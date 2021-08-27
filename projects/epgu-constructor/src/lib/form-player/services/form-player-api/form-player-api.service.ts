@@ -141,6 +141,20 @@ export class FormPlayerApiService {
     return this.get<QuizDataDtoResponse>(path);
   }
 
+  public get<T>(path: string, params?: HttpParams): Observable<T> {
+    return this.http.get<T>(path, {
+      withCredentials: true,
+      params,
+    });
+  }
+
+  public post<T>(path: string, body: Object, params?: HttpParams): Observable<T> {
+    return this.http.post<T>(path, body, {
+      withCredentials: true,
+      params,
+    });
+  }
+
   private getNavigateParams(params: NavigationParams = {}): HttpParams {
     return Object.keys(params).reduce<HttpParams>((p, k) => p.set(k, params[k]), new HttpParams());
   }
@@ -159,19 +173,5 @@ export class FormPlayerApiService {
       path += `/${pathDir}/scenario/${formPlayerNavigation}`;
     }
     return path;
-  }
-
-  private get<T>(path: string, params?: HttpParams): Observable<T> {
-    return this.http.get<T>(path, {
-      withCredentials: true,
-      params,
-    });
-  }
-
-  private post<T>(path: string, body: Object, params?: HttpParams): Observable<T> {
-    return this.http.post<T>(path, body, {
-      withCredentials: true,
-      params,
-    });
   }
 }
