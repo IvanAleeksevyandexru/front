@@ -716,7 +716,7 @@ describe('DictionaryToolsService', () => {
         simple: {
           attributeName: 'TEST',
           condition: 'EQUALS',
-          maxLength: undefined,
+          minLength: undefined,
           rawValue: 42,
           value: { asString: 42 },
         },
@@ -740,7 +740,7 @@ describe('DictionaryToolsService', () => {
         simple: {
           attributeName: 'TEST',
           condition: 'EQUALS',
-          maxLength: undefined,
+          minLength: undefined,
           rawValue: 42,
           value: { asDecimal: 42 },
         },
