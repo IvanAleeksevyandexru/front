@@ -37,6 +37,7 @@ import { DictionaryToolsService } from '../../../../../../shared/services/dictio
 import { configureTestSuite } from 'ng-bullet';
 import { MockModule } from 'ng-mocks';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
+import { DisclaimerModule } from '../../../../../../shared/components/disclaimer/disclaimer.module';
 
 describe('SelectChildrenComponent', () => {
   let component: SelectChildrenComponent;
@@ -61,6 +62,7 @@ describe('SelectChildrenComponent', () => {
         CloneButtonModule,
         ConstructorDropdownModule,
         ComponentsListModule,
+        DisclaimerModule,
       ],
       providers: [
         UnsubscribeService,
