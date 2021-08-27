@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { FormPlayerContext, QueryParams, ServiceEntity } from '../../../form-player/form-player.types';
+import {
+  FormPlayerContext,
+  QueryParams,
+  ServiceEntity,
+  ServiceInfo,
+} from '../../../form-player/form-player.types';
 
 @Injectable()
 export class InitDataServiceStub implements ServiceEntity, FormPlayerContext {
@@ -7,6 +12,7 @@ export class InitDataServiceStub implements ServiceEntity, FormPlayerContext {
   private _orderId: number;
   private _targetId: string;
   private _invited: boolean;
+  private _serviceInfo: ServiceInfo;
   private _canStartNew: boolean;
   private _initState: string;
   private _configId: string;
@@ -53,12 +59,20 @@ export class InitDataServiceStub implements ServiceEntity, FormPlayerContext {
     this._initState = initState;
   }
 
+  get serviceInfo(): ServiceInfo {
+    return this._serviceInfo;
+  }
+
+  set serviceInfo(serviceInfo: ServiceInfo) {
+    this._serviceInfo = serviceInfo;
+  }
+
   get canStartNew(): boolean {
     return this._canStartNew;
   }
 
   set canStartNew(canStartNew: boolean) {
-    this._canStartNew = canStartNew  ?? true;
+    this._canStartNew = canStartNew ?? true;
   }
 
   get configId(): string {
@@ -90,6 +104,7 @@ export class InitDataServiceStub implements ServiceEntity, FormPlayerContext {
     this.targetId = service.targetId;
     this.orderId = service.orderId;
     this.invited = service.invited;
+    this.serviceInfo = service.serviceInfo;
     this.canStartNew = service.canStartNew;
     this.initState = context?.initState;
     this.configId = context?.configId;

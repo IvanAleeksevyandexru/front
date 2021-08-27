@@ -220,8 +220,8 @@ export class FormPlayerStartManager {
   }
 
   private startFromQueryParamsCase(): void {
-    const { serviceId, targetId, queryParams } = this.initDataService;
-    const { screenId, ...rest } = queryParams || {};
+    const { serviceId, targetId, serviceInfo } = this.initDataService;
+    const { screenId, ...rest } = serviceInfo?.queryParams || {};
 
     const answers = Object.entries(rest)
       .map(([key, value]) => `${key}=${typeof value === 'object' ? JSON.stringify(value) : value}`)
@@ -234,8 +234,8 @@ export class FormPlayerStartManager {
   }
 
   private hasSpecificQueryParams(): boolean {
-    const { serviceId, targetId, queryParams } = this.initDataService;
-    const { screenId } = queryParams || {};
+    const { serviceId, targetId, serviceInfo } = this.initDataService;
+    const { screenId } = serviceInfo?.queryParams || {};
     return !!serviceId && !!targetId && !!screenId;
   }
 }

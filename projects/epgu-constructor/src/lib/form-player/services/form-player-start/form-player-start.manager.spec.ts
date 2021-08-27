@@ -27,6 +27,7 @@ import {
   LocalStorageService,
   LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { cloneDeep } from 'lodash';
 import { configureTestSuite } from 'ng-bullet';
 import { APP_OUTPUT_KEY } from '@epgu/epgu-constructor-types';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
@@ -39,7 +40,6 @@ describe('FormPlayerStartManager', () => {
   let formPlayerService: FormPlayerService;
   let formPlayerApiService: FormPlayerApiService;
   let localStorageService: LocalStorageService;
-  let loadService: LoadService;
   let loggerService: LoggerService;
   let continueOrderModalService: ContinueOrderModalService;
   let initDataService: InitDataService;
@@ -76,7 +76,6 @@ describe('FormPlayerStartManager', () => {
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
     continueOrderModalService = TestBed.inject(ContinueOrderModalService);
     localStorageService = TestBed.inject(LocalStorageService);
-    loadService = TestBed.inject(LoadService);
     loggerService = TestBed.inject(LoggerService);
     initDataService = TestBed.inject(InitDataService);
     location = TestBed.inject(Location);
@@ -440,7 +439,7 @@ describe('FormPlayerStartManager', () => {
   });
 
   describe('startFromQueryParamsCase()', () => {
-    const rawSate = JSON.stringify(responseDto);
+    const rawState = JSON.stringify(responseDto);
 
     it('should call formPlayerApiService.get()', () => {
       const spy = jest.spyOn(formPlayerApiService, 'get');
@@ -457,10 +456,10 @@ describe('FormPlayerStartManager', () => {
     it('should prepare valid path for GET request', () => {
       const path = '/api/service/10000100/scenario/-10000100/external/s1?q1=value';
       const spy = jest.spyOn(formPlayerApiService, 'get');
-      initDataService.init(
-        { ...serviceDataMock },
-        { initState: rawSate, queryParams: { screenId: 's1', q1: 'value' }},
-      );
+      const newServiceDataMock = cloneDeep(serviceDataMock);
+      // @ts-ignore
+      newServiceDataMock.serviceInfo = { queryParams: { screenId: 's1', q1: 'value' }};
+      initDataService.init({ ...newServiceDataMock }, { initState: rawState });
       service['startFromQueryParamsCase']();
       expect(spy).toHaveBeenCalledWith(path);
     });
@@ -469,16 +468,16 @@ describe('FormPlayerStartManager', () => {
   describe('hasSpecificQueryParams()', () => {
     const rawSate = JSON.stringify(responseDto);
     it('should return true, if initDataService contain serviceId, targetId, screenId in queryParams', () => {
-      initDataService.init(
-        { ...serviceDataMock },
-        { initState: rawSate, queryParams: { screenId: 's1' }},
-      );
+      const newServiceDataMock = cloneDeep(serviceDataMock);
+      // @ts-ignore
+      newServiceDataMock.serviceInfo = { queryParams: { screenId: 's1', q1: 'value' }};
+      initDataService.init({ ...newServiceDataMock }, { initState: rawSate });
       const result = service['hasSpecificQueryParams']();
       expect(result).toBeTruthy();
     });
     it('should return false, if initDataService does not contain serviceId, targetId or screenId in queryParams', () => {
       const rawSate = JSON.stringify(responseDto);
-      initDataService.init({ ...serviceDataMock }, { initState: rawSate, queryParams: {}});
+      initDataService.init({ ...serviceDataMock }, { initState: rawSate });
       const result = service['hasSpecificQueryParams']();
       expect(result).toBeFalsy();
     });
