@@ -65,6 +65,8 @@ import { RestService } from '../../shared/services/rest/rest.service';
 import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
 import { RestLookupInputComponent } from './components/rest-lookup-input/rest-lookup-input.component';
 import { InterpolationService } from '../../shared/services/interpolation/interpolation.service';
+import { FormDisclaimerComponent } from './components/form-disclaimer/form-disclaimer.component';
+import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
 
 @NgModule({
   declarations: [
@@ -81,6 +83,7 @@ import { InterpolationService } from '../../shared/services/interpolation/interp
     EaisdoGroupCostComponent,
     FieldListItemComponent,
     FileUploadFormComponent,
+    FormDisclaimerComponent,
     FormOutputHtmlComponent,
     LookupInputComponent,
     MaskedAndPlainInputComponent,
@@ -112,6 +115,7 @@ import { InterpolationService } from '../../shared/services/interpolation/interp
     ConstructorMultilineInputModule,
     ConstructorPlainInputModule,
     CurrencyModule,
+    DisclaimerModule,
     DocInputModule,
     DropDownDeptsModule,
     FieldListModule,
@@ -150,6 +154,7 @@ import { InterpolationService } from '../../shared/services/interpolation/interp
     EaisdoGroupCostComponent,
     FieldListItemComponent,
     FileUploadFormComponent,
+    FormDisclaimerComponent,
     FormOutputHtmlComponent,
     LookupInputComponent,
     MaskedAndPlainInputComponent,

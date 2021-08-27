@@ -32,6 +32,7 @@ export enum CustomScreenComponentTypes {
   ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
   DateInput = 'DateInput',
   Dictionary = 'Dictionary',
+  Disclaimer = 'Disclaimer',
   DocInput = 'DocInput',
   DropDown = 'DropDown',
   DropDownDepts = 'DropDownDepts',
