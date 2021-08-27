@@ -1,5 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -14,6 +15,7 @@ import {
   UnsubscribeService,
   ConfigService,
   LoggerService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -143,6 +145,7 @@ describe('ComponentsListFormService', () => {
         AddressHelperService,
         LoggerService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         DateRangeService,
         DatesToolsService,
         { provide: ScreenService, useClass: ScreenServiceStub },

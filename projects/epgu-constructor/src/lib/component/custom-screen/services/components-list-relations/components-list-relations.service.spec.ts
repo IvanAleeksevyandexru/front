@@ -336,6 +336,45 @@ describe('ComponentsListRelationsService', () => {
         null,
       );
     });
+
+    it('should work properly if there is no relatedRel in ref', () => {
+      const component = JSON.parse(JSON.stringify(componentMock));
+      component.attrs.ref = [
+        {
+          relatedDate: 'ai15',
+          val: '90',
+          period: 'days',
+          condition: '>='
+        }
+      ];
+
+      const components = [component];
+
+      jest.spyOn(dateRangeService, 'updateLimitDate');
+      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements');
+      jest.spyOn<any, any>(service, 'getDependentComponents').mockReturnValue(components);
+
+      let result = service.getUpdatedShownElements(
+        components,
+        createComponentMock({
+          id: 'compId',
+        }),
+        shownElements,
+        form,
+        dictionaries,
+        false,
+        screenService,
+        dictionaryToolsService,
+      );
+
+      expect(dateRangeService.updateLimitDate).not.toBeCalled();
+      expect(result).toEqual({
+        foo: {
+          isShown: true,
+          relation: CustomComponentRefRelation.autofillFromDictionary,
+        },
+      });
+    });
   });
 
   describe('createStatusElements()', () => {
@@ -1295,9 +1334,24 @@ describe('ComponentsListRelationsService', () => {
     it('should return true, if component is dependent', () => {
       expect(service.isComponentDependent(componentMock.attrs.ref, componentMock)).toBe(true);
     });
+
     it('should return false, if component is not dependent', () => {
       const component = JSON.parse(JSON.stringify(componentMock));
       component.attrs.ref[0].relatedRel = 'pd4';
+      expect(service.isComponentDependent(component.attrs.ref, componentMock)).toBe(false);
+    });
+
+    it('should work properly if there is no relatedRel attr in ref', () => {
+      const component = JSON.parse(JSON.stringify(componentMock));
+      component.attrs.ref = [
+        {
+          relatedDate: 'ai15',
+          val: '90',
+          period: 'days',
+          condition: '>='
+        }
+      ];
+
       expect(service.isComponentDependent(component.attrs.ref, componentMock)).toBe(false);
     });
   });

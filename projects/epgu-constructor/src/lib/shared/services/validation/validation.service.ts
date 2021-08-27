@@ -3,6 +3,8 @@ import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors, Validat
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
+import { HealthService } from '@epgu/epgu-constructor-ui-kit';
+import { CookieService } from 'ngx-cookie-service';
 
 import {
   CustomComponent,
@@ -21,6 +23,7 @@ import { DateRestrictionsService } from '../date-restrictions/date-restrictions.
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { get } from 'lodash';
 
+export const CARD_VALIDATION_EVENT = 'CardValidation';
 
 enum ValidationType {
   regExp = 'RegExp',
@@ -45,7 +48,9 @@ export class ValidationService {
     private dateRangeService: DateRangeService,
     private dateRestrictionsService: DateRestrictionsService,
     private datesToolsService: DatesToolsService,
-    private currentAnswerService: CurrentAnswersService
+    private currentAnswerService: CurrentAnswersService,
+    private health: HealthService,
+    private cookie: CookieService,
   ) {
   }
 
@@ -219,7 +224,13 @@ export class ValidationService {
       }
       sum += cardNum;
     }
-    return sum % 10 === 0;
+    const result = sum % 10 === 0;
+    this.health.measureStart(CARD_VALIDATION_EVENT);
+    this.health.measureEnd(CARD_VALIDATION_EVENT, 0, {
+      userId: this.cookie.get('u'),
+      validationStatus: result,
+    });
+    return result;
   }
 
   private isValid(component: CustomComponent, value: string): boolean {

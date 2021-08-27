@@ -78,7 +78,7 @@ export class ComponentsListRelationsService {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
         dependentComponent.attrs.ref
-          ?.filter((el) => el.relatedRel.split(';').some((e) => e === component.id))
+          ?.filter((el) => (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id))
           .forEach((reference) => {
             const value = reference.valueFromCache
               ? screenService.cachedAnswers[reference.valueFromCache].value
@@ -219,7 +219,10 @@ export class ComponentsListRelationsService {
   }
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
-    return arr.some((el) => [...el.relatedRel.split(';'), el.relatedDate].includes(component.id));
+    return arr.some((el) => [
+      ...(el.relatedRel ? el.relatedRel.split(';') : []),
+      el.relatedDate
+    ].includes(component.id));
   }
 
   public getDependentComponents(

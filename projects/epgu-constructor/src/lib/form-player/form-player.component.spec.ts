@@ -61,6 +61,8 @@ import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { AnimationBuilder } from '@angular/animations';
 import { JsonHelperService } from '../core/services/json-helper/json-helper.service';
 import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
+import { FormPlayerApiServiceStub } from './services/form-player-api/form-player-api.service.stub';
+import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -113,6 +115,7 @@ describe('FormPlayerComponent', () => {
         WINDOW_PROVIDERS,
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: TracingService, useClass: TracingServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
