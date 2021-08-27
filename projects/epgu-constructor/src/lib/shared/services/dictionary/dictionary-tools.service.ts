@@ -453,7 +453,7 @@ export class DictionaryToolsService {
     const filter = { ...rawFilter };
 
     if (filter?.simple) {
-      delete filter.simple?.maxLength;
+      delete filter.simple?.minLength;
       delete filter.simple?.rawValue;
     }
     return filter;
