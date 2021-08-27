@@ -42,7 +42,7 @@ export interface DictionarySimpleFilter {
   value: DictionaryValue;
   valueType?: DictionaryValueTypes;
   rawValue?: string;
-  maxLength?: number;
+  minLength?: number;
   trueForNull?: boolean;
 }
 
@@ -109,7 +109,7 @@ export interface ComponentDictionaryFilterDto {
   value: string;
   valueType: string;
   dateFormat?: string;
-  maxLength?: number;
+  minLength?: number;
   formatValue?: FilterDtoConfig;
   trueForNull?: boolean;
   excludeWrapper?: boolean;

@@ -189,9 +189,9 @@ export class DictionaryToolsService {
   }
 
   dictionaryFiltersCheckOptions(options: DictionaryOptions): DictionaryOptions | null {
-    if (options?.filter?.simple?.maxLength) {
+    if (options?.filter?.simple?.minLength) {
       const value = options.filter.simple.rawValue || '';
-      if (value.length > options.filter.simple.maxLength) {
+      if (value.length < options.filter.simple.minLength) {
         return null;
       }
     }
@@ -325,7 +325,7 @@ export class DictionaryToolsService {
       simple: {
         attributeName: dFilter.attributeName,
         condition: dFilter.condition,
-        maxLength: dFilter.maxLength,
+        minLength: dFilter.minLength,
         ...valueForFilter,
         ...(dFilter.hasOwnProperty('trueForNull') ? { trueForNull: dFilter.trueForNull } : {}),
         ...(dFilter.hasOwnProperty('checkAllValues')
