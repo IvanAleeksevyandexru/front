@@ -33,6 +33,7 @@ import { DateRestrictionsService } from '../date-restrictions/date-restrictions.
 import { getDictKeyByComp } from './dictionary-helper';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -177,6 +178,7 @@ describe('DictionaryToolsService', () => {
         DateRangeService,
         DatesToolsService,
         RefRelationService,
+        DateRefService,
         MockProvider(DateRestrictionsService),
         JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },

@@ -1,4 +1,4 @@
-import { ListItem } from '@epgu/epgu-lib';
+import { BrokenDateFixStrategy, ListItem } from '@epgu/epgu-lib';
 import {
   ComponentDictionaryFilterDto,
   DictionaryOptions,
@@ -31,6 +31,7 @@ export enum CustomScreenComponentTypes {
   CityInput = 'CityInput',
   ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
   DateInput = 'DateInput',
+  CalendarInput = 'CalendarInput',
   Dictionary = 'Dictionary',
   Disclaimer = 'Disclaimer',
   DocInput = 'DocInput',
@@ -184,12 +185,16 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   validation?: CustomComponentAttrValidation[];
   withAmount?: boolean;
   interpolationEnabled?: boolean;
+  readonly?: boolean;
+  brokenDateFixStrategy?: BrokenDateFixStrategy;
 }
 
 export interface DateRestriction {
   condition: string;
   type: 'ref' | 'const';
-  value: string;
+  value: string | Date;
+  forChild?: string;
+  precision?: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -204,6 +209,7 @@ export interface CustomComponentAttrValidation {
   errorDesc?: string;
   updateOn?: UpdateOn;
   expr?: string;
+  forChild?: string;
 }
 
 export enum CustomComponentAttrValidator {
@@ -292,3 +298,9 @@ export interface SupportedValue {
   value: string;
   isDefault?: boolean;
 }
+
+export interface DateRestrictionGroups {
+  [key: string]: DateRestriction[];
+}
+
+export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';

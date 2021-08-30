@@ -22,6 +22,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;
@@ -67,6 +68,7 @@ describe('MultiChoiceDictionaryModalComponent', () => {
         FormBuilder,
         UnsubscribeService,
         EventBusService,
+        DateRefService,
         {
           provide: DictionaryApiService,
           useClass: DictionaryApiServiceStub,
