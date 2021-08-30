@@ -75,9 +75,7 @@ export class LogicService {
     const options: DictionaryOptions = {
       ...defaultOptions,
       ...(dictionaryFilter
-        ? this.dictionaryToolsService.clearTemporaryOptions(
-            this.dictionaryToolsService.prepareOptions(component, store, dictionaryFilter),
-          )
+        ? this.dictionaryToolsService.prepareOptions(component, store, dictionaryFilter)
         : {}),
     };
 
