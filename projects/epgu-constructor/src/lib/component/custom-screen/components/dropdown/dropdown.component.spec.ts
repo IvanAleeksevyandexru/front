@@ -1,5 +1,5 @@
 import { DropdownComponent } from './dropdown.component';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule, MockProviders } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
@@ -235,7 +235,7 @@ describe('DropdownComponent', () => {
 
   describe('onChange', () => {
     it('should call updateDropDowns and set selectedDropDown event when have event with dropDown', () => {
-      spyOn<any>(component, 'updateDropDowns');
+      jest.spyOn<any>(component, 'updateDropDowns');
       expect(component['selectedDropDown']).toBeUndefined();
       component['isNotDuplicate'] = true;
       fixture.detectChanges();
@@ -245,7 +245,7 @@ describe('DropdownComponent', () => {
     });
 
     it('should call updateDropDowns and set selectedDropDown null when have not event with dropDown', () => {
-      spyOn<any>(component, 'updateDropDowns');
+      jest.spyOn<any>(component, 'updateDropDowns');
       expect(component['selectedDropDown']).not.toBeNull();
       component['isNotDuplicate'] = true;
       fixture.detectChanges();

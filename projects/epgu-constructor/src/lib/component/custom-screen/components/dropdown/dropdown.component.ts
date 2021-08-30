@@ -1,5 +1,6 @@
 import { ListItem, ValidationShowOn } from '@epgu/epgu-lib';
 import { Component, ChangeDetectionStrategy, Injector, OnDestroy, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { isEqual as _isEqual } from 'lodash';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -42,9 +43,10 @@ export class DropdownComponent extends AbstractComponentListItemComponent
     this.isNotDuplicate = this.control.value.attrs.isNotDuplicate;
 
     this.dropDowns$ = this.dictionaryToolsService.dropDowns$;
-    this.dropDowns$.subscribe((data) => {
+    this.dropDowns$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       if (!this.isNotDuplicate) {
         this.dropDowns = data[this.control?.value?.id];
+        return;
       }
 
       this.sourceDropDowns = data[`${this.control?.value?.id}${this.sourceDropDownPostfix}`];
