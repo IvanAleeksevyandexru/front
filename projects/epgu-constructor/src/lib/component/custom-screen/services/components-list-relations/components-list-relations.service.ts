@@ -159,7 +159,7 @@ export class ComponentsListRelationsService {
     itemRef: CustomComponentRef,
     components: CustomComponent[],
     form: FormArray,
-  ): number | string {
+  ): string {
     let str = itemRef.val as string;
     const lettersAnNumberItemRegExp = /\{\w+\}/gm;
     const matches = str.match(lettersAnNumberItemRegExp);
