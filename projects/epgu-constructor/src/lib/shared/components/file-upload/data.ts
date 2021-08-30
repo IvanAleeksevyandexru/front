@@ -50,6 +50,8 @@ export interface UploadContext {
   clarifications: Clarifications;
 }
 
+export const mimeTypeByExtension = { sig: 'application/signature' };
+
 export const extToLowerCase: (name: string) => string = (name: string) => {
   if (!name) {
     return name;
@@ -80,10 +82,11 @@ export class FileItem {
       this.item.uploaded = true;
     }
     if (!raw && item) {
+      const type = this.getMimeType();
       this.raw = {
         size: item.fileSize,
         name: extToLowerCase(item.fileName),
-        type: item.mimeType || '',
+        type,
       } as File;
       this.isRawMock = true;
     }
@@ -148,6 +151,12 @@ export class FileItem {
     } as TerraFileOptions;
   }
 
+  getMimeType(): string {
+    const type = this.raw?.type || this.item?.mimeType || '';
+
+    return type.length > 0 ? type : mimeTypeByExtension[this.getType().toLowerCase()] || '';
+  }
+
   createUploadOptions(
     objectId: string,
     objectType: number,
@@ -155,7 +164,7 @@ export class FileItem {
   ): TerraUploadFileOptions {
     return {
       name: this.raw.name,
-      mimeType: this.raw.type,
+      mimeType: this.getMimeType(),
       objectId: objectId,
       objectType: objectType,
       mnemonic: mnemonic,
@@ -163,7 +172,8 @@ export class FileItem {
   }
 
   getType(): string {
-    return this.raw.name.split('.').pop().toUpperCase();
+    const name = this.raw?.name || this.item?.fileName;
+    return name.split('.').pop().toUpperCase();
   }
 
   isTypeValid(acceptTypes?: string): boolean {
