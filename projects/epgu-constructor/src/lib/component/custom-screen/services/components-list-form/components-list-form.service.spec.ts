@@ -1,5 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -14,6 +15,7 @@ import {
   UnsubscribeService,
   ConfigService,
   LoggerService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -36,6 +38,7 @@ import { TypeCastService } from '../../../../core/services/type-cast/type-cast.s
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -136,11 +139,13 @@ describe('ComponentsListFormService', () => {
       providers: [
         ComponentsListFormService,
         ValidationService,
+        CurrentAnswersService,
         UnsubscribeService,
         ComponentsListToolsService,
         AddressHelperService,
         LoggerService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         DateRangeService,
         DatesToolsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -192,7 +197,8 @@ describe('ComponentsListFormService', () => {
     const setup = (
       type = CustomScreenComponentTypes.DropDown,
       attrs = { defaultIndex: 0 },
-      dictionaryItemsCount = 2
+      dictionaryItemsCount = 2,
+      value = ''
     ) => {
       const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
       const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
@@ -215,7 +221,7 @@ describe('ComponentsListFormService', () => {
       extraComponent.id = 'someID';
       component.type = type;
       component.attrs = { ...component.attrs, ...attrs };
-      component.value = undefined;
+      component.value = value;
       service.create([component, extraComponent], {});
 
       const control = service.form.controls.find((ctrl) => ctrl.value.id === component.id);
@@ -322,6 +328,15 @@ describe('ComponentsListFormService', () => {
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
         expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
+      });
+
+      it('should dont call patch when there is no value ', () => {
+        const {
+          controlPatchSpy,
+          component,
+        } = setup(CustomScreenComponentTypes.Lookup, { lockedValue: false }, 1, '');
+        service.patch(component);
+        expect(controlPatchSpy).toHaveBeenCalledTimes(0);
       });
     });
   });

@@ -41,7 +41,7 @@
     &__controls {
       display: flex;
       padding-top: 24px;
-      margin-top: auto;
+      margin-top: 0;
       justify-content: center;
       flex: 0 1 auto;
       @include tablets-down {

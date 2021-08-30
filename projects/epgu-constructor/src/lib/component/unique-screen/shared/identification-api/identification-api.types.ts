@@ -66,7 +66,7 @@ export const simplifyQualityTransform = <T extends QualityResponse>(data: T) => 
   if (result?.similarityFaceId) {
     result.similarityFaceId = Math.round(result.similarityFaceId * 100);
   }
-  if (result?.similarity) {
+  if (result?.similaritySelfieFaceId) {
     result.similaritySelfieFaceId = Math.round(result.similaritySelfieFaceId * 100);
   }
 

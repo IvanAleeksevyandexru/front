@@ -1,4 +1,7 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
 
 :host {
   display: flex;

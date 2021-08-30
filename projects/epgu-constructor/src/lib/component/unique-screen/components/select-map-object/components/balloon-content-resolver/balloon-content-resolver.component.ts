@@ -36,6 +36,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
   @Input() mapObject;
   @Input() isSelectButtonHidden = false;
   @Input() contentType = ContentTypes.commonContent;
+  @Input() attrs;
   @Output() selectObject = new EventEmitter<YMapItem<DictionaryItem>>();
   private balloonContentComponentRef: ComponentRef<ContentTypesComponents>;
 
@@ -81,6 +82,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
     const { instance } = ref;
     instance.mapObject = this.mapObject;
     instance.isSelectButtonHidden = this.isSelectButtonHidden;
+    instance.attrs = this.attrs;
     instance.selectObject = (obj, evt: Event): void => {
       evt.stopPropagation();
       this.selectObject.emit(obj);

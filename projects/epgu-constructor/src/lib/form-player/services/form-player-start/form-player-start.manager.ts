@@ -8,7 +8,7 @@ import {
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
@@ -21,7 +21,9 @@ import {
   QuizRequestDto,
   ScenarioDto,
   APP_OUTPUT_KEY,
+  FormPlayerApiResponse,
 } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 
 /**
  * Менеджер для обработки различных кейсов запуска плеера.
@@ -29,12 +31,14 @@ import {
 @Injectable()
 export class FormPlayerStartManager {
   constructor(
+    public continueOrderModalService: ContinueOrderModalService,
     private initDataService: InitDataService,
     private loggerService: LoggerService,
     private locationService: LocationService,
     private localStorageService: LocalStorageService,
     private formPlayerService: FormPlayerService,
-    public continueOrderModalService: ContinueOrderModalService,
+    private formPlayerApiService: FormPlayerApiService,
+    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
@@ -60,6 +64,8 @@ export class FormPlayerStartManager {
       this.startBookingCase();
     } else if (orderId) {
       this.getOrderStatus();
+    } else if (this.hasSpecificQueryParams()) {
+      this.startFromQueryParamsCase();
     } else {
       this.getOrderIdFromApi();
     }
@@ -211,5 +217,25 @@ export class FormPlayerStartManager {
 
   private startBookingCase(): void {
     this.formPlayerService.getBooking();
+  }
+
+  private startFromQueryParamsCase(): void {
+    const { serviceId, targetId, serviceInfo } = this.initDataService;
+    const { screenId, ...rest } = serviceInfo?.queryParams || {};
+
+    const answers = Object.entries(rest)
+      .map(([key, value]) => `${key}=${typeof value === 'object' ? JSON.stringify(value) : value}`)
+      .join('&');
+
+    const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/${targetId}/external/${screenId}?${answers}`;
+    this.formPlayerApiService.get(path).subscribe((response: FormPlayerApiResponse) => {
+      this.formPlayerService.processResponse(response);
+    });
+  }
+
+  private hasSpecificQueryParams(): boolean {
+    const { serviceId, targetId, serviceInfo } = this.initDataService;
+    const { screenId } = serviceInfo?.queryParams || {};
+    return !!serviceId && !!targetId && !!screenId;
   }
 }

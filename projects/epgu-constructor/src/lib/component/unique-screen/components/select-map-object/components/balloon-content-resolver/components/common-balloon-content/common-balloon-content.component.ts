@@ -25,6 +25,7 @@ export class CommonBalloonContentComponent implements IBalloonContent {
   @Input() isSelectButtonHidden = false;
   @Input() showLoader = false;
   @Input() mapObject;
+  @Input() attrs;
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
   public selectObject: Function;

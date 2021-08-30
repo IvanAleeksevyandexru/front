@@ -61,6 +61,12 @@ import { DepartmentLookupComponent } from './components/department-lookup/depart
 import { RadioInputComponent } from './components/radio-input/radio-input.component';
 import { EaisdoGroupCostComponent } from './components/eaisdo-group-cost/eaisdo-group-cost.component';
 import { CertificateEaisdoComponent } from './components/certificate-eaisdo/certificate-eaisdo.component';
+import { RestService } from '../../shared/services/rest/rest.service';
+import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
+import { RestLookupInputComponent } from './components/rest-lookup-input/rest-lookup-input.component';
+import { InterpolationService } from '../../shared/services/interpolation/interpolation.service';
+import { FormDisclaimerComponent } from './components/form-disclaimer/form-disclaimer.component';
+import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
 
 @NgModule({
   declarations: [
@@ -77,6 +83,7 @@ import { CertificateEaisdoComponent } from './components/certificate-eaisdo/cert
     EaisdoGroupCostComponent,
     FieldListItemComponent,
     FileUploadFormComponent,
+    FormDisclaimerComponent,
     FormOutputHtmlComponent,
     LookupInputComponent,
     MaskedAndPlainInputComponent,
@@ -85,6 +92,7 @@ import { CertificateEaisdoComponent } from './components/certificate-eaisdo/cert
     MvdGiacLookupComponent,
     PassportLookupComponent,
     RadioInputComponent,
+    RestLookupInputComponent,
     SearchableDropdownComponent,
     ShowComponentPipe,
     TextAreaComponent,
@@ -107,6 +115,7 @@ import { CertificateEaisdoComponent } from './components/certificate-eaisdo/cert
     ConstructorMultilineInputModule,
     ConstructorPlainInputModule,
     CurrencyModule,
+    DisclaimerModule,
     DocInputModule,
     DropDownDeptsModule,
     FieldListModule,
@@ -127,6 +136,9 @@ import { CertificateEaisdoComponent } from './components/certificate-eaisdo/cert
     DictionaryApiService,
     SuggestHandlerService,
     ValidationService,
+    RestService,
+    RestToolsService,
+    InterpolationService,
   ],
   entryComponents: [
     AddressInputComponent,
@@ -142,6 +154,7 @@ import { CertificateEaisdoComponent } from './components/certificate-eaisdo/cert
     EaisdoGroupCostComponent,
     FieldListItemComponent,
     FileUploadFormComponent,
+    FormDisclaimerComponent,
     FormOutputHtmlComponent,
     LookupInputComponent,
     MaskedAndPlainInputComponent,
@@ -150,6 +163,7 @@ import { CertificateEaisdoComponent } from './components/certificate-eaisdo/cert
     MvdGiacLookupComponent,
     PassportLookupComponent,
     RadioInputComponent,
+    RestLookupInputComponent,
     SearchableDropdownComponent,
     TextAreaComponent,
     TimerItemComponent,

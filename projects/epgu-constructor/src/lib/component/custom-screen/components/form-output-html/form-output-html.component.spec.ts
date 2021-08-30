@@ -11,6 +11,7 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
 import { FormOutputHtmlComponent } from './form-output-html.component';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
 import { CustomScreenComponentTypes } from '../../components-list.types';
+import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
 
 const mockFormOutputHtmlComponent = {
   id: 'id',
@@ -28,6 +29,7 @@ describe('FormOutputHtmlComponent', () => {
   let formService: ComponentsListFormServiceStub;
   let control: FormGroup;
   let fb: FormBuilder;
+  let interpolationService: InterpolationService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -38,6 +40,7 @@ describe('FormOutputHtmlComponent', () => {
       providers: [
         FormBuilder,
         MockProvider(ComponentsListRelationsService),
+        MockProvider(InterpolationService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
       ],
     }).overrideComponent(FormOutputHtmlComponent, {
@@ -48,6 +51,7 @@ describe('FormOutputHtmlComponent', () => {
   beforeEach(() => {
     fb = TestBed.inject(FormBuilder);
     formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
+    interpolationService = TestBed.inject(InterpolationService);
     control = fb.group(mockFormOutputHtmlComponent);
     formService['_form'] = new FormArray([ control ]);
     fixture = TestBed.createComponent(FormOutputHtmlComponent);
@@ -83,6 +87,9 @@ describe('FormOutputHtmlComponent', () => {
     });
 
     it('interpolate data if needed', () => {
+      const interpolationStringSpy  = jest.spyOn(interpolationService, 'interpolateString')
+        .mockReturnValue('fake label some-data1 some-data2');
+
       component.control = new FormControl({
         ...mockFormOutputHtmlComponent,
         type: CustomScreenComponentTypes.HtmlString,
@@ -100,6 +107,10 @@ describe('FormOutputHtmlComponent', () => {
       fixture.detectChanges();
 
       expect(component.label()).toBe('fake label some-data1 some-data2');
+      expect(interpolationStringSpy).toBeCalledWith('fake label ${anotherComponent1.data} ${anotherComponent2.data}', {
+        anotherComponent1: { data: 'some-data1' },
+        anotherComponent2: { data: 'some-data2' },
+      });
     });
   });
 });

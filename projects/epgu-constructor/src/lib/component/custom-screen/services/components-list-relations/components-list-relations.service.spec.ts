@@ -336,6 +336,45 @@ describe('ComponentsListRelationsService', () => {
         null,
       );
     });
+
+    it('should work properly if there is no relatedRel in ref', () => {
+      const component = JSON.parse(JSON.stringify(componentMock));
+      component.attrs.ref = [
+        {
+          relatedDate: 'ai15',
+          val: '90',
+          period: 'days',
+          condition: '>='
+        }
+      ];
+
+      const components = [component];
+
+      jest.spyOn(dateRangeService, 'updateLimitDate');
+      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements');
+      jest.spyOn<any, any>(service, 'getDependentComponents').mockReturnValue(components);
+
+      let result = service.getUpdatedShownElements(
+        components,
+        createComponentMock({
+          id: 'compId',
+        }),
+        shownElements,
+        form,
+        dictionaries,
+        false,
+        screenService,
+        dictionaryToolsService,
+      );
+
+      expect(dateRangeService.updateLimitDate).not.toBeCalled();
+      expect(result).toEqual({
+        foo: {
+          isShown: true,
+          relation: CustomComponentRefRelation.autofillFromDictionary,
+        },
+      });
+    });
   });
 
   describe('createStatusElements()', () => {
@@ -771,6 +810,50 @@ describe('ComponentsListRelationsService', () => {
         // value === 'some value', потому что в dictionaries есть нужный словарь
         expect(dependentControl.touched).toBeFalsy();
         expect(dependentControl.get('value').value).toBe('some value');
+      });
+
+      it('should update dependent control if it is equal empty string', () => {
+        const reference: CustomComponentRef = {
+          relatedRel: 'rf1',
+          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+          relation: CustomComponentRefRelation.autofillFromDictionary,
+        };
+
+        dependentControl = new FormGroup({
+          id: new FormControl(dependentComponent.id),
+          value: new FormControl(''),
+        });
+        form = new FormArray([dependentControl]);
+
+        dependentControl.markAsTouched();
+        initInitialValues = false;
+
+        componentVal = {
+          id: 'foo',
+          regOkato: '450000',
+        };
+
+        dictionaries = {} as CustomListDictionaries;
+
+        initInitialValues = true;
+        jest.spyOn(service, 'getDictionaryAttributeValue').mockReturnValue('new value');
+
+        service['getDependentComponentUpdatedShownElements'](
+          dependentComponent,
+          reference,
+          componentVal,
+          components,
+          form,
+          shownElements,
+          dictionaries,
+          initInitialValues,
+          dictionaryToolsService,
+          screenService,
+        );
+
+        expect(dependentControl.touched).toBeFalsy();
+        expect(dependentControl.get('value').value).toBe('new value');
+
       });
     });
 
@@ -1295,9 +1378,24 @@ describe('ComponentsListRelationsService', () => {
     it('should return true, if component is dependent', () => {
       expect(service.isComponentDependent(componentMock.attrs.ref, componentMock)).toBe(true);
     });
+
     it('should return false, if component is not dependent', () => {
       const component = JSON.parse(JSON.stringify(componentMock));
       component.attrs.ref[0].relatedRel = 'pd4';
+      expect(service.isComponentDependent(component.attrs.ref, componentMock)).toBe(false);
+    });
+
+    it('should work properly if there is no relatedRel attr in ref', () => {
+      const component = JSON.parse(JSON.stringify(componentMock));
+      component.attrs.ref = [
+        {
+          relatedDate: 'ai15',
+          val: '90',
+          period: 'days',
+          condition: '>='
+        }
+      ];
+
       expect(service.isComponentDependent(component.attrs.ref, componentMock)).toBe(false);
     });
   });

@@ -17,6 +17,9 @@
     <div class="grid-col-6 grid-col-12-sm form__item">
       <epgu-constructor-label
         [label]="attrs.beginDate?.label"
+      ></epgu-constructor-label>
+      <epgu-constructor-label
+        [label]="attrs.beginDate?.sublabel"
         [for]="'startDate'"
       ></epgu-constructor-label>
 
@@ -40,15 +43,16 @@
     <div class="grid-col-6 grid-col-12-sm form__item">
       <epgu-constructor-label
         [label]="attrs.endDate?.label"
-        [for]="'endDate'"
       ></epgu-constructor-label>
-
       <div class="date-time-period-btns" *ngIf="attrs?.hints as hints">
         <div class="date-time-period-btns__item" *ngFor="let hint of hints" (click)="hintClick(hint)">
           {{ hint.label }}
         </div>
       </div>
-
+      <epgu-constructor-label
+        [label]="attrs.endDate?.sublabel"
+        [for]="'endDate'"
+      ></epgu-constructor-label>
       <epgu-constructor-constructor-date-picker
         [id]="'endDate'"
         [minDate]="group.controls.startDate.value || attrs.endDate?.minDate"

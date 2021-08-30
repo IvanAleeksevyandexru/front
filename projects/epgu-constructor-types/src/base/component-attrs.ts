@@ -10,14 +10,16 @@ import { ConfirmUserDataStyle } from './confirm-user-data';
 import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
-import { ScreenButton } from './screen-buttons';
 import { KeyValueMap } from './core.types';
+import { LogicComponentHeaders, LogicComponentMethods } from './logic-component';
 
-export interface KinderGardenAttrs {
+export interface KindergartenAttrs {
   header?: string;
   label?: string;
   checkboxLabel?: string;
-  buttons?: ScreenButton[];
+  finalScreenText?: string;
+  listMaxLength?: number;
+  nextStepLength?: number;
   attrs?: ComponentAttrsDto;
 }
 
@@ -55,6 +57,7 @@ export interface ComponentAttrsDto {
   dictItemCode?: string;
   disabled?: boolean;
   disclaimer?: DisclaimerDto;
+  defaultHint?: HintDto;
   displayShowTimeSeconds?: number;
   downloadLink?: string; // ссылка для скачивания файлов в empty screen
   emptySlotsModal?: ConfirmationModal;
@@ -91,7 +94,7 @@ export interface ComponentAttrsDto {
   labelHint?: string;
   lastName?: string;
   link?: string;
-  mapKinderGardenPriorityAttrs?: KinderGardenAttrs;
+  mapKindergartenPriorityAttrs?: KindergartenAttrs;
   mask?: string[];
   maxDate?: string;
   maxDateRef?: string;
@@ -135,6 +138,7 @@ export interface ComponentAttrsDto {
   success?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
   suggestionPath?: string;
   templateId?: string; // @see LkInvitationInputAttrs
+  emptyFieldsErrorMsg?: string;
   timerRules?: TimerRulesDto;
   uploadedFile?: ComponentUploadedFileDto;
   ussr?: boolean;
@@ -162,6 +166,15 @@ export interface ComponentAttrsDto {
   defaultLabelList?: string;
   defaultNewList?: string;
   listLabel?: boolean;
+  limit?: number | string;
+  url?: string;
+  body?: string;
+  method?: LogicComponentMethods;
+  path?: string;
+  timeout?: string;
+  headers?: LogicComponentHeaders;
+  customValidation?: CustomValidationDto;
+  balloonAttrs?: KeyValueMap;
 }
 
 export type ChildrenListAgeView = 'date' | 'age';
@@ -186,6 +199,12 @@ export interface DisclaimerDto {
   type: 'warn' | 'error';
   title: string;
   description: string;
+}
+
+export interface HintDto {
+  type: 'warn' | 'info' | 'default';
+  title: string;
+  value: string;
 }
 
 export interface IMvdFilter {
@@ -292,6 +311,8 @@ export interface ComponentFieldDto {
   label?: string;
   value?: string;
   suggestionId?: string;
+  attrs?: unknown;
+  required?: boolean;
 }
 
 export interface DisplaySubjHead {
@@ -315,6 +336,7 @@ export interface ActionConfirmationsDto {
 
 export interface ComponentDateTimeDto {
   label: string;
+  sublabel: string;
   valueType: string;
   value: string;
   required: boolean;
@@ -347,4 +369,9 @@ export interface ComponentUploadedFileDto {
   deleted?: boolean;
   uploadId?: string;
   maxSize?: number;
+}
+
+export interface CustomValidationDto {
+  fields?: string[];
+  path?: string;
 }

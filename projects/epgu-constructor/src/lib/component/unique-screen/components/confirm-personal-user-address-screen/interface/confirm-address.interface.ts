@@ -22,6 +22,7 @@ export interface ConfirmAddressInterface {
 
 interface ConfirmAddressInterfaceAttr {
   actions: ConfirmAddressActionsInterface[];
+  emptyFieldsErrorMsg: string;
   fields: ConfirmAddressFieldsInterface[];
   fstuc?: TextTransform;
   hideLevels?: string[];

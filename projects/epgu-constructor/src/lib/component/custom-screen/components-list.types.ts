@@ -11,6 +11,7 @@ import {
   ComponentAttrsDto,
   DictionaryUrlTypes,
   CustomComponentRefRelation,
+  RestAttrsDto,
 } from '@epgu/epgu-constructor-types';
 import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../screen/screen.types';
@@ -31,6 +32,7 @@ export enum CustomScreenComponentTypes {
   ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
   DateInput = 'DateInput',
   Dictionary = 'Dictionary',
+  Disclaimer = 'Disclaimer',
   DocInput = 'DocInput',
   DropDown = 'DropDown',
   DropDownDepts = 'DropDownDepts',
@@ -52,6 +54,7 @@ export enum CustomScreenComponentTypes {
   PersonInnInput = 'PersonInnInput',
   PhoneNumberChangeInput = 'PhoneNumberChangeInput',
   RadioInput = 'RadioInput',
+  RestLookup = 'RestLookup',
   SearchableDropDown = 'SearchableDropDown',
   SnilsInput = 'SnilsInput',
   StringInput = 'StringInput',
@@ -116,6 +119,12 @@ export type CustomComponentAttrField = {
   type?: string;
 }[];
 
+export interface MappingParamsDto {
+ idPath: string;
+ textPath: string;
+ isRoot?: boolean;
+}
+
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
  * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
@@ -131,6 +140,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   defaultIndex?: number;
   defaultValue?: boolean;
   dictionaryFilter?: ComponentDictionaryFilterDto[];
+  dictionaryFilters?: ComponentDictionaryFilterDto[][];
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryOptions?: DictionaryOptions;
   dictionaryType?: string;
@@ -149,7 +159,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   lockedValue?: boolean;
   lookupDefaultValue?: string | number;
   lookupFilterPath?: string;
-  mappingParams?: { idPath: string; textPath: string; isRoot: boolean };
+  mappingParams?: MappingParamsDto;
   maskOptions?: NumberMaskOptions;
   maxDate?: string;
   minDate?: string;
@@ -193,6 +203,12 @@ export interface CustomComponentAttrValidation {
   errorMsg: string;
   errorDesc?: string;
   updateOn?: UpdateOn;
+  expr?: string;
+}
+
+export enum CustomComponentAttrValidator {
+  validationFn = 'validation-fn',
+  calculatedPredicate = 'CalculatedPredicate'
 }
 
 export interface CustomComponentOutputData {
@@ -225,6 +241,7 @@ export interface CustomComponentRef {
   dictionaryFilter?: ComponentDictionaryFilterDto[];
   isResetable?: boolean;
   path?: string;
+  rest?: RestAttrsDto;
 }
 
 export interface CustomListFormGroup {

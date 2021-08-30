@@ -13,7 +13,7 @@ import {
 import {
   ConfigService,
   ConfigServiceStub,
-  mockSelectMapObjectStore
+  mockSelectMapObjectStore,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -90,6 +90,7 @@ describe('DictionaryToolsService', () => {
       dictionaryType: 'FNS_ZAGS_ORGANIZATION_AREA',
       lockedValue: true,
       repeatWithNoFilters: true,
+
       dictionaryFilter: [
         {
           attributeName: 'SHOW_ON_MAP',
@@ -198,7 +199,11 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.value,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 'true' });
+      const result = { asString: 'true' };
+      expect(valueForFilter).toEqual({
+        rawValue: result,
+        value: result,
+      });
     });
 
     it('should calc valueType preset', () => {
@@ -210,7 +215,8 @@ describe('DictionaryToolsService', () => {
       };
       const compValue = JSON.parse(MapStore.display.components[0].value);
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 'R77' });
+
+      expect(valueForFilter).toEqual({ rawValue: 'R77', value: { asString: 'R77' }});
     });
 
     it('should calc valueType root', () => {
@@ -221,7 +227,7 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.root,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 763712529 });
+      expect(valueForFilter).toEqual({ rawValue: 763712529, value: { asString: 763712529 }});
     });
 
     it('should calc valueType ref', () => {
@@ -232,7 +238,10 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.ref,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: '77000000000358800' });
+      expect(valueForFilter).toEqual({
+        rawValue: '77000000000358800',
+        value: { asString: '77000000000358800' },
+      });
     });
 
     it('should calc valueType rawFilter', () => {
@@ -243,7 +252,10 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.rawFilter,
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 'searchString' });
+      expect(valueForFilter).toEqual({
+        rawValue: 'searchString',
+        value: { asString: 'searchString' },
+      });
     });
 
     it('should calc valueType formValue with date', () => {
@@ -255,7 +267,7 @@ describe('DictionaryToolsService', () => {
         dateFormat: 'yyyy-MM-dd',
       };
       const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: '2021-04-08' });
+      expect(valueForFilter).toEqual({ rawValue: '2021-04-08', value: { asString: '2021-04-08' }});
     });
 
     it('should calc valueType formValue with string', () => {
@@ -266,7 +278,7 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.formValue,
       };
       const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ asString: 'test' });
+      expect(valueForFilter).toEqual({ rawValue: 'test', value: { asString: 'test' }});
     });
 
     it('should calc valueType INVALID_VALUE_TYPE', () => {
@@ -284,16 +296,121 @@ describe('DictionaryToolsService', () => {
 
   describe('getDictKeyByComp()', () => {
     it('should return dictionary key by component', () => {
-      expect(getDictKeyByComp(
-        { attrs: { dictionaryType: 'testType' }, id: 1 } as any))
-        .toBe('testType1');
+      expect(getDictKeyByComp({ attrs: { dictionaryType: 'testType' }, id: 1 } as any)).toBe(
+        'testType1',
+      );
+    });
+  });
+
+  describe('dictionaryFiltersLoader()', () => {
+    const patchedComponent = {
+      ...component,
+      attrs: {
+        ...component.attrs,
+        dictionaryFilters: [
+          [
+            {
+              attributeName: 'SHOW_ON_MAP',
+              condition: DictionaryConditions.EQUALS,
+              value: '{"asString":"true"}',
+              valueType: 'value',
+            },
+          ],
+          [
+            {
+              attributeName: 'SOLEMN',
+              condition: DictionaryConditions.EQUALS,
+              value: '{"asString":"true"}',
+              valueType: 'value',
+            },
+          ],
+          [
+            {
+              attributeName: 'CODE',
+              condition: DictionaryConditions.CONTAINS,
+              value: 'regCode',
+              valueType: 'preset',
+            },
+          ],
+          [
+            {
+              attributeName: 'PR2',
+              condition: DictionaryConditions.EQUALS,
+              value: '{"asString":"true"}',
+              valueType: 'value',
+            },
+          ],
+        ],
+      },
+    };
+
+    it('nulled items', (done) => {
+      jest.spyOn(service, 'getDictionaries$').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: getDictionary(0),
+        }),
+      );
+      const { dictionaryType } = patchedComponent.attrs;
+      service
+        .dictionaryFiltersLoader(
+          patchedComponent,
+          screenStore,
+          dictionaryType,
+          patchedComponent.attrs.dictionaryFilters,
+        )
+        .subscribe(() => {
+          expect(service.getDictionaries$).toHaveBeenCalledTimes(4);
+          done();
+        });
+    });
+    it('not nulled items', (done) => {
+      jest.spyOn(service, 'getDictionaries$').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: getDictionary(1),
+        }),
+      );
+      const { dictionaryType } = patchedComponent.attrs;
+      service
+        .dictionaryFiltersLoader(
+          patchedComponent,
+          screenStore,
+          dictionaryType,
+          patchedComponent.attrs.dictionaryFilters,
+        )
+        .subscribe(() => {
+          expect(service.getDictionaries$).toHaveBeenCalledTimes(1);
+          done();
+        });
     });
   });
 
   describe('getDropDownDepts$()', () => {
+    it('should dictionaryFilters', (done) => {
+      const patchedComponent = {
+        ...component,
+        attrs: { ...component.attrs, dictionaryFilters: component.attrs.dictionaryFilter },
+      };
+
+      jest.spyOn(service, 'dictionaryFiltersLoader').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: getDictionary(0),
+        }),
+      );
+
+      service.getDropDownDepts$(patchedComponent, screenStore).subscribe(() => {
+        expect(service.dictionaryFiltersLoader).toHaveBeenCalled();
+        done();
+      });
+    });
     describe('when repeatWithNoFilters is false and there is no items', () => {
       const repeatWithNoFilters = false;
-      const patchedComponent = { ...component, attrs: { ...component.attrs, repeatWithNoFilters }};
+      const patchedComponent = {
+        ...component,
+        attrs: { ...component.attrs, repeatWithNoFilters },
+      };
       const data = {
         component: patchedComponent,
         data: getDictionary(0),
@@ -314,7 +431,10 @@ describe('DictionaryToolsService', () => {
 
     describe('when repeatWithNoFilters is true', () => {
       const repeatWithNoFilters = true;
-      const patchedComponent = { ...component, attrs: { ...component.attrs, repeatWithNoFilters }};
+      const patchedComponent = {
+        ...component,
+        attrs: { ...component.attrs, repeatWithNoFilters },
+      };
 
       describe('when there is no items for filtered fetch', () => {
         const data = {
@@ -596,6 +716,8 @@ describe('DictionaryToolsService', () => {
         simple: {
           attributeName: 'TEST',
           condition: 'EQUALS',
+          minLength: undefined,
+          rawValue: 42,
           value: { asString: 42 },
         },
       });
@@ -618,6 +740,8 @@ describe('DictionaryToolsService', () => {
         simple: {
           attributeName: 'TEST',
           condition: 'EQUALS',
+          minLength: undefined,
+          rawValue: 42,
           value: { asDecimal: 42 },
         },
       });
@@ -626,11 +750,7 @@ describe('DictionaryToolsService', () => {
 
   describe('getFilterOptions', () => {
     it('should return nothing', () => {
-      const filter = service.getFilterOptions(
-        { value: 42 },
-        {},
-        undefined
-      );
+      const filter = service.getFilterOptions({ value: 42 }, {}, undefined);
 
       expect(filter).toEqual({ filter: null });
     });

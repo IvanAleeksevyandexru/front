@@ -8,7 +8,10 @@
   <span class="map-object__value election"
     ><ul>
       <li *ngFor="let election of extInfo.elections">
-        {{ election.electionName }}
+        {{ election.electionName }}.
+        <ng-container *ngIf="attrs?.isDistrictNoVisible && election.districtNo">
+          <br>Избирательный округ № {{election.districtNo}}
+        </ng-container>
       </li>
     </ul></span
   >

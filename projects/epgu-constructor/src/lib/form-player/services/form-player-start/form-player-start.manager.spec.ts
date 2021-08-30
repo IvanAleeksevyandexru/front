@@ -11,7 +11,7 @@ import {
 } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
 import { LoadService } from '@epgu/epgu-lib';
-import { LoadServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub, LoadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerService } from '../form-player/form-player.service';
@@ -27,16 +27,19 @@ import {
   LocalStorageService,
   LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { cloneDeep } from 'lodash';
 import { configureTestSuite } from 'ng-bullet';
 import { APP_OUTPUT_KEY } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
 describe('FormPlayerStartManager', () => {
   let service: FormPlayerStartManager;
   let formPlayerService: FormPlayerService;
+  let formPlayerApiService: FormPlayerApiService;
   let localStorageService: LocalStorageService;
-  let loadService: LoadService;
   let loggerService: LoggerService;
   let continueOrderModalService: ContinueOrderModalService;
   let initDataService: InitDataService;
@@ -56,6 +59,8 @@ describe('FormPlayerStartManager', () => {
         WINDOW_PROVIDERS,
         LocationService,
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ContinueOrderModalService, useClass: ContinueOrderModalServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
@@ -68,9 +73,9 @@ describe('FormPlayerStartManager', () => {
   beforeEach(() => {
     service = TestBed.inject(FormPlayerStartManager);
     formPlayerService = TestBed.inject(FormPlayerService);
+    formPlayerApiService = TestBed.inject(FormPlayerApiService);
     continueOrderModalService = TestBed.inject(ContinueOrderModalService);
     localStorageService = TestBed.inject(LocalStorageService);
-    loadService = TestBed.inject(LoadService);
     loggerService = TestBed.inject(LoggerService);
     initDataService = TestBed.inject(InitDataService);
     location = TestBed.inject(Location);
@@ -310,11 +315,13 @@ describe('FormPlayerStartManager', () => {
       const token = 'some cool token';
       const scenarioDto = {};
       spyOn(locationService, 'getParamValue').and.returnValue(token);
-      spyOn(formPlayerService, 'getQuizDataByToken').and.returnValue(of({
-        data: {
-          order: JSON.stringify(scenarioDto)
-        }
-      }));
+      spyOn(formPlayerService, 'getQuizDataByToken').and.returnValue(
+        of({
+          data: {
+            order: JSON.stringify(scenarioDto),
+          },
+        }),
+      );
       spyOn<any>(service, 'loadOrderFromQuiz').and.callThrough();
       service['startLoadFromQuizCaseByToken']();
       expect(service['loadOrderFromQuiz']).toBeCalledWith(scenarioDto);
@@ -428,6 +435,51 @@ describe('FormPlayerStartManager', () => {
       spyOn(formPlayerService, 'getBooking').and.callThrough();
       service['startBookingCase']();
       expect(formPlayerService.getBooking).toBeCalled();
+    });
+  });
+
+  describe('startFromQueryParamsCase()', () => {
+    const rawState = JSON.stringify(responseDto);
+
+    it('should call formPlayerApiService.get()', () => {
+      const spy = jest.spyOn(formPlayerApiService, 'get');
+      service['startFromQueryParamsCase']();
+      expect(spy).toBeCalled();
+    });
+
+    it('should call formPlayerService.processResponse()', () => {
+      const spy = jest.spyOn(formPlayerService, 'processResponse');
+      service['startFromQueryParamsCase']();
+      expect(spy).toBeCalled();
+    });
+
+    it('should prepare valid path for GET request', () => {
+      const path = '/api/service/10000100/scenario/-10000100/external/s1?q1=value';
+      const spy = jest.spyOn(formPlayerApiService, 'get');
+      const newServiceDataMock = cloneDeep(serviceDataMock);
+      // @ts-ignore
+      newServiceDataMock.serviceInfo = { queryParams: { screenId: 's1', q1: 'value' }};
+      initDataService.init({ ...newServiceDataMock }, { initState: rawState });
+      service['startFromQueryParamsCase']();
+      expect(spy).toHaveBeenCalledWith(path);
+    });
+  });
+
+  describe('hasSpecificQueryParams()', () => {
+    const rawSate = JSON.stringify(responseDto);
+    it('should return true, if initDataService contain serviceId, targetId, screenId in queryParams', () => {
+      const newServiceDataMock = cloneDeep(serviceDataMock);
+      // @ts-ignore
+      newServiceDataMock.serviceInfo = { queryParams: { screenId: 's1', q1: 'value' }};
+      initDataService.init({ ...newServiceDataMock }, { initState: rawSate });
+      const result = service['hasSpecificQueryParams']();
+      expect(result).toBeTruthy();
+    });
+    it('should return false, if initDataService does not contain serviceId, targetId or screenId in queryParams', () => {
+      const rawSate = JSON.stringify(responseDto);
+      initDataService.init({ ...serviceDataMock }, { initState: rawSate });
+      const result = service['hasSpecificQueryParams']();
+      expect(result).toBeFalsy();
     });
   });
 });
