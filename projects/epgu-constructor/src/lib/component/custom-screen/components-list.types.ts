@@ -152,6 +152,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   hint?: string;
   image?: ComponentImageDto;
   isBottomSlot?: boolean;
+  isNotDuplicate?: boolean;
   isTextHelper?: boolean;
   labelAttr?: string; // TODO: deprecated?
   labelHint?: string;

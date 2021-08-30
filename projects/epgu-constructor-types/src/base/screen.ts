@@ -6,7 +6,7 @@ import { InfoComponentDto } from './info-component-dto';
 
 /**
  * @property {}components
- * @property {boolean}firstScreen - ствойсвто отвечает на вопрос, на первом ли экране мы находимся,
+ * @property {boolean}firstScreen - свойство отвечает на вопрос, на первом ли экране мы находимся,
  * если экран не первый то свойства не должно быть
  * @property {string}header - текстовый заголовок компонента
  * @property {string}id - идентификатор экрана
