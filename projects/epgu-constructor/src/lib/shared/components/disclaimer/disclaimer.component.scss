@@ -1,8 +1,11 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
-:host:not(:first-child) {
-  margin-top: 24px;
+:host {
+  display: block;
+  &:not(:first-child) {
+    margin-top: 24px;
+  }
 }
 
 .error {

@@ -11,6 +11,7 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { delay, filter, map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import {
   ComponentAttrsDto,
+  DisclaimerDto,
   DisplayDto,
   ScenarioErrorsDto,
   ScreenTypes,
@@ -54,6 +55,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   componentValidation: boolean[] = [];
   parentComponentId: string;
   cacheRepeatableFieldsAnswersLocally: boolean;
+  disclaimer: DisclaimerDto;
 
   /**
    * Словарь для хранения массива компонентов
@@ -266,11 +268,13 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
       screenCaption,
       secondScreenCaption,
       cacheRepeatableFieldsAnswersLocally = false,
+      uniqueBy,
     } = this.propData.components[0].attrs;
     this.canDeleteFirstScreen = canDeleteFirstScreen;
     this.minOccures = minOccures;
     this.screenCaption = screenCaption;
     this.secondScreenCaption = secondScreenCaption;
     this.cacheRepeatableFieldsAnswersLocally = cacheRepeatableFieldsAnswersLocally;
+    this.disclaimer = uniqueBy?.disclaimer;
   }
 }

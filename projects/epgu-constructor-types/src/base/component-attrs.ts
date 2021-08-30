@@ -121,7 +121,7 @@ export interface ComponentAttrsDto {
   repeatAmount?: number;
   resendCodeUrl?: string;
   restrictions?: ComponentRestrictionsDto;
-  russia?: boolean;
+  russia?: boolean; // TODO: избавить от рудимента после рефактора json'ов услуг
   screenCaption?: string;
   secondaryDictionaryFilter?: ComponentDictionaryFilterDto[];
   secondScreenCaption?: string;
@@ -141,7 +141,8 @@ export interface ComponentAttrsDto {
   emptyFieldsErrorMsg?: string;
   timerRules?: TimerRulesDto;
   uploadedFile?: ComponentUploadedFileDto;
-  ussr?: boolean;
+  ussr?: boolean; // TODO: избавить от рудимента после рефактора json'ов услуг
+  uniqueBy?: { disclaimer?: DisclaimerDto; keys: unknown[] };
   validateMessage?: string;
   validation?: ComponentValidationDto[];
   value?: string;
@@ -196,9 +197,18 @@ export type HintTimeTypes =
   | 'milliseconds';
 
 export interface DisclaimerDto {
-  type: 'warn' | 'error';
+  type: DisclaimerDtoType;
   title: string;
   description: string;
+  clarifications: Clarifications;
+  uniquenessErrors: string[];
+}
+
+export enum DisclaimerDtoType {
+  advice = 'advice',
+  info = 'info',
+  warn = 'warn',
+  error = 'error',
 }
 
 export interface HintDto {

@@ -15,10 +15,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { startWith, takeUntil } from 'rxjs/operators';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from 'uuid';
 import { get } from 'lodash';
-import { ScenarioErrorsDto, ComponentDto, ChildrenListAgeView } from '@epgu/epgu-constructor-types';
+import {
+  ScenarioErrorsDto,
+  ComponentDto,
+  ChildrenListAgeView,
+  DisclaimerDto,
+} from '@epgu/epgu-constructor-types';
 import {
   DATE_STRING_DOT_FORMAT,
   EventBusService,
@@ -65,6 +69,7 @@ export class SelectChildrenComponent implements OnInit {
   fullNameInList: boolean;
   fullNameListAge: ChildrenListAgeView;
   defaultNewList: string;
+  disclaimer: DisclaimerDto;
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
@@ -110,6 +115,7 @@ export class SelectChildrenComponent implements OnInit {
     this.isSingleChild = this.component?.attrs?.singleChild;
     this.hint = this.component?.attrs?.hint;
     this.isObliged = this.component?.attrs?.obliged;
+    this.disclaimer = this.component?.attrs?.uniqueBy?.disclaimer;
   }
 
   initStartValues(): void {
