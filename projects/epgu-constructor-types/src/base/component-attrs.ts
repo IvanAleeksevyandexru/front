@@ -173,6 +173,7 @@ export interface ComponentAttrsDto {
   path?: string;
   timeout?: string;
   headers?: LogicComponentHeaders;
+  customValidation?: CustomValidationDto;
   balloonAttrs?: KeyValueMap;
 }
 
@@ -310,6 +311,8 @@ export interface ComponentFieldDto {
   label?: string;
   value?: string;
   suggestionId?: string;
+  attrs?: unknown;
+  required?: boolean;
 }
 
 export interface DisplaySubjHead {
@@ -366,4 +369,9 @@ export interface ComponentUploadedFileDto {
   deleted?: boolean;
   uploadId?: string;
   maxSize?: number;
+}
+
+export interface CustomValidationDto {
+  fields?: string[];
+  path?: string;
 }
