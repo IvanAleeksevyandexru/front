@@ -12,20 +12,22 @@ import { DateValidator } from './components/registration-addr/date-validator';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
 import { RegistrationAddrReadonlyComponent } from './components/registration-addr-readonly/registration-addr-readonly.component';
+import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 
 @NgModule({
   declarations: [RegistrationAddrComponent, RegistrationAddrReadonlyComponent],
   exports: [RegistrationAddrComponent],
-  imports: [
-    BaseModule,
-    ConstructorPlainInputModule,
-    ConstructorDadataWidgetModule,
-    BaseComponentsModule,
-    ScreenPadModule,
-    ConstructorDatePickerModule,
-    DefaultUniqueScreenWrapperModule,
-    ClickableLabelModule,
-  ],
+    imports: [
+        BaseModule,
+        ConstructorPlainInputModule,
+        ConstructorDadataWidgetModule,
+        BaseComponentsModule,
+        ScreenPadModule,
+        ConstructorDatePickerModule,
+        DefaultUniqueScreenWrapperModule,
+        ClickableLabelModule,
+        DisclaimerModule,
+    ],
   providers: [DateValidator, DatesToolsService],
   entryComponents: [RegistrationAddrComponent, RegistrationAddrReadonlyComponent]
 })

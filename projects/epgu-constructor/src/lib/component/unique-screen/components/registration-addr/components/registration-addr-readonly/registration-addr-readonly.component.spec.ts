@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProviders } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
 import {
-  ConfigService, ConfigServiceStub,
+  ConfigService,
+  ConfigServiceStub,
+  DatesToolsService,
+  HealthService,
   ImgPrefixerPipe,
   SafePipe,
   ScreenPadModule,
@@ -15,6 +18,11 @@ import { RegistrationAddrReadonlyComponent } from './registration-addr-readonly.
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { IRegistrationAddrReadonlyComponent } from '../../registration-addr-screen.types';
 import { ClickableLabelDirective } from 'projects/epgu-constructor/src/lib/shared/directives/clickable-label/clickable-label.directive';
+import { DisclaimerModule } from '../../../../../../shared/components/disclaimer/disclaimer.module';
+import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
+import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
+import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { CookieService } from 'ngx-cookie-service';
 
 describe('RegistrationAddrReadonlyComponent', () => {
   let component: RegistrationAddrReadonlyComponent;
@@ -43,10 +51,13 @@ describe('RegistrationAddrReadonlyComponent', () => {
       imports: [
         MockModule(DefaultUniqueScreenWrapperModule),
         MockModule(ScreenPadModule),
+        MockModule(DisclaimerModule),
       ],
       providers: [
         UnsubscribeService,
         CurrentAnswersService,
+        ValidationService,
+        MockProviders(DateRangeService, DateRestrictionsService, DatesToolsService, HealthService, CookieService),
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
@@ -67,9 +78,9 @@ describe('RegistrationAddrReadonlyComponent', () => {
   });
 
   describe('onInit', () => {
-    it('should write data to registartionAddress feild', () => {
+    it('should write data to registrationAddress field', () => {
       component.ngOnInit();
-      expect(component.registrationAddress).toBeTruthy();
+      expect(component.parsedValue).toBeTruthy();
     });
 
     it('should be valid screen if full address is present', () => {
@@ -81,8 +92,37 @@ describe('RegistrationAddrReadonlyComponent', () => {
       const invalidMock = JSON.parse(JSON.stringify(mockData)) as IRegistrationAddrReadonlyComponent;
       invalidMock.value = '{"regAddr" : {"fullAddress": ""}}';
       screenService.component = invalidMock;
+
       component.ngOnInit();
+
       expect(answersService.isValid).toBeFalsy();
+    });
+
+    it('should take error from screen service', () => {
+      jest.spyOn(screenService, 'getStore').mockImplementation((...args) => {
+        return { errors: { pd5: 'testError' }};
+      });
+
+      component.ngOnInit();
+
+      expect(component.error).toEqual('testError');
+    });
+
+    it('should validate using custom rules', () => {
+      const validationMock = JSON.parse(JSON.stringify(mockData)) as IRegistrationAddrReadonlyComponent;
+      validationMock.attrs.validation = [{
+        type: 'RegExp',
+        value: 'testValue',
+        ref: '',
+        dataType: '',
+        condition: '',
+        errorMsg: 'testError2'
+      }];
+      screenService.component = validationMock;
+
+      component.ngOnInit();
+
+      expect(component.error).toEqual('testError2');
     });
 
   });
