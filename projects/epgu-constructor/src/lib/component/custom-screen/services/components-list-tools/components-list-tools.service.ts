@@ -12,6 +12,7 @@ export class ComponentsListToolsService {
   private readonly availableComponentTypesToJsonParse = [
     CustomScreenComponentTypes.DropDown,
     CustomScreenComponentTypes.Lookup,
+    CustomScreenComponentTypes.RestLookup,
     CustomScreenComponentTypes.Dictionary,
     CustomScreenComponentTypes.AddressInput,
     CustomScreenComponentTypes.CityInput,
