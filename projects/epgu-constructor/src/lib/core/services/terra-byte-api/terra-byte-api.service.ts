@@ -54,12 +54,12 @@ export class TerraByteApiService {
    * Возвращает список файлов из галереи (ака саджетс-файлы), для определённой мнемоники
    * @param mnemonic - строковый идентификатор мнемоники
    */
-    getGalleryByMnemonic(mnemonic: string): Observable<UploadedFile[]> {
-      return this.http.get<UploadedFile[]>(
-        this.getGalleryApiUrl(`/${mnemonic}`),
-        this.getServerRequestOptions(),
-      );
-    }
+  getGalleryByMnemonic(mnemonic: string): Observable<UploadedFile[]> {
+    return this.http.get<UploadedFile[]>(
+      this.getGalleryApiUrl(`/${mnemonic}`),
+      this.getServerRequestOptions(),
+    );
+  }
 
   /**
    * Возвращает информацию по файлу
