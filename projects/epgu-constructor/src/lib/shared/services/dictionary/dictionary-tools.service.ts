@@ -127,9 +127,7 @@ export class DictionaryToolsService {
               ...defaultOptions,
               ...(dictionaryOptions || {}),
               ...(dictionaryFilter
-                ? this.clearTemporaryOptions(
-                    this.prepareOptions(component, screenStore, dictionaryFilter),
-                  )
+                ? this.prepareOptions(component, screenStore, dictionaryFilter)
                 : {}),
               ...{ excludedParams },
               ...{ additionalParams },
@@ -206,7 +204,7 @@ export class DictionaryToolsService {
     index: number = 0,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
     const options = this.dictionaryFiltersCheckOptions(
-      this.prepareOptions(component, screenStore, filters[index], index),
+      this.prepareOptions(component, screenStore, filters[index], index, false),
     );
     const newIndex = index + 1;
     const meta = { repeatedWithNoFilters: index > 0 };
@@ -270,17 +268,18 @@ export class DictionaryToolsService {
       );
     } else {
       const firstQueryOptions: DictionaryOptions = dictionaryFilter
-        ? this.clearTemporaryOptions(this.prepareOptions(component, screenStore, dictionaryFilter))
+        ? this.prepareOptions(component, screenStore, dictionaryFilter)
         : { pageNum: 0 };
 
       return this.getDictionaries$(dictionaryType, component, firstQueryOptions).pipe(
         concatMap((value: CustomListGenericData<DictionaryResponse>) => {
           if (value.data.items.length === 0 && repeatWithNoFilters) {
             const { secondaryDictionaryFilter } = component.attrs;
-            const secondQueryOptions: DictionaryOptions = this.clearTemporaryOptions(
-              this.prepareOptions(component, screenStore, secondaryDictionaryFilter),
+            const secondQueryOptions: DictionaryOptions = this.prepareOptions(
+              component,
+              screenStore,
+              secondaryDictionaryFilter,
             );
-
             return this.getDictionaries$(dictionaryType, component, secondQueryOptions).pipe(
               map((value: CustomListGenericData<DictionaryResponse>) => ({
                 ...value,
@@ -360,13 +359,14 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     dictionaryFilters?: ComponentDictionaryFilterDto[] | undefined,
     index = 0,
+    isTemporaryClear = true,
   ): DictionaryFilters {
     const filter =
       dictionaryFilters?.length === 1
         ? this.prepareSimpleFilter(componentValue, screenStore, dictionaryFilters[0], index)
         : this.prepareUnionFilter(componentValue, screenStore, dictionaryFilters);
-
-    return { filter };
+    const result: DictionaryFilters = { filter };
+    return isTemporaryClear ? (this.clearTemporaryOptions(result) as DictionaryFilters) : result;
   }
 
   public getAdditionalParams(
@@ -473,6 +473,7 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     dictionaryFilter: ComponentDictionaryFilterDto[],
     index = 0,
+    isTemporaryClear = true,
   ): DictionaryOptions {
     let componentValue: ComponentValue;
     try {
@@ -485,8 +486,13 @@ export class DictionaryToolsService {
       return { pageNum: 0 };
     }
 
-    const filter = this.getFilterOptions(componentValue, screenStore, dictionaryFilter, index)
-      .filter;
+    const filter = this.getFilterOptions(
+      componentValue,
+      screenStore,
+      dictionaryFilter,
+      index,
+      isTemporaryClear,
+    ).filter;
     return {
       filter,
       pageNum: 0,
