@@ -48,15 +48,16 @@
         <div class="uploader-info">
           <span *ngIf="isMobile && !uploader.hasImageTypes">Выберите файл</span>
           <span *ngIf="!isMobile">
-            Перетащите {{ plurals.choosingFiles | pluralize: uploader.maxAmount }} или выберите на компьютере
+            Перетащите {{ plurals.choosingFiles | pluralize: uploader.maxAmount }} или выберите на
+            компьютере
           </span>
           <span *ngIf="isMobile && uploader.hasImageTypes">Выберите файл или сделайте фото</span>
         </div>
         <div class="uploader-buttons">
           <button
-            *ngIf="isPrevUploadedFilesButtonShown(($any(suggestions$) | async)[componentId])"
+            *ngIf="isGalleryFilesButtonShown(galleryFiles)"
             class="fileupload__link-button"
-            (click)="attachUploadedFiles()"
+            (click)="openGalleryFilesModal()"
           >
             <div class="fileupload__icon"></div>
             Ранее загруженные
@@ -87,7 +88,7 @@
                 class="fileupload__button-icon"
                 alt="Файл"
               />
-              Выбрать {{plurals.uploadingFiles | pluralize: files.getValue().length + 1}}
+              Выбрать {{ plurals.uploadingFiles | pluralize: files.getValue().length + 1 }}
             </button>
           </epgu-constructor-uploader-button>
         </div>
