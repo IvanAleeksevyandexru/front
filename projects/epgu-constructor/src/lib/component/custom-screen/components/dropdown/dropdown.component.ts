@@ -5,7 +5,7 @@ import { SuggestHandlerService } from '../../../../shared/services/suggest-handl
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { SUGGEST_SEPORATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
+import { SUGGEST_SEPARATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
 import { CustomListDropDowns } from '../../components-list.types';
 import { DropDownUpdateTypes } from './dropdown.interface';
 
@@ -17,7 +17,7 @@ import { DropDownUpdateTypes } from './dropdown.interface';
 export class DropdownComponent extends AbstractComponentListItemComponent
   implements OnInit, OnDestroy {
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  public readonly suggestSeparator = SUGGEST_SEPORATOR_DEFAULT;
+  public readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   public dropDowns: Partial<ListItem>[];
   private dropDowns$;
