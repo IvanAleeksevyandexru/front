@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { get, isUndefined } from 'lodash';
+import { get, isUndefined, isEmpty } from 'lodash';
 import {
   CustomComponent,
   CustomComponentRef,
@@ -617,7 +617,7 @@ export class ComponentsListRelationsService {
         dependentControl
           .get('value')
           .patchValue(
-            dependentControl.value.value !== null
+            !isEmpty(dependentControl.value.value)
               ? dependentControl.value.value
               : dictionaryAttributeValue,
             { onlySelf: true, emitEvent: false },

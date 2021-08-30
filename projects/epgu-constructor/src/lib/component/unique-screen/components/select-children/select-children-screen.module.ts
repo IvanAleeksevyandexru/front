@@ -13,6 +13,7 @@ import { SelectChildrenItemComponent } from './components/select-children-item/s
 import { SelectChildrenItemWrapperComponent } from './components/select-children-item-wrapper/select-children-item-wrapper.component';
 import { SelectChildrenComponent } from './components/select-children/select-children.component';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 
 const COMPONENTS = [
   SelectChildrenScreenContainerComponent,
@@ -31,6 +32,7 @@ const COMPONENTS = [
     CloneButtonModule,
     ScreenPadModule,
     DefaultUniqueScreenWrapperModule,
+    DisclaimerModule,
   ],
   exports: [...COMPONENTS],
   providers: [ScreenService, CachedAnswersService, EventBusService],

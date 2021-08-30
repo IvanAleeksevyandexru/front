@@ -4,7 +4,12 @@ import { Observable, of, TimeoutError } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
 
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
-import { ApplicantAnswersDto, DictionaryOptions, LogicComponentAttrsDto, LogicComponents } from '@epgu/epgu-constructor-types';
+import {
+  ApplicantAnswersDto,
+  DictionaryOptions,
+  LogicComponentAttrsDto,
+  LogicComponents,
+} from '@epgu/epgu-constructor-types';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CustomComponent } from '../../custom-screen/components-list.types';
@@ -26,17 +31,17 @@ export class LogicService {
     private restService: RestService,
   ) {}
 
-  public fetch(
-    components: LogicComponents[],
-  ): Observable<ApplicantAnswersDto>[] {
+  public fetch(components: LogicComponents[]): Observable<ApplicantAnswersDto>[] {
     return components.map((logicComponent) => {
-      const value = logicComponent.value as unknown as LogicComponentAttrsDto;
+      const value = (logicComponent.value as unknown) as LogicComponentAttrsDto;
       return this.makeRequestAndCall(logicComponent).pipe(
         timeout(value.timeout ? parseFloat(value.timeout) : this.maxTimeout),
         map((response) => this.createLogicAnswers(logicComponent.id, response)),
         catchError((error: TimeoutError | HttpErrorResponse) => {
           if (error instanceof TimeoutError) {
-            return of(this.createLogicAnswers(logicComponent.id, this.createErrorFromTimeout(value.url)));
+            return of(
+              this.createLogicAnswers(logicComponent.id, this.createErrorFromTimeout(value.url)),
+            );
           }
 
           return of(this.createLogicAnswers(logicComponent.id, error));
@@ -45,25 +50,23 @@ export class LogicService {
     });
   }
 
-  private makeRequestAndCall(component: LogicComponents): Observable<HttpResponse<object>>  {
-    return (component?.attrs?.dictionaryFilter && component?.attrs?.dictionaryType) ?
-      this.callDictionaryRequest(component.attrs) :
-      this.restService.fetch<HttpResponse<unknown>>(component.value as unknown as LogicComponentAttrsDto);
+  private makeRequestAndCall(component: LogicComponents): Observable<HttpResponse<object>> {
+    return component?.attrs?.dictionaryFilter && component?.attrs?.dictionaryType
+      ? this.callDictionaryRequest(component.attrs)
+      : this.restService.fetch<HttpResponse<unknown>>(
+          (component.value as unknown) as LogicComponentAttrsDto,
+        );
   }
 
   private callDictionaryRequest(value: LogicComponentAttrsDto): Observable<HttpResponse<object>> {
-    const {
-      dictionaryType,
-      dictionaryFilter = null,
-      dictionaryUrlType
-    } = value;
+    const { dictionaryType, dictionaryFilter = null, dictionaryUrlType } = value;
 
     const state = this.jsonHelperService.tryToParse(this.currentAnswersService.state, {});
     const store = {
       ...this.screenService.getStore(),
       applicantAnswers: {
         ...this.screenService.getStore().applicantAnswers,
-        ...state as ApplicantAnswersDto,
+        ...(state as ApplicantAnswersDto),
       },
     };
 
@@ -72,12 +75,17 @@ export class LogicService {
     const options: DictionaryOptions = {
       ...defaultOptions,
       ...(dictionaryFilter
-        ? this.dictionaryToolsService.prepareOptions(component, store, dictionaryFilter)
+        ? this.dictionaryToolsService.clearTemporaryOptions(
+            this.dictionaryToolsService.prepareOptions(component, store, dictionaryFilter),
+          )
         : {}),
     };
 
-    return this.dictionaryApiService
-      .getDictionary(dictionaryType, options, dictionaryUrlType) as unknown as Observable<HttpResponse<object>>;
+    return (this.dictionaryApiService.getDictionary(
+      dictionaryType,
+      options,
+      dictionaryUrlType,
+    ) as unknown) as Observable<HttpResponse<object>>;
   }
 
   private createLogicAnswers(

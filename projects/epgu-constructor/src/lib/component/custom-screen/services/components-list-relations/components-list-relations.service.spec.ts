@@ -815,6 +815,50 @@ describe('ComponentsListRelationsService', () => {
         expect(dependentControl.touched).toBeFalsy();
         expect(dependentControl.get('value').value).toBe('some value');
       });
+
+      it('should update dependent control if it is equal empty string', () => {
+        const reference: CustomComponentRef = {
+          relatedRel: 'rf1',
+          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+          relation: CustomComponentRefRelation.autofillFromDictionary,
+        };
+
+        dependentControl = new FormGroup({
+          id: new FormControl(dependentComponent.id),
+          value: new FormControl(''),
+        });
+        form = new FormArray([dependentControl]);
+
+        dependentControl.markAsTouched();
+        initInitialValues = false;
+
+        componentVal = {
+          id: 'foo',
+          regOkato: '450000',
+        };
+
+        dictionaries = {} as CustomListDictionaries;
+
+        initInitialValues = true;
+        jest.spyOn(service, 'getDictionaryAttributeValue').mockReturnValue('new value');
+
+        service['getDependentComponentUpdatedShownElements'](
+          dependentComponent,
+          reference,
+          componentVal,
+          components,
+          form,
+          shownElements,
+          dictionaries,
+          initInitialValues,
+          dictionaryToolsService,
+          screenService,
+        );
+
+        expect(dependentControl.touched).toBeFalsy();
+        expect(dependentControl.get('value').value).toBe('new value');
+
+      });
     });
 
     describe('if relation === calc', () => {
