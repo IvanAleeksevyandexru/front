@@ -7,14 +7,16 @@ type CookieSession = { userId: string };
 export class SessionService {
   private _userId: string;
 
-  constructor(
-    private cookieService: CookieService,
-  ) {
+  constructor(private cookieService: CookieService) {
     this.init();
   }
 
   get userId(): string {
     return this._userId;
+  }
+
+  get disableUnderConstructionMode(): string {
+    return this.cookieService.get('disableUnderConstructionMode');
   }
 
   private init(): void {
