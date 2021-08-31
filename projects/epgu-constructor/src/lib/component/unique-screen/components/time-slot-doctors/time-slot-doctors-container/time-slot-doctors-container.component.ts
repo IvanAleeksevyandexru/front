@@ -37,11 +37,15 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import {
   BookingRequestAttrs,
+  lkApiItemAttributes,
   TimeSlotDoctorsAttrs,
   TimeSlotDoctorsComponentDto,
 } from '../time-slot-doctors.interface';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
-import { CustomComponent } from '../../../../custom-screen/components-list.types';
+import {
+  CustomComponent,
+  CustomListGenericData,
+} from '../../../../custom-screen/components-list.types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/error-handler/error-handler';
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { DateTypeTypes, TimeSlotsConstants } from '../../time-slots/time-slots.constants';
@@ -54,6 +58,10 @@ import { ActionService } from '../../../../../shared/directives/action/action.se
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 import { TimeSlotDoctorService } from '../time-slot-doctor.service';
 import { TimeSlotDoctorsComponent } from '../time-slot-doctors.component';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../../../shared/services/dictionary/dictionary-api.types';
 
 /* eslint-disable max-len */
 export const STATIC_ERROR_MESSAGE =
@@ -413,6 +421,22 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     });
   }
 
+  filterByAttributeName(
+    reference: CustomListGenericData<DictionaryResponse>,
+    filterByAttributeName: string,
+    searchString: string,
+  ): DictionaryItem[] {
+    return reference.data.items.filter((item) => {
+      const attributes = (item.attributes as unknown) as lkApiItemAttributes[];
+      return attributes.some((attribute) => {
+        return (
+          attribute.name === filterByAttributeName &&
+          attribute.value.toLowerCase().includes(searchString.toLowerCase())
+        );
+      });
+    });
+  }
+
   private focusOnFirstLookup(): void {
     if (this.timeSlotDoctorService.isByMedRef) {
       this.timeSlotDoctorsComponent.docLookup.setFocus();
@@ -502,6 +526,15 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
                   errorMessage,
                 );
               }
+            }
+
+            if (attrs.searchProvider.filterByAttributeName) {
+              // eslint-disable-next-line no-param-reassign
+              reference.data.items = this.filterByAttributeName(
+                reference,
+                attrs.searchProvider.filterByAttributeName,
+                searchString,
+              );
             }
 
             return this.dictionaryToolsService.adaptDictionaryToListItem(
