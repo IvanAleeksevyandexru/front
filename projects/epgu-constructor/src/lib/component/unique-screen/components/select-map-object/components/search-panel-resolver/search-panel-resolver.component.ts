@@ -9,6 +9,7 @@ import {
   ViewContainerRef,
   Type,
 } from '@angular/core';
+import { DisclaimerDto } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CommonSearchPanelComponent } from './components/common-search-panel/common-search-panel.component';
 import { ElectionsSearchPanelComponent } from './components/elections-search-panel/elections-search-panel.component';
@@ -35,6 +36,7 @@ export class SearchPanelResolverComponent implements AfterViewInit {
   @Input() noDepartmentsErrorMsg: string;
   @Input() showNav: boolean;
   @Input() panelType = PanelTypes.commonPanel;
+  @Input() disclaimer: DisclaimerDto;
 
   private panelsMap = {
     [PanelTypes.commonPanel]: CommonSearchPanelComponent,

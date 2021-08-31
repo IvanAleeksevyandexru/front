@@ -1,0 +1,38 @@
+<div [formGroup]="form" class="calendar-input-from">
+  <div class="calendar-input-item" *ngFor="let component of components">
+    <epgu-constructor-output-html
+      *ngIf="component?.attrs?.subLabel"
+      class="custom_subLabel"
+      [html]="component?.attrs.subLabel"
+      [clarifications]="component?.attrs?.clarifications"
+    ></epgu-constructor-output-html>
+    <epgu-constructor-label
+      [isTextHelper]="component?.attrs?.isTextHelper"
+      [tips]="component?.attrs?.labelHint"
+      [label]="component?.label"
+      [clarifications]="component?.attrs?.clarifications"
+      *ngIf="component?.label"
+    ></epgu-constructor-label>
+    <epgu-constructor-constructor-date-picker
+      [invalid]="form.get(component.id).invalid && form.get(component.id).touched"
+      [validationShowOn]="validationShowOn"
+      [name]="control.value?.id + '-' + component.id"
+      [control]="$any(form.get(component.id))"
+      [component]="component"
+      [readOnly]="component?.attrs?.readonly"
+      [minDate]="component?.attrs?.minDate || minDateDefault"
+      [maxDate]="component?.attrs?.maxDate || maxDateDefault"
+      [clearable]="clearable"
+      [align]="align"
+      [brokenDateFixStrategy]="component?.attrs.brokenDateFixStrategy || strategy"
+    ></epgu-constructor-constructor-date-picker>
+    <div class="calendar-input-error" *ngIf="form.get(component.id)?.invalid && form.get(component.id)?.touched">
+      <small>{{ form.get(component.id)?.getError('msg') }}</small>
+    </div>
+    <epgu-constructor-hint
+      *ngIf="component?.attrs?.hint"
+      [hint]="component?.attrs?.hint"
+      [clarifications]="component?.attrs?.clarifications"
+    ></epgu-constructor-hint>
+  </div>
+</div>

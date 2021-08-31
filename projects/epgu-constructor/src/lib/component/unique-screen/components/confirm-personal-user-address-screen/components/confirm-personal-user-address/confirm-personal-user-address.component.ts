@@ -27,7 +27,7 @@ import { ISuggestionItem } from '../../../../../../core/services/autocomplete/au
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import {
   prepareClassifiedSuggestionItems,
-  SUGGEST_SEPORATOR_DEFAULT,
+  SUGGEST_SEPARATOR_DEFAULT,
 } from '../../../../../../core/services/autocomplete/autocomplete.const';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 
@@ -56,7 +56,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   form: FormGroup;
   isRequired: boolean;
-  readonly suggestSeporator = SUGGEST_SEPORATOR_DEFAULT;
+  readonly suggestSeporator = SUGGEST_SEPARATOR_DEFAULT;
 
   constructor(
     public config: ConfigService,

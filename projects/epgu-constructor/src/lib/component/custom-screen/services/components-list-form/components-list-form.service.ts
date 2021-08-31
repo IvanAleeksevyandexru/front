@@ -1,13 +1,10 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { ListItem } from '@epgu/epgu-lib';
-import { LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ListItem, LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { get, isEqual } from 'lodash';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, LoggerService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
@@ -34,7 +31,6 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
-import { FormControl } from '@angular/forms';
 import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
 
 @Injectable()
@@ -220,6 +216,11 @@ export class ComponentsListFormService {
       if (this.shownElements[val.id].isShown) {
         if (type === CustomScreenComponentTypes.DateInput && value) {
           value = this.datesToolsService.format(value);
+        } else if (type === CustomScreenComponentTypes.CalendarInput) {
+          const keys = Object.keys(value);
+          keys.forEach((key: string) => {
+            value[key] = this.datesToolsService.format(value[key]);
+          });
         } else if (
           type === CustomScreenComponentTypes.StringInput &&
           val.attrs.mask === 'NumberMaskInput' &&
@@ -250,7 +251,8 @@ export class ComponentsListFormService {
   private changeValidators(component: CustomComponent, control: AbstractControl): void {
     const validators = [this.validationService.customValidator(component)];
     if (component.type === CustomScreenComponentTypes.DateInput ||
-      component.type === CustomScreenComponentTypes.MonthPicker) {
+      component.type === CustomScreenComponentTypes.MonthPicker ||
+    component.type === CustomScreenComponentTypes.CalendarInput) {
       validators.push(this.validationService.dateValidator(component, null));
     }
     control.setValidators(validators);
@@ -334,7 +336,8 @@ export class ComponentsListFormService {
 
     if (
       component.type === CustomScreenComponentTypes.DateInput ||
-      component.type === CustomScreenComponentTypes.MonthPicker
+      component.type === CustomScreenComponentTypes.MonthPicker ||
+      component.type === CustomScreenComponentTypes.CalendarInput
     ) {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
@@ -366,28 +369,31 @@ export class ComponentsListFormService {
 
     this.watchFormGroup$(form).subscribe(
       ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
+
         this.lastChangedComponent = [prev, next];
-        this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
-          components,
-          next,
-          this.shownElements,
-          this.form,
-          this.dictionaryToolsService.dictionaries,
-          true,
-          this.screenService,
-          this.dictionaryToolsService,
-          componentsGroupIndex,
-        );
-        // TODO: в перспективе избавиться от этой хардкодной логики
-        this.checkAndFetchCarModel(next, prev);
+        if (!isEqual(prev, next)) {
+          this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
+            components,
+            next,
+            this.shownElements,
+            this.form,
+            this.dictionaryToolsService.dictionaries,
+            true,
+            this.screenService,
+            this.dictionaryToolsService,
+            componentsGroupIndex,
+          );
+          // TODO: в перспективе избавиться от этой хардкодной логики
+          this.checkAndFetchCarModel(next);
+        }
       },
     );
 
     return form;
   }
 
-  private checkAndFetchCarModel(next: CustomListFormGroup, prev: CustomListFormGroup): void {
-    if (next.attrs.dictionaryType === 'MARKI_TS' && !isEqual(prev, next)) {
+  private checkAndFetchCarModel(next: CustomListFormGroup): void {
+    if (next.attrs.dictionaryType === 'MARKI_TS') {
       const indexVehicle: number = this.form.controls.findIndex(
         (control: AbstractControl) => control.value?.id === next.id,
       );

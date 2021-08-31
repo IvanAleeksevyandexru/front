@@ -24,6 +24,7 @@ import { SearchableDropdownComponent } from '../components/searchable-dropdown/s
 import { TextAreaComponent } from '../components/text-area/text-area.component';
 import { TimerItemComponent } from '../components/timer-item/timer-item.component';
 import { CertificateEaisdoComponent } from '../components/certificate-eaisdo/certificate-eaisdo.component';
+import { CalendarInputComponent } from '../components/calendar-input/calendar-input.component';
 import { RestLookupInputComponent } from '../components/rest-lookup-input/rest-lookup-input.component';
 import { FormDisclaimerComponent } from '../components/form-disclaimer/form-disclaimer.component';
 
@@ -36,6 +37,7 @@ type CustomScreenComponent =
   | CheckboxListComponent
   | CityInputComponent
   | DateInputComponent
+  | CalendarInputComponent
   | DepartmentLookupComponent
   | FormDisclaimerComponent
   | DocInputComponent
@@ -70,6 +72,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   CityInput: CityInputComponent,
   ConfirmPersonalUserRegAddrChange: AddressInputComponent,
   DateInput: DateInputComponent,
+  CalendarInput: CalendarInputComponent,
   Dictionary: DictionaryComponent,
   Disclaimer: FormDisclaimerComponent,
   DocInput: DocInputComponent,

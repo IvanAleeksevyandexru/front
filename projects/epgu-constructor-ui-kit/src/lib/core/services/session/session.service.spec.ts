@@ -8,7 +8,7 @@ describe('ServiceDataService', () => {
 
   const init = () => {
     TestBed.configureTestingModule({
-      providers: [SessionService, CookieService]
+      providers: [SessionService, CookieService],
     });
   };
 
@@ -19,7 +19,7 @@ describe('ServiceDataService', () => {
 
     Object.defineProperty(window.document, 'cookie', {
       writable: true,
-      value: 'u=123456',
+      value: 'u=123456;disableUnderConstructionMode=true',
     });
 
     service = TestBed.inject(SessionService);
@@ -35,5 +35,16 @@ describe('ServiceDataService', () => {
     service = TestBed.inject(SessionService);
 
     expect(service.userId).toBe('');
+  });
+
+  it('disableUnderConstructionMode getter should return string from disableUnderConstructionMode cookie or empty string', () => {
+    expect(service.disableUnderConstructionMode).toBe('true');
+
+    window.document.cookie = '';
+    TestBed.resetTestingModule();
+    init();
+    service = TestBed.inject(SessionService);
+
+    expect(service.disableUnderConstructionMode).toBe('');
   });
 });

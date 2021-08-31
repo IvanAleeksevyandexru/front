@@ -81,9 +81,6 @@
     .screen-footer > .screen-buttons,
     .screen-footer:not(.quiz__container) > .screen-buttons {
       margin-top: 0;
-      @include tablets-down {
-        margin-top: 12px;
-      }
     }
   }
 }
