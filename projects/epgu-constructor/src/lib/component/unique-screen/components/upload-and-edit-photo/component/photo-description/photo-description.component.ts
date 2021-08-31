@@ -23,6 +23,7 @@ import { ConfirmationModalComponent } from '../../../../../../modal/confirmation
 export class PhotoDescriptionComponent implements OnInit {
   @Input() data: ComponentDto;
   howPhotoModalParameters: ConfirmationModal;
+  whyNeedPhotoModalParameters: ConfirmationModal;
 
   constructor(
     private modalService: ModalService,
@@ -31,7 +32,14 @@ export class PhotoDescriptionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.setHowPhotoModalParams();
+    this.howPhotoModalParameters = this.setModalParams(
+      uploadPhotoElemId.howToTakePhoto,
+      uploadPhotoElemId.requirements,
+    );
+    this.whyNeedPhotoModalParameters = this.setModalParams(
+      uploadPhotoElemId.whyneedphoto,
+      uploadPhotoElemId.requirements,
+    );
   }
 
   handleClickOnElemById($event: Event): void {
@@ -43,6 +51,21 @@ export class PhotoDescriptionComponent implements OnInit {
     if (targetElementId === uploadPhotoElemId.requirements) {
       this.openHowPhotoModal();
     }
+    if (targetElementId === uploadPhotoElemId.whyneedphoto) {
+      this.openWhyNeedPhoto();
+    }
+  }
+
+  openWhyNeedPhoto(): void {
+    this.modalService
+      .openModal(ConfirmationModalComponent, this.whyNeedPhotoModalParameters)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((value) => {
+        if (value === uploadPhotoElemId.requirements) {
+          this.openRequirementsModal();
+        }
+        this.cdr.markForCheck();
+      });
   }
 
   openRequirementsModal(): void {
@@ -70,20 +93,23 @@ export class PhotoDescriptionComponent implements OnInit {
       });
   }
 
-  setHowPhotoModalParams(): void {
-    this.howPhotoModalParameters = {
-      text: this.data?.attrs?.clarifications[uploadPhotoElemId.howToTakePhoto]?.text || '',
+  setModalParams(
+    clarificationId: uploadPhotoElemId,
+    nextModal: uploadPhotoElemId,
+  ): ConfirmationModal {
+    return {
+      text: this.data?.attrs?.clarifications[clarificationId]?.text || '',
+      title: this.data?.attrs?.clarifications[clarificationId]?.title || '',
       elemEventHandlers: [
         {
-          elemId: uploadPhotoElemId.requirements,
+          elemId: nextModal,
           event: 'click',
           handler(): void {
-            this.modalResult.next(uploadPhotoElemId.requirements);
+            this.modalResult.next(nextModal);
             this.closeModal();
           },
         },
       ],
-      title: 'Как сделать фото',
     };
   }
 }
