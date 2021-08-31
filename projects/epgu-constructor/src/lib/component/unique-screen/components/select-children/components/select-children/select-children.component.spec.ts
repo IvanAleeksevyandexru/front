@@ -13,6 +13,7 @@ import {
   UnsubscribeService,
   HealthService,
   EventBusService,
+  MemoModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -59,6 +60,7 @@ describe('SelectChildrenComponent', () => {
         BaseModule,
         BaseComponentsModule,
         ScreenPadModule,
+        MemoModule,
         CloneButtonModule,
         ConstructorDropdownModule,
         ComponentsListModule,
@@ -121,7 +123,8 @@ describe('SelectChildrenComponent', () => {
           label: 'Добавить данные ребёнка',
           required: true,
           type: 'ChildrenList',
-          presetValue: '[{"cl1_ri":false,"cl1_3":"Ильдарович","cl1_4":"2013-07-03T00:00:00.000Z","cl1_5":"M","cl1_id":"7544001","cl1_1":"Бобков","cl1_2":"Геннадий"}]',
+          presetValue:
+            '[{"cl1_ri":false,"cl1_3":"Ильдарович","cl1_4":"2013-07-03T00:00:00.000Z","cl1_5":"M","cl1_id":"7544001","cl1_1":"Бобков","cl1_2":"Геннадий"}]',
         };
 
         jest.spyOn(component, 'addMoreChild');
