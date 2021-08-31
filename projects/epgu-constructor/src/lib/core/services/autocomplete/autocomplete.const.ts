@@ -57,4 +57,4 @@ export const isChildrenListType = (component): boolean => {
   ].includes(component.type as UniqueScreenComponentTypes);
 };
 
-export const SUGGEST_SEPORATOR_DEFAULT = ', ';
+export const SUGGEST_SEPARATOR_DEFAULT = ', ';

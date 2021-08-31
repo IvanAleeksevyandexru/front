@@ -8,7 +8,7 @@ import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomp
 import { ScreenService } from '../../../../screen/screen.service';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 
-import { SUGGEST_SEPORATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
+import { SUGGEST_SEPARATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
 
@@ -40,7 +40,7 @@ export class RestLookupInputComponent extends AbstractComponentListItemComponent
     : ConstantsService.DEFAULT_QUERY_DEBOUNCE;
 
   readonly validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  readonly suggestSeparator = SUGGEST_SEPORATOR_DEFAULT;
+  readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   constructor(
     private restToolsService: RestToolsService,

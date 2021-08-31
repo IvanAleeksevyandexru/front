@@ -23,6 +23,7 @@ import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import {
   CustomComponent,
+  CustomComponentAttr,
   CustomComponentOutputData,
 } from '../../component/custom-screen/components-list.types';
 import {
@@ -155,6 +156,13 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     const screensAmount: number = Object.keys(this.screens).length;
     const repeatAmount = this.propData.components[0].attrs?.repeatAmount || defaultScreensAmount;
 
+    const componentAttrs = this.firstComponentAttrs;
+    const { isNotDuplicate, dictionaryList } = componentAttrs;
+
+    if (isNotDuplicate && dictionaryList) {
+      return dictionaryList.length > screensAmount;
+    }
+
     return screensAmount < repeatAmount;
   }
 
@@ -276,5 +284,10 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     this.secondScreenCaption = secondScreenCaption;
     this.cacheRepeatableFieldsAnswersLocally = cacheRepeatableFieldsAnswersLocally;
     this.disclaimer = uniqueBy?.disclaimer;
+  }
+
+  private get firstComponentAttrs(): CustomComponentAttr {
+    return (this.propData.components[0].attrs.components[0]
+      .attrs as unknown) as CustomComponentAttr;
   }
 }
