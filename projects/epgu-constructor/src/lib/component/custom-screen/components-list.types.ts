@@ -164,6 +164,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   maxDate?: string;
   minDate?: string;
   needUnfilteredDictionaryToo?: boolean;
+  emptyWhenNoFilter?: boolean;
   onlyFirstScreen?: boolean;
   ref?: (CustomComponentRef | DateRangeRef)[]; //TODO разобраться с типами
   refs?: { [key: string]: string };
