@@ -2,6 +2,7 @@
   <epgu-constructor-search-panel-resolver
     [panelType]="searchPanelType"
     [label]="data.label"
+    [disclaimer]="data.attrs.disclaimer"
     [showNav]="screenService.showNav$ | async"
     [noDepartmentsErrorMsg]="data.attrs.noDepartmentsErrorMsg"
     [isNoDepartmentErrorVisible]="isNoDepartmentErrorVisible"
