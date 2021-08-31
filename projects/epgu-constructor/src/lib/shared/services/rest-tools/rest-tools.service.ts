@@ -9,7 +9,7 @@ import {
   CustomScreenComponentTypes, MappingParamsDto,
 } from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 // eslint-disable-next-line max-len
 import { ComponentRestUpdates } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
 // eslint-disable-next-line max-len
@@ -21,7 +21,7 @@ import {
   CustomComponentRefRelation,
   RestAttrsDto,
 } from '@epgu/epgu-constructor-types';
-import { getDictKeyByComp } from '../dictionary/dictionary-helper';
+import { getRestDictKeyByComp } from '../dictionary/dictionary-helper';
 import { DictionaryItem, DictionaryResponse } from '../dictionary/dictionary-api.types';
 import { RestService } from '../rest/rest.service';
 import { HttpResponse } from '@angular/common/http';
@@ -49,14 +49,17 @@ export class RestToolsService {
     return this.componentsListRelationsService.restUpdates$.pipe(
       switchMap((updates: ComponentRestUpdates) => {
         const filteredComponents = components
-          .filter(component => !!updates[component.id] || component?.attrs?.needUnfilteredDictionaryToo)
-          .map(component => updates[component.id] ? {
+          .filter(component => updates[component.id] !== undefined || component?.attrs?.needUnfilteredDictionaryToo)
+          .map(component => ({
             ...component,
             attrs: {
               ...component.attrs,
-              ...this.interpolationService.interpolateObject(updates[component.id].rest, updates[component.id].value)
+              ...(updates[component.id] ?
+                this.interpolationService.interpolateObject(updates[component.id].rest, updates[component.id].value):
+                {}),
+              emptyWhenNoFilter: !updates[component.id],
             },
-          }: component);
+          }));
 
         return this.loadReferenceData$(filteredComponents);
       }),
@@ -75,7 +78,11 @@ export class RestToolsService {
             url: component.attrs.url + component.attrs.path,
           } as RestAttrsDto;
 
-          data.push(this.getDictionariesByRest$(component, request));
+          if (component.attrs.emptyWhenNoFilter) {
+            data.push(this.emptyDictionary(component));
+          } else {
+            data.push(this.getDictionariesByRest$(component, request));
+          }
         }
       });
 
@@ -106,7 +113,7 @@ export class RestToolsService {
 
   public initDictionary(reference: CustomListGenericData<DictionaryResponse>): void {
     const dictionaries = this.dictionaries;
-    const id = getDictKeyByComp(reference.component);
+    const id = getRestDictKeyByComp(reference.component);
 
     dictionaries[id] = this.getDictionaryFirstState();
     dictionaries[id].loading = false;
@@ -123,15 +130,15 @@ export class RestToolsService {
     this.dictionaries$.next(dictionaries);
   }
 
-  /**
-   * Мапим словарь в ListItem для компонента EPGU отвечающий за список
-   * @param items массив элементов словаря
-   */
   public adaptDictionaryToListItem(
     items: (DictionaryItem | KeyValueMap)[],
     mappingParams: MappingParamsDto = { idPath: '', textPath: '' },
     isRoot?: boolean,
   ): ListElement[] {
+    if (!Array.isArray(items)) {
+      return items;
+    }
+
     return items.map((item) => ({
       originalItem: item,
       id:
@@ -166,7 +173,7 @@ export class RestToolsService {
 
   public isResultEmpty(component: CustomComponent): boolean {
     if (this.isDictionaryLike(component.type)) {
-      const id = getDictKeyByComp(component);
+      const id = getRestDictKeyByComp(component);
       return isUndefined(this.dictionaries[id]?.list?.length)
         ? false
         : this.dictionaries[id]?.list?.length === 0;
@@ -183,6 +190,20 @@ export class RestToolsService {
     });
   }
 
+  private emptyDictionary(
+    component: CustomComponent,
+  ): Observable<CustomListGenericData<DictionaryResponse>> {
+    return of({
+      component,
+      data: {
+        error: { code: 0, message: 'emptyDictionary' },
+        fieldErrors: [],
+        items: [],
+        total: 0,
+      },
+    });
+  }
+
   /**
    * Проверяет необходимость начальной загрузки справочника
    * @param compAttrs атрибуты компонента
@@ -193,17 +214,18 @@ export class RestToolsService {
       return false;
     }
 
-    if (compAttrs.url && compAttrs.path) {
-      return true;
-    }
-
-    if (!Array.isArray(compAttrs.ref)) {
+    if (
+      (compAttrs.url && compAttrs.path) ||
+      (!Array.isArray(compAttrs.ref)) ||
+      compAttrs.emptyWhenNoFilter ||
+      compAttrs.needUnfilteredDictionaryToo
+    ) {
       return true;
     }
 
     const hasFilterOnRef = compAttrs.ref.some(
       (reference) => reference.relation === CustomComponentRefRelation.updateRestLookupOn,
     );
-    return !hasFilterOnRef || compAttrs.needUnfilteredDictionaryToo;
+    return !hasFilterOnRef;
   }
 }

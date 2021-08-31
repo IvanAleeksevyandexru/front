@@ -2,8 +2,10 @@
   [control]="control.get('value')"
   [component]="control.value"
   [invalid]="control.invalid"
+  *ngIf="dictionariesList$ | async as list"
 >
   <lib-lookup
+    *ngIf="list && list.length > 0"
     epgu-constructor-validation-type
     [showNotFound]="showNotFound"
     [component]="control.value"
@@ -13,12 +15,11 @@
     [formControl]="$any(control.get('value'))"
     [queryMinSymbolsCount]="0"
     [searchCaseSensitive]="false"
-    [fixedItems]="dictionariesList$ | async"
+    [fixedItems]="list"
     [virtualScroll]="true"
     [clearable]="true"
     [required]="control.value.required"
     [queryTimeout]="queryTimeout"
-    [itemsProvider]="provider"
     [placeholder]="control.value?.attrs?.placeholder"
   >
   </lib-lookup>

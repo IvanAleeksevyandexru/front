@@ -116,7 +116,7 @@ describe('RestLookupInputComponent', () => {
     expect(component).toBeInstanceOf(RestLookupInputComponent);
   });
 
-  it('epgu-constructor-component-item', () => {
+  it.skip('epgu-constructor-component-item', () => {
     const selector = 'epgu-constructor-component-item';
     const debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
