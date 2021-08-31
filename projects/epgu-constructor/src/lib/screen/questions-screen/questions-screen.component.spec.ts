@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule, SmuEventsService } from '@epgu/epgu-lib';
 import { MockComponents, MockDirective, MockModule, MockPipe } from 'ng-mocks';
-import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
@@ -102,7 +102,8 @@ describe('QuestionsScreenComponent', () => {
         CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
-        HtmlSelectService
+        HtmlSelectService,
+        SessionService,
       ],
     })
       .overrideComponent(QuestionsScreenComponent, {
@@ -192,7 +193,7 @@ describe('QuestionsScreenComponent', () => {
       expect(nextStepSpy).toBeCalledWith(expectedPayload);
     });
 
-    it('should mutate action if action.underConstruction && config.disableUnderConstructionMode', () => {
+    it('should mutate action if action.underConstruction && config.disableUnderConstructionMode || disableUnderConstructionMode', () => {
       const showModalRedirectToSpy = spyOn<any>(component, 'showModalRedirectTo');
       const nextStepSpy = spyOn(component, 'nextStep');
 
@@ -229,6 +230,18 @@ describe('QuestionsScreenComponent', () => {
       expect(showModalRedirectToSpy).not.toBeCalled();
       // call nextStep() because action is changed to ActionType.nextStep
       expect(nextStepSpy).toBeCalledTimes(1);
+      showModalRedirectToSpy.calls.reset();
+
+      configService['_disableUnderConstructionMode'] = false;
+      component.disableUnderConstructionMode = true;
+      // should mutate action because component.disableUnderConstructionMode is TRUE
+      component.answerChoose(actionUnderConstruction);
+
+      expect(actionUnderConstruction.type).toBe(ActionType.nextStep);
+      expect(actionUnderConstruction.action).toBe(DTOActionAction.getNextStep);
+
+      expect(showModalRedirectToSpy).not.toBeCalled();
+      // call nextStep() because action is changed to ActionType.nextStep
     });
   });
 
