@@ -30,6 +30,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { DTOActionAction } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../../core/services/date-ref/date-ref.service';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;
@@ -82,6 +83,7 @@ describe('InformationCenterMvdContainerComponent', () => {
         UnsubscribeService,
         DownloadService,
         ObjectHelperService,
+        DateRefService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,

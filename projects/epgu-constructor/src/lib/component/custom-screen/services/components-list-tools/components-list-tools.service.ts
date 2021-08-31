@@ -12,11 +12,13 @@ export class ComponentsListToolsService {
   private readonly availableComponentTypesToJsonParse = [
     CustomScreenComponentTypes.DropDown,
     CustomScreenComponentTypes.Lookup,
+    CustomScreenComponentTypes.RestLookup,
     CustomScreenComponentTypes.Dictionary,
     CustomScreenComponentTypes.AddressInput,
     CustomScreenComponentTypes.CityInput,
     CustomScreenComponentTypes.PassportLookup,
     CustomScreenComponentTypes.DocInput,
+    CustomScreenComponentTypes.CalendarInput
   ];
 
   constructor(private typeCastService: TypeCastService) { }

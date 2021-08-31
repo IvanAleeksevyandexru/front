@@ -2,6 +2,7 @@ import { DadataResult, RelativeDate } from '@epgu/epgu-lib';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { DurationTimeTypes } from '@epgu/epgu-constructor-ui-kit';
 import { Clarifications, ComponentActionDto, TextTransform } from '@epgu/epgu-constructor-types';
+import { CustomComponentAttrValidation } from '../../../custom-screen/components-list.types';
 
 export interface IRegistrationAddrComponent extends ComponentBase {
   attrs: RegistrationAddrComponentAttrs;
@@ -14,7 +15,8 @@ export interface IRegistrationAddrReadonlyComponent extends ComponentBase {
 export interface IRegistrationAddrReadonlyComponentAttrs {
   addressType: 'legalAddress' | 'factAddress',
   hint: string,
-  clarifications: Clarifications
+  clarifications: Clarifications,
+  validation: CustomComponentAttrValidation[]
 }
 
 export interface RegistrationAddrComponentAttrs {

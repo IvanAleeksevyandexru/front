@@ -19,6 +19,7 @@ import {
   LocationService,
   UnsubscribeService,
   ConfigService,
+  SessionService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { NavigationPayload } from '../../form-player/form-player.types';
@@ -35,6 +36,7 @@ import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confi
 export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   isLoading: boolean;
   selectedAnswer: string;
+  disableUnderConstructionMode = false;
 
   constructor(
     public injector: Injector,
@@ -42,11 +44,13 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     private config: ConfigService,
     private locationService: LocationService,
     private changeDetectionRef: ChangeDetectorRef,
+    private sessionService: SessionService,
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this.disableUnderConstructionMode = this.sessionService.disableUnderConstructionMode === 'true';
     this.screenService.isLoading$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((isLoading: boolean) => {
@@ -68,7 +72,10 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     if (answer.disabled || this.isLoading) {
       return;
     }
-    if (answer.underConstruction && this.config.disableUnderConstructionMode) {
+    if (
+      (this.disableUnderConstructionMode && answer.underConstruction) ||
+      (this.config.disableUnderConstructionMode && answer.underConstruction)
+    ) {
       // Здесь намеренное мутирование значений для работы форм-плеера с отключенным режимом underConstruction
       // eslint-disable-next-line no-param-reassign
       answer.type = ActionType.nextStep;

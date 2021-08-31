@@ -11,9 +11,15 @@
       {{ (data$ | async).label }}
     </p>
 
-    <div *ngIf="registrationAddress?.regAddr?.fullAddress" class="value-text mt-4">
-        {{ registrationAddress.regAddr.fullAddress }}
+    <div *ngIf="fullAddress.value" class="value-text mt-4">
+        {{ fullAddress.value }}
     </div>
+
+    <epgu-constructor-disclaimer
+      *ngIf="error"
+      [title]="'Ошибка в адресе'"
+      [description]="error"
+    ></epgu-constructor-disclaimer>
 
     <div class="divider mt-24 mb-24">
     </div>

@@ -35,6 +35,7 @@ export interface ServiceInfo {
     path: string;
     codes: string[];
   };
+  queryParams: QueryParams;
 }
 
 /**

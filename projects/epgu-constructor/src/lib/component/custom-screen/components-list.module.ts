@@ -61,6 +61,7 @@ import { DepartmentLookupComponent } from './components/department-lookup/depart
 import { RadioInputComponent } from './components/radio-input/radio-input.component';
 import { EaisdoGroupCostComponent } from './components/eaisdo-group-cost/eaisdo-group-cost.component';
 import { CertificateEaisdoComponent } from './components/certificate-eaisdo/certificate-eaisdo.component';
+import { CalendarInputComponent } from './components/calendar-input/calendar-input.component';
 import { RestService } from '../../shared/services/rest/rest.service';
 import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
 import { RestLookupInputComponent } from './components/rest-lookup-input/rest-lookup-input.component';
@@ -77,6 +78,7 @@ import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.
     CityInputComponent,
     ComponentsListComponent,
     DateInputComponent,
+    CalendarInputComponent,
     DepartmentLookupComponent,
     DictionaryComponent,
     DropdownComponent,
@@ -146,6 +148,7 @@ import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.
     CheckboxListComponent,
     CityInputComponent,
     DateInputComponent,
+    CalendarInputComponent,
     DepartmentLookupComponent,
     DictionaryComponent,
     DocInputComponent,

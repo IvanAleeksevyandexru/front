@@ -9,6 +9,7 @@
   <ng-template
     #panel
   ></ng-template>
+  <ng-container *ngTemplateOutlet="disclaimerTemplate"></ng-container>
 </div>
 
 <ng-template #errorRegion>
@@ -25,4 +26,13 @@
       [html]="noDepartmentsErrorMsg"
     ></epgu-constructor-output-html>
   </div>
+</ng-template>
+
+<ng-template #disclaimerTemplate>
+  <epgu-constructor-disclaimer *ngIf="disclaimer"
+    class="mt-16"
+    [type]="disclaimer.type"
+    [title]="disclaimer.title"
+    [description]="disclaimer.description"
+  ></epgu-constructor-disclaimer>
 </ng-template>

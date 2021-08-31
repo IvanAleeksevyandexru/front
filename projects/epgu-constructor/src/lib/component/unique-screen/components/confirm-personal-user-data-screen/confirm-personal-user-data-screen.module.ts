@@ -6,11 +6,11 @@ import { BaseModule } from '../../../../shared/base.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserLegalDataComponent } from './component/confirm-personal-user-legal-data/confirm-personal-user-legal-data.component';
-
+import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 @NgModule({
   declarations: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent],
   exports: [ConfirmPersonalUserDataComponent],
-  imports: [BaseModule, FieldListModule, ScreenPadModule, DefaultUniqueScreenWrapperModule],
+  imports: [BaseModule, FieldListModule, ScreenPadModule, DefaultUniqueScreenWrapperModule, DisclaimerModule],
   entryComponents: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent]
 })
 export class ConfirmPersonalUserDataScreenModule {}

@@ -30,6 +30,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../../core/services/date-ref/date-ref.service';
 
 describe('InformationCenterContainerComponent', () => {
   let component: InformationCenterContainerComponent;
@@ -135,6 +136,7 @@ describe('InformationCenterContainerComponent', () => {
         DictionaryToolsService,
         ComponentsListRelationsService,
         DateRangeService,
+        DateRefService,
         DatesToolsService,
         RefRelationService,
         MockProvider(DateRestrictionsService),
