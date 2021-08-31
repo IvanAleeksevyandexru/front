@@ -13,6 +13,18 @@
     {{ hint }}
   </epgu-cf-ui-constructor-helper-text>
 </div>
+<section class="card__content" *ngIf="!isNewChild && control.value && visibleComponents.length > 0">
+  <epgu-constructor-components-list
+    [componentsGroupIndex]="idx"
+    [components]="components | memo: showComponents:this"
+    [errors]="errors"
+    (changes)="updateChild($event)"
+    (emitFormStatus)="updateItemValueAndValidity()"
+    (emitFormCreated)="updateItemValidators($event)"
+  >
+  </epgu-constructor-components-list>
+</section>
+
 <section class="card__content" *ngIf="isNewChild">
   <epgu-constructor-components-list
     [componentsGroupIndex]="idx"

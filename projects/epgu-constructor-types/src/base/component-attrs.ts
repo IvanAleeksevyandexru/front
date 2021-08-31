@@ -176,6 +176,8 @@ export interface ComponentAttrsDto {
   headers?: LogicComponentHeaders;
   customValidation?: CustomValidationDto;
   balloonAttrs?: KeyValueMap;
+  visibleComponents?: string[];
+  writableComponents?: string[];
 }
 
 export type ChildrenListAgeView = 'date' | 'age';
