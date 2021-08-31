@@ -38,6 +38,7 @@ import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors
 import { ComponentsListFormService } from '../../component/custom-screen/services/components-list-form/components-list-form.service';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
+import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
 
 const displayMock = {
   id: 's113',
@@ -167,6 +168,7 @@ describe('RepeatableScreenComponent', () => {
         BaseComponentsModule,
         ScreenPadModule,
         ScreenButtonsModule,
+        MockModule(DisclaimerModule),
         MockModule(UserInfoLoaderModule),
       ],
       declarations: [

@@ -38,6 +38,7 @@ import { TypeCastService } from '../../../../core/services/type-cast/type-cast.s
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 describe('ComponentsListFormService', () => {
@@ -137,6 +138,7 @@ describe('ComponentsListFormService', () => {
       declarations: [MockComponent],
       imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [
+        DateRefService,
         ComponentsListFormService,
         ValidationService,
         CurrentAnswersService,

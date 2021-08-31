@@ -81,6 +81,13 @@
   }
 }
 
+.green-line {
+  &::before {
+    background-image: escape-svg($green-line-icon);
+    @include line;
+  }
+}
+
 .red-line {
   &::before {
     background-image: escape-svg($red-line-icon);

@@ -38,6 +38,7 @@ import {
   AdditionalRequestType,
   KeyValueMap,
   CustomComponentRefRelation,
+  DictionarySubFilter,
 } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
@@ -46,6 +47,11 @@ import { getDictKeyByComp } from './dictionary-helper';
 export type ComponentValue = {
   [key: string]: string | number | object;
 };
+
+export interface ValueForFilter {
+  rawValue: string;
+  value: DictionaryValue;
+}
 
 @Injectable()
 export class DictionaryToolsService {
@@ -180,6 +186,16 @@ export class DictionaryToolsService {
     );
   }
 
+  dictionaryFiltersCheckOptions(options: DictionaryOptions): DictionaryOptions | null {
+    if (options?.filter?.simple?.minLength) {
+      const value = options.filter.simple.rawValue || '';
+      if (value.length < options.filter.simple.minLength) {
+        return null;
+      }
+    }
+    return this.clearTemporaryOptions(options);
+  }
+
   dictionaryFiltersLoader(
     component: CustomComponent,
     screenStore: ScreenStore,
@@ -187,24 +203,49 @@ export class DictionaryToolsService {
     filters: ComponentDictionaryFilterDto[][],
     index: number = 0,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
-    const options = this.prepareOptions(component, screenStore, filters[index], index);
-    return this.getDictionaries$(dictionaryType, component, options).pipe(
-      take(1),
-      concatMap((value: CustomListGenericData<DictionaryResponse>) => {
-        const newIndex = index + 1;
-        const meta = { repeatedWithNoFilters: index > 0 };
-        if (value.data.items.length === 0 && filters[newIndex]) {
-          return this.dictionaryFiltersLoader(
-            component,
-            screenStore,
-            dictionaryType,
-            filters,
-            newIndex,
-          );
-        }
-        return of({ ...value, meta });
-      }),
+    const options = this.dictionaryFiltersCheckOptions(
+      this.prepareOptions(component, screenStore, filters[index], index, false),
     );
+    const newIndex = index + 1;
+    const meta = { repeatedWithNoFilters: index > 0 };
+
+    if (options) {
+      return this.getDictionaries$(dictionaryType, component, options).pipe(
+        take(1),
+        concatMap((value: CustomListGenericData<DictionaryResponse>) => {
+          if (value.data.items.length === 0 && filters[newIndex]) {
+            return this.dictionaryFiltersLoader(
+              component,
+              screenStore,
+              dictionaryType,
+              filters,
+              newIndex,
+            );
+          }
+          return of({ ...value, meta });
+        }),
+      );
+    } else {
+      if (filters[newIndex]) {
+        return this.dictionaryFiltersLoader(
+          component,
+          screenStore,
+          dictionaryType,
+          filters,
+          newIndex,
+        );
+      }
+    }
+    return of({
+      component,
+      data: ({
+        errors: [] as string[],
+        fieldErrors: [] as string[],
+        items: ([] as unknown) as DictionaryItem,
+        total: 0,
+      } as unknown) as DictionaryResponse,
+      meta,
+    } as CustomListGenericData<DictionaryResponse>);
   }
 
   public getDropDownDepts$(
@@ -239,7 +280,6 @@ export class DictionaryToolsService {
               screenStore,
               secondaryDictionaryFilter,
             );
-
             return this.getDictionaries$(dictionaryType, component, secondQueryOptions).pipe(
               map((value: CustomListGenericData<DictionaryResponse>) => ({
                 ...value,
@@ -279,11 +319,13 @@ export class DictionaryToolsService {
     dFilter: ComponentDictionaryFilterDto,
     index: number = 0,
   ): { simple: DictionarySimpleFilter } {
+    const valueForFilter = this.getValueForFilter(componentValue, screenStore, dFilter, index);
     return {
       simple: {
         attributeName: dFilter.attributeName,
         condition: dFilter.condition,
-        value: this.getValueForFilter(componentValue, screenStore, dFilter, index),
+        minLength: dFilter.minLength,
+        ...valueForFilter,
         ...(dFilter.hasOwnProperty('trueForNull') ? { trueForNull: dFilter.trueForNull } : {}),
         ...(dFilter.hasOwnProperty('checkAllValues')
           ? { checkAllValues: dFilter.checkAllValues }
@@ -317,13 +359,14 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     dictionaryFilters?: ComponentDictionaryFilterDto[] | undefined,
     index = 0,
+    isTemporaryClear = true,
   ): DictionaryFilters {
     const filter =
       dictionaryFilters?.length === 1
         ? this.prepareSimpleFilter(componentValue, screenStore, dictionaryFilters[0], index)
         : this.prepareUnionFilter(componentValue, screenStore, dictionaryFilters);
-
-    return { filter };
+    const result: DictionaryFilters = { filter };
+    return isTemporaryClear ? (this.clearTemporaryOptions(result) as DictionaryFilters) : result;
   }
 
   public getAdditionalParams(
@@ -406,11 +449,31 @@ export class DictionaryToolsService {
     throw new Error('Incorrect usage of filterOn ref');
   }
 
+  clearTemporaryFilter(rawFilter: DictionarySubFilter): DictionarySubFilter {
+    const filter = { ...rawFilter };
+
+    if (filter?.simple) {
+      delete filter.simple?.minLength;
+      delete filter.simple?.rawValue;
+    }
+    return filter;
+  }
+  clearTemporaryOptions(options: DictionaryOptions): DictionaryOptions {
+    const filter = this.clearTemporaryFilter(
+      options.filter as DictionarySubFilter,
+    ) as DictionaryFilters['filter'];
+    if (filter?.union?.subs?.length > 0) {
+      filter.union.subs = filter?.union?.subs.map((item) => this.clearTemporaryFilter(item));
+    }
+    return options;
+  }
+
   public prepareOptions(
     component: CustomComponent,
     screenStore: ScreenStore,
     dictionaryFilter: ComponentDictionaryFilterDto[],
     index = 0,
+    isTemporaryClear = true,
   ): DictionaryOptions {
     let componentValue: ComponentValue;
     try {
@@ -423,8 +486,15 @@ export class DictionaryToolsService {
       return { pageNum: 0 };
     }
 
+    const filter = this.getFilterOptions(
+      componentValue,
+      screenStore,
+      dictionaryFilter,
+      index,
+      isTemporaryClear,
+    ).filter;
     return {
-      filter: this.getFilterOptions(componentValue, screenStore, dictionaryFilter, index).filter,
+      filter,
       pageNum: 0,
     };
   }
@@ -582,51 +652,63 @@ export class DictionaryToolsService {
     screenStore: ScreenStore,
     dFilter: ComponentDictionaryFilterDto | string,
     index: number = 0,
-  ): DictionaryValue {
+  ): ValueForFilter {
     const attributeType: AttributeTypes =
       (dFilter as ComponentDictionaryFilterDto)?.attributeType || AttributeTypes.asString;
     //TODO разобраться с типами
     // @ts-ignore
-    const filterTypes: { [key in DictionaryValueTypes]: (string) => DictionaryValue } = {
-      [DictionaryValueTypes.value]: (dFilter): DictionaryValue => JSON.parse(dFilter.value),
-      [DictionaryValueTypes.preset]: (dFilter): DictionaryValue => {
-        const filters = this.formatValue(componentValue[dFilter.value], dFilter.formatValue);
-        return dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
+    const filterTypes: {
+      [key in DictionaryValueTypes]: (string) => ValueForFilter;
+    } = {
+      [DictionaryValueTypes.value]: (dFilter): ValueForFilter => {
+        const rawValue = JSON.parse(dFilter.value);
+        return { rawValue, value: rawValue };
       },
-      [DictionaryValueTypes.root]: (dFilter): DictionaryValue => ({
-        [attributeType]: this.formatValue(
-          get(screenStore, dFilter.value, undefined),
-          dFilter.formatValue,
-        ),
-      }),
-      [DictionaryValueTypes.ref]: (dFilter): DictionaryValue => {
-        const filters = this.formatValue(
-          this.getValueViaRef(screenStore.applicantAnswers, dFilter.value),
-          dFilter.formatValue,
-        );
 
-        if (dFilter?.excludeWrapper) {
-          return filters;
-        }
-        return {
-          [attributeType]: filters,
-        };
+      [DictionaryValueTypes.preset]: (dFilter): ValueForFilter => {
+        const rawValue = componentValue[dFilter.value];
+        const filters = this.formatValue(rawValue, dFilter.formatValue);
+        const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
+        return { rawValue, value };
       },
-      [DictionaryValueTypes.rawFilter]: (): DictionaryValue => ({
-        [attributeType]: (dFilter as ComponentDictionaryFilterDto).value,
-      }),
-      [DictionaryValueTypes.formValue]: (): DictionaryValue => ({
-        [attributeType]: this.getValueFromForm(
+      [DictionaryValueTypes.root]: (dFilter): ValueForFilter => {
+        const rawValue = get(screenStore, dFilter.value, undefined);
+        const value = {
+          [attributeType]: this.formatValue(rawValue, dFilter.formatValue),
+        };
+        return { rawValue, value };
+      },
+      [DictionaryValueTypes.ref]: (dFilter): ValueForFilter => {
+        const rawValue = this.getValueViaRef(screenStore.applicantAnswers, dFilter.value);
+        const filters = this.formatValue(rawValue, dFilter.formatValue);
+        const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
+        return { rawValue, value };
+      },
+      [DictionaryValueTypes.rawFilter]: (): ValueForFilter => {
+        const rawValue = (dFilter as ComponentDictionaryFilterDto).value;
+        const value = {
+          [attributeType]: rawValue,
+        };
+        return { rawValue, value };
+      },
+      [DictionaryValueTypes.formValue]: (): ValueForFilter => {
+        const rawValue = this.getValueFromForm(
           componentValue as FormArray,
           dFilter as ComponentDictionaryFilterDto,
-        ),
-      }),
-      [DictionaryValueTypes.calc]: (): DictionaryValue => {
-        return {
-          [attributeType]: (componentValue as ComponentValue)?.dictionaryFilters[index][
-            (dFilter as ComponentDictionaryFilterDto).attributeName
-          ],
+        );
+        const value = {
+          [attributeType]: rawValue,
         };
+        return { rawValue, value };
+      },
+      [DictionaryValueTypes.calc]: (): ValueForFilter => {
+        const rawValue = (componentValue as ComponentValue)?.dictionaryFilters[index][
+          (dFilter as ComponentDictionaryFilterDto).attributeName
+        ];
+        const value = {
+          [attributeType]: rawValue,
+        };
+        return { rawValue, value };
       },
     };
 

@@ -124,7 +124,7 @@ export class DatesToolsService {
    * @param {unknown} date проверяемая сущность, является ли валидной датой
    */
   public isValid(date: unknown): boolean {
-    return _isValid(date);
+    return date instanceof Date ? _isValid(date) : _isValid(this.parseISO(date as string));
   }
 
   /**

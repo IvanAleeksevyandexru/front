@@ -32,9 +32,11 @@
       </div>
     </form>
   </epgu-cf-ui-constructor-screen-pad>
-
   <div class="referral-number__footer">
-    <lib-button (click)="navigateToNextStep(referral.value)" [disabled]="!referral.valid || !referral.value">{{
+    <lib-button
+      [showLoader]="screenService.isLoading$ | async"
+      (click)="navigateToNextStep(referral.value)"
+      [disabled]="!referral.valid || !referral.value">{{
       data.attrs.findReferralLabel || 'Найти'
       }}</lib-button>
   </div>

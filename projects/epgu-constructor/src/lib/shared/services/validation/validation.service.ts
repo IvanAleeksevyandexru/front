@@ -143,52 +143,62 @@ export class ValidationService {
   }
 
   public dateValidator(component: CustomComponent, componentsGroupIndex?: number): ValidatorFn {
-    const validations =
-      component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
-      [];
+    const validations = this.getDateValidators(component);
 
     return (control: AbstractControl): ValidationErrors => {
-      if (validations.length === 0) return;
-
-      let minDate =
-        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.min ||
-        this.dateRangeService.rangeMap.get(component.id)?.min ||
-        DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
-      let maxDate =
-        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.max ||
-        this.dateRangeService.rangeMap.get(component.id)?.max ||
-        DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
-
-      let controlValueAsDate: Date | number;
-      if (control.value instanceof MonthYear) {
-        // если работаем с типом MonthYear, то приводим даты к началу месяца, чтобы сравнение работало корректно
-        controlValueAsDate = control.value.firstDay();
-        minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
-        maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
-      } else {
-        controlValueAsDate = control.value;
-      }
-
-      const error =
-        controlValueAsDate &&
-        validations.find((validation) => {
+      for (const validation of validations) {
+        let hasErrors;
+        let minDate =
+          this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.min ||
+          this.dateRangeService.rangeMap.get(component.id)?.min ||
+          DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
+        let maxDate =
+          this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.max ||
+          this.dateRangeService.rangeMap.get(component.id)?.max ||
+          DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
+        let controlValueAsDate: Date | number;
+        if (control.value instanceof MonthYear) {
+          // если работаем с типом MonthYear, то приводим даты к началу месяца, чтобы сравнение работало корректно
+          controlValueAsDate = control.value.firstDay();
+          minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+          maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+        } else if (validation.forChild) {
+          controlValueAsDate = control.value[validation.forChild];
+        } else {
+          controlValueAsDate = control.value;
+        }
+        if (controlValueAsDate) {
           switch ((validation.condition as unknown) as DateValidationCondition) {
             case '<':
-              return this.datesToolsService.isBefore(controlValueAsDate, minDate);
+              hasErrors = this.datesToolsService.isBefore(controlValueAsDate, minDate);
+              break;
             case '<=':
-              return this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
+              hasErrors = this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
+              break;
             case '>':
-              return this.datesToolsService.isAfter(controlValueAsDate, maxDate);
+              hasErrors = this.datesToolsService.isAfter(controlValueAsDate, maxDate);
+              break;
             case '>=':
-              return this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
+              hasErrors = this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
+              break;
             default:
-              return null;
+              hasErrors = null;
           }
-        });
+        }
 
-      if (error) {
-        return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD, undefined, error.errorMsg ? true : false);
+        if (hasErrors) {
+          if (validation.forChild) {
+            control.markAllAsTouched();
+          }
+          return this.validationErrorMsg(validation.errorMsg ?
+            validation.errorMsg :
+            INCORRENT_DATE_FIELD,
+            undefined,
+            !!validation.errorMsg,
+            validation.forChild);
+        }
       }
+
     };
   }
 
@@ -245,6 +255,8 @@ export class ValidationService {
         return value.length === this.personInnLength && checkINN(value);
       case CustomScreenComponentTypes.LegalInnInput:
         return value.length === this.legalInnLength && checkINN(value);
+      case CustomScreenComponentTypes.CalendarInput:
+        return Object.values(value).every((val) => !!val);
       case CustomScreenComponentTypes.CardNumberInput:
         return this.checkCardNumber(value);
       case CustomScreenComponentTypes.StringInput:
@@ -287,8 +299,9 @@ export class ValidationService {
     error: string = InvalidControlMsg.formatField,
     desc?: string,
     textFromJson = false,
+    forChild?: string
   ): ValidationErrors {
-    return { msg: error, desc, textFromJson };
+    return { msg: error, desc, textFromJson, forChild };
   }
 
   private getError(
@@ -306,5 +319,25 @@ export class ValidationService {
           new RegExp(value).test(control.value)) ||
         (type === ValidationType.checkRS && !this.checkRS(control.value, component.attrs.refs)),
     );
+  }
+
+
+  private getDateValidators(component: CustomComponent): CustomComponentAttrValidation[] {
+    let validations: CustomComponentAttrValidation[] = [];
+    if (component.type === CustomScreenComponentTypes.CalendarInput) {
+      const components = component.attrs.components;
+      for (const component of components) {
+        for (const validation of component.attrs.validation) {
+          if (validation.type === ValidationType.date) {
+            validation['forChild'] = component.id;
+            validations.push(validation);
+          }
+        }
+      }
+    } else {
+      validations = component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
+        [];
+    }
+    return validations;
   }
 }
