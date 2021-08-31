@@ -65,9 +65,9 @@ const mockComponentWithFilledPlaceholder = {
   required: false,
 };
 
-const mockDropDowns = [];
+const mockDropDowns1 = [];
 
-mockDropDowns[mockComponentId] = [
+mockDropDowns1[mockComponentId] = [
   {
     id: '1',
     text: 'Test dropdown 1'
@@ -75,6 +75,19 @@ mockDropDowns[mockComponentId] = [
   {
     id: '2',
     text: 'Test dropdown 2'
+  }
+];
+
+const mockDropDowns2 = [];
+
+mockDropDowns2[mockComponentId] = [
+  {
+    id: '3',
+    text: 'Test dropdown 3'
+  },
+  {
+    id: '4',
+    text: 'Test dropdown 4'
   }
 ];
 
@@ -134,7 +147,7 @@ describe('DropdownComponent', () => {
 
     component = fixture.componentInstance;
     component.componentIndex = 0;
-    dictionaryToolsService.dropDowns$.next(mockDropDowns);
+    dictionaryToolsService.dropDowns$.next(mockDropDowns1);
     fixture.detectChanges();
   });
 
@@ -224,12 +237,13 @@ describe('DropdownComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set valid source and active dropDowns', () => {
-      dictionaryToolsService.dropDowns$.next(mockDropDowns);
-      expect(component.dropDowns).toEqual(mockDropDowns[mockComponentId]);
-      expect(component['sourceDropDowns']).toEqual(mockDropDowns[mockComponentId]);
-      dictionaryToolsService.dropDowns$.next([]);
-      expect(component.dropDowns).toBeUndefined();
-      expect(component['sourceDropDowns']).toBeUndefined();
+      component['isNotDuplicate'] = true;
+      dictionaryToolsService.dropDowns$.next(mockDropDowns1);
+      expect(component.dropDowns).toEqual(mockDropDowns1[mockComponentId]);
+      expect(component['sourceDropDowns']).toEqual(mockDropDowns1[mockComponentId]);
+      dictionaryToolsService.dropDowns$.next(mockDropDowns2);
+      expect(component.dropDowns).toEqual(mockDropDowns2[mockComponentId]);
+      expect(component['sourceDropDowns']).toEqual(mockDropDowns2[mockComponentId]);
     });
   });
 
@@ -239,7 +253,7 @@ describe('DropdownComponent', () => {
       expect(component['selectedDropDown']).toBeUndefined();
       component['isNotDuplicate'] = true;
       fixture.detectChanges();
-      component.onChange(mockDropDowns[mockComponentId][0]);
+      component.onChange(mockDropDowns1[mockComponentId][0]);
       expect(component['selectedDropDown']).not.toBeNull();
       expect(component['updateDropDowns']).toHaveBeenCalledWith(DropDownUpdateTypes.delete);
     });
@@ -267,8 +281,8 @@ describe('DropdownComponent', () => {
 
   describe('getPreparedDropDowns', () => {
     it('should return valid array with prepared dropDowns', () => {
-      const preparedDropDowns = component['getPreparedDropDowns'](mockDropDowns[mockComponentId]);
-      expect(JSON.stringify(preparedDropDowns)).toEqual(JSON.stringify(mockDropDowns));
+      const preparedDropDowns = component['getPreparedDropDowns'](mockDropDowns1[mockComponentId]);
+      expect(JSON.stringify(preparedDropDowns)).toEqual(JSON.stringify(mockDropDowns1));
     });
   });
 
@@ -289,12 +303,12 @@ describe('DropdownComponent', () => {
       component.componentIndex = 0;
       fixture.detectChanges();
 
-      component.onChange(mockDropDowns[mockComponentId][1]);
+      component.onChange(mockDropDowns1[mockComponentId][1]);
       component.ngOnInit();
       const array = [];
-      array[mockComponentId] = mockDropDowns[mockComponentId][0];
+      array[mockComponentId] = mockDropDowns1[mockComponentId][0];
       dictionaryToolsService.dropDowns$.next(array);
-      expect(component.dropDowns).toContain(mockDropDowns[mockComponentId][1]);
+      expect(component.dropDowns).toContain(mockDropDowns1[mockComponentId][1]);
     });
   });
 });
