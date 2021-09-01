@@ -2,7 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
-import { LoadServiceStub, MainContainerModule, TracingServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  LoadServiceStub,
+  MainContainerModule,
+  TracingServiceStub,
+  ObjectHelperService
+} from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
@@ -42,7 +47,7 @@ import { EpguLibModuleInited } from '../shared/base.module';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from '../core/services/autocomplete/autocomplete-api.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../screen/current-answers.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -54,6 +59,10 @@ import { AutocompletePrepareService } from '../core/services/autocomplete/autoco
 import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { AnimationBuilder } from '@angular/animations';
+import { JsonHelperService } from '../core/services/json-helper/json-helper.service';
+import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
+import { FormPlayerApiServiceStub } from './services/form-player-api/form-player-api.service.stub';
+import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -82,7 +91,7 @@ describe('FormPlayerComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [EpguLibModuleInited, MainContainerModule],
+      imports: [EpguLibModuleInited, MainContainerModule, NotifierDisclaimerModule],
       declarations: [
         FormPlayerComponent,
         ScreenResolverComponentMock,
@@ -99,12 +108,14 @@ describe('FormPlayerComponent', () => {
         AutocompletePrepareService,
         EventBusService,
         ModalService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         DatesToolsService,
         CurrentAnswersService,
         WINDOW_PROVIDERS,
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: TracingService, useClass: TracingServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
@@ -121,6 +132,7 @@ describe('FormPlayerComponent', () => {
         SessionService,
         TerraByteApiService,
         AnimationBuilder,
+        JsonHelperService,
       ],
     }).compileComponents();
   });
@@ -203,7 +215,7 @@ describe('FormPlayerComponent', () => {
     });
 
     it('should call tracingService init with true', () => {
-      configService['_isZipkinEnabled'] = true;
+      configService['_zipkinGenerationEnabled'] = true;
       spyOn(tracingService, 'init').and.callThrough();
       component['initConfigDependentEntities']();
       expect(tracingService.init).toBeCalledWith(true);
@@ -298,6 +310,13 @@ describe('FormPlayerComponent', () => {
       expect(component['skipStep']).toBeCalledWith(navigationParam);
     });
 
+    it('should call formPlayerService initData with param when push restartOrder', () => {
+      spyOn<any>(formPlayerService, 'initData').and.callThrough();
+      navService.restartOrder();
+      component['initNavigation']();
+      expect(formPlayerService['initData']).toBeCalledWith();
+    });
+
     it('should call patchStepOnCli with param when push patchStepOnCli prev-button', () => {
       const navigationParam = {};
       spyOn<any>(component, 'patchStepOnCli').and.callThrough();
@@ -312,7 +331,6 @@ describe('FormPlayerComponent', () => {
       id: 's1',
       name: '',
       header: '',
-      submitLabel: '',
       type: ScreenTypes.UNIQUE,
       terminal: false,
       components: [],

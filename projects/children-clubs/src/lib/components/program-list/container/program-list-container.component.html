@@ -1,10 +1,9 @@
-<children-clubs-select-map-object
-  [ngClass]="{ invisible: (listService.groupFiltersMode$ | async).isList }"
->
+<children-clubs-select-map-object *ngIf="(listService.groupFiltersMode$ | async).isMap">
   <div class="filter-panel">
     <children-clubs-filter-panel
       (openFilters)="openFilter()"
       (search)="search($event)"
+      [initValue]="initValue"
       [filtersCount]="filtersCount$ | async"
       [showNav]="(listService.groupFiltersMode$ | async).isMap"
     ></children-clubs-filter-panel>
@@ -15,14 +14,13 @@
   *ngIf="(listService.groupFiltersMode$ | async).isList"
   class="tiny"
 >
-  <div class="screen-body" *ngIf="(listService.groupFiltersMode$ | async).isList">
+  <div class="screen-body">
     <div class="title mb-24">
       Выберите программу
     </div>
     <children-clubs-filter-panel
       (openFilters)="openFilter()"
       (search)="search($event)"
-      [isShowMenu]="true"
       [initValue]="initValue"
       [filtersCount]="filtersCount$ | async"
     ></children-clubs-filter-panel>
@@ -34,7 +32,7 @@
     <ng-template #content>
       <ng-container *ngIf="data$ | async as data">
         <ng-container *ngIf="$any(data)?.length > 0">
-          <children-clubs-list (addItemsEvent)="fetchItems()">
+          <children-clubs-list (addItemsEvent)="nextPage()">
             <children-clubs-item
               *ngFor="let item of data$ | async"
               [data]="item"

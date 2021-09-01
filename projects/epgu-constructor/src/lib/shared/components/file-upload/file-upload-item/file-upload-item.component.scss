@@ -5,6 +5,12 @@
 
 :host {
   display: block;
+  .file-upload-item {
+    margin-bottom: 24px;
+  }
+  .file-upload-item:last-child{
+    margin-bottom: 0;
+  }
 }
 .info {
   font-size: 14px;
@@ -14,7 +20,7 @@
 }
 
 .title {
-  @include typ-h5;
+  @include typ-h4;
 
   margin-bottom: 20px;
   font-weight: bold;
@@ -30,6 +36,7 @@
 .file__bottom {
   margin-bottom: 24px;
   &--divider {
+    padding-bottom: 24px;
     border-bottom: 1px solid $color-divider;
   }
 }
@@ -193,6 +200,9 @@ input[type='file'] {
   @include typ-plain-small;
   color: $color-text-helper;
   margin-bottom: 24px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .fileupload {

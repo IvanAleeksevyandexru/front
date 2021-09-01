@@ -1,0 +1,37 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/fonts';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+
+.item {
+  margin-bottom: 20px;
+}
+
+.label-helper {
+  @include typ-plain-text;
+  margin-bottom: 4px;
+
+  color: $color-text-helper;
+
+  &:first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.divider {
+  margin: 0 0 24px;
+}
+
+.btn-edit {
+  display: flex;
+  align-items: center;
+  padding: 0;
+
+  font-size: $font-dflt;
+
+  background: none;
+  border: 0;
+  cursor: pointer;
+
+  &__text {
+    color: $color-gosblue;
+  }
+}

@@ -1,0 +1,159 @@
+<tui-doc-page [header]="header" [package]="package" [type]="type">
+  <ng-template pageTab="Описание">
+    <div i18n class="tui-space_bottom-3">
+      Dropdown &mdash; базовое представление чекбокса по умолчанию. Поддерживает свойства id,
+      required, hidden, label и др. Используется как самостоятельный компонент, так и составной в
+      более сложных компонентах, например в
+      <a>DropdownListComponent</a> или <a>DropdownCubeComponent</a>
+    </div>
+    <tui-doc-example id="example1" heading="Пример" [content]="example1">
+      <example-1-epgu-dropdown-component></example-1-epgu-dropdown-component>
+    </tui-doc-example>
+
+    <tui-doc-example
+      id="example2"
+      heading="Невалидное состояние"
+      description="Например, невыбрана опция, а поле обязательно"
+      [content]="example2"
+    >
+      <example-2-epgu-dropdown-component></example-2-epgu-dropdown-component>
+    </tui-doc-example>
+
+    <tui-doc-example
+      id="example3"
+      heading="Очищаемый список"
+      description="Можно очистить выбранный ранее вариант, нажав крестик"
+      [content]="example3"
+    >
+      <example-3-epgu-dropdown-component></example-3-epgu-dropdown-component>
+    </tui-doc-example>
+
+    <tui-doc-example
+      id="example4"
+      heading="Список с поиском"
+      description="Для быстрого нахождения нужного пункта в большом списке"
+      [content]="example4"
+    >
+      <example-4-epgu-dropdown-component></example-4-epgu-dropdown-component>
+    </tui-doc-example>
+
+    <tui-doc-example id="example5" heading="Список с кастомным placeholder" [content]="example5">
+      <example-5-epgu-dropdown-component></example-5-epgu-dropdown-component>
+    </tui-doc-example>
+
+    <tui-doc-example id="example6" heading="Заблокированный список" [content]="example6">
+      <example-6-epgu-dropdown-component></example-6-epgu-dropdown-component>
+    </tui-doc-example>
+  </ng-template>
+
+  <ng-template pageTab="API">
+    <tui-doc-demo>
+      <epgu-cf-ui-constructor-constructor-dropdown
+        [control]="control"
+        [items]="items"
+        [localSearch]="localSearch"
+        [disabled]="disabled"
+        [clearable]="clearable"
+        [invalid]="invalid"
+        [placeholder]="placeholder"
+        (changed)="handleSelect($event)"
+      ></epgu-cf-ui-constructor-constructor-dropdown>
+    </tui-doc-demo>
+    <tui-doc-documentation>
+      <ng-template
+        documentationPropertyName="items"
+        documentationPropertyType="ListElement[]"
+        documentationPropertyMode="input"
+        [documentationPropertyValues]="itemsVariants"
+        [(documentationPropertyValue)]="items"
+      >
+        Массив значений элементов <code>ListElement</code>, доступных для выбора в списке
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="control"
+        documentationPropertyType="AbstractControl"
+        documentationPropertyMode="input"
+        [(documentationPropertyValue)]="control"
+      >
+        Контрол формы для связывания значения Dropdown и форм-группы
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="localSearch"
+        documentationPropertyType="boolean"
+        documentationPropertyMode="checkbox"
+        [(documentationPropertyValue)]="localSearch"
+      >
+        Флаг, включающий/выключающий опцию полнотекстового поиска по опциям
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="disabled"
+        documentationPropertyType="boolean"
+        documentationPropertyMode="checkbox"
+        [(documentationPropertyValue)]="disabled"
+      >
+        Флаг заблокированности компонента
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="clearable"
+        documentationPropertyType="boolean"
+        documentationPropertyMode="checkbox"
+        [(documentationPropertyValue)]="clearable"
+      >
+        Флаг включения/отключения опции очищения выбранной раннее опции, через нажатие крестика
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="invalid"
+        documentationPropertyType="boolean"
+        documentationPropertyMode="checkbox"
+        [(documentationPropertyValue)]="invalid"
+      >
+        Флаг включения/отключения визуального представления невалидности компонента
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="placeholder"
+        documentationPropertyType="string"
+        documentationPropertyMode="input"
+        [(documentationPropertyValue)]="placeholder"
+      >
+        Строка-плейсхолдер, которая встречает пользователя при невыбранной опции. По умолчанию
+        <code>&mdash;</code>
+      </ng-template>
+
+      <ng-template
+        documentationPropertyName="changed"
+        documentationPropertyMode="output"
+        documentationPropertyType="ListElement"
+      >
+        Производит событие с выбранной в списке опцией
+      </ng-template>
+    </tui-doc-documentation>
+  </ng-template>
+
+  <ng-template pageTab="Setup">
+    <ol class="b-demo-steps">
+      <li>
+        <p>Импорт <code>ConstructorDropdownModule</code> в модули используемого компонента</p>
+
+        <tui-doc-code
+          filename="target-component.module.ts"
+          [code]="exampleImportModule"
+        ></tui-doc-code>
+      </li>
+
+      <li>
+        <p>Иcпользование в шаблоне:</p>
+
+        <tui-doc-code
+          filename="target-component.template.html"
+          [code]="exampleInsertTemplate"
+        ></tui-doc-code>
+      </li>
+    </ol>
+  </ng-template>
+</tui-doc-page>

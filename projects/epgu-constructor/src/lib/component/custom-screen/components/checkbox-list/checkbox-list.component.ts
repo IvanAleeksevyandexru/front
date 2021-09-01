@@ -48,9 +48,21 @@ export class CheckboxListComponent extends AbstractComponentListItemComponent
   }
 
   ngAfterViewInit(): void {
-    this.form.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((changes) => this.emitToParentForm(changes));
+    this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((changes) => {
+      this.checkShownElements(changes);
+      this.emitToParentForm(changes);
+    });
+  }
+
+  checkShownElements(changes): void {
+    const countOfTruthfulCheckboxes = Object.values(changes).filter((value) => value).length;
+    if (countOfTruthfulCheckboxes >= this.limit) {
+      this.hidden = !this.hidden;
+      this.checkboxes = this.checkboxes.map((el) => ({
+        ...el,
+        hidden: !changes[el.id] && this.hidden,
+      }));
+    }
   }
 
   loadCachedValues(): void {

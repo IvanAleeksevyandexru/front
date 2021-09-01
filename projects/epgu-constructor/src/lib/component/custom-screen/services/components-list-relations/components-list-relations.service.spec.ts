@@ -1,19 +1,18 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import {
   CustomComponent,
   CustomComponentRef,
-  CustomComponentRefRelation,
   CustomListDictionaries,
   CustomListStatusElements,
   CustomScreenComponentTypes,
   CustomStatusElement,
+  DATE_RESTRICTION_GROUP_DEFAULT_KEY,
+  DateRestriction,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -22,15 +21,19 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentsListRelationsService } from './components-list-relations.service';
 import { Observable } from 'rxjs';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
-import { mergeWith as _mergeWith, isArray as _isArray } from 'lodash';
+import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
 import {
+  CustomComponentRefRelation,
   DictionaryConditions,
   DictionaryFilters,
   DictionaryValueTypes,
 } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { MockProvider } from 'ng-mocks';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -108,23 +111,26 @@ describe('ComponentsListRelationsService', () => {
   let dictionaryToolsService: DictionaryToolsService;
   let refRelationService: RefRelationService;
   let dateRangeService: DateRangeService;
+  let dateRestrictionsService: DateRestrictionsService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
+        DateRefService,
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
         RefRelationService,
         HttpClient,
         HttpHandler,
+        JsonHelperService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,
         DictionaryApiService,
         ConfigService,
         LoggerService,
         FormBuilder,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
       ],
     });
   });
@@ -135,6 +141,7 @@ describe('ComponentsListRelationsService', () => {
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
     refRelationService = TestBed.inject(RefRelationService);
     dateRangeService = TestBed.inject(DateRangeService);
+    dateRestrictionsService = TestBed.inject(DateRestrictionsService);
   });
 
   describe('filters$ property', () => {
@@ -332,6 +339,45 @@ describe('ComponentsListRelationsService', () => {
         dependentComponent,
         null,
       );
+    });
+
+    it('should work properly if there is no relatedRel in ref', () => {
+      const component = JSON.parse(JSON.stringify(componentMock));
+      component.attrs.ref = [
+        {
+          relatedDate: 'ai15',
+          val: '90',
+          period: 'days',
+          condition: '>='
+        }
+      ];
+
+      const components = [component];
+
+      jest.spyOn(dateRangeService, 'updateLimitDate');
+      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements');
+      jest.spyOn<any, any>(service, 'getDependentComponents').mockReturnValue(components);
+
+      let result = service.getUpdatedShownElements(
+        components,
+        createComponentMock({
+          id: 'compId',
+        }),
+        shownElements,
+        form,
+        dictionaries,
+        false,
+        screenService,
+        dictionaryToolsService,
+      );
+
+      expect(dateRangeService.updateLimitDate).not.toBeCalled();
+      expect(result).toEqual({
+        foo: {
+          isShown: true,
+          relation: CustomComponentRefRelation.autofillFromDictionary,
+        },
+      });
     });
   });
 
@@ -768,6 +814,50 @@ describe('ComponentsListRelationsService', () => {
         // value === 'some value', потому что в dictionaries есть нужный словарь
         expect(dependentControl.touched).toBeFalsy();
         expect(dependentControl.get('value').value).toBe('some value');
+      });
+
+      it('should update dependent control if it is equal empty string', () => {
+        const reference: CustomComponentRef = {
+          relatedRel: 'rf1',
+          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+          relation: CustomComponentRefRelation.autofillFromDictionary,
+        };
+
+        dependentControl = new FormGroup({
+          id: new FormControl(dependentComponent.id),
+          value: new FormControl(''),
+        });
+        form = new FormArray([dependentControl]);
+
+        dependentControl.markAsTouched();
+        initInitialValues = false;
+
+        componentVal = {
+          id: 'foo',
+          regOkato: '450000',
+        };
+
+        dictionaries = {} as CustomListDictionaries;
+
+        initInitialValues = true;
+        jest.spyOn(service, 'getDictionaryAttributeValue').mockReturnValue('new value');
+
+        service['getDependentComponentUpdatedShownElements'](
+          dependentComponent,
+          reference,
+          componentVal,
+          components,
+          form,
+          shownElements,
+          dictionaries,
+          initInitialValues,
+          dictionaryToolsService,
+          screenService,
+        );
+
+        expect(dependentControl.touched).toBeFalsy();
+        expect(dependentControl.get('value').value).toBe('new value');
+
       });
     });
 
@@ -1232,6 +1322,44 @@ describe('ComponentsListRelationsService', () => {
         });
       });
     });
+
+    describe('if relation === formatOn', () => {
+      it('should set value from related component', () => {
+        const reference: CustomComponentRef = {
+          relatedRel: 'rf1',
+          val: '*',
+          relation: CustomComponentRefRelation.formatOn,
+        };
+
+        const dependentControl = form.controls[0];
+        const patchValue = jest.spyOn(dependentControl, 'patchValue');
+
+        service['getDependentComponentUpdatedShownElements'](
+          dependentComponent,
+          reference,
+          componentVal,
+          components,
+          form,
+          shownElements,
+          dictionaries,
+          initInitialValues,
+          dictionaryToolsService,
+          screenService,
+        );
+
+        expect(patchValue).toBeCalled();
+        expect(patchValue).toBeCalledTimes(1);
+        expect(patchValue).toBeCalledWith({
+            id: 'dependentComponentId',
+            value: { rf1: { foo: 'bar' }}
+          },
+          {
+            emitEvent: false,
+            onlySelf: true
+          }
+        );
+      });
+    });
   });
 
   describe('hasRelation()', () => {
@@ -1254,9 +1382,24 @@ describe('ComponentsListRelationsService', () => {
     it('should return true, if component is dependent', () => {
       expect(service.isComponentDependent(componentMock.attrs.ref, componentMock)).toBe(true);
     });
+
     it('should return false, if component is not dependent', () => {
       const component = JSON.parse(JSON.stringify(componentMock));
       component.attrs.ref[0].relatedRel = 'pd4';
+      expect(service.isComponentDependent(component.attrs.ref, componentMock)).toBe(false);
+    });
+
+    it('should work properly if there is no relatedRel attr in ref', () => {
+      const component = JSON.parse(JSON.stringify(componentMock));
+      component.attrs.ref = [
+        {
+          relatedDate: 'ai15',
+          val: '90',
+          period: 'days',
+          condition: '>='
+        }
+      ];
+
       expect(service.isComponentDependent(component.attrs.ref, componentMock)).toBe(false);
     });
   });
@@ -1502,7 +1645,7 @@ describe('ComponentsListRelationsService', () => {
         },
       ];
       const refsExpected = JSON.parse(JSON.stringify(refs));
-      const { dependentControl, control, mockForm, dependentComponent } = setup(refs);
+      const { dependentControl, control, mockForm, dependentComponent } = setup(refs as any);
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
       control.markAsTouched();
 
@@ -1526,4 +1669,102 @@ describe('ComponentsListRelationsService', () => {
       expect(dependentComponent.attrs.ref).toEqual(refsExpected);
     });
   });
+
+  describe('updateLimitDatesByDateRestrictions()', () => {
+
+    it('should process date restrictions and pass right arguments to form update method', async () => {
+      const dateRestrictions: DateRestriction[] = [ { type: 'const', value: 'today', condition: '>' } ];
+      const component: CustomComponent = { id: 'test', type: CustomScreenComponentTypes.DateInput, attrs: { dateRestrictions }};
+      const form = new FormArray([]);
+      const stub = jest.spyOn(service as any, 'updateFormWithDateRange').mockImplementation((...args) =>  null);
+
+      await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
+
+      expect(stub).toHaveBeenLastCalledWith(form, component, undefined, DATE_RESTRICTION_GROUP_DEFAULT_KEY);
+    });
+
+    it('should process date restrictions and separately call form update for different childs', async () => {
+      const dateRestrictions: DateRestriction[] = [
+        { type: 'const', value: 'today', condition: '>', forChild: 'first' },
+        { type: 'const', value: 'today', condition: '>', forChild: 'second' },
+      ];
+      const component: CustomComponent = { id: 'test', type: CustomScreenComponentTypes.DateInput, attrs: { dateRestrictions }};
+      const form = new FormArray([]);
+      const stub = jest.spyOn(service as any, 'updateFormWithDateRange').mockImplementation((...args) =>  null);
+
+      await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
+
+      expect(stub).toHaveBeenCalledTimes(2);
+      expect(stub).nthCalledWith(1, form, component, undefined, 'first');
+      expect(stub).nthCalledWith(2, form, component, undefined, 'second');
+    });
+
+    it('should correctly set min and max dates', async () => {
+      const dateRestrictions: DateRestriction[] = [ { type: 'const', value: 'today', condition: '>' } ];
+      const component: CustomComponent = {
+        id: 'test', type: CustomScreenComponentTypes.DateInput, attrs: {
+          dateRestrictions,
+        }
+      };
+      const control = new FormGroup({
+        id: new FormControl('test'),
+        attrs: new FormControl(component.attrs),
+        value: new FormControl(''),
+      });
+      const form = new FormArray([control]);
+      const testDate = new Date('2021-01-02T00:00:00.000Z');
+      jest.spyOn(dateRestrictionsService, 'getDateRange')
+        .mockImplementation((...args) => {
+          return Promise.resolve({
+            min: testDate,
+            max: testDate
+          });
+        });
+
+      await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
+
+      expect(control.get('attrs').value.minDate).toEqual(testDate);
+      expect(control.get('attrs').value.maxDate).toEqual(testDate);
+    });
+
+    it('should set min and max dates for child controls', async () => {
+
+      const dateRestrictions: DateRestriction[] = [
+        { type: 'const', value: 'today', condition: '>', forChild: 'firstDate' },
+        { type: 'const', value: 'today', condition: '>', forChild: 'secondDate' },
+      ];
+      const component: CustomComponent = {
+        id: 'test', type: CustomScreenComponentTypes.DateInput, attrs: {
+          dateRestrictions, components: [
+            { id: 'firstDate', attrs: {}, type: 'DateInput' },
+            { id: 'secondDate', attrs: {}, type: 'DateInput' }
+          ]
+        }
+      };
+      const control = new FormGroup({
+        id: new FormControl('test'),
+        attrs: new FormControl(component.attrs),
+        value: new FormControl(''),
+      });
+      const form = new FormArray([control]);
+      const testDate = new Date('2021-01-02T00:00:00.000Z');
+      jest.spyOn(dateRestrictionsService, 'getDateRange')
+        .mockImplementation((...args) => {
+          return Promise.resolve({
+            min: testDate,
+            max: testDate
+          });
+        });
+
+      await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
+
+      expect(control.get('attrs').value.components[0].attrs.minDate).toEqual(testDate);
+      expect(control.get('attrs').value.components[1].attrs.minDate).toEqual(testDate);
+      expect(control.get('attrs').value.components[0].attrs.maxDate).toEqual(testDate);
+      expect(control.get('attrs').value.components[1].attrs.maxDate).toEqual(testDate);
+
+    });
+
+  });
+
 });

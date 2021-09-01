@@ -25,12 +25,14 @@ import { NavigationModalService } from '../../core/services/navigation-modal/nav
 import { ScreenModalService } from './screen-modal.service';
 import { ScreenService } from '../../screen/screen.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { CurrentAnswersService } from '../../screen/current-answers.service';
+import { ActionService } from '../../shared/directives/action/action.service';
 
 @Component({
   selector: 'epgu-constructor-screen-modal',
   templateUrl: './screen-modal.component.html',
   styleUrls: ['./screen-modal.component.scss'],
-  providers: [ScreenService, ScreenModalService], // Нужен отдельный инстанс для ScreenService
+  providers: [ScreenService, ScreenModalService, CurrentAnswersService, ActionService], // Нужен отдельный инстанс для ScreenService
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class ScreenModalComponent extends ModalBaseComponent implements OnInit {

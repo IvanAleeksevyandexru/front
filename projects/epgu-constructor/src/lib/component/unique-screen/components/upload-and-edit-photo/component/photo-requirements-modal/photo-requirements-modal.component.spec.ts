@@ -19,6 +19,7 @@ import { uploadPhotoElemId } from '../../../../../../shared/components/upload-an
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
 import { SmuEventsService } from '@epgu/epgu-lib';
+import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;
@@ -56,6 +57,7 @@ describe('PhotoRequirementsModalComponent', () => {
         CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
+        HtmlSelectService,
       ],
     }).compileComponents();
   });

@@ -1,4 +1,4 @@
-import { CustomComponentRefRelation } from '../../../component/custom-screen/components-list.types';
+import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 
 export const displayOffRefMock = {
   relatedRel: 's42',

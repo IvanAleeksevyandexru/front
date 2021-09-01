@@ -1,18 +1,30 @@
 import { DadataResult, RelativeDate } from '@epgu/epgu-lib';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { DurationTimeTypes } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentActionDto, TextTransform } from '@epgu/epgu-constructor-types';
+import { Clarifications, ComponentActionDto, TextTransform } from '@epgu/epgu-constructor-types';
+import { CustomComponentAttrValidation } from '../../../custom-screen/components-list.types';
 
 export interface IRegistrationAddrComponent extends ComponentBase {
   attrs: RegistrationAddrComponentAttrs;
 }
 
+export interface IRegistrationAddrReadonlyComponent extends ComponentBase {
+  attrs: IRegistrationAddrReadonlyComponentAttrs;
+}
+
+export interface IRegistrationAddrReadonlyComponentAttrs {
+  addressType: 'legalAddress' | 'factAddress',
+  hint: string,
+  clarifications: Clarifications,
+  validation: CustomComponentAttrValidation[]
+}
+
 export interface RegistrationAddrComponentAttrs {
-  hints: Array<RegistrationAddrHints>;
-  fields: Array<RegistrationAddrFields>;
-  actions: Array<ComponentActionDto>;
+  hints: RegistrationAddrHints[];
+  fields: RegistrationAddrFields[];
+  actions: ComponentActionDto[];
   fstuc?: TextTransform;
-  hideLevels?: Array<string>;
+  hideLevels?: string[];
 }
 
 /**
@@ -36,7 +48,7 @@ export interface RegistrationAddrFields {
   label: string;
   type: 'input' | 'date';
   regexp: string | RegExp;
-  hideLevels?: Array<string>;
+  hideLevels?: string[];
   attrs?: {
     labelHint?: string;
     minDate?: Date | RelativeDate | string;

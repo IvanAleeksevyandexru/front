@@ -14,7 +14,6 @@ import {
   BookTimeSlotReq,
   CancelSlotResponseInterface,
   DepartmentInterface,
-  SlotInterface,
   SmevBookResponseInterface,
   SmevSlotsMapInterface,
   TimeSlot,
@@ -23,16 +22,16 @@ import {
   TimeSlotValueInterface,
 } from './time-slots.types';
 import { get } from 'lodash';
-import { DATE_STRING_YEAR_MONTH } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
   DictionaryOptions,
   DictionaryUnionKind,
 } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
-type attributesMapType = Array<{ name: string; value: string }>;
+type attributesMapType = { name: string; value: string }[];
 
 type configType = {
   [key: string]: string | attributesMapType;
@@ -59,7 +58,8 @@ export class TimeSlotsService {
   private availableMonths: string[];
   private areas: string[];
   private config: configType = {};
-  private timeSlotRequestAttrs: Array<{ name: string; value: string }>;
+  private timeSlotRequestAttrs: { name: string; value: string }[];
+  private areaNamesIsNeeded: boolean;
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
@@ -68,6 +68,7 @@ export class TimeSlotsService {
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
     public screenService: ScreenService,
+    public jsonHelperService: JsonHelperService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -195,6 +196,9 @@ export class TimeSlotsService {
 
     let department = JSON.parse(data.department);
     this.isBookedDepartment = this.getBookedDepartment(cachedAnswer, department);
+    this.areaNamesIsNeeded = [TimeSlotsTypes.BRAK, TimeSlotsTypes.RAZBRAK].includes(
+      this.timeSlotsType,
+    );
     if (!this.isBookedDepartment || !this.department) {
       changed = true;
       this.department = department;
@@ -210,20 +214,22 @@ export class TimeSlotsService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
       bookAttributes:
-        UtilsService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+        this.jsonHelperService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestParams,
       attributeNameWithAddress: this.screenService.component.attrs.attributeNameWithAddress,
       userSelectedRegion: data.userSelectedRegion,
     };
 
-    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
-      let solemn = data.solemn == 'Да';
+    if (this.areaNamesIsNeeded) {
+      let solemn = data.solemn === 'Да';
       if (this.solemn !== solemn) {
         changed = true;
         this.solemn = solemn;
       }
+    }
 
+    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
       let slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
       if (this.slotsPeriod !== slotsPeriod) {
         changed = true;
@@ -242,7 +248,7 @@ export class TimeSlotsService {
     return changed;
   }
 
-  public getAreasListItems(): Array<ListItem> {
+  public getAreasListItems(): ListItem[] {
     return this.areas.map((area) => {
       return new ListItem({
         id: area,
@@ -272,9 +278,10 @@ export class TimeSlotsService {
   }
 
   private getBookedDepartment(cachedAnswer: TimeSlotsAnswerInterface, department): boolean {
+    // NOTICE: иногда в AREA_NAME ожидается проверка null == undefined
     return (
       cachedAnswer?.department.value === department.value &&
-      cachedAnswer?.department.attributeValues?.AREA_NAME === department.attributeValues?.AREA_NAME
+      cachedAnswer?.department.attributeValues?.AREA_NAME == department.attributeValues?.AREA_NAME
     );
   }
 
@@ -321,12 +328,14 @@ export class TimeSlotsService {
     });
   }
 
-  private deleteIgnoreRequestParams(requestBody: TimeSlotReq | BookTimeSlotReq): Partial<TimeSlotReq> | Partial<BookTimeSlotReq> {
+  private deleteIgnoreRequestParams(
+    requestBody: TimeSlotReq | BookTimeSlotReq,
+  ): Partial<TimeSlotReq> | Partial<BookTimeSlotReq> {
     if (!this.screenService.component.attrs.ignoreRootParams) {
       return requestBody;
     }
 
-    Object.keys(requestBody).forEach(key => {
+    Object.keys(requestBody).forEach((key) => {
       if (this.screenService.component.attrs.ignoreRootParams.includes(key)) {
         delete requestBody[key];
       }
@@ -338,7 +347,7 @@ export class TimeSlotsService {
   private getSlotsRequestAttributes(
     slotsType: TimeSlotsTypes,
     serviceId: string,
-  ): Array<{ name: string; value: string }> {
+  ): { name: string; value: string }[] {
     if (this.timeSlotRequestAttrs) {
       return this.timeSlotRequestAttrs;
     }
@@ -392,7 +401,7 @@ export class TimeSlotsService {
       routeNumber,
       subject: (this.config.subject as string) || subject,
       userSelectedRegion: this.config.userSelectedRegion as string,
-      params: this.config.bookParams as attributesMapType || [
+      params: (this.config.bookParams as attributesMapType) || [
         {
           name: 'phone',
           value: this.department.attributeValues.PHONE,
@@ -441,8 +450,12 @@ export class TimeSlotsService {
   }
 
   private getAddress(attributeValues: { [key: string]: string }): string {
-    return attributeValues[this.config.attributeNameWithAddress as string]
-    || attributeValues.ADDRESS || attributeValues.ADDRESS_OUT || attributeValues.address;
+    return (
+      attributeValues[this.config.attributeNameWithAddress as string] ||
+      attributeValues.ADDRESS ||
+      attributeValues.ADDRESS_OUT ||
+      attributeValues.address
+    );
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
@@ -482,8 +495,8 @@ export class TimeSlotsService {
    * то нужно из справочника запросить список кабинетов
    * @param areaName AREA_NAME загса
    */
-  private getAvailableAreaNames(areaName: string): Observable<Array<string>> {
-    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
+  private getAvailableAreaNames(areaName: string): Observable<string[]> {
+    if (this.areaNamesIsNeeded) {
       if (areaName) {
         return of([areaName]);
       } else {
@@ -504,33 +517,43 @@ export class TimeSlotsService {
    * Подготовка тела POST запроса dictionary
    */
   private getOptionsMapDictionary(): DictionaryOptions {
+    const subs = [
+      {
+        simple: {
+          attributeName: 'SHOW_ON_MAP',
+          condition: DictionaryConditions.EQUALS,
+          value: { asString: 'false' },
+        },
+      },
+      {
+        simple: {
+          attributeName: 'CODE',
+          condition: DictionaryConditions.CONTAINS,
+          value: { asString: this.department.value },
+        },
+      },
+      {
+        simple: {
+          attributeName: this.timeSlotsType === TimeSlotsTypes.BRAK ? 'PR2' : 'PR3',
+          condition: DictionaryConditions.CONTAINS,
+          value: { asString: 'true' },
+        },
+      },
+    ];
+    if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
+      subs.push({
+        simple: {
+          attributeName: 'SOLEMN',
+          condition: DictionaryConditions.EQUALS,
+          value: { asString: this.solemn.toString() },
+        },
+      });
+    }
     return {
       filter: {
         union: {
           unionKind: DictionaryUnionKind.AND,
-          subs: [
-            {
-              simple: {
-                attributeName: 'SHOW_ON_MAP',
-                condition: DictionaryConditions.EQUALS,
-                value: { asString: 'false' },
-              },
-            },
-            {
-              simple: {
-                attributeName: 'SOLEMN',
-                condition: DictionaryConditions.EQUALS,
-                value: { asString: this.solemn.toString() },
-              },
-            },
-            {
-              simple: {
-                attributeName: 'CODE',
-                condition: DictionaryConditions.CONTAINS,
-                value: { asString: this.department.value },
-              },
-            },
-          ],
+          subs,
         },
       },
       selectAttributes: ['*'],
@@ -549,7 +572,7 @@ export class TimeSlotsService {
 
   private getSlotsByDate(date: Date, areadId?: string | number): SlotInterface[] {
     const slotsPath = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
-    const slots: Array<SlotInterface> = get(this.slotsMap, slotsPath, []);
+    const slots: SlotInterface[] = get(this.slotsMap, slotsPath, []);
     return slots.filter((slot) => slot.areaId === areadId || !areadId);
   }
 }

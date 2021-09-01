@@ -1,0 +1,9 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+
+:host {
+  display: block;
+}
+.label-text {
+  color: $color-text-helper
+}
+

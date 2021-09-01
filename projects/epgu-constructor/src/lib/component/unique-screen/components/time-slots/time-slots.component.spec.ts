@@ -4,7 +4,7 @@ import { PageNameComponent } from '../../../../shared/components/base-components
 import {
   ScreenPadComponent,
   HelperTextComponent,
-  HttpCancelService,
+  HttpCancelService, TimeCalendarModule, ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
@@ -30,7 +30,7 @@ import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 import * as moment_ from 'moment';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
@@ -43,6 +43,7 @@ import { HttpClient } from '@angular/common/http';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { mockScreenDoctorStore } from './mocks/mock-screen-doctor-store';
 import { mockSlotsDoctor202106 } from './mocks/mock-time-slots_doctors';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 const moment = moment_;
 moment.locale('ru');
@@ -52,6 +53,7 @@ describe('TimeSlotsComponent', () => {
   let fixture: ComponentFixture<TimeSlotsComponent>;
   let screenService: ScreenServiceStub;
   let timeSlotsService: TimeSlotsService;
+  let currentAnswersService: CurrentAnswersService;
   let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
   let datesToolsService: DatesToolsService;
   let store: ScreenStore;
@@ -60,7 +62,7 @@ describe('TimeSlotsComponent', () => {
   configureTestSuite(() => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
     TestBed.configureTestingModule({
-      imports: [EpguLibModule, HttpClientTestingModule],
+      imports: [EpguLibModule, HttpClientTestingModule, TimeCalendarModule],
       declarations: [
         TimeSlotsComponent,
         MockComponents(
@@ -75,8 +77,10 @@ describe('TimeSlotsComponent', () => {
         TimeSlotsConstants,
         DatesToolsService,
         TimeSlotsService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         HttpCancelService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -90,6 +94,7 @@ describe('TimeSlotsComponent', () => {
 
   beforeEach(() => {
     timeSlotsService = TestBed.inject(TimeSlotsService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
     datesToolsService = TestBed.inject(DatesToolsService);
     httpClient = TestBed.inject(HttpClient);
@@ -139,6 +144,42 @@ describe('TimeSlotsComponent', () => {
     fixture.detectChanges();
     const cachedAnswer = component['cachedAnswer'];
     expect(cachedAnswer?.department?.value).toBe('R7700028');
+  });
+
+  it('should set time slot on selection', () => {
+    const slot = {
+      areaId: 'Кабинет отдела',
+      slotId: 'a7164f5b-c5d6-4d47-9478-dcab86882695',
+      slotTime: new Date('2021-03-20T10:00:00.000Z'),
+      timezone: '00:00Z',
+    };
+
+    expect(component.currentSlot).toBeFalsy();
+    expect(currentAnswersService.state).toBeFalsy();
+
+    component.chooseTimeSlot(slot);
+
+    expect(component.currentSlot).toEqual(slot);
+    expect(currentAnswersService.state).toEqual(slot);
+  });
+
+  it('should clear time slot on the same slot selection', () => {
+    const slot = {
+      areaId: 'Кабинет отдела',
+      slotId: 'a7164f5b-c5d6-4d47-9478-dcab86882695',
+      slotTime: new Date('2021-03-20T10:00:00.000Z'),
+      timezone: '00:00Z',
+    };
+
+    component.chooseTimeSlot(slot);
+
+    expect(component.currentSlot).toEqual(slot);
+    expect(currentAnswersService.state).toEqual(slot);
+
+    component.chooseTimeSlot(slot);
+
+    expect(component.currentSlot).toEqual(null);
+    expect(currentAnswersService.state).toEqual(null);
   });
 
   it('checkDateRestrictions with mock\'s restrictions', () => {
@@ -444,7 +485,7 @@ describe('TimeSlotsComponent', () => {
       const allowedMap = {
         2021523: true,
         2021526: true,
-        2021529: true,       
+        2021529: true,
       };
       checks(allowedMap);
     });
@@ -459,9 +500,78 @@ describe('TimeSlotsComponent', () => {
         2021526: true,
         2021529: true,
         202162: true,
-        202165: true,        
+        202165: true,
       };
       checks(allowedMap);
     });
   });
+
+  describe('showTimeSlots()', () => {
+
+
+      it('should leave timeslots unchanged', () => {
+        const slots = [{ slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' }];
+        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+        component.bookedSlot = { slotTime: new Date('2021-08-27T09:00:00Z'), timezone: '', areaId: '', slotId: '' };
+
+        component.showTimeSlots(new Date());
+
+        expect(component.timeSlots.length).toEqual(1);
+      });
+
+      it('should insert booked slot at start', () => {
+        const slots = [
+          { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
+          { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' }];
+        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+        component.bookedSlot = { slotTime: new Date('2021-08-28T08:00:00Z'), timezone: '', areaId: '', slotId: '' };
+
+        component.showTimeSlots(new Date());
+
+        expect(component.timeSlots[0]).toEqual(component.bookedSlot);
+      });
+
+      it('should insert booked slot at end', () => {
+        const slots = [
+          { slotTime: new Date('2021-08-28T08:00:00Z'), timezone: '', areaId: '', slotId: '' },
+          { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' }];
+        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+        component.bookedSlot = { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' };
+
+        component.showTimeSlots(new Date());
+
+        expect(component.timeSlots[component.timeSlots.length - 1]).toEqual(component.bookedSlot);
+      });
+
+
+      it('should insert booked slot in between', () => {
+        const slots = [
+          { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
+          { slotTime: new Date('2021-08-28T11:00:00Z'), timezone: '', areaId: '', slotId: '' }];
+        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+        component.bookedSlot = { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' };
+
+        component.showTimeSlots(new Date());
+
+        expect(component.timeSlots[1]).toEqual(component.bookedSlot);
+      });
+
+      it('should insert booked slot at right position', () => {
+        const slots = [
+          { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
+          { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' },
+          { slotTime: new Date('2021-08-28T11:00:00Z'), timezone: '', areaId: '', slotId: '' },
+          { slotTime: new Date('2021-08-28T13:00:00Z'), timezone: '', areaId: '', slotId: '' }];
+
+        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+        component.bookedSlot = { slotTime: new Date('2021-08-28T12:00:00Z'), timezone: '', areaId: '', slotId: '' };
+
+        component.showTimeSlots(new Date());
+
+        expect(component.timeSlots[3]).toEqual(component.bookedSlot);
+      });
+
+    }
+  );
+
 });

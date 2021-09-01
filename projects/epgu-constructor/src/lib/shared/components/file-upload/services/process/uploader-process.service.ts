@@ -146,7 +146,8 @@ export class UploaderProcessService {
     return of(item).pipe(
       tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.delition)),
       concatMap((file) =>
-        status === FileItemStatus.uploaded
+        status === FileItemStatus.uploaded ||
+        (status === FileItemStatus.error && file.error?.type === ErrorActions.serverError)
           ? this.api.deleteFile(file.createUploadedParams()).pipe(
               tap(() => this.stat.decrementLimitByFileItem(file)),
               mapTo(undefined),

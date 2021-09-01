@@ -1,0 +1,53 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
+.notifiers-list {
+  position: fixed;
+  z-index: 2147473650;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  left: 32px;
+  right: unset;
+  bottom: 24px;
+
+  .notifier {
+    position: relative;
+    background: $color-white;
+    @include shadow-main();
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 16px 48px 16px 16px;
+    margin-bottom: 8px;
+    width: 488px;
+
+    & .icon-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+    }
+  }
+  &.light {
+    .notifier {
+      box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.1);
+      background-color: $color-white;
+      color: $color-summer-night;
+    }
+  }
+  &.right {
+    align-items: flex-end;
+    left: unset;
+    right: 8px;
+    text-align: right;
+  }
+
+  @include phones-down {
+    left: 16px;
+    right: 16px;
+    bottom: 8px;
+    align-items: stretch;
+    .notifier {
+      width: 100%;
+    }
+  }
+}

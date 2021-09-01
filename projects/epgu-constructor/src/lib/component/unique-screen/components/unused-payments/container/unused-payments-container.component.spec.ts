@@ -10,10 +10,11 @@ import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique
 import { UnusedPaymentsComponent } from '../component/unused-payments.component';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { ObjectHelperService, DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ComponentAttrsDto, CachedAnswersDto } from '@epgu/epgu-constructor-types';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;
@@ -50,7 +51,9 @@ describe('UnusedPaymentsContainerComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
         CachedAnswersService,
-        UtilsService,
+        DownloadService,
+        JsonHelperService,
+        ObjectHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     }).compileComponents();

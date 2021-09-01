@@ -25,3 +25,4 @@ export * from './text-transform';
 export * from './timer';
 export * from './arguments';
 export * from './core.types';
+export * from './info-component-dto';

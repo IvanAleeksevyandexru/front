@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -9,12 +9,14 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HealthService } from '@epgu/epgu-lib';
 import {
-  AppStateQuery, AppStateQueryStub,
+  MicroAppStateQuery,
+  MicroAppStateQueryStub,
   ConfigService,
   ConfigServiceStub,
   HealthServiceStub,
+  SessionService,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { RequestStatus } from '@epgu/epgu-constructor-types';
 
@@ -51,9 +53,10 @@ describe('HealthHandlerService', () => {
       providers: [
         HealthHandlerService,
         TestHealthInterceptor,
+        SessionService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
-        { provide: AppStateQuery, useClass: AppStateQueryStub },
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TestHealthInterceptor,

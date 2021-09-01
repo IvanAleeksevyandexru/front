@@ -21,7 +21,7 @@ export class ConstructorDatePickerComponent {
   @Input() clearable: boolean;
   @Input() align: Align | string;
   @Input() disabled: boolean;
-  @Input() brokenDateFixStrategy?: BrokenDateFixStrategy;
+  @Input() brokenDateFixStrategy?: BrokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   @Input() textModelValue: boolean;
 
   @Output() dateSelectedEvent = new EventEmitter<Date>();
@@ -29,7 +29,7 @@ export class ConstructorDatePickerComponent {
   @Output() blurEvent = new EventEmitter<void>();
 
   public onDateSelected(date: Date): void {
-    this.control.setValue(this.control.value);
+    this.control.patchValue(date);
     this.control.updateValueAndValidity();
     this.dateSelectedEvent.emit(date);
   }
@@ -46,9 +46,27 @@ export class ConstructorDatePickerComponent {
 
   public onChange($event: Event): void {
     const input = $event.target as HTMLInputElement;
-    const [day, month, year] = input.value.split('.').map((date) => parseInt(date, 10));
+    const [day, month, year] = this.getDateTuple(input.value);
 
-    const date = new Date(year, month - 1, day);
+    const date = (day && month && year && new Date(year, month - 1, day)) || null;
     this.onDateSelected(date);
+  }
+
+  public onInput($event: Event): void {
+    const input = $event.target as HTMLInputElement;
+    const [day, month, year] = this.getDateTuple(input.value);
+    if (
+      !Number.isNaN(day) &&
+      !Number.isNaN(month) &&
+      !Number.isNaN(year) &&
+      year.toString().length === 4
+    ) {
+      const date = new Date(year, month - 1, day);
+      this.onDateSelected(date);
+    }
+  }
+
+  private getDateTuple(date: string): number[] {
+    return date.split('.').map((num) => parseInt(num, 10));
   }
 }

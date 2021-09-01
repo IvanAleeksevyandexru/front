@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, MemoModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
@@ -13,6 +13,7 @@ import { SelectChildrenItemComponent } from './components/select-children-item/s
 import { SelectChildrenItemWrapperComponent } from './components/select-children-item-wrapper/select-children-item-wrapper.component';
 import { SelectChildrenComponent } from './components/select-children/select-children.component';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 
 const COMPONENTS = [
   SelectChildrenScreenContainerComponent,
@@ -24,6 +25,7 @@ const COMPONENTS = [
 @NgModule({
   declarations: [...COMPONENTS],
   imports: [
+    MemoModule,
     BaseModule,
     ComponentsListModule,
     ConstructorDropdownModule,
@@ -31,9 +33,10 @@ const COMPONENTS = [
     CloneButtonModule,
     ScreenPadModule,
     DefaultUniqueScreenWrapperModule,
+    DisclaimerModule,
   ],
   exports: [...COMPONENTS],
   providers: [ScreenService, CachedAnswersService, EventBusService],
-  entryComponents: [SelectChildrenScreenContainerComponent]
+  entryComponents: [SelectChildrenScreenContainerComponent],
 })
 export class SelectChildrenScreenModule {}

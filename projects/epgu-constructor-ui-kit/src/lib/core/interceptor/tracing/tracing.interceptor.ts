@@ -14,10 +14,11 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import * as zipkin from '@epgu/zipkin';
 import ZipkinHttpClient = zipkin.Instrumentation.HttpClient;
 import { Injectable } from '@angular/core';
+import { ConfigService } from '../../services/config/config.service';
 
 @Injectable()
 export class TracingHttpInterceptor implements HttpInterceptor {
-  constructor(private tracingService: TracingService) {}
+  constructor(private tracingService: TracingService, private configService: ConfigService) {}
 
   public intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const remoteService = 'form-backend';
@@ -31,7 +32,11 @@ export class TracingHttpInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    return this.doIntercept(tracer, url, remoteService, req, next);
+    if (this.configService.zipkinSpanSendEnabled) {
+      return this.doIntercept(tracer, url, remoteService, req, next);
+    } else {
+      return next.handle(req);
+    }
   }
 
   private doIntercept(

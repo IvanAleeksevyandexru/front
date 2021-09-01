@@ -1,5 +1,6 @@
 {
   "default-config": {
+    "lkuipElection": "https://lkuip-elections-dev.test.gosuslugi.ru",
     "nsiSuggestDictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi-suggest/v1",
     "dictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary",
     "externalApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1",
@@ -12,7 +13,10 @@
     "lkUrl": "https://pgu-uat-betalk.test.gosuslugi.ru",
     "paymentUrl": "https://oplata.gosuslugi.ru",
     "fileUploadApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files",
+    "quizDataApiUrl": "http://127.0.0.1:8190/quiz-data/data",
     "childrenClubsApi": "https://dev01.pgu2-pub.test.gosuslugi.ru/api/eaisdo-service/v1",
+    "identificationApiUrl": "/v1/identification",
+    "wsIdentificationUrl": "wss://guc.notamedia.ru:5443/ws",
     "production": true,
     "mocks": [],
     "mockUrl": "https://pgu-uat-fed.test.gosuslugi.ru/mock/api",
@@ -66,7 +70,8 @@
     "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/",
     "suggestionsApiUrl": "/suggests/api/drafts/v1/suggests",
     "staticDomainContentPath": "https://gu-st.ru/content",
-    "isZipkinEnabled": false,
+    "zipkinGenerationEnabled": false,
+    "zipkinSpanSendEnabled": false,
     "zipkinUrl": "http://dev01.pgu2-dev.test.gosuslugi.ru/zipkin/api/v2/spans",
     "zipkinMaxPayloadSize": 0,
     "zipkinEnv": "dev01",

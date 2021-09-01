@@ -23,13 +23,15 @@ import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
 import { LocationService } from '../../services/location/location.service';
 import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
-import { UtilsService } from '../../services/utils/utils.service';
+import { DownloadService } from '../../services/download/download.service';
 import { DatesToolsService } from '../../services/dates-tools/dates-tools.service';
 import { SessionService } from '../../services/session/session.service';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 import { TRACE_ALLOWED_REMOTE_SERVICES } from '../../services/tracing/tracing.token';
+import { ObjectHelperService } from '../../services/object-helper/object-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -72,27 +74,23 @@ describe('TracingHttpInterceptor', () => {
         ScreenService,
         CurrentAnswersService,
         DeviceDetectorService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         DatesToolsService,
-        DictionaryToolsService,
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
         SessionService,
         UnsubscribeService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        DateRestrictionsService,
         {
           provide: TRACE_ALLOWED_REMOTE_SERVICES,
-          useValue: [
-            someUrl1,
-            someUrl2
-          ]
-        }
+          useValue: [someUrl1, someUrl2],
+        },
       ],
     });
   });
@@ -101,6 +99,7 @@ describe('TracingHttpInterceptor', () => {
     interceptor = TestBed.inject(TracingHttpInterceptor);
     formPlayerApi = TestBed.inject(FormPlayerApiService);
     config = TestBed.inject(ConfigService);
+    config.zipkinSpanSendEnabled = true;
     init = TestBed.inject(InitDataService);
     init.serviceId = serviceId;
     init.orderId = orderId;
@@ -109,6 +108,23 @@ describe('TracingHttpInterceptor', () => {
   });
 
   describe('doIntercept()', () => {
+    it('should not call doIntercept(), if configService.zipkinSpanSendEnabled is disabled', fakeAsync(() => {
+      const doInterceptSpy = spyOn<any>(interceptor, 'doIntercept');
+      config.zipkinSpanSendEnabled = false;
+      formPlayerApi.sendAction(api, dto).subscribe((response) => {
+        expect(response).toBeTruthy();
+      });
+      const requestToSucceed = httpMock.expectOne(`${config.apiUrl}/${api}`);
+      const dataToFlush = {
+        scenarioDto: {
+          ...dto.scenarioDto,
+          orderId,
+        },
+      };
+      requestToSucceed.flush(dataToFlush);
+      expect(doInterceptSpy).not.toHaveBeenCalled();
+      discardPeriodicTasks();
+    }));
     it('should not call doIntercept(), if no tracer', fakeAsync(() => {
       const doInterceptSpy = spyOn<any>(interceptor, 'doIntercept');
       formPlayerApi.sendAction(api, dto).subscribe((response) => {

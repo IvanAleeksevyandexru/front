@@ -1,7 +1,20 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/variables';
 
 .cmp-group {
   &__layer {
     margin-bottom: $screen-pad-24;
+  }
+}
+
+.children-item::ng-deep .children-list-item {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  > .full-name-item {
+    flex-shrink: 0;
+    flex-grow: 1;
+  }
+  > .date-item {
+    margin-right: 32px;
   }
 }

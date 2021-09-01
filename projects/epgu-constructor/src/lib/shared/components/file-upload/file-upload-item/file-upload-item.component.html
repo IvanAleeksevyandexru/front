@@ -1,8 +1,8 @@
-<div class="fileupload__wrapper">
+<div class="fileupload__wrapper file-upload-item">
   <div *ngIf="data.title" class="title">
     {{ data.title }}
-    <epgu-constructor-user-info-loader [isDisplay]="false"></epgu-constructor-user-info-loader>
   </div>
+  <div class="divider mb-24"></div>
   <div class="file__bottom" [ngClass]="{ 'file__bottom--divider': isShownDivider() }">
     <epgu-constructor-output-html
       class="info__text"
@@ -47,22 +47,26 @@
       >
         <div class="uploader-info">
           <span *ngIf="isMobile && !uploader.hasImageTypes">Выберите файл</span>
-          <span *ngIf="!isMobile"
-            >Перетащите {{ plurals.choosingFiles | pluralize: uploader.maxAmount }} или выберите на
-            компьютере</span
-          >
+          <span *ngIf="!isMobile">
+            Перетащите {{ plurals.choosingFiles | pluralize: uploader.maxAmount }} или выберите на компьютере
+          </span>
           <span *ngIf="isMobile && uploader.hasImageTypes">Выберите файл или сделайте фото</span>
         </div>
         <div class="uploader-buttons">
           <button
-            *ngIf="isPrevUploadedFilesButtonShown((suggestions$ | async)[componentId])"
+            *ngIf="isPrevUploadedFilesButtonShown(($any(suggestions$) | async)[componentId])"
             class="fileupload__link-button"
             (click)="attachUploadedFiles()"
           >
             <div class="fileupload__icon"></div>
             Ранее загруженные
           </button>
-          <epgu-constructor-uploader-button capture="environment" accept="image/*">
+          <epgu-constructor-uploader-button
+            #takePhoto
+            id="photo"
+            capture="environment"
+            accept="image/*"
+          >
             <button *ngIf="this.isMobile && uploader.hasImageTypes" class="fileupload__link-button">
               <img
                 src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
@@ -72,14 +76,18 @@
               Сделать фото
             </button>
           </epgu-constructor-uploader-button>
-          <epgu-constructor-uploader-button [multiple]="true" [accept]="uploader.acceptTypes">
+          <epgu-constructor-uploader-button
+            id="files"
+            [multiple]="true"
+            [accept]="uploader.acceptTypes"
+          >
             <button class="fileupload__link-button">
               <img
                 src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
                 class="fileupload__button-icon"
                 alt="Файл"
               />
-              Выбрать {{ plurals.uploadingFiles | pluralize: uploader.maxAmount }}
+              Выбрать {{plurals.uploadingFiles | pluralize: files.getValue().length + 1}}
             </button>
           </epgu-constructor-uploader-button>
         </div>
@@ -129,9 +137,9 @@
           {{ plurals.before | pluralize: uploader.maxTotalAmount }}
           {{ uploader.maxTotalAmount }}
           {{ beforeFilesPlural | pluralize: uploader.maxTotalAmount }}.
-          <ng-container *ngIf="uploader.maxTotalAmount > 1"
-            >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
-          >
+          <ng-container *ngIf="uploader.maxTotalAmount > 1">
+            Чтобы выбрать другие файлы, удалите часть прикрепленных
+          </ng-container>
         </div>
       </ng-template>
       <ng-template #amount>
@@ -145,9 +153,9 @@
           {{ plurals.before | pluralize: uploader.maxAmount }}
           {{ uploader.maxAmount }}
           {{ beforeFilesPlural | pluralize: uploader.maxAmount }}.
-          <ng-container *ngIf="uploader.maxAmount > 1"
-            >Чтобы выбрать другие файлы, удалите часть прикрепленных</ng-container
-          >
+          <ng-container *ngIf="uploader.maxAmount > 1">
+            Чтобы выбрать другие файлы, удалите часть прикрепленных
+          </ng-container>
         </div>
       </ng-template>
       <ng-template #totalSize>
@@ -169,9 +177,9 @@
           {{ plurals.before | pluralize: uploader.maxTotalAmount }}
           {{ uploader.maxTotalAmount }}&nbsp;
           {{ beforeFilesPlural | pluralize: uploader.maxTotalAmount }}.
-          <ng-container *ngIf="uploader.maxTotalAmount > 1"
-            >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
-          >
+          <ng-container *ngIf="uploader.maxTotalAmount > 1">
+            Если хотите выбрать еще файлы, удалите часть прикрепленных
+          </ng-container>
         </div>
       </ng-template>
       <ng-template #amountMax>
@@ -179,9 +187,9 @@
         <div class="message__description">
           Здесь можно загрузить {{ plurals.before | pluralize: uploader.maxAmount }}
           {{ uploader.maxAmount }} {{ beforeFilesPlural | pluralize: uploader.maxAmount }}.
-          <ng-container *ngIf="uploader.maxAmount > 1"
-            >Если хотите выбрать еще файлы, удалите часть прикрепленных</ng-container
-          >
+          <ng-container *ngIf="uploader.maxAmount > 1">
+            Если хотите выбрать еще файлы, удалите часть прикрепленных
+          </ng-container>
         </div>
       </ng-template>
       <ng-template #totalSizeMax>
@@ -191,8 +199,8 @@
           хотите выбрать еще файлы, удалите часть прикрепленных
         </div>
       </ng-template>
-    </ng-container></ng-container
-  >
+    </ng-container>
+  </ng-container>
 </div>
 
 <ng-template #filesPluralAttach let-value>

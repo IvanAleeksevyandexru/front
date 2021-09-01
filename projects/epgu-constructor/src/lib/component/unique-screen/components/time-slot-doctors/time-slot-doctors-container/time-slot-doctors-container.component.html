@@ -1,0 +1,47 @@
+
+<ng-container *ngIf="currentAnswersService.isValid$ | async as isValid">
+  <epgu-constructor-default-unique-screen-wrapper
+    [header]="screenService.header$ | async"
+    [isLoading]="screenService.isLoading$ | async"
+    [showNav]="screenService.showNav$ | async"
+    [isValid]="isValid"
+  >
+    <ng-container *ngIf="timeSlotDoctorService.state$$ | async as state">
+      <epgu-constructor-time-slot-doctors
+        #timeSlotDoctorsComponent
+        *ngIf="timeSlotDoctors$ | async as timeSlotDoctor"
+        [timeNotFoundTemplate]="timeNotFoundTemplate"
+        [daysNotFoundTemplate]="daysNotFoundTemplate"
+        [label]="timeSlotDoctor.label"
+        [currentSlot]="currentSlot"
+        [weeks]="weeks"
+        [slotList]="timeSlots"
+        [monthsRange]="monthsRange"
+        [specLookupControl]="specLookupControl"
+        [docLookupControl]="docLookupControl"
+        [specProvider]="specProvider"
+        [doctorProvider]="doctorProvider"
+        [docLookupAttrs]="timeSlotDoctor.attrs.docLookup"
+        [specLookupAttrs]="timeSlotDoctor.attrs.specLookup"
+        [timeSlotAttrs]="timeSlotDoctor.attrs.ts"
+        (specLookupWasChanged)="handleSpecLookupValue($event)"
+        (docLookupWasChanged)="handleDocLookupValue($event)"
+        (selectDate)="selectDate($event)"
+        (chooseTimeSlot)="chooseTimeSlot($event)"
+        [isDocLookupShown]="!!state.specLookup || this.timeSlotDoctorService.isByMedRef"
+        [isMapShown]="!!state.docLookup && slotsLoadingStatus$$.getValue()"
+        [isLoading]="isLoading$ | async"
+        [isChosenTimeStrVisible]="isChosenTimeStrVisible"
+        [chosenTimeStr]="chosenTimeStr"
+        [labelButton]="(screenService.button$ | async).label"
+        [isValid]="isValid"
+        [inLoadingProgress]="inLoadingProgress"
+        [inBookingProgress]="inBookingProgress"
+        [isExistsSlots]="isExistsSlots"
+        [isDoctorsNotAvailable]="isDoctorsNotAvailable"
+        [doctorsNotFoundTemplate]="doctorsNotFoundTemplate"
+        (bookSlot)="clickSubmit()"
+      ></epgu-constructor-time-slot-doctors>
+    </ng-container>
+  </epgu-constructor-default-unique-screen-wrapper>
+</ng-container>

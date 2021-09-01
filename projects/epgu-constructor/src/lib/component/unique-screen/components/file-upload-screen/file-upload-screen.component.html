@@ -2,10 +2,13 @@
   [show-nav]="screenService.showNav$ | async"
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
-  <div *ngIf="data$ | async as data" class="screen-body">
-    <epgu-constructor-page-name *ngIf="header$ | async as header">{{
-      header
-    }}</epgu-constructor-page-name>
+  <div *ngIf="data$ | async as data"
+    class="screen-body"
+    [class.with-size-info]="showSizeInfo()"
+  >
+    <epgu-constructor-page-name *ngIf="header$ | async as header">
+      {{ header }}
+    </epgu-constructor-page-name>
 
     <epgu-constructor-file-upload
       [objectId]="screenService.orderIdAsString$ | async"
@@ -13,6 +16,15 @@
       [attributes]="$any(data).attrs"
     >
     </epgu-constructor-file-upload>
+
+    <div class="size-info" *ngIf="showSizeInfo()">
+      Можно выбрать еще
+      <span *ngIf="!hideTotalAvailableCount && maxFileCount !== undefined" class="size-info__bold">{{ fileCountLeft }}</span> 
+      {{ ['файл', 'файла', 'файлов'] | pluralize: fileCountLeft }}
+      <ng-container *ngIf="!hideTotalAvailableSize && maxFileSize !== undefined">
+        на <span class="size-info__bold">{{ fileSizeLeft | fileSize }}</span>
+      </ng-container>
+    </div>
   </div>
 
   <div class="screen-footer">

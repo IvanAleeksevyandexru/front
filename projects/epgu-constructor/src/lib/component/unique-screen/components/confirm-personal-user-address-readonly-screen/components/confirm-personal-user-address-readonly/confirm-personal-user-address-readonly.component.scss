@@ -4,18 +4,16 @@
   display: block;
 }
 
-.item {
-  margin-top: 16px;
-  &--date {
-    display: block;
-    width: 50%;
+.item:not(:first-child) {
+    margin-top: 16px;
+}
 
-    @include phones-down {
-      width: 100%;
-    }
-  }
-  .item {
-    margin-top: 4px;
+.value-date {
+  display: block;
+  width: 50%;
+
+  @include phones-down {
+    width: 100%;
   }
 }
 
@@ -40,6 +38,7 @@
   &:first-letter {
     text-transform: capitalize;
   }
+  margin-bottom: 4px;
 }
 
 .divider {

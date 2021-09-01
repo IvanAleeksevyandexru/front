@@ -4,7 +4,7 @@ import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
-import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
+import { MockComponent, MockDirective, MockModule, MockProvider } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
@@ -13,6 +13,7 @@ import { FileUploadComponent } from '../../../../shared/components/file-upload/f
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import {
   FileResponseToBackendUploadsItem,
+  FileUploadAttributes,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { By } from '@angular/platform-browser';
@@ -23,6 +24,8 @@ import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { LongButtonComponent } from '@epgu/epgu-constructor-ui-kit';
+import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -30,12 +33,13 @@ const screenServiceComponentMockData: ComponentDto = {
       {
         uploadId: '1',
         label: '',
-        fileType: 'txt',
-        maxFileCount: '1',
-        maxSize: '42',
+        fileType: ['txt'],
+        maxFileCount: 1,
+        maxSize: 1000,
       },
     ],
-  },
+    clarifications: null,
+  } as FileUploadAttributes,
   id: '',
   label: '',
   type: 'FileUploadComponent',
@@ -43,6 +47,7 @@ const screenServiceComponentMockData: ComponentDto = {
 } as ComponentDto;
 
 const fileSample: UploadedFile = {
+  description: '',
   fileName: 'file-name',
   objectId: 'object-id',
   objectTypeId: 1,
@@ -83,7 +88,9 @@ describe('FileUploadScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
+        CertificateEaisdoService,
         CurrentAnswersService,
+        EaisdoGroupCostService,
       ],
     }).overrideComponent(FileUploadScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -95,6 +102,7 @@ describe('FileUploadScreenComponent', () => {
     screenService.component = screenServiceComponentMockData;
     screenService.header = '';
     screenService.buttons = [button];
+    jest.spyOn(screenService, 'componentErrors', 'get').mockReturnValue({});
 
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     eventBusService = TestBed.inject(EventBusService);
@@ -139,6 +147,7 @@ describe('FileUploadScreenComponent', () => {
             value: [fileSample],
           },
         ],
+        errors: [],
       };
 
       eventBusService.emit('fileUploadValueChangedEvent', eventData);
@@ -150,6 +159,7 @@ describe('FileUploadScreenComponent', () => {
             value: [fileSample],
           },
         ],
+        totalSize: 100
       });
     });
 
@@ -287,7 +297,7 @@ describe('FileUploadScreenComponent', () => {
               label: '',
               fileType: 'txt',
               maxFileCount: '1',
-              maxSize: '42',
+              maxSize: '1000',
             },
           ],
         },
@@ -303,7 +313,7 @@ describe('FileUploadScreenComponent', () => {
             label: '',
             fileType: 'txt',
             maxFileCount: '1',
-            maxSize: '42',
+            maxSize: '1000',
           },
         ],
       });
@@ -380,6 +390,7 @@ describe('FileUploadScreenComponent', () => {
               ],
             },
           ],
+          errors: [],
           relatedUploads: {
             uploads: [
               {
@@ -403,6 +414,81 @@ describe('FileUploadScreenComponent', () => {
     it('action property', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl.injector.get(ActionDirective).action).toEqual(button);
+    });
+  });
+
+  describe('Total files size', () => {
+    it('should be set if files attached', () => {
+      const eventData: FileResponseToBackendUploadsItem = {
+        uploadId: 'id1',
+        files: [
+          {
+            value: [fileSample],
+          },
+        ],
+        errors: [],
+      };
+
+      eventBusService.emit('fileUploadValueChangedEvent', eventData);
+
+      expect(component.currentFilesSize).toEqual(100);
+    });
+
+    describe('Info plate', () => {
+      const selector = '.size-info';
+
+      it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is UNDEFINED', () => {
+        const debugEl = fixture.debugElement.query(By.css(selector));
+        expect(debugEl).toBeNull();
+      });
+
+      it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is TRUE', () => {
+        screenService.component = {
+          ...screenServiceComponentMockData,
+          ...{
+            attrs: {
+              hideTotalAvailableSize: true,
+              hideTotalAvailableCount: true,
+            } as FileUploadAttributes
+          }
+        };
+        fixture.detectChanges();
+
+        const debugEl = fixture.debugElement.query(By.css(selector));
+        expect(debugEl).toBeNull();
+      });
+
+      it('should be visible if attrs.hideTotalAvailableSize is FALSE and attrs.maxSize is defined', () => {
+        screenService.component = {
+          ...screenServiceComponentMockData,
+          ...{
+            attrs: {
+              maxSize: 10000,
+              hideTotalAvailableSize: false
+            } as FileUploadAttributes
+          }
+        };
+        fixture.detectChanges();
+
+        const debugEl = fixture.debugElement.query(By.css(selector));
+        expect(debugEl).toBeTruthy();
+      });
+
+      it('should be visible if attrs.hideTotalAvailableCount is FALSE and attrs.maxFileCount is defined', () => {
+        screenService.component = {
+          ...screenServiceComponentMockData,
+          ...{
+            attrs: {
+              maxFileCount: 10,
+              hideTotalAvailableCount: false
+            } as FileUploadAttributes
+          }
+        };
+        fixture.detectChanges();
+
+        const debugEl = fixture.debugElement.query(By.css(selector));
+        expect(debugEl).toBeTruthy();
+      });
     });
   });
 });

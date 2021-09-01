@@ -25,6 +25,7 @@ export class ConstructorLookupComponent {
   @ViewChild('lookupComponent', { static: false })
   lookupComponent: LookupComponent;
 
+  @Input() searchOnFocus = false;
   @Input() showNotFound = false;
   @Input() id: string | number;
   @Input() control: AbstractControl = new FormControl();
@@ -34,7 +35,7 @@ export class ConstructorLookupComponent {
   @Input() virtualScroll: boolean;
   @Input() searchCaseSensitive: boolean;
   @Input() queryMinSymbolsCount = 0;
-  @Input() fixedItems: Array<ListElement>;
+  @Input() fixedItems: ListElement[];
   @Input() itemsProvider:
     | LookupProvider<Partial<ListElement>>
     | LookupPartialProvider<Partial<ListElement>>;
@@ -51,5 +52,9 @@ export class ConstructorLookupComponent {
 
   public clearInput(): void {
     this.lookupComponent.clearInput();
+  }
+
+  public setFocus(): void {
+    this.lookupComponent.searchBar.setFocus();
   }
 }

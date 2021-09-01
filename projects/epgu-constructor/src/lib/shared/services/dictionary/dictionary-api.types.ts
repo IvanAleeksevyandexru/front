@@ -2,19 +2,25 @@ import { ListElement } from '@epgu/epgu-lib';
 import { PaymentInfoInterface } from '../../../component/unique-screen/components/payment/payment.types';
 
 export interface DictionaryResponse {
-  error: DictionaryResponseError;
-  fieldErrors: Array<string>;
-  items: Array<DictionaryItem>;
+  error?: DictionaryResponseError | null;
+  fieldErrors: string[];
+  items: DictionaryItem[];
   total: number;
 }
 
 export interface DictionaryResponseForYMap extends DictionaryResponse {
-  items: Array<DictionaryYMapItem>;
+  items: DictionaryYMapItem[];
 }
 
 export interface DictionaryResponseError {
-  code: number;
-  message: string;
+  code?: number;
+  message?: string;
+  errorCode?: number;
+  errorMessage?: string;
+  errorDetail?: {
+    errorCode: number;
+    errorMessage: string;
+  },
 }
 
 /**
@@ -28,8 +34,8 @@ export interface DictionaryResponseError {
  */
 export interface DictionaryItem extends ListElement {
   attributeValues: PaymentInfoInterface & { [key: string]: string };
-  attributes: Array<string | boolean>;
-  children: Array<unknown>;
+  attributes: (string | boolean)[];
+  children: unknown[];
   isLeaf: boolean;
   parentValue: null;
   title: string;
@@ -37,7 +43,7 @@ export interface DictionaryItem extends ListElement {
 }
 
 export interface DictionaryYMapItem extends DictionaryItem {
-  center: Array<number>;
+  center: [number, number];
   baloonContent: Object;
   id: string;
   idForMap: number;
@@ -54,7 +60,7 @@ export interface DadataSuggestionsAddress {
 }
 
 export interface DadataSuggestions {
-  addresses: Array<DadataSuggestionsAddress>;
+  addresses: DadataSuggestionsAddress[];
   error: DictionaryResponseError;
 }
 
@@ -78,7 +84,7 @@ export interface DadataNormalizeAddressElement {
 }
 
 export interface DadataNormalizeAddress {
-  elements: Array<DadataNormalizeAddressElement>;
+  elements: DadataNormalizeAddressElement[];
   fiasCode: string;
   fullAddress: string;
   numericFiasCode: string;

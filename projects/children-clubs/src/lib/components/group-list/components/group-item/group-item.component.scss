@@ -1,8 +1,13 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
 
 :host {
   display: block;
+}
+
+.card-toggle-pad {
+  padding-top: 8px !important;
 }
 
 .group-item-content {
@@ -11,7 +16,23 @@
   flex-wrap: nowrap;
 }
 
+.group-item-header {
+  justify-content: flex-start !important;
+  position: relative;
+  flex-direction: column;
+
+  @include phones-up {
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-right: 35px;
+  }
+}
+
 .group-item-header::after {
+  position: absolute;
+  right: 0;
+  top: 16px;
   content: '' !important;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9IiNFNEVDRkQiLz48cGF0aCBkPSJNOC41MTcgMTAuNTA0YS43MTUuNzE1IDAgMTAtMS4wMSAxLjAxMmwzLjc4NyAzLjc3OWExIDEgMCAwMDEuNDEyIDBsMy43ODctMy43OGEuNzE1LjcxNSAwIDAwLTEuMDEtMS4wMTFMMTIgMTMuOTc4bC0zLjQ4My0zLjQ3NHoiIGZpbGw9IiMwRDRDRDMiLz48L3N2Zz4=') !important;
   transform: rotate(0deg) !important;
@@ -20,6 +41,10 @@ input:checked {
   + .group-item-header::after {
     transform: rotate(180deg) !important;
   }
+}
+
+.card-toggle-label {
+  margin-right: 16px;
 }
 
 .btn-container {
@@ -37,4 +62,8 @@ input:checked {
 .group-item__value {
   margin-top: 2px;
   color: $color-summer-night;
+}
+
+.deny-reason-container {
+  display: flex;
 }

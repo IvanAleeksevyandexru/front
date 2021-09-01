@@ -1,13 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import {
-  AppNavigationService,
-  AppStateQuery,
-  AppStateService,
+  MicroAppNavigationService,
+  MicroAppStateQuery,
+  MicroAppStateService,
+  DATE_STRING_DASH_FORMAT,
+  DATE_STRING_DOT_FORMAT,
+  DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FinancialSource, FinancialSourceType, Group, Program } from '../../../../typings';
 import {
   ChildrenClubsState,
   ChildrenClubsValue,
+  DenyReasonMessage,
   ValueGroup,
   ValueProgram,
 } from '../../../../children-clubs.types';
@@ -18,13 +22,14 @@ import {
   styleUrls: ['./group-item.component.scss', '../../../../../styles/index.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GroupItemComponent {
+export class GroupItemComponent implements OnInit {
   @Input() set data(data: Group) {
     this.group = data;
     data?.financingSources?.forEach((item) => {
       this.sources[item.sourceCode] = this.getCost(item) ?? null;
       this.resultSources[item.sourceCode] = true;
     });
+    this.available = data?.available ?? true;
 
     this.certCost = this.sources[FinancialSourceType.pfdod_certificate];
     this.paidCost =
@@ -55,13 +60,22 @@ export class GroupItemComponent {
   isPayments = false;
   isMultiPaymentsInfoShown = false;
   group: Group;
+  available: boolean;
   sourceType = FinancialSourceType;
+  denyReasonMessage: DenyReasonMessage | null = null;
+  isNextSchoolYear: boolean;
 
   constructor(
-    private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
-    private stateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
-    private appNavigationService: AppNavigationService,
+    private appStateService: MicroAppStateService<ChildrenClubsValue, ChildrenClubsState>,
+    private stateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private appNavigationService: MicroAppNavigationService,
+    private dateToolService: DatesToolsService,
   ) {}
+
+  ngOnInit(): void {
+    this.setIsNextSchoolYear();
+    this.getDenyReasonMessage();
+  }
 
   setPaymentMethodsInfo(): void {
     let paymentInfoText;
@@ -112,6 +126,9 @@ export class GroupItemComponent {
       municipalityName: this.program?.municipal?.name,
       regionName: this.program?.region?.name,
       fiasRegion: this.program?.region?.uuid,
+      partnerPhone: this.program?.partnerPhone,
+      site: this.program?.site,
+      pfdodRulesLink: this.program?.pfdodRulesLink,
     };
 
     const group: ValueGroup = {
@@ -134,5 +151,67 @@ export class GroupItemComponent {
 
   private getCost(item: FinancialSource): number {
     return item.sourceCode === FinancialSourceType.pfdod_certificate ? item.monthlyCost : item.cost;
+  }
+
+  private getDenyReasonMessage(): void {
+    try {
+      if (this.group && !(this.group.available ?? true) && this.group.denyReason) {
+        const { denyReason } = this.group;
+        const { denyReason: denyReasonJSON } = this.stateQuery.state;
+        const denyReasonsByPeriod = JSON.parse(denyReasonJSON);
+        const denyReasonMessage: DenyReasonMessage | null =
+          (this.isNextSchoolYear
+            ? denyReasonsByPeriod.nextYear[denyReason]
+            : denyReasonsByPeriod.currentYear[denyReason]) || null;
+        if (denyReasonMessage) {
+          this.denyReasonMessage = {
+            text: this.getReplacedDenyReasonMessageStr(denyReasonMessage.text),
+            title: this.getReplacedDenyReasonMessageStr(denyReasonMessage.title),
+          };
+        }
+      }
+    } catch (e) {
+      this.denyReasonMessage = null;
+    }
+  }
+
+  private getReplacedDenyReasonMessageStr(str: string): string {
+    if (!this.group) {
+      return str;
+    }
+    const {
+      dateEnd,
+      dateBegin,
+      orderTo,
+      orderFrom,
+      availableNextYearOrderFrom,
+      availableNextYearOrderTo,
+    } = this.group;
+    return str
+      .replace(/\$\{orderFrom\}?/g, this.formatDateToReplaceInDenyReason(orderFrom))
+      .replace(/\$\{orderTo\}?/g, this.formatDateToReplaceInDenyReason(orderTo))
+      .replace(/\$\{dateBegin\}?/g, this.formatDateToReplaceInDenyReason(dateBegin))
+      .replace(/\$\{dateEnd\}?/g, this.formatDateToReplaceInDenyReason(dateEnd))
+      .replace(
+        /\$\{availableNextYearOrderFrom\}?/g,
+        this.formatDateToReplaceInDenyReason(availableNextYearOrderFrom),
+      )
+      .replace(
+        /\$\{availableNextYearOrderTo\}?/g,
+        this.formatDateToReplaceInDenyReason(availableNextYearOrderTo),
+      );
+  }
+
+  private formatDateToReplaceInDenyReason(date: string | null): string {
+    return date
+      ? this.dateToolService.format(
+          this.dateToolService.parse(date, DATE_STRING_DASH_FORMAT),
+          DATE_STRING_DOT_FORMAT,
+        )
+      : '';
+  }
+
+  private setIsNextSchoolYear(): void {
+    this.isNextSchoolYear = this.stateQuery.state.nextSchoolYear === 'true';
   }
 }

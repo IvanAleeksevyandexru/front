@@ -1,19 +1,23 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 $item-hint-mx: 13px;
 :host {
   display: block;
 }
 
-.item {
-  &__data {
-    display: block;
-    width: 50%;
+.form {
+  flex: 1 1 auto;
+  flex-flow: wrap;
+  width: auto;
+  margin-right: calc(-16px / 2);
+  margin-left: calc(-16px / 2);
+}
 
-    @include phones-down {
-      width: 100%;
-    }
-  }
+.item {
+  width: 100%;
+  margin-right: calc(16px / 2);
+  margin-left: calc(16px / 2);
 
   &__hint {
     background: $color-light-gray;
@@ -31,10 +35,10 @@ $item-hint-mx: 13px;
     display: block;
     margin-top: 8px;
   }
-}
 
-.item:not(:last-child) {
-  margin-bottom: 20px;
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
 }
 
 .hint-wrapper {

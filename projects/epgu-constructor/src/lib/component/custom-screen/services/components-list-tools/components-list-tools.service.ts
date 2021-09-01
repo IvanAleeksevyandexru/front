@@ -1,24 +1,27 @@
 import { Injectable } from '@angular/core';
-import { isUndefined, toBoolean } from '@epgu/epgu-constructor-ui-kit';
+import { isUndefined } from 'lodash';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
   CustomScreenComponentValueTypes,
 } from '../../components-list.types';
+import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 
 @Injectable()
 export class ComponentsListToolsService {
   private readonly availableComponentTypesToJsonParse = [
     CustomScreenComponentTypes.DropDown,
     CustomScreenComponentTypes.Lookup,
+    CustomScreenComponentTypes.RestLookup,
     CustomScreenComponentTypes.Dictionary,
     CustomScreenComponentTypes.AddressInput,
     CustomScreenComponentTypes.CityInput,
     CustomScreenComponentTypes.PassportLookup,
     CustomScreenComponentTypes.DocInput,
+    CustomScreenComponentTypes.CalendarInput
   ];
 
-  constructor() { }
+  constructor(private typeCastService: TypeCastService) { }
 
   public convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
@@ -59,6 +62,21 @@ export class ComponentsListToolsService {
     return type === CustomScreenComponentTypes.DateInput;
   }
 
+  // Очень условная проверка на соответствие номеру телефона
+  // Решает конкретную проблему с валидностью полей с номерами телефонов
+  public isPhone(value: string): boolean {
+    if (!value || typeof value !== 'string') {
+      return false;
+    }
+
+    const numberWithoutSymbols = value.replace(/[+()* ]/g, '');
+    return value.includes('+7') && !isNaN(Number(numberWithoutSymbols));
+  }
+
+  public getMaskedPhone(value): string {
+    return value.replace(/^([0-9+]{2})([0-9()]{5})([0-9]{3})([0-9]{2})([0-9]{2})$/, '$1 $2 $3 $4 $5');
+  }
+
   private parseValue(
     value: string,
     isDateAndValue: boolean,
@@ -79,9 +97,11 @@ export class ComponentsListToolsService {
         return value;
       }
     } else if (this.isCheckBox(componentType)) {
-      return toBoolean(value);
+      return this.typeCastService.toBoolean(value);
     } else if (componentType === CustomScreenComponentTypes.DropDownDepts) {
       return ''; // Подавляем значение value т.к. оно используется для вставки данных в фильтр
+    } else if (this.isPhone(value)) {
+      return this.getMaskedPhone(value);
     } else {
       return value;
     }

@@ -5,7 +5,7 @@ import { MockComponents, MockModule } from 'ng-mocks';
 import { ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 import { configureTestSuite } from 'ng-bullet';
 
-import { 
+import {
   ScreenContainerComponent,
   ScreenPadModule,
   PrevButtonComponent,
@@ -36,13 +36,15 @@ import { CachedAnswersService } from '../../shared/services/cached-answers/cache
 import { CustomComponent } from '../../component/custom-screen/components-list.types';
 import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors/uniqueness-errors.service';
 import { ComponentsListFormService } from '../../component/custom-screen/services/components-list-form/components-list-form.service';
+import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
+import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
+import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
 
 const displayMock = {
   id: 's113',
   name: 'Укажите все изменения ФИО',
   type: ScreenTypes.REPEATABLE,
   header: 'Укажите все изменения',
-  submitLabel: 'Далее',
   components: [
     {
       id: 'pd6',
@@ -161,7 +163,14 @@ describe('RepeatableScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [MockModule(BaseModule), BaseComponentsModule, ScreenPadModule, ScreenButtonsModule],
+      imports: [
+        MockModule(BaseModule),
+        BaseComponentsModule,
+        ScreenPadModule,
+        ScreenButtonsModule,
+        MockModule(DisclaimerModule),
+        MockModule(UserInfoLoaderModule),
+      ],
       declarations: [
         RepeatableScreenComponent,
         ScreenContainerComponent,
@@ -182,6 +191,7 @@ describe('RepeatableScreenComponent', () => {
         CachedAnswersService,
         UniquenessErrorsService,
         ComponentsListFormService,
+        JsonHelperService,
       ],
     }).compileComponents();
   });
@@ -339,12 +349,12 @@ describe('RepeatableScreenComponent', () => {
         displayMockCacheEnable.components[0].attrs.cacheRepeatableFieldsAnswersLocally = true;
         screenService.display = displayMockCacheEnable;
         component.ngOnInit();
-        
+
         expect(component.cacheRepeatableFieldsAnswersLocally).toBeTruthy();
 
         jest.spyOn(cachedAnswersService, 'setValueToLocalStorage');
         component.removeItem('pd9', 0);
-  
+
         expect(cachedAnswersService.setValueToLocalStorage).toHaveBeenCalled();
       });
     });
@@ -376,7 +386,7 @@ describe('RepeatableScreenComponent', () => {
 
         jest.spyOn(cachedAnswersService, 'setValueToLocalStorage');
         component.removeItem('pd9', 0);
-  
+
         expect(cachedAnswersService.setValueToLocalStorage).not.toHaveBeenCalled();
       });
     });

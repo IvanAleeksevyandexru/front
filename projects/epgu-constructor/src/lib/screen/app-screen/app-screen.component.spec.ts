@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, LoggerService, LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -26,7 +26,6 @@ const displayDtoSample: DisplayDto = {
   header: 'header1',
   id: 'id1',
   name: 'name1',
-  submitLabel: 'submitLabel1',
   type: ScreenTypes.APP,
   terminal: true,
 };
@@ -56,6 +55,7 @@ describe('SpaScreenComponent', () => {
       ],
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: CfAppStateService, useClass: CfAppStateServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
@@ -238,6 +238,7 @@ describe('SpaScreenComponent', () => {
         value: currentComponent.value,
         callbackRedirectUrl: currentUrl,
         isPrevStepCase: false,
+        orderId: orderId,
         healthPayload: {
           id: displayDtoSample.id,
           name: displayDtoSample.name,
@@ -259,6 +260,7 @@ describe('SpaScreenComponent', () => {
         value: currentComponent.value,
         callbackRedirectUrl: currentUrl,
         isPrevStepCase: true,
+        orderId: orderId,
         healthPayload: {
           id: displayDtoSample.id,
           name: displayDtoSample.name,

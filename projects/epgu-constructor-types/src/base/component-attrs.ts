@@ -10,59 +10,65 @@ import { ConfirmUserDataStyle } from './confirm-user-data';
 import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
-import { ScreenButton } from './screen-buttons';
+import { KeyValueMap } from './core.types';
+import { LogicComponentHeaders, LogicComponentMethods } from './logic-component';
 
-export interface KinderGardenAttrs {
+export interface KindergartenAttrs {
   header?: string;
   label?: string;
   checkboxLabel?: string;
-  buttons?: Array<ScreenButton>;
+  finalScreenText?: string;
+  listMaxLength?: number;
+  nextStepLength?: number;
   attrs?: ComponentAttrsDto;
 }
 
 export interface ComponentAttrsDto {
   accuracy?: string;
-  actions?: Array<ComponentActionDto>;
+  actions?: ComponentActionDto[];
   add?: { component: string; caption: string[] };
   addContextQueryParams?: boolean;
   addressString?: ComponentAddressStringDto;
-  answers?: Array<ComponentAnswerDto>;
+  answers?: ComponentAnswerDto[];
   applicantType?: string;
   attributeNameWithAddress?: string;
   autoCenterAllPoints?: boolean;
   autoMapFocus?: boolean;
-  baloonContent?: Array<ComponentBaloonContentDto>;
+  baloonContent?: ComponentBaloonContentDto[];
   beginDate?: ComponentDateTimeDto;
   beginTime?: ComponentDateTimeDto;
   cacheRepeatableFieldsAnswersLocally?: boolean;
   cancelReservation?: string[];
   canDeleteFirstScreen?: boolean;
   characterMask?: string;
-  checkedParametersGIBDD?: Array<string>;
+  checkedParametersGIBDD?: string[];
   clarifications?: Clarifications;
   codeLength?: number;
-  components?: Array<ComponentDto>;
+  components?: ComponentDto[];
   customUnrecLabel?: string;
   dateType?: string;
   daysToShow?: number;
   defaultIndex?: number;
   defaultValue?: boolean;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  dictionaryFilter?: ComponentDictionaryFilterDto[];
   dictionaryGIBDD?: string;
   dictionaryOptions?: DictionaryOptions;
-  dictionaryType?: Array<string> | string;
+  dictionaryType?: string[] | string;
   dictItemCode?: string;
   disabled?: boolean;
   disclaimer?: DisclaimerDto;
+  defaultHint?: HintDto;
   displayShowTimeSeconds?: number;
   downloadLink?: string; // ссылка для скачивания файлов в empty screen
   emptySlotsModal?: ConfirmationModal;
+  email?: string;
   endDate?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
   error?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
   expandAllChildrenBlocks?: boolean;
   expirationTime?: string;
-  fields?: Array<ComponentFieldDto>;
+  fields?: ComponentFieldDto[];
+  fieldGroups?: { groupName: string; visibilityLabel: string; fields: ComponentFieldDto[] };
   filter?: ComponentFilterDto;
   fio?: string;
   firstName?: string;
@@ -77,7 +83,7 @@ export interface ComponentAttrsDto {
   hideSocialShare?: boolean;
   hint?: string;
   hints?: Hints[];
-  ignoreRootParams?: Array<string>;
+  ignoreRootParams?: string[];
   image?: ComponentImageDto;
   imgSrc?: string;
   infoComponents?: string[];
@@ -88,8 +94,8 @@ export interface ComponentAttrsDto {
   labelHint?: string;
   lastName?: string;
   link?: string;
-  mapKinderGardenPriorityAttrs?: KinderGardenAttrs;
-  mask?: Array<string>;
+  mapKindergartenPriorityAttrs?: KindergartenAttrs;
+  mask?: string[];
   maxDate?: string;
   maxDateRef?: string;
   middleName?: string;
@@ -97,26 +103,27 @@ export interface ComponentAttrsDto {
   minDateRef?: string;
   minOccures?: number;
   muchTries?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
-  mvdFilters?: Array<IMvdFilter>; // TODO: EPGUCORE-54425, Виктория Харитонова сказала что фильтрацию сделают на бэке. После этого нужно поле удалить это поле.
+  mvdFilters?: IMvdFilter[]; // TODO: EPGUCORE-54425, Виктория Харитонова сказала что фильтрацию сделают на бэке. После этого нужно поле удалить это поле.
   noDepartmentsErrorMsg?: string;
   nonStop?: boolean;
   nsi?: string;
+  obliged?: boolean;
   payCode?: number;
   phoneNumber?: number;
   placeholderText?: string;
   preset?: ComponentPresetDto;
   redirectLabel?: string;
-  ref?: Array<ComponentRefDto> | string | { fiasCode: string } | Array<CustomComponentRef>;
+  ref?: ComponentRefDto[] | string | { fiasCode: string } | CustomComponentRef[];
   refDate?: string;
   refs?: RefsTimeDto | { [key: string]: string };
   relationField?: ComponentRelationFieldDto;
-  repeatableComponents?: Array<Array<ComponentDto>>;
+  repeatableComponents?: ComponentDto[][];
   repeatAmount?: number;
   resendCodeUrl?: string;
   restrictions?: ComponentRestrictionsDto;
-  russia?: boolean;
+  russia?: boolean; // TODO: избавить от рудимента после рефактора json'ов услуг
   screenCaption?: string;
-  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  secondaryDictionaryFilter?: ComponentDictionaryFilterDto[];
   secondScreenCaption?: string;
   selectedValue?: string;
   sendEmailLabel?: string;
@@ -129,16 +136,52 @@ export interface ComponentAttrsDto {
   step?: number;
   style?: ConfirmUserDataStyle;
   success?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
+  suggestionPath?: string;
   templateId?: string; // @see LkInvitationInputAttrs
+  emptyFieldsErrorMsg?: string;
   timerRules?: TimerRulesDto;
   uploadedFile?: ComponentUploadedFileDto;
-  ussr?: boolean;
+  ussr?: boolean; // TODO: избавить от рудимента после рефактора json'ов услуг
+  uniqueBy?: { disclaimer?: DisclaimerDto; keys: unknown[] };
   validateMessage?: string;
-  validation?: Array<ComponentValidationDto>;
+  validation?: ComponentValidationDto[];
   value?: string;
   visited?: boolean;
   years?: number;
+  searchProvider?: {
+    dictionaryOptions: DictionaryOptions;
+    dictionaryFilter: ComponentDictionaryFilterDto[];
+    filterByAttributeName?: string;
+    turnOffStartFilter?: boolean;
+  };
+  selectAttributes?: string[];
+  LOMurlTemplate?: string;
+  mapType?: string;
+  electionLevel?: string;
+  electionDate?: string;
+  mapOptions?: KeyValueMap;
+  region?: string;
+  fullNameInList?: boolean;
+  fullNameListAge?: ChildrenListAgeView;
+  isClearable?: boolean;
+  chooseChildLabel?: string;
+  defaultLabelList?: string;
+  defaultNewList?: string;
+  listLabel?: boolean;
+  limit?: number | string;
+  url?: string;
+  body?: string;
+  method?: LogicComponentMethods;
+  path?: string;
+  timeout?: string;
+  headers?: LogicComponentHeaders;
+  customValidation?: CustomValidationDto;
+  balloonAttrs?: KeyValueMap;
+  visibleComponents?: string[];
+  writableComponents?: string[];
 }
+
+export type ChildrenListAgeView = 'date' | 'age';
 
 export interface Hints {
   label: string;
@@ -157,15 +200,39 @@ export type HintTimeTypes =
   | 'milliseconds';
 
 export interface DisclaimerDto {
-  type: 'warn' | 'error';
+  type: DisclaimerDtoType;
+  level: DisclaimerDtoLevel;
+  message?: string;
+  id?: number;
   title: string;
   description: string;
+  clarifications: Clarifications;
+  uniquenessErrors: string[];
+}
+
+export enum DisclaimerDtoType {
+  advice = 'advice',
+  info = 'info',
+  warn = 'warn',
+  error = 'error',
+}
+
+export enum DisclaimerDtoLevel {
+  info = 'INFO',
+  warn = 'WARN',
+  error = 'ERROR',
+}
+
+export interface HintDto {
+  type: 'warn' | 'info' | 'default';
+  title: string;
+  value: string;
 }
 
 export interface IMvdFilter {
-  fiasList: Array<string>;
+  fiasList: string[];
   field: string;
-  value: Array<string>;
+  value: string[];
 }
 
 export interface RefsTimeDto {
@@ -183,7 +250,7 @@ export interface TimerRulesDto {
 
 export interface ComponentFilterDto {
   key: string;
-  value: Array<string>;
+  value: string[];
   isExcludeType: boolean;
 }
 
@@ -210,17 +277,17 @@ export interface ComponentBaloonContentDto {
 export interface ComponentGIBDDpaymentErrorDto {
   text: string;
   title: string;
-  buttons: Array<{
+  buttons: {
     label: string;
     closeModal: boolean;
     color?: ColorDto;
     value?: boolean;
-  }>;
+  }[];
 }
 
 export interface ComponentStatesDto {
   [key: string]: {
-    actions: Array<ComponentActionDto>;
+    actions: ComponentActionDto[];
     body: string;
     header: string;
     subHeader: string;
@@ -236,13 +303,13 @@ export interface ComponentPresetDto {
 
 export interface ComponentRelationFieldDto {
   ref: string;
-  conditions: Array<{
+  conditions: {
     type: 'RegExp' | 'MinDate' | 'MaxDate';
     value: string;
     result: {
       attrs: ComponentAttrsDto;
     };
-  }>;
+  }[];
 }
 
 export interface ComponentValidationDto {
@@ -264,7 +331,10 @@ export interface ComponentRefDto {
 export interface ComponentFieldDto {
   fieldName?: string;
   label?: string;
+  value?: string;
   suggestionId?: string;
+  attrs?: unknown;
+  required?: boolean;
 }
 
 export interface DisplaySubjHead {
@@ -276,24 +346,25 @@ export interface ActionConfirmationsDto {
   [key: string]: {
     title?: string;
     text?: string;
-    submitLabel?: string;
-    buttons: Array<{
+    buttons: {
       label: string;
       closeModal: boolean;
       color?: ColorDto;
       value?: boolean;
-    }>;
+    }[];
     actionButtons: ComponentActionDto;
   };
 }
 
 export interface ComponentDateTimeDto {
   label: string;
+  sublabel: string;
   valueType: string;
   value: string;
   required: boolean;
   hidden: boolean;
   maxDate?: string;
+  minDate?: string;
 }
 
 export interface ComponentUploadedFileDto {
@@ -320,4 +391,9 @@ export interface ComponentUploadedFileDto {
   deleted?: boolean;
   uploadId?: string;
   maxSize?: number;
+}
+
+export interface CustomValidationDto {
+  fields?: string[];
+  path?: string;
 }

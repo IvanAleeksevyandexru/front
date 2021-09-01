@@ -1,13 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DeviceDetectorService, DownloadService, EventBusService, LocalStorageService, LocationService, LocationServiceStub, LoggerService, ModalService, ModalServiceStub, SessionService, SessionStorageService, SessionStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import {
-  ConfirmUserData,
-  ConfirmUserDataErrorType,
-} from '../../confirm-personal-user-data-screen.types';
+import { ConfirmUserDataErrorType } from '../../confirm-personal-user-data-screen.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -17,13 +14,26 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { BaseModule } from '../../../../../../shared/base.module';
 import { FieldListModule } from '../../../../../../shared/components/field-list/field-list.module';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
 import { configureTestSuite } from 'ng-bullet';
-import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ActionType, ComponentActionDto, DTOActionAction, ScreenTypes } from '@epgu/epgu-constructor-types';
+import { DisclaimerModule } from 'projects/epgu-constructor/src/lib/shared/components/disclaimer/disclaimer.module';
+import { ComponentBase, ScreenStoreComponentDtoI } from 'projects/epgu-constructor/src/lib/screen/screen.types';
+import { FormPlayerApiService } from 'projects/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
+import { InitDataService } from 'projects/epgu-constructor/src/lib/core/services/init-data/init-data.service';
+import { NavigationService } from 'projects/epgu-constructor/src/lib/core/services/navigation/navigation.service';
+import { NavigationServiceStub } from 'projects/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
+import { NavigationModalService } from 'projects/epgu-constructor/src/lib/core/services/navigation-modal/navigation-modal.service';
+import { HtmlRemoverService } from 'projects/epgu-constructor/src/lib/shared/services/html-remover/html-remover.service';
+import { AutocompleteApiService } from 'projects/epgu-constructor/src/lib/core/services/autocomplete/autocomplete-api.service';
+import { FormPlayerService } from 'projects/epgu-constructor/src/lib/form-player/services/form-player/form-player.service';
+import { FormPlayerServiceStub } from 'projects/epgu-constructor/src/lib/form-player/services/form-player/form-player.service.stub';
+import { JsonHelperService } from 'projects/epgu-constructor/src/lib/core/services/json-helper/json-helper.service';
+import { HtmlSelectService } from 'projects/epgu-constructor/src/lib/core/services/html-select/html-select.service';
 
-const componentMock: ConfirmUserData = {
+const componentMock: ComponentBase = {
   attrs: {
     actions: [
       {
@@ -34,10 +44,35 @@ const componentMock: ConfirmUserData = {
     ],
     fields: [
       {
-        fieldName: 'birthDate',
-        label: 'Birthday Date',
+        fieldName: 'firstName',
+        label: '',
+        attrs: {
+          validation: [
+            {
+              type: 'RegExp',
+              value: '.+',
+              ref: '',
+              dataType: '',
+              condition: '',
+              errorMsg: 'Для продолжения нужно заполнить поле <b>\"Имя\"</b> не может быть пустым. Нажмите кнопку \"Редактировать\".',
+            },
+            {
+              type: 'RegExp',
+              value: '^[\\s\\S]{0,60}$',
+              ref: '',
+              condition: '',
+              errorMsg: 'Поле Имя должно содержать не более 60 символов',
+            }
+          ]
+        }
       },
     ],
+    customValidation: {
+      fields: [
+        'firstName',
+      ],
+      path: 'storedValues',
+    },
     style: {
       divider: '',
       list: '',
@@ -49,7 +84,15 @@ const componentMock: ConfirmUserData = {
     },
   },
   type: '',
-  value: '{}',
+  value: '{"states":[{"groupName":"Фёдоров Фёдор Акакиевич", \
+  "fields":[{"label":"Дата рождения","value":"06.06.1971"}]}, \
+  {"groupName":"Паспорт гражданина РФ","fields":[{"label":"Серия и номер","value":"4410 271830"}, \
+  {"label":"Дата выдачи","value":"08.07.2005"},{"label":"Кем выдан","value":"УФМС"},{"label":"Код подразделения","value":"490-001"}, \
+  {"label":"Место рождения","value":"Россия"}]}], \
+  "storedValues":{"firstName":"Фёдор","lastName":"Фёдоров","middleName":"Акакиевич","birthDate":"06.06.1971", \
+  "birthPlace":"Россия","gender":"M","docType":"RF_PASSPORT","rfPasportSeries":"4410","rfPasportNumber":"271830", \
+  "rfPasportIssueDate":"08.07.2005","rfPasportIssuedBy":"УФМС","rfPasportIssuedById":"490001", \
+  "rfPasportIssuedByIdFormatted":"490-001","citizenship":"РОССИЯ","citizenshipCode":"RUS"},"errors":[]}',
   presetValue: '{}',
   label: '',
   id: '',
@@ -66,6 +109,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
   let fixture: ComponentFixture<ConfirmPersonalUserDataComponent>;
   let screenService: ScreenServiceStub;
   let currentAnswersService: CurrentAnswersService;
+  let sessionStorageService: SessionStorageService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -77,11 +121,30 @@ describe('ConfirmPersonalUserDataComponent', () => {
         MockModule(BaseModule),
         MockModule(FieldListModule),
         MockModule(ScreenPadModule),
+        DisclaimerModule,
       ],
       providers: [
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        FormPlayerApiService,
+        InitDataService,
+        LoggerService,
+        { provide: LocationService, useClass: LocationServiceStub },
+        SessionService,
+        { provide: NavigationService, useClass: NavigationServiceStub },
+        DeviceDetectorService,
+        NavigationModalService,
+        DownloadService,
+        LocalStorageService,
+        HtmlRemoverService,
+        AutocompleteApiService,
+        EventBusService,
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        JsonHelperService,
+        HtmlSelectService,
       ],
     })
       .overrideComponent(ConfirmPersonalUserDataComponent, {
@@ -97,6 +160,89 @@ describe('ConfirmPersonalUserDataComponent', () => {
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService.component = componentMock;
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock as any);
+    sessionStorageService = (TestBed.inject(SessionStorageService) as unknown) as SessionStorageServiceStub;
+  });
+
+  it('should set session param in ngOnInit', () => {
+    screenService.getStore().applicantAnswers = {
+      cld1_id : {
+        visited: true,
+        value: '1'
+      }
+    };
+    fixture.detectChanges();
+
+    expect(sessionStorageService.getRaw('childId')).toBe('1');
+  });
+
+  it('should proccessed custom validation (required) for \'firstName\' and rendered correctly', () => {
+    screenService.getStore().display = {
+      components: [
+        componentMock as ScreenStoreComponentDtoI
+      ],
+      id: '',
+      name: '',
+      header: '',
+      type: ScreenTypes.UNIQUE,
+      terminal: false
+    };
+
+    const value: { [key: string]: unknown } =
+        JSON.parse(screenService.component.value) || {};
+
+    // eslint-disable-next-line
+    value[screenService.component.attrs.customValidation.path]['firstName'] = '';
+    screenService.component.value = JSON.stringify(value);
+    fixture.detectChanges();
+
+    expect(JSON.stringify(component.errors)).toEqual(JSON.stringify(
+      [
+        {
+          type: 'error',
+          title: 'Ошибка',
+          desc: 'Для продолжения нужно заполнить поле <b>"Имя"</b> не может быть пустым. Нажмите кнопку "Редактировать".'
+        }
+      ]
+    ));
+
+    const selector = 'epgu-constructor-disclaimer';
+    const debugEl: DebugElement = fixture.debugElement.query(By.css(selector));
+    expect(debugEl).toBeTruthy();
+  });
+
+  it('should proccessed custom validation (maxLength) for \'firstName\' and rendered correctly', () => {
+    screenService.getStore().display = {
+      components: [
+        componentMock as ScreenStoreComponentDtoI
+      ],
+      id: '',
+      name: '',
+      header: '',
+      type: ScreenTypes.UNIQUE,
+      terminal: false
+    };
+
+    const value: { [key: string]: unknown } =
+        JSON.parse(screenService.component.value) || {};
+
+    // eslint-disable-next-line
+    value[screenService.component.attrs.customValidation.path]['firstName'] = ''.padStart(61, '*');
+    screenService.component.value = JSON.stringify(value);
+    fixture.detectChanges();
+
+    expect(JSON.stringify(component.errors)).toEqual(JSON.stringify(
+      [
+        {
+          type: 'error',
+          title: 'Ошибка',
+          desc: 'Поле Имя должно содержать не более 60 символов'
+        }
+      ]
+    ));
+
+    const selector = 'epgu-constructor-disclaimer';
+    const debugEl: DebugElement = fixture.debugElement.query(By.css(selector));
+    expect(debugEl).toBeTruthy();
   });
 
   describe('update value', () => {

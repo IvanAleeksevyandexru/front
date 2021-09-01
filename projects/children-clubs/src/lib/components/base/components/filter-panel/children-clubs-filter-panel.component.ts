@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
-import { distinctUntilChanged, filter } from 'rxjs/operators';
+import {
+  ConfigService,
+  MicroAppStateQuery,
+  MicroAppStateService,
+} from '@epgu/epgu-constructor-ui-kit';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import {
   ChildrenClubsState,
   ChildrenClubsValue,
@@ -16,10 +20,11 @@ import { ProgramListService } from '../../../../services/program-list/program-li
 })
 export class ChildrenClubsFilterPanelComponent implements OnInit {
   @Input() filtersCount: number;
-  @Input() initValue: string;
+  @Input() initValue: () => string;
   @Input() isShowMenu = true;
-  @Input() title = 'Введите адрес проведения занятий, ФИО педагога, название группы';
+  @Input() title = 'Введите название группы, ФИО педагога, или адрес проведения занятий';
   @Input() showNav = false;
+  @Input() showMap = true;
   @Output() openFilters = new EventEmitter();
   @Output() search = new EventEmitter<string>();
 
@@ -29,17 +34,19 @@ export class ChildrenClubsFilterPanelComponent implements OnInit {
 
   constructor(
     public programListService: ProgramListService,
-    private query: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
-    private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
+    public config: ConfigService,
+    private query: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private appStateService: MicroAppStateService<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
   ngOnInit(): void {
     if (this.initValue) {
-      this.searchControl.setValue(this.initValue);
+      this.searchControl.setValue(this.initValue());
     }
     this.searchControl.valueChanges
       .pipe(
         filter((value) => value.length > 3 || !value.length),
         distinctUntilChanged(),
+        debounceTime(2000),
       )
       .subscribe((searchTxt) => this.search.next(searchTxt));
   }

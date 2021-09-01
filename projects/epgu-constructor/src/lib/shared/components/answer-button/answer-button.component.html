@@ -1,5 +1,4 @@
 <epgu-cf-ui-long-button
-  [data]="data"
   [isLoading]="screenService.isLoading$ | async"
   [disabled]="data.disabled"
   class="answer-btn"
@@ -21,5 +20,11 @@
       ></span>
     </span>
   </div>
-  <div *ngIf="data?.description" class="answer-btn__description">{{ data.description }}</div>
+  <epgu-constructor-output-html
+    *ngIf="data?.description"
+    [html]="data.description"
+    class="answer-btn__description"
+    [clarifications]="data?.attrs?.clarifications"
+    (click)="handleOutputHtmlClick($event)">
+  </epgu-constructor-output-html>
 </epgu-cf-ui-long-button>

@@ -1,31 +1,34 @@
-<div class="conf-modal" [class.conf-modal--short]="isShortModal" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
+<div class="conf-modal" [class.conf-modal--short]="isShortModal" cdkTrapFocus>
   <div class="conf-modal__header">
     <h3 *ngIf="title" class="conf-modal__title" [innerHTML]="title | safe: 'html'"></h3>
     <div *ngIf="showCrossButton" class="conf-modal__close icon-close" (click)="closeModal()"></div>
   </div>
   <div class="conf-modal__body" [class.preview]="preview">
-    <perfect-scrollbar
-      #perfectScroll
-      class="perfect-scrollbar"
-      *ngIf="!isMobile && !isShortModal; else contentBlock"
-      [class.perfect-scrollbar-button-outside-content]="isButtonsOutsideContent"
-      [config]="scrollConfig"
-    >
-      <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
-    </perfect-scrollbar>
-    <ng-container *ngIf="isButtonsOutsideContent && !isMobile">
-      <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
-    </ng-container>
-
-    <ng-template #contentBlock>
-      <div class="conf-modal__content">
-        <ng-content select="[modal-content]"></ng-content>
-        <ng-container *ngIf="!isButtonsOutsideContent || isMobile">
-          <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
-        </ng-container>
-      </div>
-    </ng-template>
+    <div class="wrap-scrollbar">
+      <perfect-scrollbar
+        #perfectScroll
+        class="perfect-scrollbar"
+        *ngIf="!isMobile && !isShortModal; else contentBlock"
+        [class.perfect-scrollbar-button-outside-content]="isButtonsOutsideContent"
+        [config]="scrollConfig"
+      >
+        <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
+      </perfect-scrollbar>
+    </div>
   </div>
+  <div *ngIf="isButtonsOutsideContent && !isMobile" class="conf-modal__footer">
+    <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
+  </div>
+  <ng-template #contentBlock>
+    <div class="conf-modal__content">
+      <div [class.scroll-padding]="!isShortModal">
+        <ng-content select="[modal-content]"></ng-content>
+      </div>
+      <ng-container *ngIf="!isButtonsOutsideContent || isMobile">
+        <ng-container *ngTemplateOutlet="buttonsTemplate"></ng-container>
+      </ng-container>
+    </div>
+  </ng-template>
 </div>
 {{ preview | json }}
 

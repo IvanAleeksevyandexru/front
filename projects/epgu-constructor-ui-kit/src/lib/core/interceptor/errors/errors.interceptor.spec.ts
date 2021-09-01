@@ -9,13 +9,10 @@ import { ErrorsInterceptor } from './errors.interceptor';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   DRAFT_STATEMENT_NOT_FOUND,
-  COMMON_ERROR_MODAL_PARAMS,
   ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
   BOOKING_ONLINE_ERROR,
   TIME_INVITATION_ERROR,
   NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
-  ITEMS_NO_DATA,
-  ITEMS_FAILURE,
 } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
 import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
 import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
@@ -36,7 +33,11 @@ import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
 import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { LocationService } from '../../services/location/location.service';
+import { FormPlayerService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service';
 import { ERROR_HANDLER_SERVICE } from './errors.token';
+import { SessionService } from '../../services/session/session.service';
+import { LocalStorageService } from '../../services/local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -57,11 +58,14 @@ describe('ErrorsInterceptor', () => {
       imports: [HttpClientTestingModule],
       providers: [
         FormPlayerApiService,
+        SessionService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: ErrorsInterceptor,
@@ -164,60 +168,6 @@ describe('ErrorsInterceptor', () => {
     expect(modalService.openModal).toHaveBeenCalledWith(
       ConfirmationModalComponent,
       BOOKING_ONLINE_ERROR,
-    );
-    tick();
-  }));
-
-  it('should open modal with ITEMS_NO_DATA params', fakeAsync(() => {
-    const data = {
-      items: [],
-      error: {
-        errorDetail: {
-          errorMessage: 'NO_DATA:TEST MESSAGE',
-        },
-      },
-    };
-    const url = 'agg/ref/items';
-    const spy = jest.spyOn(modalService, 'openModal');
-    httpClient
-      .post(url, {})
-      .pipe(catchError(() => of()))
-      .subscribe();
-    const req = httpMock.expectOne(url);
-
-    expect(req.request.method).toBe('POST');
-
-    req.flush(data, { status: 200, statusText: 'success' });
-    expect(spy).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      ITEMS_NO_DATA,
-    );
-    tick();
-  }));
-
-  it('should open modal with ITEMS_FAILURE params', fakeAsync(() => {
-    const data = {
-      items: [],
-      error: {
-        errorDetail: {
-          errorMessage: 'UNKNOWN_REQUEST_DESCRIPTION:TEST MESSAGE',
-        },
-      },
-    };
-    const url = 'agg/ref/items';
-    const spy = jest.spyOn(modalService, 'openModal');
-    httpClient
-      .post(url, {})
-      .pipe(catchError(() => of()))
-      .subscribe();
-    const req = httpMock.expectOne(url);
-
-    expect(req.request.method).toBe('POST');
-
-    req.flush(data, { status: 200, statusText: 'success' });
-    expect(spy).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      ITEMS_FAILURE,
     );
     tick();
   }));

@@ -16,7 +16,7 @@ import { InitDataService } from '../../../core/services/init-data/init-data.serv
 import { FormPlayerService } from './form-player.service';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerApiResponse, ScreenTypes } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiResponse, FormPlayerApiSuccessResponse, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';
 
@@ -249,7 +249,6 @@ describe('FormPlayerService', () => {
           label: 'some label',
           id: '2222',
           name: 'some name 2',
-          submitLabel: 'some submit label',
           terminal: false,
           type: ScreenTypes.COMPONENT,
         },
@@ -258,6 +257,15 @@ describe('FormPlayerService', () => {
       spyOn<any>(service, 'processResponse').and.callThrough();
       service.patchStore(newScenarioDtoDiff);
       expect(service['processResponse']).toHaveBeenCalledWith(state);
+    });
+  });
+
+  describe('getQuizDataByToken()', () => {
+    it('should call getQuizDataByToken with passed token', () => {
+      const token = 'some token';
+      spyOn<any>(service, 'getQuizDataByToken').and.callThrough();
+      service.getQuizDataByToken(token);
+      expect(service['getQuizDataByToken']).toHaveBeenCalledWith(token);
     });
   });
 
@@ -682,6 +690,15 @@ describe('FormPlayerService', () => {
       spyOn<any>(service['playerLoadedSubject'], 'next').and.callThrough();
       service['updatePlayerLoaded'](true);
       expect(service['playerLoadedSubject'].next).toBeCalledWith(true);
+    });
+  });
+
+  describe('augmentDisplayId', () => {
+    it('should update display.id in successResponse with last id from finishedAndCurrentScreens', () => {
+      const successResponse = ({ scenarioDto: { display: 'id' }} as unknown) as FormPlayerApiSuccessResponse;
+      const otherScenario = { finishedAndCurrentScreens: ['id1', 'id2'] };
+      service['augmentDisplayId'](successResponse, otherScenario);
+      expect(successResponse.scenarioDto.display.id).toBe('id2');
     });
   });
 });

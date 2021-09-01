@@ -36,6 +36,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
   @Input() componentIndex = 0;
   @Input() componentsGroupIndex = 0;
   @Input() componentType: ComponentTypes;
+  @Input() limit?: number | string;
   componentRef: ComponentRef<ScreenComponentTypes>;
 
   constructor(
@@ -49,6 +50,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
     if (this.componentRef && (changes.componentsGroupIndex || changes.componentIndex)) {
       this.componentRef.instance.componentIndex = this.componentIndex;
       this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
+      this.componentRef.instance.limit = this.limit;
     }
   }
 
@@ -63,6 +65,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
         const cmpType =
           this.componentType ?? (components[this.componentIndex].type as ComponentTypes);
         this.createComponent(cmpType, screenType);
+
         this.cdr.detectChanges();
       });
   }
@@ -90,6 +93,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
     this.componentRef.instance.componentIndex = this.componentIndex;
     // @ts-ignore
     this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
+    this.componentRef.instance.limit = this.limit;
   }
 
   private getComponentByType(cmpType: ComponentTypes): Type<ScreenComponentTypes> {

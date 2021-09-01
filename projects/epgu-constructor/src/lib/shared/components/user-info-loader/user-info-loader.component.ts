@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { concatMap, map, tap } from 'rxjs/operators';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import {
+  ComponentDto,
+  CycledInfo,
+  UserInfoComponentTypes,
+  UserInfo,
+  InfoComponentDto,
+} from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../screen/screen.service';
-import { UserInfoComponentTypes } from './user-info-loader.types';
-
-import { UserInfoType } from './components/user-info/user-info.type';
 import { ComponentValue } from '../../../screen/screen-content';
-import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import { CycledInfo } from './components/cycled-info/cycled-info.types';
 
 @Component({
   selector: 'epgu-constructor-user-info-loader',
@@ -18,28 +18,16 @@ import { CycledInfo } from './components/cycled-info/cycled-info.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoLoaderComponent {
-  @Input() isDisplay = true;
-
-  components$: Observable<[ComponentDto, ComponentValue][]> = of([1, 1]).pipe(
-    concatMap(() =>
-      this.isDisplay
-        ? this.screenService.displayInfoComponents$.pipe(
-            tap((v) => {
-              this.loggerService.log(['display', v]);
-            }),
-          )
-        : this.screenService.componentInfoComponents$.pipe(
-            tap((v) => {
-              this.loggerService.log(['component', v]);
-            }),
-          ),
-    ),
+  components$: Observable<
+    [ComponentDto, ComponentValue][]
+  > = this.screenService.infoComponents$.pipe(
     map((components) => {
-      return components.map(([component, value]: [ComponentDto, ComponentValue]) => {
+      return components?.map((component: InfoComponentDto) => {
+        const value = JSON.parse(component.value);
         switch (component.type) {
-          case (this.userInfoTypes.PersonInfo as unknown) as UniqueScreenComponentTypes:
-            return [component, value as UserInfoType];
-          case (this.userInfoTypes.CycledInfo as unknown) as UniqueScreenComponentTypes:
+          case this.userInfoTypes.PersonInfo:
+            return [component, value as UserInfo];
+          case this.userInfoTypes.CycledInfo:
             return [component, value as CycledInfo];
           default:
             return [component, value];
@@ -48,5 +36,6 @@ export class UserInfoLoaderComponent {
     }),
   );
   userInfoTypes = UserInfoComponentTypes;
-  constructor(public screenService: ScreenService, private loggerService: LoggerService) {}
+
+  constructor(public screenService: ScreenService) {}
 }

@@ -1,6 +1,5 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/variables';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
 :host {
   @include flex-container();
@@ -8,7 +7,7 @@
 
 .info {
   &__head {
-    margin-bottom: 24px;
+    margin-bottom: $screen-pad-24;
   }
 
   &__submit {
@@ -17,7 +16,11 @@
 }
 
 .divider {
-  margin: 0 0 24px;
+  margin: 0 0 $screen-pad-24;
+}
+
+.screen-body ::ng-deep .screen-button {
+  margin-top: $screen-pad-24;
 }
 
 .gray-theme {
@@ -31,6 +34,13 @@
   .divider {
     display: none;
   }
+
+  &.screen-body ::ng-deep .screen-button {
+    margin-top: $screen-pad-40;
+    @include tablets-down {
+      margin-top: $screen-pad-32;
+    }
+  }
 }
 
 .info-screen--status {
@@ -42,9 +52,9 @@
 .info-screen--solution-page,
 .info-screen--solution-page-2 {
   & > .info__submit > ::ng-deep .screen-button {
-    margin-top: 40px;
+    margin-top: $screen-pad-40;
     @include tablets-down {
-      margin-top: 32px;
+      margin-top: $screen-pad-32;
     }
   }
 }
@@ -53,6 +63,7 @@
   .info-screen--solution-page,
   .info-screen--solution-page-2,
   .info-screen--deadlock,
+  .info-screen--outer-buttons,
   .info-screen--status {
     .info__text {
       @include screen-content-margins;
@@ -61,31 +72,36 @@
 
   .info-screen--deadlock {
     .red-line, .yellow-line {
-      margin-top: 24px;
+      margin-top: $screen-pad-24;
     }
     p + ul:not(:first-child) {
-      margin-top: 24px;
+      margin-top: $screen-pad-24;
     }
+  }
+
+  .info-screen--outer-buttons {
+    padding-bottom: $screen-pad-32;
+    padding-top: $screen-pad-32;
   }
 
   .info-screen--status {
     .block--with-icon {
       span {
-        margin-right: 16px;
+        margin-right: $screen-pad-16;
       }
       a {
         display: inline-block;
       }
     }
     h5 + ol {
-      margin-top: 8px;
+      margin-top: $screen-pad-8;
     }
   }
 
   .info-screen--solution-page {
     .info__text {
       ul + h5 {
-        margin-top: 32px;
+        margin-top: $screen-pad-32;
       }
       li > ul + a {
         margin-top: 12px;
@@ -97,7 +113,7 @@
   .info-screen--solution-page-2 {
     .info__text {
       h3 {
-        margin-bottom: 24px;
+        margin-bottom: $screen-pad-24;
       }
     }
   }
@@ -106,11 +122,11 @@
     .info__text {
       p:not(:first-child),
       h5:not(:first-child) {
-        margin-top: 16px;
+        margin-top: $screen-pad-16;
       }
 
       p.text-color--text-helper:not(:first-child) {
-        margin-top: 24px;
+        margin-top: $screen-pad-24;
       }
     }
   }

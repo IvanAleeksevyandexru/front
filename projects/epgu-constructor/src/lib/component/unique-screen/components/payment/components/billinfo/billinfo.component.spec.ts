@@ -4,7 +4,13 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  SessionService,
+  SessionStorageService,
+  SessionStorageServiceStub,
+  ObjectHelperService
+} from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
@@ -14,7 +20,7 @@ import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -28,6 +34,9 @@ import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 
 const mockData: ComponentDto = {
   attrs: {},
@@ -56,22 +65,11 @@ describe('BillInfoComponent', () => {
         MockProvider(ConfigService),
         MockProvider(LocationService),
         MockProvider(LocalStorageService),
+        MockProvider(DatesToolsService),
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
-        EventBusService,
-        DatesToolsService,
-        ActionService,
-        FormPlayerApiService,
-        InitDataService,
-        LoggerService,
-        NavigationService,
-        NavigationModalService,
-        DeviceDetectorService,
-        UtilsService,
-        HtmlRemoverService,
-        AutocompleteApiService,
-        ModalService,
-        WINDOW_PROVIDERS,
+        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
   });
@@ -80,7 +78,7 @@ describe('BillInfoComponent', () => {
     screenService = TestBed.inject(ScreenService);
     screenService.component = mockData;
     screenService.header = '';
-    screenService.submitLabel = '';
+    screenService.buttons = [];
     fixture = TestBed.createComponent(BillInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

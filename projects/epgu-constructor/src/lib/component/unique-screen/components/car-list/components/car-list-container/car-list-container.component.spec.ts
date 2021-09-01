@@ -16,7 +16,7 @@ import {
   WINDOW_PROVIDERS,
   HttpCancelService,
   PrevButtonModule,
-  PREV_BUTTON_NAVIGATION
+  PREV_BUTTON_NAVIGATION, ObjectHelperService
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { BaseModule } from '../../../../../../shared/base.module';
@@ -24,7 +24,7 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
@@ -81,7 +81,8 @@ describe('CarListContainerComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: PREV_BUTTON_NAVIGATION, useClass: PrevButtonNavigationService },
         CurrentAnswersService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         NavigationService,
         ModalService,
         HttpCancelService,

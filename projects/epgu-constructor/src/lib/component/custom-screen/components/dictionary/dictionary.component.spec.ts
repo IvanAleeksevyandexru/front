@@ -129,5 +129,16 @@ describe('DictionaryComponent', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector)).componentInstance.disabled).toBeFalsy();
     });
+
+    it('Should set value if list length equal 1', () => {
+      const mockItem = {
+        id: 1,
+        text: 'some-text',
+      };
+
+      dictionaryToolsService.dictionaries$.next((mockItem as unknown) as CustomListDictionaries);
+      fixture.detectChanges();
+      expect(formService['_form'].value[0].value).toEqual(mockItem);
+    });
   });
 });

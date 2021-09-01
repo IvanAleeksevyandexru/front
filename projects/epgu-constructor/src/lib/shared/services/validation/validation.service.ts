@@ -1,28 +1,29 @@
 import { Injectable } from '@angular/core';
-import {
-  AbstractControl,
-  AsyncValidatorFn,
-  FormArray,
-  ValidationErrors,
-  ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
+import { HealthService } from '@epgu/epgu-constructor-ui-kit';
+import { CookieService } from 'ngx-cookie-service';
 
 import {
   CustomComponent,
   CustomComponentAttrValidation,
+  CustomComponentAttrValidator,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import {
+  DatesToolsService,
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../date-range/date-range.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { get } from 'lodash';
+
+export const CARD_VALIDATION_EVENT = 'CardValidation';
 
 enum ValidationType {
   regExp = 'RegExp',
@@ -30,12 +31,13 @@ enum ValidationType {
   date = 'Date',
   checkRS = 'checkRS',
 }
+
 type DateValidationCondition = '<' | '<=' | '>' | '>=';
 
 @Injectable()
 export class ValidationService {
   public form?: FormArray;
-  private readonly typesWithoutValidation: Array<CustomScreenComponentTypes> = [
+  private readonly typesWithoutValidation: CustomScreenComponentTypes[] = [
     CustomScreenComponentTypes.LabelSection,
     CustomScreenComponentTypes.HtmlString,
   ];
@@ -46,7 +48,11 @@ export class ValidationService {
     private dateRangeService: DateRangeService,
     private dateRestrictionsService: DateRestrictionsService,
     private datesToolsService: DatesToolsService,
-  ) {}
+    private currentAnswerService: CurrentAnswersService,
+    private health: HealthService,
+    private cookie: CookieService,
+  ) {
+  }
 
   public customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
@@ -69,7 +75,8 @@ export class ValidationService {
           return this.validationErrorMsg(error.errorMsg, error?.errorDesc, true);
         }
         customMessage = validations.find(
-          (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
+          (validator: CustomComponentAttrValidation) => validator.type === CustomComponentAttrValidator.validationFn
+            || validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
       }
 
@@ -102,7 +109,8 @@ export class ValidationService {
           return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));
         }
         customMessage = onBlurValidations.find(
-          (validator: CustomComponentAttrValidation) => validator.type === 'validation-fn',
+          (validator: CustomComponentAttrValidation) => validator.type === CustomComponentAttrValidator.validationFn
+            || validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
       }
 
@@ -135,52 +143,62 @@ export class ValidationService {
   }
 
   public dateValidator(component: CustomComponent, componentsGroupIndex?: number): ValidatorFn {
-    const validations =
-      component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
-      [];
+    const validations = this.getDateValidators(component);
 
     return (control: AbstractControl): ValidationErrors => {
-      if (validations.length === 0) return;
-
-      let minDate =
-        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.min ||
-        this.dateRangeService.rangeMap.get(component.id)?.min ||
-        DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
-      let maxDate =
-        this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex)?.max ||
-        this.dateRangeService.rangeMap.get(component.id)?.max ||
-        DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
-
-      let controlValueAsDate: Date | number;
-      if (control.value instanceof MonthYear) {
-        // если работаем с типом MonthYear, то приводим даты к началу месяца, чтобы сравнение работало корректно
-        controlValueAsDate = control.value.firstDay();
-        minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
-        maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
-      } else {
-        controlValueAsDate = control.value;
-      }
-
-      const error =
-        controlValueAsDate &&
-        validations.find((validation) => {
+      for (const validation of validations) {
+        let hasErrors;
+        let minDate =
+          this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.min ||
+          this.dateRangeService.rangeMap.get(component.id)?.min ||
+          DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
+        let maxDate =
+          this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.max ||
+          this.dateRangeService.rangeMap.get(component.id)?.max ||
+          DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
+        let controlValueAsDate: Date | number;
+        if (control.value instanceof MonthYear) {
+          // если работаем с типом MonthYear, то приводим даты к началу месяца, чтобы сравнение работало корректно
+          controlValueAsDate = control.value.firstDay();
+          minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+          maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+        } else if (validation.forChild) {
+          controlValueAsDate = control.value[validation.forChild];
+        } else {
+          controlValueAsDate = control.value;
+        }
+        if (controlValueAsDate) {
           switch ((validation.condition as unknown) as DateValidationCondition) {
             case '<':
-              return this.datesToolsService.isBefore(controlValueAsDate, minDate);
+              hasErrors = this.datesToolsService.isBefore(controlValueAsDate, minDate);
+              break;
             case '<=':
-              return this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
+              hasErrors = this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
+              break;
             case '>':
-              return this.datesToolsService.isAfter(controlValueAsDate, maxDate);
+              hasErrors = this.datesToolsService.isAfter(controlValueAsDate, maxDate);
+              break;
             case '>=':
-              return this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
+              hasErrors = this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
+              break;
             default:
-              return null;
+              hasErrors = null;
           }
-        });
+        }
 
-      if (error) {
-        return this.validationErrorMsg(error.errorMsg ? error.errorMsg : INCORRENT_DATE_FIELD, undefined, error.errorMsg ? true : false);
+        if (hasErrors) {
+          if (validation.forChild) {
+            control.markAllAsTouched();
+          }
+          return this.validationErrorMsg(validation.errorMsg ?
+            validation.errorMsg :
+            INCORRENT_DATE_FIELD,
+            undefined,
+            !!validation.errorMsg,
+            validation.forChild);
+        }
       }
+
     };
   }
 
@@ -203,20 +221,26 @@ export class ValidationService {
   }
 
   public checkCardNumber(cardNumber: string): boolean {
-      let sum = 0;
-      const digits = String(cardNumber).replace(/\D/g, '');
-      let isEven = digits.length % 2 === 0;
-      for (let i = 0; i < digits.length; i++) {
-        let cardNum = parseInt(digits[i]);
-        if (isEven ? i % 2 === 0 : i % 2 === 1) {
-          cardNum = cardNum * 2;
-          if (cardNum > 9) {
-            cardNum = cardNum - 9;
-          }
+    let sum = 0;
+    const digits = String(cardNumber).replace(/\D/g, '');
+    let isEven = digits.length % 2 === 0;
+    for (let i = 0; i < digits.length; i++) {
+      let cardNum = parseInt(digits[i]);
+      if (isEven ? i % 2 === 0 : i % 2 === 1) {
+        cardNum = cardNum * 2;
+        if (cardNum > 9) {
+          cardNum = cardNum - 9;
         }
-        sum += cardNum;
       }
-      return sum % 10 === 0;
+      sum += cardNum;
+    }
+    const result = sum % 10 === 0;
+    this.health.measureStart(CARD_VALIDATION_EVENT);
+    this.health.measureEnd(CARD_VALIDATION_EVENT, 0, {
+      userId: this.cookie.get('u'),
+      validationStatus: result,
+    });
+    return result;
   }
 
   private isValid(component: CustomComponent, value: string): boolean {
@@ -231,23 +255,57 @@ export class ValidationService {
         return value.length === this.personInnLength && checkINN(value);
       case CustomScreenComponentTypes.LegalInnInput:
         return value.length === this.legalInnLength && checkINN(value);
+      case CustomScreenComponentTypes.CalendarInput:
+        return Object.values(value).every((val) => !!val);
       case CustomScreenComponentTypes.CardNumberInput:
         return this.checkCardNumber(value);
+      case CustomScreenComponentTypes.StringInput:
+        return this.calculateStringPredicate(component, value);
       default:
         return true;
     }
+  }
+
+  private calculateStringPredicate(component: CustomComponent, value: string): boolean {
+    let customPredicateValidation = component.attrs.validation?.find((validation) => {
+      return validation.type === CustomComponentAttrValidator.calculatedPredicate;
+    });
+    if (!customPredicateValidation) {
+      return true;
+    }
+    let validationExpression = this.replaceValueForPredicateExpression(customPredicateValidation.expr, component.id, value);
+    try {
+      return eval(validationExpression);
+    } catch (error: unknown) {
+      if (error instanceof SyntaxError) {
+        throw new Error(`Ошибка в выражении CalculatedPredicate. Component ID: ${component.id}`);
+      }
+    }
+  }
+
+  private replaceValueForPredicateExpression(expression: string, componentId: string, value: string): string {
+    return expression.match(/\${([^\s)]*)}/g)
+      .map(match => match.match(/\${\s?(?<refGroup>[^\s)]*)\s?}/).groups.refGroup)
+      .reduce((accumulator, currentMatch) => {
+        // Конвертируется в Number чтобы избежать скриптинга по эвал
+        let valueToReplace = currentMatch === `${componentId}.value`?
+          Number(value) :
+          Number(get(this.currentAnswerService.state, currentMatch));
+        return accumulator.replace(`\$\{${currentMatch}\}`, isNaN(valueToReplace) ? '' : valueToReplace + '');
+      }, expression);
   }
 
   private validationErrorMsg(
     error: string = InvalidControlMsg.formatField,
     desc?: string,
     textFromJson = false,
+    forChild?: string
   ): ValidationErrors {
-    return { msg: error, desc, textFromJson };
+    return { msg: error, desc, textFromJson, forChild };
   }
 
   private getError(
-    validations: Array<CustomComponentAttrValidation>,
+    validations: CustomComponentAttrValidation[],
     control: AbstractControl,
     component: CustomComponent,
   ): CustomComponentAttrValidation {
@@ -261,5 +319,25 @@ export class ValidationService {
           new RegExp(value).test(control.value)) ||
         (type === ValidationType.checkRS && !this.checkRS(control.value, component.attrs.refs)),
     );
+  }
+
+
+  private getDateValidators(component: CustomComponent): CustomComponentAttrValidation[] {
+    let validations: CustomComponentAttrValidation[] = [];
+    if (component.type === CustomScreenComponentTypes.CalendarInput) {
+      const components = component.attrs.components;
+      for (const component of components) {
+        for (const validation of component.attrs.validation) {
+          if (validation.type === ValidationType.date) {
+            validation['forChild'] = component.id;
+            validations.push(validation);
+          }
+        }
+      }
+    } else {
+      validations = component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
+        [];
+    }
+    return validations;
   }
 }

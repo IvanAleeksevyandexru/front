@@ -2,32 +2,27 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
-import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  SessionStorageService,
+  SessionStorageServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { InitDataService } from '../../../../../../core/services/init-data/init-data.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { NavigationModalService } from '../../../../../../core/services/navigation-modal/navigation-modal.service';
-import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
-import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
 import { PaymentService } from '../../payment.service';
 import { PaymentComponent } from './payment.component';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
+import { ActionToolsService } from '../../../../../../shared/directives/action/action-tools.service';
 
 let mockData: ComponentDto;
 
@@ -63,24 +58,14 @@ describe('PaymentComponent', () => {
         MockProvider(PaymentService),
         MockProvider(CurrentAnswersService),
         MockProvider(LocationService),
+        MockProvider(ActionToolsService),
+        MockProvider(DatesToolsService),
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        EventBusService,
-        DatesToolsService,
-        ActionService,
-        FormPlayerApiService,
-        InitDataService,
-        LoggerService,
-        NavigationService,
-        NavigationModalService,
-        DeviceDetectorService,
-        UtilsService,
-        HtmlRemoverService,
-        AutocompleteApiService,
-        ModalService,
-        WINDOW_PROVIDERS,
+        { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
   });

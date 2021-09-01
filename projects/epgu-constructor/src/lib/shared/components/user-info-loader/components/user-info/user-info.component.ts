@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ConfigService, UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { IconList, UserInfoType } from './user-info.type';
+import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { UserInfo } from '@epgu/epgu-constructor-types';
+import { IconList } from './user-info.type';
 
 @Component({
   selector: 'epgu-constructor-user-info',
@@ -9,12 +10,12 @@ import { IconList, UserInfoType } from './user-info.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoComponent {
-  @Input() set value(user: UserInfoType) {
+  @Input() set value(user: UserInfo) {
     if (
-      this.utils.isDefined(user) &&
-      this.utils.isDefined(user.ageType) &&
-      this.utils.isDefined(user.gender) &&
-      this.utils.isDefined(user.name)
+      this.objectHelperService.isDefined(user) &&
+      this.objectHelperService.isDefined(user.ageType) &&
+      this.objectHelperService.isDefined(user.gender) &&
+      this.objectHelperService.isDefined(user.name)
     ) {
       this.user.ageType = user.ageType;
       this.user.gender = user.gender;
@@ -30,8 +31,8 @@ export class UserInfoComponent {
     MATURE: { M: 'male-child.svg', F: 'female-child.svg' },
     YOUNG: { M: 'male-child.svg', F: 'female-child.svg' },
   };
-  user = {} as UserInfoType;
+  user = {} as UserInfo;
   iconPath = '';
 
-  constructor(public config: ConfigService, private utils: UtilsService) {}
+  constructor(public config: ConfigService, private objectHelperService: ObjectHelperService) {}
 }

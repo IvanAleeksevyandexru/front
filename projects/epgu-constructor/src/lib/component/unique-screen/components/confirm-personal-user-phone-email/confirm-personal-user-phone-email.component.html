@@ -6,41 +6,44 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
+  <ng-container *ngIf="(data$ | async).errors?.length === 0">
+    <epgu-constructor-disclaimer
+      class="confirm-personal-data-disclaimer"
+      *ngIf="(data$ | async).attrs?.disclaimer as disclaimer"
+      [type]="disclaimer.type"
+      [title]="disclaimer.title"
+      [description]="disclaimer.description"
+    ></epgu-constructor-disclaimer>
+  </ng-container>
+
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body" *ngIf="data$ | async as data">
     <ng-container *ngIf="data.errors">
       <epgu-constructor-disclaimer
         *ngFor="let error of data.errors"
         class="mb-16"
+        [type]="error.type"
         [title]="error.title"
         [description]="error.desc"
         [clarifications]="data.attrs?.clarifications"
       ></epgu-constructor-disclaimer>
     </ng-container>
 
-    <div class="label-helper">{{ data.label }}</div>
-    <div class="item">
-      {{ isPhoneScreenType ? (data.value | formatPhone) : data.value }}
-    </div>
-
-    <epgu-constructor-disclaimer
-      class="mt-16"
-      *ngIf="data.attrs?.disclaimer as disclaimer"
-      [type]="disclaimer.type"
-      [title]="disclaimer.title"
-      [description]="disclaimer.description"
-    ></epgu-constructor-disclaimer>
-
-    <ng-container *ngIf="isEditContactAction">
-      <div class="footer" *ngIf="screenService.action$ | async as action">
-        <div class="divider"></div>
-        <button class="btn-edit" epgu-constructor-action [action]="action" [disabled]="async.isLoading">
-          <img
-            class="btn-edit__icon"
-            src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
-          />
-          <span class="btn-edit__text">{{ action.label }}</span>
-        </button>
+    <ng-container *ngIf="data.errors?.length == 0">
+      <div class="label-helper">{{ data.label }}</div>
+      <div class="item">
+        {{ isPhoneScreenType ? (data.value | formatPhone) : data.value }}
       </div>
     </ng-container>
+
+    <div class="footer" *ngIf="screenService.action$ | async as action">
+      <div class="divider"></div>
+      <button class="btn-edit" epgu-constructor-action [action]="action" [disabled]="async.isLoading">
+        <img
+          class="btn-edit__icon"
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/edit.svg"
+        />
+        <span class="btn-edit__text">{{ action.label }}</span>
+      </button>
+    </div>
   </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

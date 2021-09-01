@@ -1,7 +1,10 @@
 export enum UniqueScreenComponentTypes {
+  IdentificationUploadComponent = 'IdentificationUploadComponent',
+  IdentificationStreamComponent = 'IdentificationStreamComponent',
   fileUploadComponent = 'FileUploadComponent',
   OrderFileProcessingComponent = 'OrderFileProcessingComponent',
   timeSlot = 'TimeSlot',
+  timeSlotDoctor = 'TimeSlotDoctor',
   timeSlotWithComputableDepartment = 'TimeSlotWithComputableDepartment',
   mapService = 'MapService',
   carInfo = 'CarInfo',
@@ -15,6 +18,7 @@ export enum UniqueScreenComponentTypes {
   billInfo = 'BillInfo',
   phoneNumberConfirmCodeInput = 'PhoneNumberConfirmCodeInput',
   confirmCodeInput = 'ConfirmCodeInput',
+  confirmEmailCodeInput = 'ConfirmEmailCodeInput',
   ConfirmNewEmail = 'ConfirmNewEmail',
   ConfirmLegalNewEmail = 'ConfirmLegalNewEmail',
   unusedPayments = 'UnusedPayments',
@@ -33,6 +37,7 @@ export enum UniqueScreenComponentTypes {
   confirmPersonalUserEmail = 'ConfirmPersonalUserEmail',
   confirmPersonalUserPhone = 'ConfirmPersonalUserPhone',
   registrationAddr = 'RegistrationAddr',
+  registrationLegalAddrReadOnly = 'RegistrationLegalAddrReadOnly',
   registrationLegalAddr = 'RegistrationLegalAddr',
   passportLookup = 'PassportLookup',
   childrenList = 'ChildrenList',
@@ -52,4 +57,5 @@ export enum UniqueScreenComponentTypes {
   medicalReferrals = 'MedicalReferrals',
   ReferralNumber = 'ReferralNumber',
   paymentWay = 'PaymentWay',
+  personUserInn = 'PersonUserInn',
 }

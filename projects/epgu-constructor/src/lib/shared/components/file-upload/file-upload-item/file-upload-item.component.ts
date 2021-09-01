@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
 
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
@@ -41,6 +48,9 @@ import { UploaderProcessService } from '../services/process/uploader-process.ser
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
 import { UploaderValidationService } from '../services/validation/uploader-validation.service';
 import { UploaderStatService } from '../services/stat/uploader-stat.service';
+import { UploadingFile } from '../../uploader/components/uploader/uploader.component';
+import { FileUploadPreviewComponent } from '../file-upload-preview/file-upload-preview.component';
+import { UploaderButtonComponent } from '../../uploader/components/uploader-button/uploader-button.component';
 
 @Component({
   selector: 'epgu-constructor-file-upload-item',
@@ -54,6 +64,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.uploader.maxFileNumber = -1;
     this.initFilesList.next(files);
   }
+
+  @ViewChild('takePhoto', { static: false })
+  takePhoto: UploaderButtonComponent;
+
   get data(): FileUploadItem {
     return this.uploader.data;
   }
@@ -75,7 +89,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   processingFiles$ = this.processingFiles.pipe(
     tap(() => this.stat.resetLimits()), // Обнуляем каунтеры перебора
     tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на uploaded статус
-    tap(() => this.store.removeWithErrorStatus()), // Удаляем все ошибки
+    tap(() => this.store.removeWithErrorStatus([ErrorActions.serverError])), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
     map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
     map(
@@ -84,11 +98,11 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     concatMap(
       (file: FileItem) => this.validation.prepare(file), // Валидируем файл
     ),
-    filter((file: FileItem) => this.stat.amountFilter(file)), // Фильруем по лимитам
+    filter((file: FileItem) => this.stat.amountFilter(file)), // Фильтруем по лимитам
     tap((file: FileItem) => this.store.add(file)), // Добавление файла в общий поток
-    filter((file: FileItem) => file.status !== FileItemStatus.error), // Далле только без ошибок
+    filter((file: FileItem) => file.status !== FileItemStatus.error), // Далее только без ошибок
     tap((file: FileItem) => this.stat.incrementLimits(file)), // Обновляем лимиты
-    tap((file: FileItem) => this.addUpload(file)), // Эвент на згарузку
+    tap((file: FileItem) => this.addUpload(file)), // Эвент на загрузку
   );
 
   files = this.store.files;
@@ -201,13 +215,14 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     value: FileItem,
   ): FileResponseToBackendUploadsItem {
     const ignoreActions = [ErrorActions.addDeletionErr, ErrorActions.addDownloadErr];
+    const blockActions = [ErrorActions.serverError];
     const availableErrorCondition = value?.error && ignoreActions.includes(value?.error?.type);
 
     if ((availableErrorCondition || !value?.error) && value.item) {
       acc.value.push(value.item);
-      if (value.error) {
-        acc.errors.push(value.error.text);
-      }
+    }
+    if (blockActions.includes(value?.error?.type)) {
+      acc.errors.push(value.error.text);
     }
     return acc;
   }
@@ -253,7 +268,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   isShownDivider(): boolean {
-    return this.files.getValue().length > 0 || !this.data.label;
+    return this.files.getValue().length > 0 && !!this.data.label;
   }
 
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
@@ -265,8 +280,33 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     } as FileResponseToBackendUploadsItem);
   }
 
-  selectFiles(fileList: FileList): void {
-    this.processingFiles.next(fileList);
+  selectFileByStatus(event: UploadingFile, status: boolean | null): void {
+    if (status !== null) {
+      if (status) {
+        this.processingFiles.next(event.files);
+      } else {
+        this.takePhoto?.click();
+      }
+    }
+  }
+
+  selectFiles(event: UploadingFile): void {
+    if (
+      this.uploader.data?.isPreviewPhoto === true &&
+      event?.action === 'photo' &&
+      event.files.length === 1
+    ) {
+      this.modal
+        .openModal<{ changeImage?: boolean; imageObjectUrl?: string } | boolean>(
+          FileUploadPreviewComponent,
+          {
+            imageObjectUrl: window.URL.createObjectURL(event.files[0]),
+          },
+        )
+        .subscribe((status: boolean) => this.selectFileByStatus(event, status));
+      return;
+    }
+    this.processingFiles.next(event.files);
   }
 
   loadList(files: UploadedFile[]): Observable<FileItem> {
@@ -274,6 +314,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       map(
         (file) => new FileItem(FileItemStatus.uploaded, this.config.fileUploadApiUrl, null, file),
       ),
+      map((file: FileItem) => this.validation.checkServerError(file)),
       tap((file: FileItem) => this.store.add(file)),
       tap((file: FileItem) => this.validation.checkAndSetMaxCountByTypes(file)),
       tap((file: FileItem) => this.stat.incrementLimits(file)),

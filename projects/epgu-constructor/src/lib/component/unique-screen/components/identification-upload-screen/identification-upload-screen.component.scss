@@ -1,0 +1,17 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+
+:host {
+  @include flex-container();
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: inherit;
+  min-height: inherit;
+  @include tablets-up {
+    min-height: auto;
+  }
+}

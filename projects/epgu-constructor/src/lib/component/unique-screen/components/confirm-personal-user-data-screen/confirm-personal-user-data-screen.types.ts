@@ -1,5 +1,10 @@
 import { ComponentBase } from '../../../../screen/screen.types';
-import { Clarifications, ConfirmUserDataStyle, DTOActionAction } from '@epgu/epgu-constructor-types';
+import {
+  ActionType,
+  Clarifications,
+  ConfirmUserDataStyle,
+  DTOActionAction,
+} from '@epgu/epgu-constructor-types';
 
 export interface ConfirmUserData extends ComponentBase {
   attrs: ConfirmUserDataAttrs;
@@ -10,13 +15,13 @@ export interface ConfirmUserLegalData extends ComponentBase {
 }
 
 export interface ConfirmUserDataAttrs {
-  fields: Array<ConfirmUserDataField>;
-  actions: Array<ConfirmUserDataActions>;
+  fields: ConfirmUserDataField[];
+  actions: ConfirmUserDataActions[];
   style: ConfirmUserDataStyle;
 }
 
 export interface ConfirmUserLegalDataAttrs {
-  fields: Array<ConfirmUserDataField>;
+  fields: ConfirmUserDataField[];
   clarifications: Clarifications;
   hint: string;
 }
@@ -25,6 +30,7 @@ export interface ConfirmUserDataActions {
   label: string;
   value: string;
   action: DTOActionAction;
+  type: ActionType;
 }
 
 export interface ConfirmUserDataField {
@@ -40,7 +46,8 @@ export interface ConfirmUserDataAdaptiveField {
 
 export interface ConfirmUserDataFieldsState {
   groupName: string;
-  fields: Array<ConfirmUserDataAdaptiveField>;
+  visibilityLabel: string;
+  fields: ConfirmUserDataAdaptiveField[];
   needDivider?: boolean;
 }
 

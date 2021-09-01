@@ -8,7 +8,7 @@ import {
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { getAppStorageKey, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
@@ -21,9 +21,9 @@ import {
   QuizRequestDto,
   ScenarioDto,
   APP_OUTPUT_KEY,
-  APP_INPUT_KEY,
-  OutputAppDto,
+  FormPlayerApiResponse,
 } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 
 /**
  * Менеджер для обработки различных кейсов запуска плеера.
@@ -31,12 +31,14 @@ import {
 @Injectable()
 export class FormPlayerStartManager {
   constructor(
+    public continueOrderModalService: ContinueOrderModalService,
     private initDataService: InitDataService,
     private loggerService: LoggerService,
     private locationService: LocationService,
     private localStorageService: LocalStorageService,
     private formPlayerService: FormPlayerService,
-    public continueOrderModalService: ContinueOrderModalService,
+    private formPlayerApiService: FormPlayerApiService,
+    private configService: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
@@ -49,6 +51,11 @@ export class FormPlayerStartManager {
       this.startLoadLastScreenCase();
     } else if (this.hasLoadFromStorageCase('getNextScreen', NEXT_SCENARIO_KEY)) {
       this.startLoadNextScreenCase();
+    } else if (
+      this.locationService.hasParam('fromQuiz') &&
+      this.locationService.hasParam('token')
+    ) {
+      this.startLoadFromQuizCaseByToken();
     } else if (this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY)) {
       this.startLoadFromQuizCase();
     } else if (this.hasLoadFromStorageCase('fromOrder', ORDER_TO_ORDER_SCENARIO_KEY)) {
@@ -57,6 +64,8 @@ export class FormPlayerStartManager {
       this.startBookingCase();
     } else if (orderId) {
       this.getOrderStatus();
+    } else if (this.hasSpecificQueryParams()) {
+      this.startFromQueryParamsCase();
     } else {
       this.getOrderIdFromApi();
     }
@@ -80,10 +89,7 @@ export class FormPlayerStartManager {
   }
 
   private hasLoadFromStorageCase(queryParamName: string, key: string): boolean {
-    return (
-      this.locationService.path(true).includes(`${queryParamName}=`) &&
-      !!this.localStorageService.getRaw(key)
-    );
+    return this.locationService.hasParam(queryParamName) && !!this.localStorageService.getRaw(key);
   }
 
   private startLoadLastScreenCase(): void {
@@ -101,15 +107,28 @@ export class FormPlayerStartManager {
     this.locationService.deleteParam('getNextScreen');
   }
 
+  private startLoadFromQuizCaseByToken(): void {
+    const token = this.locationService.getParamValue('token');
+    this.formPlayerService.getQuizDataByToken(token).subscribe((quizDataDtoResponse) => {
+      const scenarioDto = JSON.parse(quizDataDtoResponse.data.order) as ScenarioDto;
+      this.loadOrderFromQuiz(scenarioDto);
+    });
+  }
+
   private startLoadFromQuizCase(): void {
+    const scenarioDto = this.localStorageService.get<ScenarioDto>(QUIZ_SCENARIO_KEY);
+    this.loadOrderFromQuiz(scenarioDto);
+    this.localStorageService.delete(QUIZ_SCENARIO_KEY);
+    this.locationService.deleteParam('fromQuiz');
+  }
+
+  private loadOrderFromQuiz(scenarioDto: ScenarioDto): void {
     const quiz: QuizRequestDto = {
-      scenarioDto: this.localStorageService.get<ScenarioDto>(QUIZ_SCENARIO_KEY),
+      scenarioDto,
       serviceId: this.initDataService.serviceId,
       targetId: this.initDataService.targetId,
     };
     this.formPlayerService.initPlayerFromQuiz(quiz);
-    this.localStorageService.delete(QUIZ_SCENARIO_KEY);
-    this.locationService.deleteParam('fromQuiz');
   }
 
   private startLoadFromOrderCase(): void {
@@ -127,7 +146,12 @@ export class FormPlayerStartManager {
     if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
       this.showContinueOrderModal();
     } else {
-      this.formPlayerService.initData(orderId);
+      let initOrderId = orderId;
+      if (this.localStorageService.hasKey('resetFormPlayer')) {
+        this.localStorageService.delete('resetFormPlayer');
+        initOrderId = null;
+      }
+      this.formPlayerService.initData(initOrderId);
       this.localStorageService.set('cachedAnswers', {});
     }
   }
@@ -141,6 +165,7 @@ export class FormPlayerStartManager {
       !invited &&
       canStartNew &&
       !!orderId &&
+      !this.localStorageService.hasKey('resetFormPlayer') &&
       !this.localStorageService.hasKey(APP_OUTPUT_KEY) &&
       !this.hasLoadFromStorageCase('getLastScreen', LAST_SCENARIO_KEY) &&
       !this.hasLoadFromStorageCase('getNextScreen', NEXT_SCENARIO_KEY) &&
@@ -158,19 +183,10 @@ export class FormPlayerStartManager {
 
         if (!orderId) {
           this.localStorageService.set('cachedAnswers', {});
-          this.deleteAppStorage();
         }
 
         this.formPlayerService.initData(orderId);
       });
-  }
-
-  private deleteAppStorage(): void {
-    const appInput: OutputAppDto = this.localStorageService.get(APP_INPUT_KEY);
-    if (appInput) {
-      const key = getAppStorageKey(appInput.componentType, appInput.componentId);
-      this.localStorageService.delete(key);
-    }
   }
 
   private getOrderStatus(): void {
@@ -201,5 +217,25 @@ export class FormPlayerStartManager {
 
   private startBookingCase(): void {
     this.formPlayerService.getBooking();
+  }
+
+  private startFromQueryParamsCase(): void {
+    const { serviceId, targetId, serviceInfo } = this.initDataService;
+    const { screenId, ...rest } = serviceInfo?.queryParams || {};
+
+    const answers = Object.entries(rest)
+      .map(([key, value]) => `${key}=${typeof value === 'object' ? JSON.stringify(value) : value}`)
+      .join('&');
+
+    const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/${targetId}/external/${screenId}?${answers}`;
+    this.formPlayerApiService.get(path).subscribe((response: FormPlayerApiResponse) => {
+      this.formPlayerService.processResponse(response);
+    });
+  }
+
+  private hasSpecificQueryParams(): boolean {
+    const { serviceId, targetId, serviceInfo } = this.initDataService;
+    const { screenId } = serviceInfo?.queryParams || {};
+    return !!serviceId && !!targetId && !!screenId;
   }
 }

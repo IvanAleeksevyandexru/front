@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { CustomComponentRefRelation } from '../../../component/custom-screen/components-list.types';
 import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
 import { ListElement } from '@epgu/epgu-lib';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class RefRelationService {
+  constructor(private jsonHelperService: JsonHelperService) {}
+
   public isDisplayOffRelation(relation: CustomComponentRefRelation): boolean {
     return relation === CustomComponentRefRelation.displayOff;
   }
@@ -40,7 +42,7 @@ export class RefRelationService {
    * @param componentVal - value из компонета
    */
   public isValueEquals(
-    value: string | Array<string> | boolean,
+    value: string | string[] | boolean,
     componentVal: { id?: string } | string | number, //TODO: нормализовать типы
   ): boolean {
     const parsedComponentValue = this.getValueFromComponentVal(componentVal);
@@ -69,15 +71,20 @@ export class RefRelationService {
     return value === parsedComponentValue;
   }
 
-  public getValueFromComponentVal(
+  private getValueFromComponentVal(
     componentVal: { id?: string } | string | number | Date | ListElement[],
   ): string | Date | ListElement[] {
     if (componentVal instanceof Date) {
       return componentVal;
     }
 
-    if (UtilsService.hasJsonStructure(componentVal as string)) {
-      return JSON.parse(componentVal as string);
+    if (this.jsonHelperService.hasJsonStructure(componentVal as string)) {
+      const parsedValue = JSON.parse(componentVal as string);
+      if (Array.isArray(parsedValue)) {
+        return parsedValue;
+      } else {
+        return parsedValue.id;
+      }
     }
 
     // NOTICE: иногда сюда приходят значения мультисписка, которые представлены массивом ListElement

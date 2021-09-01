@@ -19,23 +19,23 @@ import {
   months,
   StartOfTypes,
   weekDaysAbbr,
+  IDay,
+  SlotInterface,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
-
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { ActionService } from '../../../../shared/directives/action/action.service';
-import { DateTypeTypes, TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
-import { TimeSlotsService } from './time-slots.service';
 import {
-  IDay,
-  SlotInterface,
-  TimeSlot,
-  TimeSlotsAnswerInterface,
-  TimeSlotValueInterface,
-} from './time-slots.types';
+  DateTypeTypes,
+  TimeSlotsConstants,
+  TimeSlotsTypes,
+  STATIC_ERROR_MESSAGE,
+} from './time-slots.constants';
+import { TimeSlotsService } from './time-slots.service';
+import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
@@ -55,6 +55,11 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public activeYearNumber: number;
   public chosenTimeStr: string;
   public isChosenTimeStrVisible = false;
+
+  daysNotFoundTemplate = {
+    header: 'В этом месяце всё занято',
+    description: 'Выберите другой месяц или подразделение, чтобы забронировать время',
+  };
 
   confirmModalParameters: ConfirmationModal = {
     text: 'Вы уверены, что хотите поменять забронированное время?',
@@ -76,7 +81,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public daysOfWeek = weekDaysAbbr;
   public months = months;
 
-  public weeks: Array<Array<IDay>> = [];
+  public weeks: IDay[][] = [];
   public areas: ListItem[] = [];
   public isAreasVisible = false;
   public monthsYears: ListItem[] = [];
@@ -203,7 +208,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    */
   public chooseTimeSlot(slot: SlotInterface): void {
     if (this.currentSlot?.slotId === slot.slotId) {
-      this.clearDateSelection();
+      this.clearTimeSlotSelection();
     } else {
       this.currentSlot = slot;
       this.currentAnswersService.state = slot;
@@ -218,6 +223,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.currentSlot = null;
     this.timeSlotsService.getAvailableSlots(date, this.currentArea?.id).subscribe(
       (timeSlots) => {
+        this.addBookedTimeSlotToList(timeSlots);
         this.timeSlots = timeSlots;
         if (this.timeSlotsService.hasError()) {
           this.showError(
@@ -331,7 +337,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   buttonDisabled(): boolean {
-    return !this.currentAnswersService.isValid || this.inProgress || !this.isBookSlotSelected();
+    return !this.currentAnswersService.isValid || this.inProgress || !this.currentSlot?.slotId;
   }
 
   isBookSlotSelected(): string {
@@ -362,7 +368,12 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           if (this.errorMessage === 101) {
             this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
           }
-          this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+          if (this.errorMessage?.includes(STATIC_ERROR_MESSAGE)) {
+            this.daysNotFoundTemplate.header = 'Непредвиденная ошибка';
+            this.daysNotFoundTemplate.description = this.errorMessage;
+          } else {
+            this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+          }
         } else {
           await this.serviceInitHandle(!!isBookedDepartment);
         }
@@ -389,7 +400,29 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private addDayToWeek(week: Array<IDay>, date: Date, today: Date): void {
+  private addBookedTimeSlotToList(timeSlots: SlotInterface[]): void {
+    if (
+      this.bookedSlot &&
+      timeSlots.length &&
+      this.datesHelperService.isSameDate(this.bookedSlot.slotTime, timeSlots[0].slotTime)
+    ) {
+      const bookedSlotTime = this.bookedSlot.slotTime?.getTime();
+      const insertIdx = timeSlots.findIndex((timeSlot, idx) => {
+        const prevSlotTime = timeSlots[idx - 1]?.slotTime?.getTime();
+        const currentSlotTime = timeSlot.slotTime?.getTime();
+        return prevSlotTime
+          ? bookedSlotTime > prevSlotTime && bookedSlotTime < currentSlotTime
+          : bookedSlotTime < currentSlotTime;
+      });
+      if (insertIdx !== -1) {
+        timeSlots.splice(insertIdx, 0, this.bookedSlot);
+      } else {
+        timeSlots.push(this.bookedSlot);
+      }
+    }
+  }
+
+  private addDayToWeek(week: IDay[], date: Date, today: Date): void {
     const isOutOfSection = this.isDateOutOfSection(
       date,
       this.firstDayOfMainSection,
@@ -616,14 +649,21 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Метод очищает выбранные на календаре день и время
+   * Метод очищает выбранные в календаре день и время
    */
   private clearDateSelection(): void {
     this.date = null;
+    this.timeSlots = null;
+    this.clearTimeSlotSelection();
+    this.recalcDaysStyles();
+  }
+
+  /**
+   * Метод очищает выбранное в календаре время
+   */
+  private clearTimeSlotSelection(): void {
     this.currentSlot = null;
     this.currentAnswersService.state = null;
-    this.timeSlots = null;
-    this.recalcDaysStyles();
   }
 
   /**
@@ -665,7 +705,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   private initSlotsAreas(): void {
-    if (this.timeSlotType === TimeSlotsTypes.BRAK) {
+    if ([TimeSlotsTypes.BRAK, TimeSlotsTypes.RAZBRAK].includes(this.timeSlotType)) {
       this.areas = this.timeSlotsService.getAreasListItems();
       [this.currentArea] = this.areas;
       this.isAreasVisible = this.areas.length > 0;

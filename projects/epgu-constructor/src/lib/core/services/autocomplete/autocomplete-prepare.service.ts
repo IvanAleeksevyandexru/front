@@ -3,9 +3,8 @@ import { Answer, ComponentDto } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
 import { isChildrenListType } from './autocomplete.const';
-import { cloneDeep as _cloneDeep } from 'lodash';
+import { get as _get, cloneDeep as _cloneDeep } from 'lodash';
 import {
   ISuggestionApi,
   ISuggestionApiValueField,
@@ -18,6 +17,7 @@ import {
 } from '../../../component/custom-screen/components-list.types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../json-helper/json-helper.service';
 
 @Injectable()
 export class AutocompletePrepareService {
@@ -25,10 +25,11 @@ export class AutocompletePrepareService {
     private screenService: ScreenService,
     private currentAnswersService: CurrentAnswersService,
     private datesToolsService: DatesToolsService,
+    private jonHelperService: JsonHelperService,
   ) {}
 
   public getFormattedList(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     fields: ISuggestionApiValueField[],
     id: number,
@@ -75,7 +76,7 @@ export class AutocompletePrepareService {
   }
 
   public formatAndPassDataToSuggestions(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     suggestions: ISuggestionApi[],
   ): void {
@@ -112,7 +113,7 @@ export class AutocompletePrepareService {
   }
 
   public findAndUpdateComponentWithValue(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     parentComponent: ComponentDto,
     mnemonic: string,
@@ -126,7 +127,22 @@ export class AutocompletePrepareService {
       mnemonic,
       componentsGroupIndex,
     );
-    const componentValue = this.findComponentValue(component, id, value);
+    let componentValue = this.findComponentValue(
+      component,
+      id,
+      value,
+      mnemonic,
+      componentsSuggestionsSet,
+    );
+    if (component.type === CustomScreenComponentTypes.DocInput) {
+      const [, fieldName] = Array.from(componentsSuggestionsSet)
+        .find(([suggestId]) => suggestId === mnemonic)[1]
+        .split('.');
+      componentValue = JSON.stringify({
+        ...JSON.parse(component.value),
+        [fieldName]: componentValue,
+      });
+    }
     this.setComponentValue(component, componentValue);
     if (isChildrenListType(parentComponent)) {
       const cachedAnswer: Answer = this.prepareCachedAnswers(
@@ -147,7 +163,7 @@ export class AutocompletePrepareService {
   public loadValuesFromCurrentAnswer(repeatableComponents, parentComponentId?: string): void {
     if (repeatableComponents.length) {
       let currentAnswerParsedValue;
-      if (UtilsService.hasJsonStructure(this.currentAnswersService.state as string)) {
+      if (this.jonHelperService.hasJsonStructure(this.currentAnswersService.state as string)) {
         currentAnswerParsedValue = JSON.parse(this.currentAnswersService.state as string);
       } else {
         currentAnswerParsedValue = this.currentAnswersService.state;
@@ -179,7 +195,7 @@ export class AutocompletePrepareService {
   }
 
   private getFormattedHints(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     fields: ISuggestionApiValueField[],
     componentMnemonic: string,
@@ -220,12 +236,12 @@ export class AutocompletePrepareService {
   }
 
   private prepareValue(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     value: string,
     componentMnemonic?: string,
   ): string {
-    if (UtilsService.hasJsonStructure(value)) {
+    if (this.jonHelperService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
       // Кейс парсинга значения Repeatable компонентов
       if (repeatableComponents.length && parsedValue.length) {
@@ -254,7 +270,7 @@ export class AutocompletePrepareService {
   }
 
   private findComponent(
-    repeatableComponents: Array<Array<ComponentDto>>,
+    repeatableComponents: ComponentDto[][],
     componentsSuggestionsSet: Set<[string, string]>,
     mnemonic: string,
     componentsGroupIndex?: number,
@@ -266,31 +282,42 @@ export class AutocompletePrepareService {
       return repeatableComponents[componentsGroupIndex].find((component) => {
         return Array.from(componentsSuggestionsSet).some(
           ([componentMnemonic, componentId]) =>
-            componentId === component.id && componentMnemonic === parentMnemonic,
+            (componentId === component.id && componentMnemonic === parentMnemonic) ||
+            (componentId.includes(component.id) && componentMnemonic === parentMnemonic),
         );
       });
     } else {
       return this.screenService.display?.components?.find((component) => {
         return Array.from(componentsSuggestionsSet).some(
           ([componentMnemonic, componentId]) =>
-            componentId === component.id && componentMnemonic === parentMnemonic,
+            (componentId === component.id && componentMnemonic === parentMnemonic) ||
+            (componentId.includes(component.id) && componentMnemonic === parentMnemonic),
         );
       });
     }
   }
 
-  private findComponentValue(component: Partial<ComponentDto>, id: number, value: string): string {
-    const result =
-      component &&
-      this.screenService.suggestions[component.id]?.list.find((item) => {
-        if (typeof id === 'number') {
-          return item.id === id;
-        } else if (item.originalItem.includes(value)) {
-          return true;
-        } else {
-          return item.value === value;
-        }
-      });
+  private findComponentValue(
+    component: Partial<ComponentDto>,
+    id: number,
+    value: string,
+    mnemonic: string,
+    componentsSuggestionsSet: Set<[string, string]>,
+  ): string {
+    const [, fieldName] = Array.from(componentsSuggestionsSet).find(
+      ([componentMnemonic]) => componentMnemonic === mnemonic,
+    );
+    const suggestions =
+      this.screenService.suggestions[component?.id] || this.screenService.suggestions[fieldName];
+    const result = suggestions?.list.find((item) => {
+      if (typeof id === 'number') {
+        return item.id === id;
+      } else if (item.originalItem.includes(value)) {
+        return true;
+      } else {
+        return item.value === value;
+      }
+    });
 
     return result?.originalItem || '';
   }
@@ -298,18 +325,6 @@ export class AutocompletePrepareService {
   private setComponentValue(component: ComponentDto, value: string): void {
     if (component && value) {
       value = this.getFormattedValue(component, value);
-
-      // обработка кейса для компонентов, участвующих в RepeatableFields компоненте
-      if (UtilsService.hasJsonStructure(value)) {
-        const parsedValue = JSON.parse(value);
-        if (Array.isArray(parsedValue)) {
-          const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
-          value = JSON.stringify(parsedItem[component.id]);
-        } else if ('snils' in parsedValue) {
-          value = parsedValue['snils'];
-        }
-      }
-
       component.value = value;
     }
   }
@@ -372,9 +387,28 @@ export class AutocompletePrepareService {
           ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
           : dateValue;
       }
+    } else if (component.type === CustomScreenComponentTypes.DocInput) {
+      const dateValue = this.datesToolsService.parse(value);
+      if (this.datesToolsService.isValid(dateValue)) {
+        return this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT);
+      } else {
+        return value;
+      }
     } else if (component.type === CustomScreenComponentTypes.RadioInput) {
       const componentAttrs = component.attrs as CustomComponentAttr;
       return componentAttrs.supportedValues.find((item) => item.value === value)?.label || value;
+    } else if (!!component.attrs.suggestionPath && this.jonHelperService.hasJsonStructure(value)) {
+      const parsedValue = this.jonHelperService.tryToParse(value);
+      return _get(parsedValue, component.attrs.suggestionPath);
+    } else if (this.jonHelperService.hasJsonStructure(value)) {
+      const parsedValue = JSON.parse(value);
+      if (Array.isArray(parsedValue)) {
+        const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
+        value = parsedItem[component.id];
+        return typeof value === 'string' ? value : JSON.stringify(value);
+      } else if ('snils' in parsedValue) {
+        return parsedValue['snils'];
+      }
     }
     return value;
   }

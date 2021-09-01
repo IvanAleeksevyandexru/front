@@ -1,32 +1,32 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub, DownloadService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { CycledInfoComponent } from './components/cycled-info/cycled-info.component';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { DisplayDto, ComponentDto } from '@epgu/epgu-constructor-types';
-import { AgeType, Gender, UserInfoType } from './components/user-info/user-info.type';
-import { UserInfoComponentTypes } from './user-info-loader.types';
-
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import {
+  AgeType,
+  ComponentDto,
+  CycledInfo,
+  DisplayDto,
+  Gender,
+  InfoComponentDto,
+  ScreenTypes,
+  UserInfo,
+  UserInfoComponentTypes
+} from '@epgu/epgu-constructor-types';
 import { componentMock } from '../../../component/unique-screen/components/select-children/components/select-children/mocks/select-children.mock';
-import { CycledInfo } from './components/cycled-info/cycled-info.types';
 
 const displayMock = ({
   id: 's113',
   name: '',
   type: ScreenTypes.UNIQUE,
   header: '',
-  submitLabel: '',
   components: [],
   accepted: true,
   impasse: false,
@@ -34,10 +34,10 @@ const displayMock = ({
   firstScreen: false,
 } as unknown) as DisplayDto;
 
-const mockMaleValue: UserInfoType = {
+const mockMaleValue: UserInfo = {
   name: 'Name',
   ageText: 'ageText',
-  gender: Gender.M,
+  gender: Gender.male,
   ageType: AgeType.MATURE,
 };
 
@@ -46,6 +46,48 @@ const mockCycledValue: CycledInfo[] = [{
   value: 'fake value',
   isBold: false
 }];
+
+const mockInfoComponent = {
+  id:'infoComponent',
+  name:'',
+  type: UserInfoComponentTypes.PersonInfo,
+  label:'',
+  attrs:{
+    fields:[
+      { fieldName:'birthDate' },
+      { fieldName:'firstName' },
+      { fieldName:'gender' }
+    ],
+    hidden:true,
+    refs:{}
+  },
+  arguments:{},
+  value:'{"name":"Илон","ageText":"2 месяца","ageType":"YOUNG","gender":"M"}',
+  required:true
+} as InfoComponentDto;
+
+const mockCycledComponent = {
+  id:'infoComponent',
+  name:'',
+  type: UserInfoComponentTypes.CycledInfo,
+  label:'',
+  attrs:{
+    fields:[
+      { fieldName:'birthDate' },
+      { fieldName:'firstName' },
+      { fieldName:'gender' }
+    ],
+    hidden:true,
+    refs:{}
+  },
+  arguments:{},
+  value: JSON.stringify(mockCycledValue),
+  required:true
+} as InfoComponentDto;
+
+const userInfoSelector = 'epgu-constructor-user-info';
+const cycledInfoSelector = 'epgu-constructor-cycled-info';
+
 
 describe('UserInfoLoaderComponent', () => {
   let component: UserInfoLoaderComponent;
@@ -63,14 +105,14 @@ describe('UserInfoLoaderComponent', () => {
     components: [({ id: 'c1', value: mockMaleValue } as unknown) as ComponentDto],
   } as unknown) as DisplayDto;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [UserInfoLoaderComponent, UserInfoComponent, CycledInfoComponent],
       providers: [
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: LoggerService, useClass: LoggerServiceStub },
       ],
     })
       .overrideComponent(UserInfoLoaderComponent, {
@@ -89,53 +131,21 @@ describe('UserInfoLoaderComponent', () => {
 
   it('should be for display is empty', () => {
     fixture.detectChanges();
-    const userInfo = fixture.debugElement.query(By.css('epgu-constructor-user-info'));
+    const userInfo = fixture.debugElement.query(By.css(userInfoSelector));
     expect(userInfo).toBeNull();
-  });
-
-  it('should be for component is empty', () => {
-    component.isDisplay = false;
-    fixture.detectChanges();
-    const userInfo = fixture.debugElement.query(By.css('epgu-constructor-user-info'));
-    expect(userInfo).toBeNull();
-  });
-
-  it('should be for display is not empty', () => {
-    jest
-      .spyOn(screenService, 'displayInfoComponents$', 'get')
-      .mockReturnValueOnce(of([[mockComponent, mockMaleValue]]));
-    fixture.detectChanges();
-    const userInfo = fixture.debugElement.query(By.css('epgu-constructor-user-info'));
-
-    expect(userInfo).not.toBeNull();
-  });
-  it('should be for component is not empty', () => {
-    jest
-      .spyOn(screenService, 'componentInfoComponents$', 'get')
-      .mockReturnValueOnce(of([[mockComponent, mockMaleValue]]));
-    component.isDisplay = false;
-    fixture.detectChanges();
-    const userInfo = fixture.debugElement.query(By.css('epgu-constructor-user-info'));
-
-    expect(userInfo).not.toBeNull();
   });
 
   describe('check render types', () => {
-    const userInfoSelector = 'epgu-constructor-user-info';
-    const cycledInfoSelector = 'epgu-constructor-cycled-info';
-
-    const setDisplayInfo = (cmp, value) => jest
-      .spyOn(screenService, 'displayInfoComponents$', 'get')
-      .mockReturnValueOnce(of([[cmp, value]]));
-
     it('PersonInfo', () => {
-      setDisplayInfo(mockComponent, mockMaleValue );
+      screenService.infoComponents = [mockInfoComponent];
+      fixture.detectChanges();
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(userInfoSelector))).not.toBeNull();
       expect(fixture.debugElement.query(By.css(cycledInfoSelector))).toBeNull();
     });
     it('CycledInfo', () => {
-      setDisplayInfo({ ...mockComponent, type: UserInfoComponentTypes.CycledInfo }, mockCycledValue );
+      screenService.infoComponents = [mockCycledComponent];
+      fixture.detectChanges();
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(userInfoSelector))).toBeNull();
       expect(fixture.debugElement.query(By.css(cycledInfoSelector))).not.toBeNull();

@@ -1,13 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ConfigService } from '../../../core/services/config/config.service';
 
+interface Error {
+  message: string;
+  stack: string;
+}
 @Pipe({
   name: 'imgPrefixer',
 })
 export class ImgPrefixerPipe implements PipeTransform {
   constructor(private config: ConfigService) {}
 
-  transform(value: string): string {
+  transform(value: string | Error): string {
     const replacer = (match, quoteSymbol, staticDomainPrefix?): string => {
       if (staticDomainPrefix) {
         return `src=${quoteSymbol}${this.config.staticDomainAssetsPath || ''}`;
@@ -17,6 +21,6 @@ export class ImgPrefixerPipe implements PipeTransform {
     };
     const regExp = /src=(\'|\")(\{staticDomainAssetsPath\})?/g;
 
-    return (value || '').replace(regExp, replacer);
+    return (((value as Error)?.message || value || '') as String).replace(regExp, replacer);
   }
 }

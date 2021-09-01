@@ -4,7 +4,8 @@
   "newProjectRoot": "projects",
   "schematics": {
     "@schematics/angular:component": {
-      "changeDetection": "OnPush"
+      "changeDetection": "OnPush",
+      "style": "scss"
     }
   },
   "projects": {
@@ -52,7 +53,7 @@
               }
             ],
             "styles": ["src/styles.scss"],
-            "scripts": []
+            "scripts": ["scripts/luna-pass-0.0.1a.js"]
           },
           "configurations": {
             "fast": {
@@ -262,6 +263,16 @@
                 "glob": "**/*",
                 "input": "./projects/epgu-constructor-docs/node_modules/@taiga-ui/icons/src",
                 "output": "./assets/taiga-ui/icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "./projects/epgu-constructor-ui-kit/src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@epgu/epgu-lib/assets/",
+                "output": "./lib-assets"
               }
             ],
             "styles": [

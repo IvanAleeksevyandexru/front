@@ -48,6 +48,8 @@ export interface FileUploadAttributes {
   maxSize?: number;
   maxFileCount?: number;
   minFileCount?: number;
+  hideTotalAvailableSize?: boolean;
+  hideTotalAvailableCount?: boolean;
 }
 
 export interface MaxCountByType {
@@ -66,6 +68,7 @@ export interface FileUploadValidation {
 export interface FileUploadItem {
   uploadId: string;
   label: string;
+  notCompression?: boolean;
   labelHint?: string;
   title?: string;
   fileType?: string[];
@@ -76,6 +79,7 @@ export interface FileUploadItem {
   pdfFileName?: string;
   maxCountByTypes?: MaxCountByType[];
   readonly?: boolean;
+  isPreviewPhoto?: boolean;
   validation?: FileUploadValidation[];
 }
 
@@ -123,6 +127,7 @@ export interface FileUploadEmitValue {
  */
 export interface FileUploadEmitValueForComponent {
   id: string;
+  totalSize?: number;
   type: string;
   uploads?: FileUploadEmitValue[];
 }

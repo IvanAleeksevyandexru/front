@@ -6,7 +6,7 @@ import { CachedAnswersService } from '../shared/services/cached-answers/cached-a
 import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore } from './screen.types';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { ObjectHelperService, DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClient, HttpHandler } from '@angular/common/http';
@@ -21,6 +21,9 @@ import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '../core/services/json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
+import { DateRefService } from '../core/services/date-ref/date-ref.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: 653920,
@@ -35,7 +38,6 @@ const makeScreenStoreSample = (): ScreenStore => ({
     name: 'Приветствие',
     type: ScreenTypes.INFO,
     header: 'Получение заграничного паспорта',
-    submitLabel: 'Продолжить',
     components: [
       {
         id: 'w1',
@@ -93,8 +95,10 @@ describe('ScreenService', () => {
         ScreenService,
         CachedAnswersService,
         CurrentAnswersService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         PrepareComponentsService,
+        DateRefService,
         DatesToolsService,
         DictionaryToolsService,
         DictionaryApiService,
@@ -105,7 +109,8 @@ describe('ScreenService', () => {
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
+        JsonHelperService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],

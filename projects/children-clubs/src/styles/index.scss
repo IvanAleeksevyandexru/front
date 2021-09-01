@@ -1,154 +1,157 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
-
-// Implement styleguide for all library's components
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
-
-.mb-24 {
-  margin-bottom: 24px;
-}
-
-.mb-16 {
-  margin-bottom: 16px;
-}
-
-.mb-12 {
-  margin-bottom: 12px;
-}
-.mb-8 {
-  margin-bottom: 8px;
-}
-.mb-4 {
-  margin-bottom: 4px;
-}
-.mt-24 {
-  margin-top: 24px;
-}
-.app-host {
-  height: 100%;
-}
-
-.small-link {
-  @include typ-plain-small;
-}
-
-.container {
-  width: 100%;
-  max-width: 592px;
-  margin-top: 24px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-left: 0;
-  padding-right: 0;
-  @media (max-width: 623px) {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-}
-
-a {
-  text-decoration: none;
-  color: $color-gosblue;
-  cursor: pointer;
-
-  &:hover {
-    color: $color-active-item;
-  }
-}
-
-.divider {
-  background: $color-mercury;
-  margin: 16px 0;
-  height: 1px;
-  @include phones-down {
-    margin: 24px 0;
-  }
-}
-.title {
-  @include typ-h5();
-}
-
-.error {
-  margin-bottom: 4px;
-  color: $color-gosred;
-}
-
-.modal-divider {
-  background: $color-mercury;
-  border-top: 1px solid $color-mercury;
-}
-
-.half-for-desktop {
-  width: 100%;
-
-  @include tablets-up {
-    width: 50%;
-  }
-}
-
-.row {
-  display: flex;
-  flex-direction: column;
-
-  &-item {
-    width: 100%;
+:host::ng-deep {
+  @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+  // Implement styleguide for all library's components
+  @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+  .mb-24 {
     margin-bottom: 24px;
   }
 
-  @include tablets-up {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  .mb-16 {
+    margin-bottom: 16px;
+  }
 
-    &-item {
-      width: 48%;
+  .mb-12 {
+    margin-bottom: 12px;
+  }
+  .mb-8 {
+    margin-bottom: 8px;
+  }
+  .mb-4 {
+    margin-bottom: 4px;
+  }
+  .mt-24 {
+    margin-top: 24px;
+  }
+  .micro-app-host {
+    height: 100%;
+  }
+
+  .small-link {
+    @include typ-plain-small;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 592px;
+    margin-top: 24px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0;
+    padding-right: 0;
+    @media (max-width: 623px) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: $color-gosblue;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-active-item;
+    }
+  }
+
+  .divider {
+    background: $color-mercury;
+    margin: 16px 0;
+    height: 1px;
+    @include phones-down {
+      margin: 24px 0;
+    }
+  }
+  .title {
+    @include typ-h5();
+  }
+
+  .error {
+    margin-bottom: 4px;
+    color: $color-gosred;
+    &:empty {
       margin-bottom: 0;
     }
   }
-}
 
-.label {
-  display: block;
-  text-align: left;
-  color: $color-summer-night;
-  @include typ-plain-small;
-
-  &::first-letter {
-    text-transform: uppercase;
+  .modal-divider {
+    background: $color-mercury;
+    border-top: 1px solid $color-mercury;
   }
 
-  @include phones-down {
-    font-weight: bold;
-  }
+  .half-for-desktop {
+    width: 100%;
 
-  margin-bottom: 4px;
-}
-
-.btn {
-  width: auto;
-
-  &-submit {
-    order: 0;
-  }
-
-  @include phones-down {
-    &-submit {
-      order: 1;
+    @include tablets-up {
+      width: 50%;
     }
   }
-}
 
-.text--center {
-  text-align: center;
-}
-.bold,
-b,
-strong {
-  font-weight: $fw-bold;
-}
-.block {
-  &--content-centered {
+  .row {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+
+    &-item {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    @include tablets-up {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      &-item {
+        width: 48%;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .label {
+    display: block;
+    text-align: left;
+    color: $color-summer-night;
+    @include typ-plain-small;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+
+    @include phones-down {
+      font-weight: bold;
+    }
+
+    margin-bottom: 4px;
+  }
+
+  .btn {
+    width: auto;
+
+    &-submit {
+      order: 0;
+    }
+
+    @include phones-down {
+      &-submit {
+        order: 1;
+      }
+    }
+  }
+
+  .text--center {
+    text-align: center;
+  }
+  .bold,
+  b,
+  strong {
+    font-weight: $fw-bold;
+  }
+  .block {
+    &--content-centered {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }

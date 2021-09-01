@@ -96,6 +96,7 @@ module.exports = {
         'import/prefer-default-export': 'off',
         'import/extensions': 'off',
         'no-alert': 'off',
+        'color-no-hex': 'off',
         'class-methods-use-this': 'off',
         "lines-between-class-members": "off",
         "max-len": ["error", { "code": 180, ignorePattern: '^import .*' }],

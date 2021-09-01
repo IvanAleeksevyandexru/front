@@ -10,13 +10,13 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
@@ -34,13 +34,15 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { Answer } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '../json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;
   let service: AutocompletePrepareService;
   let datesToolsService: DatesToolsService;
   let screenService: ScreenService;
-  let repeatableComponents: Array<Array<ComponentDto>>;
+  let repeatableComponents: ComponentDto[][];
   let componentsSuggestionsSet: Set<[string, string]>;
   let parentComponent: ComponentDto;
 
@@ -100,7 +102,6 @@ describe('AutocompletePrepareService', () => {
       id: '',
       name: '',
       displayCssClass: '',
-      submitLabel: '',
       suggestion: { groupId: 'groupId' },
       type: ScreenTypes.CUSTOM,
       terminal: false,
@@ -154,19 +155,21 @@ describe('AutocompletePrepareService', () => {
         AutocompleteAutofillService,
         HttpHandler,
         CurrentAnswersService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         DatesToolsService,
         EventBusService,
         ModalService,
+        JsonHelperService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         DictionaryToolsService,
         DictionaryApiService,
         ComponentsListRelationsService,
         DateRangeService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         TerraByteApiService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
@@ -297,6 +300,7 @@ describe('AutocompletePrepareService', () => {
     it('should return string value of passed component via suggestions', () => {
       const component = mockData.display.components[0];
       const componentValue = 'value';
+      const componentMnemonic = 'prev_region';
       screenService.suggestions['pd8'] = {
         mnemonic: 'prev_region',
         list: [
@@ -307,9 +311,15 @@ describe('AutocompletePrepareService', () => {
           },
         ],
       };
-      expect(service['findComponentValue'](component, null, componentValue)).toEqual(
-        componentValue,
-      );
+      expect(
+        service['findComponentValue'](
+          component,
+          null,
+          componentValue,
+          componentMnemonic,
+          componentsSuggestionsSet,
+        ),
+      ).toEqual(componentValue);
     });
   });
 
@@ -347,6 +357,30 @@ describe('AutocompletePrepareService', () => {
         expect(service['getFormattedValue'](component, value, false)).toEqual(
           datesToolsService.toDate(value),
         );
+      });
+    });
+    describe('should return', () => {
+      const component = _cloneDeep(mockData.display.components[0]);
+      component.type = 'StringInput';
+      let value = '{ "value": "value" }';
+      let result = 'value';
+      it('value via existing json-path in suggestionPath attr', () => {
+        component.attrs.suggestionPath = 'value';
+        expect(service['getFormattedValue'](component, value)).toEqual(result);
+      });
+      it('undefined value via non existing json-path in suggestionPath attr', () => {
+        component.attrs.suggestionPath = 'nonExisting.json.path.value';
+        expect(service['getFormattedValue'](component, value)).toBeUndefined();
+      });
+      it('json-string of finded item in json-stringified array of items', () => {
+        component.attrs.suggestionPath = null;
+        value = '[{ "pd8": "value"}]';
+        expect(service['getFormattedValue'](component, value)).toEqual(result);
+      });
+      it('snils as text if json-object with snils attr passed', () => {
+        component.attrs.suggestionPath = null;
+        value = '{"snils": "123"}';
+        expect(service['getFormattedValue'](component, value)).toEqual('123');
       });
     });
     describe('should return mapped value', () => {

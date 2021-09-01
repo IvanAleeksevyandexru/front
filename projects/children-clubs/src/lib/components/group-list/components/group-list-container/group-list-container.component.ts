@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import {
-  AppNavigationService,
+  MicroAppNavigationService,
   ModalService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -25,7 +25,7 @@ export class GroupListContainerComponent implements OnInit {
   titleFilter = 'Введите ФИО педагога, название группы';
 
   filtersCount$$ = new BehaviorSubject<number>(0);
-  initValue = this.state.groupFilters.query || '';
+
   isShowButton$ = this.groupService.isFinish$.pipe(map((status) => !status));
   fullLoading = new BehaviorSubject<boolean>(true);
   fullLoading$ = this.fullLoading.asObservable();
@@ -36,10 +36,12 @@ export class GroupListContainerComponent implements OnInit {
     private state: StateService,
     private groupService: GroupListService,
     private dictionary: DictionaryService,
-    private appNavigationService: AppNavigationService,
+    private appNavigationService: MicroAppNavigationService,
     private ngUnsubscribe$: UnsubscribeService,
     private modalService: ModalService,
   ) {}
+
+  initValue: () => string = () => this.state.groupFilters.query || '';
 
   next(): void {
     this.groupService.next();

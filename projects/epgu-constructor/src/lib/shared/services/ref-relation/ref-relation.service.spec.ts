@@ -11,13 +11,14 @@ import {
 } from './ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
 import { ListElement } from '@epgu/epgu-lib';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('RefRelationService', () => {
   let service: RefRelationService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [RefRelationService],
+      providers: [RefRelationService, JsonHelperService],
     });
   });
 
@@ -115,24 +116,29 @@ describe('RefRelationService', () => {
     describe('getValueFromComponentVal()', () => {
       it('should return component string value, if arg is string', () => {
         const value = 'value';
-        expect(service.getValueFromComponentVal(value)).toBe(value);
+        expect(service['getValueFromComponentVal'](value)).toBe(value);
       });
       it('should return component string value, if arg is {id: string}', () => {
         const value = { id: 'value' };
-        expect(service.getValueFromComponentVal(value)).toBe('value');
+        expect(service['getValueFromComponentVal'](value)).toBe('value');
       });
 
       it('should return component as original array, if arg is array', () => {
         const value = [{ id: 'value' }] as ListElement[];
-        expect(service.getValueFromComponentVal(value)).toBe(value);
+        expect(service['getValueFromComponentVal'](value)).toBe(value);
       });
-      it('should return parsed JSON, if arg is JSON string', () => {
+      it('should return item id, if arg is JSON-stringified obj with id attr', () => {
+        const value = '{"id": "AUS", "label":"Австралия"}';
+        const expectedResult = 'AUS';
+        expect(service['getValueFromComponentVal'](value)).toEqual(expectedResult);
+      });
+      it('should return parsed JSON, if arg is JSON-stringified array', () => {
         const value = '[{"id": "AUS", "label":"Австралия"},{"id": "RUS", "label":"Россия"}]';
         const expectedResult = [
           { id: 'AUS', label: 'Австралия' },
           { id: 'RUS', label: 'Россия' },
         ];
-        expect(service.getValueFromComponentVal(value)).toEqual(expectedResult);
+        expect(service['getValueFromComponentVal'](value)).toEqual(expectedResult);
       });
     });
 

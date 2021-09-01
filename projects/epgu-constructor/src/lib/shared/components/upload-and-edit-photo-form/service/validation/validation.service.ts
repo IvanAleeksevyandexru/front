@@ -10,7 +10,7 @@ export class ValidationService {
     allowedImgTypes: string[],
     width: number,
     height: number,
-    validations: Array<ComponentValidationDto>,
+    validations: ComponentValidationDto[],
   ): {
     isTypeValid: boolean;
     isSizeValid: boolean;
@@ -74,7 +74,7 @@ export class ValidationService {
     return imageErrors;
   }
 
-  validateFileName(fileName: string, validations?: Array<ComponentValidationDto>): string | null {
+  validateFileName(fileName: string, validations?: ComponentValidationDto[]): string | null {
     if (!validations || validations.length === 0) return null;
 
     return (

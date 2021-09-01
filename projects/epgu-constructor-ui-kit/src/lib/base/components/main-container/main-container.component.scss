@@ -7,8 +7,16 @@
   width: 100%;
   min-width: 320px;
   height: 100%;
+  position: relative;
 
   & .loader {
-    margin: auto;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 105;
+    background: rgba($color-white, 0.7);
   }
 }

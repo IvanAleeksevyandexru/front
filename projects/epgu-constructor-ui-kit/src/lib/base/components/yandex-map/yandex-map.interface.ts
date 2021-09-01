@@ -1,5 +1,7 @@
+import { ymaps } from './yandex-map.types';
+
 export interface IYMapPoint<T> {
-  center: Array<number>;
+  center: number[];
   obj: T;
 }
 
@@ -10,28 +12,26 @@ export enum IFeatureTypes {
 
 export interface IFeatureItem<T> {
   type: IFeatureTypes;
-  id: number;
-  geometry: {
-    type: string;
-    coordinates: [number, number];
-  };
+  id: number | string;
+  geometry: ymaps.IGeometry;
   properties?: {
-    res?: IYMapPoint<T>;
+    res?: T;
   };
 }
 
 export interface IClusterItem<T> extends Pick<IFeatureItem<T>, 'type' | 'id' | 'geometry'> {
-  features: Array<IFeatureItem<T>>;
+  features: IFeatureItem<T>[];
   properties: {
-    geoObjects: Array<IFeatureItem<T>>;
+    geoObjects: IFeatureItem<T>[];
   };
 }
 
 export interface IFeatureCollection<T> {
   type: string;
-  features: Array<IFeatureItem<T>>;
+  features: IFeatureItem<T>[];
 }
 
 export type YMapItem<T> = T & {
-  expanded?: boolean,
+  expanded?: boolean;
+  objectId?: number;
 };

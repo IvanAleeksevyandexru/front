@@ -14,6 +14,14 @@ import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { ActionType, DTOActionAction, ComponentDto } from '@epgu/epgu-constructor-types';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
+import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
+import { EventBusService, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { ActionModule } from '../../../../shared/directives/action/action.module';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -25,6 +33,7 @@ describe('InfoComponentModalComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
+      imports: [ScreenButtonsModule, ActionModule],
       declarations: [
         InfoComponentModalComponent,
         MockComponent(ButtonComponent),
@@ -32,6 +41,12 @@ describe('InfoComponentModalComponent', () => {
         MockDirective(ActionDirective),
       ],
       providers: [
+        CertificateEaisdoService,
+        EaisdoGroupCostService,
+        EventBusService,
+        CurrentAnswersService,
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -99,18 +114,16 @@ describe('InfoComponentModalComponent', () => {
 
     fixture.detectChanges();
 
-    button = fixture.debugElement.query(By.css('.submit-button'));
+    button = fixture.debugElement.query(By.css('.screen-buttons .screen-button'));
     expect(button).toBeTruthy();
 
-    expect(button.nativeElement.innerHTML.trim()).toBe(screenService.buttons[0].value);
+    expect(button.query(By.css('button span')).nativeElement.innerHTML.trim()).toBe(screenService.buttons[0].value);
 
-    expect(button.componentInstance.showLoader).toBeFalsy();
     expect(button.componentInstance.disabled).toBeFalsy();
 
     screenService['isLoadingSubject'].next(true);
     fixture.detectChanges();
 
-    expect(button.componentInstance.showLoader).toBeTruthy();
     expect(button.componentInstance.disabled).toBeTruthy();
   });
 });

@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { MonthYear } from '@epgu/epgu-lib';
-import { combineLatest } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import {
   EmployeeType,
@@ -26,7 +26,7 @@ import { DeclinePipe } from '@epgu/epgu-lib';
 @Injectable()
 export class EmployeeHistoryFormService {
   employeeHistoryForm: FormArray = this.fb.array([]);
-  employeeHistory: Array<EmployeeHistoryModel> = [];
+  employeeHistory: EmployeeHistoryModel[] = [];
   generateForm: FormGroup;
 
   private readonly defaultType: EmployeeType;
@@ -67,10 +67,16 @@ export class EmployeeHistoryFormService {
     if (generationData) {
       for (const [key, value] of Object.entries(generationData)) {
         let convertedValue = value;
-        if (['from', 'to'].includes(key)) {
+        if (key === 'from') {
           convertedValue = new MonthYear(value?.month, value?.year);
         }
+        if (key === 'to') {
+          continue;
+        }
         form.get(key).patchValue(convertedValue);
+      }
+      if (generationData.to) {
+        form.get('to').patchValue(new MonthYear(generationData.to.month, generationData.to.year));
       }
     } else {
       form.get('type').patchValue(this.defaultType);
@@ -92,14 +98,14 @@ export class EmployeeHistoryFormService {
     form
       .get('checkboxToDate')
       .valueChanges.pipe(
-        filter((checked: boolean) => checked),
-        switchMap(() => {
-          return this.datesToolsService.getToday();
-        }),
-        takeUntil(this.unsubscribeService),
-      )
-      .subscribe((date) => {
-        form.get('to').patchValue(MonthYear.fromDate(date));
+      switchMap((checked: boolean) => {
+        return checked ? this.datesToolsService.getToday() : of(null);
+      }),
+      takeUntil(this.unsubscribeService),
+    )
+      .subscribe((date: Date) => {
+        const value = date ? MonthYear.fromDate(date) : null;
+        form.get('to').patchValue(value);
       });
 
     form

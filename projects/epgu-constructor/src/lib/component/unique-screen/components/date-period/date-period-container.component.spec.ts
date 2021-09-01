@@ -16,13 +16,13 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { DatePeriodComponent } from './date-period/date-period.component';
 import { parseISO } from 'date-fns';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('DatePeriodContainerComponent', () => {
   let component: DatePeriodContainerComponent;
   let fixture: ComponentFixture<DatePeriodContainerComponent>;
   let screenService: ScreenService;
   let currentAnswersService: CurrentAnswersService;
-  let dateToolsService: DatesToolsService;
 
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
@@ -34,10 +34,10 @@ describe('DatePeriodContainerComponent', () => {
         CachedAnswersService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         DatesToolsService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();
-    dateToolsService = TestBed.inject(DatesToolsService);
   });
 
   beforeEach(() => {
@@ -102,8 +102,7 @@ describe('DatePeriodContainerComponent', () => {
       fixture.detectChanges();
       component.initialState$.subscribe((value) => {
         expect(value.endDate).toBeNull();
-        expect(dateToolsService.format(value.startDate, DATE_STRING_DASH_FORMAT))
-          .toEqual(dateToolsService.format(new Date(), DATE_STRING_DASH_FORMAT));
+        expect(value.startDate).toBeNull();
       });
 
       jest.runAllTimers();

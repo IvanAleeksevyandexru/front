@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
+
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { ModalService, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -25,11 +26,39 @@ import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadScreenComponent implements OnInit {
+  disabled$$ = new BehaviorSubject<boolean>(true);
+  disabled$ = this.disabled$$.pipe(distinctUntilChanged());
+  currentFilesSize = 0;
+  currentFilesCount = 0;
+  maxFileSize: number;
+  maxFileCount: number;
+  fileSizeLeft: number;
+  fileCountLeft: number;
+  hideTotalAvailableSize: boolean;
+  hideTotalAvailableCount: boolean;
+  nextStepAction: ComponentActionDto = {
+    label: 'Далее',
+    action: DTOActionAction.getNextStep,
+    value: '',
+    type: ActionType.nextStep,
+  };
+  uploaderProcessing = new BehaviorSubject<string[]>([]);
+  uploaderProcessing$ = this.uploaderProcessing.pipe(
+    map((list) => list.length > 0),
+    distinctUntilChanged(),
+    tap((status) => this.screenService.updateLoading(status)),
+  );
+
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<ComponentBase> = this.screenService.component$.pipe(
     tap((data: ComponentBase) => {
       const attrs: FileUploadAttributes = data.attrs as FileUploadAttributes;
-      this.allMaxFiles = 0;
+      this.maxFileSize = attrs?.maxSize;
+      this.maxFileCount = attrs?.maxFileCount;
+      this.hideTotalAvailableSize =
+        attrs?.hideTotalAvailableSize == null ? true : attrs?.hideTotalAvailableSize;
+      this.hideTotalAvailableCount =
+        attrs?.hideTotalAvailableCount == null ? true : attrs?.hideTotalAvailableCount;
 
       if (data.type === UniqueScreenComponentTypes.OrderFileProcessingComponent && attrs?.uploads) {
         attrs.maxFileCount = attrs.uploads?.length ?? 0;
@@ -51,8 +80,6 @@ export class FileUploadScreenComponent implements OnInit {
         }
       }
 
-      this.collectMaxFilesNumber(attrs?.uploads ?? []);
-
       this.value = {
         id: data.id,
         type: data.type,
@@ -65,23 +92,7 @@ export class FileUploadScreenComponent implements OnInit {
     this.screenService.header$,
   ]).pipe(map(([data, header]: [ComponentBase, string]) => header || data.label));
 
-  disabled$$ = new BehaviorSubject<boolean>(true);
-  disabled$ = this.disabled$$.pipe(distinctUntilChanged());
-  allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
-  nextStepAction: ComponentActionDto = {
-    label: 'Далее',
-    action: DTOActionAction.getNextStep,
-    value: '',
-    type: ActionType.nextStep,
-  };
-  uploaderProcessing = new BehaviorSubject<string[]>([]);
-  uploaderProcessing$ = this.uploaderProcessing.pipe(
-    map((list) => list.length > 0),
-    distinctUntilChanged(),
-    tap((status) => this.screenService.updateLoading(status)),
-  );
-
-  private value: FileUploadEmitValueForComponent; // Здесь будет храниться значение на передачу
+  private value: FileUploadEmitValueForComponent; // Здесь хранится значение на передачу
 
   constructor(
     public screenService: ScreenService,
@@ -89,6 +100,7 @@ export class FileUploadScreenComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
     private modalService: ModalService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   toCSVUploader(upload: FileUploadItem): FileUploadItem {
@@ -104,6 +116,10 @@ export class FileUploadScreenComponent implements OnInit {
       .subscribe((payload: FileResponseToBackendUploadsItem) => {
         this.handleNewValueSet(payload);
         this.currentAnswersService.state = this.value;
+        if (this.maxFileSize) this.fileSizeLeft = this.maxFileSize - this.currentFilesSize;
+        if (this.maxFileCount) this.fileCountLeft = this.maxFileCount - this.currentFilesCount;
+
+        if (this.showSizeInfo()) setTimeout(() => this.cdr.detectChanges());
       });
     this.uploaderProcessing$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
 
@@ -149,21 +165,31 @@ export class FileUploadScreenComponent implements OnInit {
     return true;
   }
 
+  showSizeInfo(): boolean {
+    return (
+      (!this.hideTotalAvailableCount && this.maxFileCount !== undefined) ||
+      (!this.hideTotalAvailableSize && this.maxFileSize !== undefined)
+    );
+  }
+
   /**
-   * Принимает новое значение от компонентов и провеяет доступность кнопки далее
+   * Принимает новое значение от компонентов и проверяет доступность кнопки далее
    * @param $eventData - данные из компонента
    */
   private handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
     this.value.uploads = $eventData.files as FileUploadEmitValue[];
+    this.calculateСurrentFiles(this.value.uploads);
+    this.value.totalSize = this.currentFilesSize;
 
     /**
      * Блокируем кнопку если:
-     * 1. Не в каждом загрузчике есть файл
-     * Или
-     * 2. Если не все файлы загрузились на терабайт
+     * 1. Есть ошибки
+     * 2. Не в каждом загрузчике есть файл
+     * 3. Не все файлы загрузились на терабайт
      */
     this.disabled$$.next(
       !(
+        $eventData.errors.length === 0 &&
         this.isEveryUploaderHasFile(this.value.uploads) &&
         this.isAllFilesUploaded(this.value.uploads)
       ),
@@ -171,15 +197,25 @@ export class FileUploadScreenComponent implements OnInit {
   }
 
   /**
-   * Собираем максимальное число файлов из всех форм
+   * Считаем объём и количество уже загруженных в этом компоненте файлов
    * @private
    */
-  private collectMaxFilesNumber(uploads: FileUploadItem[]): void {
-    uploads.forEach((upload) => {
-      if (upload?.maxFileCount) {
-        this.allMaxFiles += upload.maxFileCount;
+  private calculateСurrentFiles(uploads: FileUploadEmitValue[]): void {
+    let currentFilesSize = 0;
+    let files: UploadedFile[] = [];
+
+    uploads.forEach((upload: FileUploadEmitValue) => {
+      if (upload.value && upload.value.length > 0) {
+        files = [...files, ...upload.value];
       }
     });
+
+    files.forEach((file: UploadedFile) => {
+      currentFilesSize += file.fileSize;
+    });
+
+    this.currentFilesSize = currentFilesSize;
+    this.currentFilesCount = files.length;
   }
 
   /**

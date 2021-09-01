@@ -22,7 +22,7 @@ export interface SourceDictionaryI {
   label: string;
   text: string;
   hint: string;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  dictionaryFilter?: ComponentDictionaryFilterDto[];
 }
 
 export interface DictionaryToRequestI {
@@ -30,7 +30,7 @@ export interface DictionaryToRequestI {
   label: string;
   text: string;
   hint: string;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  dictionaryFilter?: ComponentDictionaryFilterDto[];
 }
 
 export interface MvdInfoCenterI {

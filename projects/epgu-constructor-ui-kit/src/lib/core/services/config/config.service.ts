@@ -18,6 +18,7 @@ export class ConfigService implements Config {
   private _dictionaryUrl: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
+  private _quizDataApiUrl: string;
   private _lkUrl: string;
   private _lkApi: string;
   private _childrenClubsApi: string;
@@ -36,7 +37,8 @@ export class ConfigService implements Config {
   private _isSocialShareDisabled: boolean;
   private _isAutocompleteServiceDisabled: boolean;
   private _addToCalendarUrl: string;
-  private _isZipkinEnabled: boolean;
+  private _zipkinGenerationEnabled: boolean;
+  private _zipkinSpanSendEnabled: boolean;
   private _zipkinUrl: string;
   private _zipkinMaxPayloadSize: number;
   private _zipkinEnv: string;
@@ -46,6 +48,9 @@ export class ConfigService implements Config {
   private _lookupQueryTimeoutMs: number;
   private _nsiSuggestDictionaryUrl: string;
   private _appPathMap: AppPathMap;
+  private _lkuipElection: string;
+  private _identificationApiUrl: string;
+  private _wsIdentificationUrl: string;
 
   constructor(private loadService: LoadService, private loggerService: LoggerService) {}
 
@@ -97,6 +102,10 @@ export class ConfigService implements Config {
 
   get fileUploadApiUrl(): string {
     return this._fileUploadApiUrl;
+  }
+
+  get quizDataApiUrl(): string {
+    return this._quizDataApiUrl;
   }
 
   get lkUrl(): string {
@@ -171,8 +180,16 @@ export class ConfigService implements Config {
     return this._addToCalendarUrl;
   }
 
-  get isZipkinEnabled(): boolean {
-    return this._isZipkinEnabled;
+  get zipkinGenerationEnabled(): boolean {
+    return this._zipkinGenerationEnabled;
+  }
+
+  get zipkinSpanSendEnabled(): boolean {
+    return this._zipkinSpanSendEnabled;
+  }
+
+  set zipkinSpanSendEnabled(value: boolean) {
+    this._zipkinSpanSendEnabled = value;
   }
 
   get zipkinUrl(): string {
@@ -211,12 +228,25 @@ export class ConfigService implements Config {
     return this._appPathMap;
   }
 
+  get lkuipElection(): string {
+    return this._lkuipElection;
+  }
+
+  get identificationApiUrl(): string {
+    return this._identificationApiUrl;
+  }
+
+  get wsIdentificationUrl(): string {
+    return this._wsIdentificationUrl;
+  }
+
   initCore(config: Config = {} as Config): void {
     this._apiUrl = config.apiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._suggestionsApiUrl = config.suggestionsApiUrl ?? `${this.apiUrl}`;
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
+    this._lkuipElection = config.lkuipElection;
     this._nsiSuggestDictionaryUrl =
       config.nsiSuggestDictionaryUrl ?? `${this.loadService.config.newSfApiUrl}/nsi-suggest/v1`;
     this._externalApiUrl = config.externalApiUrl ?? `${this.loadService.config.nsiApiUrl}`;
@@ -238,6 +268,10 @@ export class ConfigService implements Config {
     this._addToCalendarUrl =
       config.addToCalendarUrl ?? `${this.loadService.config.addToCalendarUrl}`;
     this._oplataUrl = config.oplataUrl ?? `${this.loadService.config.oplataUrl}`;
+    this._identificationApiUrl =
+      config.identificationApiUrl ?? `${this.loadService.config.identificationApiUrl}`;
+    this._wsIdentificationUrl =
+      config.wsIdentificationUrl ?? `${this.loadService.config.wsIdentificationUrl}`;
   }
 
   set config(config: Config) {
@@ -250,7 +284,8 @@ export class ConfigService implements Config {
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._isAutocompleteServiceDisabled = config.isAutocompleteServiceDisabled || false;
-    this._isZipkinEnabled = config.isZipkinEnabled || false;
+    this._zipkinGenerationEnabled = config.zipkinGenerationEnabled || false;
+    this._zipkinSpanSendEnabled = config.zipkinSpanSendEnabled || false;
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
@@ -258,6 +293,7 @@ export class ConfigService implements Config {
     this._showTraceIdOnError = config.showTraceIdOnError || false;
     this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
     this._appPathMap = config.appPathMap || {};
+    this._quizDataApiUrl = config.quizDataApiUrl || '';
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

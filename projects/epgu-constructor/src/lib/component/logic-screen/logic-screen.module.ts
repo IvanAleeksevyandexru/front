@@ -6,6 +6,7 @@ import { LogicComponent } from './component/logic.component';
 import { LogicService } from './service/logic.service';
 import { LogicErrorInterceptor } from './interceptor/logic-error-interceptor.service';
 import { BaseModule } from '../../shared/base.module';
+import { RestService } from '../../shared/services/rest/rest.service';
 
 @NgModule({
   declarations: [LogicComponent],
@@ -13,6 +14,7 @@ import { BaseModule } from '../../shared/base.module';
   imports: [CommonModule, BaseModule],
   providers: [
     LogicService,
+    RestService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LogicErrorInterceptor,

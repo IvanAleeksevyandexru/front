@@ -1,21 +1,27 @@
 import { TestBed } from '@angular/core/testing';
-import { FormArray, FormControl } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl } from '@angular/forms';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import { ComponentsListToolsService } from '../../../component/custom-screen/services/components-list-tools/components-list-tools.service';
-import { ValidationService } from './validation.service';
+import { ValidationService, CARD_VALIDATION_EVENT } from './validation.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsService, LoggerService, HealthServiceStub, HealthService } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
+import { MockProvider } from 'ng-mocks';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 describe('ValidationService', () => {
   let service: ValidationService;
+  let restrictionService: DateRestrictionsService;
+  let currentAnswersService: CurrentAnswersService;
+  let health: HealthService;
   let dateInputComponent = ({
     id: 'pd8',
     type: CustomScreenComponentTypes.DateInput,
@@ -105,7 +111,7 @@ describe('ValidationService', () => {
     required: true,
   };
 
-  configureTestSuite(() => {
+    configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -113,8 +119,11 @@ describe('ValidationService', () => {
         ComponentsListToolsService,
         DateRangeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: HealthService, useClass: HealthServiceStub },
+        CurrentAnswersService,
         DatesToolsService,
         DateRestrictionsService,
+        MockProvider(DateRefService),
         ConfigService,
         LoggerService,
       ],
@@ -123,6 +132,13 @@ describe('ValidationService', () => {
 
   beforeEach(() => {
     service = TestBed.inject(ValidationService);
+    restrictionService = TestBed.inject(DateRestrictionsService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
+    health = TestBed.inject(HealthService);
+    Object.defineProperty(window.document, 'cookie', {
+      writable: true,
+      value: 'u=123456',
+    });
   });
 
   describe('customValidator', () => {
@@ -164,6 +180,71 @@ describe('ValidationService', () => {
       });
     });
   });
+
+    describe('calculateStringPredicate()', () => {
+      let mockCalcStringComponent: CustomComponent = {
+        id: 'rf2',
+        type: CustomScreenComponentTypes.StringInput,
+        label: 'Сумма',
+        attrs: {
+          dictionaryType: '',
+          ref: [],
+          labelAttr: '',
+          fields: [],
+          validation: [
+            {
+              type: 'CalculatedPredicate',
+              value: '',
+              ref: '',
+              condition: '',
+              dataType: '',
+              expr: '${rf2.value} > ${rf3.value}',
+              errorMsg: 'Полная стоимость путёвки должна превышать оплаченную'
+            }
+          ],
+          value: '',
+        }
+      };
+      it('should evaluate 10 > 12 to false', () => {
+        currentAnswersService.state = {
+          rf3: {
+            value: 12
+          }
+        };
+        const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
+        expect(customValidator).toBeFalsy();
+      });
+
+      it('should evaluate 10 > 8 to true', () => {
+        currentAnswersService.state = {
+          rf3: {
+            value: 8
+          }
+        };
+        const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
+        expect(customValidator).toBeTruthy();
+      });
+
+      it('should throw error on evil script', () => {
+        // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
+         currentAnswersService.state = {
+          rf3: {
+            value: 'throw new Error("Evil code"); 12'
+          }
+        };
+        expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError('Ошибка в выражении CalculatedPredicate. Component ID: rf2');
+      });
+
+      it('should throw error on evil script', () => {
+        // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
+        currentAnswersService.state = {
+          rf3: {
+            value: '12; throw new Error("Evil code")'
+          }
+        };
+        expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError('Ошибка в выражении CalculatedPredicate. Component ID: rf2');
+      });
+    });
 
   describe('customValidator', () => {
     it('should return proper error for control value with not enought length', (done) => {
@@ -277,20 +358,115 @@ describe('ValidationService', () => {
     const checkNumber = (number: any) => service.checkCardNumber(number);
 
     it('should return true', () => {
-      expect(checkNumber('5469 3800 2401 6155')).toBeTruthy();
-      expect(checkNumber('5469380024016155')).toBeTruthy();
-      expect(checkNumber('5469-3800-2401-6155')).toBeTruthy();
+      spyOn(health, 'measureStart').and.callThrough();
+      spyOn(health, 'measureEnd').and.callThrough();
+      expect(checkNumber('3562990024016152')).toBeTruthy();
+      expect(checkNumber('3562 9900 2401 6152')).toBeTruthy();
+      expect(checkNumber('3562 99002401 6152')).toBeTruthy();
+      expect(checkNumber('35629900 24016152')).toBeTruthy();
 
-      expect(checkNumber('5213 2439 2469 4266')).toBeTruthy();
-      expect(checkNumber('5213 & 2439 ololo2469 ololo4266')).toBeTruthy();
-      expect(checkNumber('5213 2439 2469 4464')).toBeTruthy();
+      expect(checkNumber('6291 5700 1247 5287482')).toBeTruthy();
+      expect(checkNumber('6291 5700 1247 528438')).toBeTruthy();
+      expect(checkNumber('6291 5700 1247 52832')).toBeTruthy();
       expect(checkNumber('2200 3307 9345 4721 809')).toBeTruthy();
       expect(checkNumber('2200 3307 1335 4721 6')).toBeTruthy();
+      expect(health.measureStart).toHaveBeenCalledWith(CARD_VALIDATION_EVENT);
+      expect(health.measureEnd).toHaveBeenCalledWith(CARD_VALIDATION_EVENT, 0, {
+        userId: '123456',
+        validationStatus: true,
+      });
     });
 
     it('should return false', () => {
+      spyOn(health, 'measureStart').and.callThrough();
+      spyOn(health, 'measureEnd').and.callThrough();
       expect(checkNumber('5439 3800 2401 6155')).toBeFalsy();
-      expect(checkNumber('5469 3800 2401')).toBeTruthy();
+      expect(health.measureEnd).toHaveBeenCalledWith(CARD_VALIDATION_EVENT, 0, {
+        userId: '123456',
+        validationStatus: false,
+      });
     });
   });
+
+  describe('dateValidator()', () => {
+
+    const compoundComponent = {
+      type: CustomScreenComponentTypes.CalendarInput,
+      attrs: { components: [{
+        id: 'first',
+          type: CustomScreenComponentTypes.DateInput,
+          attrs: {
+            validation: [{
+              type: 'Date',
+              value: '',
+              ref: '',
+              condition: '<',
+              errorMsg: 'Я ошибка',
+              dataType: 'aa'
+            }]
+          }}] },
+      id: 'test',
+    };
+
+    const plainComponent = {
+      type: CustomScreenComponentTypes.DateInput,
+      id: 'test',
+      attrs: {
+        validation: [{
+          type: 'Date',
+          value: '',
+          ref: '',
+          condition: '>',
+          errorMsg: 'Я ошибка',
+          dataType: 'aa'
+        }] },
+    };
+
+    const range = { min: new Date(2005, 5,5 ), max: new Date(2010, 10, 10) };
+    const controlCompound = { value: { first : new Date(2004, 4, 4) }, markAllAsTouched() { return null; } };
+    const controlPlain = { value: new Date(2006, 6, 6) };
+
+    it('should return error if min date is greater than value', () => {
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      controlCompound.value.first = new Date(2004, 4, 4);
+      const validator = service.dateValidator(compoundComponent);
+
+      const result = validator(controlCompound as AbstractControl);
+
+      expect(result.msg).toEqual('Я ошибка');
+    });
+
+    it('should return nothing if min date is lower than value', () => {
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      controlCompound.value.first = new Date(2006, 6, 6);
+      const validator = service.dateValidator(compoundComponent);
+
+      const result = validator(controlCompound as AbstractControl);
+
+      expect(result).toBeUndefined();
+    });
+
+    it('should return error if max date is lower than value', () => {
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      controlPlain.value = new Date(2006, 6, 6);
+      const validator = service.dateValidator(plainComponent);
+
+      const result = validator(controlPlain as AbstractControl);
+
+      expect(result).toBeUndefined();
+
+    });
+
+    it('should return undefined if max date is greater than value', () => {
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      controlPlain.value = new Date(2011, 11, 11);
+      const validator = service.dateValidator(plainComponent);
+
+      const result = validator(controlPlain as AbstractControl);
+
+      expect(result.msg).toEqual('Я ошибка');
+    });
+
+  });
+
 });

@@ -1,10 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-lib';
 import { Subject } from 'rxjs';
 import { CoreModule } from '../../../../core/core.module';
-import { CoreUiModule, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CoreUiModule,
+  LocationService,
+  ObjectHelperService,
+  WINDOW_PROVIDERS,
+  WordTransformService
+} from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, HealthService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -20,6 +25,7 @@ import { AutocompleteApiService } from '../../../../core/services/autocomplete/a
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
+import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 
 class MockScreenService {
   header = '';
@@ -75,6 +81,9 @@ describe('UploadAndEditPhotoComponent', () => {
         HtmlRemoverService,
         CurrentAnswersService,
         AutocompleteApiService,
+        EaisdoGroupCostService,
+        WordTransformService,
+        ObjectHelperService,
       ],
     }).compileComponents();
   });

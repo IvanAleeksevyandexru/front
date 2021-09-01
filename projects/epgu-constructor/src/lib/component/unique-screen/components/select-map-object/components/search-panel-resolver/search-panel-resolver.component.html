@@ -1,0 +1,38 @@
+<div class="widget__form widget-form">
+  <epgu-cf-ui-prev-button class="nav" *ngIf="screenService.showNav$ | async"></epgu-cf-ui-prev-button>
+  <ng-container *ngTemplateOutlet="errorRegion"></ng-container>
+  <span
+    *ngIf="isSearchTitleVisible && !isNoDepartmentErrorVisible"
+    class="widget-form__title"
+    [innerHTML]="label | safe: 'html'"
+  ></span>
+  <ng-template
+    #panel
+  ></ng-template>
+  <ng-container *ngTemplateOutlet="disclaimerTemplate"></ng-container>
+</div>
+
+<ng-template #errorRegion>
+  <div *ngIf="isNoDepartmentErrorVisible" class="error-region">
+    <ng-container *ngIf="!noDepartmentsErrorMsg">
+      <h6 class="red-line">Нет доступных подразделений</h6>
+      <span
+        class="hint-text"
+      >Для подачи документов выберите подразделение в другом регионе
+      </span>
+    </ng-container>
+    <epgu-constructor-output-html
+      *ngIf="noDepartmentsErrorMsg"
+      [html]="noDepartmentsErrorMsg"
+    ></epgu-constructor-output-html>
+  </div>
+</ng-template>
+
+<ng-template #disclaimerTemplate>
+  <epgu-constructor-disclaimer *ngIf="disclaimer"
+    class="mt-16"
+    [type]="disclaimer.type"
+    [title]="disclaimer.title"
+    [description]="disclaimer.description"
+  ></epgu-constructor-disclaimer>
+</ng-template>

@@ -5,7 +5,7 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { UploadedFile } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CompressionService } from '../compression/compression.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 
 import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 
@@ -14,7 +14,7 @@ export class UploadService {
   constructor(
     private terraByteApiService: TerraByteApiService,
     private compressionService: CompressionService,
-    private utils: UtilsService,
+    private wordTransformService: WordTransformService,
   ) {}
 
   uploadPhotoToServer(
@@ -59,7 +59,7 @@ export class UploadService {
   ): { requestData: ComponentUploadedFileDto; compressedFile: Blob | File } {
     const prepareFileName = fileName.split('.');
     prepareFileName[prepareFileName.length - 1] = 'jpg';
-    const name = this.utils.cyrillicToLatin(prepareFileName.join('.'));
+    const name = this.wordTransformService.cyrillicToLatin(prepareFileName.join('.'));
 
     return { requestData: { ...requestData, name }, compressedFile };
   }

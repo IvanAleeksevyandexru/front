@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
-import { MockComponents, MockModule } from 'ng-mocks';
+import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import {
   ScreenPadComponent,
@@ -11,7 +11,9 @@ import {
   ConfigServiceStub,
   LoggerService,
   LoggerServiceStub,
-  HelperTextComponent, ModalService,
+  HelperTextComponent,
+  ModalService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -33,6 +35,7 @@ import { NavigationServiceStub } from '../../../../core/services/navigation/navi
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { InvitationType } from './invitation-type';
 import { InvitationErrorService } from '../../invitation-error.service';
+import { ActivatedRoute } from '@angular/router';
 
 class HTTPClientStub {
   public post(url: string, body: any | null, options: object) {
@@ -40,7 +43,7 @@ class HTTPClientStub {
   }
 }
 
-xdescribe('LkInvitationInputComponent', () => {
+describe('LkInvitationInputComponent', () => {
   let component: LkInvitationInputComponent;
   let validationService: ValidationService;
   let fixture: ComponentFixture<LkInvitationInputComponent>;
@@ -85,12 +88,13 @@ xdescribe('LkInvitationInputComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: HttpClient, useClass: HTTPClientStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         ValidationService,
         UnsubscribeService,
         CurrentAnswersService,
         DateRangeService,
         DatesToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ModalService,
         InvitationErrorService,
       ],
@@ -156,10 +160,8 @@ xdescribe('LkInvitationInputComponent', () => {
         const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(of({}));
         const { firstName, lastName } = mockData.attrs;
         const fio = `${lastName} ${firstName}`;
-
         component.sendEmail();
         fixture.detectChanges();
-        expect(component['emailSent']).toBe(true);
         expect(httpPostSpy).toBeCalledWith(
           '/register/LK_INVITATION',
           {
@@ -186,10 +188,8 @@ xdescribe('LkInvitationInputComponent', () => {
         const http = TestBed.inject(HttpClient);
         const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(of({}));
         const { fio } = mockData.attrs;
-
         component.sendEmail();
         fixture.detectChanges();
-        expect(component['emailSent']).toBe(true);
         expect(httpPostSpy).toBeCalledWith(
           '/register/INVITATION_REGISTRY_ANY',
           {
@@ -199,6 +199,22 @@ xdescribe('LkInvitationInputComponent', () => {
           { withCredentials: true },
         );
       });
+    });
+
+    it('should call getInvitationData() without gender', () => {
+      delete mockData.attrs.gender;
+      const spy = jest.spyOn(component, 'sendEmail');
+      component.sendEmail();
+      expect(spy).toHaveBeenCalled();
+      expect(component.data.attrs.gender).toBe(undefined);
+    });
+
+    it('should call sendMail with payment', () => {
+      component.config.mocks.push('payment');
+      const spy = jest.spyOn(component, 'sendEmail');
+      component.sendEmail();
+      expect(spy).toBeCalledTimes(1);
+      expect(component.config.mockUrl).not.toBe(undefined);
     });
   });
 });

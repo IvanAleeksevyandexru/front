@@ -16,9 +16,7 @@ import {
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Clipboard } from '@angular/cdk/clipboard';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { NotifierService } from '@epgu/epgu-lib';
 
 @Component({

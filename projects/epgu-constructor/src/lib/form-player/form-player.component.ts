@@ -48,7 +48,7 @@ import { AutocompleteService } from '../core/services/autocomplete/autocomplete.
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
-  @HostBinding('class.epgu-form-player') class = true;
+  @HostBinding('class.epgu-constructor') class = true;
   @HostBinding('attr.test-screen-id') screenId: string;
   @Input() service: ServiceEntity;
   @Input() context: FormPlayerContext = {};
@@ -77,6 +77,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     this.initFormPlayerConfig();
     this.initNavigation();
     this.initSettingOfScreenIdToAttr();
+    this.initLoader();
   }
 
   ngAfterViewInit(): void {
@@ -114,7 +115,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private initConfigDependentEntities(): void {
     this.autocompleteService.init(this.configService.isAutocompleteServiceDisabled || false);
-    this.tracingService.init(this.configService.isZipkinEnabled || false);
+    this.tracingService.init(this.configService.zipkinGenerationEnabled || false);
     this.screenService.serviceCode$
       .pipe(
         filter((serviceCode) => serviceCode !== null),
@@ -149,6 +150,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
         this.skipStep(data);
         this.changeDetectionRef.markForCheck();
       });
+
+    this.navService.restartOrder$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.formPlayerService.initData();
+      this.changeDetectionRef.markForCheck();
+    });
 
     this.navService.patchStepOnCli$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -197,5 +203,11 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private patchStepOnCli(newScenarioDtoDiff?: Partial<ScenarioDto>): void {
     this.formPlayerService.patchStore(newScenarioDtoDiff);
+  }
+
+  private initLoader(): void {
+    this.screenService.isLoaderVisible.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      setTimeout(() => this.changeDetectionRef.detectChanges(), 0);
+    });
   }
 }

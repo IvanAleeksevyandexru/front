@@ -1,4 +1,13 @@
 <div class="cmp-group">
+  <ng-container *ngIf="disclaimer">
+    <epgu-constructor-disclaimer
+      class="mb-24"
+      [type]="disclaimer.type"
+      [title]="disclaimer.title"
+      [description]="disclaimer.description"
+      [clarifications]="disclaimer.clarifications"
+    ></epgu-constructor-disclaimer>
+  </ng-container>
   <form [formGroup]="selectChildrenForm">
     <epgu-cf-ui-constructor-screen-pad
       class="cmp-group__layer"
@@ -11,6 +20,7 @@
         (removeChildEvent)="removeChild($event)"
       >
         <epgu-constructor-select-children-item
+          class="children-item"
           [hint]="hint"
           [idx]="idx"
           [control]="selectChildrenForm.get(item.controlId)"

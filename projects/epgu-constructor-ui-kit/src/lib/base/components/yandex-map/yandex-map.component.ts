@@ -9,7 +9,7 @@ import { ConfigService } from '../../../core/services/config/config.service';
 })
 export class YandexMapComponent implements OnInit {
   @Input() mapControls = [];
-  @Input() mapCenter: Array<number>;
+  @Input() mapCenter: number[];
   @Input() mapIsLoaded = false;
   @Input() showMap = false;
 

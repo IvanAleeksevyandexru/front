@@ -25,7 +25,14 @@ import { ScreenButtonsModule } from '../../shared/components/screen-buttons/scre
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentDto, ComponentActionDto, DTOActionAction, ButtonColor } from '@epgu/epgu-constructor-types';
+import {
+  ComponentDto,
+  ComponentActionDto,
+  DTOActionAction,
+  ButtonColor,
+} from '@epgu/epgu-constructor-types';
+import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -78,7 +85,9 @@ describe('InfoScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         EventBusService,
+        CertificateEaisdoService,
         CurrentAnswersService,
+        EaisdoGroupCostService,
       ],
     })
       .overrideComponent(InfoScreenComponent, {
@@ -134,18 +143,19 @@ describe('InfoScreenComponent', () => {
   });
 
   describe('should render epgu-constructor-page-name if screenService.header is not empty', () => {
-    const selector = 'epgu-cf-ui-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-page-name';
+    const selector =
+      'epgu-cf-ui-screen-container epgu-cf-ui-constructor-screen-pad epgu-constructor-page-name';
 
     it('screenService.header as plain text', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeNull();
-  
+
       screenService.header = 'any';
       fixture.detectChanges();
-  
+
       debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeTruthy();
-  
+
       expect(debugEl.nativeElement.textContent.trim()).toBe('any');
     });
 
@@ -156,7 +166,7 @@ describe('InfoScreenComponent', () => {
 
       screenService.header = testHtml;
       fixture.detectChanges();
-  
+
       debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeTruthy();
 

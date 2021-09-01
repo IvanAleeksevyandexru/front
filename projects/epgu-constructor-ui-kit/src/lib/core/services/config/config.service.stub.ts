@@ -16,6 +16,7 @@ export class ConfigServiceStub implements Config {
   _childrenClubsApi = '';
   _paymentUrl = 'https://oplata.gosuslugi.ru';
   _fileUploadApiUrl = '';
+  _quizDataApiUrl = '/api/v1/quizdata';
   _uinApiUrl = '';
   _billsApiUrl = '';
   _invitationUrl = '';
@@ -29,7 +30,8 @@ export class ConfigServiceStub implements Config {
   _isSocialShareDisabled = false;
   _isAutocompleteServiceDisabled = false;
   _addToCalendarUrl = '';
-  _isZipkinEnabled = false;
+  _zipkinGenerationEnabled: boolean;
+  _zipkinSpanSendEnabled: boolean;
   _zipkinUrl = '';
   _zipkinMaxPayloadSize: number;
   _zipkinEnv = '';
@@ -40,6 +42,7 @@ export class ConfigServiceStub implements Config {
   _lookupQueryTimeoutMs = 42;
   _nsiSuggestDictionaryUrl = '';
   _suggestionsApiUrl = '';
+  _identificationApiUrl = 'http://localhost:8097/v1/identification';
 
   _isLoaded$ = of(false);
   _appPathMap = {};
@@ -124,6 +127,10 @@ export class ConfigServiceStub implements Config {
     return this._fileUploadApiUrl;
   }
 
+  get quizDataApiUrl(): string {
+    return this._quizDataApiUrl;
+  }
+
   get lkUrl(): string {
     return this._lkUrl;
   }
@@ -196,8 +203,16 @@ export class ConfigServiceStub implements Config {
     return this._addToCalendarUrl;
   }
 
-  get isZipkinEnabled(): boolean {
-    return this._isZipkinEnabled;
+  get zipkinGenerationEnabled(): boolean {
+    return this._zipkinGenerationEnabled;
+  }
+
+  get zipkinSpanSendEnabled(): boolean {
+    return this._zipkinSpanSendEnabled;
+  }
+
+  set zipkinSpanSendEnabled(value) {
+    this._zipkinSpanSendEnabled = value;
   }
 
   get zipkinUrl(): string {
@@ -244,6 +259,10 @@ export class ConfigServiceStub implements Config {
     return this._suggestionsApiUrl;
   }
 
+  get identificationApiUrl(): string {
+    return this._identificationApiUrl;
+  }
+
   initCore(): void {}
 
   set config(config: Config) {
@@ -252,6 +271,7 @@ export class ConfigServiceStub implements Config {
     this._dictionaryUrl = config.dictionaryUrl;
     this._externalApiUrl = config.externalApiUrl;
     this._fileUploadApiUrl = config.fileUploadApiUrl;
+    this._quizDataApiUrl = config.quizDataApiUrl;
     this._lkUrl = config.lkUrl;
     this._childrenClubsApi = config.childrenClubsApi;
     this._paymentUrl = config.paymentUrl;
@@ -268,11 +288,13 @@ export class ConfigServiceStub implements Config {
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._addToCalendarUrl = config.addToCalendarUrl;
-    this._isZipkinEnabled = config.isZipkinEnabled || false;
+    this._zipkinGenerationEnabled = config.zipkinGenerationEnabled || false;
+    this._zipkinSpanSendEnabled = config.zipkinSpanSendEnabled || false;
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
     this._showTraceIdOnError = config.isZipkinCascadeMode || false;
     this._showTraceIdOnError = config.showTraceIdOnError || false;
+    this._identificationApiUrl = config.identificationApiUrl || '';
   }
 }

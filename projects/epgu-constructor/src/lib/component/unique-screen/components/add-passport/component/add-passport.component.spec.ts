@@ -13,6 +13,8 @@ import {
   ModalServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
+  FocusManagerService,
+  FocusManagerServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -29,6 +31,8 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { SuggestMonitorService } from '../../../../../shared/services/suggest-monitor/suggest-monitor.service';
+import { HtmlSelectService } from '../../../../../core/services/html-select/html-select.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -76,9 +80,11 @@ describe('AddPassportComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
         SuggestHandlerService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
+        { provide: FocusManagerService, useClass: FocusManagerServiceStub },
+        HtmlSelectService,
       ],
     }).compileComponents();
   });

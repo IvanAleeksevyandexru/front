@@ -38,7 +38,7 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
   @Input() fstuc?: TextTransform;
   @Input() init: [ComponentDto, Gender];
   @Input() componentValue?: EmployeeHistoryModel[];
-  @Input() ds: Array<EmployeeHistoryDataSource>;
+  @Input() ds: EmployeeHistoryDataSource[];
   @Output() updateFormEvent = new EventEmitter<EmployeeHistoryFormData>();
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;

@@ -6,6 +6,7 @@ import { Navigation, NavigationPayload } from '../../../../form-player/form-play
 import { CustomScreenService } from '../../../../screen/custom-screen/custom-screen.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenModalService } from '../../screen-modal.service';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 @Component({
   selector: 'epgu-constructor-component-list-modal',
@@ -23,6 +24,7 @@ export class ComponentListModalComponent {
     public screenService: ScreenService,
     public screenModalService: ScreenModalService,
     private customScreenService: CustomScreenService,
+    private currentAnswersService: CurrentAnswersService,
   ) {}
 
   nextStep(navigation?: Navigation): void {
@@ -41,5 +43,6 @@ export class ComponentListModalComponent {
   changeComponentsList(changes: CustomComponentOutputData): void {
     this.isValid = Object.values(changes).every((item) => item.isValid);
     this.dataToSend = this.customScreenService.getFormattedData(changes);
+    this.currentAnswersService.state = this.dataToSend;
   }
 }

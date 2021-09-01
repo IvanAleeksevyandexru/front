@@ -24,7 +24,8 @@ import { ValidationService } from '../../services/validation/validation.service'
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
@@ -50,10 +51,11 @@ describe('ConstructorPlainInputComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         EventBusService,
         ValidationService,
+        CurrentAnswersService,
         DateRangeService,
         DatesToolsService,
         UnsubscribeService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
       ],
     }).compileComponents();
   });

@@ -3,13 +3,14 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
-import { ModalService, ModalServiceStub, ChipModule } from '@epgu/epgu-constructor-ui-kit';
+import { ChipModule, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 import { MultipleChoiceDictionaryComponent } from './multiple-choice-dictionary.component';
 import { BaseModule } from '../../../base.module';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 
 describe('MultipleChoiceDictionaryComponent', () => {
   let component: MultipleChoiceDictionaryComponent;
@@ -20,7 +21,8 @@ describe('MultipleChoiceDictionaryComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MultipleChoiceDictionaryComponent],
       imports: [MockModule(BaseModule), MockModule(ChipModule)],
-      providers: [{ provide: ModalService, useClass: ModalServiceStub }],
+      providers: [{ provide: ModalService, useClass: ModalServiceStub }
+      ],
     })
       .overrideComponent(MultipleChoiceDictionaryComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -59,6 +61,17 @@ describe('MultipleChoiceDictionaryComponent', () => {
         code: '34',
       },
     ];
+    component.dictionaryFilter = {
+      filter: {
+        simple: {
+          attributeName: 'ID',
+          condition: DictionaryConditions.EQUALS,
+          value: {
+            asString: '03'
+          }
+        }
+      }
+    };
     fixture.detectChanges();
     component.ngOnInit();
     expect(JSON.stringify(component.dictionaryList)).toBe(JSON.stringify(expectedValue));
@@ -73,7 +86,8 @@ describe('MultipleChoiceDictionaryComponent', () => {
         title: component.modalHeader,
         dictionaryList: undefined,
         dictionaryType: component.dictionaryType,
-        selectedItems: component.selectedItems,
+        selectedItems: component.selectedItems.list,
+        dictionaryFilter: component.dictionaryFilter
       });
     });
     it('should be open modal without modalHeader', () => {
@@ -83,14 +97,15 @@ describe('MultipleChoiceDictionaryComponent', () => {
         title: component.subLabel,
         dictionaryList: undefined,
         dictionaryType: component.dictionaryType,
-        selectedItems: component.selectedItems,
+        selectedItems: component.selectedItems.list,
+        dictionaryFilter: component.dictionaryFilter
       });
     });
 
     it('should be update value after success close modal', () => {
       jest.spyOn(modalService, 'openModal').mockReturnValue(of([]));
       component.onClick();
-      expect(component.selectedItems).toEqual([]);
+      expect(component.selectedItems.list).toEqual([]);
     });
 
     it('should be  open error modal after error MultiChoiceDictionaryModalComponent', () => {
@@ -106,7 +121,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
 
   describe('remove', () => {
     it('should be update selectedItems after remove', () => {
-      component.selectedItems = [
+      component.selectedItems.list = [
         {
           id: 'AUT',
           text: 'АВСТРИЯ',
@@ -125,7 +140,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
       ];
       fixture.detectChanges();
       component.remove('AUT');
-      expect(component.selectedItems).toEqual([]);
+      expect(component.selectedItems.list).toEqual([]);
     });
   });
 });

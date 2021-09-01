@@ -13,7 +13,7 @@ export class AddressesToolsService {
    * @param items
    */
   public getCoordsByAddress(
-    addresses: Array<String>,
+    addresses: string[],
   ):
   Observable<IGeoCoordsResponse> {
     const path = `${this.configService.externalApiUrl}/address/resolve`;

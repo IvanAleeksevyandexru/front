@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { ComponentActionDto } from '@epgu/epgu-constructor-types';
+import { map } from 'rxjs/operators';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ComponentBase } from '../../../../../screen/screen.types';
 import { Passport } from '../add-passport.models';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
+import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 
 @Component({
   selector: 'epgu-constructor-add-passport-container',
@@ -15,6 +17,15 @@ import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 })
 export class AddPassportContainerComponent {
   data$: Observable<ComponentBase> = this.screenService.component$;
+  cachedValue$: Observable<string> = combineLatest([this.screenService.display$]).pipe(
+    map(([data]) => {
+      return JSON.parse(
+        data.components.find(
+          (component) => component.type === UniqueScreenComponentTypes.passportLookup,
+        ).value || '{}',
+      );
+    }),
+  );
 
   nextStepAction: ComponentActionDto = NEXT_STEP_ACTION;
 

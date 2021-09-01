@@ -26,7 +26,7 @@ import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/co
 export class AutocompleteService {
   componentsSuggestionsSet: Set<[string, string]> = new Set();
   suggestionGroupId: string = null;
-  repeatableComponents: Array<Array<ComponentDto>> = [];
+  repeatableComponents: ComponentDto[][] = [];
   parentComponent: ComponentDto = null;
 
   constructor(
@@ -173,12 +173,12 @@ export class AutocompleteService {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItem) => {
         const text = payload.list.reduce((acc, item: ISuggestionItemList): string => {
-          const hints = item.hints.map((hint) => hint.value).join(', ');
+          const hints = item.hints?.map((hint) => hint.value).join(', ');
           const { value, mnemonic, id } = item;
           const html = `
           <div class="suggest-item">
             <div>${value}</div>
-            <div class="suggest-hint">${hints}</div>
+            ${hints ? '<div class="suggest-hint">' + hints + '</div>' : ''}
             <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${
               mnemonic + ':' + value + ':' + id
             }">
@@ -210,7 +210,7 @@ export class AutocompleteService {
       });
   }
 
-  public getRepeatableComponents(display): Array<Array<ComponentDto>> {
+  public getRepeatableComponents(display): ComponentDto[][] {
     if (display.components[0]?.attrs?.repeatableComponents) {
       return display.components[0]?.attrs.repeatableComponents;
     } else if (display.components[0]?.attrs?.components) {

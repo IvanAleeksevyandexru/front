@@ -6,32 +6,37 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  ViewChild,
 } from '@angular/core';
-import { YaMapService, ListElement, LookupProvider } from '@epgu/epgu-lib';
+import { YaMapService } from '@epgu/epgu-lib';
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
-import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { isEqual as _isEqual } from 'lodash';
+import {
+  catchError,
+  filter,
+  finalize,
+  map,
+  reduce,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
+import { get, isEqual as _isEqual } from 'lodash';
 import {
   ActionType,
   ApplicantAnswersDto,
   ComponentDictionaryFilterDto,
   DictionaryOptions,
-  IMvdFilter,
   ScreenButton,
   DictionaryFilterPriority,
 } from '@epgu/epgu-constructor-types';
 import {
-  ConstructorLookupComponent,
   ModalService,
-  CommonModalComponent,
   DeviceDetectorService,
   UnsubscribeService,
   ConfigService,
-  UtilsService,
   AddressesToolsService,
   YMapItem,
   IGeoCoordsResponse,
+  YandexMapService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenService } from '../../../../screen/screen.service';
@@ -40,7 +45,6 @@ import { DictionaryApiService } from '../../../../shared/services/dictionary/dic
 import {
   DictionaryItem,
   DictionaryResponseForYMap,
-  DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import {
   ComponentValue,
@@ -49,6 +53,7 @@ import {
 import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import {
   IFillCoordsResponse,
+  MapTypes,
   SelectMapComponentAttrs,
   SelectMapObjectService,
 } from './select-map-object.service';
@@ -57,26 +62,28 @@ import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { PanelTypes } from './components/search-panel-resolver/search-panel-resolver.component';
+import { ContentTypes } from './components/balloon-content-resolver/balloon-content-resolver.component';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
+import { NavigationService } from '../../../../core/services/navigation/navigation.service';
+import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
+
+const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 
 @Component({
   selector: 'epgu-constructor-select-map-object',
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
-  providers: [UnsubscribeService, SelectMapObjectService],
+  providers: [UnsubscribeService, SelectMapObjectService, YandexMapService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
-  @ViewChild('informationTemplate', { static: false }) informationTemplate;
-  @ViewChild('libLookup', { static: false }) libLookup: ConstructorLookupComponent;
   data: ComponentBase;
   applicantAnswers: ApplicantAnswersDto;
   public mappedDictionaryForLookup;
-  public mapCenter: Array<number>;
+  public mapCenter: number[];
   public mapControls = [];
-  public provider: LookupProvider<Partial<ListElement>> = {
-    search: this.providerSearch(),
-  };
   public selectedValue;
   public showMap = false;
   public mapIsLoaded = false;
@@ -85,6 +92,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public isSearchTitleVisible = true;
   public isNoDepartmentErrorVisible = false;
   public screenActionButtons: ScreenButton[] = [];
+  public searchPanelType: PanelTypes;
+  public balloonContentType: ContentTypes;
 
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
@@ -100,26 +109,31 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   ]);
 
   constructor(
-    public selectMapObjectService: SelectMapObjectService,
     public config: ConfigService,
-    private yaMapService: YaMapService,
-    private dictionaryApiService: DictionaryApiService,
-    private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
-    private cdr: ChangeDetectorRef,
-    private modalService: ModalService,
-    private modalErrorService: ModalErrorService,
-    private zone: NgZone,
-    private deviceDetector: DeviceDetectorService,
-    private dictionaryToolsService: DictionaryToolsService,
+    public selectMapObjectService: SelectMapObjectService,
+    public yandexMapService: YandexMapService,
     private actionService: ActionService,
-    private currentAnswersService: CurrentAnswersService,
+    private actionToolsService: ActionToolsService,
     private addressesToolsService: AddressesToolsService,
+    private cdr: ChangeDetectorRef,
+    private currentAnswersService: CurrentAnswersService,
+    private deviceDetector: DeviceDetectorService,
+    private dictionaryApiService: DictionaryApiService,
+    private dictionaryToolsService: DictionaryToolsService,
+    private jsonHelperService: JsonHelperService,
+    private modalErrorService: ModalErrorService,
+    private modalService: ModalService,
+    private navigationService: NavigationService,
+    private ngUnsubscribe$: UnsubscribeService,
+    private yaMapService: YaMapService,
+    private zone: NgZone,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
 
   ngOnInit(): void {
+    this.screenService.isLoaderVisible.next(true);
     this.initData$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([data, applicantAnswers]: [ComponentBase, ApplicantAnswersDto]) => {
@@ -131,7 +145,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
     this.screenService.buttons$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((buttons: Array<ScreenButton>) => {
+      .subscribe((buttons: ScreenButton[]) => {
         this.screenActionButtons = buttons || [];
         this.cdr.markForCheck();
       });
@@ -142,69 +156,21 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       this.showMap = true;
       this.cdr.markForCheck();
     });
-    this.selectMapObjectService.templates.detailsTemplate = this.detailsTemplate;
-    this.selectMapObjectService.templates.informationTemplate = this.informationTemplate;
   }
 
   ngOnDestroy(): void {
     this.clearMapVariables();
   }
 
-  public lookupChanged(
-    mapObject: YMapItem<DictionaryItem>,
-    lookup: ConstructorLookupComponent,
-  ): void {
-    this.selectMapObject(mapObject);
-    lookup.clearInput();
-  }
-
-  public providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
-    return (searchString): Observable<Partial<ListElement>[]> => {
-      this.selectMapObjectService.searchMapObject(searchString);
-      const fullItems = [];
-      this.selectMapObjectService.filteredDictionaryItems.forEach((item) => {
-        item.children.forEach((child) => {
-          fullItems.push(child);
-        });
-      });
-      return of(this.dictionaryToolsService.adaptDictionaryToListItem(fullItems));
-    };
-  }
-
   public selectObject(item: YMapItem<DictionaryItem>): void {
     if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-      this.availablePaymentInGIBDD(this.selectedValue.attributeValues.code)
+      this.availablePaymentInGIBDD(item.attributeValues.code)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => this.nextStep(item));
       return;
     }
 
     this.nextStep(item);
-  }
-
-  /**
-   * Показывает модальное окно на основе шаблона
-   * @param templateName имя шаблона из this.templates
-   * @param item контекст балуна
-   */
-  public showModalFromTemplate(templateName: string, item: YMapItem<DictionaryItem>): void {
-    this.modalService.openModal(CommonModalComponent, {
-      modalTemplateRef: this[templateName],
-      item,
-    });
-  }
-
-  /**
-   * Метод раскрывает выбранный зал на панели слева
-   * @param mapObject объект на карте
-   */
-  public expandObject(mapObject: YMapItem<DictionaryItem>): void {
-    if (!mapObject || mapObject.expanded) return;
-    this.selectedValue.children = this.selectedValue.children.map(
-      (child: YMapItem<DictionaryItem>) => {
-        return { ...child, expanded: child.objectId === mapObject.objectId };
-      },
-    );
   }
 
   private initVariable(): void {
@@ -214,6 +180,16 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
+    this.selectMapObjectService.mapType = this.data.attrs.mapType as MapTypes;
+    this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
+    this.searchPanelType =
+      this.data.attrs.mapType === MapTypes.electionsMap
+        ? PanelTypes.electionsPanel
+        : PanelTypes.commonPanel;
+    this.balloonContentType =
+      this.data.attrs.mapType === MapTypes.electionsMap
+        ? ContentTypes.electionsContent
+        : ContentTypes.commonContent;
     this.needToAutoFocus = this.data.attrs.autoMapFocus;
     this.needToAutoCenterAllPoints = this.data.attrs.autoCenterAllPoints;
     this.componentValue = JSON.parse(this.data.value || '{}');
@@ -223,10 +199,12 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initSelectedValue(): void {
     if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
-      const mapObject = UtilsService.tryToParse(this.data?.value) as YMapItem<DictionaryItem>;
+      const mapObject = this.jsonHelperService.tryToParse(this.data?.value) as YMapItem<
+        DictionaryItem
+      >;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
-        this.selectMapObject(this.selectMapObjectService.findObjectByObjectId(mapObject.objectId));
+        this.yandexMapService.selectMapObject(mapObject);
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
         this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
@@ -246,20 +224,20 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
    */
   private getSelectedValue(): { [key: string]: string } {
-    const selectedValue = UtilsService.getObjectProperty(
+    const selectedValue = (get(
       this.applicantAnswers,
       this.data?.attrs.selectedValue,
-    );
+    ) as unknown) as string;
     return JSON.parse(selectedValue);
   }
 
   private subscribeToEmmitNextStepData(): void {
-    this.selectMapObjectService.selectedValue
+    this.yandexMapService.selectedValue$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: DictionaryItem) => {
         this.isSearchTitleVisible = !value || !this.isMobile;
         this.selectedValue = value;
-        this.expandObject(value);
+        // this.expandObject(value);
         this.cdr.detectChanges();
       });
   }
@@ -276,38 +254,52 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.initMapCenter();
   }
 
+  private getUrlTemplate(): string {
+    const region = this.data.attrs.region ? `&region=${this.data.attrs.region}` : '';
+    const url =
+      `${this.config.lkuipElection}/${this.data.attrs.LOMurlTemplate}&electionLevel=${this.data.attrs.electionLevel}` +
+      `&electionDate=${this.data.attrs.electionDate + region}`;
+    return url;
+  }
+
   /**
    * Инициализация карты - попытка определения центра, получение и расстановка точек на карте
    */
   private initMap(): void {
-    this.setMapOpstions();
+    if (this.data.attrs.LOMurlTemplate) {
+      this.yandexMapService.placeObjectsOnMap(null, null, this.getUrlTemplate());
+      this.mapIsLoaded = true;
+      this.screenService.isLoaderVisible.next(false);
+    } else {
+      if (this.isOnlySecondaryFilterRequestNeeded()) {
+        this.fillCoords(this.data.attrs.secondaryDictionaryFilter)
+          .pipe(
+            takeUntil(this.ngUnsubscribe$),
+            catchError((error) => this.handleError(error)),
+            filter((coords: IGeoCoordsResponse) => !!coords),
+            tap((coords: IGeoCoordsResponse) => this.handleGettingCoordinatesResponse(coords)),
+            finalize(() => this.screenService.isLoaderVisible.next(false)),
+          )
+          .subscribe();
+        return;
+      }
 
-    if (this.isOnlySecondaryFilterRequestNeeded()) {
-      this.fillCoords(this.data.attrs.secondaryDictionaryFilter)
+      this.fillCoords(this.data.attrs.dictionaryFilter)
         .pipe(
           takeUntil(this.ngUnsubscribe$),
+          switchMap((coords: IGeoCoordsResponse) => {
+            if (this.isSecondReqNeeded(coords)) {
+              return this.fillCoords(this.data.attrs.secondaryDictionaryFilter);
+            }
+            return of(coords);
+          }),
           catchError((error) => this.handleError(error)),
           filter((coords: IGeoCoordsResponse) => !!coords),
           tap((coords: IGeoCoordsResponse) => this.handleGettingCoordinatesResponse(coords)),
+          finalize(() => this.screenService.isLoaderVisible.next(false)),
         )
         .subscribe();
-      return;
     }
-
-    this.fillCoords(this.data.attrs.dictionaryFilter)
-      .pipe(
-        takeUntil(this.ngUnsubscribe$),
-        switchMap((coords: IGeoCoordsResponse) => {
-          if (this.isSecondReqNeeded(coords)) {
-            return this.fillCoords(this.data.attrs.secondaryDictionaryFilter);
-          }
-          return of(coords);
-        }),
-        catchError((error) => this.handleError(error)),
-        filter((coords: IGeoCoordsResponse) => !!coords),
-        tap((coords: IGeoCoordsResponse) => this.handleGettingCoordinatesResponse(coords)),
-      )
-      .subscribe();
   }
 
   private isOnlySecondaryFilterRequestNeeded(): boolean {
@@ -318,7 +310,25 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private handleError(error): Observable<null> {
-    this.modalErrorService.showError(error);
+    if ((error?.message || error) === INTERNAL_ERROR_MESSAGE) {
+      this.modalService
+        .openModal(ConfirmationModalComponent, {
+          ...COMMON_ERROR_MODAL_PARAMS,
+          backdropDismiss: false,
+          showCrossButton: false,
+          buttons: [
+            {
+              label: 'На предыдущий шаг',
+              closeModal: true,
+              value: 'prevStep',
+              handler: (): void => this.navigationService.prev(),
+            },
+          ],
+        })
+        .toPromise();
+    } else {
+      this.modalErrorService.showError(error);
+    }
     return of(null);
   }
 
@@ -327,23 +337,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.mapIsLoaded = true;
     this.initSelectedValue();
     this.cdr.detectChanges();
-    this.libLookup.lookupComponent.setSearchBarFocus();
-  }
-
-  private setMapOpstions(): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.selectMapObjectService.ymaps = (window as any).ymaps;
-    this.yaMapService.map.controls.add('zoomControl', {
-      position: {
-        top: 108,
-        right: 10,
-        bottom: 'auto',
-        left: 'auto',
-      },
-      size: this.isMobile ? 'small' : 'large',
-    });
-    this.yaMapService.map.options.set('minZoom', 4);
-    this.yaMapService.map.copyrights.togglePromo();
   }
 
   /**
@@ -352,7 +345,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   private handleFilledCoordinate(coords: IGeoCoordsResponse): void {
     this.selectMapObjectService.saveCoords(coords);
-    this.selectMapObjectService.placeObjectsOnMap(this.yaMapService.map);
+    const items = this.selectMapObjectService.filteredDictionaryItems.map((item) => {
+      return {
+        center: item.center,
+        obj: item,
+      };
+    });
+    this.yandexMapService.placeObjectsOnMap(items);
     this.tryInitSelectedObject();
   }
 
@@ -384,7 +383,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
   private fillCoords(
-    dictionaryFilters: Array<ComponentDictionaryFilterDto>,
+    dictionaryFilters: ComponentDictionaryFilterDto[],
   ): Observable<IFillCoordsResponse> {
     let options;
     try {
@@ -394,14 +393,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     }
     return this.dictionaryApiService.getSelectMapDictionary(this.getDictionaryType(), options).pipe(
       switchMap((dictionary: DictionaryResponseForYMap) => {
+        if (dictionary.error !== null && dictionary.error?.code !== 0) {
+          return throwError(dictionary.error);
+        }
         this.isNoDepartmentErrorVisible = !dictionary.total;
         this.selectMapObjectService.dictionary = dictionary;
-        const needToFilterMvd =
-          this.data.attrs.mvdFilters && this.componentValue.isMvdFiltersActivatedOnFront === 'true';
         // Параллелим получение геоточек на 4 запроса
-        const items = needToFilterMvd
-          ? this.applyRegionFilters(dictionary.items, this.data.attrs.mvdFilters)
-          : [...dictionary.items];
+        const items = [...dictionary.items];
         const addresses = items.map(
           (item: DictionaryItem) =>
             item.attributeValues[this.screenService.component.attrs.attributeNameWithAddress],
@@ -432,15 +430,17 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    * Подготовка тела POST запроса dictionary
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
-  private getOptions(dictionaryFilters: Array<ComponentDictionaryFilterDto>): DictionaryOptions {
+  private getOptions(dictionaryFilters: ComponentDictionaryFilterDto[]): DictionaryOptions {
     return {
       ...this.dictionaryToolsService.getFilterOptions(
         this.componentPresetValue,
         this.screenStore,
         dictionaryFilters,
       ),
+      // TODO: после правки JSON услуг, вернуть
+      // selectAttributes: this.screenService.component.attrs.selectAttributes || ['*'],
       selectAttributes: ['*'],
-      pageSize: '10000',
+      pageSize: '100000',
     };
   }
 
@@ -467,10 +467,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       );
 
       if (confirmationModalButtons.length > 0) {
-        this.actionService.openConfirmationModal(confirmationModalButtons[0], this.data.id, () => {
-          this.currentAnswersService.state = answer;
-          this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
-        });
+        this.actionToolsService.openConfirmationModal(
+          confirmationModalButtons[0],
+          this.data.id,
+          () => {
+            this.currentAnswersService.state = answer;
+            this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
+          },
+        );
       } else {
         this.currentAnswersService.state = answer;
         this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
@@ -540,7 +544,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         chosenMapObject = mapObj;
       }
     });
-    this.selectMapObjectService.centeredPlaceMark(chosenMapObject.center, chosenMapObject);
+    chosenMapObject = this.yandexMapService.getObjectById(chosenMapObject.objectId);
+    this.yandexMapService.centeredPlaceMark(chosenMapObject);
   }
 
   private centerAllPoints(): void {
@@ -577,26 +582,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private isSecondReqNeeded(coords: IFillCoordsResponse): boolean {
     return (
       coords.coords.length === 0 &&
-      coords.dictionaryError.code === 0 &&
+      (coords.dictionaryError === null || coords.dictionaryError.code === 0) &&
       !!this.data.attrs.secondaryDictionaryFilter
     );
-  }
-
-  private applyRegionFilters(
-    items: Array<DictionaryYMapItem>,
-    mvdFilters: Array<IMvdFilter>,
-  ): Array<DictionaryYMapItem> {
-    const filteredMvdFilters = mvdFilters.filter((mvdFilter) =>
-      mvdFilter.fiasList.some((fias) =>
-        ['*', this.componentValue.fiasLevel1, this.componentValue.fiasLevel4].includes(fias),
-      ),
-    );
-    const lastFilteredMvdFilter = filteredMvdFilters.pop();
-
-    return items.filter((department) => {
-      return lastFilteredMvdFilter
-        ? lastFilteredMvdFilter.value.includes(department[lastFilteredMvdFilter.field])
-        : false;
-    });
   }
 }

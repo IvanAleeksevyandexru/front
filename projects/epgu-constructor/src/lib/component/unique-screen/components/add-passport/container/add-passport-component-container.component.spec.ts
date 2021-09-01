@@ -2,15 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService } from '@epgu/epgu-lib';
 import { of } from 'rxjs';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, FocusManagerService, FocusManagerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { ComponentBase } from '../../../../../screen/screen.types';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
-import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadComponent, HealthService } from '@epgu/epgu-constructor-ui-kit';
 import { Passport } from '../add-passport.models';
 import { AddPassportComponent } from '../component/add-passport.component';
 import { AddPassportContainerComponent } from './add-passport-component-container.component';
@@ -48,6 +47,7 @@ describe('AddPassportContainerComponent', () => {
         SuggestMonitorService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         SuggestHandlerService,
+        { provide: FocusManagerService, useClass: FocusManagerServiceStub },
       ],
     }).compileComponents();
   });

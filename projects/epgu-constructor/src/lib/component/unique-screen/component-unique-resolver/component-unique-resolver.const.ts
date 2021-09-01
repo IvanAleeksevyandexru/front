@@ -30,17 +30,22 @@ import { MatPeriodContainerComponent } from '../components/mat-period/mat-period
 import { DateTimePeriodContainerComponent } from '../components/date-time-period/components/date-time-period-container/date-time-period-container.component';
 import { ConfirmPersonalUserAddressReadonlyComponent } from '../components/confirm-personal-user-address-readonly-screen/components/confirm-personal-user-address-readonly/confirm-personal-user-address-readonly.component';
 import { CarDetailInfoContainerComponent } from '../components/car-info/containers/car-detail-info/car-detail-info-container.component';
-import {
-  MedicalReferralsListContainerComponent
-} from '../components/medical-referrals-list/container/medical-refferals-list-container.component';
+import { MedicalReferralsListContainerComponent } from '../components/medical-referrals-list/container/medical-refferals-list-container.component';
 import { ConfirmPersonalUserLegalDataComponent } from '../components/confirm-personal-user-data-screen/component/confirm-personal-user-legal-data/confirm-personal-user-legal-data.component';
 import { ReferralNumberComponent } from '../components/referral-number/referral-number.component';
 import { DatePeriodContainerComponent } from '../components/date-period/date-period-container.component';
 import { PaymentWayContainerComponent } from '../components/payment-way/components/payment-way-container/payment-way-container.component';
+import { TimeSlotDoctorsContainerComponent } from '../components/time-slot-doctors/time-slot-doctors-container/time-slot-doctors-container.component';
+import { IdentificationUploadScreenComponent } from '../components/identification-upload-screen/identification-upload-screen.component';
+import { IdentificationStreamComponent } from '../components/identification-stream/identification-stream.component';
+import { RegistrationAddrReadonlyComponent } from '../components/registration-addr/components/registration-addr-readonly/registration-addr-readonly.component';
+import { PersonUserInnComponent } from '../components/person-user-inn/person-user-inn.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
 type UniqueScreenComponent =
+  | IdentificationStreamComponent
+  | IdentificationUploadScreenComponent
   | InformationCenterMvdContainerComponent
   | UnusedPaymentsContainerComponent
   | SelectMapObjectComponent
@@ -49,6 +54,7 @@ type UniqueScreenComponent =
   | EmployeeHistoryContainerComponent
   | RepeatableScreenComponent
   | TimeSlotsComponent
+  | TimeSlotDoctorsContainerComponent
   | CarInfoContainerComponent
   | CarOwnerInfoContainerComponent
   | CarListContainerComponent
@@ -75,7 +81,8 @@ type UniqueScreenComponent =
   | MedicalReferralsListContainerComponent
   | ReferralNumberComponent
   | PaymentWayContainerComponent
-  ;
+  | PersonUserInnComponent
+  | RegistrationAddrReadonlyComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
 
@@ -83,6 +90,8 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   UniqueScreenComponentTypes,
   Type<UniqueScreenComponent>
 >> = {
+  IdentificationStreamComponent: IdentificationStreamComponent,
+  IdentificationUploadComponent: IdentificationUploadScreenComponent,
   CityDepartment: InformationCenterMvdContainerComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,
@@ -91,6 +100,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,
   TimeSlot: TimeSlotsComponent,
+  TimeSlotDoctor: TimeSlotDoctorsContainerComponent,
   TimeSlotWithComputableDepartment: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,
   CarList: CarListContainerComponent,
@@ -114,6 +124,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   ConfirmLegalEmail: ConfirmPersonalUserPhoneEmailComponent,
   RegistrationAddr: RegistrationAddrComponent,
   RegistrationLegalAddr: RegistrationAddrComponent,
+  RegistrationLegalAddrReadOnly: RegistrationAddrReadonlyComponent,
   PassportLookup: AddPassportContainerComponent,
   ChildrenList: SelectChildrenScreenContainerComponent,
   ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated
@@ -130,4 +141,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   MedicalReferrals: MedicalReferralsListContainerComponent,
   ReferralNumber: ReferralNumberComponent,
   PaymentWay: PaymentWayContainerComponent,
+  PersonUserInn: PersonUserInnComponent
 };

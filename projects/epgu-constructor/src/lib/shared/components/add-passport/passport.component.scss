@@ -1,20 +1,30 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 :host {
   flex: 1 1 auto;
   width: 100%;
-  .form__name {
-    @include typ-plain-small;
 
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
+  .form {
+    &__name {
+      @include typ-plain-small;
+  
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
 
-  .form__inputs {
-    display: flex;
-    justify-content: space-between;
-    .inputs__field {
-      flex-basis: calc(50% - 10px);
+    &__inputs {
+      display: flex;
+      justify-content: space-between;
+      .inputs__field {
+        flex-basis: calc(50% - 10px);
+      }
+    }
+
+    &__error {
+      min-height: 20px;
+      margin-bottom: 4px;
+      color: $color-gosred;
     }
   }
 }

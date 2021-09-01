@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LabelComponent } from './label.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DeviceDetectorService, DeviceDetectorServiceStub, SafePipe } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  SafePipe
+} from '@epgu/epgu-constructor-ui-kit';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 import { ClickableLabelDirective } from '../../../directives/clickable-label/clickable-label.directive';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
@@ -15,6 +19,7 @@ import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
 import { SmuEventsService } from '@epgu/epgu-lib';
+import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 
 describe('LabelComponent', () => {
   let component: LabelComponent;
@@ -33,6 +38,7 @@ describe('LabelComponent', () => {
         CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
+        HtmlSelectService,
       ],
     }).compileComponents();
   });

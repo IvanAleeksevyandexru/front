@@ -1,27 +1,50 @@
 @import '../../../../styles/core/index';
 
 .chip {
-  min-height: 40px;
-  border-radius: 8px;
   display: inline-flex;
-  align-items: center;
   justify-content: space-between;
-  background: $color-azzurro-alice;
-  padding: 8px 16px;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 12px 8px 16px;
   word-break: break-word;
+  background: $color-azzurro-alice;
+  border-radius: 8px;
 }
+
+.chip__text {
+  line-height: 1.5;
+}
+
 .cross-btn {
   position: relative;
   top: 0;
   right: 0;
-  margin-left: 10px;
-  min-width: 20px;
+  align-self: flex-start;
+  width: 16px;
+  min-width: 16px;
+  height: 24px;
+  margin-left: 9px;
+
   &:before,
   &:after {
+    top: 5px;
+    left: 7px;
+    height: 16px;
     background: $color-blue-selvaggio;
+
+    @include tablets-down {
+      top: 4px;
+      left: 11px;
+    }
   }
+
   &:hover:before,
   &:hover:after {
     background: $color-gosblue;
+  }
+
+  @include tablets-down {
+    width: 24px;
+    min-width: 24px;
   }
 }

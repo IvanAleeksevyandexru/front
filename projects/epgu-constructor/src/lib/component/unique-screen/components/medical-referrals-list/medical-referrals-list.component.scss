@@ -1,4 +1,6 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
 
 .referrals-end-date {
   color: $color-text-helper;
@@ -8,6 +10,15 @@
 .referrals-specialist {
   text-transform: capitalize;
   @include typ-h5();
+}
+
+.referrals-service {
+  &-heading {
+    @include typ-h5();
+  }
+  &-plain {
+    @include typ-plain-text;
+  }
 }
 
 .referrals-address {

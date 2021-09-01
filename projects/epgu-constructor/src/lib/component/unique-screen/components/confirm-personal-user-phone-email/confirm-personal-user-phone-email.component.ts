@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from 'lodash';
-import { DTOActionAction } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -32,7 +31,6 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     })),
   );
   isPhoneScreenType: boolean;
-  isEditContactAction: boolean;
 
   constructor(
     public currentAnswersService: CurrentAnswersService,
@@ -44,7 +42,6 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
-      this.isEditContactAction = this.getIsEditContactAction();
       this.isPhoneScreenType = this.getIsPhoneScreenType();
       this.updateValue(data.value, data.errors);
 
@@ -60,18 +57,6 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     }
     const hasErrors = errors.some((error) => error?.type === ConfirmUserDataErrorType.error);
     this.currentAnswersService.isValid = !_isEmpty(value) && !hasErrors;
-  }
-
-  private getIsEditContactAction(): boolean {
-    const isEditPhone = [DTOActionAction.editPhoneNumber, DTOActionAction.editLegalPhone].includes(
-      this.screenService.action?.action,
-    );
-    const isEditEmail = [
-      DTOActionAction.editEmail,
-      DTOActionAction.editLegalEmail,
-      DTOActionAction.serviceEditLegalEmail,
-    ].includes(this.screenService.action?.action);
-    return isEditPhone || isEditEmail;
   }
 
   private getIsPhoneScreenType(): boolean {

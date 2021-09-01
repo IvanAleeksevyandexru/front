@@ -1,5 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, ViewChild, AfterViewInit } from '@angular/core';
-
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  ViewChild,
+  AfterViewInit,
+  ElementRef,
+} from '@angular/core';
 import { PerfectScrollbarConfigInterface, PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
@@ -18,10 +24,12 @@ export class CtaModalComponent implements AfterViewInit {
   @Input() showCrossButton?: boolean;
   @Input() preview?: boolean;
   @Input() isShortModal?: boolean;
-  @Input() isButtonsOutsideContent? = false;
+  @Input() isButtonsOutsideContent = false;
   @Input() scrollTop = true;
 
-  @ViewChild('perfectScroll', { static: false }) perfectScroll: PerfectScrollbarComponent;
+  @ViewChild('perfectScroll', { static: false, read: ElementRef }) perfectScroll: ElementRef<
+    PerfectScrollbarComponent
+  >;
 
   public isMobile: boolean;
   public scrollConfig: PerfectScrollbarConfigInterface = { suppressScrollX: true };
@@ -39,7 +47,7 @@ export class CtaModalComponent implements AfterViewInit {
       https://jira.egovdev.ru/secure/attachment/514868/514868_2021-07-06+12-03-52.mp4
       */
       setTimeout(() => {
-        this.perfectScroll.directiveRef.scrollToTop();
+        (this.perfectScroll as ElementRef).nativeElement.scrollIntoView();
       });
     }
   }

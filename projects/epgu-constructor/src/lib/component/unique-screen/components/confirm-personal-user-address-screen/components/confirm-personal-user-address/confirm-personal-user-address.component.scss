@@ -1,4 +1,6 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 :host {
   display: block;
@@ -65,4 +67,16 @@
 .edit-item {
   position: relative;
   top: 19px;
+}
+
+.empty-fields {
+  display: flex;
+  margin-top: 24px;
+  justify-content: center;
+  color: $color-text-helper;
+  line-height: 24px;
+
+  @include tablets-up {
+    margin-top: 40px;
+  }
 }

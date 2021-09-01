@@ -19,14 +19,14 @@ import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
 import { AddressItemComponent } from '../address-item/address-item.component';
-import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';
+import { DadataWidgetComponent, PlainInputComponent } from '@epgu/epgu-lib';
 import { LabelComponent } from '../../../../../../shared/components/base-components/label/label.component';
 import { HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
-import { HealthService } from '@epgu/epgu-lib';
-import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { HealthServiceStub, HealthService } from '@epgu/epgu-constructor-ui-kit';
+import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 
 const mockData = {
   attrs: {
@@ -65,7 +65,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
         AddressItemComponent,
         ConfirmPersonalUserAddressComponent,
         MockComponents(
-          DatePickerComponent,
+          ConstructorDatePickerComponent,
           LabelComponent,
           HelperTextComponent,
           DefaultUniqueScreenWrapperComponent,

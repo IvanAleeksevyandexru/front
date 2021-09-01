@@ -1,143 +1,6 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
-
-.calendar-grid-wrap {
-  display: flex;
-  width: 100%;
-  min-width: 100%;
-  flex-shrink: 0;
-
-  &.out-of-area {
-    display: block;
-    max-height: 200px;
-    overflow: hidden;
-  }
-}
-
-.time-slots-empty {
-  text-align: center;
-  h4 {
-    margin-bottom: 8px;
-  }
-}
-
-.calendar-grid {
-  display: table;
-  width: 100%;
-  .calendar-week-days {
-    display: table-row;
-    width: 100%;
-    .calendar-week-day {
-      display: table-cell;
-      width: 14.28%; // 1/7
-      text-align: center;
-      padding: 10px;
-      .calendar-week-day-text {
-        font-family: Lato,sans-serif;
-        font-size: 14px;
-        line-height: 20px;
-        color: $color-dark-gray;
-      }
-    }
-  }
-  .calendar-week {
-    display: table-row;
-    width: 100%;
-    .calendar-day {
-      display: table-cell;
-      width: 14.28%; // 1/7
-      text-align: center;
-      padding: 10px;
-      cursor: pointer;
-      box-sizing: border-box;
-      .calendar-day-text {
-        font-family: Lato,sans-serif;
-        font-size: 14px;
-        line-height: 20px;
-        color: $color-gosblue;
-      }
-      &.today {
-        position: relative;
-      }
-      &:hover {
-        background: $color-gosblue;
-        border-radius: 12px;
-        .calendar-day-text {
-          color: $color-white;
-        }
-      }
-      &.locked {
-        cursor: default;
-        &:hover {
-          border: none;
-        }
-        .calendar-day-text {
-          color: $color-divider;
-        }
-      }
-      &.holiday {
-        .calendar-day-text {
-          color: $color-gosred;
-        }
-      }
-      &.is-past, &.outer-section {
-        .calendar-day-text {
-          color: $color-bg-disabled;
-        }
-      }
-      &.outer-month {
-        visibility: hidden;
-      }
-      &.visible {
-        visibility: visible;
-      }
-      &.selected {
-        background: $color-gosblue;
-        border-radius: 12px;
-        .calendar-day-text {
-          color: $color-white;
-        }
-      }
-    }
-  }
-}
-
-.divider {
-  margin: 20px 0 24px;
-}
-
-.time-slots-items {
-  margin: 0 -4px -4px -4px;
-  display: flex;
-  flex-flow: wrap;
-
-  .time-slot-item {
-    $margin: 4px;
-    background: $color-alice-blue;
-    border-radius: 8px;
-    color: $color-gosblue;
-    padding: 10px 16px;
-    line-height: 24px;
-    margin: $margin;
-    cursor: pointer;
-    text-align: center;
-    width: calc((100% / 3) - #{2 * $margin});
-    @include phones-up() {
-      width: calc((100% / 4) - #{2 * $margin});
-    }
-    @include tablets-up {
-      width: calc((100% / 6) - #{2 * $margin});
-    }
-
-    &:hover {
-      background: $color-tagline-hit;
-    }
-
-    &.selected {
-      background: $color-gosblue;
-      color: $color-white;
-    }
-  }
-}
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
 
 .months-range {
   @include typ-plain-text;
@@ -145,7 +8,8 @@
   padding-bottom: 16px;
 }
 
-.dropdown-list, .months-range {
+.dropdown-list,
+.months-range {
   text-align: center;
 }
 
@@ -165,8 +29,8 @@
         }
       }
 
-      .dropdown-value>.selected-value-text {
-        color: $color-gosblue!important;
+      .dropdown-value > .selected-value-text {
+        color: $color-gosblue !important;
       }
     }
 
@@ -179,29 +43,29 @@
       width: 195px;
 
       .dropdown-list-area .dropdown-item {
-        .dropdown-item-text{
-          color: $color-gosblue!important;
+        .dropdown-item-text {
+          color: $color-gosblue !important;
         }
         &.selected {
-          background-color: $color-white!important;
+          background-color: $color-white !important;
           .dropdown-item-text {
-            color: $color-summer-night!important;
+            color: $color-summer-night !important;
           }
         }
         &.highlighted {
-          background-color: $color-white!important;
+          background-color: $color-white !important;
           .dropdown-item-text {
-            color: $color-active-item!important;
+            color: $color-active-item !important;
           }
         }
       }
-
     }
   }
 }
 
 .cancel-button {
-  ::ng-deep button, ::ng-deep button:hover {
+  ::ng-deep button,
+  ::ng-deep button:hover {
     background: $color-white;
     border: 1px solid $color-pulsante-premuto;
     box-sizing: border-box;
@@ -211,14 +75,13 @@
 }
 
 .screen-footer {
-
   & &--time-slots {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 4px;
 
-    .time{
+    .time {
       margin-bottom: 24px;
       &--bold {
         font-weight: $fw-bold;

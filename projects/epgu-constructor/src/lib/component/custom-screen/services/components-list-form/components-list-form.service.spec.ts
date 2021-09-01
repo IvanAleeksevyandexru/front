@@ -1,4 +1,6 @@
+import { DecimalPipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -13,6 +15,7 @@ import {
   UnsubscribeService,
   ConfigService,
   LoggerService,
+  ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -22,7 +25,6 @@ import { ComponentsListRelationsService } from '../components-list-relations/com
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import {
   CustomComponent,
-  CustomComponentRefRelation,
   CustomListFormGroup,
   CustomScreenComponentTypes,
 } from '../../components-list.types';
@@ -30,6 +32,14 @@ import { Observable } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { MaskTransformService } from 'projects/epgu-constructor/src/lib/shared/directives/mask/mask-transform.service';
+import { cloneDeep } from 'lodash';
+import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { MockProvider } from 'ng-mocks';
+import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -93,10 +103,18 @@ describe('ComponentsListFormService', () => {
     value: 'value',
     required: true,
   };
+  let dictionaryMock = (index) => ({
+    originalItem: {
+      attributeValues: {
+        OKATO: index === 0 ? '40000000000' : '45000000000'
+      }
+    },
+  });
   let component: MockComponent;
   let dictionaryToolsService: DictionaryToolsService;
   let addressHelperService: AddressHelperService;
   let componentsListToolsService: ComponentsListToolsService;
+  let maskTransformService: MaskTransformService;
 
   @Component({
     template: `
@@ -120,13 +138,16 @@ describe('ComponentsListFormService', () => {
       declarations: [MockComponent],
       imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [
+        DateRefService,
         ComponentsListFormService,
         ValidationService,
+        CurrentAnswersService,
         UnsubscribeService,
         ComponentsListToolsService,
         AddressHelperService,
         LoggerService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         DateRangeService,
         DatesToolsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -136,8 +157,12 @@ describe('ComponentsListFormService', () => {
         HttpHandler,
         RefRelationService,
         DictionaryToolsService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ConfigService,
+        MaskTransformService,
+        DecimalPipe,
+        TypeCastService,
+        JsonHelperService,
       ],
     });
   });
@@ -147,6 +172,7 @@ describe('ComponentsListFormService', () => {
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
     addressHelperService = TestBed.inject(AddressHelperService);
     componentsListToolsService = TestBed.inject(ComponentsListToolsService);
+    maskTransformService = TestBed.inject(MaskTransformService);
     fixture = TestBed.createComponent(MockComponent);
     component = fixture.componentInstance;
     component.componentMockData = componentMockData;
@@ -173,7 +199,8 @@ describe('ComponentsListFormService', () => {
     const setup = (
       type = CustomScreenComponentTypes.DropDown,
       attrs = { defaultIndex: 0 },
-      dictionaryItemsCount = 2
+      dictionaryItemsCount = 2,
+      value = ''
     ) => {
       const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
       const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
@@ -181,7 +208,10 @@ describe('ComponentsListFormService', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       const getDictionariesSpy = jest.fn(() => ({
         [`${component.attrs.dictionaryType}${component.id}`]: {
-          list: Array(dictionaryItemsCount).fill({}).map((_, index) => ({ id: `index ${index}` })),
+          list: Array(dictionaryItemsCount).fill({}).map((_, index) => ({
+            id: `index ${index}`,
+            ...dictionaryMock(index),
+          })),
         },
       }));
 
@@ -193,7 +223,7 @@ describe('ComponentsListFormService', () => {
       extraComponent.id = 'someID';
       component.type = type;
       component.attrs = { ...component.attrs, ...attrs };
-      component.value = undefined;
+      component.value = value;
       service.create([component, extraComponent], {});
 
       const control = service.form.controls.find((ctrl) => ctrl.value.id === component.id);
@@ -246,7 +276,7 @@ describe('ComponentsListFormService', () => {
 
         service.patch(component);
         expect(getDictionariesSpy).toHaveBeenCalled();
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0' });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
       });
 
       it('should pass lookupDefaultValue if it is provided', () => {
@@ -258,7 +288,22 @@ describe('ComponentsListFormService', () => {
 
         service.patch(component);
         expect(getDictionariesSpy).toHaveBeenCalled();
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 1' });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 1', ...dictionaryMock(1) });
+      });
+
+      it('should pass lookupDefaultValue with lookupFilterPath if it is provided', () => {
+        const {
+          getDictionariesSpy,
+          controlPatchSpy,
+          component,
+        } = setup(CustomScreenComponentTypes.Lookup, {
+          lookupDefaultValue: '40000000000',
+          lookupFilterPath: 'originalItem.attributeValues.OKATO',
+        });
+
+        service.patch(component);
+        expect(getDictionariesSpy).toHaveBeenCalled();
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
       });
     });
 
@@ -272,7 +317,7 @@ describe('ComponentsListFormService', () => {
         service.patch(component);
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0' });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
       });
 
       it('should patchDropDownDeptsValue when there is one element', () => {
@@ -284,7 +329,16 @@ describe('ComponentsListFormService', () => {
         service.patch(component);
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0' });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
+      });
+
+      it('should dont call patch when there is no value ', () => {
+        const {
+          controlPatchSpy,
+          component,
+        } = setup(CustomScreenComponentTypes.Lookup, { lockedValue: false }, 1, '');
+        service.patch(component);
+        expect(controlPatchSpy).toHaveBeenCalledTimes(0);
       });
     });
   });
@@ -299,6 +353,32 @@ describe('ComponentsListFormService', () => {
       expect(getPreparedStateForSendingSpy).toHaveBeenCalled();
       expect(emitSpy).toHaveBeenCalled();
     });
+    it('should call transformNumberMaskInput if type equally StringInput and val.attrs.mask equally NumberMaskInput', async () => {
+      const transformNumberMaskInput = jest.spyOn(maskTransformService, 'transformNumberMaskInput');
+      const componentStub = cloneDeep(componentMockData);
+
+      // @ts-ignore
+      componentStub.attrs.mask = 'NumberMaskInput';
+      componentStub.attrs.ref[0].relation = CustomComponentRefRelation.displayOff;
+      componentStub.attrs.maskOptions = {
+        decimalSymbol: ',',
+        allowDecimal: true
+      };
+      componentStub.value = 'value';
+      let component = JSON.parse(JSON.stringify(componentStub));
+      service.create([componentStub, component], {});
+
+      await service.emitChanges();
+      expect(transformNumberMaskInput).toHaveBeenCalled();
+      expect(service['getPreparedStateForSending']()[componentStub.id]['value']).toEqual('0,00');
+
+      componentStub.value = '123';
+      component = JSON.parse(JSON.stringify(componentStub));
+      service.create([componentStub, component], {});
+
+      await service.emitChanges();
+      expect(service['getPreparedStateForSending']()[componentStub.id]['value']).toEqual('123,00');
+    });
   });
 
   describe('addressHelperServiceProvider()', () => {
@@ -306,6 +386,16 @@ describe('ComponentsListFormService', () => {
       const addressHelperServiceSpy = jest.spyOn(addressHelperService, 'getProvider');
       service.addressHelperServiceProvider(componentMockData.attrs);
       expect(addressHelperServiceSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('markForFirstRoundValidation()', () => {
+    it('should mark form controls as touched, if there are non-empty values ', () => {
+      const extraComponent = JSON.parse(JSON.stringify(componentMockData));
+      service.create([componentMockData, extraComponent], {});
+      service['markForFirstRoundValidation']([extraComponent]);
+      const result = service['_form'].controls.some(control => control.touched);
+      expect(result).toBeTruthy();
     });
   });
 

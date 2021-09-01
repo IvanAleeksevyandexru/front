@@ -1,4 +1,14 @@
 <div class="form__name">Паспорт РФ</div>
+<div class="form__error">
+  <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames">
+    <div *ngIf="hasWrongValue(fieldName) && showOnFocus(fieldName)">
+      <small>{{ valueErrorsList[fieldName].errorMsg }} {{ valueErrorsList[fieldName].label }}</small>
+    </div>
+    <div *ngIf="hasNoValue(fieldName) && showOnFocus(fieldName)">
+      <small>Необходимо заполнить {{ valueErrorsList[fieldName].label }}</small>
+    </div>
+  </epgu-cf-ui-constructor-input-error>
+</div>
 <form [formGroup]="passportForm" class="form__inputs">
   <div class="inputs__field" *ngFor="let field of attrs.fields">
     <epgu-constructor-label

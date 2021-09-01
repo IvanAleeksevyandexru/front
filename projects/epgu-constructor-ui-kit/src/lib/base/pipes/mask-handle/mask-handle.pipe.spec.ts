@@ -31,10 +31,10 @@ describe('MaskHandlePipe', () => {
   describe('test NumberMaskInput', () => {
     const setup = (
       maskOptions?: Partial<NumberMaskOptions>,
-    ): { numberMaskTransform: (string) => Array<string | RegExp> } => ({
+    ): { numberMaskTransform: (string) => (string | RegExp)[] } => ({
       numberMaskTransform: (pipe.transform('NumberMaskInput', maskOptions) as unknown) as (
         string,
-      ) => Array<string | RegExp>,
+      ) => (string | RegExp)[],
     });
 
     it('provide correct mask for simple number', () => {

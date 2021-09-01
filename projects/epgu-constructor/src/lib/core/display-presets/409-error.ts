@@ -5,7 +5,6 @@ export const DOUBLE_ORDER_ERROR_DISPLAY: DisplayDto = {
   name: 'Финальная страница сценария электронный вариант',
   type: ScreenTypes.CUSTOM,
   header: '',
-  submitLabel: '',
   components: [
     {
       id: 'finishcomponent_double_order_error',

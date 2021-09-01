@@ -1,0 +1,41 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+
+:host {
+  ::ng-deep.map-object {
+    padding: 24px;
+    border-bottom: 1px solid $color-mercury;
+    @include typ-plain-small;
+
+    &__header {
+      padding-bottom: 0px;
+    }
+
+    &__attr {
+      & > * {
+        display: block;
+      }
+    }
+
+    .details-link {
+      padding-bottom: 24px;
+      margin-top: -8px;
+      display: flex;
+    }
+
+    &__label {
+      padding-top: 16px;
+      font-weight: $fw-bold;
+    }
+
+    &:not(.expanded) {
+      cursor: pointer;
+      color: $color-gosblue;
+    }
+
+    .submit-button {
+      display: block;
+      margin-top: 24px;
+    }
+  }
+}

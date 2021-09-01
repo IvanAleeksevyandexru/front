@@ -1,5 +1,7 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
 
 .form-player__navigation {
   @include navigation-mt();

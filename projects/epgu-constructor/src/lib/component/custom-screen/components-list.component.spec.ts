@@ -1,7 +1,8 @@
+import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
 import { cloneDeep } from 'lodash';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
-import { MockComponents, MockPipe } from 'ng-mocks';
+import { MockComponents, MockPipe, MockProvider } from 'ng-mocks';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
@@ -19,7 +20,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   LocalStorageService,
-  LocalStorageServiceStub, HttpCancelService,
+  LocalStorageServiceStub, HttpCancelService, ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
@@ -44,7 +45,7 @@ import { AddressHelperService } from '../../shared/services/address-helper/addre
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../../shared/services/prepare-components/prepare-components.service';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService, HealthService, HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from './services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormServiceStub } from './services/components-list-form/components-list-form.service.stub';
@@ -54,8 +55,9 @@ import { SuggestHandlerService } from '../../shared/services/suggest-handler/sug
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
 import { mockComponentsListComponentStore } from './mocks/mock-components-list';
 import { SuggestMonitorService } from '../../shared/services/suggest-monitor/suggest-monitor.service';
-import { HealthService } from '@epgu/epgu-lib';
-import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
+import { of } from 'rxjs';
+import { DateRefService } from '../../core/services/date-ref/date-ref.service';
 
 // TODO: написать тест
 describe('ComponentsListComponent', () => {
@@ -87,7 +89,7 @@ describe('ComponentsListComponent', () => {
           PassportComponent,
           DocInputComponent,
           FieldListComponent,
-          OutputHtmlComponent
+          OutputHtmlComponent,
         )
       ],
       providers: [
@@ -102,21 +104,25 @@ describe('ComponentsListComponent', () => {
         ScreenService,
         DateRangeService,
         DatesToolsService,
+        DateRefService,
+        MockProvider(RestToolsService),
         AddressHelperService,
         CurrentAnswersService,
-        PrepareComponentsService,
+        MockProvider(PrepareComponentsService),
         CachedAnswersService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         LoggerService,
         DictionaryToolsService,
         ComponentsListRelationsService,
         UnsubscribeService,
         RefRelationService,
         SuggestHandlerService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         SuggestMonitorService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        JsonHelperService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(ComponentsListComponent, {
@@ -130,6 +136,9 @@ describe('ComponentsListComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentsListComponent);
+    const restToolsService = TestBed.inject(RestToolsService);
+    jest.spyOn(restToolsService, 'dictionaries$', 'get').mockReturnValue(of({}));
+    jest.spyOn(restToolsService, 'watchForUpdates').mockReturnValue(of({}));
     component = fixture.componentInstance;
     formService = TestBed.inject(ComponentsListFormService);
     component.components = cloneDeep(mockComponentsListComponentStore.display.components);

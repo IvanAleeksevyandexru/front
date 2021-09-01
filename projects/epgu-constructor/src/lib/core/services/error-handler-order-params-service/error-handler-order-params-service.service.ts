@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   ErrorHandlerOrderParams,
   ErrorHandlerOrderParamsAbstractService,
-  UtilsService
+  ObjectHelperService,
+  WordTransformService
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenStore } from '../../../screen/screen.types';
@@ -12,7 +13,8 @@ import { ScreenStore } from '../../../screen/screen.types';
 export class ErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderParamsAbstractService {
   constructor(
     public screenService: ScreenService,
-    private utils: UtilsService,
+    private wordTransformService: WordTransformService,
+    private objectHelperService: ObjectHelperService,
   ) {}
 
   public getParams(): ErrorHandlerOrderParams {
@@ -20,17 +22,17 @@ export class ErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderP
     let orderId = undefined;
 
     if (this.hasOrderId(store)) {
-      orderId = this.utils.isDefined(store.orderId) ? store.orderId : store.callBackOrderId;
+      orderId = this.objectHelperService.isDefined(store.orderId) ? store.orderId : store.callBackOrderId;
     }
 
     return {
       id: store?.display?.id,
-      name: this.utils.cyrillicToLatin(store?.display?.name),
+      name: this.wordTransformService.cyrillicToLatin(store?.display?.name),
       orderId,
     };
   }
 
   private hasOrderId(store: ScreenStore): boolean {
-    return this.utils.isDefined(store.orderId) || this.utils.isDefined(store.callBackOrderId);
+    return this.objectHelperService.isDefined(store.orderId) || this.objectHelperService.isDefined(store.callBackOrderId);
   }
 }

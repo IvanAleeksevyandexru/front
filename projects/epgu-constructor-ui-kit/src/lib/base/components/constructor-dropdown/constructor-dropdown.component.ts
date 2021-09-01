@@ -23,7 +23,7 @@ export class ConstructorDropdownComponent implements OnInit {
   @Input() disabled: boolean;
   @Input() localSearch: boolean;
   @Input() placeholder?: string = '&mdash;';
-  @Input() items: Array<ListElement>;
+  @Input() items: ListElement[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Output() changed = new EventEmitter<ListElement | any>(); // TODO: подумать над рефактором подписочной модели
 

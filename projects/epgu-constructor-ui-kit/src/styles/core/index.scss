@@ -4,6 +4,12 @@
 @import 'functions';
 @import 'typography';
 @import 'breakpoint';
+@import 'display';
 @import 'grid';
 @import 'tables';
-@import 'core';
+@import 'class';
+.epgu-constructor {
+  @import 'core';
+  @import 'lists';
+}
+

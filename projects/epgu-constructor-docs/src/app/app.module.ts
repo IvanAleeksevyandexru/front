@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExampleEpguChipModule } from '../components/chip/chip.module';
 import { APP_PROVIDERS } from './app.providers';
+import { EpguLibModule } from '@epgu/epgu-lib';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,11 @@ import { APP_PROVIDERS } from './app.providers';
     TuiDocExampleModule,
     TuiDocPageModule,
     ExampleEpguChipModule,
+    EpguLibModule.forRoot({
+      notifier: {
+        singleNotifier: true,
+      },
+    }),
   ],
   providers: APP_PROVIDERS,
   bootstrap: [AppComponent],

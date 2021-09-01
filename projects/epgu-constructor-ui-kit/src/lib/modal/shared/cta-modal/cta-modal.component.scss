@@ -2,7 +2,7 @@
 @import '../../../../styles/components/rubles';
 @import '../../../../styles/components/modal';
 
-$my: 7vh;
+$my: 96px;
 $pyConfModal: 64px;
 $headerHeight: 57px;
 $controlHeight: 55px;
@@ -53,6 +53,7 @@ $closeBtnWidth: 24px;
     right: 0;
     z-index: 1;
     cursor: pointer;
+
     &:only-child {
       @include tablets-up {
         top: 4px;
@@ -61,6 +62,7 @@ $closeBtnWidth: 24px;
   }
 
   &__body {
+    display: flex;
     overflow: auto; // для отработки скрола в модалке в моб
     @include rubles('.conf-modal__body');
     @include tablets-down {
@@ -72,11 +74,20 @@ $closeBtnWidth: 24px;
     }
   }
 
+  .wrap-scrollbar {
+    min-height: 100%;
+    width: 100%;
+  }
+
   &__content {
     overflow: auto;
     @include flex-container();
     @include tablets-down {
       height: 100%;
+    }
+
+    .scroll-padding {
+      padding-right: 16px;
     }
   }
 
@@ -93,6 +104,9 @@ $closeBtnWidth: 24px;
     }
 
     ::ng-deep {
+      .row {
+        width: 100%;
+      }
       > *:not(:first-child) {
         margin: 0 0 24px;
         @include tablets-up {
@@ -133,32 +147,18 @@ $closeBtnWidth: 24px;
     }
 
     .conf-modal__controls {
-      margin-right: -15px; // центрирует кнопки
+      margin-right: -16px; // центрирует кнопки
     }
 
     .ps-content {
       display: flex;
       flex-direction: column;
       height: 100%;
-      padding-right: 15px; // fix overlapping content by scroll
+      padding-right: 16px; // fix overlapping content by scroll
       padding-bottom: 2px; // hack for avoid overlapping of buttons
       @include tablets-up {
-        max-height: calc(
-          100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight} - #{$controlHeight}
-        );
         min-height: calc(
           #{$minModalHeight} - #{$pyConfModal} - #{$headerHeight} - #{$pyConfModal} / 2
-        );
-      }
-    }
-  }
-
-  .perfect-scrollbar-button-outside-content {
-    .ps-content {
-      @include tablets-up {
-        max-height: calc(
-          100vh - #{$my * 2} - #{$pyConfModal} - #{$headerHeight} - #{$controlHeight} - #{$controlHeight} *
-            2
         );
       }
     }

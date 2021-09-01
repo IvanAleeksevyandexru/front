@@ -9,8 +9,8 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   EventBusService,
-  ModalService,
-  UtilsService,
+  ModalService, ObjectHelperService,
+  DownloadService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
@@ -57,7 +57,8 @@ describe('ConfirmationModalComponent', () => {
       providers: [
         EventBusService,
         ModalService,
-        UtilsService,
+        DownloadService,
+        ObjectHelperService,
         Clipboard,
         NotifierService,
         { provide: NavigationService, useClass: NavigationServiceStub },

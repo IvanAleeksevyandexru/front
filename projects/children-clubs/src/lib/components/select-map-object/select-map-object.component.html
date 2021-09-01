@@ -20,7 +20,7 @@
           <div class="map-object__attr" *ngFor="let item of mapObject.financingTypes">
             <img
               [alt]="financingTypes[item].text"
-              src="assets/icons/{{ financingTypes[item].icon }}"
+              src="{{ config.staticDomainAssetsPath }}/assets/icons/{{ financingTypes[item].icon }}"
             />
             <span class="PGU-AttrsValue">{{ financingTypes[item].text }}</span>
           </div>

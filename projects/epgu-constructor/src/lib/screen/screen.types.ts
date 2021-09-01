@@ -14,7 +14,7 @@ export interface ScreenStoreComponentDtoI extends ComponentBase {
   presetValue?: string;
 }
 export interface ScreenStoreDisplayDtoI extends DisplayDto {
-  components: Array<ScreenStoreComponentDtoI>;
+  components: ScreenStoreComponentDtoI[];
 }
 
 export interface ScreenStore extends Partial<ScenarioDto> {

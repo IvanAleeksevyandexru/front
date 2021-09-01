@@ -15,11 +15,13 @@
   >
     <epgu-constructor-multiple-choice-dictionary
       [formControl]="$any(control.get('value'))"
+      [dictionaryFilter]="dictionaryFilter"
       [dictionaryList]="component.attrs?.dictionaryList"
       [dictionaryType]="component.attrs?.dictionaryType"
       [subLabel]="component.attrs?.subLabel"
       [modalHeader]="component.attrs?.modalHeader"
       [label]="component.label"
+      [withAmount]="component.attrs?.withAmount"
     ></epgu-constructor-multiple-choice-dictionary>
   </epgu-constructor-component-item>
 </ng-template>

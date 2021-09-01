@@ -7,6 +7,7 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
 import { configureTestSuite } from 'ng-bullet';
+import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 
 describe('ComponentsListToolsService', () => {
   let service: ComponentsListToolsService;
@@ -30,6 +31,7 @@ describe('ComponentsListToolsService', () => {
         DatesToolsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,
+        TypeCastService,
       ],
     });
     service = TestBed.inject(ComponentsListToolsService);
@@ -79,6 +81,11 @@ describe('ComponentsListToolsService', () => {
       component.type = CustomScreenComponentTypes.CheckBox;
       component.value = 'true';
       expect(service.convertedValue(component)).toEqual(true);
+    });
+    it('should return parsed phone number', () => {
+      const component = JSON.parse(JSON.stringify(mockComponent));
+      component.value = '+7(980)7060210';
+      expect(service.convertedValue(component)).toEqual('+7 (980) 706 02 10');
     });
     it('should return string value, if string value passed', () => {
       const component = mockComponent;
@@ -160,6 +167,25 @@ describe('ComponentsListToolsService', () => {
     it('should return false, if undefined', () => {
       const type = undefined;
       expect(service.isDate(type)).toBeFalsy();
+    });
+  });
+
+  describe('isPhone()', () => {
+    it('should return true, if is phone number', () => {
+      const value = '+7(980)7060210';
+      expect(service.isPhone(value)).toBeTruthy();
+    });
+    it('should return false, if is not phone number', () => {
+      const value = '234-234-423 34';
+      expect(service.isPhone(value)).toBeFalsy();
+    });
+    it('should return false, if undefined', () => {
+      const value = undefined;
+      expect(service.isPhone(value)).toBeFalsy();
+    });
+    it('should return false, if null', () => {
+      const value = null;
+      expect(service.isPhone(value)).toBeFalsy();
     });
   });
 });

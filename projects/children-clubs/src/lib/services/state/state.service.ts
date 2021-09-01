@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
-import { AppStateQuery, AppStateService } from '@epgu/epgu-constructor-ui-kit';
+import { MicroAppStateQuery, MicroAppStateService } from '@epgu/epgu-constructor-ui-kit';
 import { ChildrenClubsState, ChildrenClubsValue, GroupFiltersModes } from '../../children-clubs.types';
 import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs';
+import { pluck } from 'rxjs/operators';
 
 @Injectable()
 export class StateService {
   state$ = this.stateQuery.state$;
 
+  public isLoaderVisible$: Observable<boolean> = this.stateQuery.state$.pipe(
+    pluck('isLoaderVisible'),
+  );
+
   constructor(
-    private appStateService: AppStateService<ChildrenClubsValue, ChildrenClubsState>,
-    private stateQuery: AppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private appStateService: MicroAppStateService<ChildrenClubsValue, ChildrenClubsState>,
+    private stateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
 
   changeState(state: Partial<ChildrenClubsState>): void {
@@ -48,9 +54,19 @@ export class StateService {
   }
 
   get groupFilters(): FindOptionsGroup {
-    return this.stateQuery.state?.groupFilters
-      ? cloneDeep(this.stateQuery.state?.groupFilters)
-      : ({ nextSchoolYear: this.nextSchoolYear, vendor: this.vendor } as FindOptionsGroup);
+    const defaultFindOptions: FindOptionsGroup = {
+      nextSchoolYear: this.nextSchoolYear,
+      vendor: this.vendor,
+      isRegistrationOpen: this.programFilters.isRegistrationOpen,
+      maxPrice: this.programFilters.maxPrice,
+      age: this.programFilters.age,
+      inlearnoPayments: this.programFilters.inlearnoPayments
+      };
+    if (!this.stateQuery.state?.groupFilters || Object.keys(this.stateQuery.state?.groupFilters).length === 0) {
+      return defaultFindOptions;
+    } else {
+      return cloneDeep(this.stateQuery.state?.groupFilters);
+    }
   }
 
   set groupFilters(filters: FindOptionsGroup) {
@@ -64,6 +80,14 @@ export class StateService {
 
   set groupFiltersMode(groupFiltersMode: GroupFiltersModes) {
     this.changeState({ groupFiltersMode });
+  }
+
+  get isLoaderVisible(): boolean {
+    return this.stateQuery.state?.isLoaderVisible;
+  }
+
+  set isLoaderVisible(isLoaderVisible: boolean) {
+    this.changeState({ isLoaderVisible });
   }
 
   clearGroupFilters(): void {

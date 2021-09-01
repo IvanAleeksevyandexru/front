@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ConfigService, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DATE_STRING_DOT_FORMAT, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -13,7 +13,7 @@ import { UniqueScreenComponentTypes } from '../../../../unique-screen-components
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
-import { DadataWidgetComponent, DatePickerComponent, PlainInputComponent } from '@epgu/epgu-lib';
+import { DadataWidgetComponent, PlainInputComponent } from '@epgu/epgu-lib';
 import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
@@ -24,6 +24,8 @@ import { ActionDirective } from '../../../../../../shared/directives/action/acti
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
+import { DisclaimerComponent } from '../../../../../../shared/components/disclaimer/disclaimer.component';
+import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   const mockData: ConfirmAddressInterface = {
@@ -40,9 +42,15 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
           hint: 'Дату регистрации можно найти на штампе о регистрации на стр. 5-12 паспорта РФ',
         },
       ],
+      disclaimer: {
+        type: 'warn',
+        title: 'Добавьте адрес',
+        description: 'Адрес постоянной регистрации нужен для отправки заявления. Этот адрес сохранится в профиле, и в будущих заявлениях не придется вводить его заново',
+      },
     },
     id: '',
     value: '{}',
+    presetValue: '{}',
     label: '',
     type: UniqueScreenComponentTypes.confirmPersonalUserRegAddr,
     required: true,
@@ -65,7 +73,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
       ],
       declarations: [
         ConfirmPersonalUserAddressReadonlyComponent,
-        MockComponent(DatePickerComponent),
+        MockComponent(ConstructorDatePickerComponent),
         MockDirective(TextTransformDirective),
         MockDirective(ActionDirective),
         MockComponent(LabelComponent),
@@ -73,6 +81,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         MockComponent(DefaultUniqueScreenWrapperComponent),
         MockComponent(DadataWidgetComponent),
         MockComponent(PlainInputComponent),
+        MockComponent(DisclaimerComponent),
         SafePipe,
         ImgPrefixerPipe,
       ],
@@ -94,12 +103,13 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
     const component: ConfirmPersonalUserAddressReadonlyComponent = fixture.componentInstance;
     const screenService: ScreenService = TestBed.inject(ScreenService);
     const currentAnswersService: CurrentAnswersService = TestBed.inject(CurrentAnswersService);
+    const dateService: DatesToolsService = TestBed.inject(DatesToolsService);
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
     jest.spyOn(screenService, 'componentErrors', 'get').mockReturnValue({});
     component.data$ = of(data);
     fixture.detectChanges();
 
-    return { fixture, component, screenService, currentAnswersService };
+    return { fixture, component, screenService, currentAnswersService, dateService };
   }
 
   it('should create', () => {
@@ -190,5 +200,31 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
       expect(component.valueParsed).toEqual({ regAddr: 'Some addr' });
       expect(JSON.parse(currentAnswersService.state as string)).toEqual({ regAddr: 'Some addr' });
     });
+
+    it('should show preset value over value if former is specified', () => {
+      const { component, dateService } = setup({
+        ...mockData,
+        attrs: {
+          ...mockData.attrs,
+          fields: [
+            {
+              fieldName: 'regAddr' as FieldNames,
+              label: 'Адрес',
+            },
+            {
+              fieldName: 'regDate' as FieldNames,
+              label: 'Дата',
+            },
+          ],
+        },
+        value: JSON.stringify({ regAddr: 'Some addr', regDate: '11.05.2021' }),
+        presetValue: JSON.stringify({ regAddr: 'Some addr1', regDate: '12.05.2021' }),
+      });
+
+      component.ngOnInit();
+
+      expect(component.valueParsed).toEqual({ regAddr: 'Some addr1', regDate: dateService.parse('12.05.2021', DATE_STRING_DOT_FORMAT) });
+    });
+
   });
 });

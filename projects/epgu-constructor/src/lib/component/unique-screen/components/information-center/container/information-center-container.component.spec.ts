@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { InformationCenterContainerComponent } from './information-center-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -29,6 +29,8 @@ import { RefRelationService } from '../../../../../shared/services/ref-relation/
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../../core/services/date-ref/date-ref.service';
 
 describe('InformationCenterContainerComponent', () => {
   let component: InformationCenterContainerComponent;
@@ -134,11 +136,13 @@ describe('InformationCenterContainerComponent', () => {
         DictionaryToolsService,
         ComponentsListRelationsService,
         DateRangeService,
+        DateRefService,
         DatesToolsService,
         RefRelationService,
-        DateRestrictionsService,
+        MockProvider(DateRestrictionsService),
         ConfigService,
         LoggerService,
+        JsonHelperService,
       ],
     }).compileComponents();
   });

@@ -1,4 +1,4 @@
-import { ListItem } from '@epgu/epgu-lib';
+import { BrokenDateFixStrategy, ListItem } from '@epgu/epgu-lib';
 import {
   ComponentDictionaryFilterDto,
   DictionaryOptions,
@@ -10,10 +10,10 @@ import {
   ComponentImageDto,
   ComponentAttrsDto,
   DictionaryUrlTypes,
+  CustomComponentRefRelation,
+  RestAttrsDto,
 } from '@epgu/epgu-constructor-types';
-// @ts-ignore
 import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
-
 import { ComponentBase } from '../../screen/screen.types';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {
@@ -22,49 +22,54 @@ import {
 } from '../../shared/services/dictionary/dictionary-api.types';
 
 export enum CustomScreenComponentTypes {
-  LabelSection = 'LabelSection',
-  Dictionary = 'Dictionary',
-  DropDown = 'DropDown',
-  SearchableDropDown = 'SearchableDropDown',
-  DropDownDepts = 'DropDownDepts',
-  MvdGiac = 'MvdGiac',
-  StringInput = 'StringInput',
-  DateInput = 'DateInput',
-  MonthPicker = 'MonthPicker',
-  RadioInput = 'RadioInput',
-  Lookup = 'Lookup',
   AddressInput = 'AddressInput',
-  HtmlString = 'HtmlString',
+  CardNumberInput = 'CardNumberInput',
+  CertificateEaisdo = 'CertificateEaisdo',
   CheckBox = 'CheckBox',
-  PhoneNumberChangeInput = 'PhoneNumberChangeInput',
+  CheckBoxList = 'CheckBoxList',
+  CheckingAccount = 'CheckingAccount',
+  CityInput = 'CityInput',
+  ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
+  DateInput = 'DateInput',
+  CalendarInput = 'CalendarInput',
+  Dictionary = 'Dictionary',
+  Disclaimer = 'Disclaimer',
+  DocInput = 'DocInput',
+  DropDown = 'DropDown',
+  DropDownDepts = 'DropDownDepts',
+  EaisdoGroupCost = 'EaisdoGroupCost',
+  FieldList = 'FieldList',
+  FileUploadComponent = 'FileUploadComponent',
+  HtmlString = 'HtmlString',
+  LabelSection = 'LabelSection',
+  LegalInnInput = 'LegalInnInput',
+  Lookup = 'Lookup',
+  MonthPicker = 'MonthPicker',
+  MultipleChoiceDictionary = 'MultipleChoiceDictionary',
+  MvdGiac = 'MvdGiac',
   NewEmailInput = 'NewEmailInput',
   NewLegalEmailInput = 'NewLegalEmailInput',
   OgrnInput = 'OgrnInput',
   OgrnipInput = 'OgrnipInput',
-  LegalInnInput = 'LegalInnInput',
-  PersonInnInput = 'PersonInnInput',
   PassportLookup = 'PassportLookup',
+  PersonInnInput = 'PersonInnInput',
+  PhoneNumberChangeInput = 'PhoneNumberChangeInput',
+  RadioInput = 'RadioInput',
+  RestLookup = 'RestLookup',
+  SearchableDropDown = 'SearchableDropDown',
   SnilsInput = 'SnilsInput',
-  CardNumberInput = 'CardNumberInput',
-  CityInput = 'CityInput',
-  DocInput = 'DocInput',
-  FieldList = 'FieldList',
-  Timer = 'Timer',
+  StringInput = 'StringInput',
   TextArea = 'TextArea',
-  MultipleChoiceDictionary = 'MultipleChoiceDictionary',
-  CheckBoxList = 'CheckBoxList',
-  CheckingAccount = 'CheckingAccount',
-  FileUploadComponent = 'FileUploadComponent',
-  ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
+  Timer = 'Timer',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
 // type CustomScreenComponentValue = {[key in CustomScreenComponentTypes]: CustomScreenComponentValueTypes };
 
 // @todo. выяснить, почему в коде CustomListDropDowns как объект, а не массив
-export type CustomListDropDowns = Array<{ [key: string]: Partial<ListItem>[] }>;
+export type CustomListDropDowns = { [key: string]: Partial<ListItem>[] }[];
 // @todo. выяснить, почему в коде CustomListDictionaries как объект, а не массив
-export type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;
+export type CustomListDictionaries = { [key: string]: CustomListDictionary[] }[];
 export type CustomListReferenceData = CustomListGenericData<
   Partial<ListItem>[] | DictionaryResponse
 >;
@@ -77,7 +82,7 @@ export interface CustomListDictionary {
   paginationLoading: boolean;
   origin: CustomComponent;
   data: DictionaryResponse;
-  list: Array<ListItem>;
+  list: ListItem[];
   page: number;
   selectedItem: DictionaryItem;
   repeatedWithNoFilters?: boolean;
@@ -100,7 +105,7 @@ export interface CustomListGenericData<T> {
   };
 }
 
-export type CustomComponentDropDownItemList = Array<CustomComponentDropDownItem>;
+export type CustomComponentDropDownItemList = CustomComponentDropDownItem[];
 export type CustomComponentDropDownItem = {
   title?: string;
   label?: string; // TODO нужно удалить после обновления JSON, вместо него поле value
@@ -109,11 +114,17 @@ export type CustomComponentDropDownItem = {
   disable: boolean;
 };
 
-export type CustomComponentAttrField = Array<{
+export type CustomComponentAttrField = {
   fieldName?: string;
   label?: string;
   type?: string;
-}>;
+}[];
+
+export interface MappingParamsDto {
+ idPath: string;
+ textPath: string;
+ isRoot?: boolean;
+}
 
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
@@ -121,61 +132,71 @@ export type CustomComponentAttrField = Array<{
  * @property dictionaryType - dictionary name for request {@see getDictionary}
  */
 export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
-  dictionaryList?: CustomComponentDropDownItemList;
-  dictionaryType?: string;
-  subLabel?: string;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
-  secondaryDictionaryFilter?: Array<ComponentDictionaryFilterDto>;
-  needUnfilteredDictionaryToo?: boolean;
-  labelAttr?: string; // TODO: deprecated?
-  fields?: CustomComponentAttrField;
-  ref?: Array<CustomComponentRef | DateRangeRef>; //TODO разобраться с типами
-  validation?: Array<CustomComponentAttrValidation>;
-  requiredAttrs?: Array<string>;
-  updateOnValidation?: UpdateOn;
-  supportedValues?: Array<SupportedValue>;
-  relation?: { ref: string; conditions: RelationCondition[] };
-  disabled?: boolean;
-  hidden?: boolean;
-  defaultValue?: boolean;
-  filter?: ComponentFilterDto;
-  defaultIndex?: number;
-  lookupDefaultValue?: string | number;
-  relationField?: ComponentRelationFieldDto;
-  dictionaryOptions?: DictionaryOptions;
-  grid?: string;
-  minDate?: string;
-  maxDate?: string;
-  onlyFirstScreen?: boolean;
   add?: { component: string; caption: string[] };
-  suggestionId?: string;
-  searchType?: string;
   cityFilter?: string[];
-  maskOptions?: NumberMaskOptions;
-  labelHint?: string;
-  hint?: string;
-  customUnrecLabel?: string;
   clarifications?: Clarifications;
-  isTextHelper?: boolean;
-  isBottomSlot?: boolean;
-  lockedValue?: boolean;
-  repeatWithNoFilters?: boolean;
-  refs?: { [key: string]: string };
+  class?: string;
+  customUnrecLabel?: string;
   dateRestrictions?: DateRestriction[];
-  mappingParams?: { idPath: string; textPath: string; isRoot: boolean };
+  defaultIndex?: number;
+  defaultValue?: boolean;
+  dictionaryFilter?: ComponentDictionaryFilterDto[];
+  dictionaryFilters?: ComponentDictionaryFilterDto[][];
+  dictionaryList?: CustomComponentDropDownItemList;
+  dictionaryOptions?: DictionaryOptions;
+  dictionaryType?: string;
   dictionaryUrlType?: DictionaryUrlTypes;
+  disabled?: boolean;
+  fields?: CustomComponentAttrField;
+  filter?: ComponentFilterDto;
+  grid?: string;
+  hidden?: boolean;
+  hint?: string;
+  image?: ComponentImageDto;
+  isBottomSlot?: boolean;
+  isNotDuplicate?: boolean;
+  isTextHelper?: boolean;
+  labelAttr?: string; // TODO: deprecated?
+  labelHint?: string;
+  lockedValue?: boolean;
+  lookupDefaultValue?: string | number;
+  lookupFilterPath?: string;
+  mappingParams?: MappingParamsDto;
+  maskOptions?: NumberMaskOptions;
+  maxDate?: string;
+  minDate?: string;
+  needUnfilteredDictionaryToo?: boolean;
+  emptyWhenNoFilter?: boolean;
+  onlyFirstScreen?: boolean;
+  ref?: (CustomComponentRef | DateRangeRef)[]; //TODO разобраться с типами
+  refs?: { [key: string]: string };
+  relation?: { ref: string; conditions: RelationCondition[] };
+  relationField?: ComponentRelationFieldDto;
+  repeatWithNoFilters?: boolean;
+  requiredAttrs?: string[];
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
-    turnOffStartFilter?: boolean;
   };
-  image?: ComponentImageDto;
+  searchType?: string;
+  secondaryDictionaryFilter?: ComponentDictionaryFilterDto[];
+  subLabel?: string;
+  suggestionId?: string;
+  supportedValues?: SupportedValue[];
+  updateOnValidation?: UpdateOn;
+  validation?: CustomComponentAttrValidation[];
+  withAmount?: boolean;
+  interpolationEnabled?: boolean;
+  readonly?: boolean;
+  brokenDateFixStrategy?: BrokenDateFixStrategy;
 }
 
 export interface DateRestriction {
   condition: string;
   type: 'ref' | 'const';
-  value: string;
+  value: string | Date;
+  forChild?: string;
+  precision?: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -189,6 +210,13 @@ export interface CustomComponentAttrValidation {
   errorMsg: string;
   errorDesc?: string;
   updateOn?: UpdateOn;
+  expr?: string;
+  forChild?: string;
+}
+
+export enum CustomComponentAttrValidator {
+  validationFn = 'validation-fn',
+  calculatedPredicate = 'CalculatedPredicate'
 }
 
 export interface CustomComponentOutputData {
@@ -199,22 +227,6 @@ export interface CustomComponentOutputData {
     disabled?: boolean;
     condition?: string;
   };
-}
-
-/**
- * Тип зависимости от другого компонента
- */
-export enum CustomComponentRefRelation {
-  displayOn = 'displayOn',
-  displayOff = 'displayOff',
-  filterOn = 'filterOn',
-  disabled = 'disabled',
-  calc = 'calc',
-  getValue = 'getValue',
-  autofillFromDictionary = 'autofillFromDictionary',
-  reset = 'reset',
-  validateDependentControl = 'validateDependentControl',
-  autoFillTextFromRefs = 'autoFillTextFromRefs',
 }
 
 export enum CustomComponentValidationConditions {
@@ -228,15 +240,16 @@ export enum CustomComponentValidationConditions {
  */
 export interface CustomComponentRef {
   relatedRel: string;
-  val: string | Array<string> | boolean;
+  val: string | string[] | boolean;
   relation: CustomComponentRefRelation;
   sourceId?: string;
   relatedRelValues?: { [key: string]: string };
   defaultValue?: string | boolean;
   valueFromCache?: string;
-  dictionaryFilter?: Array<ComponentDictionaryFilterDto>;
+  dictionaryFilter?: ComponentDictionaryFilterDto[];
   isResetable?: boolean;
   path?: string;
+  rest?: RestAttrsDto;
 }
 
 export interface CustomListFormGroup {
@@ -250,7 +263,7 @@ export interface CustomListFormGroup {
 }
 
 export interface CustomDisplay extends DisplayDto {
-  components: Array<CustomComponent>;
+  components: CustomComponent[];
 }
 
 export interface RelationCondition {
@@ -259,7 +272,19 @@ export interface RelationCondition {
   result: CustomComponentAttr;
 }
 
+export interface CustomComponentWithAttrs<T> extends ComponentBase {
+  attrs: T;
+  type: CustomScreenComponentTypes;
+  id: string;
+  hint?: string;
+  fstuc?: TextTransform;
+  isShown?: boolean;
+  price?: boolean;
+  searchProvider?: { search: Function };
+}
+
 export interface CustomComponent extends ComponentBase {
+  arguments?: { [key: string]: string };
   attrs: CustomComponentAttr;
   type: CustomScreenComponentTypes;
   id: string;
@@ -275,3 +300,9 @@ export interface SupportedValue {
   value: string;
   isDefault?: boolean;
 }
+
+export interface DateRestrictionGroups {
+  [key: string]: DateRestriction[];
+}
+
+export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';

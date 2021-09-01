@@ -4,7 +4,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService, LocationService,
+  LocationServiceStub,
+  SessionStorageService,
+  SessionStorageServiceStub
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -12,8 +17,8 @@ import { NavigationModalService } from '../../../core/services/navigation-modal/
 import { NavigationModalServiceStub } from '../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
-import { UtilsService } from '@epgu/epgu-constructor-ui-kit';
-import { UtilsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -34,6 +39,9 @@ import {
   ActionApiResponse,
   ComponentDto,
 } from '@epgu/epgu-constructor-types';
+import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { ActionToolsService } from './action-tools.service';
 
 @Component({
   selector: 'epgu-constructor-action-test',
@@ -136,7 +144,7 @@ describe('ActionDirective', () => {
   let screenService: ScreenService;
   let navigationService: NavigationService;
   let navigationModalService: NavigationModalService;
-  let utilsService: UtilsService;
+  let downloadService: DownloadService;
   let localStorageService: LocalStorageService;
   let actionService: ActionService;
 
@@ -150,16 +158,21 @@ describe('ActionDirective', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
-        { provide: UtilsService, useClass: UtilsServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
         HtmlRemoverService,
         CurrentAnswersService,
         ActionService,
+        ActionToolsService,
         AutocompleteApiService,
         HttpClient,
         HttpHandler,
         EventBusService,
+        EaisdoGroupCostService,
+        JsonHelperService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -172,20 +185,22 @@ describe('ActionDirective', () => {
     screenService = TestBed.inject(ScreenService);
     navigationService = TestBed.inject(NavigationService);
     navigationModalService = TestBed.inject(NavigationModalService);
-    utilsService = TestBed.inject(UtilsService);
+    downloadService = TestBed.inject(DownloadService);
     localStorageService = TestBed.inject(LocalStorageService);
     actionService = TestBed.inject(ActionService);
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
+
+    screenService.display = new FormPlayerServiceStub()._store.scenarioDto.display;
   });
 
   it('test directive - download action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.download')).nativeElement;
     fixture.detectChanges();
-    spyOn(utilsService, 'downloadFile').and.callThrough();
+    spyOn(downloadService, 'downloadFile').and.callThrough();
     button.click();
 
-    expect(utilsService.downloadFile).toHaveBeenCalled();
+    expect(downloadService.downloadFile).toHaveBeenCalled();
   });
 
   it('test directive - prevStepModal Action', () => {

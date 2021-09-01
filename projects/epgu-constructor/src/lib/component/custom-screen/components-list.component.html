@@ -1,10 +1,15 @@
 <form class="form">
   <ng-container *ngFor="let componentData of formService.form.controls; let idx = index">
+    <!--класс find-item позволяет находить первые и последние видимые элементы класса form__item-->
+    <p class="find-item"
+      *ngIf="formService.shownElements[componentData.value?.id]?.isShown
+        | showComponent: componentData.value?.attrs?.hidden">
+    </p>
     <div class="form__item {{
         componentData.value?.attrs?.grid ? componentData.value?.attrs?.grid : ''
       }}"
       [class.form__item--checkbox]="[componentType.CheckBox].includes(componentData.value?.type)"
-      *ngIf="
+      [class.show]="
           formService.shownElements[componentData.value?.id]?.isShown
             | showComponent: componentData.value?.attrs?.hidden
         "
@@ -13,6 +18,7 @@
         [componentIndex]="idx"
         [componentsGroupIndex]="componentsGroupIndex"
         [componentType]="componentData.value?.type"
+        [limit]='componentData.value?.attrs?.limit'
         class="component-list-resolver"
       ></epgu-constructor-component-list-resolver>
   </div>

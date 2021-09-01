@@ -11,7 +11,7 @@ describe('ValidationService', () => {
       value: '[w.]',
       errorMsg: 'Недопустимое имя файла',
     },
-  ] as Array<ComponentValidationDto>;
+  ] as ComponentValidationDto[];
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({

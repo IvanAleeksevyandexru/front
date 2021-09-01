@@ -47,10 +47,10 @@ export class AddressHelperService {
     qString: string,
     params: { [key: string]: string },
     cityFilter?: string[],
-  ): Observable<Array<DadataSuggestionsAddressForLookup>> {
+  ): Observable<DadataSuggestionsAddressForLookup[]> {
     return this.dictionaryApiService.getDadataSuggestions(qString, params).pipe(
       pluck('suggestions', 'addresses'),
-      concatMap((addresses: Array<DadataSuggestionsAddress>) => {
+      concatMap((addresses: DadataSuggestionsAddress[]) => {
         return cityFilter
           ? from(addresses).pipe(
               filter(({ address }: DadataSuggestionsAddress) => {

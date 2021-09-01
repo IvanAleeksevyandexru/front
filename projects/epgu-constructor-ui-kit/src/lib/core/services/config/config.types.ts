@@ -27,6 +27,7 @@ export type TimeSlotsApi = {
  * @property {string}billsApiUrl - url до сервиса по получению информации о счете на оплату, как правило apiHostName/api/pay/v1/bills
  * @property {string}paymentUrl - url до сервиса оплаты, как правило apiHostName
  * @property {string}fileUploadApiUrl - url до хранилища файлов, как правило apiHostName/api/storage/v1/files
+ * @property {string}quizDataApiUrl - url до API сервиса quiz-data, отвечающий за кроссплатформенное хранение квиза
  * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
  * @property {string}invitationUrl - url приглашения по емейл
  * @property {string}yandexMapsApiKey - токен для яндекс карт
@@ -34,12 +35,14 @@ export type TimeSlotsApi = {
  * @property {string}staticDomainContentPath - путь до контента
  * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
  * @property {string}mockUrl - url до mockApi
+ * @property {string}identificationApiUrl - url до сервиса идентификации
  * @property {TimeSlotsApi}timeSlots - настройки для time-slot в разных услугах
  * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
  * @property {boolean}isSocialShareDisabled - задизейблить соц.кнопки на всех экранах
  * @property {boolean}isAutocompleteServiceDisabled - задизейблить функцию автокомплита для всего форм-плеера
  * @property {string}addToCalendarUrl - url добавления ивента в календарь
- * @property {boolean}isZipkinEnabled - включен ли трейсинг Zipkin
+ * @property {boolean}zipkinGenerationEnabled  - включена ли генерация traceId для показа в модалках и отправке в запросах на бэк
+ * @property {boolean}zipkinSpanSendEnabled - включена ли отправка span'ов в Zipkin-backend
  * @property {string}zipkinUrl - API-url до бэк-сервиса Zipkin
  * @property {number}zipkinMaxPayloadSize - максимальный размер payload, передаваемого в span Zipkin'a
  * @property {string}zipkinEnv - окружение запуска Zipkin
@@ -60,9 +63,11 @@ export interface Config {
   billsApiUrl: string;
   paymentUrl: string;
   fileUploadApiUrl: string;
+  quizDataApiUrl: string;
   lkUrl: string;
   lkApi: string;
   childrenClubsApi: string;
+  identificationApiUrl: string;
   yandexMapsApiKey: string;
   invitationUrl: string;
   staticDomainAssetsPath: string;
@@ -74,7 +79,8 @@ export interface Config {
   isSocialShareDisabled?: boolean;
   isAutocompleteServiceDisabled?: boolean;
   addToCalendarUrl?: string;
-  isZipkinEnabled?: boolean;
+  zipkinGenerationEnabled?: boolean;
+  zipkinSpanSendEnabled?: boolean;
   zipkinUrl?: string;
   zipkinMaxPayloadSize?: number;
   zipkinEnv?: string;
@@ -83,7 +89,9 @@ export interface Config {
   oplataUrl?: string;
   lookupQueryTimeoutMs?: number;
   nsiSuggestDictionaryUrl?: string;
+  lkuipElection?: string;
   appPathMap: AppPathMap;
+  wsIdentificationUrl?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

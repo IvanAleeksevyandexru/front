@@ -9,7 +9,11 @@
   margin-left: calc( #{-$screen-pad-16} / 2);
   margin-right: calc( #{-$screen-pad-16} / 2);
   &__item {
+    &.show {
+      display: flex;
+    }
     @include flex-container();
+    display: none;
     justify-content: flex-start;
     flex: 1 1 100%;
     margin-left: calc( #{$screen-pad-16} / 2);
@@ -25,18 +29,13 @@
     }
     &--checkbox > * {
       margin-bottom: $screen-pad-16;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
     &[class*="grid"] {
-      &:last-child > * {
-        margin-bottom: $screen-pad-24 !important;
-      }
-    }
-    &:last-child {
-      &::ng-deep > .component-list-resolver > * > * {
-        margin-bottom: 0;
-      }
-      ::ng-deep .doc-input {
-        margin-bottom: 0;
+      .component-list-resolver {
+        justify-content: flex-start;
       }
     }
   }
@@ -65,6 +64,9 @@
     &--inline {
       display: inline-flex;
       flex-wrap: wrap;
+      @include phones-down {
+        flex-direction: column;
+      }
       lib-radio {
         margin-top: $screen-pad-12;
       }
@@ -73,13 +75,24 @@
       }
     }
   }
-  &__item:first-child::ng-deep {
-    .form__radio--block {
+  p.find-item {
+    display: none;
+  }
+  & > p:first-of-type + .form__item.show {
+    &::ng-deep .form__radio--block {
       margin-top: 0;
     }
   }
-  &__item:last-child::ng-deep {
-    .component-list-resolver {
+  & > p:last-of-type + .form__item.show {
+    &[class*="grid"] {
+      > * {
+        margin-bottom: $screen-pad-24 !important;
+      }
+    }
+    &::ng-deep > .component-list-resolver > * > *,
+    &::ng-deep > .component-list-resolver .component-item,
+    &::ng-deep .component-list-resolver,
+    ::ng-deep .doc-input {
       margin-bottom: 0;
     }
   }

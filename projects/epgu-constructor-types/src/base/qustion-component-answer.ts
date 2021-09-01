@@ -1,4 +1,9 @@
+import { Clarifications } from './clarifications';
+
 export interface ComponentAnswerDto {
+  attrs?: {
+    clarifications?: Clarifications;
+  };
   label: string;
   value: string;
   type: string;

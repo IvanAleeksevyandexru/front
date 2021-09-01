@@ -1,0 +1,37 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <epgu-cf-ui-constructor-screen-pad class="screen-pad-body"s>
+
+    <p class="label-text">
+      {{ (data$ | async).label }}
+    </p>
+
+    <div *ngIf="fullAddress.value" class="value-text mt-4">
+        {{ fullAddress.value }}
+    </div>
+
+    <epgu-constructor-disclaimer
+      *ngIf="error"
+      [title]="'Ошибка в адресе'"
+      [description]="error"
+    ></epgu-constructor-disclaimer>
+
+    <div class="divider mt-24 mb-24">
+    </div>
+
+    <div
+      *ngIf="(data$ | async).attrs?.hint as hint"
+      class="hint-field"
+      epgu-constructor-clickable-label
+      [clarifications]="(data$ | async).attrs?.clarifications"
+      [innerHTML]="hint | imgPrefixer | safe: 'html'"
+    >
+    </div>
+
+  </epgu-cf-ui-constructor-screen-pad>
+</epgu-constructor-default-unique-screen-wrapper>
