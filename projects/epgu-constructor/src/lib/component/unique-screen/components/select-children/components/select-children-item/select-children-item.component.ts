@@ -33,11 +33,26 @@ export class SelectChildrenItemComponent {
 
   isClearable = this.screenService?.component?.attrs?.isClearable ?? true;
   defaultLabelList = this.screenService?.component?.attrs?.defaultLabelList ?? '—';
+  visibleComponents: string[] = this.screenService?.component?.attrs?.visibleComponents || [];
+  writableComponents: string[] = this.screenService?.component?.attrs?.writableComponents || [];
 
   constructor(private screenService: ScreenService) {}
 
   public selectChildren(value: ChildI): void {
     this.selectChildrenEvent.emit(value);
+  }
+
+  showComponents(components: CustomComponent[]): CustomComponent[] {
+    const result = components
+      .filter((component) => this.visibleComponents.includes(component.id))
+      .map((component) => {
+        return {
+          ...component,
+          value: this.control.value[component.id] || null,
+          attrs: { ...component.attrs, disabled: !this.writableComponents.includes(component.id) },
+        };
+      });
+    return [...result];
   }
 
   public updateChild(childData: CustomComponentOutputData): void {
