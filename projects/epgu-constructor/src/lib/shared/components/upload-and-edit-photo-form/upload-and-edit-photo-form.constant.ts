@@ -56,6 +56,7 @@ const imageErrorText = {
 enum uploadPhotoElemId {
   requirements = 'requirements',
   howToTakePhoto = 'howtotakephoto',
+  whyneedphoto = 'whyneedphoto'
 }
 
 export {

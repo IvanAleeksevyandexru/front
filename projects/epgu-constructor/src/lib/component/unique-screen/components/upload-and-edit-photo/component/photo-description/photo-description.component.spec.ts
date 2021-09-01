@@ -31,9 +31,15 @@ describe('PhotoDescriptionComponent', () => {
       },
       clarifications: {
         howtotakephoto: {
-          title: ' ',
+          title: 'Как сделать фото?',
           text:
             '<ol style="padding-left: 20px"><br><li style="color: #0d4cd3"> <a id="requirements">примеры удачных фотографий</a></li></ol>',
+        },
+        whyneedphoto: {
+          title: 'Зачем нужно прикладывать фото',
+          text: '<p>Фото необходимо для формирования электронного дела в МВД России</p>' +
+            '<p class=""mt-24">Требования к электронной фотографии такие же как для бумажной</p>' +
+            '<p class="mt-24"><a id=\"requirements\">Требования к фото</a></p>'
         },
         requirements: {
           setting: {
@@ -102,6 +108,16 @@ describe('PhotoDescriptionComponent', () => {
       expect(component.howPhotoModalParameters.text).toEqual(
         mockData?.attrs?.clarifications[uploadPhotoElemId.howToTakePhoto]?.text,
       );
+      expect(component.howPhotoModalParameters.elemEventHandlers[0].elemId).toEqual(uploadPhotoElemId.requirements);
+    });
+  });
+
+  describe('setWhyNeedPhotoModalParams', () => {
+    it('should be set params to setWhyNeedPhotoModalParams', () => {
+      expect(component.howPhotoModalParameters.text).toEqual(
+        mockData?.attrs?.clarifications[uploadPhotoElemId.howToTakePhoto]?.text,
+      );
+      expect(component.howPhotoModalParameters.elemEventHandlers[0].elemId).toEqual(uploadPhotoElemId.requirements);
     });
   });
 
@@ -133,6 +149,22 @@ describe('PhotoDescriptionComponent', () => {
       jest.spyOn(modalService, 'openModal').mockReturnValue(of(''));
       jest.spyOn(component, 'openRequirementsModal');
       component.openHowPhotoModal();
+      expect(component.openRequirementsModal).toBeCalledTimes(0);
+    });
+  });
+
+  describe('openWhyNeedPhoto', () => {
+    it('should be call openRequirementsModal if has value', () => {
+      jest.spyOn(modalService, 'openModal').mockReturnValue(of(uploadPhotoElemId.requirements));
+      jest.spyOn(component, 'openRequirementsModal');
+      component.openWhyNeedPhoto();
+      expect(component.openRequirementsModal).toHaveBeenCalled();
+    });
+
+    it('should be not call openRequirementsModal', () => {
+      jest.spyOn(modalService, 'openModal').mockReturnValue(of(''));
+      jest.spyOn(component, 'openRequirementsModal');
+      component.openWhyNeedPhoto();
       expect(component.openRequirementsModal).toBeCalledTimes(0);
     });
   });
