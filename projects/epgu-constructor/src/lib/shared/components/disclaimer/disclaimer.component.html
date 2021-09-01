@@ -2,9 +2,9 @@
   class="disclaimer"
   [ngClass]="{
     'vertical-line': isNotifierDisclaimer,
-    'yellow-line': type === 'warn',
-    'gray-line': type === 'info',
-    'red-line': type === 'error'
+    'yellow-line': isNotifierDisclaimer && type === 'warn',
+    'gray-line': isNotifierDisclaimer && type === 'info',
+    'red-line': isNotifierDisclaimer && type === 'error'
   }"
 >
   <p class="title">

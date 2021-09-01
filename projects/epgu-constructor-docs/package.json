@@ -19,7 +19,7 @@
     "@epgu/epgu-constructor-types": "28.4.0",
     "@epgu/epgu-constructor-ui-kit": "28.4.0",
     "@epgu/epgu-lib": "3.0.379-3-core-frontv2",
-    "@taiga-ui/addon-doc": "^2.11.2",
+    "@taiga-ui/addon-doc": "2.11.2",
     "@taiga-ui/addon-mobile": "2.11.2",
     "@taiga-ui/cdk": "2.11.2",
     "@taiga-ui/core": "2.11.2",
@@ -31,7 +31,7 @@
     "lodash": "^4.17.21",
     "ngx-highlightjs": "^4.1.4",
     "ngx-perfect-scrollbar": "^8.0.0",
-    "rxjs": "^6.6.6",
+    "rxjs": "6.6.6",
     "zone.js": "^0.10.3"
   },
   "devDependencies": {
