@@ -151,6 +151,7 @@ export interface ComponentAttrsDto {
   searchProvider?: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
+    filterByAttributeName?: string;
     turnOffStartFilter?: boolean;
   };
   selectAttributes?: string[];
