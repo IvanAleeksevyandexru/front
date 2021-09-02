@@ -37,6 +37,7 @@ import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
+import { PriorPrefixModule } from '../../../../../../shared/pipes/prior-prefix/prior-prefix.module';
 
 const mockData: ComponentDto = {
   attrs: {},
@@ -58,7 +59,7 @@ describe('BillInfoComponent', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [BillInfoComponent],
-      imports: [HttpClientTestingModule, HttpClientTestingModule],
+      imports: [HttpClientTestingModule, HttpClientTestingModule, PriorPrefixModule],
       providers: [
         MockProvider(PaymentService),
         MockProvider(CurrentAnswersService),
