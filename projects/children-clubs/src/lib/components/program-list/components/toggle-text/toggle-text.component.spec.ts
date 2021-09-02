@@ -41,10 +41,10 @@ describe('ToggleTextComponent', () => {
     fixture = TestBed.createComponent(ToggleTextComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    
+
     window = TestBed.inject(WINDOW) as Window;
     component['elemRef'] = new MockElementRef();
-    
+
     jest.spyOn(window, 'getComputedStyle').mockReturnValue({
       getPropertyValue: () => '' + lineHeight // mock line-height
     } as unknown as CSSStyleDeclaration);
@@ -81,6 +81,26 @@ describe('ToggleTextComponent', () => {
 
     const resultText = fixture.debugElement.query(By.css('.toggle-text')).nativeElement.textContent.trim();
     expect(resultText).toBe('text text2 text3 text4 text5 [...]');
+  });
+
+  describe('toggleText()', () => {
+
+    it('should toggle text', () => {
+      component.showAllText = true;
+
+      component.toggleText();
+
+      expect(component.showAllText).toBeFalsy();
+    });
+
+    it('should toggle text', () => {
+      component.showAllText = false;
+
+      component.toggleText();
+
+      expect(component.showAllText).toBeTruthy();
+    });
+
   });
 
 });
