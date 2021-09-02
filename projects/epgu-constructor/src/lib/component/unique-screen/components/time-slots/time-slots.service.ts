@@ -99,17 +99,10 @@ export class TimeSlotsService {
     this.errorMessage = null;
     return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
       tap((response) => {
-        if (response.error) {
-          this.errorMessage = response.error?.errorDetail
-            ? response.error.errorDetail.errorMessage
-            : 'check log';
-          this.loggerService.error([response.error]);
-        } else {
-          this.bookedSlot = selectedSlot;
-          this.bookId = response.bookId;
-          this.activeMonthNumber = selectedSlot.slotTime.getMonth();
-          this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-        }
+        this.bookedSlot = selectedSlot;
+        this.bookId = response.bookId;
+        this.activeMonthNumber = selectedSlot.slotTime.getMonth();
+        this.activeYearNumber = selectedSlot.slotTime.getFullYear();
       }),
       catchError((error) => {
         this.errorMessage = error.message;
