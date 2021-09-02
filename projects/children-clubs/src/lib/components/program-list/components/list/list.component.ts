@@ -27,6 +27,10 @@ export class ListComponent {
 
   @HostListener('window:scroll', ['$event']) scroll(event: Event): void {
     const scrollElement: HTMLElement = (event.target as Document).scrollingElement as HTMLElement;
+    this.handleScroll(scrollElement);
+  }
+
+  handleScroll(scrollElement: HTMLElement): void {
     if (
       !this.listService.autoScroll ||
       scrollElement.clientHeight === scrollElement.scrollHeight ||
