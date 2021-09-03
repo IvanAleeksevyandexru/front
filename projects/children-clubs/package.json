@@ -11,7 +11,7 @@
     "@angular/core": "11.0.0",
     "@angular/forms": "11.0.0",
     "@angular/cdk": "11.0.0",
-    "@epgu/epgu-lib": "3.0.379-3-core-frontv2",
+    "@epgu/epgu-lib": "0.1.194",
     "rxjs": "6.6.6",
     "lodash": ""
   },
