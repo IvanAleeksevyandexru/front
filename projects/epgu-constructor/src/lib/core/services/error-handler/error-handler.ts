@@ -13,6 +13,11 @@ const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <span>Попробуйте снова или зайдите позже. Если ничего не изменится — напишите в
 <a target="_blank" href="https://www.gosuslugi.ru/feedback">службу поддержки</a> и передайте код ошибки:</span></div>`;
 
+const LOADING_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Ошибка Загрузки</h4>
+<span>{textAsset}</span></div>`;
+
 const AUTH_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Войдите, чтобы продолжить</h4>
@@ -105,6 +110,21 @@ export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
       closeModal: true,
       value: 'prevStep',
     },
+    {
+      label: 'Попробовать ещё раз',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
+
+export const LOADING_ERROR_MODAL_PARAMS: ConfirmationModal = {
+  text: LOADING_ERROR_MODAL_PARAMS_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
     {
       label: 'Попробовать ещё раз',
       closeModal: true,

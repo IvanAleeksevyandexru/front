@@ -283,12 +283,6 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.timeSlotsService.checkBooking(this.currentSlot).subscribe(
       (response) => {
         this.inProgress = false;
-        if (this.timeSlotsService.hasError()) {
-          this.showError(
-            `${this.constants.errorFailBookTimeSlot}  (${this.timeSlotsService.getErrorMessage()})`,
-          );
-          return;
-        }
         const answer = {
           ...response,
           department: this.timeSlotsService.department,
@@ -300,7 +294,6 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       },
       () => {
         this.inProgress = false;
-        this.showModal(COMMON_ERROR_MODAL_PARAMS);
         this.changeDetectionRef.markForCheck();
       },
     );
