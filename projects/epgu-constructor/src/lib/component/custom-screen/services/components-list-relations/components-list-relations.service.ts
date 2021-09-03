@@ -164,7 +164,7 @@ export class ComponentsListRelationsService {
     itemRef: CustomComponentRef,
     components: CustomComponent[],
     form: FormArray,
-  ): number | string {
+  ): string {
     let str = itemRef.val as string;
     const lettersAnNumberItemRegExp = /\{\w+\}/gm;
     const matches = str.match(lettersAnNumberItemRegExp);
@@ -184,8 +184,8 @@ export class ComponentsListRelationsService {
       }
     });
 
-    // Возвращает например Math.round({add16} + {add17} / 100) => Math.round(50 + 150 / 100)
-    return haveAllValues ? this.getCalcFieldValue(str) : '';
+    // Возвращает например ({add16} + {add17} / 100) => (50 + 150 / 100)
+    return haveAllValues ? this.getCalcFieldValue(str).toString() : '';
   }
 
   public applyFilter(
@@ -286,7 +286,7 @@ export class ComponentsListRelationsService {
    */
   public getCalcFieldValue(formula: string): number {
     // eslint-disable-next-line @typescript-eslint/no-implied-eval,no-new-func
-    return Function(`'use strict'; return (Math.round(${formula}))`)();
+    return Function(`'use strict'; return (${formula})`)();
   }
 
   public onAfterFilterOnRel(
