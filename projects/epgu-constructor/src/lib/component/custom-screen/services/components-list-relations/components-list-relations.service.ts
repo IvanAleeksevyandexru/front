@@ -527,6 +527,7 @@ export class ComponentsListRelationsService {
         this.handleUpdateRestLookupOn(
           reference,
           componentVal,
+          dependentControl,
           dependentComponent,
         );
         break;
@@ -684,9 +685,9 @@ export class ComponentsListRelationsService {
     dictionaryToolsService: DictionaryToolsService | RestToolsService,
   ): void {
     if (refControl.touched) {
-      dependentControl.get('value').patchValue(reference.defaultValue || '');
-      dependentControl.get('value').markAsUntouched();
       if (dictionaryToolsService.isResultEmpty(dependentComponent)) {
+        dependentControl.get('value').patchValue(reference.defaultValue || '');
+        dependentControl.get('value').markAsUntouched();
         dependentControl.disable({ onlySelf: true, emitEvent: false });
       } else if (dependentControl.disabled) {
         dependentControl.enable({ onlySelf: true, emitEvent: false });
@@ -712,9 +713,14 @@ export class ComponentsListRelationsService {
   private handleUpdateRestLookupOn(
     reference: CustomComponentRef,
     componentVal: ComponentValueChangeDto,
+    dependentControl: AbstractControl,
     dependentComponent: CustomComponent,
   ): void {
+    dependentControl.get('value').patchValue(reference.defaultValue || '');
     if ( this.refRelationService.isValueEquals(reference.val, componentVal) ) {
+      if (this.restUpdates[dependentComponent.id]) {
+        this.restUpdates = { [dependentComponent.id]: null };
+      }
       this.restUpdates = {
         [dependentComponent.id]: {
           rest: reference.rest,
