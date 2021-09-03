@@ -49,3 +49,8 @@ export interface TimeSlotValueInterface {
   bookingRequestAttrs?: { name: string; value: string }[];
   userSelectedRegion?: string;
 }
+
+export interface lkApiItemAttributes {
+  name: string;
+  value: string
+}

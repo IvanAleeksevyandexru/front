@@ -11,6 +11,7 @@ import {
   LoggerService,
   LoggerServiceStub,
   HealthService,
+  MemoModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -84,6 +85,7 @@ describe('SelectChildrenItemComponent', () => {
         ConstructorDropdownModule,
         ComponentsListModule,
         BaseComponentsModule,
+        MemoModule,
       ],
       providers: [
         HealthService,
@@ -118,10 +120,23 @@ describe('SelectChildrenItemComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should be showComponents', () => {
+    component.visibleComponents = ['ai19_0'];
+    component.writableComponents = ['ai19_0'];
+    component.control = new FormControl({ ai19_0: '' });
+    fixture.detectChanges();
+
+    const result = component.showComponents(componentMock);
+    expect(result[0].attrs.disabled).toBeFalsy();
+    expect(result.length).toBe(1);
+  });
+
   it('should call selectChildren()', () => {
     jest.spyOn(component, 'selectChildren');
     jest.spyOn(component.selectChildrenEvent, 'emit');
-    const debugEl = fixture.debugElement.query(By.css('epgu-cf-ui-constructor-constructor-dropdown'));
+    const debugEl = fixture.debugElement.query(
+      By.css('epgu-cf-ui-constructor-constructor-dropdown'),
+    );
     debugEl.triggerEventHandler('changed', {});
     fixture.detectChanges();
 

@@ -76,6 +76,7 @@ import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
+import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -105,6 +106,7 @@ describe('SelectMapObjectComponent', () => {
         ConstructorLookupModule,
         MockModule(PrevButtonModule),
         HttpClientTestingModule,
+        DisclaimerModule,
       ],
       providers: [
         AddressesToolsService,

@@ -757,7 +757,7 @@ export class DictionaryToolsService {
    * @returns
    */
   private isLoadingNeeded(compAttrs: CustomComponentAttr): boolean {
-    if (compAttrs.searchProvider) {
+    if (compAttrs.searchProvider && !compAttrs.lookupDefaultValue) {
       return false;
     }
 

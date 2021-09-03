@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ServiceEntity, ServiceInfo, FormPlayerContext } from '@epgu/epgu-constructor';
 
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { AppService } from '../app.service';
 
 @Component({
@@ -15,9 +16,12 @@ import { AppService } from '../app.service';
 export class FpContainerComponent {
   service$: Observable<ServiceEntity> = this.appService.config$.pipe(
     map((config) => {
+      const paramTargetId = this.locationService.getParamValue('targetId');
+      const paramServiceId = this.locationService.getParamValue('serviceId');
+
       const service: ServiceEntity = {
-        serviceId: config.serviceId,
-        targetId: config.targetId,
+        serviceId: paramServiceId || config.serviceId,
+        targetId: paramTargetId || config.targetId,
         serviceInfo: config.serviceInfo ? (JSON.parse(config.serviceInfo) as ServiceInfo) : null,
         orderId: config.orderId,
         invited: config.invited,
@@ -66,5 +70,5 @@ export class FpContainerComponent {
     }),
   );
 
-  constructor(private appService: AppService) {}
+  constructor(private appService: AppService, private locationService: LocationService) {}
 }

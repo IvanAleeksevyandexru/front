@@ -4,20 +4,20 @@
   [invalid]="control.invalid"
 >
   <lib-dropdown
-    *ngIf="dictionaryToolsService.dropDowns$ | async as dropDowns"
     epgu-constructor-validation-type
+    *ngIf="dropDowns"
     [component]="control.value"
     [invalid]="control.get('value').invalid && control.get('value').touched"
-    [items]="$any(dropDowns[control.value?.id])"
-    [disabled]="$any(dropDowns[control.value?.id])?.length === 1"
+    [items]="dropDowns"
     [validationShowOn]="validationShowOn"
     [formControl]="$any(control.get('value'))"
     [clearable]="true"
     [localSearch]="control.value.attrs.localSearch"
     class="cs__select cs-select"
     [suggest]="(screenService.suggestions$ | async)[control.value?.id]"
-    [suggestSeparator]="suggestSeporator"
+    [suggestSeparator]="suggestSeparator"
     (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'DROPDOWN')"
+    (changed)="onChange($event)"
     [placeholder]="control.value.attrs.placeholder || '&mdash;'"
   >
   </lib-dropdown>

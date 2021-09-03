@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, MemoModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
@@ -25,6 +25,7 @@ const COMPONENTS = [
 @NgModule({
   declarations: [...COMPONENTS],
   imports: [
+    MemoModule,
     BaseModule,
     ComponentsListModule,
     ConstructorDropdownModule,
@@ -36,6 +37,6 @@ const COMPONENTS = [
   ],
   exports: [...COMPONENTS],
   providers: [ScreenService, CachedAnswersService, EventBusService],
-  entryComponents: [SelectChildrenScreenContainerComponent]
+  entryComponents: [SelectChildrenScreenContainerComponent],
 })
 export class SelectChildrenScreenModule {}

@@ -9,7 +9,7 @@ import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomp
 import { ScreenService } from '../../../../screen/screen.service';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 
-import { SUGGEST_SEPORATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
+import { SUGGEST_SEPARATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 
 @Component({
@@ -40,7 +40,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
     : ConstantsService.DEFAULT_QUERY_DEBOUNCE;
 
   readonly validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  readonly suggestSeporator = SUGGEST_SEPORATOR_DEFAULT;
+  readonly suggestSeporator = SUGGEST_SEPARATOR_DEFAULT;
 
   constructor(
     private dictionaryToolsService: DictionaryToolsService,
