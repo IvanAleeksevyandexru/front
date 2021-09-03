@@ -685,9 +685,11 @@ export class ComponentsListRelationsService {
   ): void {
     if (refControl.touched) {
       if (dictionaryToolsService.isResultEmpty(dependentComponent)) {
-        this.patchValueAndDisable(dependentComponent.id, dependentControl, reference.defaultValue);
+        dependentControl.get('value').patchValue(reference.defaultValue || '');
+        dependentControl.get('value').markAsUntouched();
+        dependentControl.disable({ onlySelf: true, emitEvent: false });
       } else if (dependentControl.disabled) {
-        this.patchToPrevValueAndEnable(dependentComponent.id, dependentControl);
+        dependentControl.enable({ onlySelf: true, emitEvent: false });
       }
     }
   }
