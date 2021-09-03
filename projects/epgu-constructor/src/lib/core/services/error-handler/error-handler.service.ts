@@ -33,7 +33,8 @@ import {
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
   GET_SLOT_RESPONSE_TIMEOUT,
   STATIC_ERROR_MODAL,
-  SERVICE_OR_SPEC_SESSION_TIMEOUT_2, LOADING_ERROR_MODAL_PARAMS,
+  SERVICE_OR_SPEC_SESSION_TIMEOUT_2,
+  LOADING_ERROR_MODAL_PARAMS,
 } from './error-handler';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
@@ -51,6 +52,7 @@ export enum ModalFailureType {
   FAILURE,
   SESSION,
 }
+
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
 /* eslint-disable max-len */
 
@@ -86,7 +88,8 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
     private formPlayer: FormPlayerService,
-  ) {}
+  ) {
+  }
 
   public handleResponse(
     httpRequest: HttpRequest<unknown>,
@@ -122,7 +125,8 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
               this.navigationService.redirectToLK();
             }
           });
-        } catch (e) {}
+        } catch (e) {
+        }
       }
 
       if (url.includes('equeue/agg/slots')) {
@@ -299,7 +303,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
-  handleBookingError( { error } : ItemsErrorResponse): void {
+  handleBookingError({ error }: ItemsErrorResponse): void {
     let modalParams = COMMON_ERROR_MODAL_PARAMS;
     if (error.errorDetail?.errorMessage === STATIC_ERROR_BOOKING_LIMIT_MESSAGE) {
       modalParams = LOADING_ERROR_MODAL_PARAMS;
