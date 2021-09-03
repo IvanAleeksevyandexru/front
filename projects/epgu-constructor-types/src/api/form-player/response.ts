@@ -48,6 +48,8 @@ export interface CheckOrderApiResponse {
 export interface ActionApiResponse<T> {
   errorList: { [key: string]: string }[];
   responseData: { value: T; type: string };
+  status: string;
+  message: string;
 }
 
 export interface EaisdoResponse {
