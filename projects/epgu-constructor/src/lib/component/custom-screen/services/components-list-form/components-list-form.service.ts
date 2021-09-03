@@ -115,8 +115,8 @@ export class ComponentsListFormService {
 
     this.watchFormArray$()
       .pipe(
-        tap(() => this.relationMapChanges(this.lastChangedComponent[1])),
         takeUntil(this.ngUnsubscribe$),
+        tap(() => this.relationMapChanges(this.lastChangedComponent[1])),
       )
       .subscribe(() => this.emitChanges());
     this.emitChanges();
