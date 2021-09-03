@@ -146,6 +146,22 @@ describe('ProgramListService', () => {
       expect(spy).toHaveBeenCalled();
     });
 
+    it('should set isFinish to true', () => {
+      const programsArray = new Array(3).fill(baseProgramStub);
+
+      service.add(programsArray);
+
+      expect(service.isFinish$$.getValue()).toBeTruthy();
+    });
+
+    it('should not set isFinish to true', () => {
+      const programsArray = new Array(4).fill(baseProgramStub);
+
+      service.add(programsArray);
+
+      expect(service.isFinish$$.getValue()).toBeFalsy();
+    });
+
   });
 
   describe('processFilters()', () => {
