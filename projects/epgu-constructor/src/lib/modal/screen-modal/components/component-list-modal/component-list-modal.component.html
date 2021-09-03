@@ -9,12 +9,22 @@
   </div>
 
   <div class="component-list__footer">
-    <epgu-constructor-screen-buttons
-      class="screen-buttons"
-      *ngIf="(screenService.buttons$ | async).length"
-      [screenButtons]="screenService.buttons$ | async"
-      [isLoading]="screenService.isLoading$ | async"
-      [disabled]="!isValid"
-    ></epgu-constructor-screen-buttons>
+    <!-- 
+      TODO: для использования ScreenButtonsComponent неободимо спрева 
+      научить его передавать правильный state в action + корректно работать 
+      со сценариями внутри модалок 
+    -->
+    <ng-container *ngFor="let button of screenService.buttons$ | async">
+      <lib-button
+        [color]="button.color"
+        [disabled]="(screenService.isLoading$ | async) || !isValid"
+        [showLoader]="screenService.isLoading$ | async"
+        [attr.data-button-type]="button.type | lowercase"
+        class="screen-button"
+        (click)="nextScreen()"
+      >
+        {{ button.label }}
+      </lib-button>
+    </ng-container>
   </div>
 </div>
