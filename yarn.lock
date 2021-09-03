@@ -1772,10 +1772,10 @@
   dependencies:
     schematics-utilities "^2.0.3"
 
-"@epgu/epgu-lib@3.0.379-3-core-frontv2":
-  version "3.0.379-3-core-frontv2"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-lib/-/epgu-lib-3.0.379-3-core-frontv2.tgz#0c58d68b084d8bd5220a36a33acceb0de20deef8"
-  integrity sha512-Etw773SyyzEc+98G1Avyn0nEN5Vh8LxCOOu1D0OOFAZRz9h22lAPCczUfKmhqqEz0DTNc2xXtoIlEmyl++3vfg==
+"@epgu/epgu-lib@0.1.194":
+  version "0.1.194"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-lib/-/epgu-lib-0.1.194.tgz#9985de0d1c3ac28614db18272b4b6c0402b2b3c9"
+  integrity sha512-LYsytw3gRpsc1ao6FsBFhDuVHrR9nZckRohnLn+c57A6zVUUXAK0GimZDmFGIiOAVIWZqydJdvLdYlJEvJmtLg==
   dependencies:
     "@angular/animations" "11.0.0"
     "@angular/cdk" "11.0.0"
@@ -2532,10 +2532,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@taiga-ui/addon-doc@^2.11.2":
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/@taiga-ui/addon-doc/-/addon-doc-2.14.0.tgz#7664dec484ac3d1f4acb1c087599c46497e5e8c3"
-  integrity sha512-leFRrxOnnv44RmLRPhrTj42a47nnwQ3GbtjqyOQuNaljclDQEIOODvbcNcewSUjKY1nTYHD6Bqf2ftSrwGnv6Q==
+"@taiga-ui/addon-doc@2.11.2":
+  version "2.11.2"
+  resolved "https://registry.yarnpkg.com/@taiga-ui/addon-doc/-/addon-doc-2.11.2.tgz#e5df1634c5c62d2f6771d778cbcd7a611c93f93f"
+  integrity sha512-UqBCYtqq1p9gwjTxcmrahkwD4TR85i5IS9DWXjIMWBKiLwatblYRZirInVLG0UikbiGvwQ4acHe5Y8je+rnzMQ==
   dependencies:
     tslib "^1.10.0"
 
@@ -13992,7 +13992,7 @@ rxjs@6.6.6:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@6.6.7, rxjs@^6.4.0, rxjs@^6.5.0, rxjs@^6.5.2, rxjs@^6.5.3, rxjs@^6.6.0, rxjs@^6.6.2, rxjs@^6.6.3, rxjs@^6.6.6, rxjs@~6.6.0:
+rxjs@6.6.7, rxjs@^6.4.0, rxjs@^6.5.0, rxjs@^6.5.2, rxjs@^6.5.3, rxjs@^6.6.0, rxjs@^6.6.2, rxjs@^6.6.3, rxjs@~6.6.0:
   version "6.6.7"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.7.tgz#90ac018acabf491bf65044235d5863c4dab804c9"
   integrity sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==
