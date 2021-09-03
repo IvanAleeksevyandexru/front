@@ -35,7 +35,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
     tap((dictionaries) => {
       if (
         this.searchIconForcedShowing &&
-        this.control.value.attrs.searchIconForcedShowing &&
+        this.control.value?.attrs?.searchIconForcedShowing &&
         dictionaries[getDictKeyByComp(this.control.value)]?.list
       ) {
         this.searchIconForcedShowing = false;
