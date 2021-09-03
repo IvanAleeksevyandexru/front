@@ -29,7 +29,6 @@ import { InterpolationService } from '../interpolation/interpolation.service';
 
 @Injectable()
 export class RestToolsService {
-  public _prevRestUpdates: ComponentRestUpdates = {};
   private _dictionaries$ = new BehaviorSubject<CustomListDictionaries>([]);
 
   public get dictionaries$(): BehaviorSubject<CustomListDictionaries> {
@@ -49,7 +48,6 @@ export class RestToolsService {
   public watchForUpdates(components: CustomComponent[]): Observable<CustomListReferenceData[]> {
     return this.componentsListRelationsService.restUpdates$.pipe(
       switchMap((updates: ComponentRestUpdates) => {
-        this._prevRestUpdates = updates;
         const filteredComponents = components
           .filter(component => updates[component.id] !== undefined || component?.attrs?.needUnfilteredDictionaryToo)
           .map(component => ({
@@ -61,7 +59,6 @@ export class RestToolsService {
                 {}),
               emptyWhenNoFilter: !updates[component.id],
             },
-            value: this._prevRestUpdates[component.id] === null || updates[component.id] === null ? null : component.value,
           }));
 
         return this.loadReferenceData$(filteredComponents);
