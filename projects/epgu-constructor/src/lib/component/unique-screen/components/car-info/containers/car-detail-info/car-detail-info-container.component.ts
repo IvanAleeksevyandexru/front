@@ -15,7 +15,7 @@ import { ComponentBase } from '../../../../../../screen/screen.types';
   providers: [CarDetailInfoService],
 })
 export class CarDetailInfoContainerComponent {
-  data$: Observable<ComponentBase> = this.screenService.component$;
+  public data$: Observable<ComponentBase> = this.screenService.component$;
   public serviceResult = ServiceResult;
   public errors$ = this.screenService.component$.pipe(
     map((component) => component.attrs as CarDetailInfoComponentAttrsDto),

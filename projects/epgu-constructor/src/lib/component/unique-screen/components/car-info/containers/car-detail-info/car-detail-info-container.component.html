@@ -73,12 +73,12 @@
         ></ng-container>
       </ng-template>
     </ng-container>
-    <div *ngIf="(data$ | async).attrs.helperText">
+    <ng-container *ngIf="(data$ | async).attrs.helperText as helperText">
       <div class="divider info-list-divider"></div>
       <epgu-constructor-output-html
-        [html]="(data$ | async).attrs.helperText"
+        [html]="helperText"
       ></epgu-constructor-output-html>
-    </div>
+    </ng-container>
   </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>
 
