@@ -46,7 +46,7 @@ describe('PhotoFormViewComponent', () => {
       jest.spyOn(component.openCameraEvent, 'emit');
       component.isDesktop = false;
       fixture.detectChanges();
-      const debugEl = fixture.debugElement.query(By.css('button'));
+      const debugEl = fixture.debugElement.queryAll(By.css('button'))[1];
       debugEl.triggerEventHandler('click', {});
 
       expect(component.openCameraEvent.emit).toHaveBeenCalled();
