@@ -18,13 +18,13 @@
       <p *ngIf="!isDesktop" class="photo__uploading-text photo__uploading-text_mt-68">
         Выберите файл или сделайте фото
       </p>
-      <button *ngIf="!isDesktop" class="photo__uploading-button" (click)="openCameraEvent.emit()">
-        <img src="{{ staticDomainAssetsPath }}/assets/icons/svg/camera.svg" alt="" />
-        Сделать фото
-      </button>
       <button class="photo__uploading-button" (click)="hiddenFileInputEvent.emit()">
         <img src="{{ staticDomainAssetsPath }}/assets/icons/svg/clip.svg" alt="" />
         Загрузить фото
+      </button>
+      <button *ngIf="!isDesktop" class="photo__uploading-button" (click)="openCameraEvent.emit()">
+        <img src="{{ staticDomainAssetsPath }}/assets/icons/svg/camera.svg" alt="" />
+        Сделать фото
       </button>
     </div>
   </div>
