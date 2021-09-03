@@ -11,7 +11,7 @@
         <div class="info__text">
           <strong>{{ paymentPurpose }}</strong>
         </div>
-        <div class="info__text" *ngIf="uin.length">УИН {{ uin }}</div>
+        <div class="info__text" *ngIf="uin.length">УИН {{ uin | priorPrefix }}</div>
         <div class="info__text" *ngIf="docInfo.length">Начисление на {{ docInfo }}</div>
         <div class="payment__sum" *ngIf="sum.length">
           {{ sum }} Р

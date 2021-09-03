@@ -23,6 +23,7 @@ import { FormPlayerService } from '../../../../../../form-player/services/form-p
 import { ComponentDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { ActionToolsService } from '../../../../../../shared/directives/action/action-tools.service';
+import { PriorPrefixModule } from '../../../../../../shared/pipes/prior-prefix/prior-prefix.module';
 
 let mockData: ComponentDto;
 
@@ -53,7 +54,7 @@ describe('PaymentComponent', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [PaymentComponent],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, PriorPrefixModule],
       providers: [
         MockProvider(PaymentService),
         MockProvider(CurrentAnswersService),
