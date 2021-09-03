@@ -30,6 +30,10 @@ export class StateServiceStub {
     return true;
   }
 
+  get pageSize(): number {
+    return 3;
+  }
+
   get selectedProgramUUID(): string {
     return this.stateQuery.state?.selectedProgramUUID;
   }
