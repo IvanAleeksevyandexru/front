@@ -104,7 +104,7 @@ export class ProgramListService {
     if (this.data.length === 0) {
       this.fullLoading$$.next(false);
     }
-    if (data.length < this.pageSize) {
+    if (data.length <= this.pageSize) {
       this.finish();
     }
     this.data$$.next([...this.data].concat(data));
