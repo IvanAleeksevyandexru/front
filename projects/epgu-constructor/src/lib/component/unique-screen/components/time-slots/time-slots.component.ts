@@ -6,8 +6,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { ListItem } from '@epgu/epgu-lib';
-import { Observable, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DisplayDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import {
   ModalService,
@@ -23,6 +23,8 @@ import {
   SlotInterface,
 } from '@epgu/epgu-constructor-ui-kit';
 
+import { addDays, isAfter } from 'date-fns';
+import { throwError } from 'rxjs/internal/observable/throwError';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -48,6 +50,7 @@ import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal
 export class TimeSlotsComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
+  isSmev2 = this.screenService.component.attrs?.isSmev2 || false;
 
   public date: Date = null;
   public label: string;
@@ -112,6 +115,31 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
   private _monthsRange = new Set();
   private today: Date;
+  private dateSelector$$ = new BehaviorSubject<Date>(null);
+  private dateSelector$ = this.dateSelector$$
+    .pipe(
+      filter((value) => !!value),
+      tap(() => {
+        this.timeSlots = [];
+      }),
+      switchMap((date: Date) => {
+        this.inProgress = true;
+        return this.timeSlotsService.smev2getSlots(date).pipe(
+          tap((slots) => {
+            this.timeSlots = slots;
+            this.inProgress = false;
+            this.changeDetectionRef.markForCheck();
+          }),
+          catchError((err) => {
+            this.inProgress = false;
+            this.changeDetectionRef.markForCheck();
+            return throwError(err);
+          }),
+        );
+      }),
+      takeUntil(this.ngUnsubscribe$),
+    )
+    .subscribe();
 
   constructor(
     private modalService: ModalService,
@@ -140,8 +168,24 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         this.screenService.component.id,
         this.screenService.component.attrs?.cancelReservation,
       );
-      this.loadTimeSlots();
+
+      if (!this.isSmev2) {
+        this.loadTimeSlots();
+      } else {
+        this.smev2Loading();
+      }
     }
+  }
+
+  smev2Loading(): void {
+    this.label = this.screenService.component?.label;
+    const value = JSON.parse(this.screenService.component?.value);
+
+    this.initServiceVariables(value);
+    this.timeSlotType = value.timeSlotType;
+    this.timeSlotsService.smev2Init(value, this.cachedAnswer, value.timeSlotType);
+    this.serviceInitHandle(false);
+    this.changeDetectionRef.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -154,11 +198,13 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * Функция вызывается при каждой регенерации календаря
    */
   public checkExistenceSlots(): void {
-    this.isExistsSlots = this.weeks.some((week) => {
-      return week.some((day) => {
-        return !this.isDateLocked(day.date, this.firstDayOfMainSection, this.daysInMainSection);
+    if (!this.isSmev2) {
+      this.isExistsSlots = this.weeks.some((week) => {
+        return week.some((day) => {
+          return !this.isDateLocked(day.date, this.firstDayOfMainSection, this.daysInMainSection);
+        });
       });
-    });
+    }
   }
 
   public isToday(date: Date): boolean {
@@ -178,6 +224,13 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   public isDateLocked(date: Date, firstDayOfMainSection: Date, daysInMainSection: number): boolean {
+    if (this.isSmev2) {
+      return (
+        isAfter(addDays(this.today, 1), date) ||
+        this.isDateOutOfSection(date, firstDayOfMainSection, daysInMainSection) ||
+        this.checkDateRestrictions(date)
+      );
+    }
     return (
       this.isDateOutOfSection(date, firstDayOfMainSection, daysInMainSection) ||
       this.timeSlotsService.isDateLocked(date, this.currentArea?.id) ||
@@ -211,7 +264,11 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       this.clearTimeSlotSelection();
     } else {
       this.currentSlot = slot;
-      this.currentAnswersService.state = slot;
+      if (this.isSmev2) {
+        this.currentAnswersService.state = this.timeSlotsService.smev2CacheItems[slot.slotId];
+      } else {
+        this.currentAnswersService.state = slot;
+      }
     }
   }
 
@@ -221,24 +278,30 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   public showTimeSlots(date: Date): void {
     this.currentSlot = null;
-    this.timeSlotsService.getAvailableSlots(date, this.currentArea?.id).subscribe(
-      (timeSlots) => {
-        this.addBookedTimeSlotToList(timeSlots);
-        this.timeSlots = timeSlots;
-        if (this.timeSlotsService.hasError()) {
+    if (this.isSmev2) {
+      this.dateSelector$$.next(date);
+    } else {
+      this.timeSlotsService.getAvailableSlots(date, this.currentArea?.id).subscribe(
+        (timeSlots) => {
+          this.addBookedTimeSlotToList(timeSlots);
+          this.timeSlots = timeSlots;
+          if (this.timeSlotsService.hasError()) {
+            this.showError(
+              `${
+                this.constants.errorLoadingTimeSlots
+              } (${this.timeSlotsService.getErrorMessage()})`,
+            );
+          }
+          this.changeDetectionRef.markForCheck();
+        },
+        () => {
           this.showError(
-            `${this.constants.errorLoadingTimeSlots} (${this.timeSlotsService.getErrorMessage()})`,
+            `${this.constants.errorLoadingTimeSlots}  (${this.timeSlotsService.getErrorMessage()})`,
           );
-        }
-        this.changeDetectionRef.markForCheck();
-      },
-      () => {
-        this.showError(
-          `${this.constants.errorLoadingTimeSlots}  (${this.timeSlotsService.getErrorMessage()})`,
-        );
-        this.changeDetectionRef.markForCheck();
-      },
-    );
+          this.changeDetectionRef.markForCheck();
+        },
+      );
+    }
   }
 
   public areaChanged(): void {
@@ -250,10 +313,37 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public async monthChanged(ev: ListItem): Promise<void> {
     const { id } = ev;
     const [activeYear, activeMonth] = (id as string).split('-');
+
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
     this.activeYearNumber = parseInt(activeYear, 10);
     await this.renderSingleMonthGrid(this.weeks);
     this.checkExistenceSlots();
+  }
+
+  nextSmev2(): void {
+    this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
+  }
+
+  getConfirmModalParams(): ConfirmationModal {
+    const time = this.datesHelperService.format(this.currentSlot.slotTime, DATE_TIME_STRING_FULL);
+    return {
+      text: `<div class="text_modal_confirmation">
+<h4>Подтверждение</h4>
+<span>Вы уверены, что хотите забронировать на <strong>${time}</strong>?</span></div>`,
+      showCloseButton: false,
+      buttons: [
+        {
+          label: 'Да',
+          closeModal: true,
+          handler: this.nextSmev2.bind(this),
+        },
+        {
+          label: 'Нет',
+          closeModal: true,
+          color: 'white',
+        },
+      ],
+    } as ConfirmationModal;
   }
 
   /**
@@ -266,6 +356,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    *  Иначе, букаем слот
    */
   public clickSubmit(): void {
+    if (this.isSmev2) {
+      this.showModal(this.getConfirmModalParams());
+      return;
+    }
     if (this.bookedSlot) {
       if (this.isCachedValueChanged()) {
         this.showModal(this.confirmModalParameters);
@@ -481,7 +575,9 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     output.splice(0, output.length); // in-place clear
     const daysToShow = this.screenService.component?.attrs.daysToShow;
 
-    this.today = await this.datesHelperService.getToday(true);
+    if (!this.isSmev2 || !this.today) {
+      this.today = await this.datesHelperService.getToday(true);
+    }
 
     if (this.screenService.component?.attrs.startSection === 'today') {
       this.firstDayOfMainSection = this.today;
@@ -580,9 +676,17 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * Создается и заполняет массив для выпадающего списка месяцев
    * Месяцы создаются от минимального до максимального из эндпоинта самих слотов
    */
-  private fillMonthsYears(): void {
+  private async fillMonthsYears(): Promise<void> {
     this.monthsYears = [];
-    const availableMonths = this.timeSlotsService.getAvailableMonths();
+
+    if (!this.today) {
+      this.today = await this.datesHelperService.getToday(true);
+    }
+
+    const availableMonths = this.isSmev2
+      ? this.datesHelperService.getMonthListByYear(this.today)
+      : this.timeSlotsService.getAvailableMonths();
+
     if (availableMonths.length) {
       availableMonths.sort((date1: string, date2: string): number => {
         return new Date(date1) > new Date(date2) ? 1 : -1;
@@ -692,7 +796,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.activeYearNumber = this.timeSlotsService.getCurrentYear();
     this.initSlotsAreas();
 
-    this.fillMonthsYears();
+    await this.fillMonthsYears();
     this.fixedMonth = this.monthsYears.length < 2;
     if (this.currentMonth) {
       await this.monthChanged(this.currentMonth);
@@ -701,6 +805,9 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     if (this.bookedSlot && isBookedDepartment) {
       this.selectDate(this.bookedSlot.slotTime);
       this.chooseTimeSlot(this.bookedSlot);
+    }
+    if (this.isSmev2) {
+      this.changeDetectionRef.markForCheck();
     }
   }
 

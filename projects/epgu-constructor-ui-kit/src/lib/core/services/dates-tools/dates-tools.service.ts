@@ -33,6 +33,8 @@ import {
   startOfISOWeek as _startOfISOWeek,
   endOfISOWeek as _endOfISOWeek,
   formatISO as _formatISO,
+  format,
+  setMonth,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
 import { replaceArguments } from '../../decorators/replace-arguments';
@@ -78,6 +80,13 @@ export class DatesToolsService {
     return _isToday(date);
   }
 
+  public getMonthListByYear(date: Date, formatString: string = 'yyyy-MM'): string[] {
+    const nowMonth = parseInt(format(date, 'M'), 10);
+    return new Array(12 - nowMonth + 1)
+      .fill(null)
+      .map((item, index) => format(setMonth(date, nowMonth + index - 1), formatString));
+  }
+
   /**
    *
    * @param resetTime если true, то сбрасывает время до 00:00:00
@@ -85,7 +94,9 @@ export class DatesToolsService {
    */
   public async getToday(resetTime = false): Promise<Date> {
     const path = this.configService.apiUrl + '/service/actions/currentDateTime';
-    const timeString = await this.http.get(path, { responseType: 'text', withCredentials: true }).toPromise();
+    const timeString = await this.http
+      .get(path, { responseType: 'text', withCredentials: true })
+      .toPromise();
     const date = new Date(timeString);
     if (resetTime) {
       date.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());

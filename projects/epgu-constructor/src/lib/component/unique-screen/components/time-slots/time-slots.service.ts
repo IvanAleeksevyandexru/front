@@ -1,13 +1,22 @@
 import { Injectable } from '@angular/core';
 import { ListItem } from '@epgu/epgu-lib';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, pluck, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DATE_ISO_STRING_FORMAT,
+  DATE_STRING_YEAR_MONTH,
+  DatesToolsService,
+  LoggerService,
+  SessionService,
+  SlotInterface,
+} from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryResponse } from '../../../../shared/services/dictionary/dictionary-api.types';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../../shared/services/dictionary/dictionary-api.types';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { TimeSlotsTypes } from './time-slots.constants';
 import {
@@ -22,7 +31,6 @@ import {
   TimeSlotValueInterface,
 } from './time-slots.types';
 import { get } from 'lodash';
-import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
@@ -30,6 +38,8 @@ import {
   DictionaryUnionKind,
 } from '@epgu/epgu-constructor-types';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
+import { addDays, format, subSeconds } from 'date-fns';
 
 type attributesMapType = { name: string; value: string }[];
 
@@ -48,6 +58,8 @@ export class TimeSlotsService {
   public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
   public timeSlotsType: TimeSlotsTypes;
   public cancelReservation: string[];
+  public isSmev2: boolean;
+  public smev2CacheItems: Record<string, DictionaryItem> = {};
 
   public department: DepartmentInterface;
   private solemn: boolean;
@@ -63,10 +75,12 @@ export class TimeSlotsService {
 
   constructor(
     private smev3TimeSlotsRestService: Smev3TimeSlotsRestService,
+    private smev2TimeSlotsService: Smev2TimeSlotsRestService,
     private configService: ConfigService,
     private dictionaryApiService: DictionaryApiService,
     private loggerService: LoggerService,
     private datesToolsService: DatesToolsService,
+    private sessionService: SessionService,
     public screenService: ScreenService,
     public jsonHelperService: JsonHelperService,
   ) {}
@@ -146,11 +160,97 @@ export class TimeSlotsService {
     return this.activeYearNumber;
   }
 
+  getSmev2DictionaryOptions(date: Date): DictionaryOptions {
+    return {
+      treeFiltering: 'ONELEVEL',
+      pageNum: 1,
+      pageSize: '258',
+      filter: {
+        union: {
+          unionKind: DictionaryUnionKind.AND,
+          subs: [
+            {
+              simple: {
+                attributeName: 'departmentID',
+                condition: DictionaryConditions.EQUALS,
+                value: {
+                  asString: this.department.attributeValues?.code,
+                },
+              },
+            },
+            {
+              simple: {
+                attributeName: 'AppointmentDate',
+                condition: DictionaryConditions.EQUALS,
+                value: {
+                  asString: format(date, DATE_ISO_STRING_FORMAT),
+                },
+              },
+            },
+            {
+              simple: {
+                attributeName: 'AppointmentDateTo',
+                condition: DictionaryConditions.EQUALS,
+                value: {
+                  asString: format(subSeconds(addDays(date, 1), 1), DATE_ISO_STRING_FORMAT),
+                },
+              },
+            },
+            {
+              simple: {
+                attributeName: 'personSourceSystemID',
+                condition: DictionaryConditions.EQUALS,
+                value: {
+                  asString: this.sessionService.userId,
+                },
+              },
+            },
+          ],
+        },
+      },
+      parentRefItemValue: '',
+      selectAttributes: ['*'],
+      tx: '',
+    };
+  }
+
+  smev2getSlots(date: Date): Observable<SlotInterface[]> {
+    return this.smev2TimeSlotsService.getTimeSlots(this.getSmev2DictionaryOptions(date)).pipe(
+      pluck('items'),
+      tap(() => {
+        this.smev2CacheItems = {};
+      }),
+      map((items: DictionaryItem[]) =>
+        items.map((item) => {
+          const id = uuidv4();
+          this.smev2CacheItems[id] = item;
+          return {
+            slotId: id,
+            slotTime: new Date(item.value),
+            timezone: item.value.substr(TIMEZONE_STR_OFFSET),
+          } as SlotInterface;
+        }),
+      ),
+    );
+  }
+
+  smev2Init(
+    data: TimeSlotValueInterface,
+    cachedAnswer: TimeSlotsAnswerInterface,
+    timeSlotsType: TimeSlotsTypes,
+  ): void {
+    this.isSmev2 = true;
+    this.timeSlotsType = timeSlotsType;
+    this.timeSlotRequestAttrs = data.timeSlotRequestAttrs;
+    this.changed(data, cachedAnswer);
+  }
+
   init(
     data: TimeSlotValueInterface,
     cachedAnswer: TimeSlotsAnswerInterface,
     timeSlotsType: TimeSlotsTypes,
   ): Observable<boolean> {
+    this.isSmev2 = false;
     this.timeSlotsType = timeSlotsType;
     this.timeSlotRequestAttrs = data.timeSlotRequestAttrs;
     if (this.changed(data, cachedAnswer) || this.errorMessage) {
@@ -214,7 +314,8 @@ export class TimeSlotsService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
       bookAttributes:
-        this.jsonHelperService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+        this.jsonHelperService.hasJsonStructure(data.bookAttributes) &&
+        JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestParams,
       attributeNameWithAddress: this.screenService.component.attrs.attributeNameWithAddress,
@@ -254,6 +355,22 @@ export class TimeSlotsService {
         id: area,
         text: area,
       });
+    });
+  }
+
+  private getSlotsRequest(): TimeSlotReq {
+    const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[this.timeSlotsType];
+
+    return <TimeSlotReq>this.deleteIgnoreRequestParams({
+      organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
+      caseNumber:
+        this.timeSlotsType === TimeSlotsTypes.MVD
+          ? (this.config.parentOrderId as string)
+          : (this.config.orderId as string),
+      serviceId: [(this.config.serviceId as string) || serviceId],
+      eserviceId: (this.config.eserviceId as string) || eserviceId,
+      routeNumber,
+      attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
     });
   }
 
@@ -310,22 +427,6 @@ export class TimeSlotsService {
           return throwError(error);
         }),
       );
-  }
-
-  private getSlotsRequest(): TimeSlotReq {
-    const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[this.timeSlotsType];
-
-    return <TimeSlotReq>this.deleteIgnoreRequestParams({
-      organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
-      caseNumber:
-        this.timeSlotsType === TimeSlotsTypes.MVD
-          ? (this.config.parentOrderId as string)
-          : (this.config.orderId as string),
-      serviceId: [(this.config.serviceId as string) || serviceId],
-      eserviceId: (this.config.eserviceId as string) || eserviceId,
-      routeNumber,
-      attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
-    });
   }
 
   private deleteIgnoreRequestParams(

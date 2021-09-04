@@ -36,9 +36,6 @@ export type DurationTimeTypes =
   | 'seconds'
   | 'milliseconds';
 
-export type StartOfTypes =
-  | 'year'
-  | 'month'
-  | 'day';
+export type StartOfTypes = 'year' | 'month' | 'day';
 
 export const weekDaysAbbr = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
