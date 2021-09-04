@@ -5,7 +5,7 @@ import {
   DeviceDetectorService,
   createOpenBrowserEvent,
 } from '@epgu/epgu-constructor-ui-kit';
-import { SmuEventsService } from '@epgu/epgu-lib';
+import { SmuEvent, SmuEventsService } from '@epgu/epgu-lib';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
@@ -43,7 +43,7 @@ export class ClickableLabelDirective {
     const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
 
     if (targetElement.hasAttribute('href') && targetElement.getAttribute('href') && this.deviceDetectorService.isWebView) {
-      this.smu.notify(createOpenBrowserEvent(targetElement.getAttribute('href'), false));
+      this.smu.notify(createOpenBrowserEvent(targetElement.getAttribute('href'), false) as SmuEvent);
     }
 
     if (targetElementActionType) {
