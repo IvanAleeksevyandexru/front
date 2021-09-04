@@ -138,6 +138,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
         this.screenService.cachedAnswers,
         this.screenService.getStore(),
       )
+      .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
       .subscribe((references: CustomListReferenceData[]) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => this.formService.patch(reference.component), 0);
@@ -147,6 +148,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.restToolsService
       .loadReferenceData$(components)
+      .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
       .subscribe((references: CustomListReferenceData[]) => {
         references.forEach((reference: CustomListReferenceData) => {
           setTimeout(() => this.formService.patch(reference.component), 0);
@@ -159,6 +161,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     references: CustomListReferenceData[],
   ): Observable<CustomListReferenceData[]> {
     return this.dictionaryToolsService.dictionaries$.pipe(
+      takeUntil(this.unsubscribeService.ngUnsubscribe$),
       first(),
       map(() => {
         references.forEach((reference) => {
@@ -174,6 +177,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     references: CustomListReferenceData[],
   ): Observable<CustomListReferenceData[]> {
     return this.restToolsService.dictionaries$.pipe(
+      takeUntil(this.unsubscribeService.ngUnsubscribe$),
       first(),
       map(() => {
         references.forEach((reference) => {
@@ -212,14 +216,9 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
           this.handleAfterRestUpdate(references),
         ),
       )
-      .subscribe((references: CustomListReferenceData[]) => {
-        references.forEach((reference: CustomListReferenceData) => {
-          setTimeout(() => {
-            this.formService.patch(reference.component);
-            this.changeDetectionRef.markForCheck();
-          }, 0);
-          this.formService.emitChanges();
-        });
+      .subscribe(() => {
+        this.changeDetectionRef.markForCheck();
+        this.formService.emitChanges();
       });
   }
 

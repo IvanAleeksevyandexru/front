@@ -110,7 +110,10 @@ export class ComponentsListFormService {
     });
 
     this.watchFormArray$()
-      .pipe(tap(() => this.relationMapChanges(this.lastChangedComponent[1])))
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        tap(() => this.relationMapChanges(this.lastChangedComponent[1])),
+      )
       .subscribe(() => this.emitChanges());
     this.emitChanges();
 
@@ -367,7 +370,9 @@ export class ComponentsListFormService {
       form.disable();
     }
 
-    this.watchFormGroup$(form).subscribe(
+    this.watchFormGroup$(form)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(
       ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
 
         this.lastChangedComponent = [prev, next];
@@ -418,6 +423,7 @@ export class ComponentsListFormService {
 
       this.dictionaryToolsService
         .getDictionaries$('MODEL_TS', model?.value, options)
+        .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe((dictionary) => {
           this.dictionaryToolsService.initDictionary(dictionary);
         });
