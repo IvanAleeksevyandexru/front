@@ -35,7 +35,7 @@ export class ProgramListService {
   get isFinish(): boolean {
     return this.isFinish$$.getValue();
   }
-  pageSize = 3;
+  pageSize: number;
 
   autoScroll$$ = new BehaviorSubject<boolean>(false);
   get autoScroll(): boolean {
@@ -96,7 +96,9 @@ export class ProgramListService {
     private api: ApiService,
     private stateService: StateService,
     private appStateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
-  ) {}
+  ) {
+    this.pageSize = this.stateService.pageSize;
+  }
 
   add(data: BaseProgram[]): void {
     if (this.data.length === 0) {

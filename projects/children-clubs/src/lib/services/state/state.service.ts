@@ -27,6 +27,10 @@ export class StateService {
     return this.stateQuery.state.vendor;
   }
 
+  get pageSize(): number {
+    return +this.stateQuery.state.pageSize || 10;
+  }
+
   get okato(): number {
     return +this.stateQuery.state.okato;
   }

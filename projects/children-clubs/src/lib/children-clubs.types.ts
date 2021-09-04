@@ -16,6 +16,7 @@ export interface ChildrenClubsState {
   groupFiltersMode: GroupFiltersModes;
   isLoaderVisible: boolean;
   denyReason: string;
+  pageSize: number;
 }
 
 export interface ValueProgram {
