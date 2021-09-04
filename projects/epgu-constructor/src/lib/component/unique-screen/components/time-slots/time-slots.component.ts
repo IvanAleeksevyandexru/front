@@ -60,8 +60,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public isChosenTimeStrVisible = false;
 
   daysNotFoundTemplate = {
-    header: 'В этом месяце всё занято',
-    description: 'Выберите другой месяц или подразделение, чтобы забронировать время',
+    header: this.isSmev2 ? 'В этот день все заятно' : 'В этом месяце всё занято',
+    description: this.isSmev2
+      ? 'Выберите другой день, чтобы забронировать время'
+      : 'Выберите другой месяц или подразделение, чтобы забронировать время',
   };
 
   confirmModalParameters: ConfirmationModal = {
@@ -128,6 +130,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           tap((slots) => {
             this.timeSlots = slots;
             this.inProgress = false;
+            this.isExistsSlots = this.timeSlots.length > 0;
             this.changeDetectionRef.markForCheck();
           }),
           catchError((err) => {
