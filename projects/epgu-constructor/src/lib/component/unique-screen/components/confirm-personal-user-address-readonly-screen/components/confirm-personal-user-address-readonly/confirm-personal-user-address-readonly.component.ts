@@ -89,7 +89,7 @@ export class ConfirmPersonalUserAddressReadonlyComponent implements OnInit, OnDe
     if (data?.value) {
       this.valueParsed = this.parseValue(data);
       this.createForm(data, this.valueParsed);
-      this.currentAnswersService.isValid = this.hasServerErrors() && this.isFormValid();
+      this.currentAnswersService.isValid = !this.hasServerErrors() && this.isFormValid();
       this.currentAnswersService.state = this.getPreparedDataToSend();
     } else {
       this.currentAnswersService.isValid = false;
@@ -102,7 +102,7 @@ export class ConfirmPersonalUserAddressReadonlyComponent implements OnInit, OnDe
   private createForm(data: ConfirmAddressInterface, values: ConfirmAddressReadonlyValue): void {
     if (data?.attrs?.fields) {
       data?.attrs?.fields.forEach((field: ConfirmAddressFieldsInterface) => {
-        this.form.addControl(field.fieldName, new FormControl(values[field.fieldName] || ''));
+        this.form.setControl(field.fieldName, new FormControl(values[field.fieldName]));
       });
 
       this.subscribeFormChanges();
@@ -190,7 +190,7 @@ export class ConfirmPersonalUserAddressReadonlyComponent implements OnInit, OnDe
   }
 
   private hasServerErrors(): boolean {
-    return Object.keys(this.screenService.componentErrors).length === 0;
+    return Object.keys(this.screenService.componentErrors).length !== 0;
   }
 
   private isPresetable(field?: ConfirmAddressFieldsInterface): boolean {

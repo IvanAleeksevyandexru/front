@@ -34,6 +34,7 @@ import {
   GET_SLOT_RESPONSE_TIMEOUT,
   STATIC_ERROR_MODAL,
   SERVICE_OR_SPEC_SESSION_TIMEOUT_2,
+  LOADING_ERROR_MODAL_PARAMS,
 } from './error-handler';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
@@ -51,6 +52,7 @@ export enum ModalFailureType {
   FAILURE,
   SESSION,
 }
+
 export const STATIC_ERROR_MESSAGE = 'Operation completed';
 /* eslint-disable max-len */
 
@@ -67,7 +69,8 @@ export const SMEV2_GET_SLOT_RESPONSE_TIMEOUT =
 
 export const REFERRAL_NUMBER_NOT_FOUND =
   'NO_DATA:Направление пациента с указанным номером не найдено. Пожалуйста, проверьте корректность введенных выше данных.';
-export const NEW_BOOKING_DEFAULT_ERROR_MESSAGE = 'Извините, запись невозможна.';
+// eslint-disable-next-line max-len
+export const STATIC_ERROR_BOOKING_LIMIT_MESSAGE = 'Превышено количество забронированных слотов для данного пользователя для данной услуги. Текущее ограничение - 1 забронированный слот в день';
 
 export enum RefName {
   serviceOrSpecs = 'ServiceOrSpecs',
@@ -85,7 +88,8 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
     private formPlayer: FormPlayerService,
-  ) {}
+  ) {
+  }
 
   public handleResponse(
     httpRequest: HttpRequest<unknown>,
@@ -103,8 +107,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       const error = (body as ItemsErrorResponse)?.error;
 
       if (url.includes('equeue/agg/book') && error) {
-        const errorMessage = error?.errorDetail?.errorMessage || NEW_BOOKING_DEFAULT_ERROR_MESSAGE;
-        this.showModalFailure(errorMessage, false, ModalFailureType.BOOKING);
+        this.handleBookingError(body as ItemsErrorResponse);
       }
 
       if (
@@ -122,7 +125,8 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
               this.navigationService.redirectToLK();
             }
           });
-        } catch (e) {}
+        } catch (e) {
+        }
       }
 
       if (url.includes('equeue/agg/slots')) {
@@ -258,7 +262,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
   }
 
   public isValidRequest(obj: object): boolean {
-    return 'scenarioDto' in obj || 'items' in obj;
+    return 'scenarioDto' in obj || 'items' in obj || 'bookId' in obj;
   }
 
   public showModalFailure(errorMessage: string, replace: boolean, modal: ModalFailureType): void {
@@ -299,6 +303,19 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
+  handleBookingError({ error }: ItemsErrorResponse): void {
+    let modalParams = COMMON_ERROR_MODAL_PARAMS;
+    if (error.errorDetail?.errorMessage === STATIC_ERROR_BOOKING_LIMIT_MESSAGE) {
+      modalParams = LOADING_ERROR_MODAL_PARAMS;
+      LOADING_ERROR_MODAL_PARAMS.text = LOADING_ERROR_MODAL_PARAMS.text.replace(/\{textAsset\}?/g, STATIC_ERROR_BOOKING_LIMIT_MESSAGE);
+    }
+    this.showModal(modalParams).then((prevStep) => {
+      if (prevStep) {
+        this.navigationService.prev();
+      }
+    });
+  }
+
   private handleItemsRequest(body: unknown, url: string, refName: string | undefined): void {
     const error = (body as ItemsErrorResponse)?.error;
     const errorMessage = error?.errorDetail?.errorMessage;
@@ -310,7 +327,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       error?.errorDetail?.errorMessage !== undefined &&
       error?.errorDetail?.errorMessage !== '' &&
       error?.errorDetail?.errorMessage.toLocaleLowerCase().trim() !==
-        STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim() &&
+      STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim() &&
       refName != null
     ) {
       switch (refName) {

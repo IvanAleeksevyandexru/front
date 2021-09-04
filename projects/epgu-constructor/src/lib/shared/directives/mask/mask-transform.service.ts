@@ -9,20 +9,20 @@ export class MaskTransformService {
   private localeDecimalSeparator = this.decimalPipe.transform(1.23, '0.2-2').replace(/\d/g, '');
   constructor (
     private decimalPipe: DecimalPipe,
-  ) { 
-    
+  ) {
+
   }
 
   public transformNumberMaskInput(
-    value: string, 
+    value: string,
     maskOptions: Partial<NumberMaskOptions>,
     ): string {
       const options = { ...numberMaskDefaultOptions, ...maskOptions };
-      
+
       let result =
       value.replace(options.decimalSymbol, '.').replace(/[^\d.]/g, '') || '0';
-      
-      if (!Number.isNaN(+result)) {        
+
+      if (!Number.isNaN(+result)) {
         result = this.decimalPipe
           .transform(
             result.substring(0, 10),

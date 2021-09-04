@@ -125,9 +125,9 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.valueParsed).toEqual({ regAddr: 'Some addr', regDate: '' });
+      expect(component.valueParsed).toEqual({ regDate: null, regAddr: 'Some addr' });
       expect(currentAnswersService.state).toEqual(
-        JSON.stringify({ regAddr: 'Some addr', regDate: '' }),
+        JSON.stringify({ regDate: null, regAddr: 'Some addr' }),
       );
     });
 
@@ -142,9 +142,9 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.valueParsed).toEqual({ regAddr: 'Some addr', regDate: '2021-05-11' });
+      expect(component.valueParsed).toEqual({ regDate: '2021-05-11', regAddr: 'Some addr' });
       expect(currentAnswersService.state).toEqual(
-        JSON.stringify({ regAddr: 'Some addr', regDate: '2021-05-11' }),
+        JSON.stringify({ regDate: '2021-05-11', regAddr: 'Some addr' }),
       );
     });
   });

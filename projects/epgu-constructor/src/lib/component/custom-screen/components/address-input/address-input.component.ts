@@ -19,10 +19,11 @@ export class AddressInputComponent extends AbstractComponentListItemComponent {
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
       const addressSuggestions = suggestions[this.control.value?.id];
-      addressSuggestions.list.forEach((item) => {
+      addressSuggestions?.list.forEach((item) => {
         // eslint-disable-next-line no-param-reassign
         item.value = JSON.parse(item.originalItem).fullAddress;
       });
+
       return addressSuggestions;
     }),
   );

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { ActionType } from '@epgu/epgu-constructor-types';
-
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CarDetailInfoComponentAttrsDto, ServiceResult } from '../../models/car-info.interface';
 import { CarDetailInfoService } from '../../service/car-detail-info.service';
+import { ComponentBase } from '../../../../../../screen/screen.types';
 
 @Component({
   selector: 'epgu-constructor-car-detail-info-container',
@@ -15,6 +15,7 @@ import { CarDetailInfoService } from '../../service/car-detail-info.service';
   providers: [CarDetailInfoService],
 })
 export class CarDetailInfoContainerComponent {
+  public data$: Observable<ComponentBase> = this.screenService.component$;
   public serviceResult = ServiceResult;
   public errors$ = this.screenService.component$.pipe(
     map((component) => component.attrs as CarDetailInfoComponentAttrsDto),
