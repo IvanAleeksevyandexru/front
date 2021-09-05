@@ -109,18 +109,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
   public today: Date;
 
-  private errorModalResultSub = new Subscription();
-  private cachedAnswer: TimeSlotsAnswerInterface;
-  private timeSlotType: TimeSlotsTypes;
-  private nextStepAction = NEXT_STEP_ACTION;
-  private emptySlotsModal: ConfirmationModal = null;
-  private firstDayOfMainSection: Date;
-  private daysInMainSection: number;
-  private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
-  private _monthsRange = new Set();
-
-  private dateSelector$$ = new BehaviorSubject<Date>(null);
-  private dateSelector$ = this.dateSelector$$
+  dateSelector$$ = new BehaviorSubject<Date>(null);
+  dateSelector$ = this.dateSelector$$
     .pipe(
       filter((value) => !!value),
       tap(() => {
@@ -146,8 +136,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     )
     .subscribe();
 
-  private init$$ = new BehaviorSubject<boolean>(false);
-  private init$ = this.init$$
+  init$$ = new BehaviorSubject<boolean>(false);
+  init$ = this.init$$
     .pipe(
       filter((status) => status),
       switchMap(() => from(this.datesHelperService.getToday(true))),
@@ -162,6 +152,16 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       takeUntil(this.ngUnsubscribe$),
     )
     .subscribe();
+
+  private errorModalResultSub = new Subscription();
+  private cachedAnswer: TimeSlotsAnswerInterface;
+  private timeSlotType: TimeSlotsTypes;
+  private nextStepAction = NEXT_STEP_ACTION;
+  private emptySlotsModal: ConfirmationModal = null;
+  private firstDayOfMainSection: Date;
+  private daysInMainSection: number;
+  private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
+  private _monthsRange = new Set();
 
   constructor(
     private modalService: ModalService,
