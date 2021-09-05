@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ListItem } from '@epgu/epgu-lib';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DisplayDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import {
@@ -58,6 +58,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public activeYearNumber: number;
   public chosenTimeStr: string;
   public isChosenTimeStrVisible = false;
+  public isFinish = new Subject<null>();
 
   daysNotFoundTemplate = {
     header: this.isSmev2 ? 'В этот день все заятно' : 'В этом месяце всё занято',
@@ -106,6 +107,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public get monthsRange(): string {
     return Array.from(this._monthsRange).join(' — ');
   }
+  public today: Date;
 
   private errorModalResultSub = new Subscription();
   private cachedAnswer: TimeSlotsAnswerInterface;
@@ -116,7 +118,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private daysInMainSection: number;
   private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
   private _monthsRange = new Set();
-  private today: Date;
+
   private dateSelector$$ = new BehaviorSubject<Date>(null);
   private dateSelector$ = this.dateSelector$$
     .pipe(
@@ -139,6 +141,23 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
             return throwError(err);
           }),
         );
+      }),
+      takeUntil(this.ngUnsubscribe$),
+    )
+    .subscribe();
+
+  private init$$ = new BehaviorSubject<boolean>(false);
+  private init$ = this.init$$
+    .pipe(
+      filter((status) => status),
+      switchMap(() => from(this.datesHelperService.getToday(true))),
+      tap((today: Date) => {
+        this.today = today;
+        if (!this.isSmev2) {
+          this.loadTimeSlots();
+        } else {
+          this.smev2Loading();
+        }
       }),
       takeUntil(this.ngUnsubscribe$),
     )
@@ -171,13 +190,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         this.screenService.component.id,
         this.screenService.component.attrs?.cancelReservation,
       );
-
-      if (!this.isSmev2) {
-        this.loadTimeSlots();
-      } else {
-        this.smev2Loading();
-      }
     }
+    this.init$$.next(true);
   }
 
   smev2Loading(): void {
@@ -313,13 +327,13 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.recalcDaysStyles();
   }
 
-  public async monthChanged(ev: ListItem): Promise<void> {
+  public monthChanged(ev: ListItem): void {
     const { id } = ev;
     const [activeYear, activeMonth] = (id as string).split('-');
 
     this.activeMonthNumber = parseInt(activeMonth, 10) - 1;
     this.activeYearNumber = parseInt(activeYear, 10);
-    await this.renderSingleMonthGrid(this.weeks);
+    this.renderSingleMonthGrid(this.weeks);
     this.checkExistenceSlots();
   }
 
@@ -445,6 +459,47 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     return !this.errorMessage;
   }
 
+  // TODO
+  // eslint-disable-next-line @typescript-eslint/typedef
+  renderSingleMonthGrid(output): void {
+    output.splice(0, output.length); // in-place clear
+    const daysToShow = this.screenService.component?.attrs.daysToShow;
+
+    if (this.screenService.component?.attrs.startSection === 'today') {
+      this.firstDayOfMainSection = this.today;
+    } else {
+      this.firstDayOfMainSection = this.datesHelperService.setCalendarDate(
+        this.today,
+        this.activeYearNumber,
+        this.activeMonthNumber,
+        1,
+      );
+    }
+
+    const firstDate = this.datesHelperService.startOfISOWeek(this.firstDayOfMainSection);
+
+    this.daysInMainSection =
+      daysToShow || this.datesHelperService.getDaysInMonth(this.firstDayOfMainSection);
+
+    const lastDate = this.datesHelperService.endOfISOWeek(
+      this.datesHelperService.add(this.firstDayOfMainSection, this.daysInMainSection - 1, 'days'),
+    );
+
+    const totalDays = this.datesHelperService.differenceInCalendarDays(firstDate, lastDate);
+
+    let date = firstDate;
+    let week = 0;
+    output.push([]);
+    for (let i = 0; i <= totalDays; i += 1) {
+      if (output[week].length && output[week].length % 7 === 0) {
+        week += 1;
+        output.push([]);
+      }
+      this.addDayToWeek(output[week], date, this.today);
+      date = this.datesHelperService.add(date, 1, 'days');
+    }
+  }
+
   private setCancelReservation(currentTimeSlotId: string, cancelReservation: string[]): void {
     this.timeSlotsService.cancelReservation = [currentTimeSlotId, ...(cancelReservation || [])];
   }
@@ -458,7 +513,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.timeSlotType = value.timeSlotType;
 
     this.timeSlotsService.init(value, this.cachedAnswer, value.timeSlotType).subscribe(
-      async (isBookedDepartment) => {
+      (isBookedDepartment) => {
         if (this.timeSlotsService.hasError()) {
           this.inProgress = false;
           this.errorMessage = this.timeSlotsService.getErrorMessage();
@@ -472,7 +527,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
             this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
           }
         } else {
-          await this.serviceInitHandle(!!isBookedDepartment);
+          this.serviceInitHandle(!!isBookedDepartment);
         }
 
         this.inProgress = false;
@@ -572,47 +627,6 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     });
   }
 
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/typedef
-  private async renderSingleMonthGrid(output): Promise<void> {
-    output.splice(0, output.length); // in-place clear
-    const daysToShow = this.screenService.component?.attrs.daysToShow;
-
-    if (!this.isSmev2 || !this.today) {
-      this.today = await this.datesHelperService.getToday(true);
-    }
-
-    if (this.screenService.component?.attrs.startSection === 'today') {
-      this.firstDayOfMainSection = this.today;
-    } else {
-      this.firstDayOfMainSection = this.datesHelperService.setCalendarDate(
-        this.today,
-        this.activeYearNumber,
-        this.activeMonthNumber,
-        1,
-      );
-    }
-
-    const firstDate = this.datesHelperService.startOfISOWeek(this.firstDayOfMainSection);
-    this.daysInMainSection =
-      daysToShow || this.datesHelperService.getDaysInMonth(this.firstDayOfMainSection);
-    const lastDate = this.datesHelperService.endOfISOWeek(
-      this.datesHelperService.add(this.firstDayOfMainSection, this.daysInMainSection - 1, 'days'),
-    );
-    const totalDays = this.datesHelperService.differenceInCalendarDays(firstDate, lastDate);
-    let date = firstDate;
-    let week = 0;
-    output.push([]);
-    for (let i = 0; i <= totalDays; i += 1) {
-      if (output[week].length && output[week].length % 7 === 0) {
-        week += 1;
-        output.push([]);
-      }
-      this.addDayToWeek(output[week], date, this.today);
-      date = this.datesHelperService.add(date, 1, 'days');
-    }
-  }
-
   private getMonthsListItem(monthYear: string): ListItem {
     const [activeYear, activeMonth] = monthYear.split('-');
     const monthNumber = parseInt(activeMonth, 10) - 1;
@@ -679,12 +693,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * Создается и заполняет массив для выпадающего списка месяцев
    * Месяцы создаются от минимального до максимального из эндпоинта самих слотов
    */
-  private async fillMonthsYears(): Promise<void> {
+  private fillMonthsYears(): void {
     this.monthsYears = [];
-
-    if (!this.today) {
-      this.today = await this.datesHelperService.getToday(true);
-    }
 
     const availableMonths = this.isSmev2
       ? this.datesHelperService.getMonthListByYear(this.today)
@@ -792,23 +802,24 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
    * Обработка инициализации текущего сервиса
    * @param isBookedDepartment Флаг показывающий что выбран департамент, на который уже есть бронь
    */
-  private async serviceInitHandle(isBookedDepartment: boolean): Promise<void> {
+  private serviceInitHandle(isBookedDepartment: boolean): void {
     this.isChosenTimeStrVisible = isBookedDepartment && !!this.bookedSlot;
     this.errorMessage = undefined;
     this.activeMonthNumber = this.timeSlotsService.getCurrentMonth();
     this.activeYearNumber = this.timeSlotsService.getCurrentYear();
     this.initSlotsAreas();
 
-    await this.fillMonthsYears();
+    this.fillMonthsYears();
     this.fixedMonth = this.monthsYears.length < 2;
     if (this.currentMonth) {
-      await this.monthChanged(this.currentMonth);
+      this.monthChanged(this.currentMonth);
     }
 
     if (this.bookedSlot && isBookedDepartment) {
       this.selectDate(this.bookedSlot.slotTime);
       this.chooseTimeSlot(this.bookedSlot);
     }
+
     if (this.isSmev2) {
       this.changeDetectionRef.markForCheck();
     }

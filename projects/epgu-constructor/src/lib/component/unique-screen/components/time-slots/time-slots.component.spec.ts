@@ -209,8 +209,9 @@ describe('TimeSlotsComponent', () => {
     expect(check).toBeFalsy();
   });
 
-  it('calcing of isBookedDepartment as true', () => {
+  it('calcing of isBookedDepartment as true', async () => {
     fixture.detectChanges();
+    await fixture.whenStable();
     let isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
     expect(isBookedDepartment).toBeTruthy();
   });
@@ -238,22 +239,24 @@ describe('TimeSlotsComponent', () => {
     expect(isBookedDepartment).toBeFalsy();
   });
 
-  it('generate new uuid in case of waitingTimeExpired', () => {
+  it('generate new uuid in case of waitingTimeExpired', async () => {
     const compValue = JSON.parse(screenService.component.value);
     compValue.waitingTimeExpired = true;
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
+    await fixture.whenStable();
     const oldBookid = component['timeSlotsService'].bookId;
     component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
     const newBookid = component['timeSlotsService'].bookId;
     expect(oldBookid).not.toMatch(newBookid);
   });
 
-  it('not generate new uuid in case of not waitingTimeExpired', () => {
+  it('not generate new uuid in case of not waitingTimeExpired', async () => {
     const compValue = JSON.parse(screenService.component.value);
     const department = JSON.parse(compValue.department);
     let isBookedDepartment = component['timeSlotsService']?.isBookedDepartment;
     fixture.detectChanges();
+    await fixture.whenStable();
     isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
     const oldBookid = component['timeSlotsService'].bookId;
     component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
@@ -261,11 +264,12 @@ describe('TimeSlotsComponent', () => {
     expect(oldBookid).toMatch(newBookid);
   });
 
-  it('should send cancel before book in case of waitingTimeExpired', () => {
+  it('should send cancel before book in case of waitingTimeExpired', async () => {
     const compValue = JSON.parse(screenService.component.value);
     compValue.waitingTimeExpired = true;
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
+    await fixture.whenStable();
     // @ts-ignore
     const cancelRequestSpy = spyOn(component['timeSlotsService'], 'cancelSlot').and.callThrough();
     component['timeSlotsService']['checkBooking'](EMPTY_SLOT);
@@ -288,7 +292,7 @@ describe('TimeSlotsComponent', () => {
     expect(bookedSlot).toBeNull();
   });
 
-  it('MVD should contain caseNumber and empty parentOrderId', () => {
+  it('MVD should contain caseNumber and empty parentOrderId', async () => {
     const compValue = JSON.parse(screenService.component.value);
     const department = JSON.parse(compValue.department);
     compValue.timeSlotType = 'MVD';
@@ -296,6 +300,7 @@ describe('TimeSlotsComponent', () => {
     compValue.department = JSON.stringify(department);
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
+    await fixture.whenStable();
     const reqBody = component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
     expect(reqBody.caseNumber).toBeTruthy();
     expect(reqBody.parentOrderId).toEqual('');
@@ -328,9 +333,15 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('renderSingleMonthGrid works as before', async () => {
+    jest.spyOn(component, 'renderSingleMonthGrid').mockReturnValueOnce(null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
     const actual = [];
     const expected = mockWeeks;
-    await component['renderSingleMonthGrid'](actual);
+    component.activeMonthNumber = undefined;
+    component.activeYearNumber = undefined;
+    component.renderSingleMonthGrid(actual);
     expect(actual).toEqual(expected);
   });
 
@@ -434,7 +445,8 @@ describe('TimeSlotsComponent', () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(mockEmptySlots as SmevSlotsResponseInterface));
-    await fixture.detectChanges();
+    fixture.detectChanges();
+    await fixture.whenStable();
     expect(modalSpy).toBeCalledWith(modalParams);
   });
 
@@ -445,7 +457,7 @@ describe('TimeSlotsComponent', () => {
     expect(modalSpy).not.toBeCalled();
   });
 
-  it('should call error modal if slots request returned error', () => {
+  it('should call error modal if slots request returned error', async () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(slotsError as SmevSlotsResponseInterface));
@@ -453,6 +465,7 @@ describe('TimeSlotsComponent', () => {
       return errorMessage;
     });
     fixture.detectChanges();
+    await fixture.whenStable();
     expect(modalSpy).toBeCalled();
   });
 
