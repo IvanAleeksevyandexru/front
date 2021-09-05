@@ -84,7 +84,7 @@ export class DatesToolsService {
     const nowMonth = parseInt(format(date, 'M'), 10);
     return new Array(12 - nowMonth + 1)
       .fill(null)
-      .map((item, index) => format(setMonth(date, nowMonth + index - 1), formatString));
+      .map((_, index) => format(setMonth(date, nowMonth + index - 1), formatString));
   }
 
   /**
