@@ -32,15 +32,22 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
   );
 
   dictionariesList$ = this.dictionaryToolsService.dictionaries$.pipe(
-    tap((dictionaries) => {
-      if (
-        this.searchIconForcedShowing &&
-        this.control.value?.attrs?.searchIconForcedShowing &&
-        dictionaries[getDictKeyByComp(this.control.value)]?.list
-      ) {
+    tap(
+      (dictionaries) => {
+        if (
+          this.searchIconForcedShowing &&
+          this.control.value?.attrs?.searchIconForcedShowing &&
+          dictionaries[getDictKeyByComp(this.control.value)]?.list
+        ) {
+          this.searchIconForcedShowing = false;
+          this.cdr.detectChanges();
+        }
+      },
+      () => {
         this.searchIconForcedShowing = false;
-      }
-    }),
+        this.cdr.detectChanges();
+      },
+    ),
     map((dictionaries) => dictionaries[getDictKeyByComp(this.control.value)]?.list),
   );
 
