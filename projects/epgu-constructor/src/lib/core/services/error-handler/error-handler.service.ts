@@ -35,6 +35,8 @@ import {
   STATIC_ERROR_MODAL,
   SERVICE_OR_SPEC_SESSION_TIMEOUT_2,
   LOADING_ERROR_MODAL_PARAMS,
+  REGIONS_MODAL,
+  MZRF_MODAL,
 } from './error-handler';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
@@ -70,7 +72,8 @@ export const SMEV2_GET_SLOT_RESPONSE_TIMEOUT =
 export const REFERRAL_NUMBER_NOT_FOUND =
   'NO_DATA:Направление пациента с указанным номером не найдено. Пожалуйста, проверьте корректность введенных выше данных.';
 // eslint-disable-next-line max-len
-export const STATIC_ERROR_BOOKING_LIMIT_MESSAGE = 'Превышено количество забронированных слотов для данного пользователя для данной услуги. Текущее ограничение - 1 забронированный слот в день';
+export const STATIC_ERROR_BOOKING_LIMIT_MESSAGE =
+  'Превышено количество забронированных слотов для данного пользователя для данной услуги. Текущее ограничение - 1 забронированный слот в день';
 
 export enum RefName {
   serviceOrSpecs = 'ServiceOrSpecs',
@@ -88,8 +91,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
     private formPlayer: FormPlayerService,
-  ) {
-  }
+  ) {}
 
   public handleResponse(
     httpRequest: HttpRequest<unknown>,
@@ -125,8 +127,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
               this.navigationService.redirectToLK();
             }
           });
-        } catch (e) {
-        }
+        } catch (e) {}
       }
 
       if (url.includes('equeue/agg/slots')) {
@@ -184,17 +185,56 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         const dictionaryError = error as DictionaryResponseError;
         const dictionaryResponse = body as DictionaryResponse;
         if (
-          dictionaryError?.code === 3 &&
-          dictionaryError?.message === 'Internal Error' &&
+          dictionaryError?.code !== 0 &&
           dictionaryResponse?.fieldErrors.length === 0 &&
           dictionaryResponse?.total === 0 &&
           dictionaryResponse.items.length === 0
         ) {
-          this.showModal(COMMON_ERROR_MODAL_PARAMS).then((prevStep) => {
-            if (prevStep) {
-              this.navigationService.prev();
-            }
-          });
+          const message = dictionaryError?.message
+            .replace('FAILURE:', '')
+            .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
+          REGIONS_MODAL.text = REGIONS_MODAL.text.replace(/\{textAsset\}?/g, message);
+          this.showModal(REGIONS_MODAL);
+        }
+      }
+
+      if (url.includes('dictionary/mzrf_equeue_lpu')) {
+        const dictionaryError = error as DictionaryResponseError;
+        const dictionaryResponse = body as DictionaryResponse;
+        if (
+          dictionaryError?.code !== 0 &&
+          dictionaryResponse?.fieldErrors.length === 0 &&
+          dictionaryResponse?.total === 0 &&
+          dictionaryResponse.items.length === 0
+        ) {
+          const message = dictionaryError?.message
+            .replace('FAILURE:', '')
+            .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
+          if (message?.includes('Закончилось время, отведённое на заполнение формы')) {
+            MZRF_MODAL.text = MZRF_MODAL.text.replace(
+              /\{textAsset\}?/g,
+              'Чтобы записаться к врачу, обновите страницу. Если ничего не изменится, начните заполнять форму заново',
+            );
+            MZRF_MODAL.buttons = [
+              {
+                label: 'Начать заново',
+                closeModal: true,
+                value: 'reload',
+              },
+            ];
+            this.showModal(MZRF_MODAL).then((value) => {
+              if (value) {
+                this.formPlayer.initData();
+              }
+            });
+          } else {
+            MZRF_MODAL.text = MZRF_MODAL.text.replace(/\{textAsset\}?/g, message);
+            this.showModal(MZRF_MODAL).then((prevStep) => {
+              if (prevStep) {
+                this.navigationService.prev();
+              }
+            });
+          }
         }
       }
 
@@ -307,7 +347,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     let modalParams = COMMON_ERROR_MODAL_PARAMS;
     if (error.errorDetail?.errorMessage === STATIC_ERROR_BOOKING_LIMIT_MESSAGE) {
       modalParams = LOADING_ERROR_MODAL_PARAMS;
-      LOADING_ERROR_MODAL_PARAMS.text = LOADING_ERROR_MODAL_PARAMS.text.replace(/\{textAsset\}?/g, STATIC_ERROR_BOOKING_LIMIT_MESSAGE);
+      LOADING_ERROR_MODAL_PARAMS.text = LOADING_ERROR_MODAL_PARAMS.text.replace(
+        /\{textAsset\}?/g,
+        STATIC_ERROR_BOOKING_LIMIT_MESSAGE,
+      );
     }
     this.showModal(modalParams).then((prevStep) => {
       if (prevStep) {
@@ -327,7 +370,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       error?.errorDetail?.errorMessage !== undefined &&
       error?.errorDetail?.errorMessage !== '' &&
       error?.errorDetail?.errorMessage.toLocaleLowerCase().trim() !==
-      STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim() &&
+        STATIC_ERROR_MESSAGE.toLocaleLowerCase().trim() &&
       refName != null
     ) {
       switch (refName) {
@@ -355,11 +398,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           ) {
             this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT).then((value) => {
               switch (value) {
-                case 'prevStep': {
-                  this.navigationService.prev();
-                  break;
-                }
-
                 case 'init': {
                   this.formPlayer.initData();
                   break;

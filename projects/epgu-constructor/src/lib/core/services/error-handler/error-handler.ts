@@ -13,6 +13,18 @@ const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <span>Попробуйте снова или зайдите позже. Если ничего не изменится — напишите в
 <a target="_blank" href="https://www.gosuslugi.ru/feedback">службу поддержки</a> и передайте код ошибки:</span></div>`;
 
+const REGIONS_MODAL_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Внимание!</h4>
+<span>{textAsset}</span>
+</div>`;
+
+const MZRF_MODAL_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Внимание!</h4>
+<span>{textAsset}</span>
+</div>`;
+
 const LOADING_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Ошибка Загрузки</h4>
@@ -118,6 +130,39 @@ export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
   isShortModal: true,
 };
 
+export const REGIONS_MODAL: ConfirmationModal = {
+  text: REGIONS_MODAL_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'Вернуться к заявлению',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
+export const MZRF_MODAL: ConfirmationModal = {
+  text: MZRF_MODAL_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'На предыдущий шаг',
+      color: 'white',
+      closeModal: true,
+      value: 'prevStep',
+    },
+    {
+      label: 'Попробовать ещё раз',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
 
 export const LOADING_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: LOADING_ERROR_MODAL_PARAMS_TEXT,
@@ -269,7 +314,7 @@ export const SERVICE_OR_SPEC_NO_SPECIALIST: ConfirmationModal = {
   showCrossButton: false,
   buttons: [
     {
-      label: 'На карту',
+      label: 'Обновить',
       closeModal: true,
       value: 'prevStep',
     },
@@ -303,12 +348,7 @@ export const SERVICE_OR_SPEC_SESSION_TIMEOUT: ConfirmationModal = {
       closeModal: true,
       color: 'white',
       value: 'init'
-    },
-    {
-      label: 'Обновить',
-      closeModal: true,
-      value: 'prevStep',
-    },
+    }
   ],
   isShortModal: true,
 };
@@ -363,6 +403,10 @@ export const STATIC_ERROR_MODAL: ConfirmationModal = {
       label: 'Начать заново',
       closeModal: true,
       value: 'init'
+    },
+    {
+      label: 'Попробовать ещё раз',
+      closeModal: true,
     },
   ],
   isShortModal: true,
