@@ -38,6 +38,8 @@ import { ERROR_HANDLER_SERVICE } from './errors.token';
 import { SessionService } from '../../services/session/session.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
+import { DictionaryToolsService } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service.stub';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -66,6 +68,7 @@ describe('ErrorsInterceptor', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: ErrorsInterceptor,
