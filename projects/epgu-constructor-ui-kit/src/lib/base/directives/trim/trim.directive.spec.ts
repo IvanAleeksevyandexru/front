@@ -36,6 +36,14 @@ describe('TrimDirective', () => {
     expect(value).toEqual('42Тыц 8тыц -тац тац-тац');
   });
 
+  it('should not remove extra spaces between words when isMultiline', () => {
+    inputValue = '42Тыц\n 8тыц  -тац тац-тац';
+    const expectValue = '42Тыц\n 8тыц -тац тац-тац';
+    directive.isMultiline = true;
+    const value = directive.removeExtraSpacesBetweenWords(inputValue);
+    expect(value).toEqual(expectValue);
+  });
+
   describe('TrimDirective integration', () => {
     let component: MockComponent;
     let fixture: ComponentFixture<MockComponent>;
