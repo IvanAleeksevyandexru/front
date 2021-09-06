@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ConstantsService, ListElement, ValidationShowOn } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
@@ -21,6 +21,7 @@ import { getDictKeyByComp } from '../../../../shared/services/dictionary/diction
 })
 export class LookupInputComponent extends AbstractComponentListItemComponent implements OnInit {
   public provider;
+  public searchIconForcedShowing: boolean;
 
   public showNotFound;
 
@@ -31,6 +32,15 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
   );
 
   dictionariesList$ = this.dictionaryToolsService.dictionaries$.pipe(
+    tap((dictionaries) => {
+      if (
+        this.searchIconForcedShowing &&
+        this.control.value?.attrs?.searchIconForcedShowing &&
+        dictionaries[getDictKeyByComp(this.control.value)]?.list
+      ) {
+        this.searchIconForcedShowing = false;
+      }
+    }),
     map((dictionaries) => dictionaries[getDictKeyByComp(this.control.value)]?.list),
   );
 
@@ -54,6 +64,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.searchIconForcedShowing = true;
     this.showNotFound = !!this.control.value.attrs.hint;
     if (this.control.value.attrs.searchProvider) {
       this.provider = { search: this.providerSearch() };

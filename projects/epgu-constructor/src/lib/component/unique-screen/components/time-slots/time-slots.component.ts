@@ -33,6 +33,7 @@ import {
   TimeSlotsConstants,
   TimeSlotsTypes,
   STATIC_ERROR_MESSAGE,
+  NO_DATA_MESSAGE,
 } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
 import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
@@ -364,6 +365,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           if (this.errorMessage?.includes(STATIC_ERROR_MESSAGE)) {
             this.daysNotFoundTemplate.header = 'Непредвиденная ошибка';
             this.daysNotFoundTemplate.description = this.errorMessage;
+          } else if (this.errorMessage?.includes(NO_DATA_MESSAGE)) {
+            this.daysNotFoundTemplate.header = 'Нет свободного времени для приёма';
+            this.daysNotFoundTemplate.description =
+              'Этот врач занят на ближайшие 14 дней. Выберите другого специалиста';
           } else {
             this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
           }
