@@ -19,6 +19,7 @@
     &[data-button-type="nextstep"]:not(:first-child) {
       order: -1;
     }
+    margin-top: 32px;
   }
   @include tablets-up {
     &:not(:first-child) {
