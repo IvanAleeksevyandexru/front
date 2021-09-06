@@ -16,13 +16,14 @@ import {
   DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/epgu-lib';
-
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ActionService } from '../action/action.service';
 import { ActionServiceStub } from '../action/action.service.stub';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
+import { JsonHelperServiceStub } from '../../../core/services/json-helper/json-helper.service.stub';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 @Component({
   selector: 'epgu-constructor-label-test-component',
@@ -55,8 +56,9 @@ describe('ClickableLabelDirective', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        CurrentAnswersService,
         SmuEventsService,
         HtmlSelectService,
       ],

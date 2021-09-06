@@ -16,6 +16,8 @@ import { ActionServiceStub } from '../../../../../../shared/directives/action/ac
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
+import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
+import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
 
 describe('SelectChildrenItemWrapperComponent', () => {
   let component: SelectChildrenItemWrapperComponent;
@@ -31,8 +33,9 @@ describe('SelectChildrenItemWrapperComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        CurrentAnswersService,
         SmuEventsService,
         HtmlSelectService,
       ],

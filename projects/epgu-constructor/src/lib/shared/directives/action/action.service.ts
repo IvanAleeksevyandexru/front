@@ -36,7 +36,7 @@ export class ActionService {
   private _actionType = new BehaviorSubject<ActionType | null>(null);
 
   constructor(
-    private actionApiService: FormPlayerApiService,
+    private formPlayerApiService: FormPlayerApiService,
     private actionToolsService: ActionToolsService,
     private screenService: ScreenService,
     private navService: NavigationService,
@@ -136,7 +136,7 @@ export class ActionService {
         component.id === componentId ||
         component.type === CustomScreenComponentTypes.EaisdoGroupCost,
     ) as unknown) as ActionRequestPayload;
-    return this.actionApiService.sendAction<EaisdoResponse>(action.action, component);
+    return this.formPlayerApiService.sendAction<EaisdoResponse>(action.action, component);
   }
 
   private orderToOrder(action: ComponentActionDto): void {

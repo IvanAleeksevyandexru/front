@@ -33,6 +33,8 @@ import { DateRestrictionsService } from '../../../../../shared/services/date-res
 import { SuggestMonitorService } from '../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { HtmlSelectService } from '../../../../../core/services/html-select/html-select.service';
 import { MockProvider } from 'ng-mocks';
+import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
+import { JsonHelperServiceStub } from '../../../../../core/services/json-helper/json-helper.service.stub';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -67,23 +69,24 @@ describe('AddPassportComponent', () => {
       declarations: [AddPassportComponent, ScreenPadComponent],
       imports: [RouterTestingModule, PassportModule, ReactiveFormsModule, FormsModule],
       providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: FocusManagerService, useClass: FocusManagerServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
         ComponentsListToolsService,
         HealthService,
         EventBusService,
         ValidationService,
         DateRangeService,
         SuggestMonitorService,
-        { provide: ScreenService, useClass: ScreenServiceStub },
         DatesToolsService,
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: ActionService, useClass: ActionServiceStub },
         CurrentAnswersService,
         SuggestHandlerService,
         MockProvider(DateRestrictionsService),
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
-        { provide: FocusManagerService, useClass: FocusManagerServiceStub },
         HtmlSelectService,
       ],
     }).compileComponents();

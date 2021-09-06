@@ -3,7 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule, SmuEventsService } from '@epgu/epgu-lib';
 import { MockComponents, MockDirective, MockModule, MockPipe } from 'ng-mocks';
-import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub, SessionService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  SessionService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
@@ -34,6 +39,8 @@ import {
   Clarifications,
 } from '@epgu/epgu-constructor-types';
 import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
+import { JsonHelperServiceStub } from '../../core/services/json-helper/json-helper.service.stub';
+import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -98,9 +105,10 @@ describe('QuestionsScreenComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
         EventBusService,
         CurrentAnswersService,
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
         HtmlSelectService,
         SessionService,

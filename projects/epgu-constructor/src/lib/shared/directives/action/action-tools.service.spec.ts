@@ -16,6 +16,7 @@ import {
   SessionStorageService,
   SessionStorageServiceStub,
 } from '../../../../../../epgu-constructor-ui-kit/src/public-api';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
@@ -63,6 +64,7 @@ describe('ActionToolsService', () => {
   let notifierService: NotifierService;
   let htmlRemoverService: HtmlRemoverService;
   let modalService: ModalService;
+  let clipboard: Clipboard;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -90,6 +92,7 @@ describe('ActionToolsService', () => {
         EaisdoGroupCostService,
         JsonHelperService,
         NotifierService,
+        Clipboard,
       ],
     });
   });
@@ -105,6 +108,7 @@ describe('ActionToolsService', () => {
     notifierService = TestBed.inject(NotifierService);
     htmlRemoverService = TestBed.inject(HtmlRemoverService);
     modalService = TestBed.inject(ModalService);
+    clipboard = TestBed.inject(Clipboard);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
@@ -175,10 +179,16 @@ describe('ActionToolsService', () => {
   });
 
   describe('getActionDTO()', () => {
-    it('should return ActionRequestPayload with currentUrl, if there is "addToCalendar" in action.action attr', () => {
+    it('should return ActionRequestPayload with currentUrl, if there is "addToCalendar" in action.action', () => {
       const result = { additionalParams: {}, scenarioDto: { cachedAnswers: [], currentUrl: '' }};
       const newAction = cloneDeep(profileEditAction);
       newAction.action = DTOActionAction.addToCalendar;
+      expect(service['getActionDTO'](newAction)).toEqual(result);
+    });
+    it('should return ActionRequestPayload with additionalParams, if there is non-empty additionalParams in action.attrs', () => {
+      const result = { additionalParams: { screenId: 's1' }, scenarioDto: { cachedAnswers: [] }};
+      const newAction = cloneDeep(profileEditAction);
+      newAction.attrs.additionalParams = { screenId: 's1' };
       expect(service['getActionDTO'](newAction)).toEqual(result);
     });
     it('should return NavigationOptions', () => {
@@ -188,6 +198,26 @@ describe('ActionToolsService', () => {
   });
 
   describe('copyToClipboard()', () => {
+    it('should call notifierService.success()', () => {
+      const spy = jest.spyOn(notifierService, 'success');
+      service.copyToClipboard(copyToClipboardAction);
+      expect(spy).toBeCalled();
+    });
+    it('should call service.sendAction(), if action.attrs.additionalParams exists', () => {
+      const spy = jest.spyOn(service, 'sendAction');
+      const newAction = cloneDeep(copyToClipboardAction);
+      newAction.attrs.additionalParams = { screenId: 's1' };
+      service.copyToClipboard(newAction);
+      expect(spy).toBeCalled();
+    });
+  });
+
+  describe('copyAndNotify()', () => {
+    it('should call clipboard.copy()', () => {
+      const spy = jest.spyOn(clipboard, 'copy');
+      service.copyToClipboard(copyToClipboardAction);
+      expect(spy).toBeCalled();
+    });
     it('should call notifierService.success()', () => {
       const spy = jest.spyOn(notifierService, 'success');
       service.copyToClipboard(copyToClipboardAction);

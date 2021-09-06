@@ -20,6 +20,8 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { configureTestSuite } from 'ng-bullet';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
+import { JsonHelperServiceStub } from '../../../../core/services/json-helper/json-helper.service.stub';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('LabelComponent', () => {
   let component: LabelComponent;
@@ -35,8 +37,9 @@ describe('LabelComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        CurrentAnswersService,
         SmuEventsService,
         HtmlSelectService,
       ],
