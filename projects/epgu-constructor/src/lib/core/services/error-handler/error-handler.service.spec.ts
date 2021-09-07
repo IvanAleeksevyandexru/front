@@ -16,6 +16,8 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../navigation/navigation.service';
 import { NavigationServiceStub } from '../navigation/navigation.service.stub';
+import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '../../../shared/services/dictionary/dictionary-tools.service.stub';
 
 describe('ErrorHandlerService', () => {
   let service: ErrorHandlerService;
@@ -31,6 +33,7 @@ describe('ErrorHandlerService', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
       ],
     });
   });

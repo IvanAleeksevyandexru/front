@@ -21,7 +21,7 @@ import { getDictKeyByComp } from '../../../../shared/services/dictionary/diction
 })
 export class LookupInputComponent extends AbstractComponentListItemComponent implements OnInit {
   public provider;
-  public searchIconForcedShowing: boolean;
+  public searchIconForcedShowing = false;
 
   public showNotFound;
 
@@ -32,15 +32,22 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
   );
 
   dictionariesList$ = this.dictionaryToolsService.dictionaries$.pipe(
-    tap((dictionaries) => {
-      if (
-        this.searchIconForcedShowing &&
-        this.control.value?.attrs?.searchIconForcedShowing &&
-        dictionaries[getDictKeyByComp(this.control.value)]?.list
-      ) {
+    tap(
+      (dictionaries) => {
+        if (
+          this.searchIconForcedShowing &&
+          this.control.value?.attrs?.searchIconForcedShowing &&
+          dictionaries[getDictKeyByComp(this.control.value)]?.list
+        ) {
+          this.searchIconForcedShowing = false;
+          this.cdr.detectChanges();
+        }
+      },
+      () => {
         this.searchIconForcedShowing = false;
-      }
-    }),
+        this.cdr.detectChanges();
+      },
+    ),
     map((dictionaries) => dictionaries[getDictKeyByComp(this.control.value)]?.list),
   );
 
@@ -64,8 +71,10 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.searchIconForcedShowing = true;
     this.showNotFound = !!this.control.value.attrs.hint;
+    if (this.control.value?.attrs?.searchIconForcedShowing) {
+      this.searchIconForcedShowing = this.control.value?.attrs?.searchIconForcedShowing;
+    }
     if (this.control.value.attrs.searchProvider) {
       this.provider = { search: this.providerSearch() };
     }

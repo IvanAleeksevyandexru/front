@@ -29,7 +29,8 @@ export class TrimDirective {
   }
 
   removeExtraSpacesBetweenWords(value: string): string {
-    return value.replace(/[^\S\r\n]{2,}|\s/gm, ' ');
+    const regex = this.isMultiline ? /[^\S\r\n]{2,}/gm : /[^\S\r\n]{2,}|\s/gm;
+    return value.replace(regex, ' ');
   }
 
   private isNeedUpdateDueToSpaces(value: string): boolean {
