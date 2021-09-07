@@ -109,6 +109,25 @@ const STATIC_ERROR_MESSAGE_TEXT = `<div class="text_modal_error">
 <span>{textAsset}</span>
 </div>`;
 
+const RESOURCE_NOT_AVAILABLE_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Ошибка услуга недоступна</h4>
+<span>Чтобы записаться к врачу, обновите страницу или вернитесь позже</span>
+</div>`;
+
+export const RESOURCE_NOT_AVAILABLE: ConfirmationModal = {
+  text: RESOURCE_NOT_AVAILABLE_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'Обновить',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
 
 export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: COMMON_ERROR_MODAL_PARAMS_TEXT,
@@ -346,8 +365,7 @@ export const SERVICE_OR_SPEC_SESSION_TIMEOUT: ConfirmationModal = {
     {
       label: 'Начать заново',
       closeModal: true,
-      color: 'white',
-      value: 'init'
+      value: 'init',
     }
   ],
   isShortModal: true,

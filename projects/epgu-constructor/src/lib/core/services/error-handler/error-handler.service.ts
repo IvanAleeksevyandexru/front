@@ -37,6 +37,7 @@ import {
   LOADING_ERROR_MODAL_PARAMS,
   REGIONS_MODAL,
   MZRF_MODAL,
+  RESOURCE_NOT_AVAILABLE,
 } from './error-handler';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
@@ -66,7 +67,7 @@ export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE =
 export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 =
   'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова';
 export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
-  'Закончилось время, отведённое на заполнение формы. Чтобы записаться к врачу, обновите страницу';
+  'Закончилось время, отведённое на заполнение формы';
 export const SMEV2_GET_SLOT_RESPONSE_TIMEOUT =
   'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова';
 
@@ -394,7 +395,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
               }
             });
           } else if (
-            errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1) ||
             errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) ||
             (errorMessage.includes('FAILURE') &&
               !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE))
@@ -420,16 +420,21 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
         case RefName.resource: {
           if (
-            errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1) ||
-            errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) ||
-            (errorMessage.includes('FAILURE') &&
-              !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE))
+            errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) &&
+            !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE)
           ) {
             this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT_2).then((value) => {
               if (value) {
                 this.formPlayer.initData();
               }
             });
+          }
+
+          if (
+            errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) &&
+            !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)
+          ) {
+            this.showModal(RESOURCE_NOT_AVAILABLE);
           }
           break;
         }
