@@ -78,7 +78,7 @@
     "isZipkinCascadeMode": false,
     "showTraceIdOnError": true,
     "appPathMap": {
-      "ChildrenClubs": "/app/children-clubs"
+      "ChildrenClubs": "/children-clubs"
     }
   },
   "core": {
