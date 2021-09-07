@@ -104,7 +104,7 @@ export class ScreenService extends ScreenContent {
     const disclaimers = this.screenStore.disclaimers || [];
     if (!disclaimers.length) return;
 
-    this.disclaimers.forEach((disclaimer) => {
+    disclaimers.forEach((disclaimer) => {
       const { level, title, message, id: notifierId } = disclaimer;
       const type = level.toLocaleLowerCase();
       setTimeout(() => {

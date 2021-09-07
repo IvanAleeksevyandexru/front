@@ -25,6 +25,10 @@
       position: absolute;
       top: 18px;
       right: 18px;
+      &--small {
+        top: 16px;
+        right: 16px;
+      }
     }
   }
   &.light {
