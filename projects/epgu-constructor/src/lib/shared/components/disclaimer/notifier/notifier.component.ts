@@ -8,7 +8,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { animate, AnimationBuilder, style } from '@angular/animations';
+import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { HelperService } from '@epgu/epgu-lib';
 import {
@@ -31,7 +31,7 @@ export class NotifierDisclaimerComponent implements OnInit, OnDestroy {
 
   public notifiers: Notifier[] = [];
   public NotifierType = NotifierType;
-  public containerTop = 0; // для анимации
+  public containerTop = 0;
   public animationQueue = [];
   public animationInProgress = false;
 
@@ -51,60 +51,47 @@ export class NotifierDisclaimerComponent implements OnInit, OnDestroy {
 
     this.subscription = this.notifierService.notifier$.subscribe((notifier) => {
       const maxCount = this.setting.singleNotifier ? 1 : this.setting.maxNotificationsCount;
+      const containerTop = this.notifiersList.nativeElement.getBoundingClientRect().top;
+      const notifications = this.notifiersList.nativeElement.children;
+      const notificationHeight = notifications[notifications.length - 1]?.offsetHeight;
+      const margin = HelperService.isMobile() || this.notifiers.length === 1 ? 0 : 8;
+      const offsetTop = containerTop - notificationHeight - margin;
+      const animationPlayer = this.animationPlayer(containerTop, offsetTop);
 
-      if (!notifier.message) {
-        this.notifiers = [];
-        return;
-      }
+      this.notifiers.push(notifier);
 
-      if (this.setting.animated) {
-        const animation = (): void => {
-          this.notifiers.push(notifier);
-
-          if (this.notifiers.length > maxCount) {
-            this.stack.push(this.notifiers.pop());
-          }
-
-          this.animationInProgress = true;
-
-          const containerTop = this.notifiersList.nativeElement.getBoundingClientRect().top;
-          this.renderer.setStyle(this.notifiersList.nativeElement, 'top', `${containerTop}px`);
-          this.changeDetection.detectChanges();
-          const notifications = this.notifiersList.nativeElement.children;
-          const notificationHeight = notifications[notifications.length - 1].offsetHeight;
-          const margin = HelperService.isMobile() || this.notifiers.length === 1 ? 0 : 8;
-          const animationPlayer = this.animationBuilder
-            .build([
-              style({ top: `${containerTop}px` }),
-              animate(
-                ANIMATION_TIME,
-                style({ top: `${containerTop - notificationHeight - margin}px` }),
-              ),
-            ])
-            .create(this.notifiersList.nativeElement);
-          animationPlayer.onDone(() => {
-            this.animationInProgress = false;
-            this.animationQueue = this.animationQueue.filter(
-              (animationInQueue) => animationInQueue !== animation,
-            );
-            animationPlayer.destroy();
-            this.renderer.setStyle(this.notifiersList.nativeElement, 'top', null);
-            if (this.animationQueue.length) {
-              this.animationQueue.shift()();
-            }
-          });
-          // TODO: разделить бизнес-логику и слой анимации, т.к. сейчас не совсем корректно считается стэк нотификейшенов
-          if (this.notifiers.length + this.stack.length <= maxCount) {
-            animationPlayer.play();
-          }
-        };
-        this.animationQueue.push(animation);
-        if (!this.animationInProgress) {
-          animation();
-        }
+      if (this.notifiers.length > maxCount) {
+        this.stack.push(this.notifiers.pop());
       } else {
-        this.notifiers.push(notifier);
+        this.renderer.setStyle(this.notifiersList.nativeElement, 'top', `${offsetTop}px`);
+        this.changeDetection.detectChanges();
+
+        if (this.setting.animated) {
+          const animation = (): void => {
+            this.animationInProgress = true;
+
+            animationPlayer.onDone(() => {
+              this.animationInProgress = false;
+              this.animationQueue = this.animationQueue.filter(
+                (animationInQueue) => animationInQueue !== animation,
+              );
+              animationPlayer.destroy();
+              this.renderer.setStyle(this.notifiersList.nativeElement, 'top', null);
+            });
+
+            animationPlayer.play();
+          };
+
+          this.animationQueue.push(animation);
+
+          if (!this.animationInProgress) {
+            setTimeout(() => {
+              animation();
+            });
+          }
+        }
       }
+
       if (this.setting.removeDelay !== null && this.setting.removeDelay !== undefined) {
         setTimeout(() => {
           this.removeNotifier(notifier, false);
@@ -157,4 +144,12 @@ export class NotifierDisclaimerComponent implements OnInit, OnDestroy {
     notifier.onAction();
     this.removeNotifier(notifier);
   }
+
+  private animationPlayer = (containerTop, offsetTop): AnimationPlayer =>
+    this.animationBuilder
+      .build([
+        style({ top: `${containerTop}px` }),
+        animate(ANIMATION_TIME, style({ top: `${offsetTop}px` })),
+      ])
+      .create(this.notifiersList.nativeElement);
 }

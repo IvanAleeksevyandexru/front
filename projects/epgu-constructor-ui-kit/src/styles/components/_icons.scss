@@ -38,4 +38,9 @@
   height: 24px;
   background-image: escape-svg($close-icon);
   cursor: pointer;
+  &--small {
+    width: 16px;
+    height: 16px;
+    background-image: escape-svg($close-icon-small);
+  }
 }
