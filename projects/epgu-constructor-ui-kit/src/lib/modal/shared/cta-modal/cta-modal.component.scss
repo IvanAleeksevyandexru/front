@@ -49,16 +49,10 @@ $closeBtnWidth: 24px;
 
   &__close {
     position: absolute;
-    top: 6px;
+    top: 4px;
     right: 0;
     z-index: 1;
     cursor: pointer;
-
-    &:only-child {
-      @include tablets-up {
-        top: 4px;
-      }
-    }
   }
 
   &__body {
