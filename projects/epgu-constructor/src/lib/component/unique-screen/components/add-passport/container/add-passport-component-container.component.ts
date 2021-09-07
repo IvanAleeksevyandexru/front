@@ -32,9 +32,16 @@ export class AddPassportContainerComponent {
   constructor(
     public currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
-  ) {}
+  ) {
+    this.currentAnswersService.isValid = false;
+  }
 
   onPassportDataChange({ value, isValid }: Passport): void {
+    if (!value) {
+      this.currentAnswersService.isValid = false;
+      return;
+    }
+
     this.currentAnswersService.isValid = isValid;
     this.currentAnswersService.state = JSON.stringify(value);
   }
