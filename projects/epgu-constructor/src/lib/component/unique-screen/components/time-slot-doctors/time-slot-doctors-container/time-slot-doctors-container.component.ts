@@ -64,10 +64,12 @@ import {
 } from '../../../../../shared/services/dictionary/dictionary-api.types';
 
 /* eslint-disable max-len */
-export const STATIC_ERROR_MESSAGE =
-  'Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам. Пожалуйста, обратитесь в регистратуру медицинской организации или выберите другую медицинскую организацию';
+export const STATIC_ERROR_MESSAGE = 'должности в ближайшие 14 дней нет доступного времени';
 export const STATIC_ERROR_TEMPLATE = `Выберите другую специальность врача или <a data-action-type='prevStep'>другую медицинскую организацию</a>`;
-
+export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
+  'Закончилось время, отведённое на заполнение формы';
+export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE =
+  'В выбранном Вами регионе услуга "запись на прием к врачу" временно недоступна. Пожалуйста, повторите попытку позже';
 @Component({
   selector: 'epgu-constructor-time-slot-doctors-container',
   templateUrl: './time-slot-doctors-container.component.html',
@@ -507,7 +509,12 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
           map((reference) => {
             let errorMessage = reference?.data?.error?.errorDetail?.errorMessage;
 
-            if (errorMessage != null && errorMessage !== 'Operation completed') {
+            if (
+              errorMessage != null &&
+              errorMessage !== 'Operation completed' &&
+              !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) &&
+              !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE)
+            ) {
               this.isDoctorsNotAvailable = true;
               const regExp = /\{textAsset\}?/g;
               errorMessage = errorMessage
