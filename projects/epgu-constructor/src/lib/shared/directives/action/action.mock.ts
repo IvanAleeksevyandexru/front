@@ -117,6 +117,7 @@ export const profileEditAction: ComponentActionDto = {
   value: '',
   action: DTOActionAction.editPhoneNumber,
   type: ActionType.profileEdit,
+  attrs: {},
 };
 
 export const homeAction: ComponentActionDto = {
@@ -166,4 +167,5 @@ export const copyToClipboardAction: ComponentActionDto = {
   value: 'Какой-то текст, который ляжет в буфер обмена',
   action: null,
   type: ActionType.copyToClipboard,
+  attrs: {},
 };

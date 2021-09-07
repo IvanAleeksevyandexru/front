@@ -155,6 +155,9 @@ export class ActionToolsService {
       scenarioDto: this.screenService.getStore(),
       additionalParams: {},
     };
+    if (action.attrs?.additionalParams) {
+      bodyResult.additionalParams = { ...action.attrs.additionalParams };
+    }
     if (action.action === DTOActionAction.addToCalendar) {
       bodyResult.scenarioDto = {
         ...bodyResult.scenarioDto,
@@ -166,7 +169,20 @@ export class ActionToolsService {
   }
 
   public copyToClipboard(action: ComponentActionDto): void {
-    const { value } = action;
+    let { value } = action;
+    if (action.attrs?.additionalParams) {
+      this.sendAction<string>(action)
+        .pipe(filter((response) => !response.errorList.length))
+        .subscribe(
+          ({ responseData }) => this.copyAndNotify(responseData.value),
+          (error) => console.log(error),
+        );
+      return;
+    }
+    this.copyAndNotify(value);
+  }
+
+  private copyAndNotify(value: string): void {
     this.clipboard.copy(value);
     this.notifierService.success({ message: `Скопировано: ${value}` });
   }

@@ -17,6 +17,8 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { JsonHelperServiceStub } from '../../../core/services/json-helper/json-helper.service.stub';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
@@ -31,8 +33,9 @@ describe('OutputHtmlComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
-        CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        CurrentAnswersService,
         SmuEventsService,
         HtmlSelectService,
       ],

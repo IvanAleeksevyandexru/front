@@ -31,6 +31,8 @@ import {
   DTOActionAction,
 } from '@epgu/epgu-constructor-types';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
+import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
+import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -77,6 +79,7 @@ describe('SignatureApplicationComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
         CurrentAnswersService,
         HtmlSelectService,
       ],

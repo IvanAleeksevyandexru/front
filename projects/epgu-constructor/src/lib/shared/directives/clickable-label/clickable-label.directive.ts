@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
-import { Clarifications, ActionType, DTOActionAction, ActionAnswerDto } from '@epgu/epgu-constructor-types';
+import { Clarifications, ActionType, DTOActionAction, ActionAnswerDto, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import {
   ModalService,
   DeviceDetectorService,
@@ -11,6 +11,7 @@ import { ActionService } from '../action/action.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const excludedTypesForState = [ActionType.deleteSuggest];
 
@@ -22,15 +23,16 @@ export class ClickableLabelDirective {
   @Input() public componentId: string;
 
   constructor(
-    private modalService: ModalService,
-    private screenService: ScreenService,
     private actionService: ActionService,
-    private elementRef: ElementRef,
     private currentAnswersService: CurrentAnswersService,
-    private ngZone: NgZone,
-    private smu: SmuEventsService,
     private deviceDetectorService: DeviceDetectorService,
+    private elementRef: ElementRef,
     private htmlSelectService: HtmlSelectService,
+    private jsonHelperService: JsonHelperService,
+    private modalService: ModalService,
+    private ngZone: NgZone,
+    private screenService: ScreenService,
+    private smu: SmuEventsService,
   ) {}
 
   @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
@@ -39,6 +41,7 @@ export class ClickableLabelDirective {
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
     const targetElementActionAction = targetElement.getAttribute('data-action-action');
     const targetElementActionMultipleAnswers = targetElement.getAttribute('data-action-multipleAnswers');
+    const targetElementActionAttrs = targetElement.getAttribute('data-action-attrs');
     const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
 
     if (targetElement.hasAttribute('href') && targetElement.getAttribute('href') && this.deviceDetectorService.isWebView) {
@@ -53,6 +56,7 @@ export class ClickableLabelDirective {
         targetElementActionAction,
         targetElement,
         targetElementActionMultipleAnswers,
+        targetElementActionAttrs,
       );
     } else if (targetElement.id) {
       if (needPrevent) {
@@ -68,6 +72,7 @@ export class ClickableLabelDirective {
     targetElementActionAction: string,
     targetElement: HTMLElement,
     targetElementActionMultipleAnswers?: string,
+    targetElementActionAttrs?: string,
   ): void {
     if (NgZone.isInAngularZone()) {
       this._handleAction(
@@ -76,6 +81,7 @@ export class ClickableLabelDirective {
         targetElementActionAction as DTOActionAction,
         targetElement,
         targetElementActionMultipleAnswers,
+        targetElementActionAttrs,
       );
     } else {
       this.ngZone.run(() =>
@@ -85,6 +91,7 @@ export class ClickableLabelDirective {
           targetElementActionAction as DTOActionAction,
           targetElement,
           targetElementActionMultipleAnswers,
+          targetElementActionAttrs,
         ),
       );
     }
@@ -96,8 +103,10 @@ export class ClickableLabelDirective {
     action?: DTOActionAction,
     targetElement?: HTMLElement,
     multipleAnswers?: string,
+    attrs?: string,
   ): void {
     let actionDTO: DTOActionAction;
+    let _attrs: ComponentActionDto['attrs'];
     const _multipleAnswers = (multipleAnswers as unknown) as ActionAnswerDto[];
     if (action) {
       actionDTO = action;
@@ -110,8 +119,12 @@ export class ClickableLabelDirective {
       this.currentAnswersService.state = value;
     }
 
+    if (attrs) {
+      _attrs = this.jsonHelperService.tryToParse(attrs);
+    }
+
     this.actionService.switchAction(
-      { label: '', type, action: actionDTO, value, multipleAnswers: _multipleAnswers },
+      { label: '', type, action: actionDTO, value, multipleAnswers: _multipleAnswers, attrs: _attrs },
       this.componentId || this.screenService.component.id,
       targetElement,
     );

@@ -9,6 +9,7 @@ export interface ComponentActionDto {
   attrs?: {
     stepsBack?: number;
     clarifications?: Clarifications;
+    additionalParams?: { [key: string]: string };
   };
   color?: ButtonColor;
   deliriumAction?: string;
@@ -62,6 +63,7 @@ export enum DTOActionAction {
   attachUploadedFiles = 'attachUploadedFiles',
   confirmSmsCode = 'service/actions/confirmSmsCode',
   confirmEmailCode = 'service/actions/confirmEmailCode',
+  creatUrlAction = 'service/action/createUrl',
   editChildData = 'editChildData',
   editEmail = 'service/actions/editUserEmail',
   editLegalEmail = 'editLegalEmail',

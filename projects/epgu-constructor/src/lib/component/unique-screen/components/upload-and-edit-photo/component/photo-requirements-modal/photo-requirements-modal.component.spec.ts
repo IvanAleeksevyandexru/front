@@ -20,6 +20,8 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { configureTestSuite } from 'ng-bullet';
 import { SmuEventsService } from '@epgu/epgu-lib';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
+import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
+import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;
@@ -51,11 +53,12 @@ describe('PhotoRequirementsModalComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
         CurrentAnswersService,
         UnsubscribeService,
         EventBusService,
         CurrentAnswersService,
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
         HtmlSelectService,
       ],
