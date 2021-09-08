@@ -6,7 +6,6 @@ import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import {
   ScreenPadComponent,
-  UnsubscribeService,
   ConfigService,
   ConfigServiceStub,
   LoggerService,
@@ -24,6 +23,7 @@ import { OutputHtmlComponent } from '../../../../shared/components/output-html/o
 import { ConstructorPlainInputComponent } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.component';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
+import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -35,6 +35,7 @@ import { NavigationServiceStub } from '../../../../core/services/navigation/navi
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { InvitationType } from './invitation-type';
 import { InvitationErrorService } from '../../invitation-error.service';
+import { InvitationErrorServiceStub } from '../../invitation-error.service.stub';
 import { ActivatedRoute } from '@angular/router';
 
 class HTTPClientStub {
@@ -89,14 +90,13 @@ describe('LkInvitationInputComponent', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: HttpClient, useClass: HTTPClientStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        ValidationService,
-        UnsubscribeService,
-        CurrentAnswersService,
-        DateRangeService,
-        DatesToolsService,
+        { provide: ValidationService, useClass: ValidationServiceStub },
+        { provide: InvitationErrorService, useClass: InvitationErrorServiceStub },
+        MockProvider(CurrentAnswersService),
+        MockProvider(DateRangeService),
+        MockProvider(DatesToolsService),
         MockProvider(DateRestrictionsService),
-        ModalService,
-        InvitationErrorService,
+        MockProvider(ModalService),
       ],
     }).compileComponents();
   });
