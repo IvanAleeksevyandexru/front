@@ -313,9 +313,10 @@ export class TimeSlotsService {
       eserviceId: data.eserviceId,
       serviceCode: data.serviceCode,
       organizationId: data.organizationId,
-      bookAttributes:
-        this.jsonHelperService.hasJsonStructure(data.bookAttributes) &&
-        JSON.parse(data.bookAttributes),
+      bookAttributes: this.jsonHelperService.tryToParse(
+        data?.bookAttributes,
+        {},
+      ) as attributesMapType,
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestParams,
       attributeNameWithAddress: this.screenService.component.attrs.attributeNameWithAddress,

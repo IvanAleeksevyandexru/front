@@ -22,8 +22,6 @@ import {
   IDay,
   SlotInterface,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import { addDays, isAfter } from 'date-fns';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -39,6 +37,7 @@ import {
 import { TimeSlotsService } from './time-slots.service';
 import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 @Component({
   selector: 'epgu-constructor-time-slots',
@@ -173,6 +172,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     private datesHelperService: DatesToolsService,
     private httpCancelService: HttpCancelService,
     private timeSlotsService: TimeSlotsService,
+    private jsonHelperService: JsonHelperService,
     private actionService: ActionService,
   ) {}
 
@@ -196,11 +196,14 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   smev2Loading(): void {
     this.label = this.screenService.component?.label;
-    const value = JSON.parse(this.screenService.component?.value);
+    const value = this.jsonHelperService.tryToParse(
+      this.screenService.component?.value,
+    ) as TimeSlotValueInterface;
 
+    const type = value.timeSlotType as TimeSlotsTypes;
     this.initServiceVariables(value);
-    this.timeSlotType = value.timeSlotType;
-    this.timeSlotsService.smev2Init(value, this.cachedAnswer, value.timeSlotType);
+    this.timeSlotType = type;
+    this.timeSlotsService.smev2Init(value, this.cachedAnswer, type);
     this.serviceInitHandle(false);
     this.changeDetectionRef.detectChanges();
   }
@@ -243,7 +246,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public isDateLocked(date: Date, firstDayOfMainSection: Date, daysInMainSection: number): boolean {
     if (this.isSmev2) {
       return (
-        isAfter(addDays(this.today, 1), date) ||
+        this.datesHelperService.isAfter(this.datesHelperService.addDays(this.today, 1), date) ||
         this.isDateOutOfSection(date, firstDayOfMainSection, daysInMainSection) ||
         this.checkDateRestrictions(date)
       );
