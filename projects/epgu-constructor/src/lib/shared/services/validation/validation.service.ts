@@ -284,8 +284,10 @@ export class ValidationService {
   }
 
   private replaceValueForPredicateExpression(expression: string, componentId: string, value: string): string {
-    return expression.match(/\${([^\s)]*)}/g)
-      .map(match => match.match(/\${\s?(?<refGroup>[^\s)]*)\s?}/).groups.refGroup)
+    const takePlaceholdersRegExp = new RegExp(/\${([^\s)]*)}/, 'g');
+    const takeRefGroupPlaceholderRegExp = new RegExp(/\${\s?([^\s)]*)\s?}/);
+    return expression.match(takePlaceholdersRegExp)
+      .map(match => match.match(takeRefGroupPlaceholderRegExp)[1])
       .reduce((accumulator, currentMatch) => {
         // Конвертируется в Number чтобы избежать скриптинга по эвал
         let valueToReplace = currentMatch === `${componentId}.value`?
