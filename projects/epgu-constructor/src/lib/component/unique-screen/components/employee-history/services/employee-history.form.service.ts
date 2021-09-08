@@ -8,7 +8,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { filter, switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { MonthYear } from '@epgu/epgu-lib';
 import { combineLatest, of } from 'rxjs';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -124,7 +124,6 @@ export class EmployeeHistoryFormService {
           await this.checkDates(form, fromDateValue, toDateValue);
           return [fromDateValue, toDateValue];
         }),
-        filter(([, toDate]) => toDate),
         takeUntil(this.unsubscribeService),
       )
       .subscribe(() => {
