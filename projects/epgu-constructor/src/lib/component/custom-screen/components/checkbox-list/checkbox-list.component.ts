@@ -58,10 +58,19 @@ export class CheckboxListComponent extends AbstractComponentListItemComponent
     const countOfTruthfulCheckboxes = Object.values(changes).filter((value) => value).length;
     if (countOfTruthfulCheckboxes >= this.limit) {
       this.hidden = !this.hidden;
-      this.checkboxes = this.checkboxes.map((el) => ({
-        ...el,
-        hidden: !changes[el.id] && this.hidden,
-      }));
+      this.checkboxes = this.checkboxes.reduce(
+        ({ count, checkboxes }: { count: number; checkboxes: CheckboxList[] }, checkbox) => ({
+          count: changes[checkbox.id] ? count + 1 : count,
+          checkboxes: [
+            ...checkboxes,
+            {
+              ...checkbox,
+              hidden: count >= this.limit || (!changes[checkbox.id] && this.hidden),
+            },
+          ],
+        }),
+        { count: 0, checkboxes: [] },
+      ).checkboxes;
     }
   }
 
