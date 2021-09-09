@@ -6,22 +6,13 @@ import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { ActivatedRoute } from '@angular/router';
-import {
-  ConfigService, ConfigServiceStub,
-  DatesToolsService,
-  EventBusService,
-  LoggerService,
-  UnsubscribeService,
-  ActivatedRouteStub,
-} from '@epgu/epgu-constructor-ui-kit';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { ActivatedRouteStub, ConfigService, ConfigServiceStub, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { RestLookupInputComponent } from './rest-lookup-input.component';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from 'projects/epgu-constructor/src/lib/screen/screen.service';
-import { CurrentAnswersService } from 'projects/epgu-constructor/src/lib/screen/current-answers.service';
 import { ScreenServiceStub } from 'projects/epgu-constructor/src/lib/screen/screen.service.stub';
 import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
@@ -67,18 +58,13 @@ describe('RestLookupInputComponent', () => {
       ],
       providers: [
         MockProvider(RestToolsService),
+        MockProvider(SuggestHandlerService),
+        MockProvider(EventBusService),
+        MockProvider(SuggestMonitorService),
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        DatesToolsService,
-        MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-        UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        SuggestHandlerService,
-        EventBusService,
-        CurrentAnswersService,
-        LoggerService,
-        SuggestMonitorService,
       ]
     })
       .overrideComponent(DictionaryComponent, {
