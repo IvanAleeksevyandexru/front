@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ObjectHelperService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
@@ -25,6 +25,8 @@ import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
 import { mockScreenDivorceWithCacheStore } from './mocks/mock-screen-divorce-with-cache-store';
 import { JsonHelperService } from 'projects/epgu-constructor/src/lib/core/services/json-helper/json-helper.service';
+import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
+import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
 
 describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
@@ -52,11 +54,13 @@ describe('TimeSlotsComponent', () => {
         DownloadService,
         ObjectHelperService,
         JsonHelperService,
+        SessionService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: Smev3TimeSlotsRestService, useClass: Smev3TimeSlotsRestServiceStub },
+        { provide: Smev2TimeSlotsRestService, useClass: Smev2TimeSlotsRestServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
       ],
     }).compileComponents();
@@ -218,5 +222,4 @@ describe('TimeSlotsComponent', () => {
       expect(areaNamesSpy).toHaveBeenCalledTimes(1);
     });
   });
-
 });

@@ -20,6 +20,7 @@
         </div>
         <div *ngIf="!isMonthsRangeVisible" class="dropdown-list">
           <lib-dropdown
+            *ngIf="monthsYears.length"
             [disabled]="fixedMonth"
             [items]="monthsYears"
             [(ngModel)]="currentMonth"
