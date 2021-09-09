@@ -4,7 +4,10 @@ import { PageNameComponent } from '../../../../shared/components/base-components
 import {
   ScreenPadComponent,
   HelperTextComponent,
-  HttpCancelService, TimeCalendarModule, ObjectHelperService,
+  HttpCancelService,
+  TimeCalendarModule,
+  ObjectHelperService,
+  SessionService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents } from 'ng-mocks';
@@ -44,6 +47,8 @@ import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { mockScreenDoctorStore } from './mocks/mock-screen-doctor-store';
 import { mockSlotsDoctor202106 } from './mocks/mock-time-slots_doctors';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
+import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
 
 const moment = moment_;
 moment.locale('ru');
@@ -81,11 +86,13 @@ describe('TimeSlotsComponent', () => {
         ObjectHelperService,
         HttpCancelService,
         JsonHelperService,
+        SessionService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: Smev3TimeSlotsRestService, useClass: Smev3TimeSlotsRestServiceStub },
+        { provide: Smev2TimeSlotsRestService, useClass: Smev2TimeSlotsRestServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
       ],
@@ -202,8 +209,9 @@ describe('TimeSlotsComponent', () => {
     expect(check).toBeFalsy();
   });
 
-  it('calcing of isBookedDepartment as true', () => {
+  it('calcing of isBookedDepartment as true', async () => {
     fixture.detectChanges();
+    await fixture.whenStable();
     let isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
     expect(isBookedDepartment).toBeTruthy();
   });
@@ -231,22 +239,24 @@ describe('TimeSlotsComponent', () => {
     expect(isBookedDepartment).toBeFalsy();
   });
 
-  it('generate new uuid in case of waitingTimeExpired', () => {
+  it('generate new uuid in case of waitingTimeExpired', async () => {
     const compValue = JSON.parse(screenService.component.value);
     compValue.waitingTimeExpired = true;
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
+    await fixture.whenStable();
     const oldBookid = component['timeSlotsService'].bookId;
     component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
     const newBookid = component['timeSlotsService'].bookId;
     expect(oldBookid).not.toMatch(newBookid);
   });
 
-  it('not generate new uuid in case of not waitingTimeExpired', () => {
+  it('not generate new uuid in case of not waitingTimeExpired', async () => {
     const compValue = JSON.parse(screenService.component.value);
     const department = JSON.parse(compValue.department);
     let isBookedDepartment = component['timeSlotsService']?.isBookedDepartment;
     fixture.detectChanges();
+    await fixture.whenStable();
     isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
     const oldBookid = component['timeSlotsService'].bookId;
     component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
@@ -254,11 +264,12 @@ describe('TimeSlotsComponent', () => {
     expect(oldBookid).toMatch(newBookid);
   });
 
-  it('should send cancel before book in case of waitingTimeExpired', () => {
+  it('should send cancel before book in case of waitingTimeExpired', async () => {
     const compValue = JSON.parse(screenService.component.value);
     compValue.waitingTimeExpired = true;
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
+    await fixture.whenStable();
     // @ts-ignore
     const cancelRequestSpy = spyOn(component['timeSlotsService'], 'cancelSlot').and.callThrough();
     component['timeSlotsService']['checkBooking'](EMPTY_SLOT);
@@ -281,7 +292,7 @@ describe('TimeSlotsComponent', () => {
     expect(bookedSlot).toBeNull();
   });
 
-  it('MVD should contain caseNumber and empty parentOrderId', () => {
+  it('MVD should contain caseNumber and empty parentOrderId', async () => {
     const compValue = JSON.parse(screenService.component.value);
     const department = JSON.parse(compValue.department);
     compValue.timeSlotType = 'MVD';
@@ -289,6 +300,7 @@ describe('TimeSlotsComponent', () => {
     compValue.department = JSON.stringify(department);
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
+    await fixture.whenStable();
     const reqBody = component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
     expect(reqBody.caseNumber).toBeTruthy();
     expect(reqBody.parentOrderId).toEqual('');
@@ -321,9 +333,15 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('renderSingleMonthGrid works as before', async () => {
+    jest.spyOn(component, 'renderSingleMonthGrid').mockReturnValueOnce(null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
     const actual = [];
     const expected = mockWeeks;
-    await component['renderSingleMonthGrid'](actual);
+    component.activeMonthNumber = undefined;
+    component.activeYearNumber = undefined;
+    component.renderSingleMonthGrid(actual);
     expect(actual).toEqual(expected);
   });
 
@@ -345,7 +363,8 @@ describe('TimeSlotsComponent', () => {
 
     it('should allow book date in 30+3 days after today', async () => {
       component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
-      await fixture.detectChanges();
+
+      fixture.detectChanges();
       await fixture.whenStable();
       const allDays = fixture.debugElement.queryAll(By.css('.calendar-day'));
       expect(allDays.length).toEqual(35);
@@ -426,7 +445,8 @@ describe('TimeSlotsComponent', () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(mockEmptySlots as SmevSlotsResponseInterface));
-    await fixture.detectChanges();
+    fixture.detectChanges();
+    await fixture.whenStable();
     expect(modalSpy).toBeCalledWith(modalParams);
   });
 
@@ -437,7 +457,7 @@ describe('TimeSlotsComponent', () => {
     expect(modalSpy).not.toBeCalled();
   });
 
-  it('should call error modal if slots request returned error', () => {
+  it('should call error modal if slots request returned error', async () => {
     jest
       .spyOn(smev3TimeSlotsRestService, 'getTimeSlots')
       .mockReturnValue(of(slotsError as SmevSlotsResponseInterface));
@@ -445,6 +465,7 @@ describe('TimeSlotsComponent', () => {
       return errorMessage;
     });
     fixture.detectChanges();
+    await fixture.whenStable();
     expect(modalSpy).toBeCalled();
   });
 
@@ -507,71 +528,96 @@ describe('TimeSlotsComponent', () => {
   });
 
   describe('showTimeSlots()', () => {
+    it('should leave timeslots unchanged', () => {
+      const slots = [
+        { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
+      ];
+      jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+      component.bookedSlot = {
+        slotTime: new Date('2021-08-27T09:00:00Z'),
+        timezone: '',
+        areaId: '',
+        slotId: '',
+      };
 
+      component.showTimeSlots(new Date());
 
-      it('should leave timeslots unchanged', () => {
-        const slots = [{ slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' }];
-        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
-        component.bookedSlot = { slotTime: new Date('2021-08-27T09:00:00Z'), timezone: '', areaId: '', slotId: '' };
+      expect(component.timeSlots.length).toEqual(1);
+    });
 
-        component.showTimeSlots(new Date());
+    it('should insert booked slot at start', () => {
+      const slots = [
+        { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
+        { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' },
+      ];
+      jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+      component.bookedSlot = {
+        slotTime: new Date('2021-08-28T08:00:00Z'),
+        timezone: '',
+        areaId: '',
+        slotId: '',
+      };
 
-        expect(component.timeSlots.length).toEqual(1);
-      });
+      component.showTimeSlots(new Date());
 
-      it('should insert booked slot at start', () => {
-        const slots = [
-          { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
-          { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' }];
-        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
-        component.bookedSlot = { slotTime: new Date('2021-08-28T08:00:00Z'), timezone: '', areaId: '', slotId: '' };
+      expect(component.timeSlots[0]).toEqual(component.bookedSlot);
+    });
 
-        component.showTimeSlots(new Date());
+    it('should insert booked slot at end', () => {
+      const slots = [
+        { slotTime: new Date('2021-08-28T08:00:00Z'), timezone: '', areaId: '', slotId: '' },
+        { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
+      ];
+      jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+      component.bookedSlot = {
+        slotTime: new Date('2021-08-28T10:00:00Z'),
+        timezone: '',
+        areaId: '',
+        slotId: '',
+      };
 
-        expect(component.timeSlots[0]).toEqual(component.bookedSlot);
-      });
+      component.showTimeSlots(new Date());
 
-      it('should insert booked slot at end', () => {
-        const slots = [
-          { slotTime: new Date('2021-08-28T08:00:00Z'), timezone: '', areaId: '', slotId: '' },
-          { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' }];
-        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
-        component.bookedSlot = { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' };
+      expect(component.timeSlots[component.timeSlots.length - 1]).toEqual(component.bookedSlot);
+    });
 
-        component.showTimeSlots(new Date());
+    it('should insert booked slot in between', () => {
+      const slots = [
+        { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
+        { slotTime: new Date('2021-08-28T11:00:00Z'), timezone: '', areaId: '', slotId: '' },
+      ];
+      jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+      component.bookedSlot = {
+        slotTime: new Date('2021-08-28T10:00:00Z'),
+        timezone: '',
+        areaId: '',
+        slotId: '',
+      };
 
-        expect(component.timeSlots[component.timeSlots.length - 1]).toEqual(component.bookedSlot);
-      });
+      component.showTimeSlots(new Date());
 
+      expect(component.timeSlots[1]).toEqual(component.bookedSlot);
+    });
 
-      it('should insert booked slot in between', () => {
-        const slots = [
-          { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
-          { slotTime: new Date('2021-08-28T11:00:00Z'), timezone: '', areaId: '', slotId: '' }];
-        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
-        component.bookedSlot = { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' };
+    it('should insert booked slot at right position', () => {
+      const slots = [
+        { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
+        { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' },
+        { slotTime: new Date('2021-08-28T11:00:00Z'), timezone: '', areaId: '', slotId: '' },
+        { slotTime: new Date('2021-08-28T13:00:00Z'), timezone: '', areaId: '', slotId: '' },
+      ];
 
-        component.showTimeSlots(new Date());
+      jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
+      component.bookedSlot = {
+        slotTime: new Date('2021-08-28T12:00:00Z'),
+        timezone: '',
+        areaId: '',
+        slotId: '',
+      };
 
-        expect(component.timeSlots[1]).toEqual(component.bookedSlot);
-      });
+      component.showTimeSlots(new Date());
 
-      it('should insert booked slot at right position', () => {
-        const slots = [
-          { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' },
-          { slotTime: new Date('2021-08-28T10:00:00Z'), timezone: '', areaId: '', slotId: '' },
-          { slotTime: new Date('2021-08-28T11:00:00Z'), timezone: '', areaId: '', slotId: '' },
-          { slotTime: new Date('2021-08-28T13:00:00Z'), timezone: '', areaId: '', slotId: '' }];
-
-        jest.spyOn(timeSlotsService, 'getAvailableSlots').mockImplementation((...args) => of(slots));
-        component.bookedSlot = { slotTime: new Date('2021-08-28T12:00:00Z'), timezone: '', areaId: '', slotId: '' };
-
-        component.showTimeSlots(new Date());
-
-        expect(component.timeSlots[3]).toEqual(component.bookedSlot);
-      });
-
-    }
-  );
-
+      expect(component.timeSlots[3]).toEqual(component.bookedSlot);
+    });
+  });
 });

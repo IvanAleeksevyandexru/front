@@ -13,6 +13,18 @@
   text-align: center;
 }
 
+::ng-deep .text_modal_confirmation {
+  text-align: center;
+
+  h4 {
+    margin-bottom: 8px;
+  }
+
+  span {
+    color: $color-text-helper;
+  }
+}
+
 .compact-selector {
   ::ng-deep.dropdown.compact {
     width: 195px;

@@ -43,6 +43,36 @@ describe('DatesToolsService', () => {
   afterEach(() => {
     httpTestingController.verify();
   });
+  describe('addDays() method', () => {
+    it('should return added two day to date', () => {
+      expect(service.addDays(new Date('2021-01-01'), 2)).toEqual(new Date('2021-01-03'));
+    });
+  });
+  describe('getMonthListByYear() method', () => {
+    it('should return array month list by last day in year.', () => {
+      const now = new Date('2021-12-31');
+      const result = ['2021-12'];
+      expect(service.getMonthListByYear(now)).toEqual(result);
+    });
+    it('should return array month list by first day in year.', () => {
+      const now = new Date('2021-01-01');
+      const result = [
+        '2021-01',
+        '2021-02',
+        '2021-03',
+        '2021-04',
+        '2021-05',
+        '2021-06',
+        '2021-07',
+        '2021-08',
+        '2021-09',
+        '2021-10',
+        '2021-11',
+        '2021-12',
+      ];
+      expect(service.getMonthListByYear(now)).toEqual(result);
+    });
+  });
 
   describe('isToday() method', () => {
     it('should return true if date is today', () => {
