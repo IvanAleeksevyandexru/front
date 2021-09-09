@@ -32,6 +32,10 @@ export class AddressHelperService {
             ? this.getSuggestions(searchString, { isRegion: 'true' }, cityFilter)
             : of([]),
       },
+      town: {
+        search: (searchString): Observable<DadataSuggestionsAddressForLookup[]> =>
+          searchString ? this.getSuggestions(searchString, { isTown: 'true' }, cityFilter) : of([]),
+      },
     };
 
     return providers[searchType];
