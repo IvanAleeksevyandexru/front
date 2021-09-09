@@ -1,7 +1,6 @@
-import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MockComponents, MockModule } from 'ng-mocks';
+import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 import { configureTestSuite } from 'ng-bullet';
 
@@ -10,11 +9,10 @@ import {
   ScreenPadModule,
   PrevButtonComponent,
   EventBusService,
+  EventBusServiceStub,
   UnsubscribeService,
   LocalStorageService,
   LocalStorageServiceStub,
-  ModalService,
-  ModalServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
 import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -25,17 +23,12 @@ import { BaseModule } from '../../shared/base.module';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
 import { CloneButtonComponent } from '../../shared/components/clone-button/clone-button.component';
-import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { ActionService } from '../../shared/directives/action/action.service';
-import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { CustomComponent } from '../../component/custom-screen/components-list.types';
 import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors/uniqueness-errors.service';
-import { ComponentsListFormService } from '../../component/custom-screen/services/components-list-form/components-list-form.service';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
@@ -177,21 +170,16 @@ describe('RepeatableScreenComponent', () => {
         MockComponents(ComponentsListComponent, CloneButtonComponent, PrevButtonComponent),
       ],
       providers: [
-        CurrentAnswersService,
-        ChangeDetectorRef,
-        ScrollToService,
+        MockProvider(CurrentAnswersService),
+        MockProvider(UnsubscribeService),
+        MockProvider(ScrollToService),
+        MockProvider(CachedAnswersService),
+        MockProvider(UniquenessErrorsService),
+        MockProvider(JsonHelperService),
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
-        { provide: ActionService, useClass: ActionServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        UnsubscribeService,
-        EventBusService,
+        { provide: EventBusService, useClass: EventBusServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        CachedAnswersService,
-        UniquenessErrorsService,
-        ComponentsListFormService,
-        JsonHelperService,
       ],
     }).compileComponents();
   });
