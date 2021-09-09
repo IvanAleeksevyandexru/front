@@ -15,6 +15,9 @@ import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { CertificateEaisdoService } from '../../services/certificate-eaisdo/certificate-eaisdo.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -49,7 +52,9 @@ describe('FieldListComponent', () => {
       imports: [MockModule(OutputHtmlModule)],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         EaisdoGroupCostService,
+        CertificateEaisdoService,
         UnsubscribeService,
         CurrentAnswersService,
         JsonHelperService,

@@ -31,6 +31,7 @@ import {
   EaisdoResponse,
 } from '@epgu/epgu-constructor-types';
 import { EaisdoStateTypes } from './eaisdo.interface';
+import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
 describe('EaisdoGroupCostComponent', () => {
   let component: EaisdoGroupCostComponent;
@@ -54,6 +55,7 @@ describe('EaisdoGroupCostComponent', () => {
         UnsubscribeService,
         CurrentAnswersService,
         EaisdoGroupCostService,
+        CertificateEaisdoService,
         MockProviders(ComponentsListRelationsService, SuggestHandlerService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },

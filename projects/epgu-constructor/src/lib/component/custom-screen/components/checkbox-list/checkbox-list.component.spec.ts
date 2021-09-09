@@ -211,10 +211,16 @@ describe('CheckboxListComponent', () => {
 
     it('call checkShownElements', () => {
       jest.spyOn(component, 'checkShownElements');
-      const setValue = { checkbox1: false, checkbox2: true, checkbox3: true, checkbox4: false };
+      const setValue = { checkbox1: true, checkbox2: true, checkbox3: true, checkbox4: false };
       component.form.patchValue(setValue as any);
       fixture.detectChanges();
       expect(component.checkShownElements).toHaveBeenCalledWith(setValue);
+      expect(component.checkboxes).toEqual([
+        { id: 'checkbox1', label: 'Оформление инвалидности', showOn: true, hidden: false },
+        { id: 'checkbox2', label: 'Участие в боевых действиях', showOn: true, hidden: false },
+        { id: 'checkbox3', label: 'Исполнение обязанностей военной службы', showOn: false, hidden: true },
+        { id: 'checkbox4', label: 'Великая Отчественная Война', showOn: false, hidden: true },
+      ]);
     });
   });
 });
