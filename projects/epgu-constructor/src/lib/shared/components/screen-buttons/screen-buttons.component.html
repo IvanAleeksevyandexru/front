@@ -1,6 +1,6 @@
 <ng-container *ngFor="let button of screenButtons">
   <lib-button
-    *ngIf="calculateVisibility(button)"
+    *ngIf="!button.hidden"
     epgu-constructor-action
     [action]="button"
     [color]="button.color"

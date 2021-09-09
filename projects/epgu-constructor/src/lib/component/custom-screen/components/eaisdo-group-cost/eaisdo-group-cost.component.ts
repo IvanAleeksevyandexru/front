@@ -5,7 +5,7 @@ import {
   ActionApiResponse,
   EaisdoResponse,
 } from '@epgu/epgu-constructor-types';
-import { filter, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -59,7 +59,7 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
         }),
         tap(() => this.setState()),
         takeUntil(this.ngUnsubscribe$),
-        finalize(() => {
+        tap(() => {
           this.screenService.updateLoading(false);
         }),
       )
@@ -82,7 +82,7 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
           ),
         ),
         takeUntil(this.ngUnsubscribe$),
-        finalize(() => {
+        tap(() => {
           this.screenService.updateLoading(false);
         }),
       )
