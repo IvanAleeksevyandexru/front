@@ -33,6 +33,7 @@ import {
   startOfISOWeek as _startOfISOWeek,
   endOfISOWeek as _endOfISOWeek,
   formatISO as _formatISO,
+  addDays as _addDays,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
 import { replaceArguments } from '../../decorators/replace-arguments';
@@ -70,12 +71,28 @@ export class DatesToolsService {
   }
 
   /**
+   * Добавляет кол-во дней к дате.
+   * @param {Date} date дата к которой нужно добавить дни
+   * @param {Number} days кол-во дней которые нужно добавить к дате
+   * */
+  public addDays(date: Date, days: number): Date {
+    return _addDays(date, days);
+  }
+
+  /**
    * Возвращает true, если переданная дата является сегодняшней датой,
    * иначе false
    * @param {Date | Number} date значение для проверки
    */
   public isToday(date: Date | number): boolean {
     return _isToday(date);
+  }
+
+  public getMonthListByYear(date: Date, formatString: string = 'yyyy-MM'): string[] {
+    const nowMonth = parseInt(this.format(date, 'M'), 10);
+    return new Array(12 - nowMonth + 1)
+      .fill(null)
+      .map((_, index) => this.format(_setMonth(date, nowMonth + index - 1), formatString));
   }
 
   /**
@@ -85,7 +102,9 @@ export class DatesToolsService {
    */
   public async getToday(resetTime = false): Promise<Date> {
     const path = this.configService.apiUrl + '/service/actions/currentDateTime';
-    const timeString = await this.http.get(path, { responseType: 'text', withCredentials: true }).toPromise();
+    const timeString = await this.http
+      .get(path, { responseType: 'text', withCredentials: true })
+      .toPromise();
     const date = new Date(timeString);
     if (resetTime) {
       date.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());

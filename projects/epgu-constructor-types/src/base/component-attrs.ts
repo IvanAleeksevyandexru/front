@@ -179,6 +179,7 @@ export interface ComponentAttrsDto {
   balloonAttrs?: KeyValueMap;
   visibleComponents?: string[];
   writableComponents?: string[];
+  isSmev2?: boolean;
 }
 
 export type ChildrenListAgeView = 'date' | 'age';
