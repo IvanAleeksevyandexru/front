@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 
 import { ConfigService, DeviceDetectorService, DownloadService, EventBusService, LocalStorageService, LocationService, LocationServiceStub, LoggerService, ModalService, ModalServiceStub, SessionService, SessionStorageService, SessionStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 import { ConfirmUserDataErrorType } from '../../confirm-personal-user-data-screen.types';
 import { ConfirmPersonalUserDataComponent } from './confirm-personal-user-data.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -22,7 +23,6 @@ import { ActionType, ComponentActionDto, DTOActionAction, ScreenTypes } from '@e
 import { DisclaimerModule } from 'projects/epgu-constructor/src/lib/shared/components/disclaimer/disclaimer.module';
 import { ComponentBase, ScreenStoreComponentDtoI } from 'projects/epgu-constructor/src/lib/screen/screen.types';
 import { FormPlayerApiService } from 'projects/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
-import { InitDataService } from 'projects/epgu-constructor/src/lib/core/services/init-data/init-data.service';
 import { NavigationService } from 'projects/epgu-constructor/src/lib/core/services/navigation/navigation.service';
 import { NavigationServiceStub } from 'projects/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
 import { NavigationModalService } from 'projects/epgu-constructor/src/lib/core/services/navigation-modal/navigation-modal.service';
@@ -124,27 +124,24 @@ describe('ConfirmPersonalUserDataComponent', () => {
         DisclaimerModule,
       ],
       providers: [
-        CurrentAnswersService,
+        { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
-        FormPlayerApiService,
-        InitDataService,
-        LoggerService,
         { provide: LocationService, useClass: LocationServiceStub },
-        SessionService,
         { provide: NavigationService, useClass: NavigationServiceStub },
-        DeviceDetectorService,
-        NavigationModalService,
-        DownloadService,
-        LocalStorageService,
-        HtmlRemoverService,
-        AutocompleteApiService,
-        EventBusService,
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
-        JsonHelperService,
-        HtmlSelectService,
+        MockProvider(FormPlayerApiService),
+        MockProvider(DeviceDetectorService),
+        MockProvider(NavigationModalService),
+        MockProvider(DownloadService),
+        MockProvider(LocalStorageService),
+        MockProvider(HtmlRemoverService),
+        MockProvider(AutocompleteApiService),
+        MockProvider(EventBusService),
+        MockProvider(JsonHelperService),
+        MockProvider(HtmlSelectService),
       ],
     })
       .overrideComponent(ConfirmPersonalUserDataComponent, {
