@@ -1,0 +1,25 @@
+<div class="marital-status-input__group-item marital-status-input__registrator" *ngIf="!attrs?.hidden">
+  <epgu-constructor-label
+    [tips]="attrs?.labelHint"
+    [label]="label"
+    [for]="FieldsTypes.registrator"
+  ></epgu-constructor-label>
+
+  <epgu-cf-ui-constructor-constructor-lookup
+    [id]="FieldsTypes.registrator"
+    [invalid]="control.invalid && control.touched"
+    [searchOnFocus]="true"
+    [showExpandCollapse]="true"
+    [itemsProvider]="itemsProvider"
+    [control]="$any(control)"
+    [validationShowOn]="validationShowOn"
+    [queryMinSymbolsCount]="0"
+    [virtualScroll]="true"
+    [clearable]="true"
+  >
+  </epgu-cf-ui-constructor-constructor-lookup>
+
+  <epgu-cf-ui-constructor-helper-text *ngIf="hint" class="marital-status-input__hint">
+    {{ hint }}
+  </epgu-cf-ui-constructor-helper-text>
+</div>

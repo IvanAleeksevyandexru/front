@@ -1,0 +1,22 @@
+<div class="marital-status-input__group-item marital-status-input__date">
+  <epgu-constructor-label
+    [tips]="attrs?.labelHint"
+    [label]="label"
+    [for]="FieldsTypes.date"
+  ></epgu-constructor-label>
+  <epgu-constructor-constructor-date-picker
+    [id]="FieldsTypes.date"
+    align="left"
+    [control]="control"
+    [minDate]="attrs?.minDate || '-120y'"
+    [maxDate]="attrs?.maxDate || 'today'"
+    [invalid]="control.invalid && control.dirty"
+    [validationShowOn]="validationShowOn"
+    [clearable]="true"
+    [brokenDateFixStrategy]="brokenDateFixStrategy"
+    (blurEvent)="markControlAsDirty()"
+  ></epgu-constructor-constructor-date-picker>
+  <epgu-cf-ui-constructor-helper-text *ngIf="hint" class="marital-status-input__hint">
+    {{ hint }}
+  </epgu-cf-ui-constructor-helper-text>
+</div>

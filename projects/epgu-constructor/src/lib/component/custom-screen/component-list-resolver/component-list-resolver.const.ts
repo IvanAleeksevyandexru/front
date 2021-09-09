@@ -29,6 +29,7 @@ import { RestLookupInputComponent } from '../components/rest-lookup-input/rest-l
 import { FormDisclaimerComponent } from '../components/form-disclaimer/form-disclaimer.component';
 import { SignAppLinkComponent } from '../components/sign-app-link/sign-app-link.component';
 import { ConfirmPersonalPolicyChangeComponent } from '../components/confirm-personal-policy-change/confirm-personal-policy-change.component';
+import { MaritalStatusInputComponent } from '../components/marital-status-input/marital-status-input.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -49,6 +50,7 @@ type CustomScreenComponent =
   | FileUploadFormComponent
   | FormOutputHtmlComponent
   | LookupInputComponent
+  | MaritalStatusInputComponent
   | MaskedAndPlainInputComponent
   | MonthPickerComponent
   | MultiChoiceDictionaryComponent
@@ -91,6 +93,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   LegalInnInput: MaskedAndPlainInputComponent,
   Lookup: LookupInputComponent,
   RestLookup: RestLookupInputComponent,
+  MaritalStatusInput: MaritalStatusInputComponent,
   MonthPicker: MonthPickerComponent,
   MultipleChoiceDictionary: MultiChoiceDictionaryComponent,
   MvdGiac: MvdGiacLookupComponent,

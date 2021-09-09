@@ -46,6 +46,7 @@ export enum CustomScreenComponentTypes {
   LabelSection = 'LabelSection',
   LegalInnInput = 'LegalInnInput',
   Lookup = 'Lookup',
+  MaritalStatusInput = 'MaritalStatusInput',
   MonthPicker = 'MonthPicker',
   MultipleChoiceDictionary = 'MultipleChoiceDictionary',
   MvdGiac = 'MvdGiac',
