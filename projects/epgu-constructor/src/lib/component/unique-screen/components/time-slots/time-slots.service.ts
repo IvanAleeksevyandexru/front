@@ -308,7 +308,7 @@ export class TimeSlotsService {
       organizationId: data.organizationId,
       bookAttributes: this.jsonHelperService.tryToParse(
         data?.bookAttributes,
-        {},
+        null,
       ) as attributesMapType,
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestParams,
@@ -515,7 +515,7 @@ export class TimeSlotsService {
       selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
       parentOrderId: this.config.orderId as string,
       preliminaryReservationPeriod,
-      attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId),
+      attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId) || [],
       slotId: [selectedSlot.slotId],
       serviceId: [(this.config.serviceId as string) || serviceId],
     };
