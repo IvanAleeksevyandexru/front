@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -48,9 +48,9 @@ describe('EmployeeHistoryContainerComponent', () => {
         MockModule(DefaultUniqueScreenWrapperModule),
       ],
       providers: [
-        EventBusService,
-        EmployeeHistoryDataSourceService,
-        CurrentAnswersService,
+        MockProvider(EventBusService),
+        MockProvider(EmployeeHistoryDataSourceService),
+        MockProvider(CurrentAnswersService),
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     })
