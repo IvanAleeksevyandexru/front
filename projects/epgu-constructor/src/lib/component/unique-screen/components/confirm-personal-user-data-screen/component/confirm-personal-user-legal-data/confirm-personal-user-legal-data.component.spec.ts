@@ -11,6 +11,7 @@ import { ConfirmPersonalUserLegalDataComponent } from './confirm-personal-user-l
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionType } from '@epgu/epgu-constructor-types';
@@ -50,7 +51,7 @@ describe('ConfirmPersonalUserLegalDataComponent', () => {
         MockModule(ScreenPadModule),
       ],
       providers: [
-        CurrentAnswersService,
+        { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
