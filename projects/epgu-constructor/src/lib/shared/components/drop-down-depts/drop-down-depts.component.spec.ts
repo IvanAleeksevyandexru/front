@@ -21,7 +21,7 @@ import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplet
 import IDropDownDeptsAttrs from './IDropDownDeptsAttrs';
 import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 
 const getDictionary = (count = 0, repeatedWithNoFilters = false): CustomListDictionary => {
   const list = [];
@@ -59,7 +59,7 @@ describe('DropDownDeptsComponent', () => {
         { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
-        UnsubscribeService,
+        MockProvider(UnsubscribeService),
       ],
     }).compileComponents();
   });
