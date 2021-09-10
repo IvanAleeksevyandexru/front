@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { DefaultUniqueScreenWrapperComponent } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
@@ -38,7 +38,7 @@ describe('FieldListScreenComponent', () => {
         MockModule(FieldListModule)
       ],
       providers: [
-        CurrentAnswersService,
+        MockProvider(CurrentAnswersService),
         { provide: ScreenService, useClass: ScreenServiceStub },
       ]
     }).compileComponents();
