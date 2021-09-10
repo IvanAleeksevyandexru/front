@@ -45,6 +45,7 @@ import { DictionaryApiService } from '../../../../shared/services/dictionary/dic
 import {
   DictionaryItem,
   DictionaryResponseForYMap,
+  DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import {
   ComponentValue,
@@ -68,6 +69,7 @@ import { JsonHelperService } from '../../../../core/services/json-helper/json-he
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
+import { PriorityItemsService } from './services/priority-items/priority-items.service';
 
 const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 
@@ -92,8 +94,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public isSearchTitleVisible = true;
   public isNoDepartmentErrorVisible = false;
   public screenActionButtons: ScreenButton[] = [];
-  public searchPanelType: PanelTypes;
-  public balloonContentType: ContentTypes;
+  public searchPanelType: string;
+  public balloonContentType: string;
 
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
@@ -102,11 +104,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private needToAutoCenterAllPoints = false;
   private DEFAULT_ZOOM = 9;
   private nextStepAction = NEXT_STEP_ACTION;
+  private isMultiSelect = false;
 
   private initData$ = combineLatest([
     this.screenService.component$,
     this.screenService.applicantAnswers$,
   ]);
+  private valueFromCache: string;
 
   constructor(
     public config: ConfigService,
@@ -128,6 +132,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private ngUnsubscribe$: UnsubscribeService,
     private yaMapService: YaMapService,
     private zone: NgZone,
+    private priorityItemsService: PriorityItemsService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -163,6 +168,25 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public selectObject(item: YMapItem<DictionaryItem>): void {
+    if (this.isMultiSelect) {
+      // eslint-disable-next-line no-param-reassign
+      item.isSelected = !item.isSelected;
+      this.yandexMapService.mapPaint();
+      let arr = this.priorityItemsService.getItems();
+      if (item.isSelected) {
+        arr.push(item);
+      } else {
+        arr = arr.filter((value) => {
+          return value.objectId !== item.objectId;
+        });
+      }
+      this.priorityItemsService.set(arr);
+    } else {
+      this.prepareNextStep(item);
+    }
+  }
+
+  private prepareNextStep(item: YMapItem<DictionaryItem>): void {
     if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
       this.availablePaymentInGIBDD(item.attributeValues.code)
         .pipe(takeUntil(this.ngUnsubscribe$))
@@ -180,16 +204,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
-    this.selectMapObjectService.mapType = this.data.attrs.mapType as MapTypes;
+    this.selectMapObjectService.mapType =
+      (this.data.attrs.mapType as MapTypes) || MapTypes.commonMap;
     this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
-    this.searchPanelType =
-      this.data.attrs.mapType === MapTypes.electionsMap
-        ? PanelTypes.electionsPanel
-        : PanelTypes.commonPanel;
-    this.balloonContentType =
-      this.data.attrs.mapType === MapTypes.electionsMap
-        ? ContentTypes.electionsContent
-        : ContentTypes.commonContent;
+    this.isMultiSelect = this.data.attrs.isMultiSelect || true;
+    this.valueFromCache = this.screenService.getCompValueFromCachedAnswers();
+    this.searchPanelType = PanelTypes[this.selectMapObjectService.mapType];
+    this.balloonContentType = ContentTypes[this.selectMapObjectService.mapType];
     this.needToAutoFocus = this.data.attrs.autoMapFocus;
     this.needToAutoCenterAllPoints = this.data.attrs.autoCenterAllPoints;
     this.componentValue = JSON.parse(this.data.value || '{}');
@@ -398,6 +419,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         }
         this.isNoDepartmentErrorVisible = !dictionary.total;
         this.selectMapObjectService.dictionary = dictionary;
+        if (this.isMultiSelect && this.valueFromCache) {
+          this.applySelectedObjects(dictionary);
+        }
         // Параллелим получение геоточек на 4 запроса
         const items = [...dictionary.items];
         const addresses = items.map(
@@ -424,6 +448,20 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         );
       }),
     );
+  }
+
+  private applySelectedObjects(dictionary: DictionaryResponseForYMap): void {
+    dictionary.items.forEach((item) => {
+      const cachedValue = this.jsonHelperService.tryToParse(this.valueFromCache) as {
+        items: DictionaryYMapItem[];
+      };
+      const patchValue = cachedValue?.items?.find(
+        (cachedItem) => cachedItem.attributeValues.CODE === item.attributeValues.CODE,
+      );
+      if (patchValue) {
+        Object.assign(item, patchValue);
+      }
+    });
   }
 
   /**

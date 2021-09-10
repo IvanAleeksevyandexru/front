@@ -56,6 +56,7 @@ export enum ActionType {
   reload = 'reload',
   restartOrder = 'restartOrder',
   skipStep = 'skipStep',
+  saveCacheToDraft = 'saveCacheToDraft',
 }
 
 export enum DTOActionAction {
@@ -78,6 +79,7 @@ export enum DTOActionAction {
   restartOrder = 'restartOrder',
   getNextQuiz = 'getNextQuiz', // для умного поиска
   getNextStep = 'getNextScreen',
+  getSaveCacheToDraft = 'getSaveCacheToDraft',
   getPrevStep = 'getPrevScreen',
   goBackToMainScenario = 'goBackToMainScenario',
   redirect = 'redirect', // для умного поиска

@@ -2,7 +2,7 @@
   <epgu-cf-ui-prev-button class="nav" *ngIf="screenService.showNav$ | async"></epgu-cf-ui-prev-button>
   <ng-container *ngTemplateOutlet="errorRegion"></ng-container>
   <span
-    *ngIf="isSearchTitleVisible && !isNoDepartmentErrorVisible"
+    *ngIf="label && isSearchTitleVisible && !isNoDepartmentErrorVisible"
     class="widget-form__title"
     [innerHTML]="label | safe: 'html'"
   ></span>

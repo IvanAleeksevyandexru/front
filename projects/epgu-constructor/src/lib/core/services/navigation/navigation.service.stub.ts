@@ -10,6 +10,8 @@ export class NavigationServiceStub {
   prevStep$ = this.prevStep.asObservable();
   private skipStep = new Subject<Navigation>();
   skipStep$ = this.skipStep.asObservable();
+  private saveCacheToDraft = new Subject<Navigation>();
+  saveCacheToDraft$ = this.saveCacheToDraft.asObservable();
   private restart = new Subject<Navigation>();
   restartOrder$ = this.restart.asObservable();
   private patchStepOnCli = new Subject<Navigation>();
@@ -21,6 +23,10 @@ export class NavigationServiceStub {
 
   prev(navigation?: Navigation): void {
     this.prevStep.next(navigation);
+  }
+
+  saveCache(navigation?: Navigation): void {
+    this.saveCacheToDraft.next(navigation);
   }
 
   skip(navigation?: Navigation): void {

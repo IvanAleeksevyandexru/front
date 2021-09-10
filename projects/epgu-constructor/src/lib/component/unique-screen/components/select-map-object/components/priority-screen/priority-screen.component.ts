@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Output, EventEmitter } from '@angular/core';
 import { combineLatest } from 'rxjs';
-import { pluck, startWith, takeUntil, tap } from 'rxjs/operators';
+import { pluck, skip, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { DTOActionAction, KindergartenAttrs, ScreenButton } from '@epgu/epgu-constructor-types';
 import { FormControl, Validators } from '@angular/forms';
@@ -11,6 +11,8 @@ import { DictionaryItem } from '../../../../../../shared/services/dictionary/dic
 
 import { PriorityItemsService } from '../../services/priority-items/priority-items.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
+import { SAVE_STEP_ACTION } from '../../../../../../shared/constants/actions';
 
 @Component({
   selector: 'epgu-constructor-priority-screen',
@@ -44,7 +46,6 @@ export class PriorityScreenComponent {
   buttonBase = [
     {
       label: 'Сохранить заявление',
-      value: '',
       type: 'nextStep',
       action: DTOActionAction.getNextStep,
     } as ScreenButton,
@@ -53,22 +54,23 @@ export class PriorityScreenComponent {
   buttonFinalScreen = [
     {
       label: 'Продолжить',
-      value: '',
       type: 'nextStep',
       action: DTOActionAction.getNextStep,
     } as ScreenButton,
   ];
 
   changes$ = combineLatest([
-    this.itemsService.items,
+    // Скипаем изначальное значение BehaviorSubject чтобы избежать лишнего запроса.
+    this.itemsService.items.pipe(skip(1)),
     this.controlCheckbox.valueChanges.pipe(startWith(this.controlCheckbox.value)),
   ])
     .pipe(
       tap(([items, otherKindergarten]) => {
         this.currentAnswersService.state = {
           otherKindergarten,
-          items: items.map((item) => item.attributeValues),
+          items,
         };
+        this.actionService.switchAction(SAVE_STEP_ACTION);
       }),
       takeUntil(this.unsubscribeService.ngUnsubscribe$),
     )
@@ -80,6 +82,7 @@ export class PriorityScreenComponent {
     public notify: NotifierService,
     public unsubscribeService: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
+    private actionService: ActionService,
   ) {}
 
   backAction(): void {

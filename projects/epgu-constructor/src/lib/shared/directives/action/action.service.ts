@@ -50,7 +50,7 @@ export class ActionService {
 
   public switchAction(
     action: ComponentActionDto,
-    componentId: string,
+    componentId?: string,
     targetElement?: HTMLElement,
   ): void {
     this._actionType.next(action.type);
@@ -63,6 +63,9 @@ export class ActionService {
         break;
       case ActionType.skipStep:
         this.actionToolsService.navigate(action, componentId, 'skipStep');
+        break;
+      case ActionType.saveCacheToDraft:
+        this.actionToolsService.navigate(action, componentId, 'saveCacheToDraft');
         break;
       case ActionType.restartOrder:
         this.navService.restartOrder();

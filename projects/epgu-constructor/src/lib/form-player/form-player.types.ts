@@ -65,6 +65,7 @@ export enum FormPlayerNavigation {
   'NEXT' = 'getNextStep',
   'PREV' = 'getPrevStep',
   'SKIP' = 'skipStep',
+  'SAVE_CACHE' = 'saveCacheToDraft',
   'DELIRIUM_NEXT_STEP' = 'deliriumNextStep',
 }
 

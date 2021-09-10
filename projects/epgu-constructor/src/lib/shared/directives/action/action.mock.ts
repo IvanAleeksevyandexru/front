@@ -77,6 +77,13 @@ export const prevAction: ComponentActionDto = {
   attrs: { stepsBack: 1 },
 };
 
+export const saveCacheAction: ComponentActionDto = {
+  label: '',
+  value: '',
+  action: DTOActionAction.getSaveCacheToDraft,
+  type: ActionType.saveCacheToDraft,
+};
+
 export const quizToOrderAction: ComponentActionDto = {
   label: '',
   value: '',

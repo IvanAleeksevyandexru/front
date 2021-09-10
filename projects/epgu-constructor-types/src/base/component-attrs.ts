@@ -180,6 +180,7 @@ export interface ComponentAttrsDto {
   visibleComponents?: string[];
   writableComponents?: string[];
   isSmev2?: boolean;
+  isMultiSelect?: boolean;
 }
 
 export type ChildrenListAgeView = 'date' | 'age';

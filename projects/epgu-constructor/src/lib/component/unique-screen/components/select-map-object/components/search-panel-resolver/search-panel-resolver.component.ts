@@ -11,15 +11,22 @@ import {
 } from '@angular/core';
 import { DisclaimerDto } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import { MapTypes } from '../../select-map-object.service';
+import { KindergartenSearchPanelComponent } from './components/kindergarten-search-panel/kindergarten-search-panel.component';
 import { CommonSearchPanelComponent } from './components/common-search-panel/common-search-panel.component';
 import { ElectionsSearchPanelComponent } from './components/elections-search-panel/elections-search-panel.component';
 
-type PanelTypesComponents = CommonSearchPanelComponent | ElectionsSearchPanelComponent;
+type PanelTypesComponents =
+  | CommonSearchPanelComponent
+  | ElectionsSearchPanelComponent
+  | KindergartenSearchPanelComponent;
 
-export enum PanelTypes {
-  commonPanel = 'commonPanel',
-  electionsPanel = 'electionsPanel',
-}
+export const PanelTypes = {
+  [MapTypes.commonMap]: 'commonPanel',
+  [MapTypes.electionsMap]: 'electionsPanel',
+  [MapTypes.kindergartenMap]: 'kindergartenPanel',
+  undefined: 'commonPanel',
+};
 
 @Component({
   selector: 'epgu-constructor-search-panel-resolver',
@@ -35,12 +42,13 @@ export class SearchPanelResolverComponent implements AfterViewInit {
   @Input() label: string;
   @Input() noDepartmentsErrorMsg: string;
   @Input() showNav: boolean;
-  @Input() panelType = PanelTypes.commonPanel;
   @Input() disclaimer: DisclaimerDto;
+  @Input() panelType = PanelTypes[MapTypes.commonMap];
 
   private panelsMap = {
-    [PanelTypes.commonPanel]: CommonSearchPanelComponent,
-    [PanelTypes.electionsPanel]: ElectionsSearchPanelComponent,
+    [PanelTypes[MapTypes.commonMap]]: CommonSearchPanelComponent,
+    [PanelTypes[MapTypes.electionsMap]]: ElectionsSearchPanelComponent,
+    [PanelTypes[MapTypes.kindergartenMap]]: KindergartenSearchPanelComponent,
   };
 
   constructor(
@@ -61,7 +69,7 @@ export class SearchPanelResolverComponent implements AfterViewInit {
     this.panel.createComponent(panel);
   }
 
-  private getComponent(type: PanelTypes): Type<PanelTypesComponents> {
+  private getComponent(type: string): Type<PanelTypesComponents> {
     return this.panelsMap[type];
   }
 }

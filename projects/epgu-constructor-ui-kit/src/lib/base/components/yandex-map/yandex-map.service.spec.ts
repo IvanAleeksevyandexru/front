@@ -35,6 +35,11 @@ describe('SelectMapObjectComponent', () => {
     yandexMapService['objectManager'] = {
       objects: {
         setObjectOptions: () => ({}),
+        getById: () => ({
+          properties: {
+            res: true,
+          }
+        }),
       },
       clusters: {
         getAll: () => [],

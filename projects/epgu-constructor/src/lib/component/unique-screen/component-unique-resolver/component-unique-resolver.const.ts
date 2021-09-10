@@ -40,6 +40,7 @@ import { IdentificationUploadScreenComponent } from '../components/identificatio
 import { IdentificationStreamComponent } from '../components/identification-stream/identification-stream.component';
 import { RegistrationAddrReadonlyComponent } from '../components/registration-addr/components/registration-addr-readonly/registration-addr-readonly.component';
 import { PersonUserInnComponent } from '../components/person-user-inn/person-user-inn.component';
+import { KindergartenComponent } from '../components/kindergarten/kindergarten.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -82,7 +83,9 @@ type UniqueScreenComponent =
   | ReferralNumberComponent
   | PaymentWayContainerComponent
   | PersonUserInnComponent
-  | RegistrationAddrReadonlyComponent;
+  | RegistrationAddrReadonlyComponent
+  | KindergartenComponent
+  ;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
 
@@ -95,6 +98,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   CityDepartment: InformationCenterMvdContainerComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,
   MapService: SelectMapObjectComponent,
+  KindergartenMapService: KindergartenComponent,
   OrderFileProcessingComponent: FileUploadScreenComponent,
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,

@@ -6,6 +6,7 @@ import {
   ConfigService,
   Icons,
   IFeatureCollection,
+  IGeoCoords,
   IGeoCoordsResponse,
   YandexMapService,
   YMapItem,
@@ -40,6 +41,7 @@ export interface IFillCoordsResponse extends IGeoCoordsResponse {
 export enum MapTypes {
   commonMap = 'commonMap',
   electionsMap = 'electionsMap',
+  kindergartenMap = 'kindergartenMap',
 }
 
 @Injectable()
@@ -100,7 +102,7 @@ export class SelectMapObjectService implements OnDestroy {
       hashMap[coord.address] = { latitude: coord.latitude, longitude: coord.longitude };
     });
     this.dictionary.items.forEach((item, index) => {
-      const coords = hashMap[item.attributeValues[this.componentAttrs.attributeNameWithAddress]];
+      const coords = hashMap[item.attributeValues[this.componentAttrs.attributeNameWithAddress]] as IGeoCoords;
       item.objectId = index;
       if (coords) {
         item.center = [coords.longitude, coords.latitude];
@@ -181,9 +183,9 @@ export class SelectMapObjectService implements OnDestroy {
   public searchMapObject(searchString: string): void {
     const searchStringLower = searchString.toLowerCase();
     this.filteredDictionaryItems = this.dictionary.items.filter((item) => {
-      const address = item.attributeValues[
+      const address = (item.attributeValues[
         this.componentAttrs.attributeNameWithAddress
-      ]?.toLowerCase();
+      ] as string)?.toLowerCase();
       return (
         item.title?.toLowerCase().includes(searchStringLower) ||
         address?.includes(searchStringLower)

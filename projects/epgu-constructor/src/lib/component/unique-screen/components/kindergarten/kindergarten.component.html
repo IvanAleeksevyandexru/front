@@ -1,0 +1,16 @@
+<ng-container *ngIf="kindergartenService.state$ | async as state">
+  <epgu-constructor-select-map-object
+    [hidden]="!(state === states.map)"
+  ></epgu-constructor-select-map-object>
+  <lib-button
+    *ngIf="state === states.map"
+    (click)="kindergartenService.setState(states.priority)"
+    class="submit-button next-step-button"
+    width="wide"
+    >Расставить сады по приоритету
+  </lib-button>
+  <epgu-constructor-priority-screen
+    [hidden]="!(state === states.priority)"
+    (back)="kindergartenService.setState(states.map);"
+  ></epgu-constructor-priority-screen>
+</ng-container>

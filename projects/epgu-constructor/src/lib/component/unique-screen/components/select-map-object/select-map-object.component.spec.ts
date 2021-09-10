@@ -19,6 +19,7 @@ import {
   AddressesToolsService,
   YandexMapService,
   UnsubscribeService,
+  YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
@@ -47,7 +48,9 @@ import {
   mockMapDictionary,
 } from './mocks/mock-select-map-dictionary';
 import {
+  DictionaryItem,
   DictionaryResponse,
+  DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
@@ -77,6 +80,8 @@ import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handl
 import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
 import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
+import { ExplicitContext } from '@epgu/zipkin';
+import { PriorityItemsService } from './services/priority-items/priority-items.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -130,6 +135,7 @@ describe('SelectMapObjectComponent', () => {
         SelectMapObjectService,
         UnsubscribeService,
         YandexMapService,
+        PriorityItemsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -345,6 +351,21 @@ describe('SelectMapObjectComponent', () => {
     component.data.attrs.LOMurlTemplate = 'temp';
     component['initMap']();
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  it('applySelectedObjects should apply items from cache', () => {
+    component['valueFromCache'] = '{"items":[{"isSelected":true,"value":"R7700038","attributeValues":{"CODE":"R7700038"}}]}';
+    const dict = cloneDeep(mockMapDictionary);
+    component['applySelectedObjects']((dict as unknown) as DictionaryResponseForYMap);
+    const val = dict.items.find((item) => item.attributeValues.CODE === 'R7700038');
+    expect(val.isSelected).toBeTruthy();
+  });
+
+  it('selectObject should call mapPaint', () => {
+    const spy = jest.spyOn(yandexMapService, 'mapPaint');
+    component['isMultiSelect'] = true;
+    component.selectObject({ } as YMapItem<DictionaryItem>);
+    expect(spy).toHaveBeenCalled();
   });
 });
 

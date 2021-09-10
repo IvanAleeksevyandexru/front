@@ -14,15 +14,28 @@
       Ознакомиться и подтвердить согласие</a
     >.
   </div>
-  <lib-button
-    *ngIf="!isSelectButtonHidden"
-    [showLoader]="showLoader"
-    [disabled]="!mapObject.agreement"
-    (click)="selectObject(mapObject, $event)"
-    class="submit-button"
-    width="wide"
-    >Выбрать
-  </lib-button>
+  <ng-container *ngIf="!isSelectButtonHidden">
+    <ng-container *ngIf="!mapObject.isSelected else isSelected">
+      <lib-button
+        [showLoader]="showLoader"
+        [disabled]="!mapObject.agreement"
+        (click)="selectObject(mapObject, $event)"
+        class="submit-button"
+        width="wide"
+        >Выбрать
+      </lib-button>
+    </ng-container>
+    <ng-template #isSelected>
+      <div class="department-selected">
+        <h3>
+          Выбрано
+        </h3>
+        <a (click)="selectObject(mapObject, $event)" class="information-link"
+          >Отменить</a
+        >
+      </div>
+    </ng-template>
+  </ng-container>
 </ng-container>
 
 <!--В данное модальное окно информацию должен предоставлять сервис который пока что не работает / не существует-->
