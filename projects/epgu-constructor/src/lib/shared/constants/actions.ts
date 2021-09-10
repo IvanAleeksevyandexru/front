@@ -6,6 +6,12 @@ export const NEXT_STEP_ACTION: ComponentActionDto = {
   type: ActionType.nextStep,
 };
 
+export const SAVE_STEP_ACTION: ComponentActionDto = {
+  label: '',
+  action: DTOActionAction.getSaveCacheToDraft,
+  type: ActionType.saveCacheToDraft,
+};
+
 export const EXTERNAL_INTEGRATION_ACTION: ComponentActionDto = {
   label: 'Попробовать снова',
   action: DTOActionAction.externalIntegrationAction,

@@ -1,0 +1,13 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+
+.depts-left {
+  color: $color-text-helper;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.map-object__header_selected {
+    display: block;
+    color: $color-pino-verde;
+    margin-top: 12px;
+}

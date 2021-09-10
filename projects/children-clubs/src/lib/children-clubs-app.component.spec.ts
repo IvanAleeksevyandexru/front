@@ -70,7 +70,6 @@ describe('ChildrenClubsComponent', () => {
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         { provide: CfAppStateService, useClass: CfAppStateServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
-        { provide: LocationService, useClass: LocationServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

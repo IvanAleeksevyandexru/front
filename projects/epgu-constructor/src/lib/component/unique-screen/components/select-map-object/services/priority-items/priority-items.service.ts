@@ -42,7 +42,7 @@ export class PriorityItemsService {
   }
 
   set maxKindergarten(max: number) {
-    this.maxKindergarten$$.next(max > 50 ? 50 : max);
+    this.maxKindergarten$$.next(max);
   }
   get maxKindergarten(): number {
     return this.maxKindergarten$$.getValue();

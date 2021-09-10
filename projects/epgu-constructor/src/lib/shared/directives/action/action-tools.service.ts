@@ -41,6 +41,7 @@ const navActionToNavMethodMap = {
   prevStep: 'prev',
   nextStep: 'next',
   skipStep: 'skip',
+  saveCacheToDraft: 'saveCache',
 };
 
 @Injectable()

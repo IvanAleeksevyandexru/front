@@ -23,6 +23,10 @@ import { ConstructorDadataWidgetModule } from '../../../../shared/components/con
 import { CommonBalloonContentComponent } from './components/balloon-content-resolver/components/common-balloon-content/common-balloon-content.component';
 import { ElectionsBalloonContentComponent } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.component';
 import { BalloonContentResolverComponent } from './components/balloon-content-resolver/balloon-content-resolver.component';
+import { KindergartenContentComponent } from './components/balloon-content-resolver/components/kindergarten-balloon-content/kindergarten-balloon-content.component';
+import { KindergartenSearchPanelComponent } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.component';
+import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
+import { KindergartenService } from '../kindergarten/kindergarten.service';
 
 
 @NgModule({
@@ -34,20 +38,27 @@ import { BalloonContentResolverComponent } from './components/balloon-content-re
     SearchPanelResolverComponent,
     CommonSearchPanelComponent,
     ElectionsSearchPanelComponent,
+    KindergartenSearchPanelComponent,
     BalloonContentResolverComponent,
     CommonBalloonContentComponent,
     ElectionsBalloonContentComponent,
+    KindergartenContentComponent,
   ],
   providers: [
     Icons,
     PriorityItemsService,
     NotifierService,
+    KindergartenSearchPanelService,
+    KindergartenService,
     {
       provide: 'notifierSetting',
       useValue: { singleNotifier: true },
     },
   ],
-  exports: [SelectMapObjectComponent],
+  exports: [
+    SelectMapObjectComponent,
+    PriorityScreenComponent,
+  ],
   imports: [
     BaseComponentsModule,
     ScreenContainerModule,
@@ -69,6 +80,7 @@ import { BalloonContentResolverComponent } from './components/balloon-content-re
     BalloonContentResolverComponent,
     CommonBalloonContentComponent,
     ElectionsBalloonContentComponent,
+    PriorityScreenComponent,
   ],
 })
 export class SelectMapObjectModule {}

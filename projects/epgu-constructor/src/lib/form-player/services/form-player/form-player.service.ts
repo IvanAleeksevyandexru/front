@@ -118,7 +118,9 @@ export class FormPlayerService extends FormPlayerBaseService {
       .navigate(store || this._store, navigation.options, formPlayerNavigation)
       .subscribe(
         (response) => {
-          this.processResponse(response);
+          if (formPlayerNavigation !== FormPlayerNavigation.SAVE_CACHE) {
+            this.processResponse(response);
+          }
         },
         (error) => {
           this.sendDataError(error);

@@ -58,4 +58,5 @@ export enum UniqueScreenComponentTypes {
   ReferralNumber = 'ReferralNumber',
   paymentWay = 'PaymentWay',
   personUserInn = 'PersonUserInn',
+  kindergartenMapService = 'KindergartenMapService',
 }

@@ -37,5 +37,16 @@
       display: block;
       margin-top: 24px;
     }
+
+    .department-selected {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      h3 {
+        color: $color-pino-verde;
+        text-align: center;
+      }    
+    }
   }
 }

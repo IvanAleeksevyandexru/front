@@ -151,6 +151,12 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
         this.changeDetectionRef.markForCheck();
       });
 
+    this.navService.saveCacheToDraft$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((data: NavigationPayload) => {
+        this.saveCacheToDraft(data);
+      });
+
     this.navService.restartOrder$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.formPlayerService.initData();
       this.changeDetectionRef.markForCheck();
@@ -199,6 +205,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private skipStep(navigation?: Navigation): void {
     this.formPlayerService.navigate(navigation, FormPlayerNavigation.SKIP);
+  }
+
+  private saveCacheToDraft(navigation?: Navigation): void {
+    this.formPlayerService.navigate(navigation, FormPlayerNavigation.SAVE_CACHE);
   }
 
   private patchStepOnCli(newScenarioDtoDiff?: Partial<ScenarioDto>): void {

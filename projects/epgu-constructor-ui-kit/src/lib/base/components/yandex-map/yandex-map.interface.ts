@@ -2,7 +2,9 @@ import { ymaps } from './yandex-map.types';
 
 export interface IYMapPoint<T> {
   center: number[];
-  obj: T;
+  obj: T & {
+    isSelected?: boolean;
+  };
 }
 
 export enum IFeatureTypes {

@@ -47,6 +47,7 @@ import { TimeSlotDoctorsModule } from './components/time-slot-doctors/time-slot-
 import { IdentificationUploadScreenModule } from './components/identification-upload-screen/identification-upload-screen.module';
 import { IdentificationStreamModule } from './components/identification-stream/identification-stream.module';
 import { PersonUserInnModule } from './components/person-user-inn/person-user-inn.module';
+import { KindergartenModule } from './components/kindergarten/kindergarten.module';
 
 @NgModule({
   imports: [
@@ -57,6 +58,7 @@ import { PersonUserInnModule } from './components/person-user-inn/person-user-in
     ModalModule,
     FileUploadScreenModule,
     SelectMapObjectModule,
+    KindergartenModule,
     CarInfoModule,
     EmployeeHistoryModule,
     TimeSlotsModule,
@@ -94,6 +96,7 @@ import { PersonUserInnModule } from './components/person-user-inn/person-user-in
     UploadAndEditPhotoModule,
     FileUploadScreenModule,
     SelectMapObjectModule,
+    KindergartenModule,
     CarInfoModule,
     EmployeeHistoryModule,
     TimeSlotsModule,

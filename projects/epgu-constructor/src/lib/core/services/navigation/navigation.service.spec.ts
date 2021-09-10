@@ -71,6 +71,14 @@ describe('NavigationService', () => {
     navigationService.next(null);
   });
 
+  it('test saveCache', (done) => {
+    navigationService.saveCacheToDraft$.subscribe((v) => {
+      expect(v).toBe(null);
+      done();
+    });
+    navigationService.saveCache(null);
+  });
+
   it('test prev', (done) => {
     navigationService.prevStep$.subscribe((v) => {
       expect(v).toBe(null);

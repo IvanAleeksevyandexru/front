@@ -55,7 +55,7 @@
       left: calc(50% - 296px);
       background: $color-white;
       width: 592px;
-      z-index: 100;
+      z-index: 10;
       padding: 32px;
       border-radius: $border-round;
       box-shadow: 0 24px 48px $color-shadow;
@@ -63,6 +63,11 @@
       .error-region {
         display: grid;
         padding-top: 16px;
+      }
+
+      .widget-form__bottom-label {
+        margin-top: 12px;
+        display: block;
       }
     }
     ::ng-deep #map {

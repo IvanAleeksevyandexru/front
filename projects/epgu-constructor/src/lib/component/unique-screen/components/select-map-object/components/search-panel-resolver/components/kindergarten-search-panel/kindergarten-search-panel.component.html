@@ -1,0 +1,23 @@
+<span
+  class="widget-form__title"
+  [innerHTML]="topLabel | safe: 'html'"
+></span>
+<div class="widget-form__input">
+  <epgu-cf-ui-constructor-constructor-lookup
+    *ngIf="!isNoDepartmentErrorVisible"
+    [showNotFound]="true"
+    [searchCaseSensitive]="false"
+    [itemsProvider]="provider"
+    [showSuggestion]="true"
+    [disabled]="!mapIsLoaded"
+    (changed)="lookupChanged($event?.originalItem, libLookup)"
+    [showExpandCollapse]="false"
+    [queryMinSymbolsCount]="0"
+    #libLookup
+  >
+  </epgu-cf-ui-constructor-constructor-lookup>
+</div>
+<span
+  class="widget-form__title widget-form__bottom-label"
+  [innerHTML]="bottomLabel | safe: 'html'"
+></span>

@@ -16,13 +16,20 @@ import { YMapItem } from '@epgu/epgu-constructor-ui-kit';
 import { CommonBalloonContentComponent } from './components/common-balloon-content/common-balloon-content.component';
 import { ElectionsBalloonContentComponent } from './components/elections-balloon-content/elections-balloon-content.component';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
+import { MapTypes } from '../../select-map-object.service';
+import { KindergartenContentComponent } from './components/kindergarten-balloon-content/kindergarten-balloon-content.component';
 
-type ContentTypesComponents = CommonBalloonContentComponent | ElectionsBalloonContentComponent;
+type ContentTypesComponents =
+  | CommonBalloonContentComponent
+  | ElectionsBalloonContentComponent
+  | KindergartenContentComponent;
 
-export enum ContentTypes {
-  commonContent = 'commonContent',
-  electionsContent = 'electionsContent',
-}
+export const ContentTypes = {
+  [MapTypes.commonMap]: 'commonContent',
+  [MapTypes.electionsMap]: 'electionsContent',
+  [MapTypes.kindergartenMap]: 'kindergartenContent',
+  undefined: 'commonContent',
+};
 
 @Component({
   selector: 'epgu-constructor-balloon-content-resolver',
@@ -35,14 +42,15 @@ export class BalloonContentResolverComponent implements AfterViewInit {
 
   @Input() mapObject;
   @Input() isSelectButtonHidden = false;
-  @Input() contentType = ContentTypes.commonContent;
+  @Input() contentType = ContentTypes[MapTypes.commonMap];
   @Input() attrs;
   @Output() selectObject = new EventEmitter<YMapItem<DictionaryItem>>();
   private balloonContentComponentRef: ComponentRef<ContentTypesComponents>;
 
   private contentMap = {
-    [ContentTypes.commonContent]: CommonBalloonContentComponent,
-    [ContentTypes.electionsContent]: ElectionsBalloonContentComponent,
+    [ContentTypes[MapTypes.commonMap]]: CommonBalloonContentComponent,
+    [ContentTypes[MapTypes.electionsMap]]: ElectionsBalloonContentComponent,
+    [ContentTypes[MapTypes.kindergartenMap]]: KindergartenContentComponent,
   };
 
   constructor(
@@ -74,7 +82,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
     mapObject.expanded = !mapObject.expanded;
   }
 
-  private getComponent(type: ContentTypes): Type<ContentTypesComponents> {
+  private getComponent(type: string): Type<ContentTypesComponents> {
     return this.contentMap[type];
   }
 

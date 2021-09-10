@@ -50,6 +50,7 @@ import {
   redirectAction,
   redirectToPayByUinAction,
   deliriumAction,
+  saveCacheAction,
 } from './action.mock';
 import { ActionToolsService } from './action-tools.service';
 import { of } from 'rxjs';
@@ -77,6 +78,7 @@ describe('ActionService', () => {
 
   let prevStepSpy: jasmine.Spy;
   let nextStepSpy: jasmine.Spy;
+  let saveCacheSpy: jasmine.Spy;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -129,6 +131,7 @@ describe('ActionService', () => {
     restartOrderSpy = spyOn(navigationService, 'restartOrder');
     nextStepSpy = spyOn(navigationService, 'next');
     prevStepSpy = spyOn(navigationService, 'prev');
+    saveCacheSpy = spyOn(navigationService, 'saveCache');
 
     modalPrevStepSpy = spyOn(navigationModalService, 'prev');
     modalNextStepSpy = spyOn(navigationModalService, 'next');
@@ -180,6 +183,12 @@ describe('ActionService', () => {
     prevStepSpy.calls.reset();
     actionService.switchAction(prevAction, null);
     expect(prevStepSpy).toBeCalledTimes(1);
+  });
+
+  it('should call switchAction saveCache', () => {
+    saveCacheSpy.calls.reset();
+    actionService.switchAction(saveCacheAction, null);
+    expect(saveCacheSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction quiz', () => {

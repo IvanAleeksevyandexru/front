@@ -2918,6 +2918,7 @@ export declare namespace ymaps {
     hasBalloon?: boolean | undefined;
     hasHint?: boolean | undefined;
     hideIconOnBalloonOpen?: boolean | undefined;
+    iconShape: IGeometryJson;
     interactiveZIndex?: boolean | undefined;
     interactivityModel?: InteractivityModelKey | undefined;
     opacity?: number | undefined;
@@ -3156,7 +3157,7 @@ export declare namespace ymaps {
     hint: geoObject.Hint;
     events: event.Manager<TargetGeometry>;
     options: option.Manager;
-    properties: data.Manager;
+    properties: data.Manager | Object;
     state: data.Manager;
 
     getOverlay(): Promise<IOverlay | null>;
@@ -3911,6 +3912,8 @@ export declare namespace ymaps {
 
   interface IGeometryJson {
     type: string;
+    coordinates?: [number, number];
+    radius?: number,
   }
 
   interface IGeoObject<T = IGeometry>
@@ -3921,7 +3924,7 @@ export declare namespace ymaps {
     type?: IFeatureTypes;
     id?: number;
     geometry: T | null;
-    properties: IDataManager;
+    properties: IDataManager | Object;
     state: IDataManager;
 
     getOverlay(): Promise<IOverlay | null>;
@@ -4597,13 +4600,13 @@ export declare namespace ymaps {
 
       add(object: object): this;
 
-      getById(id: string | null | undefined): GeoObject | null;
+      getById(id: number | string): GeoObject | null;
 
       getIterator(): IIterator;
 
       remove(object: object): this;
 
-      setObjectOptions(objectId: string, options: object): ObjectCollection;
+      setObjectOptions(objectId: number, options: object): ObjectCollection;
     }
   }
 

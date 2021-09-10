@@ -28,6 +28,9 @@ export class NavigationService {
   get skipStep$(): Observable<Navigation> {
     return this.skipStep.asObservable();
   }
+  get saveCacheToDraft$(): Observable<Navigation> {
+    return this.saveCacheToDraft.asObservable();
+  }
   get restartOrder$(): Observable<Navigation> {
     return this.restart.asObservable();
   }
@@ -38,6 +41,7 @@ export class NavigationService {
   private nextStep = new Subject<Navigation>();
   private prevStep = new Subject<Navigation>();
   private skipStep = new Subject<Navigation>();
+  private saveCacheToDraft = new Subject<Navigation>();
   private restart = new Subject<Navigation>();
   private patchStepOnCli = new Subject<Partial<ScenarioDto>>();
 
@@ -62,6 +66,10 @@ export class NavigationService {
 
   skip(navigation?: Navigation): void {
     this.skipStep.next(navigation);
+  }
+
+  saveCache(navigation?: Navigation): void {
+    this.saveCacheToDraft.next(navigation);
   }
 
   restartOrder(navigation?: Navigation): void {

@@ -1,0 +1,16 @@
+:host {
+  height: 100%;
+  & > *[hidden] {
+    display: none;
+  }
+
+  .next-step-button {
+    z-index: 5;
+    width: fit-content;
+    bottom: 48px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+  }
+}
