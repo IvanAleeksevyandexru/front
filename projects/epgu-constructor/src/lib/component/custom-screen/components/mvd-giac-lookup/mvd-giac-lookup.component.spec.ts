@@ -4,6 +4,7 @@ import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { EpguLibModule, ValidationShowOn } from '@epgu/epgu-lib';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
@@ -30,13 +31,13 @@ describe('MvdGiacLookupComponent', () => {
       declarations: [MvdGiacLookupComponent, MockComponent(ComponentItemComponent)],
       imports: [MockModule(EpguLibModule)],
       providers: [
-        DictionaryToolsService,
-        DatesToolsService,
+        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-        ConfigService,
-        LoggerService,
+        MockProvider(DatesToolsService),
+        MockProvider(ComponentsListRelationsService),
+        MockProvider(ConfigService),
+        MockProvider(LoggerService),
       ],
     })
       .overrideComponent(MvdGiacLookupComponent, {
