@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActionToolsService } from './action-tools.service';
 import { DTOActionAction, ScreenTypes } from '@epgu/epgu-constructor-types';
-import { LocationService, NotifierService } from '@epgu/epgu-lib';
+import { NotifierService } from '@epgu/epgu-lib';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -15,7 +15,8 @@ import {
   ModalServiceStub,
   SessionStorageService,
   SessionStorageServiceStub,
-} from '../../../../../../epgu-constructor-ui-kit/src/public-api';
+  LocationService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
