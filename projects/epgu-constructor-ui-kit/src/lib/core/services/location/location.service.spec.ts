@@ -16,6 +16,7 @@ describe('LocationService', () => {
     delete window.location;
     window.location = {
       href: null,
+      origin: 'https://host.com',
       reload: jest.fn()
     } as unknown as Location;
     locationService = TestBed.inject(LocationService);
@@ -48,6 +49,10 @@ describe('LocationService', () => {
     window.location.href = '/abc';
 
     expect(locationService.getHref()).toBe('/abc');
+  });
+
+  it('getOrigin()', () => {
+    expect(locationService.getOrigin()).toBe('https://host.com');
   });
 
   it('reload()', () => {

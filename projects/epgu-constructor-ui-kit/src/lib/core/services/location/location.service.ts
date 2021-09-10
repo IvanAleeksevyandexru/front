@@ -21,6 +21,10 @@ export class LocationService extends Location {
     return this.window.location.href;
   }
 
+  getOrigin(): string {
+    return this.window.location.origin;
+  }
+
   reload(): void {
     this.window.location.reload();
   }
