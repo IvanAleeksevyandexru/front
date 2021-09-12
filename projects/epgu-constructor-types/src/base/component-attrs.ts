@@ -121,6 +121,7 @@ export interface ComponentAttrsDto {
   repeatAmount?: number;
   resendCodeUrl?: string;
   restrictions?: ComponentRestrictionsDto;
+  result?: object;
   russia?: boolean; // TODO: избавить от рудимента после рефактора json'ов услуг
   screenCaption?: string;
   secondaryDictionaryFilter?: ComponentDictionaryFilterDto[];

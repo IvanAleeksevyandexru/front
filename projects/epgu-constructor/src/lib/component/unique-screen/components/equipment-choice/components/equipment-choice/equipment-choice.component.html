@@ -1,0 +1,9 @@
+<form [formGroup]="equipmentForm" *ngIf="isFormReady">
+  <epgu-constructor-equipment-category
+    class="equipment-category"
+    *ngFor="let category of equipmentChoiceRequestResult.categories | keyvalue"
+    [categoryFormGroup]="getFormGroup(category.key)"
+    [category]="category.value"
+    [concServiceTypeIds]="concServiceTypeIds"
+  ></epgu-constructor-equipment-category>
+</form>

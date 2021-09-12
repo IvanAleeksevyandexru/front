@@ -1,0 +1,43 @@
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes";
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/typography";
+
+.equipment-category {
+  &-inputs {
+    margin-top: 24px;
+    padding: 24px 0;
+    border-top: 1px solid $color-mercury;
+  }
+
+  &-item-title {
+    @include typ-h5;
+    margin-bottom: 8px;
+  }
+
+  .label {
+    @include typ-plain-small;
+    color: $color-text-helper;
+    margin-bottom: 4px;
+  }
+
+  .form-item {
+    margin-bottom: 32px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .label {
+      display: block;
+    }
+
+    &-input + .label {
+      margin-top: 24px;
+    }
+  }
+
+  .min-amount-error {
+    @include typ-plain-small();
+    margin-top: 12px;
+    color: $color-gosred;
+  }
+}

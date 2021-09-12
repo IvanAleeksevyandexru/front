@@ -63,6 +63,7 @@ $closeBtnWidth: 24px;
       right: 0;
       z-index: 1;
       cursor: pointer;
+
       &:only-child {
         @include tablets-up {
           top: 0;

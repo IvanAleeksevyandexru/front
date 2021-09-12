@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 export class ChipComponent {
   @Input() label: string;
   @Input() id?: string | number;
+  @Input() unselectable?: boolean;
   @Output() closeEvent = new EventEmitter<string | number>();
 
   onClose(): void {

@@ -1,0 +1,14 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <epgu-constructor-equipment-choice
+    [component]="screenService.component$ | async"
+    [cachedValue]="cachedValue$ | async"
+    (updateEvent)="onEquipmentChoiceChange($event)"
+  >
+  </epgu-constructor-equipment-choice>
+</epgu-constructor-default-unique-screen-wrapper>
