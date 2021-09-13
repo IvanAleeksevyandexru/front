@@ -46,7 +46,11 @@ import {
   CustomComponent,
   CustomListGenericData,
 } from '../../../../custom-screen/components-list.types';
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/error-handler/error-handler';
+import {
+  COMMON_ERROR_MODAL_PARAMS,
+  SERVICE_OR_SPEC_SESSION_TIMEOUT,
+  ITEMS_FAILURE,
+} from '../../../../../core/services/error-handler/error-handler';
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { DateTypeTypes, TimeSlotsConstants } from '../../time-slots/time-slots.constants';
 import {
@@ -62,14 +66,18 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../../shared/services/dictionary/dictionary-api.types';
+import { FormPlayerService } from '../../../../../form-player/services/form-player/form-player.service';
 
 /* eslint-disable max-len */
 export const STATIC_ERROR_MESSAGE = 'должности в ближайшие 14 дней нет доступного времени';
 export const STATIC_ERROR_TEMPLATE = `Выберите другую специальность врача или <a data-action-type='prevStep'>другую медицинскую организацию</a>`;
-export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
+
+export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT =
   'Закончилось время, отведённое на заполнение формы';
 export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE =
   'В выбранном Вами регионе услуга "запись на прием к врачу" временно недоступна. Пожалуйста, повторите попытку позже';
+export const NO_DATA =
+  'В настоящее время отсутствуют медицинские должности, в которые доступна запись на прием к врачу';
 @Component({
   selector: 'epgu-constructor-time-slot-doctors-container',
   templateUrl: './time-slot-doctors-container.component.html',
@@ -89,12 +97,12 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   public chosenTimeStr: string;
   public isChosenTimeStrVisible = false;
 
-  readonly daysNotFoundTemplate: ErrorTemplate = {
+  daysNotFoundTemplate: ErrorTemplate = {
     header: 'Нет свободного времени для приёма',
     description: 'Этот врач занят на ближайшие 14 дней. Выберите другого специалиста',
   };
 
-  readonly timeNotFoundTemplate: ErrorTemplate = {
+  timeNotFoundTemplate: ErrorTemplate = {
     header: 'В этот день всё занято',
     description: 'Выберите другой, чтобы забронировать время',
   };
@@ -186,6 +194,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     private datesHelperService: DatesToolsService,
     private httpCancelService: HttpCancelService,
     private actionService: ActionService,
+    private formPlayer: FormPlayerService,
   ) {}
 
   ngOnInit(): void {
@@ -367,11 +376,40 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
       (response) => {
         this.inBookingProgress = false;
         if (this.timeSlotDoctorService.hasError()) {
-          this.showError(
-            `${
-              this.constants.errorFailBookTimeSlot
-            }  (${this.timeSlotDoctorService.getErrorMessage()})`,
-          );
+          this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
+
+          if (this.errorMessage.includes('Закончилось время')) {
+            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
+              .toPromise()
+              .then((result) => {
+                if (result) {
+                  this.formPlayer.initData();
+                }
+              });
+          } else {
+            const params = {
+              ...ITEMS_FAILURE,
+              buttons: [
+                {
+                  label: 'Начать заново',
+                  closeModal: true,
+                  value: 'init',
+                },
+              ],
+            };
+            const message = this.errorMessage
+              .replace('FAILURE:', '')
+              .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+              .replace('NO_DATA:', '');
+            params.text = params.text.replace(/\{textAsset\}?/g, message);
+            this.showModal(params)
+              .toPromise()
+              .then((result) => {
+                if (result) {
+                  this.formPlayer.initData();
+                }
+              });
+          }
           return;
         }
         const answer = {
@@ -509,29 +547,29 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
           map((reference) => {
             let errorMessage = reference?.data?.error?.errorDetail?.errorMessage;
 
-            if (
-              errorMessage != null &&
-              errorMessage !== 'Operation completed' &&
-              !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) &&
-              !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE)
-            ) {
-              this.isDoctorsNotAvailable = true;
-              const regExp = /\{textAsset\}?/g;
-              errorMessage = errorMessage
-                .replace('FAILURE:', '')
-                .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
-                .replace('NO_DATA:', '');
+            if (errorMessage != null && errorMessage !== 'Operation completed') {
+              if (
+                !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT) &&
+                !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE)
+              ) {
+                this.isDoctorsNotAvailable = true;
+                const regExp = /\{textAsset\}?/g;
+                errorMessage = errorMessage
+                  .replace('FAILURE:', '')
+                  .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+                  .replace('NO_DATA:', '');
 
-              if (errorMessage.includes(STATIC_ERROR_MESSAGE)) {
-                this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
-                  regExp,
-                  STATIC_ERROR_TEMPLATE,
-                );
-              } else {
-                this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
-                  regExp,
-                  errorMessage,
-                );
+                if (errorMessage.includes(STATIC_ERROR_MESSAGE)) {
+                  this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
+                    regExp,
+                    STATIC_ERROR_TEMPLATE,
+                  );
+                } else {
+                  this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
+                    regExp,
+                    errorMessage,
+                  );
+                }
               }
             }
 
@@ -567,6 +605,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     this.clearDateSelection();
     const value = JSON.parse(this.screenService.component?.value);
     this.isDoctorsNotAvailable = false;
+    this.isExistsSlots = true;
 
     this.initServiceVariables(value);
     this.timeSlotDoctorService.init(value, this.cachedAnswer).subscribe(
@@ -577,7 +616,25 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
           if (this.errorMessage === 101) {
             this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
           }
-          this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
+          if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
+            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
+              .toPromise()
+              .then((result) => {
+                if (result) {
+                  this.formPlayer.initData();
+                }
+              });
+          } else if (this.errorMessage.includes(NO_DATA)) {
+            this.isExistsSlots = false;
+          } else {
+            const message = this.errorMessage
+              .replace('FAILURE:', '')
+              .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+              .replace('NO_DATA:', '');
+            this.isExistsSlots = false;
+            this.daysNotFoundTemplate.header = 'Нет свободного времени для приёма';
+            this.daysNotFoundTemplate.description = message;
+          }
         } else {
           await this.serviceInitHandle(!!isBookedDepartment);
         }
