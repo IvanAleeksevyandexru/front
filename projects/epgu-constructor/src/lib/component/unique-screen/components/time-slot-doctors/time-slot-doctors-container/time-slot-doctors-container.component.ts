@@ -626,15 +626,29 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
                 }
               });
           } else if (this.errorMessage.includes(NO_DATA)) {
-            this.isExistsSlots = false;
+            this.isDoctorsNotAvailable = true;
+            this.doctorsNotFoundTemplate.header = `
+            <h6 class='yellow-line mt-24'>
+              Нет свободного времени для приёма
+            </h6>`;
+            this.doctorsNotFoundTemplate.description = `
+            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
+              Этот врач занят на ближайшие 14 дней. Выберите другого специалиста
+            </div>`;
           } else {
             const message = this.errorMessage
               .replace('FAILURE:', '')
               .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
               .replace('NO_DATA:', '');
-            this.isExistsSlots = false;
-            this.daysNotFoundTemplate.header = 'Нет свободного времени для приёма';
-            this.daysNotFoundTemplate.description = message;
+            this.isDoctorsNotAvailable = true;
+            this.doctorsNotFoundTemplate.header = `
+            <h6 class='yellow-line mt-24'>
+              Нет свободного времени для приёма
+            </h6>`;
+            this.doctorsNotFoundTemplate.description = `
+            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
+              ${message}
+            </div>`;
           }
         } else {
           await this.serviceInitHandle(!!isBookedDepartment);
