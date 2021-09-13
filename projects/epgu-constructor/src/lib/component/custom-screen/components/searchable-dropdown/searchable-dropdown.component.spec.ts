@@ -16,6 +16,7 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
 import { configureTestSuite } from 'ng-bullet';
 import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { SearchableDropdownComponent } from './searchable-dropdown.component';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('SearchableDropdownComponent', () => {
   let component: SearchableDropdownComponent;
@@ -32,6 +33,7 @@ describe('SearchableDropdownComponent', () => {
       providers: [
         DictionaryToolsService,
         DatesToolsService,
+        JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },

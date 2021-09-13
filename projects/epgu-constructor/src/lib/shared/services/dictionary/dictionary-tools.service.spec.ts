@@ -246,6 +246,76 @@ describe('DictionaryToolsService', () => {
       });
     });
 
+    it('should calc valueType ref and patch items == 1', () => {
+      expect(
+        service['getValueForFilter'](compValue, MapStore, {
+          attributeName: 'CODE',
+          condition: DictionaryConditions.CONTAINS,
+          value: 'pd4',
+          valueType: DictionaryValueTypes.ref,
+        }),
+      ).toEqual({
+        rawValue: undefined,
+        value: { asString: undefined },
+      });
+    });
+
+    it('should calc valueType ref and patch items == 0', () => {
+      expect(
+        service['getValueForFilter'](compValue, MapStore, {
+          attributeName: 'CODE',
+          condition: DictionaryConditions.CONTAINS,
+          value: '',
+          valueType: DictionaryValueTypes.ref,
+        }),
+      ).toEqual({
+        rawValue: undefined,
+        value: { asString: undefined },
+      });
+    });
+
+    it('should calc valueType ref and patch string type', () => {
+      expect(
+        service['getValueForFilter'](compValue, MapStore, {
+          attributeName: 'CODE',
+          condition: DictionaryConditions.CONTAINS,
+          value: 'sn2a.value',
+          valueType: DictionaryValueTypes.ref,
+        }),
+      ).toEqual({
+        rawValue: 'qwe@qwe.qwe',
+        value: { asString: 'qwe@qwe.qwe' },
+      });
+    });
+
+    it('should calc valueType ref and patch by array', () => {
+      expect(
+        service['getValueForFilter'](compValue, MapStore, {
+          attributeName: 'CODE',
+          condition: DictionaryConditions.CONTAINS,
+          value: 'pd1.value.states[1].fields[2].value',
+          valueType: DictionaryValueTypes.ref,
+        }),
+      ).toEqual({
+        rawValue: 'Тестовый центр выдачи',
+        value: { asString: 'Тестовый центр выдачи' },
+      });
+    });
+
+    it('should calc valueType ref and patch undefiend', () => {
+      expect(
+        service['getValueForFilter'](compValue, MapStore, {
+          attributeName: 'CODE',
+          condition: DictionaryConditions.CONTAINS,
+          value: 'pd1.value.st123',
+          valueType: DictionaryValueTypes.ref,
+        }),
+      ).toEqual({
+        rawValue: undefined,
+        value: { asString: undefined },
+      });
+    });
+
     it('should calc valueType rawFilter', () => {
       const dFilter = {
         attributeName: 'CODE',
