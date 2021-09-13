@@ -11,6 +11,7 @@ import {
   ConfigService,
   DownloadService,
   EventBusService,
+  LocationService,
   ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
@@ -57,6 +58,7 @@ export class ActionToolsService {
     private htmlRemoverService: HtmlRemoverService,
     private formPlayerService: FormPlayerService,
     private hookService: HookService,
+    private locationService: LocationService,
     private modalService: ModalService,
     private navService: NavigationService,
     private navModalService: NavigationModalService,
@@ -175,7 +177,10 @@ export class ActionToolsService {
       this.sendAction<string>(action)
         .pipe(filter((response) => !response.errorList.length))
         .subscribe(
-          ({ responseData }) => this.copyAndNotify(responseData.value),
+          ({ responseData }) => {
+            const host = this.locationService.getOrigin();
+            this.copyAndNotify(host + responseData.value);
+          },
           (error) => console.log(error),
         );
       return;

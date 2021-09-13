@@ -7,6 +7,8 @@ export class LocationServiceStub extends Location {
 
   getHref(): void {}
 
+  getOrigin(): void {}
+
   reload(): void {}
 
   deleteParam(): void {}
