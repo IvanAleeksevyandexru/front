@@ -3,6 +3,9 @@ import { TextTransform } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class TextTransformService {
+  // NOTE: Символы '‐' и '-' - разные ('hyphen' и 'dash'), отображаются идентично из-за моноширинного шрифта
+  private readonly separators: string[] = [' ', '‐', '-'];
+
   private transforms = {
     [TextTransform.ALL]: this.firstLetterOfEachWordToUpperCase.bind(this),
     [TextTransform.FIRST]: this.firstLetterToUpperCase.bind(this),
@@ -14,13 +17,13 @@ export class TextTransformService {
   }
 
   /**
-   * Трансформирует первые буквы во всех словах, уичитывает разделитили пробел и тире/деффис
+   * Трансформирует первые буквы во всех словах, учитывает разделители из массива 'separators'
    * @param value - строка на трансформацию
    */
   public firstLetterOfEachWordToUpperCase(value: string): string {
-    let transformedValue = this.splitAndTransformString(value, ' ');
-    transformedValue = this.splitAndTransformString(transformedValue, '‐');
-    return this.splitAndTransformString(transformedValue, '-');
+    return this.separators.reduce((accumulator, currentValue) => {
+      return this.splitAndTransformString(accumulator, currentValue);
+    }, value);
   }
 
   /**
