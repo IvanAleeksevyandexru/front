@@ -21,7 +21,7 @@ const COMPONENTS = [FileUploadComponent, FileUploadPreviewComponent, FileUploadS
 
 @NgModule({
   declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
+  exports: [...COMPONENTS, FileSizeModule],
   imports: [
     WebcamShootModule,
     LyImageCropperModule,
