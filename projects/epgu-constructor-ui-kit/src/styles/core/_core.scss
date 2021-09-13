@@ -157,6 +157,9 @@ blockquote {
     align-items: flex-start;
     justify-content: flex-start;
     margin-top: 16px;
+    &:first-child {
+      margin-top: 0;
+    }
     & > img {
       flex: 0 0 auto;
       max-width: 25px;
