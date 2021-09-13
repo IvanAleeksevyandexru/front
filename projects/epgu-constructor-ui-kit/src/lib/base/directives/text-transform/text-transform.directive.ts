@@ -1,4 +1,5 @@
 import { Directive, HostListener, Input } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { TextTransformService } from '../../../core/services/text-transform/text-transform.service';
 
@@ -15,7 +16,10 @@ export class TextTransformDirective {
   private prevValue: string;
   private prevSelection: [number, number];
 
-  constructor(private textTransform: TextTransformService) {}
+  constructor(
+    private control: NgControl,
+    private textTransform: TextTransformService,
+  ) {}
 
   @HostListener('input', ['$event.target'])
   onInput(target: HTMLInputElement): void {
@@ -28,7 +32,8 @@ export class TextTransformDirective {
       return;
     }
     const selection: [number, number] = [target.selectionStart, target.selectionEnd];
-    target.value = this.transforms[this.textTransformType].call(this, target.value);
+    const transformedValue = this.transforms[this.textTransformType].call(this, target.value);
+    this.control.control.setValue(transformedValue);
     target.setSelectionRange(...selection);
 
     // Сохраняет предыдущее значение и позицию курсора
