@@ -72,12 +72,9 @@ import { FormPlayerService } from '../../../../../form-player/services/form-play
 export const STATIC_ERROR_MESSAGE = 'должности в ближайшие 14 дней нет доступного времени';
 export const STATIC_ERROR_TEMPLATE = `Выберите другую специальность врача или <a data-action-type='prevStep'>другую медицинскую организацию</a>`;
 
-export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT =
-  'Закончилось время, отведённое на заполнение формы';
-export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE =
-  'В выбранном Вами регионе услуга "запись на прием к врачу" временно недоступна. Пожалуйста, повторите попытку позже';
-export const NO_DATA =
-  'В настоящее время отсутствуют медицинские должности, в которые доступна запись на прием к врачу';
+export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT = 'Закончилось время';
+export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE = 'В выбранном Вами регионе услуга ';
+export const NO_DATA = 'В настоящее время отсутствуют медицинские должности';
 @Component({
   selector: 'epgu-constructor-time-slot-doctors-container',
   templateUrl: './time-slot-doctors-container.component.html',
@@ -378,7 +375,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         if (this.timeSlotDoctorService.hasError()) {
           this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
 
-          if (this.errorMessage.includes('Закончилось время')) {
+          if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
             this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
               .toPromise()
               .then((result) => {
@@ -394,6 +391,10 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
                   label: 'Начать заново',
                   closeModal: true,
                   value: 'init',
+                },
+                {
+                  label: 'Попробовать ещё раз',
+                  closeModal: true,
                 },
               ],
             };
