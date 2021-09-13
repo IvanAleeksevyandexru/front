@@ -123,7 +123,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     this.eventBusService
       .on('cloneButtonClickEvent')
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.createScreen(this.propData.components[0].attrs, true));
+      .subscribe(() => this.createScreen(this.propData.components[0].attrs, true, true));
   }
 
   // TODO решение в рамках https://jira.egovdev.ru/browse/EPGUCORE-57741
