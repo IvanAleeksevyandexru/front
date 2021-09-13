@@ -10,7 +10,8 @@ import { DictionaryApiService } from '../../../../shared/services/dictionary/dic
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ActivatedRoute } from '@angular/router';
 import {
-  ConfigService, ConfigServiceStub,
+  ConfigService,
+  ConfigServiceStub,
   DatesToolsService,
   EventBusService,
   LoggerService,
@@ -29,6 +30,7 @@ import { ScreenServiceStub } from 'projects/epgu-constructor/src/lib/screen/scre
 import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -36,18 +38,19 @@ const mockComponent = {
     dictionaryType: 'lookUpInputType',
     searchProvider: {
       dictionaryOptions: { additionalParams: [] },
-      dictionaryFilter: [{
-        attributeName: 'Session_Id',
-        condition: 'EQUALS',
-        value: 'value',
-        valueType: 'rawFilter'
-      }],
-    }
+      dictionaryFilter: [
+        {
+          attributeName: 'Session_Id',
+          condition: 'EQUALS',
+          value: 'value',
+          valueType: 'rawFilter',
+        },
+      ],
+    },
   },
   value: 'lookUpInput',
   required: false,
 };
-
 
 describe('LookupInputComponent', () => {
   let component: LookupInputComponent;
@@ -58,16 +61,11 @@ describe('LookupInputComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        LookupInputComponent,
-        MockComponent(ComponentItemComponent)
-      ],
-      imports: [
-        MockModule(EpguLibModule),
-        MockModule(ValidationTypeModule)
-      ],
+      declarations: [LookupInputComponent, MockComponent(ComponentItemComponent)],
+      imports: [MockModule(EpguLibModule), MockModule(ValidationTypeModule)],
       providers: [
         DictionaryToolsService,
+        JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         DatesToolsService,
@@ -81,7 +79,7 @@ describe('LookupInputComponent', () => {
         CurrentAnswersService,
         LoggerService,
         SuggestMonitorService,
-      ]
+      ],
     })
       .overrideComponent(DictionaryComponent, {
         set: {
@@ -96,7 +94,9 @@ describe('LookupInputComponent', () => {
 
   beforeEach(() => {
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
-    formService = (TestBed.inject(ComponentsListFormService) as unknown) as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
       id: new FormControl(mockComponent.id),

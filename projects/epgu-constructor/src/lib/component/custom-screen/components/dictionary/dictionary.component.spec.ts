@@ -12,10 +12,16 @@ import { DictionaryApiService } from '../../../../shared/services/dictionary/dic
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { ConfigService, DatesToolsService, LoggerService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DatesToolsService,
+  LoggerService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { By } from '@angular/platform-browser';
 import { CustomListDictionaries } from '../../components-list.types';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -30,26 +36,21 @@ describe('DictionaryComponent', () => {
   let dictionaryToolsService: DictionaryToolsService;
   let formService: ComponentsListFormServiceStub;
 
-
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        DictionaryComponent,
-        MockComponent(ComponentItemComponent)
-      ],
-      imports: [
-        MockModule(EpguLibModule)
-      ],
+      declarations: [DictionaryComponent, MockComponent(ComponentItemComponent)],
+      imports: [MockModule(EpguLibModule)],
       providers: [
         DictionaryToolsService,
+        JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         DatesToolsService,
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         UnsubscribeService,
         ConfigService,
-        LoggerService
-      ]
+        LoggerService,
+      ],
     })
       .overrideComponent(DictionaryComponent, {
         set: {
@@ -64,7 +65,9 @@ describe('DictionaryComponent', () => {
 
   beforeEach(() => {
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
-    formService = (TestBed.inject(ComponentsListFormService) as unknown) as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
 
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
@@ -100,14 +103,13 @@ describe('DictionaryComponent', () => {
     expect(debugEl.componentInstance.invalid).toBeTruthy();
   });
 
-
   describe('lib-dropdown', () => {
     const selector = 'lib-dropdown';
 
     beforeEach(() => {
       dictionaryToolsService.dictionaries$.next(({
         someDictionaryTypemockComponentID: {
-          list: [ { id: 1, text: 'some-text' } ],
+          list: [{ id: 1, text: 'some-text' }],
         },
       } as unknown) as CustomListDictionaries);
     });
@@ -123,7 +125,10 @@ describe('DictionaryComponent', () => {
       expect(fixture.debugElement.query(By.css(selector)).componentInstance.disabled).toBeTruthy();
       dictionaryToolsService.dictionaries$.next(({
         someDictionaryTypemockComponentID: {
-          list: [ { id: 1, text: 'some-text' }, { id:2, text: 'some-text2' } ],
+          list: [
+            { id: 1, text: 'some-text' },
+            { id: 2, text: 'some-text2' },
+          ],
         },
       } as unknown) as CustomListDictionaries);
       fixture.detectChanges();

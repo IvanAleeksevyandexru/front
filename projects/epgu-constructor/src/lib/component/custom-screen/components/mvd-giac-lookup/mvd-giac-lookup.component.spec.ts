@@ -16,6 +16,7 @@ import { ComponentsListFormServiceStub } from '../../services/components-list-fo
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { configureTestSuite } from 'ng-bullet';
 import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
@@ -31,6 +32,7 @@ describe('MvdGiacLookupComponent', () => {
       imports: [MockModule(EpguLibModule)],
       providers: [
         DictionaryToolsService,
+        JsonHelperService,
         DatesToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         MockProvider(ComponentsListRelationsService),
