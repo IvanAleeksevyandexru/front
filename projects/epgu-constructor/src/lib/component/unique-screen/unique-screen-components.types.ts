@@ -59,4 +59,5 @@ export enum UniqueScreenComponentTypes {
   paymentWay = 'PaymentWay',
   personUserInn = 'PersonUserInn',
   kindergartenMapService = 'KindergartenMapService',
+  equipmentChoice = 'EquipmentChoice',
 }

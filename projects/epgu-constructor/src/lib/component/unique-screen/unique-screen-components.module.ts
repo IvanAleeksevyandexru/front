@@ -48,6 +48,7 @@ import { IdentificationUploadScreenModule } from './components/identification-up
 import { IdentificationStreamModule } from './components/identification-stream/identification-stream.module';
 import { PersonUserInnModule } from './components/person-user-inn/person-user-inn.module';
 import { KindergartenModule } from './components/kindergarten/kindergarten.module';
+import { EquipmentChoiceModule } from './components/equipment-choice/equipment-choice.module';
 
 @NgModule({
   imports: [
@@ -91,6 +92,7 @@ import { KindergartenModule } from './components/kindergarten/kindergarten.modul
     DatePeriodModule,
     TimeSlotDoctorsModule,
     PersonUserInnModule,
+    EquipmentChoiceModule,
   ],
   exports: [
     UploadAndEditPhotoModule,
@@ -126,6 +128,7 @@ import { KindergartenModule } from './components/kindergarten/kindergarten.modul
     PaymentWayModule,
     TimeSlotDoctorsModule,
     PersonUserInnModule,
+    EquipmentChoiceModule,
   ],
   providers: [
     WebcamService,

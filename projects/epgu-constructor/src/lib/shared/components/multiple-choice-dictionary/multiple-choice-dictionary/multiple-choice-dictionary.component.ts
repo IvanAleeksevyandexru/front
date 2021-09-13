@@ -37,9 +37,11 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   @Input() modalHeader: string;
   @Input() label: string;
   @Input() dictionaryFilter: DictionaryFilters;
-  @Input() dictionaryList?: ListElement[] | CustomComponentDropDownItem[];
+  @Input() dictionaryList?: unknown;
   @Input() dictionaryType?: string;
   @Input() withAmount?: boolean;
+  @Input() isReadonly?: boolean;
+  @Input() tip?: string;
 
   selectedItems: MultipleSelectedItems = { list: [], amount: 0 };
 
@@ -96,7 +98,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
 
   public writeValue(items: ListElement[] | string): void {
     if (!items) return;
-    const value = Array.isArray(items) ? items : JSON.parse(items);
+    const value = typeof items === 'string' ? JSON.parse(items) : items;
 
     // TODO: когда-нибудь value всегда будет объектом, тогда можно будет убрать вторую проверку
     // пока что сохраняем обратную совместимость со старыми json'ами услуг
