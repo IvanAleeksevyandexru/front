@@ -96,6 +96,9 @@
     h5 + ol {
       margin-top: $screen-pad-8;
     }
+    @include tablets-down {
+      flex-grow: 0;
+    }
   }
 
   .info-screen--solution-page {
