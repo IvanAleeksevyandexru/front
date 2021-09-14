@@ -1,15 +1,14 @@
-import { MultipleSelectedItems }
-  from 'projects/epgu-constructor/src/lib/shared/components/multiple-choice-dictionary/multiple-choice-dictionary.models';
+import { MultipleSelectedItems } from '../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.models';
 
 export interface EquipmentChoiceComponentAttrsResult {
   items: EquipmentChoiceItem[];
-  attrs?: {[key: string]: unknown};
+  attrs?: { [key: string]: unknown };
 }
 export interface EquipmentChoiceItem {
   value: string;
   title: string;
-  attributeValues: {[key: string]: string | number}
-  props?: {[key: string]: string | number}
+  attributeValues: { [key: string]: string | number };
+  props?: { [key: string]: string | number };
 }
 export interface EquipmentChoiceCategory {
   id: number;
@@ -26,7 +25,7 @@ export interface EquipmentItemProps {
 export interface EquipmentFormValue {
   [key: string]: {
     [key: string]: EquipmentItemProps | MultipleSelectedItems;
-  }
+  };
 }
 
 export interface EquipmentChoiceUpdateEvent {
@@ -35,14 +34,14 @@ export interface EquipmentChoiceUpdateEvent {
 }
 
 export class EquipmentChoiceRequestResult {
-  categories: {[key: string]: EquipmentChoiceCategory} = {};
-  attrs?: {[key: string]: unknown};
+  categories: { [key: string]: EquipmentChoiceCategory } = {};
+  attrs?: { [key: string]: unknown };
 
   constructor(data: object) {
     data && this.deserialize(data);
   }
 
-  private deserialize(data: object): void{
+  private deserialize(data: object): void {
     const rawValue = data as EquipmentChoiceComponentAttrsResult;
 
     // Создаём лист категорий
@@ -71,8 +70,8 @@ export class EquipmentChoiceRequestResult {
         item.attributeValues.MIN_AMOUNT_EQUIPMENT &&
         this.categories[item.attributeValues.CATEGORY_ID].minAmount === null
       ) {
-        this.categories[item.attributeValues.CATEGORY_ID].minAmount =
-          item.attributeValues.MIN_AMOUNT_EQUIPMENT as number;
+        this.categories[item.attributeValues.CATEGORY_ID].minAmount = item.attributeValues
+          .MIN_AMOUNT_EQUIPMENT as number;
       }
     });
 
@@ -98,7 +97,7 @@ export class EquipmentChoiceFormValue {
 
     (rawValue as EquipmentChoiceSaveValue).categories.forEach((category) => {
       this[category.id] = {
-        equipment: null
+        equipment: null,
       };
 
       if (category.amount && category.amount > 0) {
@@ -106,7 +105,7 @@ export class EquipmentChoiceFormValue {
           amount: category.amount,
           list: category.list,
         };
-      };
+      }
     });
   }
 }

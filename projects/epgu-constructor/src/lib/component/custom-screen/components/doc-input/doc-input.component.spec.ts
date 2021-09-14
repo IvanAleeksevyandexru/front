@@ -25,14 +25,14 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { DurationService } from '../../../unique-screen/components/mat-period/service/duration.service';
-import { DateRangeService } from 'projects/epgu-constructor/src/lib/shared/services/date-range/date-range.service';
-import { DateRestrictionsService } from 'projects/epgu-constructor/src/lib/shared/services/date-restrictions/date-restrictions.service';
-import { ConstructorDatePickerModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-date-picker/constructor-date-picker.module';
-import { ConstructorPlainInputModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-plain-input/constructor-plain-input.module';
-import { ConstructorMaskedInputModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-masked-input/constructor-masked-input.module';
-import { ValidationTypeModule } from 'projects/epgu-constructor/src/lib/shared/directives/validation-type/validation-type.module';
-import { SuggestHandlerService } from 'projects/epgu-constructor/src/lib/shared/services/suggest-handler/suggest-handler.service';
-import { SuggestMonitorService } from 'projects/epgu-constructor/src/lib/shared/services/suggest-monitor/suggest-monitor.service';
+import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
+import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
+import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
+import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
+import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { By } from '@angular/platform-browser';
 
 const mockComponent = {
@@ -51,7 +51,7 @@ const mockComponent = {
     emitter: null,
   },
   visited: false,
-  required: false
+  required: false,
 };
 
 describe('DocInputComponent', () => {
@@ -81,7 +81,7 @@ describe('DocInputComponent', () => {
         ConfigService,
         LoggerService,
         EventBusService,
-        SuggestMonitorService
+        SuggestMonitorService,
       ],
       imports: [
         MockModule(EpguLibModule),
@@ -93,7 +93,7 @@ describe('DocInputComponent', () => {
         MockModule(ErrorModule),
         MockModule(BaseModule),
         MockModule(InputErrorModule),
-    ],
+      ],
     }).compileComponents();
   });
 
@@ -113,7 +113,8 @@ describe('DocInputComponent', () => {
               ref: '',
               condition: '',
               errorMsg: 'Поле должно быть заполено',
-            }, {
+            },
+            {
               type: 'RegExp',
               value: '^.{4}$',
               ref: '',
@@ -122,8 +123,8 @@ describe('DocInputComponent', () => {
               errorMsg: 'Поле должно содержать 4 символа',
               updateOn: 'blur',
             },
-          ]
-        }
+          ],
+        },
       },
       number: { attrs: { validation: [] }},
       emitter: { attrs: { validation: [] }},
