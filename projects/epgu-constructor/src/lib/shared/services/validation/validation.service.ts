@@ -64,7 +64,7 @@ export class ValidationService {
       }
 
       if (component.required && !control.value) {
-        return this.validationErrorMsg(control.touched ? REQUIRED_FIELD : '');
+        return this.validationErrorMsg(control.touched || control.dirty ? REQUIRED_FIELD : '');
       }
 
       let customMessage;

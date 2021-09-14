@@ -242,6 +242,13 @@ export class DocInputComponent extends AbstractComponentListItemComponent
     return this.form.get(control).invalid && this.form.get(control).touched;
   }
 
+  isErrorShown(control: string | string[]): boolean {
+    return (
+      (this.isInvalidAndTouched(control) || this.isInvalidAndDirty(control)) &&
+      this.form.get(control).errors.msg
+    );
+  }
+
   private getParsedComponentValues(): DocInputFields {
     const componentValues =
       typeof this.control.value.value === 'object'
