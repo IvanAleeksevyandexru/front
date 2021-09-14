@@ -34,11 +34,15 @@
 
 .label-helper {
   @include typ-plain-text;
+  margin-bottom: 4px;
   color: $color-text-helper;
   &:first-letter {
     text-transform: capitalize;
   }
-  margin-bottom: 4px;
+}
+
+.value-text {
+  @include typ-plain-text;
 }
 
 .divider {

@@ -57,7 +57,7 @@
       <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
         <img
           class="btn-edit__icon"
-          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-outline.svg"
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/edit.svg"
         />
         <span class="btn-edit__text" *ngIf="(screenService.action$ | async) as action">{{ action.label }}</span>
       </button>

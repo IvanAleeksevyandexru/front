@@ -1,10 +1,6 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 
-.item {
-  margin-top: 4px;
-}
-
 .footer {
   margin: 16px 0 0;
   display: block;
@@ -12,10 +8,15 @@
 
 .label-helper {
   @include typ-plain-text;
+  margin-bottom: 4px;
   color: $color-text-helper;
   &:first-letter {
     text-transform: capitalize;
   }
+}
+
+.value-text {
+  @include typ-plain-text;
 }
 
 .divider {
