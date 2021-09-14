@@ -49,6 +49,8 @@ import { mockSlotsDoctor202106 } from './mocks/mock-time-slots_doctors';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
+import { FormPlayerServiceStub } from '../../../../form-player/services/form-player/form-player.service.stub';
+import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
 
 const moment = moment_;
 moment.locale('ru');
@@ -95,6 +97,7 @@ describe('TimeSlotsComponent', () => {
         { provide: Smev2TimeSlotsRestService, useClass: Smev2TimeSlotsRestServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
       ],
     }).compileComponents();
   });

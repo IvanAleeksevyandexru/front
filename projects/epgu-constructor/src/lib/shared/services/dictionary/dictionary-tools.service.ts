@@ -43,6 +43,7 @@ import {
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
 import { getDictKeyByComp } from './dictionary-helper';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 export type ComponentValue = {
   [key: string]: string | number | object;
@@ -78,6 +79,7 @@ export class DictionaryToolsService {
     private dictionaryApiService: DictionaryApiService,
     private componentsListRelationsService: ComponentsListRelationsService,
     private datesToolsService: DatesToolsService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public watchForFilters(components: CustomComponent[]): Observable<CustomListReferenceData[]> {
@@ -593,13 +595,20 @@ export class DictionaryToolsService {
    * @param path путь до значения в applicantAnswers (примеp: pd1.value.firstName)
    */
   private getValueViaRef(applicantAnswers: CachedAnswers, path: string): string {
-    return path.split('.').reduce((ret: ComponentValue | string, current, index) => {
-      // Eсли путь ссылается на поле в value, то его (value) необходимо предварительно распарсить, всегда index === 2
-      if (index === 2) {
-        ret = JSON.parse(ret as string);
-      }
-      return ret[current];
-    }, applicantAnswers);
+    const pathList = path.split('.');
+    if (pathList.length < 2) {
+      return undefined;
+    }
+    const value = applicantAnswers[pathList[0]]?.value;
+    const resultPath = pathList.splice(2).join('.');
+
+    return get(
+      this.jsonHelperService.tryToParse(value, {}),
+      resultPath,
+      !this.jsonHelperService.hasJsonStructure(value) && resultPath.length === 0
+        ? value
+        : undefined,
+    );
   }
 
   private getDictionariesByFilter(

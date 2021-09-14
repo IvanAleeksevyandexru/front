@@ -17,13 +17,12 @@ import { ComponentsListFormServiceStub } from '../../services/components-list-fo
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { configureTestSuite } from 'ng-bullet';
 import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
   let fixture: ComponentFixture<MvdGiacLookupComponent>;
-
   let dictionaryToolsService: DictionaryToolsService;
-
   let formService: ComponentsListFormServiceStub;
 
   configureTestSuite(() => {
@@ -38,6 +37,8 @@ describe('MvdGiacLookupComponent', () => {
         MockProvider(ComponentsListRelationsService),
         MockProvider(ConfigService),
         MockProvider(LoggerService),
+        JsonHelperService,
+        DatesToolsService,
       ],
     })
       .overrideComponent(MvdGiacLookupComponent, {

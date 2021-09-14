@@ -20,6 +20,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { CustomListDictionaries } from '../../components-list.types';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 const mockComponent = {
   id: 'SomeId',
@@ -37,10 +38,11 @@ describe('DepartmentLookupComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [DepartmentLookupComponent, MockComponents(ComponentItemComponent)],
-      imports: [ MockModule(DropDownDeptsModule)],
+      imports: [MockModule(DropDownDeptsModule)],
       providers: [
         UnsubscribeService,
         DictionaryToolsService,
+        JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
@@ -118,7 +120,6 @@ describe('DepartmentLookupComponent', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector))).toBeTruthy();
     });
-
 
     it('invalid property is TRUE if value control is invalid and touched', () => {
       fixture.detectChanges();
