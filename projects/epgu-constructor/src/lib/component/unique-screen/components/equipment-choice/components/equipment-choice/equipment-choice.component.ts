@@ -18,13 +18,10 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../../../screen/screen.service';
 import {
   EquipmentChoiceRequestResult,
   EquipmentChoiceFormValue,
   EquipmentChoiceUpdateEvent,
-  EquipmentFormValue,
   EquipmentChoiceCategory,
 } from '../../equipment-choice.types';
 
@@ -39,17 +36,12 @@ export class EquipmentChoiceComponent implements OnInit {
   @Input() cachedValue: string;
   @Output() updateEvent = new EventEmitter<EquipmentChoiceUpdateEvent>();
 
-  equipmentForm: FormGroup = new FormGroup({});
+  equipmentForm: FormGroup;
   equipmentChoiceRequestResult: EquipmentChoiceRequestResult;
   concServiceTypeIds: string[];
   isFormReady = false;
 
-  constructor(
-    public screenService: ScreenService,
-    public currentAnswersService: CurrentAnswersService,
-    private ngUnsubscribe$: UnsubscribeService,
-    private cdr: ChangeDetectorRef,
-  ) {}
+  constructor(private ngUnsubscribe$: UnsubscribeService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.equipmentChoiceRequestResult = new EquipmentChoiceRequestResult(
@@ -70,6 +62,7 @@ export class EquipmentChoiceComponent implements OnInit {
   }
 
   private initForm(): void {
+    this.equipmentForm = new FormGroup({});
     if (this.isCategoryListNotEmpty()) {
       Object.keys(this.equipmentChoiceRequestResult.categories).forEach((key: string) => {
         this.equipmentForm.setControl(
@@ -87,13 +80,9 @@ export class EquipmentChoiceComponent implements OnInit {
   }
 
   private subscribeFormChanges(): void {
-    this.equipmentForm.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((change) => this.formChangesHandler(change));
-  }
-
-  private formChangesHandler(change: EquipmentFormValue): void {
-    this.updateEvent.emit({ value: change, isValid: this.equipmentForm.valid });
+    this.equipmentForm.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((change) => {
+      this.updateEvent.emit({ value: change, isValid: this.equipmentForm.valid });
+    });
   }
 
   private isCategoryListNotEmpty(): boolean {
