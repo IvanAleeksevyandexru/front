@@ -9,7 +9,7 @@ import { ValidationService } from '../../../../shared/services/validation/valida
 import { ComponentsListToolsService } from '../components-list-tools/components-list-tools.service';
 import { AddressHelperService } from '../../../../shared/services/address-helper/address-helper.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from 'projects/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.service.stub';
+import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import {
   DatesToolsService,
   UnsubscribeService,
@@ -32,7 +32,7 @@ import { Observable } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
-import { MaskTransformService } from 'projects/epgu-constructor/src/lib/shared/directives/mask/mask-transform.service';
+import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { cloneDeep } from 'lodash';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -106,8 +106,8 @@ describe('ComponentsListFormService', () => {
   let dictionaryMock = (index) => ({
     originalItem: {
       attributeValues: {
-        OKATO: index === 0 ? '40000000000' : '45000000000'
-      }
+        OKATO: index === 0 ? '40000000000' : '45000000000',
+      },
     },
   });
   let component: MockComponent;
@@ -200,7 +200,7 @@ describe('ComponentsListFormService', () => {
       type = CustomScreenComponentTypes.DropDown,
       attrs = { defaultIndex: 0 },
       dictionaryItemsCount = 2,
-      value = ''
+      value = '',
     ) => {
       const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
       const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
@@ -208,10 +208,12 @@ describe('ComponentsListFormService', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       const getDictionariesSpy = jest.fn(() => ({
         [`${component.attrs.dictionaryType}${component.id}`]: {
-          list: Array(dictionaryItemsCount).fill({}).map((_, index) => ({
-            id: `index ${index}`,
-            ...dictionaryMock(index),
-          })),
+          list: Array(dictionaryItemsCount)
+            .fill({})
+            .map((_, index) => ({
+              id: `index ${index}`,
+              ...dictionaryMock(index),
+            })),
         },
       }));
 
@@ -292,14 +294,13 @@ describe('ComponentsListFormService', () => {
       });
 
       it('should pass lookupDefaultValue with lookupFilterPath if it is provided', () => {
-        const {
-          getDictionariesSpy,
-          controlPatchSpy,
-          component,
-        } = setup(CustomScreenComponentTypes.Lookup, {
-          lookupDefaultValue: '40000000000',
-          lookupFilterPath: 'originalItem.attributeValues.OKATO',
-        });
+        const { getDictionariesSpy, controlPatchSpy, component } = setup(
+          CustomScreenComponentTypes.Lookup,
+          {
+            lookupDefaultValue: '40000000000',
+            lookupFilterPath: 'originalItem.attributeValues.OKATO',
+          },
+        );
 
         service.patch(component);
         expect(getDictionariesSpy).toHaveBeenCalled();
@@ -307,12 +308,12 @@ describe('ComponentsListFormService', () => {
       });
     });
 
-    describe('when it is DropDownDepts and has defaultIndex',  () => {
+    describe('when it is DropDownDepts and has defaultIndex', () => {
       it('should patchDropDownDeptsValue when lockedValue is true', () => {
-        const {
-          controlPatchSpy,
-          component,
-        } = setup(CustomScreenComponentTypes.DropDownDepts, { defaultIndex: 0, lockedValue: true });
+        const { controlPatchSpy, component } = setup(CustomScreenComponentTypes.DropDownDepts, {
+          defaultIndex: 0,
+          lockedValue: true,
+        });
 
         service.patch(component);
 
@@ -321,10 +322,11 @@ describe('ComponentsListFormService', () => {
       });
 
       it('should patchDropDownDeptsValue when there is one element', () => {
-        const {
-          controlPatchSpy,
-          component,
-        } = setup(CustomScreenComponentTypes.DropDownDepts, { defaultIndex: 0, lockedValue: false }, 1);
+        const { controlPatchSpy, component } = setup(
+          CustomScreenComponentTypes.DropDownDepts,
+          { defaultIndex: 0, lockedValue: false },
+          1,
+        );
 
         service.patch(component);
 
@@ -333,10 +335,12 @@ describe('ComponentsListFormService', () => {
       });
 
       it('should dont call patch when there is no value ', () => {
-        const {
-          controlPatchSpy,
-          component,
-        } = setup(CustomScreenComponentTypes.Lookup, { lockedValue: false }, 1, '');
+        const { controlPatchSpy, component } = setup(
+          CustomScreenComponentTypes.Lookup,
+          { lockedValue: false },
+          1,
+          '',
+        );
         service.patch(component);
         expect(controlPatchSpy).toHaveBeenCalledTimes(0);
       });
@@ -362,7 +366,7 @@ describe('ComponentsListFormService', () => {
       componentStub.attrs.ref[0].relation = CustomComponentRefRelation.displayOff;
       componentStub.attrs.maskOptions = {
         decimalSymbol: ',',
-        allowDecimal: true
+        allowDecimal: true,
       };
       componentStub.value = 'value';
       let component = JSON.parse(JSON.stringify(componentStub));
@@ -394,7 +398,7 @@ describe('ComponentsListFormService', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       service.create([componentMockData, extraComponent], {});
       service['markForFirstRoundValidation']([extraComponent]);
-      const result = service['_form'].controls.some(control => control.touched);
+      const result = service['_form'].controls.some((control) => control.touched);
       expect(result).toBeTruthy();
     });
   });

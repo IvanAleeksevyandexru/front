@@ -6,14 +6,19 @@ import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub, ConfigService, ConfigServiceStub, EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ActivatedRouteStub,
+  ConfigService,
+  ConfigServiceStub,
+  EventBusService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { RestLookupInputComponent } from './rest-lookup-input.component';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { ScreenService } from 'projects/epgu-constructor/src/lib/screen/screen.service';
-import { ScreenServiceStub } from 'projects/epgu-constructor/src/lib/screen/screen.service.stub';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
@@ -26,18 +31,19 @@ const mockComponent = {
     dictionaryType: 'lookUpInputType',
     searchProvider: {
       dictionaryOptions: { additionalParams: [] },
-      dictionaryFilter: [{
-        attributeName: 'Session_Id',
-        condition: 'EQUALS',
-        value: 'value',
-        valueType: 'rawFilter'
-      }],
-    }
+      dictionaryFilter: [
+        {
+          attributeName: 'Session_Id',
+          condition: 'EQUALS',
+          value: 'value',
+          valueType: 'rawFilter',
+        },
+      ],
+    },
   },
   value: 'lookUpInput',
   required: false,
 };
-
 
 describe('RestLookupInputComponent', () => {
   let component: RestLookupInputComponent;
@@ -48,14 +54,8 @@ describe('RestLookupInputComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        RestLookupInputComponent,
-        MockComponent(ComponentItemComponent)
-      ],
-      imports: [
-        MockModule(EpguLibModule),
-        MockModule(ValidationTypeModule)
-      ],
+      declarations: [RestLookupInputComponent, MockComponent(ComponentItemComponent)],
+      imports: [MockModule(EpguLibModule), MockModule(ValidationTypeModule)],
       providers: [
         MockProvider(RestToolsService),
         MockProvider(SuggestHandlerService),
@@ -65,7 +65,7 @@ describe('RestLookupInputComponent', () => {
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-      ]
+      ],
     })
       .overrideComponent(DictionaryComponent, {
         set: {
@@ -81,7 +81,9 @@ describe('RestLookupInputComponent', () => {
   beforeEach(() => {
     restToolsService = TestBed.inject(RestToolsService);
     jest.spyOn(restToolsService, 'dictionaries$', 'get').mockReturnValue(of({}));
-    formService = (TestBed.inject(ComponentsListFormService) as unknown) as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
       id: new FormControl(mockComponent.id),
