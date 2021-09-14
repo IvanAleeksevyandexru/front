@@ -9,12 +9,13 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { configureTestSuite } from 'ng-bullet';
-import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { By } from '@angular/platform-browser';
-import { ConfirmUserData, ConfirmUserDataError } from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
+import { ConfirmUserDataError } from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
+import { MockProvider } from 'ng-mocks';
 
 type PersonalUserPhoneEmailWithErrors = ComponentBase & {
   errors: ConfirmUserDataError[];
@@ -56,10 +57,10 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ConfirmPersonalUserPhoneEmailComponent, FormatPhonePipe, ActionDirective],
       providers: [
-        CurrentAnswersService,
+        MockProvider(CurrentAnswersService),
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        UnsubscribeService,
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
       ],
     }).compileComponents();
   });

@@ -31,13 +31,14 @@ import {
   SERVICE_OR_SPEC_NO_SPECIALIST,
   SERVICE_OR_SPEC_NO_AVAILABLE,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
-  GET_SLOT_RESPONSE_TIMEOUT,
+  // GET_SLOT_RESPONSE_TIMEOUT,
   STATIC_ERROR_MODAL,
   SERVICE_OR_SPEC_SESSION_TIMEOUT_2,
   LOADING_ERROR_MODAL_PARAMS,
   REGIONS_MODAL,
   MZRF_MODAL,
   RESOURCE_NOT_AVAILABLE,
+  NO_DOCTORS,
 } from './error-handler';
 import { Observable, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
@@ -62,8 +63,7 @@ export const STATIC_ERROR_MESSAGE = 'Operation completed';
 
 export const SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST =
   'В настоящее время отсутствуют медицинские должности, в которые доступна запись на прием к врачу через ЕПГУ. Пожалуйста, обратитесь в регистратуру медицинской организации';
-export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE =
-  'В выбранном Вами регионе услуга "запись на прием к врачу" временно недоступна. Пожалуйста, повторите попытку позже';
+export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE = 'В выбранном Вами регионе услуга';
 export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 =
   'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова';
 export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
@@ -71,8 +71,8 @@ export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
 export const SMEV2_GET_SLOT_RESPONSE_TIMEOUT =
   'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова';
 
-export const REFERRAL_NUMBER_NOT_FOUND =
-  'NO_DATA:Направление пациента с указанным номером не найдено. Пожалуйста, проверьте корректность введенных выше данных.';
+export const NO_AVAILABLE_DATA = 'должности в ближайшие 14 дней нет доступного времени';
+
 // eslint-disable-next-line max-len
 export const STATIC_ERROR_BOOKING_LIMIT_MESSAGE =
   'Превышено количество забронированных слотов для данного пользователя для данной услуги. Текущее ограничение - 1 забронированный слот в день';
@@ -133,39 +133,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         } catch (e) {}
       }
 
-      if (url.includes('equeue/agg/slots')) {
-        const errorMessage = error?.errorDetail?.errorMessage;
-
-        if (
-          (error?.errorDetail?.errorCode === 2 || error?.errorDetail?.errorCode === 6) &&
-          errorMessage?.includes('Закончилось время')
-        ) {
-          this.showModalFailure(
-            'Время сессии истекло, перейдите к началу',
-            true,
-            ModalFailureType.SESSION,
-          );
-        }
-
-        if (
-          errorMessage.includes(SMEV2_GET_SLOT_RESPONSE_TIMEOUT) ||
-          errorMessage.includes('FAILURE')
-        ) {
-          this.showModal(GET_SLOT_RESPONSE_TIMEOUT).then((value) => {
-            if (value) {
-              this.formPlayer.initData();
-            }
-          });
-        } else if (errorMessage != null || errorMessage !== '') {
-          STATIC_ERROR_MODAL.text = this.getStaticErrorMessage(STATIC_ERROR_MODAL, errorMessage);
-          this.showModal(STATIC_ERROR_MODAL).then((value) => {
-            if (value) {
-              this.formPlayer.initData();
-            }
-          });
-        }
-      }
-
       if (url.includes('dictionary/mzrf_lpu_equeue_smev3')) {
         const dictionaryError = error as DictionaryResponseError;
         const dictionaryResponse = body as DictionaryResponse;
@@ -223,7 +190,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
               {
                 label: 'Начать заново',
                 closeModal: true,
-                value: 'reload',
+                value: 'init',
               },
             ];
             this.showModal(MZRF_MODAL).then((value) => {
@@ -233,9 +200,20 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             });
           } else {
             MZRF_MODAL.text = MZRF_MODAL.text.replace(/\{textAsset\}?/g, message);
-            this.showModal(MZRF_MODAL).then((prevStep) => {
-              if (prevStep) {
-                this.navigationService.prev();
+            MZRF_MODAL.buttons = [
+              {
+                label: 'Начать заново',
+                closeModal: true,
+                value: 'init',
+              },
+              {
+                label: 'Попробовать ещё раз',
+                closeModal: true,
+              },
+            ];
+            this.showModal(MZRF_MODAL).then((value) => {
+              if (value) {
+                this.formPlayer.initData();
               }
             });
           }
@@ -423,57 +401,66 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) &&
             !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE)
           ) {
+            SERVICE_OR_SPEC_SESSION_TIMEOUT_2.buttons = [
+              {
+                label: 'Начать заново',
+                closeModal: true,
+                value: 'init',
+              },
+            ];
             this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT_2).then((value) => {
               if (value) {
                 this.formPlayer.initData();
               }
             });
-          }
-
-          if (
+          } else if (
             errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) &&
             !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)
           ) {
             this.showModal(RESOURCE_NOT_AVAILABLE);
+          } else if (errorMessage.includes(NO_AVAILABLE_DATA)) {
+            this.showModal(NO_DOCTORS).then((value) => {
+              switch (value) {
+                case 'init': {
+                  this.formPlayer.initData();
+                  break;
+                }
+
+                case 'prevStep': {
+                  this.navigationService.prev();
+                  break;
+                }
+              }
+            });
+          } else {
+            const modalParams = {
+              ...LOADING_ERROR_MODAL_PARAMS,
+              buttons: [
+                {
+                  label: 'Начать заново',
+                  color: 'white',
+                  closeModal: true,
+                  value: 'init',
+                },
+                {
+                  label: 'Попробовать ещё раз',
+                  closeModal: true,
+                }
+              ],
+            };
+            const message = errorMessage
+              .replace('FAILURE:', '')
+              .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+              .replace('NO_DATA:', '');
+            modalParams.text = modalParams.text.replace(/\{textAsset\}?/g, message);
+            this.showModal(modalParams as ConfirmationModal).then((resultValue) => {
+              if (resultValue) {
+                this.formPlayer.initData();
+              }
+            });
           }
           break;
         }
-      }
-    }
-
-    if (
-      url.includes('equeue/agg/slots') &&
-      (error !== null || error !== undefined) &&
-      errorMessage !== undefined &&
-      errorMessage !== ''
-    ) {
-      if (
-        (error?.errorDetail?.errorCode === 2 || error?.errorDetail?.errorCode === 6) &&
-        errorMessage?.includes('Закончилось время')
-      ) {
-        this.showModalFailure(
-          'Время сессии истекло, перейдите к началу',
-          true,
-          ModalFailureType.SESSION,
-        );
-      }
-
-      if (
-        errorMessage.includes(SMEV2_GET_SLOT_RESPONSE_TIMEOUT) ||
-        errorMessage.includes('FAILURE')
-      ) {
-        this.showModal(GET_SLOT_RESPONSE_TIMEOUT).then((value) => {
-          if (value) {
-            this.formPlayer.initData();
-          }
-        });
-      } else if (errorMessage != null || errorMessage !== '') {
-        STATIC_ERROR_MODAL.text = this.getStaticErrorMessage(STATIC_ERROR_MODAL, errorMessage);
-        this.showModal(STATIC_ERROR_MODAL).then((value) => {
-          if (value) {
-            this.formPlayer.initData();
-          }
-        });
       }
     }
   }

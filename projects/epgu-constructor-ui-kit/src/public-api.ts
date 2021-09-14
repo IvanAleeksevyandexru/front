@@ -106,6 +106,7 @@ export * from './lib/core/services/location/location.service.stub';
 
 export * from './lib/core/services/text-transform/text-transform.service';
 export * from './lib/core/services/unsubscribe/unsubscribe.service';
+export * from './lib/core/services/unsubscribe/unsubscribe.service.stub';
 export * from './lib/core/services/device-detector/device-detector.service';
 export * from './lib/core/services/device-detector/device-detector.service.stub';
 export * from './lib/core/services/device-detector/smu-events.service.stub';

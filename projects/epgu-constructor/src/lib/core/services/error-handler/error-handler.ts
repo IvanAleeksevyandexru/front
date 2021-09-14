@@ -27,7 +27,7 @@ const MZRF_MODAL_TEXT = `<div class="text_modal_error">
 
 const LOADING_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
-<h4>Ошибка Загрузки</h4>
+<h4>Ошибка загрузки</h4>
 <span>{textAsset}</span></div>`;
 
 const AUTH_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
@@ -105,7 +105,7 @@ const GET_SLOT_RESPONSE_TIMEOUT_TEXT = `<div class="text_modal_error">
 
 const STATIC_ERROR_MESSAGE_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
-<h4>Ошибка</h4>
+<h4>Ошибка загрузки</h4>
 <span>{textAsset}</span>
 </div>`;
 
@@ -113,6 +113,12 @@ const RESOURCE_NOT_AVAILABLE_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Ошибка услуга недоступна</h4>
 <span>Чтобы записаться к врачу, обновите страницу или вернитесь позже</span>
+</div>`;
+
+const NO_DOCTORS_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Врачи не найдены</h4>
+<span>Выберите другую специальность врача</span>
 </div>`;
 
 export const RESOURCE_NOT_AVAILABLE: ConfirmationModal = {
@@ -183,6 +189,27 @@ export const MZRF_MODAL: ConfirmationModal = {
   isShortModal: true,
 };
 
+export const NO_DOCTORS: ConfirmationModal = {
+  text: NO_DOCTORS_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'Начать заново',
+      color: 'white',
+      closeModal: true,
+      value: 'init',
+    },
+    {
+      label: 'Попробовать ещё раз',
+      value: 'prevStep',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
 export const LOADING_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: LOADING_ERROR_MODAL_PARAMS_TEXT,
   title: '',
@@ -196,6 +223,7 @@ export const LOADING_ERROR_MODAL_PARAMS: ConfirmationModal = {
   ],
   isShortModal: true,
 };
+
 
 export const AUTH_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: AUTH_ERROR_MODAL_PARAMS_TEXT,

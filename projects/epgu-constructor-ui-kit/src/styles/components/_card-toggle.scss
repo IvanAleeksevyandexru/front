@@ -20,6 +20,7 @@ $color-highlighted: rgba(153, 177, 230, .5);
   &-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     cursor: pointer;
     &::after {
       content: "\276F";
@@ -30,12 +31,12 @@ $color-highlighted: rgba(153, 177, 230, .5);
       background: $color-tagline;
       border-radius: 50%;
       font-size: 12px;
+      line-height: 22px;
       font-weight: 400;
       color: $color-gosblue;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       transform: rotate(90deg);
+      margin-left: 16px;
+      flex-shrink: 0;
     }
     & .card-toggle-label{
       max-width: 90%;

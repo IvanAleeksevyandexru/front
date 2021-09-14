@@ -23,7 +23,11 @@ import {
   SlotInterface,
 } from '@epgu/epgu-constructor-ui-kit';
 import { throwError } from 'rxjs/internal/observable/throwError';
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
+import {
+  COMMON_ERROR_MODAL_PARAMS,
+  SERVICE_OR_SPEC_SESSION_TIMEOUT,
+  ITEMS_FAILURE,
+} from '../../../../core/services/error-handler/error-handler';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
@@ -39,6 +43,7 @@ import { TimeSlotsService } from './time-slots.service';
 import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
 
 @Component({
   selector: 'epgu-constructor-time-slots',
@@ -175,6 +180,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     private timeSlotsService: TimeSlotsService,
     private jsonHelperService: JsonHelperService,
     private actionService: ActionService,
+    private formPlayer: FormPlayerService,
   ) {}
 
   ngOnInit(): void {
@@ -397,15 +403,55 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.inProgress = true;
     this.timeSlotsService.checkBooking(this.currentSlot).subscribe(
       (response) => {
-        this.inProgress = false;
-        const answer = {
-          ...response,
-          department: this.timeSlotsService.department,
-        };
-        this.setBookedTimeStr(this.currentSlot);
-        this.currentAnswersService.state = answer;
-        this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
-        this.changeDetectionRef.markForCheck();
+        if (this.timeSlotsService.hasError()) {
+          this.errorMessage = this.timeSlotsService.getErrorMessage();
+          if (this.errorMessage.includes('Закончилось время')) {
+            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
+              .toPromise()
+              .then((value) => {
+                if (value) {
+                  this.formPlayer.initData();
+                }
+              });
+          } else {
+            const params = {
+              ...ITEMS_FAILURE,
+              buttons: [
+                {
+                  label: 'Начать заново',
+                  closeModal: true,
+                  value: 'init',
+                },
+                {
+                  label: 'Попробовать ещё раз',
+                  closeModal: true,
+                },
+              ],
+            };
+            const message = this.errorMessage
+              .replace('FAILURE:', '')
+              .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+              .replace('NO_DATA:', '');
+            params.text = params.text.replace(/\{textAsset\}?/g, message);
+            this.showModal(params)
+              .toPromise()
+              .then((result) => {
+                if (result) {
+                  this.formPlayer.initData();
+                }
+              });
+          }
+        } else {
+          this.inProgress = false;
+          const answer = {
+            ...response,
+            department: this.timeSlotsService.department,
+          };
+          this.setBookedTimeStr(this.currentSlot);
+          this.currentAnswersService.state = answer;
+          this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
+          this.changeDetectionRef.markForCheck();
+        }
       },
       () => {
         this.inProgress = false;
@@ -522,8 +568,15 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
             this.daysNotFoundTemplate.description = this.errorMessage;
           } else if (this.errorMessage?.includes(NO_DATA_MESSAGE)) {
             this.daysNotFoundTemplate.header = 'Нет свободного времени для приёма';
-            this.daysNotFoundTemplate.description =
-              'Этот врач занят на ближайшие 14 дней. Выберите другого специалиста';
+            this.daysNotFoundTemplate.description = `Этот врач занят на ближайшие 14 дней. Выберите другого специалиста`;
+          } else if (this.errorMessage.includes('Закончилось время')) {
+            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
+              .toPromise()
+              .then((result) => {
+                if (result) {
+                  this.formPlayer.initData();
+                }
+              });
           } else {
             this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
           }
