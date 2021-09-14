@@ -7,10 +7,7 @@
   </div>
   <div class="form__error">
     <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-1">
-      <span *ngIf="
-        isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, fieldName]) &&
-        form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg
-      ">
+      <span *ngIf="isErrorShown([docInputFieldsTypes.seriesNumDate, fieldName])">
         <ng-container *ngIf="!form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.textFromJson">
           {{ fields[fieldName]?.label }}:
         </ng-container>
