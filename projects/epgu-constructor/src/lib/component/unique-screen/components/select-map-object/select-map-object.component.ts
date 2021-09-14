@@ -207,7 +207,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.mapType =
       (this.data.attrs.mapType as MapTypes) || MapTypes.commonMap;
     this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
-    this.isMultiSelect = this.data.attrs.isMultiSelect || true;
+    this.isMultiSelect = this.data.attrs.isMultiSelect;
     this.valueFromCache = this.screenService.getCompValueFromCachedAnswers();
     this.searchPanelType = PanelTypes[this.selectMapObjectService.mapType];
     this.balloonContentType = ContentTypes[this.selectMapObjectService.mapType];
