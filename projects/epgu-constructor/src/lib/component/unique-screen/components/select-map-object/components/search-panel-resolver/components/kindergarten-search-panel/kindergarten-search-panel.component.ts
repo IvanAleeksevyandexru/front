@@ -7,12 +7,17 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
+  CHILDS_HOME_PROPERTIES,
   ConstructorLookupComponent,
+  Icons,
+  KINDERGATEN_MAX_VALUE,
+  UnsubscribeService,
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
 import { LookupProvider, ListElement } from '@epgu/epgu-lib';
 import { Observable, of } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
 import { ModalErrorService } from '../../../../../../../../modal/modal-error.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
@@ -49,6 +54,8 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
     private itemsService: PriorityItemsService,
     private screenService: ScreenService,
     private jsonHelperService: JsonHelperService,
+    private icons: Icons,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +68,14 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
     this.kindergartenSearchPanelService.getEDUORGMAX().subscribe((response) => {
       this.eduorgmaxHandle(response);
     });
+    this.selectMapObjectService.isMapLoaded
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        filter((val) => !!val),
+      )
+      .subscribe(() => {
+        this.placeChildsHomeOnMap();
+      });
   }
 
   public ngAfterViewInit(): void {
@@ -76,12 +91,20 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
   }
 
   private selectMapObject(mapObject: YMapItem<DictionaryYMapItem>): void {
-    this.yandexMapService.selectMapObject(mapObject);
+    if (mapObject) {
+      const objectCoords = mapObject.center;
+      const { childHomeCoords } = this.kindergartenSearchPanelService;
+      const bounds = this.yandexMapService.getBoundsByCoords([objectCoords, childHomeCoords]);
+      this.yandexMapService.setBounds(bounds);
+      const feature = this.yandexMapService.getObjectById(mapObject.objectId);
+      this.yandexMapService.handleFeatureSelection(feature);
+    }
   }
 
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
       this.selectMapObjectService.searchMapObject(searchString);
+      this.placeChildsHomeOnMap();
       return of(
         this.dictionaryToolsService.adaptDictionaryToListItem(
           this.selectMapObjectService.filteredDictionaryItems,
@@ -91,14 +114,17 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
   }
 
   private eduorgmaxHandle(response): void {
-    this.kindergartenSearchPanelService.EDUORGMAX = response.items[0].attributeValues
-      .EDUORGMAX as number;
+    const responseValue = response.items[0].attributeValues.EDUORGMAX as number;
+    this.kindergartenSearchPanelService.EDUORGMAX = Math.min(responseValue, KINDERGATEN_MAX_VALUE);
     const cacheValue = this.getItemsFromCache();
     this.itemsService.init(this.kindergartenSearchPanelService.EDUORGMAX, cacheValue);
     this.kindergartenSearchPanelService.deptsLeftToChoose$.next(
       this.kindergartenSearchPanelService.EDUORGMAX - cacheValue.length,
     );
-    this.topLabel = `<p>Выберите от 1 до ${this.kindergartenSearchPanelService.EDUORGMAX} детских садов</p>`;
+    this.topLabel =
+      this.kindergartenSearchPanelService.EDUORGMAX === 1
+        ? `<p>Выберите детский сад</p>`
+        : `<p>Выберите от 1 до ${this.kindergartenSearchPanelService.EDUORGMAX} детских садов</p>`;
     if (response.items.length !== 1) {
       this.modalErrorService.showError('Не удалось определить EDUORGMAX');
     }
@@ -112,5 +138,13 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
       items: DictionaryYMapItem[];
     };
     return valueFromCache?.items || [];
+  }
+
+  private placeChildsHomeOnMap(): void {
+    const { childHomeCoords } = this.kindergartenSearchPanelService;
+    const options = this.icons.childsHome;
+    this.yandexMapService.addObjectsOnMap(
+      this.yandexMapService.createPlacemark(childHomeCoords, CHILDS_HOME_PROPERTIES, options),
+    );
   }
 }

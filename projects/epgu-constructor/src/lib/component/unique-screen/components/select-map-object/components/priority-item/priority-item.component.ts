@@ -14,6 +14,7 @@ export class PriorityItemComponent {
   @Input() index: number;
   @Input() isUp: boolean;
   @Input() isDown: boolean;
+  @Input() disabled: boolean;
 
   @Output() delete = new EventEmitter<DictionaryItem>();
   @Output() up = new EventEmitter<number>();

@@ -82,6 +82,7 @@ import { FormPlayerService } from '../../../../form-player/services/form-player/
 import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 import { ExplicitContext } from '@epgu/zipkin';
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
+import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -136,6 +137,7 @@ describe('SelectMapObjectComponent', () => {
         UnsubscribeService,
         YandexMapService,
         PriorityItemsService,
+        MockProvider(KindergartenSearchPanelService),
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -303,6 +305,7 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('initSelectedValue should call centerAllPoints when needToAutoCenterAllPoints is true', () => {
+    component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(component, 'centerAllPoints');
     component['needToAutoCenterAllPoints'] = true;
     component['initSelectedValue']();
@@ -310,7 +313,9 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('initSelectedValue should call selectClosestMapObject when needToAutoFocus is true', () => {
+    component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(component, 'selectClosestMapObject');
+    jest.spyOn(component['yandexMapService'], 'getDistance').mockImplementation((...args) => 5);
     component['needToAutoFocus'] = true;
     selectMapObjectService.filteredDictionaryItems = (addCenterToItems(
       mockMapDictionary.items,
@@ -320,6 +325,7 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('initSelectedValue should call selectMapObject when there is value from cached answers', () => {
+    component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(yandexMapService, 'selectMapObject');
     component.data.value =
       // eslint-disable-next-line max-len
@@ -332,6 +338,7 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('initSelectedValue should call centeredPlaceMarkByObjectValue when there is selectedValue in attrs', () => {
+    component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(selectMapObjectService, 'centeredPlaceMarkByObjectValue');
     component.applicantAnswers = divorceApplicantAnswers;
     component.data.attrs.selectedValue = 'act4.value';

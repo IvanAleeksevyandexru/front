@@ -56,11 +56,16 @@
         [clarifications]="attrs?.attrs?.clarifications"
       >
       </epgu-constructor-output-html>
-
+      <epgu-constructor-disclaimer
+        *ngIf="hasUnavailable"
+        [title]="'В списке есть недоступные сады'"
+        [description]="'Удалите их и замените при желании'"
+      ></epgu-constructor-disclaimer>
       <div *ngIf="screenItems" class="priority-list mt-8">
         <ng-container *ngFor="let item of screenItems; let i = index">
           <epgu-constructor-priority-item
             *ngIf="item !== null"
+            [disabled]="!item.attributeValues.OKTMO"
             [data]="item"
             [isUp]="i !== 0"
             [isDown]="!!items[i + 1]"

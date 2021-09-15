@@ -49,6 +49,9 @@
   &.active {
     font-weight: $fw-bold;
   }
+  &.disabled {
+    color: $color-text-helper;
+  }
 }
 .priority-details {
   .priority-detail {
