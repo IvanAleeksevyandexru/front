@@ -14,6 +14,7 @@ import {
   YMapItem,
 } from './yandex-map.interface';
 import { ymaps } from './yandex-map.types';
+import IDirectProblemSolution = ymaps.IDirectProblemSolution;
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
 
@@ -98,7 +99,11 @@ export class YandexMapService implements OnDestroy {
     }
 
     this.yaMapService.map.geoObjects.removeAll();
-    this.yaMapService.map.geoObjects.add(this.objectManager);
+    this.addObjectsOnMap(this.objectManager);
+  }
+
+  public addObjectsOnMap(object: ymaps.ObjectManager | ymaps.Placemark): void {
+    this.yaMapService.map.geoObjects.add(object);
   }
 
   /**
@@ -136,6 +141,13 @@ export class YandexMapService implements OnDestroy {
 
   public getObjectById<T>(id: number): IFeatureItem<T> {
     return this.objectManager.objects.getById(id);
+  }
+
+  public handleFeatureSelection<T>(feature: IFeatureItem<T>): void {
+    this.objectManager.objects.setObjectOptions(feature.id as number, this.icons.red);
+    const object = [(feature as IFeatureItem<T>).properties.res];
+    object[0]['expanded'] = true;
+    this.selectedValue$.next(object);
   }
 
   /**
@@ -220,6 +232,40 @@ export class YandexMapService implements OnDestroy {
       this.centerAllPoints();
     }
     this.centeredPlaceMark(chosenMapObject);
+  }
+
+  public getBoundsByCoords(coords: number[][]): [number[], number[]] {
+    const latitudes = coords.map(coord => coord[0]);
+    const longitudes = coords.map(coord => coord[1]);
+    const leftmost = Math.min(...latitudes);
+    const rightmost = Math.max(...latitudes);
+    const lowest = Math.min(...longitudes);
+    const highest = Math.max(...longitudes);
+    const leftBottom = [leftmost, lowest];
+    const rightTop = [rightmost, highest];
+    return [leftBottom, rightTop];
+  }
+
+  public setBounds(bounds: number[][]): void {
+    this.yaMapService.map.setBounds(bounds);
+  }
+
+  public getDistance(point1: number[], point2: number[]): number {
+    return this.ymaps.coordSystem.geo.getDistance(point1, point2);
+  }
+
+  /**
+   * Где мы окажемся, если выйдем из указанной точки в указанном направлении и пройдём, не сворачивая, указанное расстояние.
+   * @param startPoint точка
+   * @param direction направление
+   * @param distance расстояние
+   */
+  public solveDirectProblem(startPoint: number[], direction: number[], distance: number): IDirectProblemSolution {
+    return this.ymaps.coordSystem.geo.solveDirectProblem(startPoint, direction, distance);
+  }
+
+  public createPlacemark(coords: number[], properties?: object, options?: object): ymaps.Placemark {
+    return new this.ymaps.Placemark(coords, properties, options);
   }
 
   /**

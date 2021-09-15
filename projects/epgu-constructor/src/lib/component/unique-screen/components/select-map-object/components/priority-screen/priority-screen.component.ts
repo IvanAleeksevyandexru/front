@@ -40,6 +40,7 @@ export class PriorityScreenComponent {
   controlCheckbox = new FormControl({ value: true, disabled: false }, Validators.required);
   notifierId = 'NOTIFIERS_CHILDREN_GARDEN';
   plural = ['сад', 'сада', 'садов'];
+  hasUnavailable: boolean;
 
   finalScreen = (this.screenService.component?.arguments?.finalScreen as boolean) || false;
 
@@ -66,6 +67,7 @@ export class PriorityScreenComponent {
   ])
     .pipe(
       tap(([items, otherKindergarten]) => {
+        this.hasUnavailable = items.some((item) => !item.attributeValues.OKTMO);
         this.currentAnswersService.state = {
           otherKindergarten,
           items,

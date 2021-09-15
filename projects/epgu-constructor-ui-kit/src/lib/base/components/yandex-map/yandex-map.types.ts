@@ -3708,6 +3708,15 @@ export declare namespace ymaps {
     ): object;
   }
 
+  type IDirectProblemSolution = {
+    distance: number;
+    endDirection: [number, number];
+    startDirection: [number, number];
+    startPoint: [number, number];
+    endPoint: [number, number];
+    pathFunction: () => {};
+  };
+
   interface ICopyrightsAccessor extends ICopyrightsProvider {
     //tslint:disable-line no-empty-interface
   }
