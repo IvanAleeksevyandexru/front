@@ -161,10 +161,9 @@ describe('ConfirmPersonalUserDataComponent', () => {
   });
 
   it('should set session param in ngOnInit', () => {
-    screenService.getStore().applicantAnswers = {
-      cld1_id : {
-        visited: true,
-        value: '1'
+    screenService.cycledApplicantAnswerContext = {
+      cycledApplicantAnswerItem: {
+        id: '1'
       }
     };
     fixture.detectChanges();
