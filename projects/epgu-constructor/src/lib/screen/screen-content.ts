@@ -17,6 +17,7 @@ import {
   ScreenTypes,
   InfoComponentDto,
   DisclaimerDto,
+  CycledApplicantAnswerContextDto,
 } from '@epgu/epgu-constructor-types';
 
 type ComponentValueGeneric<T> = T;
@@ -57,6 +58,7 @@ export class ScreenContent {
   private _isTheSameScreenWithErrors = new BehaviorSubject<boolean>(null);
   private _isPrevStepCase = new BehaviorSubject<boolean>(null);
   private _isLogicComponentLoading = new BehaviorSubject<boolean>(false);
+  private _cycledApplicantAnswerContext = new BehaviorSubject<CycledApplicantAnswerContextDto>(null);
 
   public get display(): DisplayDto {
     return this._display.getValue();
@@ -405,6 +407,14 @@ export class ScreenContent {
 
   public get isLogicComponentLoading$(): Observable<boolean> {
     return this._isLogicComponentLoading.asObservable();
+  }
+
+  public get cycledApplicantAnswerContext(): CycledApplicantAnswerContextDto {
+    return this._cycledApplicantAnswerContext.getValue();
+  }
+
+  public set cycledApplicantAnswerContext(val: CycledApplicantAnswerContextDto) {
+    this._cycledApplicantAnswerContext.next(val);
   }
 
   public updateScreenContent(screenStore: ScreenStore, isWebView: boolean): void {

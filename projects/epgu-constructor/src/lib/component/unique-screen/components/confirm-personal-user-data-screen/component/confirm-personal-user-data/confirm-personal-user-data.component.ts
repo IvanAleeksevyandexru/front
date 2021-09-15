@@ -30,13 +30,10 @@ export class ConfirmPersonalUserDataComponent
   ngOnInit(): void {
     super.ngOnInit();
 
-    const applicantAnswers = this.screenService.getStore()?.applicantAnswers;
-    const childIdFromPrevStep = applicantAnswers?.cld1_id?.value;
-    const childIdFromNextStep = applicantAnswers?.cld1?.value
-      ? JSON.parse(applicantAnswers?.cld1?.value)[0]?.cld1_id
-      : '';
-
-    this.sessionStorageService.setRaw('childId', childIdFromPrevStep || childIdFromNextStep || '');
+    this.sessionStorageService.setRaw(
+      'childId',
+      this.screenService.cycledApplicantAnswerContext?.cycledApplicantAnswerItem?.id || '',
+    );
 
     const customValidation: CustomValidationDto = this.screenService.getStore().display
       ?.components[0]?.attrs?.customValidation;
