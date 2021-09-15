@@ -3,39 +3,18 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
-import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
-import {
-  ConfigService,
-  SessionService,
-  SessionStorageService,
-  SessionStorageServiceStub,
-  ObjectHelperService
-} from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { InitDataService } from '../../../../../../core/services/init-data/init-data.service';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { NavigationModalService } from '../../../../../../core/services/navigation-modal/navigation-modal.service';
-import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
-import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
 import { PaymentService } from '../../payment.service';
 import { BillInfoComponent } from './billinfo.component';
 import { configureTestSuite } from 'ng-bullet';
-import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
-import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { PriorPrefixModule } from '../../../../../../shared/pipes/prior-prefix/prior-prefix.module';
 
@@ -68,8 +47,6 @@ describe('BillInfoComponent', () => {
         MockProvider(LocalStorageService),
         MockProvider(DatesToolsService),
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
-        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).compileComponents();
