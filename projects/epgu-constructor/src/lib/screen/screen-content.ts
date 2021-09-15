@@ -431,6 +431,7 @@ export class ScreenContent {
       logicComponents = [],
       serviceInfo = {},
       isPrevStepCase,
+      cycledApplicantAnswerContext,
     } = screenStore;
     const {
       header,
@@ -477,6 +478,7 @@ export class ScreenContent {
     this.serviceCode = serviceCode;
     this.logicComponents = logicComponents;
     this.serviceInfo = serviceInfo;
+    this.cycledApplicantAnswerContext = cycledApplicantAnswerContext;
   }
 
   public getComponentData(str: string): ComponentValue {
