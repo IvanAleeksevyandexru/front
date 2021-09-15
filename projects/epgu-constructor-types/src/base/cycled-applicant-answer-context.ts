@@ -3,5 +3,5 @@ export interface CycledApplicantAnswerContextDto {
 }
 
 export interface CycledApplicantAnswerItemDto {
-  id: string;
+  id?: string;
 }
