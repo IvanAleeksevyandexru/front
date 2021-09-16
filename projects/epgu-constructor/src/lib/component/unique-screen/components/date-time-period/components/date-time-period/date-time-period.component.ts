@@ -7,11 +7,11 @@ import {
   EventEmitter,
   ChangeDetectorRef,
 } from '@angular/core';
-import { ListElement } from '@epgu/epgu-lib';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatesHelperService, ListElement } from '@epgu/epgu-lib';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { addDays, addYears, format, isSameDay, parseISO } from 'date-fns';
 import { pairwise, startWith, tap } from 'rxjs/operators';
-import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import {
   getDateTimeObject,
@@ -20,6 +20,8 @@ import {
 } from '../../utils/date-time-period.utils';
 import { DateTimePeriodFormValues, DateTimePeriodState } from '../../date-time-period.types';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
+import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 
 @Component({
   selector: 'epgu-constructor-date-time-period',
@@ -32,6 +34,7 @@ export class DateTimePeriodComponent implements OnInit {
 
   @Input() initialState: DateTimePeriodState | null = null;
 
+  @Input() component: ComponentDto;
   /**
    * Шаг в минутах
    */
@@ -53,6 +56,8 @@ export class DateTimePeriodComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
     private currentAnswersService: CurrentAnswersService,
+    private validationService: ValidationService,
+    private dateRestrictionsService: DateRestrictionsService,
   ) {
     this.allTimeDropdownItems = getTimeChunks(this.step, this.timeFormat).map((item) => ({
       id: item,
@@ -74,11 +79,16 @@ export class DateTimePeriodComponent implements OnInit {
     const startTime = this.initStartTime();
     const endDate = this.initEndDate();
     const endTime = this.initEndTime();
-
     this.group = this.formBuilder.group({
-      startDate: [startDate, Validators.required],
+      startDate: [
+        startDate,
+        [Validators.required, this.validationService.dateValidator(this.component)],
+      ],
       startTime: [startTime, Validators.required],
-      endDate: [endDate, Validators.required],
+      endDate: [
+        endDate,
+        [Validators.required, this.validationService.dateValidator(this.component)],
+      ],
       endTime: [endTime, Validators.required],
     });
 
@@ -88,6 +98,7 @@ export class DateTimePeriodComponent implements OnInit {
         startWith(this.group.getRawValue() as DateTimePeriodFormValues),
         tap((values: DateTimePeriodFormValues) => {
           // формирование выпадающего списка с конечным временем
+          this.setDateRangeToStore(values);
           this.endTimeDropdownItems = this.initStartTimeDropdownItems(values);
           this.cdr.markForCheck();
         }),
@@ -177,6 +188,40 @@ export class DateTimePeriodComponent implements OnInit {
         endTime: values.startTime,
       });
     }
+  }
+
+  public getError(timeError: ValidationErrors, dateError: ValidationErrors): string {
+    let msg = '';
+    if (timeError?.required || dateError?.required) {
+      msg = 'Не все поля заполнены';
+    }
+    if (dateError?.msg) {
+      msg = dateError.msg;
+    }
+    return msg;
+  }
+
+  private setDateRangeToStore(values: DateTimePeriodFormValues): void {
+    const dateRangeStartDate = {
+      min: DatesHelperService.relativeOrFixedToFixed(this.attrs.beginDate.minDate),
+      max: DatesHelperService.relativeOrFixedToFixed(this.attrs.beginDate.maxDate),
+    };
+    const dateRangeEndDate = {
+      min: values.startDate,
+      max: DatesHelperService.relativeOrFixedToFixed(this.attrs.endDate.maxDate),
+    };
+    this.dateRestrictionsService.setDateRangeToStore(
+      this.component.id,
+      dateRangeStartDate,
+      undefined,
+      'startDate',
+    );
+    this.dateRestrictionsService.setDateRangeToStore(
+      this.component.id,
+      dateRangeEndDate,
+      undefined,
+      'endDate',
+    );
   }
 
   private initStartDate(): Date {

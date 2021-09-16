@@ -6,7 +6,7 @@
       (this.group.controls.startTime.invalid && this.group.controls.startTime.touched)
     "
   >
-    Не все поля заполнены
+    {{getError(this.group.controls.startTime.errors, this.group.controls.startDate.errors)}}
   </epgu-cf-ui-constructor-input-error>
   <div class="form">
     <div class="grid-col-6 grid-col-12-sm form__item">
@@ -17,7 +17,7 @@
 
       <epgu-constructor-constructor-date-picker
         [id]="'startDate'"
-        [minDate]="'today'"
+        [minDate]="attrs.beginDate?.minDate || 'today'"
         [control]="group.controls.startDate"
         [maxDate]="attrs.beginDate?.maxDate"
         [clearable]="true"
@@ -60,7 +60,7 @@
       (this.group.controls.endTime.invalid && this.group.controls.endTime.touched)
     "
   >
-    Не все поля заполнены
+    {{getError(this.group.controls.endTime.errors, this.group.controls.endDate.errors)}}
   </epgu-cf-ui-constructor-input-error>
   <div class="form">
     <div class="grid-col-6 grid-col-12-sm form__item">

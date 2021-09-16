@@ -90,7 +90,7 @@ export class DateRestrictionsService {
       });
   }
 
-  private setDateRangeToStore(componentId: string, dateRange: Range, componentsGroupIndex?: number, forChild?: string): void {
+  public setDateRangeToStore(componentId: string, dateRange: Range, componentsGroupIndex?: number, forChild?: string): void {
     this.dateRangeStore.set(this.getDateRangeStoreKey(componentId, componentsGroupIndex, forChild), dateRange);
   }
 
