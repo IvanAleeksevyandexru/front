@@ -37,7 +37,7 @@ const TIMEZONE_STR_OFFSET = -6;
 
 @Injectable()
 export class TimeSlotDoctorService {
-  isByMedRef = false;
+  isOnlyDocLookupNeeded = false;
 
   state$$ = new BehaviorSubject<TimeSlotDoctorState>({
     specLookup: null,

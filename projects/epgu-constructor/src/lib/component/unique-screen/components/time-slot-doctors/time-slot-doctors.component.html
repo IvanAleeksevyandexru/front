@@ -44,12 +44,45 @@
         (changed)="docLookupWasChanged.emit($event)"
       >
       </epgu-cf-ui-constructor-constructor-lookup>
+
+      <ng-container *ngIf="isDocLookupDisclaimerShown">
+        <epgu-constructor-disclaimer
+          *ngIf="docLookupAttrs.disclaimer as disclaimer"
+          class="mb-24"
+          [type]="disclaimer.type"
+          [title]="disclaimer.title"
+          [description]="disclaimer.description"
+          [clarifications]="docLookupAttrs.clarifications"
+        ></epgu-constructor-disclaimer>
+      </ng-container>
+
     </div>
 
     <epgu-constructor-output-html
       *ngIf="isDoctorsNotAvailable && doctorsNotFoundTemplate"
       [html]="doctorsNotFoundTemplate.header + doctorsNotFoundTemplate.description"
     ></epgu-constructor-output-html>
+
+    <ng-container *ngIf="areSlotsNotAvailable">
+      <div  *ngIf="checkboxLabel"
+             class="mt-8" >
+        <epgu-cf-ui-constructor-constructor-checkbox
+          #checkboxComponent
+          [labelText]="checkboxLabel"
+          [control]="checkboxControl"
+        >
+        </epgu-cf-ui-constructor-constructor-checkbox>
+      </div>
+      <div  *ngIf="screenErrorButton"
+            class="mt-8" >
+        <epgu-constructor-screen-buttons
+          class="screen-buttons"
+          [screenButtons]="[screenErrorButton]"
+          [disabled]="!checkboxComponent?.control?.value"
+          [isLoading]="isLoading"
+        ></epgu-constructor-screen-buttons>
+      </div>
+    </ng-container>
 
     <lib-throbber-hexagon *ngIf="inLoadingProgress" class="mt-24" size="big"></lib-throbber-hexagon>
 
@@ -85,6 +118,7 @@
         </span>
       </span>
     <lib-button
+      *ngIf="!areSlotsNotAvailable || !screenErrorButton"
       [showLoader]="isLoading || inBookingProgress"
       (click)="bookSlot.emit()"
       class="submit-button"

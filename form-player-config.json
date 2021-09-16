@@ -62,6 +62,11 @@
         "serviceId": "10001000603",
         "calendarName": "на прием к врачу",
         "subject": "Запись на прием к врачу"
+      },
+      "VACCINATION": {
+        "serviceId": "10000006633",
+        "calendarName": "на вакцинацию от COVID-19",
+        "subject": "Запись на вакцинацию от COVID-19"
       }
     },
     "disableUnderConstructionMode": false,
