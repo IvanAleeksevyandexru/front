@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ListElement, ValidationShowOn } from '@epgu/epgu-lib';
-import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto, ScreenButton } from '@epgu/epgu-constructor-types';
 import {
+  ConstructorCheckboxComponent,
   ConstructorLookupComponent,
   ErrorTemplate,
   IDay,
@@ -16,11 +17,13 @@ import {
 export class TimeSlotDoctorsComponent {
   @ViewChild('specLookup') specLookup: ConstructorLookupComponent;
   @ViewChild('docLookup') docLookup: ConstructorLookupComponent;
+  @ViewChild('checkboxComponent') checkboxComponent: ConstructorCheckboxComponent;
 
   @Input() daysNotFoundTemplate: ErrorTemplate;
   @Input() timeNotFoundTemplate: ErrorTemplate;
   @Input() doctorsNotFoundTemplate: ErrorTemplate;
 
+  @Input() screenErrorButton: ScreenButton;
   @Input() label: string;
   @Input() isValid: boolean;
   @Input() isChosenTimeStrVisible: boolean;
@@ -30,6 +33,8 @@ export class TimeSlotDoctorsComponent {
   @Input() isLoading: boolean;
   @Input() labelButton: string;
   @Input() isDoctorsNotAvailable = false;
+  @Input() areSlotsNotAvailable = false;
+  @Input() isDocLookupDisclaimerShown;
 
   @Input() monthsRange: string;
   @Input() slotList: SlotInterface[];
@@ -45,10 +50,12 @@ export class TimeSlotDoctorsComponent {
 
   @Input() specLookupControl;
   @Input() docLookupControl;
+  @Input() checkboxControl;
 
   @Input() specLookupAttrs: ComponentAttrsDto;
   @Input() docLookupAttrs: ComponentAttrsDto;
   @Input() timeSlotAttrs: ComponentAttrsDto;
+  @Input() checkboxLabel: string;
 
   @Input() isDocLookupShown: boolean;
   @Input() isMapShown: boolean;
