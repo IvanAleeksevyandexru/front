@@ -5,6 +5,7 @@ import {
   ActionType,
   ComponentActionDto,
   DTOActionAction,
+  EaisdoResponse,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import {
@@ -188,6 +189,10 @@ export class ActionToolsService {
     this.copyAndNotify(value);
   }
 
+  public downloadSpAdapterPdf(action): void {
+    this.sendAction<EaisdoResponse>(action);
+  }
+
   private copyAndNotify(value: string): void {
     this.clipboard.copy(value);
     this.notifierService.success({ message: `Скопировано: ${value}` });
@@ -270,11 +275,11 @@ export class ActionToolsService {
 
   private sendAction<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
     const data = this.getActionDTO(action);
-    const preparedData = JSON.parse(JSON.stringify(data));
-    preparedData.scenarioDto.display = this.htmlRemoverService.delete(
-      preparedData.scenarioDto.display,
-    );
-    return this.formPlayerApiService.sendAction<T>(action.action, preparedData);
+    const queryParams = action.value;
+    const path = `${action.action}${queryParams ? '?' + queryParams : ''}`;
+    const payload = JSON.parse(JSON.stringify(data));
+    payload.scenarioDto.display = this.htmlRemoverService.delete(payload.scenarioDto.display);
+    return this.formPlayerApiService.sendAction<T>(path, payload);
   }
 
   private isTimerComponent(componentId: string): boolean {
