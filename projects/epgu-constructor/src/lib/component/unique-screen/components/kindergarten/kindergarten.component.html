@@ -3,7 +3,7 @@
     [hidden]="!(state === states.map)"
   ></epgu-constructor-select-map-object>
   <lib-button
-    *ngIf="state === states.map"
+    *ngIf="state === states.map && kindergartenSearchPanel.deptsChoosen$ | async"
     (click)="kindergartenService.setState(states.priority)"
     class="submit-button next-step-button"
     width="wide"

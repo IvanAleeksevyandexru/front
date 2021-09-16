@@ -18,8 +18,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { CurrentAnswersService } from 'projects/epgu-constructor/src/lib/screen/current-answers.service';
-import { ScreenService } from 'projects/epgu-constructor/src/lib/screen/screen.service';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
 import {
   EquipmentChoiceRequestResult,
   EquipmentChoiceFormValue,

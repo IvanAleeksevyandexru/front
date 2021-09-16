@@ -16,6 +16,7 @@ import {
   DatesToolsService,
   DATE_STRING_DOT_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
+import { BrokenDateFixStrategy } from '@epgu/epgu-lib';
 
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -56,6 +57,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   form: FormGroup;
   isRequired: boolean;
+  strategy = BrokenDateFixStrategy;
   readonly suggestSeporator = SUGGEST_SEPARATOR_DEFAULT;
 
   constructor(

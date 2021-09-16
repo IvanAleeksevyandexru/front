@@ -3,15 +3,11 @@ import { NgModule } from '@angular/core';
 import { EquipmentChoiceContainerComponent } from './container/equipment-choice-container.component';
 import { EquipmentChoiceComponent } from './components/equipment-choice/equipment-choice.component';
 import { EquipmentCategoryComponent } from './components/equipment-category/equipment-category.component';
-import { BaseModule } from 'projects/epgu-constructor/src/lib/shared/base.module';
+import { BaseModule } from '../../../../shared/base.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ScreenContainerModule, ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
-import { MultipleChoiceDictionaryModule }
-  from 'projects/epgu-constructor/src/lib/shared/components/multiple-choice-dictionary/multiple-choice-dictionary.module';
-import { ConstructorPlainInputModule }
-  from 'projects/epgu-constructor/src/lib/shared/components/constructor-plain-input/constructor-plain-input.module';
-
-
+import { MultipleChoiceDictionaryModule } from '../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.module';
+import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +23,6 @@ import { ConstructorPlainInputModule }
     MultipleChoiceDictionaryModule,
     ConstructorPlainInputModule,
   ],
-  entryComponents: [EquipmentChoiceContainerComponent]
+  entryComponents: [EquipmentChoiceContainerComponent],
 })
-export class EquipmentChoiceModule { }
+export class EquipmentChoiceModule {}

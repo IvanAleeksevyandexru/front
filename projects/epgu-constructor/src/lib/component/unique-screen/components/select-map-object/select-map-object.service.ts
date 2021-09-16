@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { YaMapService } from '@epgu/epgu-lib';
 import {
   ConfigService,
@@ -8,6 +8,7 @@ import {
   IFeatureCollection,
   IGeoCoords,
   IGeoCoordsResponse,
+  KINDERGARTEN_SEARCH_RADIUS_IN_METERS,
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -24,6 +25,9 @@ import {
 } from '@epgu/epgu-constructor-types';
 // eslint-disable-next-line max-len
 import { IuikFullDataResponse } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
+import {
+  KindergartenSearchPanelService
+} from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
@@ -54,6 +58,7 @@ export class SelectMapObjectService implements OnDestroy {
   public mapEvents; // events от карт, устанавливаются при создание балуна
   public mapOpenedBalloonId: number;
   public mapType = MapTypes.commonMap;
+  public isMapLoaded = new BehaviorSubject<boolean>(false);
 
   private objectManager;
   private __mapStateCenter: number[];
@@ -64,6 +69,7 @@ export class SelectMapObjectService implements OnDestroy {
     private yaMapService: YaMapService,
     private icons: Icons,
     private yandexMapService: YandexMapService,
+    private kindergartenSearchPanel: KindergartenSearchPanelService
   ) {
     this.selectedValue.pipe(filter((value) => !value)).subscribe(() => {
       this.mapOpenedBalloonId = null;
@@ -243,6 +249,90 @@ export class SelectMapObjectService implements OnDestroy {
       '&electionLevel=' +
       electionLevel;
     return this.http.get<IuikFullDataResponse>(path, { ...options, withCredentials: true }) as unknown as Observable<IuikFullDataResponse>;
+  }
+
+  public handleMultiSelectCentering(): void {
+    let bounds: number[][];
+    const { filteredDictionaryItems } = this;
+    const selectedMapObjects = filteredDictionaryItems.filter((item) => item.isSelected);
+    const { childHomeCoords } = this.kindergartenSearchPanel;
+    if (selectedMapObjects.length) {
+      const farthestKindergarten = this.findFarthestObject(childHomeCoords, selectedMapObjects);
+      const reflectionPoint = this.getReflectionPoint(farthestKindergarten.center, childHomeCoords);
+      bounds = this.yandexMapService.getBoundsByCoords([
+        reflectionPoint,
+        farthestKindergarten.center,
+      ]);
+    } else {
+      const hasKindergartenNear = filteredDictionaryItems.some(
+        (item) =>
+          this.yandexMapService.getDistance(childHomeCoords, item.center) <
+          KINDERGARTEN_SEARCH_RADIUS_IN_METERS,
+      );
+      if (hasKindergartenNear) {
+        bounds = this.yandexMapService.getBoundsByCoords(this.getRadiusPoints(childHomeCoords));
+      } else {
+        const nearestKindergarten = this.findNearestObject(
+          childHomeCoords,
+          filteredDictionaryItems,
+        );
+        const reflectionPoint = this.getReflectionPoint(nearestKindergarten.center, childHomeCoords);
+        bounds = this.yandexMapService.getBoundsByCoords([
+          nearestKindergarten.center,
+          reflectionPoint,
+        ]);
+      }
+    }
+    this.yandexMapService.setBounds(bounds);
+}
+
+  public findNearestObject(startPoint: number[], points: DictionaryYMapItem[]): DictionaryYMapItem {
+    const distances = points.map((item) =>
+      this.yandexMapService.getDistance(startPoint, item.center),
+    );
+    const minDistance = Math.min(...distances);
+    const minDistanceIdx = distances.indexOf(minDistance);
+    return points[minDistanceIdx];
+  }
+
+  private findFarthestObject(
+    startPoint: number[],
+    points: DictionaryYMapItem[],
+  ): DictionaryYMapItem {
+    const distances = points.map((item) =>
+      this.yandexMapService.getDistance(startPoint, item.center),
+    );
+    const minDistance = Math.max(...distances);
+    const minDistanceIdx = distances.indexOf(minDistance);
+    return points[minDistanceIdx];
+  }
+
+  /**
+   * Возвращает точку, симметричную параметру point, относительно параметра center
+   * @param point точка
+   * @param center центр симметрии
+   */
+  private getReflectionPoint(point: number[], center: number[]): number[] {
+    const longitudeDifference = point[0] - center[0];
+    const reflectionLongitude = center[0] - longitudeDifference;
+    const latitudeDifference = point[1] - center[1];
+    const reflectionLatitude = center[1] - latitudeDifference;
+    return [reflectionLongitude, reflectionLatitude];
+  }
+
+  private getRadiusPoints(
+    centerPoint: number[],
+    distance = KINDERGARTEN_SEARCH_RADIUS_IN_METERS,
+  ): number[][] {
+    const azimuth45deg = Math.PI / 4;
+    const rightTopDirection = [Math.sin(azimuth45deg), Math.cos(azimuth45deg)];
+    const { endPoint: rightTopPoint } = this.yandexMapService.solveDirectProblem(
+      centerPoint,
+      rightTopDirection,
+      distance,
+    );
+    const leftBottomPoint = this.getReflectionPoint(rightTopPoint, centerPoint);
+    return [rightTopPoint, leftBottomPoint];
   }
 
   /**

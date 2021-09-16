@@ -11,6 +11,19 @@ export class KindergartenSearchPanelService implements OnDestroy {
   public topLabel$ = new BehaviorSubject('');
   public bottomLabel$ = new BehaviorSubject('');
   public deptsLeftToChoose$ = new BehaviorSubject(0);
+  private _deptsChoosen$ = new BehaviorSubject<number>(0);
+  private _childHomeCoords: number[];
+
+  get childHomeCoords(): number[] {
+    if (!this._childHomeCoords) {
+      this._childHomeCoords = this.getChildHomeCoordinates();
+    }
+    return this._childHomeCoords;
+  }
+
+  get deptsChoosen$(): Observable<number> {
+    return this._deptsChoosen$.asObservable();
+  }
 
   constructor(
     private screenService: ScreenService,
@@ -18,7 +31,9 @@ export class KindergartenSearchPanelService implements OnDestroy {
   ) {
     this.getEDUORGMAX();
     this.deptsLeftToChoose$.subscribe((value) => {
-      this.bottomLabel$.next(`Выбрано ${this.EDUORGMAX - value} из ${this.EDUORGMAX}. Посмотреть`);
+      const choosenCount = this.EDUORGMAX - value;
+      this.bottomLabel$.next(`Выбрано ${choosenCount} из ${this.EDUORGMAX}. Посмотреть`);
+      this._deptsChoosen$.next(choosenCount);
     });
   }
 
@@ -44,5 +59,12 @@ export class KindergartenSearchPanelService implements OnDestroy {
     };
 
     return this.dictionaryApiService.getDictionary('KINDERGARTEN_EDUORGMAX', requestBody);
+  }
+
+  private getChildHomeCoordinates(): number[] {
+    const { childsHome: childsHomeString } = this.screenService.getStore().display.components[0].arguments;
+    const childsHomeValue = JSON.parse(childsHomeString as string || '{}');
+    const { geoLon, geoLat } = childsHomeValue;
+    return [Number(geoLon), Number(geoLat)];
   }
 }

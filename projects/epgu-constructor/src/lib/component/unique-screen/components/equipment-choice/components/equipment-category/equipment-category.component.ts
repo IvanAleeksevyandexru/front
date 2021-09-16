@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ListElement, PluralizePipe, ValidationShowOn } from '@epgu/epgu-lib';
-import { MultipleSelectedItems } from 'projects/epgu-constructor/src/lib/shared/components/multiple-choice-dictionary/multiple-choice-dictionary.models';
+import { MultipleSelectedItems } from '../../../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.models';
 import { EquipmentChoiceCategory, EquipmentChoiceItem } from '../../equipment-choice.types';
 
 @Component({

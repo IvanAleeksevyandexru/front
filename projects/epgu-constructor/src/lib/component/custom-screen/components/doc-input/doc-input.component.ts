@@ -211,6 +211,14 @@ export class DocInputComponent extends AbstractComponentListItemComponent
       [this.docInputFieldsTypes.seriesNumDate]: this.fb.group(seriesNumDate),
       ...emitter,
     });
+    const emitterControl = this.form.controls.emitter;
+
+    if (emitterControl.value) {
+      emitterControl.markAllAsTouched();
+      emitterControl.markAsDirty();
+      emitterControl.updateValueAndValidity();
+      emitterControl.setErrors(null);
+    }
 
     if (this.hasExpirationDate) {
       const expirationDate = componentValues[this.docInputFieldsTypes.expirationDate]

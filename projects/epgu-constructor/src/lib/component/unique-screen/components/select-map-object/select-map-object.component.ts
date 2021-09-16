@@ -88,7 +88,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public mapControls = [];
   public selectedValue;
   public showMap = false;
-  public mapIsLoaded = false;
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
   public isSearchTitleVisible = true;
@@ -207,7 +206,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.mapType =
       (this.data.attrs.mapType as MapTypes) || MapTypes.commonMap;
     this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
-    this.isMultiSelect = this.data.attrs.isMultiSelect || true;
+    this.isMultiSelect = this.data.attrs.isMultiSelect;
     this.valueFromCache = this.screenService.getCompValueFromCachedAnswers();
     this.searchPanelType = PanelTypes[this.selectMapObjectService.mapType];
     this.balloonContentType = ContentTypes[this.selectMapObjectService.mapType];
@@ -219,7 +218,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private initSelectedValue(): void {
-    if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
+    if (this.isMultiSelect) {
+      this.selectMapObjectService.handleMultiSelectCentering();
+    } else if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
       const mapObject = this.jsonHelperService.tryToParse(this.data?.value) as YMapItem<
         DictionaryItem
       >;
@@ -289,7 +290,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private initMap(): void {
     if (this.data.attrs.LOMurlTemplate) {
       this.yandexMapService.placeObjectsOnMap(null, null, this.getUrlTemplate());
-      this.mapIsLoaded = true;
+      this.selectMapObjectService.isMapLoaded.next(true);
       this.screenService.isLoaderVisible.next(false);
     } else {
       if (this.isOnlySecondaryFilterRequestNeeded()) {
@@ -355,7 +356,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private handleGettingCoordinatesResponse(coords: IGeoCoordsResponse): void {
     this.handleFilledCoordinate(coords);
-    this.mapIsLoaded = true;
+    this.selectMapObjectService.isMapLoaded.next(true);
     this.initSelectedValue();
     this.cdr.detectChanges();
   }
@@ -566,24 +567,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       );
   }
 
-  /**
-   * Метод ищет и выбирает среди всех объектов ближайший к this.mapCenter
-   */
   private selectClosestMapObject(): void {
-    let minDistance = 9999999;
-    let chosenMapObject;
-    this.selectMapObjectService.filteredDictionaryItems.forEach((mapObj) => {
-      // Находим катеты вычитая координаты X и Y центра карты из координат объектов на карте
-      const cathetusX = this.mapCenter[0] - mapObj.center[0];
-      const cathetusY = this.mapCenter[1] - mapObj.center[1];
-      const distance = Math.sqrt(cathetusX * cathetusX + cathetusY * cathetusY);
-      if (distance < minDistance) {
-        minDistance = distance;
-        chosenMapObject = mapObj;
-      }
-    });
-    chosenMapObject = this.yandexMapService.getObjectById(chosenMapObject.objectId);
-    this.yandexMapService.centeredPlaceMark(chosenMapObject);
+    const chosenMapObject = this.selectMapObjectService.findNearestObject(
+      this.mapCenter,
+      this.selectMapObjectService.filteredDictionaryItems,
+    );
+    this.yandexMapService.centeredPlaceMark(
+      this.yandexMapService.getObjectById(chosenMapObject.objectId),
+    );
   }
 
   private centerAllPoints(): void {

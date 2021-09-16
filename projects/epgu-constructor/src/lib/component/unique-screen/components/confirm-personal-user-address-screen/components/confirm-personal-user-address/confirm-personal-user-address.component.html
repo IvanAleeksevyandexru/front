@@ -13,9 +13,9 @@
       <small>{{ error }}</small>
     </div>
   </epgu-cf-ui-constructor-screen-pad>
-  <div 
-    *ngIf="!(currentAnswersService.isValid$ | async) && 
-      (screenService.buttons$ | async) && 
+  <div
+    *ngIf="!(currentAnswersService.isValid$ | async) &&
+      (screenService.buttons$ | async) &&
       (data$ | async)?.attrs?.emptyFieldsErrorMsg"
     class="empty-fields"
     >
@@ -60,6 +60,7 @@
           [maxDate]="data.attrs?.maxDate || 'today'"
           [control]="form.get(field.fieldName)"
           [clearable]="true"
+          [brokenDateFixStrategy]="data?.attrs?.brokenDateFixStrategy || strategy"
           align="left"
         ></epgu-constructor-constructor-date-picker>
       </epgu-constructor-address-item>

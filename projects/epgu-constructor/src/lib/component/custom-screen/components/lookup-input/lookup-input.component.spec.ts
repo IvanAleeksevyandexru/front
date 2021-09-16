@@ -1,6 +1,7 @@
 import { DictionaryComponent } from '../dictionary/dictionary.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
@@ -14,9 +15,7 @@ import {
   ConfigServiceStub,
   DatesToolsService,
   EventBusService,
-  LoggerService,
-  UnsubscribeService,
-  ActivatedRouteStub,
+  ActivatedRouteStub, DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
@@ -24,9 +23,8 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { LookupInputComponent } from './lookup-input.component';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { ScreenService } from 'projects/epgu-constructor/src/lib/screen/screen.service';
-import { CurrentAnswersService } from 'projects/epgu-constructor/src/lib/screen/current-answers.service';
-import { ScreenServiceStub } from 'projects/epgu-constructor/src/lib/screen/screen.service.stub';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
@@ -64,21 +62,18 @@ describe('LookupInputComponent', () => {
       declarations: [LookupInputComponent, MockComponent(ComponentItemComponent)],
       imports: [MockModule(EpguLibModule), MockModule(ValidationTypeModule)],
       providers: [
-        DictionaryToolsService,
-        JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        DatesToolsService,
-        MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-        UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        SuggestHandlerService,
-        EventBusService,
-        CurrentAnswersService,
-        LoggerService,
-        SuggestMonitorService,
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
+        MockProvider(JsonHelperService),
+        MockProvider(ComponentsListRelationsService),
+        MockProvider(SuggestHandlerService),
+        MockProvider(EventBusService),
+        MockProvider(SuggestMonitorService),
       ],
     })
       .overrideComponent(DictionaryComponent, {

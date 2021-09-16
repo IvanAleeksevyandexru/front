@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { map, takeUntil } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
 
-import { CurrentAnswersService } from 'projects/epgu-constructor/src/lib/screen/current-answers.service';
-import { ScreenService } from 'projects/epgu-constructor/src/lib/screen/screen.service';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
-import { CachedAnswersService } from 'projects/epgu-constructor/src/lib/shared/services/cached-answers/cached-answers.service';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { EquipmentChoiceUpdateEvent, EquipmentChoiceSaveValue } from '../equipment-choice.types';
 
 @Component({

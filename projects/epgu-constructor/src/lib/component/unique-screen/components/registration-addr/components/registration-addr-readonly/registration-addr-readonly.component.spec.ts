@@ -17,7 +17,7 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { RegistrationAddrReadonlyComponent } from './registration-addr-readonly.component';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { IRegistrationAddrReadonlyComponent } from '../../registration-addr-screen.types';
-import { ClickableLabelDirective } from 'projects/epgu-constructor/src/lib/shared/directives/clickable-label/clickable-label.directive';
+import { ClickableLabelDirective } from '../../../../../../shared/directives/clickable-label/clickable-label.directive';
 import { DisclaimerModule } from '../../../../../../shared/components/disclaimer/disclaimer.module';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
 import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
@@ -29,17 +29,16 @@ describe('RegistrationAddrReadonlyComponent', () => {
   let fixture: ComponentFixture<RegistrationAddrReadonlyComponent>;
   let screenService: ScreenService;
   let answersService: CurrentAnswersService;
-  const mockData = {
+  const mockData = ({
     id: 'pd5',
     type: 'RegistrationAddrReadonly',
     label: '',
-    attrs: {
-    },
+    attrs: {},
     linkedValues: [],
     arguments: {},
     value: '{"regAddr" : {"fullAddress": "7777"}}',
     required: true,
-  } as unknown as IRegistrationAddrReadonlyComponent;
+  } as unknown) as IRegistrationAddrReadonlyComponent;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -47,7 +46,8 @@ describe('RegistrationAddrReadonlyComponent', () => {
         RegistrationAddrReadonlyComponent,
         ClickableLabelDirective,
         SafePipe,
-        ImgPrefixerPipe],
+        ImgPrefixerPipe,
+      ],
       imports: [
         MockModule(DefaultUniqueScreenWrapperModule),
         MockModule(ScreenPadModule),
@@ -57,7 +57,13 @@ describe('RegistrationAddrReadonlyComponent', () => {
         UnsubscribeService,
         CurrentAnswersService,
         ValidationService,
-        MockProviders(DateRangeService, DateRestrictionsService, DatesToolsService, HealthService, CookieService),
+        MockProviders(
+          DateRangeService,
+          DateRestrictionsService,
+          DatesToolsService,
+          HealthService,
+          CookieService,
+        ),
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
@@ -89,7 +95,9 @@ describe('RegistrationAddrReadonlyComponent', () => {
     });
 
     it('should be invalid screen if full address is present', () => {
-      const invalidMock = JSON.parse(JSON.stringify(mockData)) as IRegistrationAddrReadonlyComponent;
+      const invalidMock = JSON.parse(
+        JSON.stringify(mockData),
+      ) as IRegistrationAddrReadonlyComponent;
       invalidMock.value = '{"regAddr" : {"fullAddress": ""}}';
       screenService.component = invalidMock;
 
@@ -109,22 +117,24 @@ describe('RegistrationAddrReadonlyComponent', () => {
     });
 
     it('should validate using custom rules', () => {
-      const validationMock = JSON.parse(JSON.stringify(mockData)) as IRegistrationAddrReadonlyComponent;
-      validationMock.attrs.validation = [{
-        type: 'RegExp',
-        value: 'testValue',
-        ref: '',
-        dataType: '',
-        condition: '',
-        errorMsg: 'testError2'
-      }];
+      const validationMock = JSON.parse(
+        JSON.stringify(mockData),
+      ) as IRegistrationAddrReadonlyComponent;
+      validationMock.attrs.validation = [
+        {
+          type: 'RegExp',
+          value: 'testValue',
+          ref: '',
+          dataType: '',
+          condition: '',
+          errorMsg: 'testError2',
+        },
+      ];
       screenService.component = validationMock;
 
       component.ngOnInit();
 
       expect(component.error).toEqual('testError2');
     });
-
   });
-
 });

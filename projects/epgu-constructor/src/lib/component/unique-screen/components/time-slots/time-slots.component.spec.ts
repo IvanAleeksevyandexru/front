@@ -24,7 +24,7 @@ import { TimeSlotsConstants } from './time-slots.constants';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { mockScreenDivorceStore } from './mocks/mock-screen-divorce-store';
-import { ScreenStore } from 'projects/epgu-constructor/src/lib/screen/screen.types';
+import { ScreenStore } from '../../../../screen/screen.types';
 import { cloneDeep } from 'lodash';
 import { Smev3TimeSlotsRestServiceStub } from './stubs/smev3-time-slots-rest.service.stub';
 import { of } from 'rxjs';

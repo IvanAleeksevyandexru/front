@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { EpguLibModule, SmuEventsService } from '@epgu/epgu-lib';
-import { MockComponents, MockDirective, MockModule, MockPipe } from 'ng-mocks';
+import { MockComponents, MockDirective, MockModule, MockPipe, MockProvider } from 'ng-mocks';
 import {
   ConfigService,
   DeviceDetectorService,
@@ -98,7 +98,6 @@ describe('QuestionsScreenComponent', () => {
         MockPipe(ImgPrefixerPipe, (value) => `ImgPrefixerFakePipe:${value}`),
       ],
       providers: [
-        LocationService,
         WINDOW_PROVIDERS,
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -107,11 +106,11 @@ describe('QuestionsScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
-        EventBusService,
-        CurrentAnswersService,
-        SmuEventsService,
-        HtmlSelectService,
-        SessionService,
+        MockProvider(LocationService),
+        MockProvider(EventBusService),
+        MockProvider(CurrentAnswersService),
+        MockProvider(HtmlSelectService),
+        MockProvider(SessionService),
       ],
     })
       .overrideComponent(QuestionsScreenComponent, {
