@@ -3,8 +3,6 @@ import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { EmployeeHistoryDescriptionComponent } from './employee-history-description.component';
 import { configureTestSuite } from 'ng-bullet';
-import { AutocompletePrepareService } from '../../../../../../core/services/autocomplete/autocomplete-prepare.service';
-import { AutocompleteAutofillService } from '../../../../../../core/services/autocomplete/autocomplete-autofill.service';
 
 describe('EmployeeHistoryDescriptionComponent', () => {
   let component: EmployeeHistoryDescriptionComponent;
@@ -13,7 +11,7 @@ describe('EmployeeHistoryDescriptionComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [EmployeeHistoryDescriptionComponent],
-      providers: [AutocompletePrepareService, AutocompleteAutofillService],
+      providers: [],
     })
       .overrideComponent(EmployeeHistoryDescriptionComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
