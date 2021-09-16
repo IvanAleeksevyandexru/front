@@ -6,6 +6,7 @@ import { Gender } from './gender';
 import { LogicComponents } from './logic-component';
 import { AdditionalParameters } from './additional-parameters';
 import { DisclaimerDto } from './component-attrs';
+import { CycledApplicantAnswerContextDto } from './cycled-applicant-answer-context';
 
 /**
  * @property {Object}additionalParameters - дополнительные параметры;
@@ -24,6 +25,7 @@ import { DisclaimerDto } from './component-attrs';
  * @property {boolean}[isInternalScenarioFinish] - появляется при internal сценарии;
  * @property {string}[serviceId] - добавляется при internal сценариев(подсценариев);
  * @property {string}[currentUrl] - текущий url, нужен бэкенду для возврата на страницу, если был переход на стороннюю страницу ;
+ * @property {Object}[cycledApplicantAnswerContext] - контекст циклических данных ;
  */
 export interface ScenarioDto {
   additionalParameters: AdditionalParameters;
@@ -46,6 +48,7 @@ export interface ScenarioDto {
   logicComponents?: LogicComponents[];
   currentLogicValue: CurrentValueDto;
   isPrevStepCase?: boolean;
+  cycledApplicantAnswerContext: CycledApplicantAnswerContextDto;
 }
 
 export interface ScenarioErrorsDto {
