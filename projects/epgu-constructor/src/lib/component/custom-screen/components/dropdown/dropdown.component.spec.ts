@@ -7,7 +7,7 @@ import { DictionaryToolsService } from '../../../../shared/services/dictionary/d
 import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { DatesToolsService, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, EventBusService, UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { EpguLibModule } from '@epgu/epgu-lib';
@@ -111,11 +111,15 @@ describe('DropdownComponent', () => {
       providers: [
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        MockProviders(ComponentsListRelationsService, DatesToolsService, SuggestHandlerService, ValidationService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        UnsubscribeService,
-        EventBusService
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
+        MockProviders(
+          ComponentsListRelationsService,
+          DatesToolsService,
+          SuggestHandlerService,
+          ValidationService,
+          EventBusService),
       ]
     })
       .overrideComponent(DropdownComponent, {
