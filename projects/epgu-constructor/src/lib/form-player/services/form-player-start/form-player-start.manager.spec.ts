@@ -441,8 +441,8 @@ describe('FormPlayerStartManager', () => {
   describe('startFromQueryParamsCase()', () => {
     const rawState = JSON.stringify(responseDto);
 
-    it('should call formPlayerApiService.get()', () => {
-      const spy = jest.spyOn(formPlayerApiService, 'get');
+    it('should call formPlayerApiService.post()', () => {
+      const spy = jest.spyOn(formPlayerApiService, 'post');
       service['startFromQueryParamsCase']();
       expect(spy).toBeCalled();
     });
@@ -453,24 +453,34 @@ describe('FormPlayerStartManager', () => {
       expect(spy).toBeCalled();
     });
 
-    it('should prepare valid path for GET request', () => {
-      const path = '/api/service/10000100/scenario/-10000100/external/s1?q1=value';
-      const spy = jest.spyOn(formPlayerApiService, 'get');
+    it('should prepare valid path and payload for POST request', () => {
+      const path = '/api/service/10000100/scenario/external';
+      const payload = {
+        answers: [['q1', 'value']],
+        screenId: 's1',
+        serviceId: '10000100',
+        targetId: '-10000100',
+      };
+      const spy = jest.spyOn(formPlayerApiService, 'post');
       const newServiceDataMock = cloneDeep(serviceDataMock);
       // @ts-ignore
-      newServiceDataMock.serviceInfo = { queryParams: { screenId: 's1', q1: 'value' }};
+      newServiceDataMock.serviceInfo = {
+        queryParams: { external: '', screenId: 's1', q1: 'value' },
+      };
       initDataService.init({ ...newServiceDataMock }, { initState: rawState });
       service['startFromQueryParamsCase']();
-      expect(spy).toHaveBeenCalledWith(path);
+      expect(spy).toHaveBeenCalledWith(path, payload);
     });
   });
 
   describe('hasSpecificQueryParams()', () => {
     const rawSate = JSON.stringify(responseDto);
-    it('should return true, if initDataService contain serviceId, targetId, screenId in queryParams', () => {
+    it('should return true, if initDataService contain external, serviceId, targetId, screenId in queryParams', () => {
       const newServiceDataMock = cloneDeep(serviceDataMock);
       // @ts-ignore
-      newServiceDataMock.serviceInfo = { queryParams: { screenId: 's1', q1: 'value' }};
+      newServiceDataMock.serviceInfo = {
+        queryParams: { external: '', screenId: 's1', q1: 'value' },
+      };
       initDataService.init({ ...newServiceDataMock }, { initState: rawSate });
       const result = service['hasSpecificQueryParams']();
       expect(result).toBeTruthy();
