@@ -1,3 +1,5 @@
 import { ComponentActionDto } from './component-action-dto';
 
-export interface ScreenButton extends ComponentActionDto {}
+export interface ScreenButton extends ComponentActionDto {
+  componentId?: string;
+}
