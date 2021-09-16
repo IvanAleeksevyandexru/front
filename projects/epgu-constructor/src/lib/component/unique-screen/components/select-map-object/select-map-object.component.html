@@ -13,7 +13,7 @@
     [enterpriseYandexMapsEnabled]="true"
     [yandexMapsApiKey]="config.yandexMapsApiKey"
     [center]="mapCenter"
-    [redraw]="mapIsLoaded"
+    [redraw]="selectMapObjectService.isMapLoaded.getValue()"
     [controls]="mapControls"
     [zoom]="data.attrs.mapOptions?.initZoom"
   >

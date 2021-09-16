@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilderStub } from './FormBuilder.stub';
 import { EpguLibModule } from '@epgu/epgu-lib';
 import { ActivatedRoute } from '@angular/router';
 import { DocInputComponent } from './doc-input.component';
@@ -20,11 +21,10 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
+import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { DurationService } from '../../../unique-screen/components/mat-period/service/duration.service';
 import { DateRangeService } from 'projects/epgu-constructor/src/lib/shared/services/date-range/date-range.service';
 import { DateRestrictionsService } from 'projects/epgu-constructor/src/lib/shared/services/date-restrictions/date-restrictions.service';
 import { ConstructorDatePickerModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-date-picker/constructor-date-picker.module';
@@ -51,7 +51,7 @@ const mockComponent = {
     emitter: null,
   },
   visited: false,
-  required: false
+  required: false,
 };
 
 describe('DocInputComponent', () => {
@@ -69,19 +69,17 @@ describe('DocInputComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        SuggestHandlerService,
-        CurrentAnswersService,
-        RefRelationService,
-        FormBuilder,
-        DurationService,
-        DatesToolsService,
-        ValidationService,
-        DateRangeService,
+        { provide: ValidationService, useClass: ValidationServiceStub },
+        MockProvider(SuggestHandlerService),
+        MockProvider(CurrentAnswersService),
+        MockProvider(DatesToolsService),
+        MockProvider(DateRangeService),
         MockProvider(DateRestrictionsService),
-        ConfigService,
-        LoggerService,
-        EventBusService,
-        SuggestMonitorService
+        MockProvider(ConfigService),
+        MockProvider(LoggerService),
+        MockProvider(EventBusService),
+        MockProvider(SuggestMonitorService),
+        FormBuilder,
       ],
       imports: [
         MockModule(EpguLibModule),
@@ -122,8 +120,8 @@ describe('DocInputComponent', () => {
               errorMsg: 'Поле должно содержать 4 символа',
               updateOn: 'blur',
             },
-          ]
-        }
+          ],
+        },
       },
       number: { attrs: { validation: [] }},
       emitter: { attrs: { validation: [] }},

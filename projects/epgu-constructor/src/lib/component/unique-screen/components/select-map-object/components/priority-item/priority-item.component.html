@@ -4,14 +4,14 @@
     <div class="priority-header__actions">
       <button
         (click)="downAction()"
-        [ngClass]="{ disabled: !isDown }"
+        [ngClass]="{ disabled: !isDown || disabled }"
         class="priority-header__action down"
       >
         <img [src]="arrowPath" alt="Опустить" />
       </button>
       <button
         (click)="upAction()"
-        [ngClass]="{ disabled: !isUp }"
+        [ngClass]="{ disabled: !isUp || disabled }"
         class="priority-header__action up"
       >
         <img [src]="arrowPath" alt="Поднять" />
@@ -24,11 +24,12 @@
       Оставьте в списке садов не более {{ itemsService.maxKindergarten }}
     </div>
   </div>
+  <div *ngIf="disabled" class="priority-info__title mb-4">Сад больше не доступен</div>
   <div class="priority-content mb-8">
     <div
       class="priority-description"
       *ngIf="data.attributeValues?.TITLE"
-      [ngClass]="{ active: isShowDetails }"
+      [ngClass]="{ active: isShowDetails, disabled: disabled }"
     >
       {{ data.attributeValues?.TITLE }}
     </div>
@@ -67,7 +68,7 @@
     </button>
     <button
       (click)="toggleShowDetails()"
-      *ngIf="!isShowDetails"
+      *ngIf="!isShowDetails && !disabled"
       class="priority-action more-details link-btn"
     >
       Подробнее

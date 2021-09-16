@@ -3,18 +3,31 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateTimePeriodComponent } from './date-time-period.component';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
-import { MockComponents } from 'ng-mocks';
+import { MockComponents, MockProvider } from 'ng-mocks';
 import { DatesToolsServiceStub } from 'projects/epgu-constructor-ui-kit/src/lib/core/services/dates-tools/dates-tools.service.stub';
-import { AbstractControl, FormControl, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { ConstructorDropdownComponent, DatesToolsService, InputErrorComponent, ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService, ConfigServiceStub,
+  ConstructorDropdownComponent,
+  DatesToolsService,
+  InputErrorComponent,
+  ScreenPadComponent
+} from '@epgu/epgu-constructor-ui-kit';
 import { LabelComponent } from 'projects/epgu-constructor/src/lib/shared/components/base-components/label/label.component';
 import { CurrentAnswersService } from 'projects/epgu-constructor/src/lib/screen/current-answers.service';
 import { ConstructorDatePickerComponent } from 'projects/epgu-constructor/src/lib/shared/components/constructor-date-picker/constructor-date-picker.component';
-import { ComponentDateTimeDto } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto, ComponentDateTimeDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { ListElement } from '@epgu/epgu-lib';
 import { addDays, addYears } from 'date-fns';
 import { getDateTimeObject } from '../../utils/date-time-period.utils';
+import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
+import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
+import { DateRefService } from '../../../../../../core/services/date-ref/date-ref.service';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 const timeDropdownItems: ListElement[] = [];
 for (var i = 0; i < 24; i++) {
@@ -38,15 +51,25 @@ describe('DateTimePeriodComponent', () => {
   const initComponent = () => {
     fixture = TestBed.createComponent(DateTimePeriodComponent);
     component = fixture.componentInstance;
+    component.component = { attrs: {}} as unknown as ComponentDto;
+    component.attrs ={  beginDate: {}, endDate: {}}  as unknown as ComponentAttrsDto;
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [ DateTimePeriodComponent,
-        MockComponents(ScreenPadComponent, InputErrorComponent, LabelComponent, ConstructorDatePickerComponent, ConstructorDropdownComponent) ],
-      providers: [ { provide: DatesToolsService, useClass: DatesToolsServiceStub },
-        CurrentAnswersService ],
-      imports: [ FormsModule, ReactiveFormsModule ],
+      declarations: [DateTimePeriodComponent,
+        MockComponents(ScreenPadComponent, InputErrorComponent, LabelComponent, ConstructorDatePickerComponent, ConstructorDropdownComponent)],
+      providers: [
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        CurrentAnswersService, ValidationService,
+        ScreenService,
+        DateRangeService,
+        DatesToolsService,
+        MockProvider(HttpClient),
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        MockProvider(ActivatedRoute),
+        DateRefService, MockProvider(DateRestrictionsService)],
+      imports: [FormsModule, ReactiveFormsModule],
     }).overrideComponent(DateTimePeriodComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },
     }).compileComponents();
@@ -76,16 +99,16 @@ describe('DateTimePeriodComponent', () => {
       expect(group.get('endDate')).toBeInstanceOf(AbstractControl);
       expect(group.get('endTime')).toBeInstanceOf(AbstractControl);
     });
-    
+
   });
   describe('epgu-cf-ui-constructor-input-error', () => {
     const selector = 'epgu-cf-ui-constructor-input-error';
-    
+
     it('should be rendered if (startDate.invalid && startDate.touched)', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
       //потому что не touched и valid
       expect(debugEl).toBeNull();
-      
+
       component.group.get('startDate').setValue('');
       component.group.get('startDate').markAsTouched();
       fixture.detectChanges();
@@ -97,7 +120,7 @@ describe('DateTimePeriodComponent', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
       //потому что не touched и valid
       expect(debugEl).toBeNull();
-      
+
       component.group.get('startTime').setValue('');
       component.group.get('startTime').markAsTouched();
       fixture.detectChanges();
@@ -133,46 +156,51 @@ describe('DateTimePeriodComponent', () => {
   describe('epgu-constructor-label epgu-constructor-constructor-date-picker', () => {
     const label = 'epgu-constructor-label';
     const date_picker = 'epgu-constructor-constructor-date-picker';
-    
+
     it ('attributes for (label) and id (date-picker) should be equal', () => {
       const debugEl_label = fixture.debugElement.queryAll(By.css(label))[0];
       const debugEl_date_picker = fixture.debugElement.queryAll(By.css(date_picker))[0];
-      expect(debugEl_date_picker.nativeElement.id).toBe(debugEl_label.componentInstance.for);  
+      expect(debugEl_date_picker.nativeElement.id).toBe(debugEl_label.componentInstance.for);
     });
   });
 
   describe('epgu-constructor-constructor-date-picker', () => {
     const selector = 'epgu-constructor-constructor-date-picker';
     it ('minDate should be today', () => {
+      component.attrs = {
+        beginDate: { minDate: 'today' } as ComponentDateTimeDto,
+        endDate: {} as ComponentDateTimeDto,
+      };
+      fixture.detectChanges();
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
-      expect(debugEl.componentInstance.minDate).toBe('today');  
+      expect(debugEl.componentInstance.minDate).toBe('today');
     });
 
     it ('control should be group.controls.startDate', () => {
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
       const group = debugEl.injector.get(FormGroupDirective).form;
-      expect(debugEl.componentInstance.control).toBe(group.controls.startDate);  
+      expect(debugEl.componentInstance.control).toBe(group.controls.startDate);
     });
 
     it ('maxDate should be attrs.beginDate?.maxDate', () => {
-      
+
       component.attrs = {
         beginDate: { maxDate: 'some maxDate' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
-      expect(debugEl.componentInstance.maxDate).toBe('some maxDate');  
+      expect(debugEl.componentInstance.maxDate).toBe('some maxDate');
     });
-    
+
     it ('clearable should be true', () => {
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
-      expect(debugEl.componentInstance.clearable).toBeTruthy();  
+      expect(debugEl.componentInstance.clearable).toBeTruthy();
     });
 
     it('invalid should be true if (startDate.invalid && startDate.touched)', () => {
       let debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
       expect(debugEl.componentInstance.invalid).toBeFalsy();
-      
+
       component.group.get('startDate').setValue('');
       fixture.detectChanges();
       debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
@@ -206,6 +234,8 @@ describe('DateTimePeriodComponent', () => {
 
     it('label should be attrs.beginTime.label', () => {
       component.attrs = {
+        beginDate: {} as ComponentDateTimeDto,
+        endDate: {} as ComponentDateTimeDto,
         beginTime: { label: 'some label text 2' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
@@ -218,17 +248,17 @@ describe('DateTimePeriodComponent', () => {
   describe('epgu-constructor-label2 epgu-cf-ui-constructor-constructor-dropdown', () => {
     const label2 = 'epgu-constructor-label';
     const dropdown = 'epgu-cf-ui-constructor-constructor-dropdown';
-    
+
     it ('attributes for (label2) and id (dropdown) should be equal', () => {
       const debugEl_label = fixture.debugElement.queryAll(By.css(label2))[1];
       const debugEl_dropdown = fixture.debugElement.queryAll(By.css(dropdown))[0];
-      expect(debugEl_dropdown.componentInstance.id).toBe(debugEl_label.componentInstance.for);  
+      expect(debugEl_dropdown.componentInstance.id).toBe(debugEl_label.componentInstance.for);
     });
   });
 
   describe('epgu-cf-ui-constructor-constructor-dropdown', () => {
     const selector = 'epgu-cf-ui-constructor-constructor-dropdown';
-    
+
     it('items should be startTimeDropdownItems', () => {
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
       const startTimeDropdownItems = timeDropdownItems;
@@ -244,7 +274,7 @@ describe('DateTimePeriodComponent', () => {
     it('invalid should be true if (startTime.invalid && startTime.touched)', () => {
       let debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
       expect(debugEl.componentInstance.invalid).toBeFalsy();
-      
+
       component.group.get('startTime').setValue('');
       fixture.detectChanges();
       debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
@@ -265,13 +295,13 @@ describe('DateTimePeriodComponent', () => {
 
   describe('date-time-period-btns__item', () => {
     const selector = '.date-time-period-btns__item';
-    
+
     it('setOneDayPeriod()', () => {
       jest.spyOn(component, 'setOneDayPeriod');
 
       const startTime = { id: '00:00', text: '00:00' };
       const startDate = new Date();
-     
+
       component.group.get('startTime').setValue(startTime);
       component.group.get('startDate').setValue(startDate);
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
@@ -290,14 +320,14 @@ describe('DateTimePeriodComponent', () => {
 
     it('setOneYearPeriod()', () => {
       jest.spyOn(component, 'setOneYearPeriod');
-      
+
       const startTime = { id: '00:00', text: '00:00' };
       const startDate = new Date();
-     
+
       component.group.get('startTime').setValue(startTime);
       component.group.get('startDate').setValue(startDate);
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
-      
+
       debugEl.triggerEventHandler('click', {});
       fixture.detectChanges();
       expect(component.setOneYearPeriod).toHaveBeenCalled();
@@ -309,14 +339,14 @@ describe('DateTimePeriodComponent', () => {
 
     it('setOneHundredYearsPeriod()', () => {
       jest.spyOn(component, 'setOneHundredYearsPeriod');
-      
+
       const startTime = { id: '23:45', text: '23:45' };
       const startDate = new Date();
-     
+
       component.group.get('startTime').setValue(startTime);
       component.group.get('startDate').setValue(startDate);
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[2];
-      
+
       debugEl.triggerEventHandler('click', {});
       fixture.detectChanges();
       expect(component.setOneHundredYearsPeriod).toHaveBeenCalled();
@@ -329,12 +359,12 @@ describe('DateTimePeriodComponent', () => {
 
   describe('epgu-cf-ui-constructor-input-error 2', () => {
     const selector = 'epgu-cf-ui-constructor-input-error';
-    
+
     it('should be rendered if (endDate.invalid && endDate.touched)', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
       //потому что не touched и valid
       expect(debugEl).toBeNull();
-      
+
       component.group.get('endDate').setValue('');
       component.group.get('endDate').markAsTouched();
       fixture.detectChanges();
@@ -346,7 +376,7 @@ describe('DateTimePeriodComponent', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
       //потому что не touched и valid
       expect(debugEl).toBeNull();
-      
+
       component.group.get('endTime').setValue('');
       component.group.get('endTime').markAsTouched();
       fixture.detectChanges();
@@ -370,6 +400,7 @@ describe('DateTimePeriodComponent', () => {
 
     it('label should be attrs.endDate.label', () => {
       component.attrs = {
+        beginDate: {} as ComponentDateTimeDto,
         endDate: { label: 'some label text 3' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
@@ -382,48 +413,49 @@ describe('DateTimePeriodComponent', () => {
   describe('epgu-constructor-label3 epgu-constructor-constructor-date-picker', () => {
     const label3 = 'epgu-constructor-label';
     const date_picker = 'epgu-constructor-constructor-date-picker';
-    
+
     it ('attributes for (label3) and id (date-picker2) should be equal', () => {
       const debugEl_label = fixture.debugElement.queryAll(By.css(label3))[2];
       const debugEl_date_picker = fixture.debugElement.queryAll(By.css(date_picker))[1];
-      expect(debugEl_date_picker.nativeElement.id).toBe(debugEl_label.componentInstance.for);  
+      expect(debugEl_date_picker.nativeElement.id).toBe(debugEl_label.componentInstance.for);
     });
   });
 
   describe('epgu-constructor-constructor-date-picker 2 (endDate)', () => {
     const selector = 'epgu-constructor-constructor-date-picker';
-    
+
     it ('minDate should be group.controls.startDate.value', () => {
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
       const group = debugEl.injector.get(FormGroupDirective).form;
-      expect(debugEl.componentInstance.minDate).toBe(group.controls.startDate.value);  
+      expect(debugEl.componentInstance.minDate).toBe(group.controls.startDate.value);
     });
-    
+
     it ('maxDate should be attrs.endDate?.maxDate', () => {
-      
+
       component.attrs = {
+        beginDate: {} as ComponentDateTimeDto,
         endDate: { maxDate: 'some maxDate 2' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
-      expect(debugEl.componentInstance.maxDate).toBe('some maxDate 2');  
+      expect(debugEl.componentInstance.maxDate).toBe('some maxDate 2');
     });
 
     it ('control should be group.controls.endDate', () => {
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
       const group = debugEl.injector.get(FormGroupDirective).form;
-      expect(debugEl.componentInstance.control).toEqual(group.controls.endDate);  
+      expect(debugEl.componentInstance.control).toEqual(group.controls.endDate);
     });
-    
+
     it ('clearable should be true', () => {
       const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
-      expect(debugEl.componentInstance.clearable).toBeTruthy();  
+      expect(debugEl.componentInstance.clearable).toBeTruthy();
     });
 
     it('invalid should be true if (endDate.invalid && endDate.touched)', () => {
       let debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
       expect(debugEl.componentInstance.invalid).toBeFalsy();
-      
+
       component.group.get('endDate').setValue('');
       fixture.detectChanges();
       debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
@@ -457,6 +489,8 @@ describe('DateTimePeriodComponent', () => {
 
     it('label should be attrs.endTime.label', () => {
       component.attrs = {
+        beginDate: {} as ComponentDateTimeDto,
+        endDate: {} as ComponentDateTimeDto,
         endTime: { label: 'some label text 4' } as ComponentDateTimeDto
       };
       fixture.detectChanges();
@@ -469,11 +503,11 @@ describe('DateTimePeriodComponent', () => {
   describe('epgu-constructor-label4 epgu-cf-ui-constructor-constructor-dropdown 2', () => {
     const label4 = 'epgu-constructor-label';
     const dropdown = 'epgu-cf-ui-constructor-constructor-dropdown';
-    
+
     it ('attributes for (label4) and id (dropdown2) should be equal', () => {
       const debugEl_label = fixture.debugElement.queryAll(By.css(label4))[3];
       const debugEl_dropdown = fixture.debugElement.queryAll(By.css(dropdown))[1];
-      expect(debugEl_dropdown.componentInstance.id).toBe(debugEl_label.componentInstance.for);  
+      expect(debugEl_dropdown.componentInstance.id).toBe(debugEl_label.componentInstance.for);
     });
   });
 
@@ -494,7 +528,7 @@ describe('DateTimePeriodComponent', () => {
     it('invalid should be true if (endTime.invalid && endTime.touched)', () => {
       let debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
       expect(debugEl.componentInstance.invalid).toBeFalsy();
-      
+
       component.group.get('endTime').setValue(new Date());
       fixture.detectChanges();
       debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
@@ -528,6 +562,25 @@ describe('DateTimePeriodComponent', () => {
     };
     fixture.detectChanges();
     expect(component.group.get('startDate').value.toISOString()).toBe('2021-06-21T11:13:36.390Z');
+  });
+
+  describe('getError()', () => {
+    const requiredError = 'Не все поля заполнены';
+
+    it ('should return required error', () => {
+      const res = component.getError({ required: true }, null);
+      expect(res).toBe(requiredError);
+    });
+
+    it ('should return required error', () => {
+      const res = component.getError(null, { required: true },);
+      expect(res).toBe(requiredError);
+    });
+
+    it ('should return msg error', () => {
+      const res = component.getError(null, { msg: 'true' },);
+      expect(res).toBe('true');
+    });
   });
 
 });

@@ -10,7 +10,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { ScreenStore } from 'projects/epgu-constructor/src/lib/screen/screen.types';
+import { ScreenStore } from '../../../../screen/screen.types';
 import { cloneDeep } from 'lodash';
 import { Smev3TimeSlotsRestServiceStub } from './stubs/smev3-time-slots-rest.service.stub';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
@@ -18,13 +18,12 @@ import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
-import * as moment_ from 'moment';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
 import { mockScreenDivorceWithCacheStore } from './mocks/mock-screen-divorce-with-cache-store';
-import { JsonHelperService } from 'projects/epgu-constructor/src/lib/core/services/json-helper/json-helper.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
 

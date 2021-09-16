@@ -10,10 +10,13 @@ import { ConstructorPlainInputModule } from '../../../../../../shared/components
 import { ConstructorMonthPickerModule } from '../../../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
 import { ConstructorCheckboxModule, MemoModule } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
-import { UnsubscribeService, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
+import { EmployeeHistoryFormServiceStub } from '../../services/employee-history.form.service.stub';
+import { UnsubscribeService, ActivatedRouteStub, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
+import { EmployeeHistoryMonthsServiceStub } from '../../services/employee-history.months.service.stub';
 import { EmployeeHistoryDataSourceService } from '../../services/employee-history.data-source.service';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { EmployeeHistoryDataSourceServiceStub } from '../../services/employee-history.data-source.service.stub';
+import { EventBusService, EventBusServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryDescriptionComponent } from '../employee-history-desription/employee-history-description.component';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
@@ -21,17 +24,12 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryModel } from '../../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { PrepareComponentsService } from '../../../../../../shared/services/prepare-components/prepare-components.service';
-import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
-import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
-import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentsListRelationsService } from '../../../../../custom-screen/services/components-list-relations/components-list-relations.service';
-import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
-import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { configureTestSuite } from 'ng-bullet';
 import { Gender, TextTransform } from '@epgu/epgu-constructor-types';
@@ -39,7 +37,6 @@ import { DateRestrictionsService } from '../../../../../../shared/services/date-
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;
@@ -80,30 +77,23 @@ describe('EmployeeHistoryFormComponent', () => {
       ],
       providers: [
         FormBuilder,
-        EmployeeHistoryFormService,
-        UnsubscribeService,
-        EmployeeHistoryDataSourceService,
-        EmployeeHistoryMonthsService,
-        EventBusService,
-        DatesToolsService,
-        ScreenService,
-        CurrentAnswersService,
-        DeviceDetectorService,
+        MockProvider(DatesToolsService),
+        MockProvider(CurrentAnswersService),
+        MockProvider(DeviceDetectorService),
         MockProvider(PrepareComponentsService),
-        CachedAnswersService,
-        DictionaryToolsService,
-        DictionaryApiService,
-        ConfigService,
-        LoggerService,
-        ComponentsListRelationsService,
-        DateRangeService,
-        RefRelationService,
-        SuggestHandlerService,
+        MockProvider(ConfigService),
+        MockProvider(LoggerService),
+        MockProvider(SuggestHandlerService),
         MockProvider(DateRestrictionsService),
-        SuggestMonitorService,
-        JsonHelperService,
+        MockProvider(SuggestMonitorService),
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
+        { provide: EventBusService, useClass: EventBusServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: EmployeeHistoryFormService, useClass: EmployeeHistoryFormServiceStub },
+        { provide: EmployeeHistoryDataSourceService, useClass: EmployeeHistoryDataSourceServiceStub },
+        { provide: EmployeeHistoryMonthsService, useClass: EmployeeHistoryMonthsServiceStub },
       ],
     })
       .overrideComponent(EmployeeHistoryFormComponent, {

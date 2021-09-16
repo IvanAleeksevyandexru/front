@@ -11,7 +11,7 @@ import { CachedAnswersService } from '../../../../../../shared/services/cached-a
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ComponentAttrsDto, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { JsonHelperService } from 'projects/epgu-constructor/src/lib/core/services/json-helper/json-helper.service';
+import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 
 describe('DateTimePeriodContainerComponent', () => {
   let component: DateTimePeriodContainerComponent;
@@ -32,7 +32,7 @@ describe('DateTimePeriodContainerComponent', () => {
 
   const mockData = {
     endDateTime: '10.01.2022',
-    startDateTime: '10.01.2021'
+    startDateTime: '10.01.2021',
   };
 
   const defineInitialState = (attrs: ComponentAttrsDto, data: any) => {
@@ -66,7 +66,7 @@ describe('DateTimePeriodContainerComponent', () => {
   });
 
   beforeEach(() => {
-    screenService = TestBed.inject(ScreenService) as unknown as ScreenServiceStub;
+    screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     fixture = TestBed.createComponent(DateTimePeriodContainerComponent);
     component = fixture.componentInstance;
   });
@@ -142,12 +142,12 @@ describe('DateTimePeriodContainerComponent', () => {
       const buttons = [
         {
           label: 'button1',
-          action: DTOActionAction.getNextStep
+          action: DTOActionAction.getNextStep,
         },
         {
           label: 'button2',
-          action: DTOActionAction.skipStep
-        }
+          action: DTOActionAction.skipStep,
+        },
       ];
       screenService.buttons = buttons;
       fixture.detectChanges();
@@ -174,7 +174,6 @@ describe('DateTimePeriodContainerComponent', () => {
       debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl.componentInstance.isValid).toBeTruthy();
     });
-
   });
 
   describe('epgu-constructor-date-time-period', () => {
@@ -200,7 +199,7 @@ describe('DateTimePeriodContainerComponent', () => {
     it('step should be screenService.component.attrs.step', () => {
       const attrs = {
         ...attrsSample,
-        step: 2
+        step: 2,
       };
       defineInitialState(attrs, mockData);
       fixture.detectChanges();
@@ -215,7 +214,6 @@ describe('DateTimePeriodContainerComponent', () => {
       expect(debugEl.componentInstance.initialState).toEqual(mockData);
     });
 
-
     it('should update currentAnswersSwervice state on updateState event', () => {
       defineInitialState(attrsSample, mockData);
       fixture.detectChanges();
@@ -224,6 +222,5 @@ describe('DateTimePeriodContainerComponent', () => {
 
       expect(component.currentAnswersService.state).toBe(JSON.stringify(mockData));
     });
-
   });
 });
