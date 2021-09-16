@@ -1,4 +1,4 @@
-<div class="form__name">Паспорт РФ</div>
+<div class="form__name" *ngIf="!attrs.titleHide">Паспорт РФ</div>
 <div class="form__error">
   <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames">
     <div *ngIf="hasWrongValue(fieldName) && showOnFocus(fieldName)">
