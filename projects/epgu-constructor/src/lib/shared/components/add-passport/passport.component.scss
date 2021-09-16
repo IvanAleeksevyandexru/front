@@ -22,9 +22,11 @@
     }
 
     &__error {
-      min-height: 20px;
-      margin-bottom: 4px;
       color: $color-gosred;
     }
+  }
+  .form__name + .form__error {
+    min-height: 20px;
+    margin-bottom: 4px;
   }
 }
