@@ -176,3 +176,10 @@ export const copyToClipboardAction: ComponentActionDto = {
   type: ActionType.copyToClipboard,
   attrs: {},
 };
+
+export const downloadSpAdapterPdfAction: ComponentActionDto = {
+  label: 'Скачать PDF',
+  value: 'pdfName=Название_файла',
+  type: ActionType.downloadSpAdapterPdf,
+  action: DTOActionAction.spAdapterPdf,
+};

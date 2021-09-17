@@ -49,6 +49,7 @@ import {
   skipAction,
   prevAction,
   profileEditAction,
+  downloadSpAdapterPdfAction,
 } from './action.mock';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { cloneDeep } from 'lodash';
@@ -213,6 +214,14 @@ describe('ActionToolsService', () => {
     });
   });
 
+  describe('downloadSpAdapterPdf()', () => {
+    it('should call sendAction()', () => {
+      const spy = jest.spyOn(service, 'sendAction');
+      service.downloadSpAdapterPdf(downloadSpAdapterPdfAction);
+      expect(spy).toHaveBeenCalledWith(downloadSpAdapterPdfAction);
+    });
+  });
+
   describe('copyAndNotify()', () => {
     it('should call clipboard.copy()', () => {
       const spy = jest.spyOn(clipboard, 'copy');
@@ -326,6 +335,16 @@ describe('ActionToolsService', () => {
       const spy = jest.spyOn(formPlayerApiService, 'sendAction');
       service['sendAction'](nextAction);
       expect(spy).toBeCalled();
+    });
+    it('should call formPlayerApiService.sendAction() with path and payload', () => {
+      const spy = jest.spyOn(formPlayerApiService, 'sendAction');
+      const path = 'sp-adapter/pdf?pdfName=Название_файла';
+      const payload = {
+        additionalParams: {},
+        scenarioDto: { cachedAnswers: [], display: undefined },
+      };
+      service['sendAction'](downloadSpAdapterPdfAction);
+      expect(spy).toHaveBeenCalledWith(path, payload);
     });
   });
 
