@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { YaMapService } from '@epgu/epgu-lib';
 import {
+  CHILDS_HOME_PROPERTIES,
   ConfigService,
   Icons,
   IFeatureCollection,
@@ -53,13 +54,14 @@ export class SelectMapObjectService implements OnDestroy {
   public dictionary: DictionaryResponseForYMap;
   public filteredDictionaryItems: DictionaryYMapItem[] = [];
   public selectedValue = new Subject();
+  public selectedViewItems$ = new BehaviorSubject<DictionaryItem[]>([]);
   public ymaps;
   public componentAttrs: SelectMapComponentAttrs; // Атрибуты компонента из getNextStep
   public mapEvents; // events от карт, устанавливаются при создание балуна
   public mapOpenedBalloonId: number;
   public mapType = MapTypes.commonMap;
   public isMapLoaded = new BehaviorSubject<boolean>(false);
-
+  public isSelectedView = new BehaviorSubject<boolean>(false);
   private objectManager;
   private __mapStateCenter: number[];
 
@@ -197,13 +199,7 @@ export class SelectMapObjectService implements OnDestroy {
         address?.includes(searchStringLower)
       );
     });
-    const items = this.filteredDictionaryItems.map((item, index) => {
-      item.objectId = index;
-      return {
-        center: item.center,
-        obj: item,
-      };
-    });
+    const items = this.convertDictionaryItemsToMapPoints(this.filteredDictionaryItems);
     this.yandexMapService.placeObjectsOnMap(items);
   }
 
@@ -295,6 +291,52 @@ export class SelectMapObjectService implements OnDestroy {
     return points[minDistanceIdx];
   }
 
+  public handleKindergartenSelection(): void {
+    const selected = this.filteredDictionaryItems.filter(
+      (item) => item.isSelected,
+    );
+    if (selected.length) {
+      this.isSelectedView.next(true);
+      this.selectedViewItems$.next(selected.map((item) => { return { ...item, expanded: false };
+      }));
+      const processed = selected.map((item) => {
+        return {
+          center: item.center,
+          obj: item,
+        };
+      });
+      this.yandexMapService.placeObjectsOnMap(processed);
+    } else {
+      this.resetSelectedView();
+    }
+    this.placeChildsHomeOnMap();
+  }
+
+  public resetSelectedView(): void {
+    this.isSelectedView.next(false);
+    this.selectedViewItems$.next([]);
+    this.yandexMapService.selectedValue$.next(null);
+    this.yandexMapService.placeObjectsOnMap(this.convertDictionaryItemsToMapPoints(this.filteredDictionaryItems));
+  }
+
+  public placeChildsHomeOnMap(): void {
+    const options = this.icons.childsHome;
+    this.yandexMapService.addObjectsOnMap(
+      this.yandexMapService.createPlacemark(this.kindergartenSearchPanel.childHomeCoords, CHILDS_HOME_PROPERTIES, options),
+    );
+  }
+
+  private convertDictionaryItemsToMapPoints
+  (dictionaryItems: DictionaryYMapItem[]): { obj: DictionaryYMapItem; center: [number, number] }[] {
+    return dictionaryItems.map((item, idx) => {
+      item.objectId = idx;
+      return {
+        center: item.center,
+        obj: item,
+      };
+    });
+  }
+
   private findFarthestObject(
     startPoint: number[],
     points: DictionaryYMapItem[],
@@ -306,8 +348,7 @@ export class SelectMapObjectService implements OnDestroy {
     const minDistanceIdx = distances.indexOf(minDistance);
     return points[minDistanceIdx];
   }
-
-  /**
+   /**
    * Возвращает точку, симметричную параметру point, относительно параметра center
    * @param point точка
    * @param center центр симметрии

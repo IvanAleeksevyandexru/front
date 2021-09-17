@@ -1,4 +1,4 @@
-<h5 (click)="expandObject(mapObject)" class="map-object__header">
+<h5 (click)="expandAndCenterObject(mapObject)" class="map-object__header">
   {{ mapObject.title }}
   <span
     *ngIf="!mapObject.expanded && mapObject.isSelected"
@@ -7,10 +7,18 @@
   </span>
 </h5>
 <ng-container *ngIf="mapObject.expanded">
-  <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
+  <p class="map-object__address-attribute mt-16 mb-16 ">
+    {{ address }}
+  </p>
+  <a href="#" (click)="toggleShowAdditionalInfo()">
+    {{showAdditionalInfo ? 'Свернуть' : 'Подробнее'}}
+  </a>
+  <ng-container *ngIf="showAdditionalInfo">
+  <div class="map-object__attr" *ngFor="let itemContent of additionalInfo">
     <span class="map-object__label">{{ itemContent.label }}: </span>
     <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
   </div>
+  </ng-container>
   <ng-container *ngIf="!isSelectButtonHidden && { deptsLeftToChoose: kindergartenSearchPanelService.deptsLeftToChoose$ | async } as data">
     <lib-button
       *ngIf="!mapObject.isSelected && data.deptsLeftToChoose"

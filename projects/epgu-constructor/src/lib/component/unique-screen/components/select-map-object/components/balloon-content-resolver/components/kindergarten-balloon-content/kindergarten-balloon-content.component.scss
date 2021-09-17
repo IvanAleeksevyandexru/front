@@ -1,4 +1,5 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 .depts-left {
   color: $color-text-helper;
@@ -6,8 +7,15 @@
   text-align: center;
 }
 
-.map-object__header_selected {
+.map-object {
+  &__header_selected {
     display: block;
     color: $color-pino-verde;
     margin-top: 12px;
+  }
+  &__address-attribute {
+    color: $color-text-helper;
+    line-height: 20px;
+    font-size: $font-sm;
+  }
 }

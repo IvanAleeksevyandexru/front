@@ -60,6 +60,11 @@
       border-radius: $border-round;
       box-shadow: 0 24px 48px $color-shadow;
 
+      &__toggle-button {
+        color: $color-gosblue;
+        cursor: pointer;
+      }
+
       .error-region {
         display: grid;
         padding-top: 16px;

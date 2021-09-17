@@ -27,7 +27,7 @@
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
     </perfect-scrollbar>
     <ng-template #contentBlock>
-      <div class="cross-btn" (click)="yandexMapService.closeBalloon()"></div>
+      <div class="cross-btn" (click)="closeBaloon()"></div>
       <ng-container *ngFor="let mapObject of selectedValue">
         <epgu-constructor-balloon-content-resolver
           [contentType]="balloonContentType"
@@ -35,6 +35,7 @@
           [isSelectButtonHidden]="data.attrs.isSelectButtonHidden"
           [attrs]="data.attrs.balloonAttrs"
           (selectObject)="selectObject($event)"
+          (expandObjectEvent)="expandObject(mapObject)"
         >
         </epgu-constructor-balloon-content-resolver>
       </ng-container>
