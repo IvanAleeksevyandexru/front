@@ -153,6 +153,15 @@ describe('ScreenService', () => {
       expect(updateScreenContentSpy).toBeCalledWith(store, deviceDetectorService.isWebView);
     });
 
+    it('should clear logicAnswers after init', () => {
+      const store = makeScreenStoreSample();
+      screenService.logicAnswers = { rest: { value: '', visited: true }};
+
+      screenService.initScreenStore(store);
+
+      expect(screenService.logicAnswers).toBe(null);
+    });
+
     describe('loadValueFromCachedAnswer', () => {
       describe('condition: hasPresetTypeRef && shouldBeTakenFromTheCache && !cachedValue', () => {
         it('should get preset value from cache', () => {
