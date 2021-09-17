@@ -77,9 +77,11 @@ import { KindergartenService } from '../kindergarten/kindergarten.service';
     SearchPanelResolverComponent,
     CommonSearchPanelComponent,
     ElectionsSearchPanelComponent,
+    KindergartenSearchPanelComponent,
     BalloonContentResolverComponent,
     CommonBalloonContentComponent,
     ElectionsBalloonContentComponent,
+    KindergartenContentComponent,
     PriorityScreenComponent,
   ],
 })
