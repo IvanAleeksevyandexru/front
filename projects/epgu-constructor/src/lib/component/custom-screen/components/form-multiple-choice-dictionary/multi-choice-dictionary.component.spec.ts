@@ -11,7 +11,6 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { MultipleChoiceDictionaryComponent } from '../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary/multiple-choice-dictionary.component';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -31,7 +30,6 @@ describe('MultiChoiceDictionaryComponent', () => {
       ],
       imports: [FormsModule, ReactiveFormsModule],
       providers: [
-        UnsubscribeService,
         MockProvider(ComponentsListRelationsService),
         MockProvider(DictionaryToolsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
