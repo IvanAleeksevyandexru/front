@@ -17,6 +17,7 @@ describe('RankPipe', () => {
   });
 
   it('check types', () => {
+    expect(pipe.transform('-')).toBe('-');
     expect(pipe.transform('1000')).toBe('1000');
     expect(pipe.transform('1000', true)).toBe('1\u00a0000');
     expect(pipe.transform('5555555', true)).toBe('5\u00a0555\u00a0555');
