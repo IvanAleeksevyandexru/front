@@ -98,6 +98,7 @@ export class ScreenService extends ScreenContent {
   private initComponentStateService(): void {
     this.currentAnswersService.state = '';
     this.currentAnswersService.isValid = true;
+    this.logicAnswers = null;
   }
 
   private initNotifierDisclaimers(): void {
