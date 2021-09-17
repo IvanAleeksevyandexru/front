@@ -28,7 +28,7 @@ export class EquipmentCategoryComponent implements OnInit {
   tipText: string;
   requiredNumbersForm: FormGroup;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  equipmentUnselectable = false;
+  isEquipmentUnselectable = false;
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
@@ -151,8 +151,7 @@ export class EquipmentCategoryComponent implements OnInit {
         });
 
       if (preset.length > 0) {
-        this.equipmentUnselectable = true;
-
+        this.isEquipmentUnselectable = true;
         /**
          * Апдейтим value только если не заполнено из applicantAnswers
          */

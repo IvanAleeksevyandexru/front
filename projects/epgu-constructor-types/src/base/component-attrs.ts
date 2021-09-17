@@ -65,6 +65,7 @@ export interface ComponentAttrsDto {
   endDate?: ComponentDateTimeDto;
   endTime?: ComponentDateTimeDto;
   error?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
+  equipmentFilters?: unknown[];
   expandAllChildrenBlocks?: boolean;
   expirationTime?: string;
   fields?: ComponentFieldDto[];
