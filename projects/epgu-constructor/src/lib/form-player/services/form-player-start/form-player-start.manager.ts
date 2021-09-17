@@ -221,21 +221,27 @@ export class FormPlayerStartManager {
 
   private startFromQueryParamsCase(): void {
     const { serviceId, targetId, serviceInfo } = this.initDataService;
-    const { screenId, ...rest } = serviceInfo?.queryParams || {};
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { external, screenId, ...rest } = serviceInfo?.queryParams || {};
 
-    const answers = Object.entries(rest)
-      .map(([key, value]) => `${key}=${typeof value === 'object' ? JSON.stringify(value) : value}`)
-      .join('&');
+    const answers = Object.entries(rest).map(([key, value]) => [key, value]);
+    const payload = {
+      serviceId,
+      targetId,
+      screenId,
+      answers,
+    };
 
-    const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/${targetId}/external/${screenId}?${answers}`;
-    this.formPlayerApiService.get(path).subscribe((response: FormPlayerApiResponse) => {
+    const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/external`;
+    this.formPlayerApiService.post(path, payload).subscribe((response: FormPlayerApiResponse) => {
       this.formPlayerService.processResponse(response);
     });
   }
 
   private hasSpecificQueryParams(): boolean {
     const { serviceId, targetId, serviceInfo } = this.initDataService;
+    const isExternal = serviceInfo?.queryParams?.hasOwnProperty('external');
     const { screenId } = serviceInfo?.queryParams || {};
-    return !!serviceId && !!targetId && !!screenId;
+    return !!serviceId && !!targetId && isExternal && !!screenId;
   }
 }
