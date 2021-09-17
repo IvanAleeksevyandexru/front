@@ -1,5 +1,5 @@
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { DictionaryComponent } from './dictionary.component';
 import { ComponentItemComponent } from '../component-item/component-item.component';
@@ -21,7 +21,7 @@ import {
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { By } from '@angular/platform-browser';
 import { CustomListDictionaries } from '../../components-list.types';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -41,15 +41,14 @@ describe('DictionaryComponent', () => {
       declarations: [DictionaryComponent, MockComponent(ComponentItemComponent)],
       imports: [MockModule(EpguLibModule)],
       providers: [
-        DictionaryToolsService,
-        JsonHelperService,
+        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        DatesToolsService,
-        MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-        UnsubscribeService,
-        ConfigService,
-        LoggerService,
+        MockProvider(DatesToolsService),
+        MockProvider(ComponentsListRelationsService),
+        MockProvider(UnsubscribeService),
+        MockProvider(ConfigService),
+        MockProvider(LoggerService),
       ],
     })
       .overrideComponent(DictionaryComponent, {
