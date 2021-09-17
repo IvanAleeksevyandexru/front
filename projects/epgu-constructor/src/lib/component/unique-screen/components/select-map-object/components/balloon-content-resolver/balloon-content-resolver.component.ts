@@ -45,6 +45,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
   @Input() contentType = ContentTypes[MapTypes.commonMap];
   @Input() attrs;
   @Output() selectObject = new EventEmitter<YMapItem<DictionaryItem>>();
+  @Output() expandObjectEvent = new EventEmitter<YMapItem<DictionaryItem>>();
   private balloonContentComponentRef: ComponentRef<ContentTypesComponents>;
 
   private contentMap = {
@@ -77,9 +78,8 @@ export class BalloonContentResolverComponent implements AfterViewInit {
    * Метод раскрывает выбранный зал на панели слева
    * @param mapObject объект на карте
    */
-  private expandObject(mapObject: YMapItem<unknown>): void {
-    // eslint-disable-next-line no-param-reassign
-    mapObject.expanded = !mapObject.expanded;
+  private expandObject(mapObject: YMapItem<DictionaryItem>): void {
+    this.expandObjectEvent.emit(mapObject);
   }
 
   private getComponent(type: string): Type<ContentTypesComponents> {

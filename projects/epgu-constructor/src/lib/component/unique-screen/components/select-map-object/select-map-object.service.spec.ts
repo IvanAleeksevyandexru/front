@@ -137,4 +137,33 @@ describe('SelectMapObjectComponent', () => {
 
   });
 
+  describe('handleKindergartenSelection()', () => {
+
+    it('should reset selected view', () => {
+      kindergartenSearchPanelService['_childHomeCoords'] = [10, 10];
+      jest.spyOn(selectMapObjectService['yandexMapService'], 'placeObjectsOnMap').mockImplementation((...args) => null);
+      jest.spyOn(selectMapObjectService['yandexMapService'], 'createPlacemark').mockImplementation((...args) => null);
+      jest.spyOn(selectMapObjectService['yandexMapService'], 'addObjectsOnMap').mockImplementation((...args) => null);
+
+      selectMapObjectService.filteredDictionaryItems = [];
+
+      selectMapObjectService.handleKindergartenSelection();
+
+      expect(selectMapObjectService.isSelectedView.getValue()).toBeFalsy();
+    });
+
+    it('should enable selected view', () => {
+      kindergartenSearchPanelService['_childHomeCoords'] = [10, 10];
+      jest.spyOn(selectMapObjectService['yandexMapService'], 'placeObjectsOnMap').mockImplementation((...args) => null);
+      jest.spyOn(selectMapObjectService['yandexMapService'], 'createPlacemark').mockImplementation((...args) => null);
+      jest.spyOn(selectMapObjectService['yandexMapService'], 'addObjectsOnMap').mockImplementation((...args) => null);
+      const testItems = [{ isSelected: true, expanded: false }] as unknown as DictionaryYMapItem[];
+      selectMapObjectService.filteredDictionaryItems = testItems;
+
+      selectMapObjectService.handleKindergartenSelection();
+
+      expect(selectMapObjectService.selectedViewItems$.getValue()).toEqual(testItems);
+      expect(selectMapObjectService.isSelectedView.getValue()).toBeTruthy();
+    });
+  });
 });

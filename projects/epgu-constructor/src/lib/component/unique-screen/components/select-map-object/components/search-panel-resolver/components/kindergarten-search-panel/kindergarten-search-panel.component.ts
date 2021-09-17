@@ -7,9 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
-  CHILDS_HOME_PROPERTIES,
   ConstructorLookupComponent,
-  Icons,
   KINDERGATEN_MAX_VALUE,
   UnsubscribeService,
   YandexMapService,
@@ -54,7 +52,6 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
     private itemsService: PriorityItemsService,
     private screenService: ScreenService,
     private jsonHelperService: JsonHelperService,
-    private icons: Icons,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
@@ -62,7 +59,7 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
     this.kindergartenSearchPanelService.deptsLeftToChoose$.subscribe((value) => {
       this.bottomLabel = `Выбрано ${this.kindergartenSearchPanelService.EDUORGMAX - value} из ${
         this.kindergartenSearchPanelService.EDUORGMAX
-      }. Посмотреть`;
+      }.`;
       this.cdr.detectChanges();
     });
     this.kindergartenSearchPanelService.getEDUORGMAX().subscribe((response) => {
@@ -90,6 +87,15 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
     lookup.clearInput();
   }
 
+  public toggleSelectedKindergartensView(): void {
+    if (this.selectMapObjectService.isSelectedView.getValue()) {
+      this.selectMapObjectService.resetSelectedView();
+      this.selectMapObjectService.placeChildsHomeOnMap();
+    } else {
+      this.selectMapObjectService.handleKindergartenSelection();
+    }
+  }
+
   private selectMapObject(mapObject: YMapItem<DictionaryYMapItem>): void {
     if (mapObject) {
       const objectCoords = mapObject.center;
@@ -97,7 +103,9 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
       const bounds = this.yandexMapService.getBoundsByCoords([objectCoords, childHomeCoords]);
       this.yandexMapService.setBounds(bounds);
       const feature = this.yandexMapService.getObjectById(mapObject.objectId);
-      this.yandexMapService.handleFeatureSelection(feature);
+      if (feature) {
+        this.yandexMapService.handleFeatureSelection(feature);
+      }
     }
   }
 
@@ -141,10 +149,6 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
   }
 
   private placeChildsHomeOnMap(): void {
-    const { childHomeCoords } = this.kindergartenSearchPanelService;
-    const options = this.icons.childsHome;
-    this.yandexMapService.addObjectsOnMap(
-      this.yandexMapService.createPlacemark(childHomeCoords, CHILDS_HOME_PROPERTIES, options),
-    );
+    this.selectMapObjectService.placeChildsHomeOnMap();
   }
 }

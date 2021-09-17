@@ -166,22 +166,58 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.clearMapVariables();
   }
 
-  public selectObject(item: YMapItem<DictionaryItem>): void {
+  public selectObject(yaMapItem: YMapItem<DictionaryItem>): void {
     if (this.isMultiSelect) {
       // eslint-disable-next-line no-param-reassign
-      item.isSelected = !item.isSelected;
+      yaMapItem.isSelected = !yaMapItem.isSelected;
+      const matchDictionaryItem = this.selectMapObjectService.filteredDictionaryItems.find(
+        (dictionaryItem) => {
+          return this.isObjectsHaveSameCoords(dictionaryItem, yaMapItem);
+        },
+      );
+      matchDictionaryItem.isSelected = yaMapItem.isSelected;
       this.yandexMapService.mapPaint();
       let arr = this.priorityItemsService.getItems();
-      if (item.isSelected) {
-        arr.push(item);
+      if (this.selectMapObjectService.isSelectedView.getValue()) {
+        this.selectMapObjectService.handleKindergartenSelection();
+      }
+      if (yaMapItem.isSelected) {
+        arr.push(yaMapItem);
       } else {
         arr = arr.filter((value) => {
-          return value.objectId !== item.objectId;
+          return value.objectId !== yaMapItem.objectId;
         });
       }
       this.priorityItemsService.set(arr);
     } else {
-      this.prepareNextStep(item);
+      this.prepareNextStep(yaMapItem);
+    }
+  }
+
+  public expandObject(mapObject: YMapItem<DictionaryItem>): void {
+    if (this.selectMapObjectService.isSelectedView.getValue()) {
+      this.selectedValue = this.selectedValue.map((object: YMapItem<DictionaryItem>) => {
+        const expanded =
+          object === mapObject ||
+          (object.center &&
+            mapObject.center &&
+            object.center[0] === mapObject.center[0] &&
+            object.center[1] === mapObject.center[1]);
+        return { ...object, expanded };
+      });
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      mapObject.expanded = !mapObject.expanded;
+    }
+    this.cdr.markForCheck();
+  }
+
+  public closeBaloon(): void {
+    if (this.selectMapObjectService.isSelectedView.getValue()) {
+      this.selectMapObjectService.resetSelectedView();
+      this.selectMapObjectService.placeChildsHomeOnMap();
+    } else {
+      this.yandexMapService.closeBalloon();
     }
   }
 
@@ -257,10 +293,22 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.yandexMapService.selectedValue$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: DictionaryItem) => {
-        this.isSearchTitleVisible = !value || !this.isMobile;
-        this.selectedValue = value;
-        // this.expandObject(value);
-        this.cdr.detectChanges();
+        if (!this.selectMapObjectService.isSelectedView.getValue()) {
+          this.isSearchTitleVisible = !value || !this.isMobile;
+          this.selectedValue = value;
+          this.cdr.detectChanges();
+        } else if (value) {
+          this.expandObject(value[0]);
+        }
+      });
+
+    this.selectMapObjectService.selectedViewItems$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((value: DictionaryItem[]) => {
+        if (this.selectMapObjectService.isSelectedView.getValue()) {
+          this.selectedValue = value;
+          this.cdr.detectChanges();
+        }
       });
   }
 
@@ -613,6 +661,18 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       coords.coords.length === 0 &&
       (coords.dictionaryError === null || coords.dictionaryError.code === 0) &&
       !!this.data.attrs.secondaryDictionaryFilter
+    );
+  }
+
+  private isObjectsHaveSameCoords(
+    firstObject: { center: number[] },
+    secondObject: { center: number[] },
+  ): boolean {
+    return (
+      firstObject.center &&
+      secondObject.center &&
+      firstObject.center[0] === secondObject.center[0] &&
+      firstObject.center[1] === secondObject.center[1]
     );
   }
 }

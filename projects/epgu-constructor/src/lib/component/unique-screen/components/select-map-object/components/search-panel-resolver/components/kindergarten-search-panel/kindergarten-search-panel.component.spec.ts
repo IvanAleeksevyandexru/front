@@ -55,7 +55,7 @@ describe('KindergartenSearchPanelComponent', () => {
         KindergartenSearchPanelService,
         MockProvider(YandexMapService),
         MockProvider(CachedAnswersService),
-        { provide:SelectMapObjectService, useClass: SelectMapObjectServiceStub },
+        { provide: SelectMapObjectService, useClass: SelectMapObjectServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
       ],
     }).compileComponents();
@@ -83,17 +83,13 @@ describe('KindergartenSearchPanelComponent', () => {
       expect(setBoundsSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('should invoke yandex api methods on call if map object is provided', () => {
-      const setBoundsSpy = jest.spyOn(component['yandexMapService'], 'setBounds').mockImplementation((...args) => null);
-      const getObjectSpy = jest.spyOn(component['yandexMapService'], 'getObjectById').mockImplementation((...args) => null);
-      const selectionSpy = jest.spyOn(component['yandexMapService'], 'handleFeatureSelection').mockImplementation((...args) => null);
+    it('should invoke yandex methods on call ', () => {
+      const getObjSpy = jest.spyOn(component['yandexMapService'], 'getObjectById').mockImplementation((...args) => null);
       component['kindergartenSearchPanelService']['_childHomeCoords'] = [10, 10];
 
       component.lookupChanged({ center: [9, 11] } as unknown as YMapItem<DictionaryYMapItem>, lookup);
 
-      expect(setBoundsSpy).toHaveBeenCalled();
-      expect(getObjectSpy).toHaveBeenCalled();
-      expect(selectionSpy).toHaveBeenCalled();
+      expect(getObjSpy).toHaveBeenCalled();
     });
   });
 
@@ -178,20 +174,43 @@ describe('KindergartenSearchPanelComponent', () => {
     });
 
     it('should draw kids home on map loading', () => {
-      const addObjectsSpy = jest.spyOn(component['yandexMapService'], 'addObjectsOnMap').mockImplementation((...args) => null);
-      const createPlaceMarkSpy = jest.spyOn(component['yandexMapService'], 'createPlacemark').mockImplementation((...args) => null);
-      const coordsStub = jest.spyOn(component['kindergartenSearchPanelService'], 'childHomeCoords', 'get').mockImplementation((...args) => [5,4]);
-      component.ngOnInit();
+      const placeSpy = jest.spyOn(component['selectMapObjectService'], 'placeChildsHomeOnMap').mockImplementation((...args) => null);
+     component.ngOnInit();
 
-      expect(addObjectsSpy).toHaveBeenCalledTimes(0);
-      expect(createPlaceMarkSpy).toHaveBeenCalledTimes(0);
+      expect(placeSpy).toHaveBeenCalledTimes(0);
 
       component['selectMapObjectService'].isMapLoaded.next(true);
 
-      expect(addObjectsSpy).toHaveBeenCalledTimes(1);
-      expect(createPlaceMarkSpy).toHaveBeenCalledTimes(1);
+      expect(placeSpy).toHaveBeenCalledTimes(1);
     });
 
+  });
+
+  describe('toggleSelectedKindergartensView()', () => {
+
+    it('should reset selected view', () => {
+      console.log(component);
+      component['selectMapObjectService'].isSelectedView.next(true);
+      const resetSelectedViewSpy = jest.spyOn(component['selectMapObjectService'], 'resetSelectedView').mockImplementation((...args) => null);
+      const handleSpy = jest.spyOn(component['selectMapObjectService'], 'handleKindergartenSelection').mockImplementation((...args) => null);
+      const placeSpy = jest.spyOn(component['selectMapObjectService'], 'placeChildsHomeOnMap').mockImplementation((...args) => null);
+
+      component.toggleSelectedKindergartensView();
+
+      expect(resetSelectedViewSpy).toHaveBeenCalledTimes(1);
+      expect(placeSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should enable selected view', () => {
+      component['selectMapObjectService'].isSelectedView.next(false);
+      const resetSelectedViewSpy = jest.spyOn(component['selectMapObjectService'], 'resetSelectedView').mockImplementation((...args) => null);
+      const handleSpy = jest.spyOn(component['selectMapObjectService'], 'handleKindergartenSelection').mockImplementation((...args) => null);
+      const placeSpy = jest.spyOn(component['selectMapObjectService'], 'placeChildsHomeOnMap').mockImplementation((...args) => null);
+
+      component.toggleSelectedKindergartensView();
+
+      expect(handleSpy).toHaveBeenCalledTimes(1);
+    });
   });
 
 });

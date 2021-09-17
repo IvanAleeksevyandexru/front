@@ -1,7 +1,7 @@
 import { ymaps } from './yandex-map.types';
 
 export interface IYMapPoint<T> {
-  center: number[];
+  center: [number, number];
   obj: T & {
     isSelected?: boolean;
   };

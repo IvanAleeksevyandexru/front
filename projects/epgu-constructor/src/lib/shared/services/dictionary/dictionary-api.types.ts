@@ -40,6 +40,7 @@ export interface DictionaryItem extends ListElement {
   parentValue: null;
   title: string;
   value: string;
+  center: number[];
 }
 
 export interface DictionaryYMapItem extends DictionaryItem {

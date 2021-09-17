@@ -5,7 +5,13 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { ConfigService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  IYMapPoint,
+  UnsubscribeService,
+  YandexMapService,
+  YMapItem,
+} from '@epgu/epgu-constructor-ui-kit';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import {
@@ -30,6 +36,7 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
   public selectObject: Function;
   public expandObject: Function;
   public readonly states = KindergartenStates;
+  public showAdditionalInfo = false;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
@@ -39,7 +46,16 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
     public screenService: ScreenService,
     public kindergartenService: KindergartenService,
     private ngUnsubscribe$: UnsubscribeService,
+    private yandexMapService: YandexMapService,
   ) {}
+
+  get address(): string {
+    return this.mapObject.baloonContent[0].value;
+  }
+
+  get additionalInfo(): object[] {
+    return this.mapObject.baloonContent.slice(1);
+  }
 
   public ngOnInit(): void {
     this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
@@ -53,5 +69,17 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
     this.kindergartenSearchPanelService.deptsLeftToChoose$.next(val);
     this.selectObject.apply(null, [mapObj, evt]);
     this.cdr.detectChanges();
+  }
+
+  public toggleShowAdditionalInfo(): void {
+    this.showAdditionalInfo = !this.showAdditionalInfo;
+  }
+
+  public expandAndCenterObject(mapObject: YMapItem<unknown>): void {
+    this.expandObject(mapObject);
+    if (this.selectMapObjectService.isSelectedView.getValue()) {
+      const { center } = mapObject as IYMapPoint<unknown>;
+      this.yandexMapService.setCenter(center);
+    }
   }
 }
