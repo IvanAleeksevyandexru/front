@@ -22,6 +22,7 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { get } from 'lodash';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 export const CARD_VALIDATION_EVENT = 'CardValidation';
 
@@ -142,7 +143,7 @@ export class ValidationService {
     };
   }
 
-  public dateValidator(component: CustomComponent, componentsGroupIndex?: number): ValidatorFn {
+  public dateValidator(component: ComponentDto, componentsGroupIndex?: number): ValidatorFn {
     const validations = this.getDateValidators(component);
 
     return (control: AbstractControl): ValidationErrors => {
@@ -162,7 +163,7 @@ export class ValidationService {
           controlValueAsDate = control.value.firstDay();
           minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
           maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
-        } else if (validation.forChild) {
+        } else if (validation.forChild && component.type === CustomScreenComponentTypes.CalendarInput) {
           controlValueAsDate = control.value[validation.forChild];
         } else {
           controlValueAsDate = control.value;
@@ -324,7 +325,7 @@ export class ValidationService {
   }
 
 
-  private getDateValidators(component: CustomComponent): CustomComponentAttrValidation[] {
+  private getDateValidators(component: ComponentDto): CustomComponentAttrValidation[] {
     let validations: CustomComponentAttrValidation[] = [];
     if (component.type === CustomScreenComponentTypes.CalendarInput) {
       const components = component.attrs.components;

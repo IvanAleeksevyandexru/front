@@ -9,6 +9,7 @@ import { TimeSlotDoctorService } from '../time-slot-doctor.service';
 import {
   ConfigService,
   ConfigServiceStub,
+  ConstructorCheckboxModule,
   ConstructorLookupModule,
   DatesToolsService,
   DeviceDetectorService,
@@ -54,6 +55,7 @@ import { FormPlayerService } from '../../../../../form-player/services/form-play
 import { FormPlayerServiceStub } from '../../../../../form-player/services/form-player/form-player.service.stub';
 import { CustomListGenericData } from '../../../../custom-screen/components-list.types';
 import { DictionaryResponse } from '../../../../../shared/services/dictionary/dictionary-api.types';
+import { DisclaimerModule } from '../../../../../shared/components/disclaimer/disclaimer.module';
 
 describe('TimeSlotDoctorsContainerComponent', () => {
   let component: TimeSlotDoctorsContainerComponent;
@@ -150,6 +152,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         ScreenButtonsModule,
         DefaultUniqueScreenWrapperModule,
         TimeCalendarModule,
+        ConstructorCheckboxModule,
+        DisclaimerModule
       ],
     }).compileComponents();
   });

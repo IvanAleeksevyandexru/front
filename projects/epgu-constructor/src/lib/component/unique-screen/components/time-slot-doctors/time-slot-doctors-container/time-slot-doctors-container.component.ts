@@ -86,6 +86,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   data$: Observable<DisplayDto> = this.screenService.display$;
 
   slotsLoadingStatus$$ = new BehaviorSubject<boolean>(false);
+  doctorWasChosen$$ = new BehaviorSubject<boolean>(false);
 
   public date: Date = null;
 
@@ -144,6 +145,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   inBookingProgress = false;
   changeTSConfirm = false;
   isDoctorsNotAvailable = false;
+  areSlotsNotAvailable = false;
   bookedSlot: SlotInterface;
   errorMessage;
 
@@ -155,19 +157,20 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
 
   specLookupControl = new FormControl();
   docLookupControl = new FormControl();
+  checkboxControl = new FormControl();
 
   component: TimeSlotDoctorsComponentDto;
   timeSlotDoctors$: Observable<TimeSlotDoctorsComponentDto> = this.screenService.component$.pipe(
+    filter((component: TimeSlotDoctorsComponentDto) => !!component.value),
     map((component: TimeSlotDoctorsComponentDto) => {
       return { ...component, parsedValue: this.screenService.componentValue };
     }),
     tap((component: TimeSlotDoctorsComponentDto) => {
-      this.timeSlotDoctorService.isByMedRef = !component.attrs.ts.department;
-
+      this.timeSlotDoctorService.isOnlyDocLookupNeeded =
+        !component.attrs.ts.department || component.attrs.isOnlyDocLookupNeeded;
       this.component = component;
       this.setProviders(component);
     }),
-    filter((component: TimeSlotDoctorsComponentDto) => !!component.value),
   );
 
   private errorModalResultSub = new Subscription();
@@ -231,6 +234,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   }
 
   handleDocLookupValue(docLookup: ListElement): void {
+    this.doctorWasChosen$$.next(true);
     const prevState = this.timeSlotDoctorService.state$$.getValue();
     const bookingRequestAttrs: Partial<BookingRequestAttrs> = {};
     docLookup.originalItem.attributes.forEach((attribute) => {
@@ -479,7 +483,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   }
 
   private focusOnFirstLookup(): void {
-    if (this.timeSlotDoctorService.isByMedRef) {
+    if (this.timeSlotDoctorService.isOnlyDocLookupNeeded) {
       this.timeSlotDoctorsComponent.docLookup.setFocus();
     } else {
       this.timeSlotDoctorsComponent.specLookup.setFocus();
@@ -490,7 +494,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     this.specProvider = {
       search: this.providerSearch(component, component.attrs.specLookup, () => []),
     };
-    if (this.timeSlotDoctorService.isByMedRef) {
+    if (this.timeSlotDoctorService.isOnlyDocLookupNeeded) {
       this.doctorProvider = {
         search: this.providerSearch(component, component.attrs.docLookup, () => []),
       };
@@ -517,6 +521,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
       let additionalParams = {};
       const filters = [...attrs.searchProvider.dictionaryFilter];
       const startFilter = attrs.searchProvider?.turnOffStartFilter;
+      this.areSlotsNotAvailable = false;
       this.isDoctorsNotAvailable = false;
 
       if (!startFilter) {
@@ -605,6 +610,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     this.inLoadingProgress = true;
     this.clearDateSelection();
     const value = JSON.parse(this.screenService.component?.value);
+    this.areSlotsNotAvailable = false;
     this.isDoctorsNotAvailable = false;
     this.isExistsSlots = true;
 
@@ -613,43 +619,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
       async (isBookedDepartment) => {
         if (this.timeSlotDoctorService.hasError()) {
           this.inLoadingProgress = false;
-          this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
-          if (this.errorMessage === 101) {
-            this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
-          }
-          if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
-            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
-              .toPromise()
-              .then((result) => {
-                if (result) {
-                  this.formPlayer.initData();
-                }
-              });
-          } else if (this.errorMessage.includes(NO_DATA)) {
-            this.isDoctorsNotAvailable = true;
-            this.doctorsNotFoundTemplate.header = `
-            <h6 class='yellow-line mt-24'>
-              Нет свободного времени для приёма
-            </h6>`;
-            this.doctorsNotFoundTemplate.description = `
-            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
-              Этот врач занят на ближайшие 14 дней. Выберите другого специалиста
-            </div>`;
-          } else {
-            const message = this.errorMessage
-              .replace('FAILURE:', '')
-              .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
-              .replace('NO_DATA:', '');
-            this.isDoctorsNotAvailable = true;
-            this.doctorsNotFoundTemplate.header = `
-            <h6 class='yellow-line mt-24'>
-              Нет свободного времени для приёма
-            </h6>`;
-            this.doctorsNotFoundTemplate.description = `
-            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
-              ${message}
-            </div>`;
-          }
+          this.areSlotsNotAvailable = true;
+          this.handleMessageError();
         } else {
           await this.serviceInitHandle(!!isBookedDepartment);
         }
@@ -670,6 +641,49 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         this.changeDetectionRef.markForCheck();
       },
     );
+  }
+
+  private handleMessageError(): void {
+    this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
+    if (this.errorMessage === 101) {
+      this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
+    }
+    if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
+      this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
+        .toPromise()
+        .then((result) => {
+          if (result) {
+            this.formPlayer.initData();
+          }
+        });
+    } else if (this.component.attrs.ts.slotsNotFoundTemplate) {
+      this.isDoctorsNotAvailable = true;
+      this.doctorsNotFoundTemplate = this.component.attrs.ts.slotsNotFoundTemplate;
+    } else if (this.errorMessage.includes(NO_DATA)) {
+      this.isDoctorsNotAvailable = true;
+      this.doctorsNotFoundTemplate.header = `
+            <h6 class='yellow-line mt-24'>
+              Нет свободного времени для приёма
+            </h6>`;
+      this.doctorsNotFoundTemplate.description = `
+            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
+              Этот врач занят на ближайшие 14 дней. Выберите другого специалиста
+            </div>`;
+    } else {
+      const message = this.errorMessage
+        .replace('FAILURE:', '')
+        .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+        .replace('NO_DATA:', '');
+      this.isDoctorsNotAvailable = true;
+      this.doctorsNotFoundTemplate.header = `
+            <h6 class='yellow-line mt-24'>
+              Нет свободного времени для приёма
+            </h6>`;
+      this.doctorsNotFoundTemplate.description = `
+            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
+              ${message}
+            </div>`;
+    }
   }
 
   private addDayToWeek(week: IDay[], date: Date, today: Date): void {

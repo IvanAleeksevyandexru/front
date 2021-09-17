@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
+    ConstructorCheckboxModule,
     ConstructorLookupModule,
     EventBusService,
     ScreenContainerModule,
@@ -13,6 +14,7 @@ import { TimeSlotDoctorsContainerComponent } from './time-slot-doctors-container
 import { TimeSlotDoctorsComponent } from './time-slot-doctors.component';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { TimeSlotDoctorService } from './time-slot-doctor.service';
+import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
 
 const COMPONENTS = [
   TimeSlotDoctorsContainerComponent,
@@ -32,6 +34,8 @@ const COMPONENTS = [
         ScreenButtonsModule,
         DefaultUniqueScreenWrapperModule,
         TimeCalendarModule,
+        DisclaimerModule,
+        ConstructorCheckboxModule,
     ],
   entryComponents: [TimeSlotDoctorsContainerComponent]
 })
