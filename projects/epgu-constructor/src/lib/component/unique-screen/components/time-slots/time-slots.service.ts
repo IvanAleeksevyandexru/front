@@ -35,11 +35,16 @@ import { ScreenService } from '../../../../screen/screen.service';
 import {
   DictionaryConditions,
   DictionaryOptions,
+  DictionarySubFilter,
   DictionaryUnionKind,
 } from '@epgu/epgu-constructor-types';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { addDays, format, subSeconds } from 'date-fns';
+import {
+  ComponentValue,
+  DictionaryToolsService,
+} from '../../../../shared/services/dictionary/dictionary-tools.service';
 
 type attributesMapType = { name: string; value: string }[];
 
@@ -83,6 +88,7 @@ export class TimeSlotsService {
     private sessionService: SessionService,
     public screenService: ScreenService,
     public jsonHelperService: JsonHelperService,
+    public dictionaryTools: DictionaryToolsService,
   ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
@@ -154,6 +160,19 @@ export class TimeSlotsService {
   }
 
   getSmev2DictionaryOptions(date: Date): DictionaryOptions {
+    const filter = this.dictionaryTools.getFilterOptions(
+      this.jsonHelperService.tryToParse(
+        this.screenService.componentValue as string,
+        {},
+      ) as ComponentValue,
+      this.screenService.getStore(),
+      this.screenService.component.attrs?.dictionaryFilter,
+    );
+
+    const additionalFilters = filter?.filter?.simple
+      ? [filter?.filter as DictionarySubFilter]
+      : filter?.filter?.union.subs;
+
     return {
       treeFiltering: 'ONELEVEL',
       pageNum: 1,
@@ -162,15 +181,7 @@ export class TimeSlotsService {
         union: {
           unionKind: DictionaryUnionKind.AND,
           subs: [
-            {
-              simple: {
-                attributeName: 'departmentID',
-                condition: DictionaryConditions.EQUALS,
-                value: {
-                  asString: this.department.attributeValues?.code,
-                },
-              },
-            },
+            ...additionalFilters,
             {
               simple: {
                 attributeName: 'AppointmentDate',

@@ -26,6 +26,8 @@ import { mockScreenDivorceWithCacheStore } from './mocks/mock-screen-divorce-wit
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
@@ -45,6 +47,7 @@ describe('TimeSlotsComponent', () => {
     TestBed.configureTestingModule({
       imports: [EpguLibModule],
       providers: [
+        MockProvider(DictionaryToolsService),
         CurrentAnswersService,
         TimeSlotsConstants,
         EventBusService,
