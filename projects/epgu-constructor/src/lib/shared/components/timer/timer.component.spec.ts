@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
-import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 import { CoreModule } from '../../../core/core.module';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { BaseModule } from '../../base.module';
@@ -14,10 +11,6 @@ import { CachedAnswersService } from '../../services/cached-answers/cached-answe
 import { PrepareComponentsService } from '../../services/prepare-components/prepare-components.service';
 import { TimerPipe } from './pipes/timer.pipe';
 import { TimerComponent } from './timer.component';
-import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
-import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
-import { DateRangeService } from '../../services/date-range/date-range.service';
-import { RefRelationService } from '../../services/ref-relation/ref-relation.service';
 import { TimerComponentBase } from './timer.interface';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
@@ -170,20 +163,13 @@ describe('TimerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [TimerComponent, TimerPipe],
       providers: [
-        UnsubscribeService,
-        ScreenService,
-        CurrentAnswersService,
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        CachedAnswersService,
+        MockProvider(ScreenService),
+        MockProvider(CurrentAnswersService),
+        MockProvider(CachedAnswersService),
         MockProvider(PrepareComponentsService),
-        EventBusService,
-        DatesToolsService,
-        DictionaryToolsService,
-        DictionaryApiService,
-        ComponentsListRelationsService,
-        DateRangeService,
-        RefRelationService,
-        MockProvider(DateRestrictionsService)
+        MockProvider(DateRestrictionsService),
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
       ],
       imports: [MockModule(BaseModule), MockModule(CoreModule), MockModule(CoreUiModule)],
     }).compileComponents();
