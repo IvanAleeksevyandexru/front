@@ -17,8 +17,13 @@
           {{ sum }} Р
           <span class="del" *ngIf="sumWithoutDiscount.length">{{ sumWithoutDiscount }} Р</span>
         </div>
-        <div class="info__hint" *ngIf="sumWithoutDiscount.length && validDiscountDate.length">
+        <div class="info__hint" 
+          *ngIf="sumWithoutDiscount.length && validDiscountDate.length && !(screenService.component$ | async).attrs.discountInformation"
+        >
           Скидка действует при оплате до {{ validDiscountDate }}
+        </div>
+        <div class="info__hint" *ngIf="sumWithoutDiscount.length && (screenService.component$ | async).attrs.discountInformation">
+          {{(screenService.component$ | async).attrs.discountInformation}}
         </div>
         <div class="is__payed" *ngIf="isPaid">
           Оплачено

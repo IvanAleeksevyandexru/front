@@ -56,6 +56,7 @@ export interface ComponentAttrsDto {
   dictionaryType?: string[] | string;
   dictItemCode?: string;
   disabled?: boolean;
+  discountInformation?: string;
   disclaimer?: DisclaimerDto;
   defaultHint?: HintDto;
   displayShowTimeSeconds?: number;
