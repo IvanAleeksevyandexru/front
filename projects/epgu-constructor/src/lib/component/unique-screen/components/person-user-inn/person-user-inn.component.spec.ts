@@ -6,7 +6,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { configureTestSuite } from 'ng-bullet';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { ConfigService, ConfigServiceStub, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
@@ -52,7 +52,6 @@ describe('PersonUserInnComponent', () => {
         CurrentAnswersService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        UnsubscribeService,
       ],
     }).compileComponents();
   });

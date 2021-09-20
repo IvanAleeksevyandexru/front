@@ -66,7 +66,9 @@ export class DatesToolsServiceStub {
 
   max() {}
 
-  intervalToDuration() {}
+  intervalToDuration() {
+    return {};
+  }
 
   utcOffset() {}
 }

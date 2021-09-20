@@ -5,6 +5,7 @@ import {
   UnsubscribeService,
   ConfigService,
   ConfigServiceStub,
+  UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { AbstractPaymentComponent } from './abstract-payment.component';
@@ -24,6 +25,7 @@ import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { billsInfoMock, billsInfoMockPaid, billsInfoMockPaidWithError } from './payment-data.stub';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
+import { MockProvider } from 'ng-mocks';
 
 
 describe('AbstractPaymentComponent', () => {
@@ -88,8 +90,8 @@ describe('AbstractPaymentComponent', () => {
       declarations: [AbstractPaymentComponent],
       imports: [],
       providers: [
-        UnsubscribeService,
-        CurrentAnswersService,
+        MockProvider(CurrentAnswersService),
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
         { provide: PaymentService, useClass: PaymentServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },

@@ -57,6 +57,7 @@ export enum ActionType {
   restartOrder = 'restartOrder',
   skipStep = 'skipStep',
   saveCacheToDraft = 'saveCacheToDraft',
+  downloadSpAdapterPdf = 'downloadSpAdapterPdf',
 }
 
 export enum DTOActionAction {
@@ -90,4 +91,5 @@ export enum DTOActionAction {
   serviceEditLegalEmail = 'service/actions/editLegalEmail',
   skipStep = 'skipStep',
   editOms = 'service/actions/editOms',
+  spAdapterPdf = 'sp-adapter/pdf',
 }

@@ -10,7 +10,7 @@ import {
   SessionService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
-import { MockComponents } from 'ng-mocks';
+import { MockComponents, MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
@@ -51,6 +51,7 @@ import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
 import { FormPlayerServiceStub } from '../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 
 const moment = moment_;
 moment.locale('ru');
@@ -80,6 +81,7 @@ describe('TimeSlotsComponent', () => {
         ),
       ],
       providers: [
+        MockProvider(DictionaryToolsService),
         CurrentAnswersService,
         TimeSlotsConstants,
         DatesToolsService,

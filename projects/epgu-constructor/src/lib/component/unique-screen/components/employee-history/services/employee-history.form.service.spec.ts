@@ -3,26 +3,18 @@ import { DeclinePipe, MonthYear } from '@epgu/epgu-lib';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { EmployeeHistoryFormService } from './employee-history.form.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
+import { EmployeeHistoryDataSourceServiceStub } from './employee-history.data-source.service.stub';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { Gender } from '@epgu/epgu-constructor-types';
-import { ScreenService } from '../../../../../screen/screen.service';
-import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { PrepareComponentsService } from '../../../../../shared/services/prepare-components/prepare-components.service';
-import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
-import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
-import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
-import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
-import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { MockProvider } from 'ng-mocks';
 
 describe('EmployeeHistoryFormService', () => {
@@ -34,24 +26,15 @@ describe('EmployeeHistoryFormService', () => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [
-        UnsubscribeService,
-        EmployeeHistoryMonthsService,
         EmployeeHistoryFormService,
-        EmployeeHistoryDataSourceService,
-        DatesToolsService,
-        ScreenService,
-        CurrentAnswersService,
-        DeviceDetectorService,
+        MockProvider(EmployeeHistoryMonthsService),
+        MockProvider(DatesToolsService),
         MockProvider(PrepareComponentsService),
-        CachedAnswersService,
-        DictionaryToolsService,
-        DictionaryApiService,
-        ConfigService,
-        LoggerService,
-        ComponentsListRelationsService,
-        DateRangeService,
-        RefRelationService,
-        DeclinePipe,
+        MockProvider(ConfigService),
+        MockProvider(LoggerService),
+        MockProvider(DeclinePipe),
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
+        { provide: EmployeeHistoryDataSourceService, useClass: EmployeeHistoryDataSourceServiceStub },
       ],
     });
   });
