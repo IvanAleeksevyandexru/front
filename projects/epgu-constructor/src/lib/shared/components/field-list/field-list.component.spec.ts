@@ -18,6 +18,7 @@ import { JsonHelperService } from '../../../core/services/json-helper/json-helpe
 import { CertificateEaisdoService } from '../../services/certificate-eaisdo/certificate-eaisdo.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { By } from '@angular/platform-browser';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -25,7 +26,15 @@ describe('FieldListComponent', () => {
   let fixture: ComponentFixture<FieldListComponent>;
   const dataMock = {
     attrs: {
-      style: {},
+      style: {
+        group: 'mb-16',
+        groupTitle: 'mb-12',
+        value: '',
+        label: 'mb-4',
+        field: 'mb-16',
+        list: '',
+        divider: 'mb-32',
+      },
       fieldGroups: [
         {
           groupName: '<h4 class=\'mb-12\'>Реквизиты сертификата</h4>',
@@ -45,6 +54,16 @@ describe('FieldListComponent', () => {
     value: '',
     id: '',
   };
+
+  const mockPreparedData = [{
+    groupName: 'groupName',
+    visibilityLabel: 'wait',
+    fields: [{
+      label: 'label',
+      value: '',
+      rank: false,
+    }]
+  }];
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -98,6 +117,16 @@ describe('FieldListComponent', () => {
       currentAnswersService.state = { id: { value: { value: { placeholder: 'someValue' }}}};
       const result = component['transformString'](str);
       expect(result).toBe('someValue');
+    });
+  });
+
+  describe('data item value html',() => {
+    it('should render "-" when value is missing', async () => {
+      component.preparedData = mockPreparedData;
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const dataItemValue = fixture.debugElement.query(By.css('.data-item__value'));
+      expect(dataItemValue.componentInstance.html).toEqual('-');
     });
   });
 });
