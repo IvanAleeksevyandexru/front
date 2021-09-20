@@ -171,7 +171,7 @@ export const redirectToPayByUinAction: ComponentActionDto = {
 
 export const copyToClipboardAction: ComponentActionDto = {
   label: 'Скопировать',
-  value: 'Какой-то текст, который ляжет в буфер обмена',
+  value: 'Скопирована ссылка:',
   action: null,
   type: ActionType.copyToClipboard,
   attrs: {},

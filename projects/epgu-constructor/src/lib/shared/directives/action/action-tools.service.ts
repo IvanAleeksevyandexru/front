@@ -173,14 +173,17 @@ export class ActionToolsService {
   }
 
   public copyToClipboard(action: ComponentActionDto): void {
-    let { value } = action;
+    const { value } = action;
     if (action.attrs?.additionalParams) {
       this.sendAction<string>(action)
         .pipe(filter((response) => !response.errorList.length))
         .subscribe(
           ({ responseData }) => {
+            const { value: responseValue } = responseData || {};
             const host = this.locationService.getOrigin();
-            this.copyAndNotify(host + responseData.value);
+            this.copyAndNotify(
+              `${value ? value : ''} ${host ? host : ''}${responseValue ? responseValue : ''}`,
+            );
           },
           (error) => console.log(error),
         );
@@ -195,7 +198,7 @@ export class ActionToolsService {
 
   private copyAndNotify(value: string): void {
     this.clipboard.copy(value);
-    this.notifierService.success({ message: `Скопировано: ${value}` });
+    this.notifierService.success({ message: `${value}` });
   }
 
   private prepareNavigationData(action: ComponentActionDto, componentId: string): Navigation {
