@@ -7,7 +7,9 @@ export class LocationServiceStub extends Location {
 
   getHref(): void {}
 
-  getOrigin(): void {}
+  getOrigin(): string {
+    return 'https://host.com';
+  }
 
   reload(): void {}
 

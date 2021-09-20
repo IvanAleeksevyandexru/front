@@ -212,6 +212,13 @@ describe('ActionToolsService', () => {
       service.copyToClipboard(newAction);
       expect(spy).toBeCalled();
     });
+    it('should call copyAndNotify() within service.sendAction(), with value + host + response.value string', () => {
+      const spy = jest.spyOn(service, 'copyAndNotify');
+      const newAction = cloneDeep(copyToClipboardAction);
+      newAction.attrs.additionalParams = { screenId: 's1' };
+      service.copyToClipboard(newAction);
+      expect(spy).toHaveBeenCalledWith('Скопирована ссылка: https://host.comvalue');
+    });
   });
 
   describe('downloadSpAdapterPdf()', () => {
@@ -223,15 +230,15 @@ describe('ActionToolsService', () => {
   });
 
   describe('copyAndNotify()', () => {
-    it('should call clipboard.copy()', () => {
+    it('should call clipboard.copy() with value', () => {
       const spy = jest.spyOn(clipboard, 'copy');
       service.copyToClipboard(copyToClipboardAction);
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalledWith(copyToClipboardAction.value);
     });
-    it('should call notifierService.success()', () => {
+    it('should call notifierService.success() with value', () => {
       const spy = jest.spyOn(notifierService, 'success');
       service.copyToClipboard(copyToClipboardAction);
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalledWith({ message: copyToClipboardAction.value });
     });
   });
 
