@@ -43,14 +43,14 @@
 
 <ng-template #selectButtons>
   <button
-    class="link-btn mb-6"
+    class="link-btn mb-16"
     *ngIf="isSelectAll$ | async; else selectAll"
     (click)="select(false)"
   >
     Сбросить все
   </button>
   <ng-template #selectAll>
-    <button class="link-btn mb-6" (click)="select(true)">
+    <button class="link-btn mb-16" (click)="select(true)">
       Выбрать все
     </button>
   </ng-template>
