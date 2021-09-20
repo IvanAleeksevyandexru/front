@@ -326,19 +326,17 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
   }
 
   handleBookingError({ error }: ItemsErrorResponse): void {
-    let modalParams = COMMON_ERROR_MODAL_PARAMS;
     if (error.errorDetail?.errorMessage === STATIC_ERROR_BOOKING_LIMIT_MESSAGE) {
-      modalParams = LOADING_ERROR_MODAL_PARAMS;
       LOADING_ERROR_MODAL_PARAMS.text = LOADING_ERROR_MODAL_PARAMS.text.replace(
         /\{textAsset\}?/g,
         STATIC_ERROR_BOOKING_LIMIT_MESSAGE,
       );
+      this.showModal(LOADING_ERROR_MODAL_PARAMS).then((prevStep) => {
+        if (prevStep) {
+          this.navigationService.prev();
+        }
+      });
     }
-    this.showModal(modalParams).then((prevStep) => {
-      if (prevStep) {
-        this.navigationService.prev();
-      }
-    });
   }
 
   private handleItemsRequest(body: unknown, url: string, refName: string | undefined): void {
