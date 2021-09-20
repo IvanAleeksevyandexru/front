@@ -140,6 +140,20 @@ describe('RefRelationService', () => {
         ];
         expect(service['getValueFromComponentVal'](value)).toEqual(expectedResult);
       });
+      it('should return array of ids when multichoice dictionary value present', () => {
+        const value: string = JSON.stringify({
+          amount: 2,
+          list: [
+            { id: 1, text: '123213', originalItem: {}},
+            { id: 2, text: 'gfsd', originalItem: {}},
+          ]
+        });
+
+        expect(service['getValueFromComponentVal'](value)).toStrictEqual([
+          { id: 1, text: '123213', originalItem: {}},
+          { id: 2, text: 'gfsd', originalItem: {}},
+        ]);
+      });
     });
 
     describe('isValueEquals()', () => {
@@ -173,6 +187,10 @@ describe('RefRelationService', () => {
       it('should return false, if componentValue is JSON array and none items are equal to one of the', () => {
         const componentVal = '[{"id": "AUS", "label":"Австралия"},{"id": "RUS", "label":"Россия"}]';
         expect(service.isValueEquals(['JAP', 'TUR'], componentVal)).toBe(false);
+      });
+      it('should return true, if componentValue is multichoice dictionary', () => {
+        const componentVal = '{ amount: 2, list: [ { id: 1 }, { id: 2 }, ] }';
+        expect(service.isValueEquals('14685', componentVal)).toBe(false);
       });
     });
   });

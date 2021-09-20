@@ -82,6 +82,8 @@ export class RefRelationService {
       const parsedValue = JSON.parse(componentVal as string);
       if (Array.isArray(parsedValue)) {
         return parsedValue;
+      } else if (Array.isArray(parsedValue?.list)) {
+        return parsedValue?.list;
       } else {
         return parsedValue.id;
       }
