@@ -12,6 +12,7 @@ import {
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
+import { IBalloonShowableContent } from 'projects/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import {
@@ -53,7 +54,7 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
     return this.mapObject.baloonContent[0].value;
   }
 
-  get additionalInfo(): object[] {
+  get additionalInfo(): IBalloonShowableContent[] {
     return this.mapObject.baloonContent.slice(1);
   }
 

@@ -45,7 +45,7 @@ export interface DictionaryItem extends ListElement {
 
 export interface DictionaryYMapItem extends DictionaryItem {
   center: [number, number];
-  baloonContent: Object;
+  baloonContent: IBalloonShowableContent[];
   id: string;
   idForMap: number;
   // fullListItems;
@@ -121,4 +121,9 @@ export interface DadataKinderGarten {
   SCHEDULE?: string;
   WEBSITE?: string;
   OKTMO: string;
+}
+
+export interface IBalloonShowableContent {
+  label: string;
+  value: string;
 }
