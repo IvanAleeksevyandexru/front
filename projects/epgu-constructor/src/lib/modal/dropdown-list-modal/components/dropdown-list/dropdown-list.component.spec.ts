@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DropdownListComponent } from './dropdown-list.component';
 import { BaseModule } from '../../../../shared/base.module';
 import { FilterPipe } from '../../pipes/filter.pipe';
+import { HighlightModule } from '@epgu/ui/pipes';
 
 describe('DropdownListComponent', () => {
   let component: DropdownListComponent;
@@ -9,14 +10,9 @@ describe('DropdownListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        DropdownListComponent,
-        FilterPipe,
-      ],
-      imports:[
-        BaseModule,
-      ],
-      providers:[]
+      declarations: [DropdownListComponent, FilterPipe],
+      imports: [BaseModule, HighlightModule],
+      providers: [],
     }).compileComponents();
   });
 

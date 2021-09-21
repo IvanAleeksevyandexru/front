@@ -14,8 +14,8 @@ module.exports = {
     '<rootDir>/src/',
   ],
   moduleNameMapper: {
-    '@ifc/plugin': '<rootDir>/node_modules/@epgu/epgu-lib/assets/vendor/ifcplugin-lib.js',
-    '@ifc/common': '<rootDir>/node_modules/@epgu/epgu-lib/assets/vendor/ifccommon-lib.js',
+    '@ifc/plugin': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js',
+    '@ifc/common': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js',
     '@epgu/epgu-constructor-ui-kit': '<rootDir>/projects/epgu-constructor-ui-kit/src/public-api',
     '@epgu/epgu-constructor-types': '<rootDir>/projects/epgu-constructor-types/src'
   },

@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { ModalService } from './modal.service';
-import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { configureTestSuite } from 'ng-bullet';
@@ -8,9 +7,9 @@ import { DeviceDetectorService } from '../core/services/device-detector/device-d
 import { ModalContainerComponent } from './shared/modal-container/modal-container.component';
 
 @Component({
-  template: ''
+  template: '',
 })
-class BlankComponent { }
+class BlankComponent {}
 
 describe('ModalService', () => {
   let service: ModalService;
@@ -19,7 +18,6 @@ describe('ModalService', () => {
     TestBed.configureTestingModule({
       declarations: [BlankComponent, ModalContainerComponent],
       providers: [DeviceDetectorService, ModalService],
-      imports: [HttpClientModule]
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {

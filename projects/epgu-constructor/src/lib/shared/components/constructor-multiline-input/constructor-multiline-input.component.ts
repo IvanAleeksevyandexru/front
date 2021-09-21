@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ValidationShowOn, Width } from '@epgu/epgu-lib';
 import { TextTransform } from '@epgu/epgu-constructor-types';
+import { Width } from '@epgu/ui/models';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 
 @Component({

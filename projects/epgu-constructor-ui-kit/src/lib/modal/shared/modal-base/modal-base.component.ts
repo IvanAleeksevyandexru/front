@@ -5,8 +5,8 @@ import {
   HostListener,
   Injector,
 } from '@angular/core';
+import { HelperService } from '@epgu/ui/services/helper';
 import { BehaviorSubject } from 'rxjs';
-import { HelperService } from '@epgu/epgu-lib';
 
 @Component({
   template: '',

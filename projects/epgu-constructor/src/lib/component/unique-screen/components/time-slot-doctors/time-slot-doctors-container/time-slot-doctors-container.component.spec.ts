@@ -18,7 +18,9 @@ import {
   EventBusService,
   HttpCancelService,
   LocalStorageService,
-  LocalStorageServiceStub, LocationService, LocationServiceStub,
+  LocalStorageServiceStub,
+  LocationService,
+  LocationServiceStub,
   LoggerService,
   LoggerServiceStub,
   ModalService,
@@ -28,7 +30,7 @@ import {
   SessionStorageService,
   SessionStorageServiceStub,
   TimeCalendarModule,
-  UnsubscribeService
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
@@ -56,6 +58,7 @@ import { FormPlayerServiceStub } from '../../../../../form-player/services/form-
 import { CustomListGenericData } from '../../../../custom-screen/components-list.types';
 import { DictionaryResponse } from '../../../../../shared/services/dictionary/dictionary-api.types';
 import { DisclaimerModule } from '../../../../../shared/components/disclaimer/disclaimer.module';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('TimeSlotDoctorsContainerComponent', () => {
   let component: TimeSlotDoctorsContainerComponent;
@@ -69,71 +72,72 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         children: [],
         fields: {
           itemName: null,
-          title: null
+          title: null,
         },
         attributes: [
           {
             name: 'Service_Id',
-            value: '109'
+            value: '109',
           },
           {
             name: 'Service_Name',
-            value: 'врач-терапевт'
-          }
-        ]
+            value: 'врач-терапевт',
+          },
+        ],
       },
       {
         parentItem: null,
         children: [],
         fields: {
           itemName: null,
-          title: null
+          title: null,
         },
         attributes: [
           {
             name: 'Service_Id',
-            value: '122'
+            value: '122',
           },
           {
             name: 'Service_Name',
-            value: 'врач-хирург'
-          }
-        ]
-      }
+            value: 'врач-хирург',
+          },
+        ],
+      },
     ],
     version: null,
     error: {
       errorDetail: {
         errorCode: 0,
-        errorMessage: 'Operation completed'
+        errorMessage: 'Operation completed',
       },
-      fieldErrors: []
-    }
+      fieldErrors: [],
+    },
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [TimeSlotDoctorsContainerComponent, TimeSlotDoctorsComponent, ],
+      declarations: [TimeSlotDoctorsContainerComponent, TimeSlotDoctorsComponent],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
-        TimeSlotDoctorService,
-        CurrentAnswersService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: Smev3TimeSlotsRestService, useClass: Smev3TimeSlotsRestServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
-        DatesToolsService,
-        JsonHelperService,
-        DictionaryToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        MockProvider(ComponentsListRelationsService),
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
+        MockProvider(ComponentsListRelationsService),
+        TimeSlotDoctorService,
+        CurrentAnswersService,
+        DatesToolsService,
+        JsonHelperService,
+        DictionaryToolsService,
         AutocompleteApiService,
         TimeSlotsConstants,
         UnsubscribeService,
@@ -141,7 +145,6 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         DownloadService,
         HtmlRemoverService,
         EventBusService,
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
       ],
       imports: [
         BaseModule,
@@ -153,7 +156,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         DefaultUniqueScreenWrapperModule,
         TimeCalendarModule,
         ConstructorCheckboxModule,
-        DisclaimerModule
+        DisclaimerModule,
+        HttpClientModule,
       ],
     }).compileComponents();
   });
@@ -161,9 +165,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TimeSlotDoctorsContainerComponent);
     component = fixture.componentInstance;
-    jest
-      .spyOn(component, 'ngAfterViewInit')
-      .mockReturnValue(null);
+    jest.spyOn(component, 'ngAfterViewInit').mockReturnValue(null);
 
     fixture.detectChanges();
   });
@@ -175,39 +177,50 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   describe('filterByAttributeName()', () => {
     it('should return all items after filtration without search string', () => {
       const filteredItems = component.filterByAttributeName(
-        { data: { items: mockLkApiItems.items }} as unknown as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         'Service_Name',
-        '');
+        '',
+      );
 
       expect(filteredItems).toEqual(mockLkApiItems.items);
     });
 
     it('should return filtered items after filtration with search string', () => {
       const filteredItems = component.filterByAttributeName(
-        { data: { items: mockLkApiItems.items }} as unknown as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         'Service_Name',
-        'врач-тер');
+        'врач-тер',
+      );
 
       expect(filteredItems).toEqual([mockLkApiItems.items[0]]);
     });
 
     it('should return filtered items after filtration with search string. Case insensitive check', () => {
       const filteredItems = component.filterByAttributeName(
-        { data: { items: mockLkApiItems.items }} as unknown as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         'Service_Name',
-        'ВрАЧ');
+        'ВрАЧ',
+      );
 
       expect(filteredItems).toEqual(mockLkApiItems.items);
     });
 
     it('should return empty array if there is no attribute name', () => {
       const filteredItems = component.filterByAttributeName(
-        { data: { items: mockLkApiItems.items }} as unknown as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         null,
-        'ВрАЧ');
+        'ВрАЧ',
+      );
 
       expect(filteredItems).toEqual([]);
     });
   });
-
 });

@@ -1,6 +1,6 @@
 {
   "name": "@epgu/children-clubs",
-  "version": "28.4.0",
+  "version": "30.6.1",
   "scripts": {
     "build": "cd ../../ && ng build children-clubs --prod",
     "lint": "cd ../../ && ng lint children-clubs",
@@ -11,13 +11,13 @@
     "@angular/core": "11.0.0",
     "@angular/forms": "11.0.0",
     "@angular/cdk": "11.0.0",
-    "@epgu/epgu-lib": "3.0.380-2-core-frontv8",
+    "@epgu/ui": "0.1.119-modules41",
     "rxjs": "6.6.6",
     "lodash": ""
   },
   "dependencies": {
-    "@epgu/epgu-constructor-types": "28.4.0",
-    "@epgu/epgu-constructor-ui-kit": "28.4.0",
+    "@epgu/epgu-constructor-types": "30.6.1",
+    "@epgu/epgu-constructor-ui-kit": "30.6.1",
     "tslib": "^2.0.0"
   }
 }

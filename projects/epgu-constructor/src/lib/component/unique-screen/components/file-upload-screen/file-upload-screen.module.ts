@@ -6,6 +6,8 @@ import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
+import { PluralizeModule } from '@epgu/ui/pipes';
+import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
 
 @NgModule({
   declarations: [FileUploadScreenComponent],
@@ -17,7 +19,9 @@ import { ScreenButtonsModule } from '../../../../shared/components/screen-button
     ScreenContainerModule,
     UserInfoLoaderModule,
     ScreenButtonsModule,
+    PluralizeModule,
+    FileSizeModule,
   ],
-  entryComponents: [FileUploadScreenComponent]
+  entryComponents: [FileUploadScreenComponent],
 })
 export class FileUploadScreenModule {}

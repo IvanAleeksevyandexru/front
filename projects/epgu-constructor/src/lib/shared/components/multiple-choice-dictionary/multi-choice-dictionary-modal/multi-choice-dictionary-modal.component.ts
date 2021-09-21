@@ -5,7 +5,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {
   catchError,

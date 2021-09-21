@@ -15,6 +15,7 @@ import { CompressionService } from './service/compression/compression.service';
 import { ValidationService } from './service/validation/validation.service';
 import { UploadService } from './service/upload/upload.service';
 import { BaseModule } from '../../base.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   entryComponents: [PhotoErrorModalComponent, PhotoEditorModalComponent],
@@ -32,6 +33,7 @@ import { BaseModule } from '../../base.module';
     AngularResizedEventModule,
     DragAndDropModule,
     BaseModule,
+    FormsModule,
   ],
   exports: [PhotoFormComponent],
   providers: [

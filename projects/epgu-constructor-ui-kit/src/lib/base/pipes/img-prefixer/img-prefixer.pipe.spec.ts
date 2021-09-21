@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { LoadService } from '@epgu/epgu-lib';
+import { LoadService } from '@epgu/ui/services/load';
 import { ImgPrefixerPipe } from './img-prefixer.pipe';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { LoadServiceStub } from '../../../core/services/config/load-service-stub';

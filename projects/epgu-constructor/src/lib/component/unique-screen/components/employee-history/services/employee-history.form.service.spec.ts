@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { DeclinePipe, MonthYear } from '@epgu/epgu-lib';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { EmployeeHistoryFormService } from './employee-history.form.service';
 import { UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
@@ -16,6 +14,8 @@ import { PrepareComponentsService } from '../../../../../shared/services/prepare
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { MockProvider } from 'ng-mocks';
+import { DeclinePipe } from '@epgu/ui/pipes';
+import { MonthYear } from '@epgu/ui/models/date-time';
 
 describe('EmployeeHistoryFormService', () => {
   let service: EmployeeHistoryFormService;

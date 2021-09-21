@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import {
   CoreUiModule,
   LongButtonModule,
@@ -39,7 +38,7 @@ describe('GroupListContainerComponent', () => {
         DictionaryService,
         GroupListService
       ],
-      imports: [EpguLibModule, LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, GroupListModule],
+      imports: [LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, GroupListModule],
     }).compileComponents();
   });
 

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
-import { ListElement, ListItem } from '@epgu/epgu-lib';
+import { ListElement, ListItem } from '@epgu/ui/models/dropdown';
 import {
   ComponentAttrsDto,
   ComponentDictionaryFilterDto,

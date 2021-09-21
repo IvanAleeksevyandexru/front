@@ -7,17 +7,16 @@ import {
   MicroAppUiConfig,
   SharedModalModule,
   MainContainerModule,
-  BaseUiModule,
   HEALTH_SERVICE,
   TRACE_ALLOWED_REMOTE_SERVICES,
   ERROR_HANDLER_SERVICE,
 } from '@epgu/epgu-constructor-ui-kit';
+import { NotifierModule } from '@epgu/ui/components/notifier';
 import { BaseModule } from './components/base/base.module';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
-
 import { GroupListModule } from './components/group-list/group-list.module';
 import { ProjectViewComponent } from './components/project-view/project-view.component';
 import { ProjectGroupComponent } from './components/project-group/project-group.component';
@@ -31,6 +30,7 @@ import {
   SEARCH_PROGRAM_SUB_URL,
 } from './services/health/health-handler';
 import { ErrorHandlerService } from './services/error-handler/error-handler.service';
+import { NotifierService } from '@epgu/ui/services/notifier';
 
 const APP_CONFIG: MicroAppUiConfig = {
   appRoutingComponentMap: {
@@ -62,10 +62,15 @@ const APP_CONFIG: MicroAppUiConfig = {
     BaseModule,
     SharedModalModule,
     SelectMapObjectModule,
+    NotifierModule,
     MicroAppUiModule.forRoot(APP_CONFIG),
-    BaseUiModule,
   ],
   providers: [
+    NotifierService,
+    {
+      provide: 'notifierSetting',
+      useValue: { singleNotifier: true },
+    },
     {
       provide: HEALTH_SERVICE,
       useClass: HealthHandlerService,

@@ -12,10 +12,14 @@ import {
   pluck,
 } from 'rxjs/operators';
 import { isEqual } from 'lodash';
-import { ListElement } from '@epgu/epgu-lib';
 import { StateService } from '../state/state.service';
-import { GroupFiltersModes, ChildrenClubsValue, ChildrenClubsState } from '../../children-clubs.types';
+import {
+  GroupFiltersModes,
+  ChildrenClubsValue,
+  ChildrenClubsState,
+} from '../../children-clubs.types';
 import { MicroAppStateQuery } from '@epgu/epgu-constructor-ui-kit';
+import { ListElement } from '@epgu/ui/models/dropdown';
 
 @Injectable()
 export class ProgramListService {
@@ -76,18 +80,20 @@ export class ProgramListService {
     map((state) => this.processFilters(state)),
     tap(() => this.reset()),
     switchMap((options) =>
-      this.api.getProgramList({
-        ...options,
-        page: 0,
-        pageSize: 100000,
-        okato: this.stateService.okato,
-        vendor: this.stateService.vendor,
-        nextSchoolYear: this.stateService.nextSchoolYear,
-      }).pipe(
-         catchError((_) => of([])),
-         tap(() => this.loading$$.next(false)),
-         tap((data: BaseProgram[]) => this.add(data))
-       )
+      this.api
+        .getProgramList({
+          ...options,
+          page: 0,
+          pageSize: 100000,
+          okato: this.stateService.okato,
+          vendor: this.stateService.vendor,
+          nextSchoolYear: this.stateService.nextSchoolYear,
+        })
+        .pipe(
+          catchError((_) => of([])),
+          tap(() => this.loading$$.next(false)),
+          tap((data: BaseProgram[]) => this.add(data)),
+        ),
     ),
     shareReplay(1),
   );

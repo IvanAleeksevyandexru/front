@@ -28,9 +28,8 @@ import {
   EventBusService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-
+import { PluralizePipe } from '@epgu/ui/pipes';
 import { differenceInCalendarMonths, differenceInCalendarYears, format } from 'date-fns';
-import { PluralizePipe } from '@epgu/epgu-lib';
 import { CustomComponentOutputData } from '../../../../../custom-screen/components-list.types';
 import { CachedValue, ChildI, ClearEvent, ItemStatus } from '../../select-children.models';
 

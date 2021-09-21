@@ -12,7 +12,7 @@ import {
   ConfigService,
   createDownloadEvent,
 } from '@epgu/epgu-constructor-ui-kit';
-import { SmuEventsService } from '@epgu/epgu-lib';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../data';
 import { ZoomComponent } from '../../../zoom/zoom.component';

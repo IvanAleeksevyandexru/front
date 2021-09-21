@@ -43,7 +43,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@epgu/epgu-lib/assets/",
+                "input": "./node_modules/@epgu/ui/assets/",
                 "output": "./lib-assets"
               },
               {
@@ -271,7 +271,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@epgu/epgu-lib/assets/",
+                "input": "./node_modules/@epgu/ui/assets/",
                 "output": "./lib-assets"
               }
             ],

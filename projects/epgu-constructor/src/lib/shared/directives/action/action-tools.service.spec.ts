@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActionToolsService } from './action-tools.service';
 import { DTOActionAction, ScreenTypes } from '@epgu/epgu-constructor-types';
-import { NotifierService } from '@epgu/epgu-lib';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -53,6 +52,7 @@ import {
 } from './action.mock';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { cloneDeep } from 'lodash';
+import { NotifierService } from '@epgu/ui/services/notifier';
 
 describe('ActionToolsService', () => {
   let service: ActionToolsService;

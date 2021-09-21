@@ -31,6 +31,7 @@ import { DateRestrictionsService } from '../../../../../shared/services/date-res
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../../core/services/date-ref/date-ref.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('InformationCenterContainerComponent', () => {
   let component: InformationCenterContainerComponent;
@@ -127,6 +128,7 @@ describe('InformationCenterContainerComponent', () => {
         MockModule(ConstructorDropdownModule),
         MockModule(DefaultUniqueScreenWrapperModule),
         MockModule(ScreenPadModule),
+        HttpClientModule,
       ],
       providers: [
         UnsubscribeService,

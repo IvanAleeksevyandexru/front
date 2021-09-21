@@ -9,6 +9,7 @@ import { BaseModule } from '../../../../shared/base.module';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [TimeSlotsComponent],
@@ -26,6 +27,7 @@ import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
     ScreenContainerModule,
     ScreenPadModule,
     TimeCalendarModule,
+    FormsModule,
   ],
   entryComponents: [TimeSlotsComponent],
 })

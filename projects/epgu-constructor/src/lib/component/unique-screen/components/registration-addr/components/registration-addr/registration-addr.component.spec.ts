@@ -29,6 +29,7 @@ import { BaseComponentsModule } from '../../../../../../shared/components/base-c
 import { UserInfoLoaderModule } from '../../../../../../shared/components/user-info-loader/user-info-loader.module';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('RegistrationAddrComponent', () => {
   let component: RegistrationAddrComponent;
@@ -36,7 +37,7 @@ describe('RegistrationAddrComponent', () => {
   let configService: ConfigService;
   let screenService: ScreenService;
   let datesToolsService: DatesToolsService;
-  const mockData = {
+  const mockData = ({
     id: 'pd5',
     type: 'RegistrationAddr',
     label: '',
@@ -73,7 +74,7 @@ describe('RegistrationAddrComponent', () => {
     arguments: {},
     value: '',
     required: true,
-  } as unknown as IRegistrationAddrComponent;
+  } as unknown) as IRegistrationAddrComponent;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -88,6 +89,7 @@ describe('RegistrationAddrComponent', () => {
         MockModule(BaseComponentsModule),
         MockModule(ScreenPadModule),
         MockModule(UserInfoLoaderModule),
+        HttpClientModule,
       ],
       providers: [
         UnsubscribeService,

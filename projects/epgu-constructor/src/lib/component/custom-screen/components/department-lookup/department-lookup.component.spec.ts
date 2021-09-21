@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockModule, MockProviders } from 'ng-mocks';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { DatesToolsService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DropDownDeptsModule } from '../../../../shared/components/drop-down-depts/drop-down-depts.module';
 import { DepartmentLookupComponent } from './department-lookup.component';

@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HealthService, SmuEventsService } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
-
 import { SelectChildrenItemWrapperComponent } from './select-children-item-wrapper.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -18,6 +20,8 @@ import { configureTestSuite } from 'ng-bullet';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
+import { HealthService } from '@epgu/ui/services/health';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('SelectChildrenItemWrapperComponent', () => {
   let component: SelectChildrenItemWrapperComponent;

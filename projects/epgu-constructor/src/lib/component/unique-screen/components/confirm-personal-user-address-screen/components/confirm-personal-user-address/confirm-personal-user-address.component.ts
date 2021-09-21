@@ -16,8 +16,7 @@ import {
   DatesToolsService,
   DATE_STRING_DOT_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
-import { BrokenDateFixStrategy } from '@epgu/epgu-lib';
-
+import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import {

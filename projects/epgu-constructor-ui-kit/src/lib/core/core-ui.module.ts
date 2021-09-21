@@ -1,9 +1,10 @@
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { SmuEventsService } from '@epgu/epgu-lib';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
-// Сокращать пути до ./components и ./services нельзя, т.к. будет ошибка при `ng build epgu-constructor --prod`
+// NOTICE: Сокращать пути до ./components и ./services нельзя, т.к. будет ошибка при `ng build epgu-constructor --prod`
+// TODO: добавить public-api.ts, package.json и index.ts для каждого сервиса, чтобы можно было импортить из одного пути
 import { CfAppStateService } from './services/cf-app-state/cf-app-state.service';
 import { LocalStorageService } from './services/local-storage/local-storage.service';
 import { SessionStorageService } from './services/session-storage/session-storage.service';
@@ -35,6 +36,7 @@ import { WordTransformService } from './services/word-transform/word-transform.s
 import { ServiceNameService } from './services/service-name/service-name.service';
 
 @NgModule({
+  imports: [HttpClientModule],
   providers: [
     ModalService,
     LocalStorageService,

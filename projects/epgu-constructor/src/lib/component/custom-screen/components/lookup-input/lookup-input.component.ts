@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { ConstantsService, ListElement, ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConstantsService } from '@epgu/ui/services/constants';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UploaderManagerItemComponent } from './uploader-manager-item.component';
 import { BaseModule } from '../../../../base.module';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
@@ -21,9 +20,10 @@ import {
   OperationType,
 } from '../../../file-upload/data';
 import { By } from '@angular/platform-browser';
-import { FileSizePipe, SmuEventsService } from '@epgu/epgu-lib';
 import { MockModule } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
+import { FileSizePipe } from '@epgu/ui/pipes';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {

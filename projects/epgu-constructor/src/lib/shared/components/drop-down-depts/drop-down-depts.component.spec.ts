@@ -13,15 +13,16 @@ import {
   ConfigServiceStub,
   LoggerService,
   LoggerServiceStub,
-  UnsubscribeService
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { CustomListDictionary } from '../../../component/custom-screen/components-list.types';
 import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
 import IDropDownDeptsAttrs from './IDropDownDeptsAttrs';
 import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { MockModule, MockProvider } from 'ng-mocks';
+import { HttpClientModule } from '@angular/common/http';
 
 const getDictionary = (count = 0, repeatedWithNoFilters = false): CustomListDictionary => {
   const list = [];
@@ -52,7 +53,13 @@ describe('DropDownDeptsComponent', () => {
 
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
-      imports: [CoreModule, BaseModule, RouterTestingModule, MockModule(ValidationTypeModule)],
+      imports: [
+        CoreModule,
+        BaseModule,
+        RouterTestingModule,
+        MockModule(ValidationTypeModule),
+        HttpClientModule,
+      ],
       declarations: [DropDownDeptsComponent],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },

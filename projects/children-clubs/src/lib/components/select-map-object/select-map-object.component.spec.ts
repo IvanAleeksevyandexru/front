@@ -26,10 +26,11 @@ import { StateService } from '../../services/state/state.service';
 import { StateServiceStub } from '../../services/state/state.service.stub';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import { SelectMapObjectModule } from './select-map-object.module';
-import { YaMapService } from '@epgu/epgu-lib';
 import { of } from 'rxjs';
 import { BaseProgram } from '../../typings';
 import { baseProgramStub } from '../../stubs/projects.stub';
+import { YaMapService } from '@epgu/ui/services/ya-map';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -40,7 +41,7 @@ describe('SelectMapObjectComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [SelectMapObjectModule],
+      imports: [SelectMapObjectModule, HttpClientModule],
       providers: [
         Icons,
         DatesToolsService,
@@ -86,7 +87,6 @@ describe('SelectMapObjectComponent', () => {
       setCenter: () => 1,
     };
 
-
     fixture.detectChanges();
   });
 
@@ -95,7 +95,6 @@ describe('SelectMapObjectComponent', () => {
   });
 
   describe('ngOnInit()', () => {
-
     it('fill coords should have been called on init', () => {
       const spy = jest.spyOn(component as any, 'fillCoords');
       component['yaMapService'].mapSubject.next(true);
@@ -119,7 +118,7 @@ describe('SelectMapObjectComponent', () => {
           });
         });
 
-      programListService.data$$.next([baseProgramStub] as unknown as BaseProgram[]);
+      programListService.data$$.next(([baseProgramStub] as unknown) as BaseProgram[]);
       component['fillCoords']().subscribe((coords: any) => {
         expect(coords[0].center[0]).toBe(37.61017);
         expect(coords[0].center[1]).toBe(55.649489);
@@ -127,43 +126,36 @@ describe('SelectMapObjectComponent', () => {
         done();
       });
     });
-
   });
 
   describe('expandObject()', () => {
-
     it('should return if no object passed', () => {
       const result = component.expandObject(null);
       expect(result).toBeUndefined();
     });
 
     it('should return if expanded object passed', () => {
-      const result = component.expandObject({ expanded: true } as unknown as YMapItem<any>);
+      const result = component.expandObject(({ expanded: true } as unknown) as YMapItem<any>);
       expect(result).toBeUndefined();
     });
 
     it('should expand passed object in service', () => {
       const obj = { expanded: false };
       yandexMapService.selectedValue$.next([obj]);
-      component.expandObject(obj as unknown as YMapItem<any>);
+      component.expandObject((obj as unknown) as YMapItem<any>);
       expect(yandexMapService.selectedValue$.value[0].expanded).toBeTruthy();
     });
-
-
   });
 
   describe('ngOnDestroy()', () => {
-
     it('should clear mapSubject value', () => {
       component.ngOnDestroy();
 
       expect(component['yaMapService'].mapSubject.getValue()).toBeNull();
     });
-
   });
 
   describe('handleError()', () => {
-
     it('should return modal observable', (done) => {
       const res = component.handleError('error');
 
@@ -171,8 +163,5 @@ describe('SelectMapObjectComponent', () => {
         done();
       });
     });
-
   });
-
-
 });

@@ -13,7 +13,7 @@ import {
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
-import { LookupProvider, ListElement } from '@epgu/epgu-lib';
+import { ListElement, LookupProvider } from '@epgu/ui/models/dropdown';
 import { Observable, of } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';

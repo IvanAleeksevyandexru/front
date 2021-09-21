@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { Observable, combineLatest } from 'rxjs';
-
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
-import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { ScreenService } from '../../../../../screen/screen.service';
-import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { EquipmentChoiceUpdateEvent, EquipmentChoiceSaveValue } from '../equipment-choice.types';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 
 @Component({
   selector: 'epgu-constructor-equipment-choice-container',
@@ -20,7 +19,9 @@ export class EquipmentChoiceContainerComponent {
     this.screenService.cachedAnswers$,
   ]).pipe(
     takeUntil(this.ngUnsubscribe$),
-    map(([component, cachedAnswers]) => this.getCachedValue(cachedAnswers, component)),
+    map(([component, cachedAnswers]) =>
+      this.getCachedValue(<CachedAnswersDto>cachedAnswers, <ComponentDto>component),
+    ),
   );
 
   constructor(

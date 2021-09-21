@@ -2,14 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
 import { MockModule, MockProviders } from 'ng-mocks';
-import { EpguLibModule } from '@epgu/epgu-lib';
-import {
-  EventBusService,
-  ImgPrefixerPipe,
-  SafePipe,
-  UnsubscribeService
-} from '@epgu/epgu-constructor-ui-kit';
-
+import { BaseUiModule, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
@@ -34,60 +27,56 @@ describe('CalendarInputComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [CalendarInputComponent,
+      declarations: [
+        CalendarInputComponent,
         OutputHtmlComponent,
         LabelComponent,
         HintComponent,
         ConstructorDatePickerComponent,
         ClickableLabelDirective,
         TableDirective,
-        ImgPrefixerPipe,
-        SafePipe,
-        ValidationTypeDirective
+        ValidationTypeDirective,
       ],
-      imports: [ MockModule(EpguLibModule)],
+      imports: [MockModule(BaseUiModule)],
       providers: [
-        UnsubscribeService,
+        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         MockProviders(ValidationService, EventBusService, TypeCastService),
+        UnsubscribeService,
         ComponentsListToolsService,
         FormBuilder,
-        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
   let control: FormGroup;
 
   beforeEach(() => {
-
     mockComponent = {
       id: 'SomeId',
       type: 'CalendarInput',
       attrs: {
-        components:[
-            { id: 'firstDate', attrs: {}},
-            { id: 'secondDate', attrs: {}}
-          ],
+        components: [
+          { id: 'firstDate', attrs: {}},
+          { id: 'secondDate', attrs: {}},
+        ],
         dateRestrictions: {
           type: 'const',
           condition: '>',
-          value: '21.02.2001'
-        }
+          value: '21.02.2001',
+        },
       },
-      value: '{"firstDate" : "1979-07-05T00:00:00.000+05:00", "secondDate": "1979-07-05T00:00:00.000+05:00"}',
+      value:
+        '{"firstDate" : "1979-07-05T00:00:00.000+05:00", "secondDate": "1979-07-05T00:00:00.000+05:00"}',
       required: false,
     };
 
-    formService = (TestBed.inject(
-      ComponentsListFormService,
-    ));
+    formService = TestBed.inject(ComponentsListFormService);
 
     control = new FormGroup({
       id: new FormControl(mockComponent.id),
       attrs: new FormControl(mockComponent.attrs),
       value: new FormControl(mockComponent.value),
       required: new FormControl(mockComponent.required),
-      type: new FormControl(mockComponent.type)
+      type: new FormControl(mockComponent.type),
     });
     formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(CalendarInputComponent);
@@ -112,8 +101,12 @@ describe('CalendarInputComponent', () => {
     it('should fill form value according to JSON parsed', () => {
       component.ngOnInit();
 
-      expect(component.form.get('firstDate').value).toEqual(new Date('1979-07-05T00:00:00.000+05:00'));
-      expect(component.form.get('secondDate').value).toEqual(new Date('1979-07-05T00:00:00.000+05:00'));
+      expect(component.form.get('firstDate').value).toEqual(
+        new Date('1979-07-05T00:00:00.000+05:00'),
+      );
+      expect(component.form.get('secondDate').value).toEqual(
+        new Date('1979-07-05T00:00:00.000+05:00'),
+      );
     });
   });
 
@@ -127,5 +120,4 @@ describe('CalendarInputComponent', () => {
       expect(component.form.get('firstDate').getError('test')).toBe('test');
     });
   });
-
 });

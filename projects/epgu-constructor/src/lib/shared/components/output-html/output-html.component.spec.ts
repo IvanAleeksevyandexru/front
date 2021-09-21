@@ -5,9 +5,15 @@ import { By } from '@angular/platform-browser';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
-  ImgPrefixerPipe
+  ImgPrefixerPipe,
 } from '@epgu/epgu-constructor-ui-kit';
-import { SafePipe, ConfigService, ConfigServiceStub, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  SafePipe,
+  ConfigService,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ActionService } from '../../directives/action/action.service';
@@ -15,10 +21,10 @@ import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ClickableLabelDirective } from '../../directives/clickable-label/clickable-label.directive';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
-import { SmuEventsService } from '@epgu/epgu-lib';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { JsonHelperServiceStub } from '../../../core/services/json-helper/json-helper.service.stub';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
@@ -40,8 +46,7 @@ describe('OutputHtmlComponent', () => {
         HtmlSelectService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -12,16 +12,18 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { ActionService } from '../../../shared/directives/action/action.service';
 import { ConfirmationModalModule } from '../../confirmation-modal/confirmation-modal.module';
+import { HighlightModule } from '@epgu/ui/pipes';
 
 const dropdownData = {
   title: 'Категории граждан и условия для досрочного назначения пенсии',
   items: [
     {
-      label: 'Мужчины и женщины, осуществлявшие педагогическую деятельность в учреждениях для детей',
+      label:
+        'Мужчины и женщины, осуществлявшие педагогическую деятельность в учреждениях для детей',
       content: 'Если имеют стаж по профессии не менее 25 лет',
-      tags: []
-    }
-  ]
+      tags: [],
+    },
+  ],
 };
 
 const components = [
@@ -30,7 +32,7 @@ const components = [
     type: 'StringInput',
     attrs: {},
     value: '',
-    required: true
+    required: true,
   },
   {
     id: 'html-string',
@@ -40,14 +42,15 @@ const components = [
       clarifications: {
         test: {
           title: 'Как определить тип стажа',
-          text: '<a data-action-type="dropdownListModal" data-action-value="dropdownListModal">Список</a>'
+          text:
+            '<a data-action-type="dropdownListModal" data-action-value="dropdownListModal">Список</a>',
         },
-        dropdownListModal: dropdownData
-      }
+        dropdownListModal: dropdownData,
+      },
     },
     value: '',
-    required: true
-  }
+    required: true,
+  },
 ];
 
 describe('DropdownListModalComponent', () => {
@@ -56,26 +59,21 @@ describe('DropdownListModalComponent', () => {
   let screenService: ScreenService;
   let eventBusService: EventBusService;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        DropdownListModalComponent,
-        DropdownListComponent,
-        FilterPipe,
-      ],
-      imports:[
-        MockModule(BaseModule),
-        MockModule(ConfirmationModalModule)
-      ],
-      providers:[
+      declarations: [DropdownListModalComponent, DropdownListComponent, FilterPipe],
+      imports: [MockModule(BaseModule), MockModule(ConfirmationModalModule), HighlightModule],
+      providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         EventBusService,
         UnsubscribeService,
-        MockProvider(ActionService)
-      ]
-    }).overrideComponent(DropdownListModalComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
-    }).compileComponents();
+        MockProvider(ActionService),
+      ],
+    })
+      .overrideComponent(DropdownListModalComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -87,7 +85,7 @@ describe('DropdownListModalComponent', () => {
     component.clarificationId = 'dropdownListModal';
   });
 
-  it('should create for repeatable screen', done => {
+  it('should create for repeatable screen', (done) => {
     screenService.display = {
       type: 'UNIQUE',
       components: [
@@ -96,9 +94,9 @@ describe('DropdownListModalComponent', () => {
           type: 'RepeatableFields',
           attrs: { components },
           value: '',
-          required: true
-        }
-      ]
+          required: true,
+        },
+      ],
     } as any;
     fixture.detectChanges();
     component.data$.subscribe((data) => {
@@ -107,10 +105,10 @@ describe('DropdownListModalComponent', () => {
     });
   });
 
-  it('should create for custom screen', done => {
+  it('should create for custom screen', (done) => {
     screenService.display = {
       type: 'CUSTOM',
-      components
+      components,
     } as any;
     fixture.detectChanges();
     component.data$.subscribe((data) => {
@@ -119,10 +117,10 @@ describe('DropdownListModalComponent', () => {
     });
   });
 
-  it('should be empty data', done => {
+  it('should be empty data', (done) => {
     screenService.display = {
       type: 'CUSTOM',
-      components: [ { id: 'string' } ]
+      components: [{ id: 'string' }],
     } as any;
     fixture.detectChanges();
     component.data$.subscribe((data) => {

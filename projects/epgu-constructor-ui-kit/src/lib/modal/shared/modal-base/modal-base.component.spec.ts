@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HelperService } from '@epgu/epgu-lib';
 
 import { ModalBaseComponent } from './modal-base.component';
 import { configureTestSuite } from 'ng-bullet';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ModalBaseComponent', () => {
   let component: ModalBaseComponent;

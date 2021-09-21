@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import {

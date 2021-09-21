@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { LoadService } from '@epgu/epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggerService } from '../logger/logger.service';
 import { Config, MockApi, AppPathMap, TimeSlotsApi } from './config.types';
 import { DEFAULT_CONFIG_ID } from '@epgu/epgu-constructor-types';
+import { LoadService } from '@epgu/ui/services/load';
 
 @Injectable()
 export class ConfigService implements Config {

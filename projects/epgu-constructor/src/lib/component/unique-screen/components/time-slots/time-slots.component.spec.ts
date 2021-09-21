@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EpguLibModule, ListItem } from '@epgu/epgu-lib';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import {
   ScreenPadComponent,
@@ -8,6 +7,7 @@ import {
   TimeCalendarModule,
   ObjectHelperService,
   SessionService,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents, MockProvider } from 'ng-mocks';
@@ -52,6 +52,8 @@ import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.ser
 import { FormPlayerServiceStub } from '../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { ListItem } from '@epgu/ui/models/dropdown';
+import { FormsModule } from '@angular/forms';
 
 const moment = moment_;
 moment.locale('ru');
@@ -63,14 +65,13 @@ describe('TimeSlotsComponent', () => {
   let timeSlotsService: TimeSlotsService;
   let currentAnswersService: CurrentAnswersService;
   let smev3TimeSlotsRestService: Smev3TimeSlotsRestService;
-  let datesToolsService: DatesToolsService;
   let store: ScreenStore;
   let httpClient: HttpClient;
 
   configureTestSuite(() => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
     TestBed.configureTestingModule({
-      imports: [EpguLibModule, HttpClientTestingModule, TimeCalendarModule],
+      imports: [HttpClientTestingModule, TimeCalendarModule, BaseUiModule, FormsModule],
       declarations: [
         TimeSlotsComponent,
         MockComponents(
@@ -81,6 +82,15 @@ describe('TimeSlotsComponent', () => {
         ),
       ],
       providers: [
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: Smev3TimeSlotsRestService, useClass: Smev3TimeSlotsRestServiceStub },
+        { provide: Smev2TimeSlotsRestService, useClass: Smev2TimeSlotsRestServiceStub },
+        { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         MockProvider(DictionaryToolsService),
         CurrentAnswersService,
         TimeSlotsConstants,
@@ -91,15 +101,6 @@ describe('TimeSlotsComponent', () => {
         HttpCancelService,
         JsonHelperService,
         SessionService,
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: Smev3TimeSlotsRestService, useClass: Smev3TimeSlotsRestServiceStub },
-        { provide: Smev2TimeSlotsRestService, useClass: Smev2TimeSlotsRestServiceStub },
-        { provide: LoggerService, useClass: LoggerServiceStub },
-        { provide: ActionService, useClass: ActionServiceStub },
-        { provide: FormPlayerService, useClass: FormPlayerServiceStub },
       ],
     }).compileComponents();
   });
@@ -108,7 +109,6 @@ describe('TimeSlotsComponent', () => {
     timeSlotsService = TestBed.inject(TimeSlotsService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
-    datesToolsService = TestBed.inject(DatesToolsService);
     httpClient = TestBed.inject(HttpClient);
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     store = cloneDeep(mockScreenDivorceStore);
@@ -116,7 +116,6 @@ describe('TimeSlotsComponent', () => {
     fixture = TestBed.createComponent(TimeSlotsComponent);
     component = fixture.componentInstance;
 
-    const compValue = JSON.parse(screenService.component.value);
     let cachedAnswer = screenService.getCompValueFromCachedAnswers();
     if (cachedAnswer) {
       cachedAnswer = JSON.parse(cachedAnswer);
@@ -286,12 +285,6 @@ describe('TimeSlotsComponent', () => {
     compValue.waitingTimeExpired = true;
     screenService.component.value = JSON.stringify(compValue);
     component['loadTimeSlots']();
-    const initMock = spyOn(component['timeSlotsService'], 'init').and.returnValue(of('okay'));
-    const hasErrorsMock = spyOn(component['timeSlotsService'], 'hasError').and.returnValue(false);
-    const getErrorMessageMock = spyOn(
-      component['timeSlotsService'],
-      'getErrorMessage',
-    ).and.returnValue('no_error');
     fixture.detectChanges();
     const bookedSlot = component.bookedSlot;
     expect(bookedSlot).toBeNull();

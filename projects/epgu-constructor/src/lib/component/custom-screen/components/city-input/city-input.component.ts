@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 

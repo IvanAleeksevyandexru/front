@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormatPhonePipe } from '@epgu/epgu-lib';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -16,6 +15,7 @@ import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { By } from '@angular/platform-browser';
 import { ConfirmUserDataError } from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import { MockProvider } from 'ng-mocks';
+import { FormatPhonePipe } from '@epgu/ui/pipes';
 
 type PersonalUserPhoneEmailWithErrors = ComponentBase & {
   errors: ConfirmUserDataError[];
@@ -31,19 +31,20 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
       disclaimer: {
         type: 'warn',
         title: 'Нашли ошибку?',
-        description: 'Измените данные <a href=\'https://lk.gosuslugi.ru/settings/account\'>в личном кабинете</a>'
+        description:
+          'Измените данные <a href=\'https://lk.gosuslugi.ru/settings/account\'>в личном кабинете</a>',
       },
       defaultHint: {
         type: 'warn',
         title: 'Добавьте телефон',
-        value: 'Укажите ваш номер в профиле и продолжите заполнять заявление'
+        value: 'Укажите ваш номер в профиле и продолжите заполнять заявление',
       },
     },
     id: '',
     label: '',
     type: '',
     value: '',
-    errors: []
+    errors: [],
   };
   const actionMock: ComponentActionDto = {
     label: '',
@@ -132,8 +133,8 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
       {
         type: 'warn',
         title: 'Добавьте телефон.',
-        desc: 'Укажите ваш номер в профиле и продолжите заполнять заявление'
-      } as ConfirmUserDataError
+        desc: 'Укажите ваш номер в профиле и продолжите заполнять заявление',
+      } as ConfirmUserDataError,
     ];
     screenService.component = mockData;
     fixture.detectChanges();
@@ -143,7 +144,9 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     expect(debugEl).toBeTruthy();
 
     expect(debugEl.nativeElement.type).toEqual('warn');
-    expect(debugEl.nativeElement.description).toEqual('Укажите ваш номер в профиле и продолжите заполнять заявление');
+    expect(debugEl.nativeElement.description).toEqual(
+      'Укажите ваш номер в профиле и продолжите заполнять заявление',
+    );
   });
 
   it('should rendered correctly view state without errors', () => {
@@ -154,6 +157,8 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     const selector = 'epgu-constructor-disclaimer';
     const debugEl: DebugElement = fixture.debugElement.query(By.css(selector));
     expect(debugEl.nativeElement.type).toEqual('warn');
-    expect(debugEl.nativeElement.description).toEqual('Измените данные <a href=\'https://lk.gosuslugi.ru/settings/account\'>в личном кабинете</a>');
+    expect(debugEl.nativeElement.description).toEqual(
+      'Измените данные <a href=\'https://lk.gosuslugi.ru/settings/account\'>в личном кабинете</a>',
+    );
   });
 });

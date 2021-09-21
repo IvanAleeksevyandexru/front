@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DurationService } from './duration.service';
 import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';

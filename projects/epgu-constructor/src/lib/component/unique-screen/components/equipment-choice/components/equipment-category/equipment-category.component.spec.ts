@@ -2,12 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
-
-import { PluralizePipe } from '@epgu/epgu-lib';
+import { PluralizePipe } from '@epgu/ui/pipes';
 import { CoreUiModule, ScreenPadComponent, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CoreModule } from '../../../../../../core/core.module';
 import { equipmentCategoryMock, categoryFormTestValue } from '../../equipment-choice.mocks';
-import { MultipleChoiceDictionaryComponent } 
+import { MultipleChoiceDictionaryComponent }
   from '../../../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary/multiple-choice-dictionary.component';
 import { ConstructorPlainInputComponent }
   from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.component';

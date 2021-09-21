@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LoadService, SmuEventsService } from '@epgu/epgu-lib';
+import { LoadService } from '@epgu/ui/services/load';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { CookieService } from 'ngx-cookie-service';
 import { LOCAL_STORAGE_PLATFORM_TYPE } from '../config/config.types';
 

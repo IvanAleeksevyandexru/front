@@ -6,10 +6,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatesToolsService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesHelperService } from '@epgu/epgu-lib';
 import { takeUntil, distinctUntilChanged, pairwise, startWith } from 'rxjs/operators';
 import { DatePeriodFormState, DatePeriodFormValues } from '../date-period.types';
 import { RegistrationAddrHints } from '../../registration-addr/registration-addr-screen.types';

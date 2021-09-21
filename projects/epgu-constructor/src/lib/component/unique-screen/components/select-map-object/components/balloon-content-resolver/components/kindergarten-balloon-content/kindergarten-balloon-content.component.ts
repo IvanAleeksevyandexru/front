@@ -12,9 +12,9 @@ import {
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
-import { IBalloonShowableContent } from 'projects/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.types';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
+import { IBalloonShowableContent } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import {
   KindergartenService,
   KindergartenStates,

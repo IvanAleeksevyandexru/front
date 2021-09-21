@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
-import { MockComponents, MockModule } from 'ng-mocks';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { MockComponents } from 'ng-mocks';
 import { PaymentWayComponent } from './payment-way.component';
 import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
 import { PaymentTypes, ProgramType } from '../../payment-way.types';
+import { PluralizeModule } from '@epgu/ui/pipes';
+import { BaseUiModule } from '@epgu/epgu-constructor-ui-kit';
 
 const mockComponents = {
   label: '',
@@ -14,24 +15,24 @@ const mockComponents = {
       {
         paymentType: PaymentTypes.paid,
         amount: 1000,
-        programType: ProgramType.other
+        programType: ProgramType.other,
       },
     ],
     html: {
       paid: 'fake paid html',
-      budget: 'fake budget html'
-    }
-  }
+      budget: 'fake budget html',
+    },
+  },
 };
 
 describe('PaymentWayComponent', () => {
   let component: PaymentWayComponent;
   let fixture: ComponentFixture<PaymentWayComponent>;
 
-  configureTestSuite(  () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [PaymentWayComponent,  MockComponents(OutputHtmlComponent)],
-      imports: [MockModule(EpguLibModule)],
+      declarations: [PaymentWayComponent, MockComponents(OutputHtmlComponent)],
+      imports: [BaseUiModule, PluralizeModule],
     }).compileComponents();
   });
 
@@ -54,23 +55,23 @@ describe('PaymentWayComponent', () => {
     };
 
     expect(setPaymentWaysWithType(PaymentTypes.pfdod_certificate)).toEqual({
-      pfdod_certificate: {  label: 'Сертификатом', paymentType: 'pfdod_certificate' }
+      pfdod_certificate: { label: 'Сертификатом', paymentType: 'pfdod_certificate' },
     });
 
     expect(setPaymentWaysWithType(PaymentTypes.private)).toEqual({
-      private: {  label: 'Из личных средств', paymentType: 'private' }
+      private: { label: 'Из личных средств', paymentType: 'private' },
     });
 
     expect(setPaymentWaysWithType(PaymentTypes.paid)).toEqual({
-      paid: {  label: 'Из личных средств', paymentType: 'paid' }
+      paid: { label: 'Из личных средств', paymentType: 'paid' },
     });
 
     expect(setPaymentWaysWithType(PaymentTypes.none)).toEqual({
-      none: {  label: 'Бесплатно', paymentType: 'none' }
+      none: { label: 'Бесплатно', paymentType: 'none' },
     });
 
     expect(setPaymentWaysWithType(PaymentTypes.budget)).toEqual({
-      budget: {  label: 'Бесплатно', paymentType: 'budget' }
+      budget: { label: 'Бесплатно', paymentType: 'budget' },
     });
   });
 });

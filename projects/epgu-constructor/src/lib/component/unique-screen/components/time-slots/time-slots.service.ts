@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ListItem } from '@epgu/epgu-lib';
+import { ListItem } from '@epgu/ui/models/dropdown';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, pluck, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';

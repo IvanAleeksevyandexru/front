@@ -10,7 +10,7 @@ import {
   getValueRefMock,
 } from './ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 describe('RefRelationService', () => {

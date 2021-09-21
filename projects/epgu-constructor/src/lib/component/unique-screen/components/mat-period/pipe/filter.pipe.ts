@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 
 @Pipe({
   name: 'filter',

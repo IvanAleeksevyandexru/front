@@ -3,8 +3,8 @@ import { ApiService } from '../api/api.service';
 import { StateService } from '../state/state.service';
 import { distinctUntilChanged, filter, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 import { FocusDirectionsItem, Municipality, NormalizedFocusData, Program } from '../../typings';
-import { ListElement } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
+import { ListElement } from '@epgu/ui/models/dropdown';
 
 @Injectable({ providedIn: 'root' })
 export class DictionaryService {

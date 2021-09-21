@@ -1,4 +1,4 @@
-import { ComponentBase } from 'projects/epgu-constructor/src/lib/screen/screen.types';
+import { ComponentBase } from '../../../../screen/screen.types';
 import { EquipmentChoiceCategory, EquipmentFormValue } from './equipment-choice.types';
 
 export const equipmentChoiceComponentMock: ComponentBase = {

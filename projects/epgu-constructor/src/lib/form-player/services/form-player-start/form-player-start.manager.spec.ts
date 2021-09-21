@@ -10,7 +10,7 @@ import {
   QUIZ_SCENARIO_KEY,
 } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
-import { LoadService } from '@epgu/epgu-lib';
+import { LoadService } from '@epgu/ui/services/load';
 import { ConfigService, ConfigServiceStub, LoadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';

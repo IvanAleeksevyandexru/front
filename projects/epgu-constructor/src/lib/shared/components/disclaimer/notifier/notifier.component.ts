@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
 import { Subscription } from 'rxjs';
-import { HelperService } from '@epgu/epgu-lib';
+import { HelperService } from '@epgu/ui/services/helper';
 import {
   Notifier,
   NOTIFIER_DEFAULT_SETTING,

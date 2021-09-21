@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import {
   CoreUiModule,
   LongButtonModule,
@@ -33,7 +32,7 @@ describe('ViewComponent', () => {
         MicroAppStateQuery,
         DictionaryService
       ],
-      imports: [EpguLibModule, LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, ProgramListModule],
+      imports: [LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, ProgramListModule],
     }).compileComponents();
   });
 

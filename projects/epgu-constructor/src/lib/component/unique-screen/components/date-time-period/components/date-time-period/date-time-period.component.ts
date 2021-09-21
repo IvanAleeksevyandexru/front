@@ -7,12 +7,13 @@ import {
   EventEmitter,
   ChangeDetectorRef,
 } from '@angular/core';
-import { DatesHelperService, ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { addDays, addYears, format, isSameDay, parseISO } from 'date-fns';
 import { pairwise, startWith, tap } from 'rxjs/operators';
 import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import {
   getDateTimeObject,
   getTimeChunks,

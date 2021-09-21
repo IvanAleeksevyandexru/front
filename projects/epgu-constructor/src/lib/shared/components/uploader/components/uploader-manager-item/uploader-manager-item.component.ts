@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { SmuEventsService } from '@epgu/epgu-lib';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import {
   DeviceDetectorService,
   ConfigService,

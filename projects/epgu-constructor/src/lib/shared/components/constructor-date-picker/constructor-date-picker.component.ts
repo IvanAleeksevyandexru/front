@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { Align, BrokenDateFixStrategy, RelativeDate, ValidationShowOn } from '@epgu/epgu-lib';
-
+import { Align, BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { RelativeDate } from '@epgu/ui/models/date-time';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 
 @Component({

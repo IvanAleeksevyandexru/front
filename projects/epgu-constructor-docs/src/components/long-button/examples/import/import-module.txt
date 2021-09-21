@@ -6,6 +6,6 @@ import { BaseUiModule, LongButtonModule } from '@epgu/epgu-constructor-ui-kit';
     imports: [
         ...
         LongButtonModule, // <--- сама кнопка
-        BaseUiModule, // <--- лоадер (крутилка) из epgu-lib
+        BaseUiModule, // <--- лоадер (крутилка) из @epgu/ui
     ],
 ...

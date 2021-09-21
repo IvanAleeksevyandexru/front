@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule, MockProvider } from 'ng-mocks';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { FormBuilder } from '@angular/forms';
 import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
 import {
@@ -23,6 +23,7 @@ import { DateRestrictionsService } from '../../../services/date-restrictions/dat
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;
@@ -63,8 +64,9 @@ describe('MultiChoiceDictionaryModalComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MultiChoiceDictionaryModalComponent],
-      imports: [MockModule(ConfirmationModalModule), MockModule(BaseModule)],
+      imports: [MockModule(ConfirmationModalModule), MockModule(BaseModule), HttpClientModule],
       providers: [
+        MockProvider(DateRestrictionsService),
         FormBuilder,
         UnsubscribeService,
         EventBusService,
@@ -73,13 +75,11 @@ describe('MultiChoiceDictionaryModalComponent', () => {
           provide: DictionaryApiService,
           useClass: DictionaryApiServiceStub,
         },
-
         DictionaryToolsService,
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
         RefRelationService,
-        MockProvider(DateRestrictionsService),
         ConfigService,
         LoggerService,
         JsonHelperService,

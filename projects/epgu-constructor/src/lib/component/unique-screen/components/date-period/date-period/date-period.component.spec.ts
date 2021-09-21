@@ -13,7 +13,8 @@ import {
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DatePeriodComponent } from './date-period.component';
-import { Hints } from 'projects/epgu-constructor-types/src/base';
+import { Hints } from '@epgu/epgu-constructor-types';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('DatePeriodComponent', () => {
   let component: DatePeriodComponent;
@@ -27,6 +28,7 @@ describe('DatePeriodComponent', () => {
         MockModule(DefaultUniqueScreenWrapperModule),
         ReactiveFormsModule,
         FormsModule,
+        HttpClientModule,
       ],
       providers: [
         DatesToolsService,
@@ -68,8 +70,12 @@ describe('DatePeriodComponent', () => {
     };
     fixture.detectChanges();
 
-    expect(format(component.group.controls.startDate.value, dateFormat)).toEqual(format(startDate, dateFormat));
-    expect(format(component.group.controls.endDate.value, dateFormat)).toEqual(format(endDate, dateFormat));
+    expect(format(component.group.controls.startDate.value, dateFormat)).toEqual(
+      format(startDate, dateFormat),
+    );
+    expect(format(component.group.controls.endDate.value, dateFormat)).toEqual(
+      format(endDate, dateFormat),
+    );
   });
 
   it('should rendered correctly', () => {
@@ -86,7 +92,7 @@ describe('DatePeriodComponent', () => {
         label: 'label',
         amount: 1,
         unit: 'days',
-      } as Hints
+      } as Hints,
     ];
     component.attrs.endDate = {
       maxDate: format(maxDate, dateFormat),
@@ -99,7 +105,9 @@ describe('DatePeriodComponent', () => {
     };
     fixture.detectChanges();
 
-    const testEl: HTMLDivElement = fixture.debugElement.query(By.css('.date-time-period-btns__item')).nativeElement as HTMLDivElement;
+    const testEl: HTMLDivElement = fixture.debugElement.query(
+      By.css('.date-time-period-btns__item'),
+    ).nativeElement as HTMLDivElement;
     expect(testEl).toBeTruthy();
     expect(testEl.innerHTML).toContain('label');
   });

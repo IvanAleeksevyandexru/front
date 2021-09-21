@@ -26,7 +26,10 @@
       [align]="align"
       [brokenDateFixStrategy]="component?.attrs.brokenDateFixStrategy || strategy"
     ></epgu-constructor-constructor-date-picker>
-    <div class="calendar-input-error" *ngIf="form.get(component.id)?.invalid && form.get(component.id)?.touched">
+    <div
+      class="calendar-input-error"
+      *ngIf="form.get(component.id)?.invalid && form.get(component.id)?.touched"
+    >
       <small>{{ form.get(component.id)?.getError('msg') }}</small>
     </div>
     <epgu-constructor-hint

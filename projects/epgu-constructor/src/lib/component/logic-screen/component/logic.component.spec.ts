@@ -9,7 +9,7 @@ import {
   DatesToolsService,
   ObjectHelperService,
   UnsubscribeService,
-  DownloadService
+  DownloadService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../shared/base.module';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -32,6 +32,7 @@ import { NavigationPayload } from '../../../form-player/form-player.types';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { RestToolsService } from '../../../shared/services/rest-tools/rest-tools.service';
 import { RestService } from '../../../shared/services/rest/rest.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('LogicComponent', () => {
   let component: LogicComponent;
@@ -43,23 +44,23 @@ describe('LogicComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [LogicComponent],
-      imports: [BaseModule],
+      imports: [BaseModule, HttpClientModule],
       providers: [
-        LogicService,
-        UnsubscribeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: HookService, useClass: HookServiceStub },
-        DictionaryToolsService,
-        CurrentAnswersService,
-        DownloadService,
-        ObjectHelperService,
-        JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),
         MockProvider(RestToolsService),
         MockProvider(RestService),
+        LogicService,
+        UnsubscribeService,
+        DictionaryToolsService,
+        CurrentAnswersService,
+        DownloadService,
+        ObjectHelperService,
+        JsonHelperService,
       ],
     })
       .overrideComponent(LogicComponent, {
@@ -98,7 +99,7 @@ describe('LogicComponent', () => {
           path: '/api/nsi/v1/dictionary/CONC_COMPETENT_ORG',
           headers: {
             Accept: 'application/json, text/plain, */*',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           body: '',
           events: ['ON_BEFORE_SUBMIT'],
@@ -109,17 +110,17 @@ describe('LogicComponent', () => {
               attributeType: 'asDecimal',
               condition: 'EQUALS',
               value: 's6lookup.value.originalItem.attributeValues.CODE',
-              valueType: 'ref'
-            }
-          ]
+              valueType: 'ref',
+            },
+          ],
         },
-        value: '{}'
+        value: '{}',
       },
     ];
     fixture.detectChanges();
   });
 
-  const prepareDataAfterFetch = logicComponent => ({
+  const prepareDataAfterFetch = (logicComponent) => ({
     id: logicComponent.id,
     attrs: logicComponent.attrs,
     value: JSON.parse(logicComponent.value as string),
@@ -132,9 +133,12 @@ describe('LogicComponent', () => {
         value: 'value',
       },
     };
-    const expectedValue = screenService
-      .logicComponents
-      .filter(logicComponent => !Array.isArray(logicComponent.attrs.events) || logicComponent.attrs.events.indexOf('INIT') !== -1)
+    const expectedValue = screenService.logicComponents
+      .filter(
+        (logicComponent) =>
+          !Array.isArray(logicComponent.attrs.events) ||
+          logicComponent.attrs.events.indexOf('INIT') !== -1,
+      )
       .map(prepareDataAfterFetch);
 
     const fetchSpy = jest.spyOn(logicService, 'fetch').mockReturnValue([of(applicantAnswersDto)]);
@@ -163,7 +167,8 @@ describe('LogicComponent', () => {
     };
     const hooks = {};
     const fetchSpy = jest.spyOn(logicService, 'fetch').mockReturnValue([of(applicantAnswersDto)]);
-    jest.spyOn(hookService, 'addHook')
+    jest
+      .spyOn(hookService, 'addHook')
       .mockImplementation((type: HookTypes, observable: ObservableInput<NavigationPayload>) => {
         if (!Array.isArray(hooks[type])) {
           hooks[type] = [observable];
@@ -172,13 +177,19 @@ describe('LogicComponent', () => {
         }
       });
 
-    const expectedValue1 = screenService
-      .logicComponents
-      .filter(logicComponent => !Array.isArray(logicComponent.attrs.events) || logicComponent.attrs.events.indexOf('INIT') !== -1)
+    const expectedValue1 = screenService.logicComponents
+      .filter(
+        (logicComponent) =>
+          !Array.isArray(logicComponent.attrs.events) ||
+          logicComponent.attrs.events.indexOf('INIT') !== -1,
+      )
       .map(prepareDataAfterFetch);
-    const expectedValue2 = screenService
-      .logicComponents
-      .filter(logicComponent => Array.isArray(logicComponent.attrs.events) && logicComponent.attrs.events.indexOf('ON_BEFORE_SUBMIT') !== -1)
+    const expectedValue2 = screenService.logicComponents
+      .filter(
+        (logicComponent) =>
+          Array.isArray(logicComponent.attrs.events) &&
+          logicComponent.attrs.events.indexOf('ON_BEFORE_SUBMIT') !== -1,
+      )
       .map(prepareDataAfterFetch);
 
     component.ngOnInit();

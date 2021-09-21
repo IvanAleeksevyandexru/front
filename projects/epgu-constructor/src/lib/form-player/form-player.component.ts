@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
-import { LoadService } from '@epgu/epgu-lib';
+import { LoadService } from '@epgu/ui/services/load';
 import { filter, mergeMap, takeUntil, tap, take, distinctUntilChanged } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';

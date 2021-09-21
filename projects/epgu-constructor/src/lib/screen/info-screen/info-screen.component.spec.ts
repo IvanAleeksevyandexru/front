@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { MockComponents, MockDirective } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
-
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -33,6 +31,8 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
+import { SocialShareModule } from '@epgu/ui/components/social-share';
+import { HttpClientModule } from '@angular/common/http';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -65,7 +65,7 @@ describe('InfoScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [EpguLibModule, BaseModule, ScreenButtonsModule],
+      imports: [BaseModule, ScreenButtonsModule, SocialShareModule, HttpClientModule],
       declarations: [
         InfoScreenComponent,
         MockComponents(

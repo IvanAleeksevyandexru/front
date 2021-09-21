@@ -12,7 +12,7 @@ import {
   ConfigServiceStub,
   EventBusService,
   LoggerService,
-  LoggerServiceStub
+  LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
@@ -27,6 +27,7 @@ import { ConfirmWithCodeComponent } from './confirm-with-code.component';
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
+import { FormatPhoneModule, FormatTimeModule } from '@epgu/ui/pipes';
 
 describe('ConfirmWithCodeComponent', () => {
   let component: ConfirmWithCodeComponent;
@@ -54,7 +55,15 @@ describe('ConfirmWithCodeComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmWithCodeComponent, CounterDirective],
-      imports: [ConstructorPlainInputModule, CoreModule, MockModule(CoreUiModule), BaseModule, RouterTestingModule],
+      imports: [
+        ConstructorPlainInputModule,
+        CoreModule,
+        MockModule(CoreUiModule),
+        BaseModule,
+        RouterTestingModule,
+        FormatPhoneModule,
+        FormatTimeModule,
+      ],
       providers: [
         UnsubscribeService,
         NavigationService,

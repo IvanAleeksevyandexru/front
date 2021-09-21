@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import { EquipmentChoiceContainerComponent } from './container/equipment-choice-container.component';
 import { EquipmentChoiceComponent } from './components/equipment-choice/equipment-choice.component';
 import { EquipmentCategoryComponent } from './components/equipment-category/equipment-category.component';

@@ -7,7 +7,6 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { YaMapService } from '@epgu/epgu-lib';
 import {
   AddressesToolsService,
   MicroAppNavigationService,
@@ -19,6 +18,7 @@ import {
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
+import { YaMapService } from '@epgu/ui/services/ya-map';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
 import { BaseProgram, financingTypes } from '../../typings';
