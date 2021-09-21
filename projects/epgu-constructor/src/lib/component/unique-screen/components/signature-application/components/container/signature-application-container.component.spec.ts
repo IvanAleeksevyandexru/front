@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
 import { of } from 'rxjs';
 import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -12,7 +11,7 @@ import {
   SafePipe,
   LocationService,
   LocationServiceStub,
-  WINDOW_PROVIDERS
+  WINDOW_PROVIDERS,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
@@ -41,6 +40,7 @@ import {
   DTOActionAction,
 } from '@epgu/epgu-constructor-types';
 import { MockComponent } from 'ng-mocks';
+import { ButtonComponent, LoaderComponent } from '@epgu/ui/base';
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 

@@ -3,8 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { DictionaryComponent } from './dictionary.component';
 import { ComponentItemComponent } from '../component-item/component-item.component';
-import { EpguLibModule } from '@epgu/epgu-lib';
-import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
+import { MockComponent, MockProvider } from 'ng-mocks';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
@@ -13,6 +12,7 @@ import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
+  BaseUiModule,
   ConfigService,
   DatesToolsService,
   LoggerService,
@@ -22,6 +22,7 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
 import { By } from '@angular/platform-browser';
 import { CustomListDictionaries } from '../../components-list.types';
 import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
+import { HttpClientModule } from '@angular/common/http';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -39,7 +40,7 @@ describe('DictionaryComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [DictionaryComponent, MockComponent(ComponentItemComponent)],
-      imports: [MockModule(EpguLibModule)],
+      imports: [BaseUiModule, HttpClientModule],
       providers: [
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },

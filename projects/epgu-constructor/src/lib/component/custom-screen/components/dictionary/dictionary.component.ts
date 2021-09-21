@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { map } from 'rxjs/operators';
 
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';

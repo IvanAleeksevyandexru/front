@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { ConfigService, ObjectHelperService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -26,8 +25,9 @@ import { mockScreenDivorceWithCacheStore } from './mocks/mock-screen-divorce-wit
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { HttpClientModule } from '@angular/common/http';
 import { MockProvider } from 'ng-mocks';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 
 describe('TimeSlotsComponent', () => {
   let screenService: ScreenServiceStub;
@@ -45,7 +45,7 @@ describe('TimeSlotsComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [EpguLibModule],
+      imports: [HttpClientModule],
       providers: [
         MockProvider(DictionaryToolsService),
         CurrentAnswersService,

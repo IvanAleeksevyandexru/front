@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http';
 import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
-import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { MockComponents, MockProvider } from 'ng-mocks';
 import {
   ScreenPadComponent,
   ConfigService,
@@ -13,8 +11,8 @@ import {
   HelperTextComponent,
   ModalService,
   ActivatedRouteStub,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { LkInvitationInputComponent } from './lk-invitation-input.component';
 import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
@@ -37,6 +35,8 @@ import { InvitationType } from './invitation-type';
 import { InvitationErrorService } from '../../invitation-error.service';
 import { InvitationErrorServiceStub } from '../../invitation-error.service.stub';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 class HTTPClientStub {
   public post(url: string, body: any | null, options: object) {
@@ -82,7 +82,7 @@ describe('LkInvitationInputComponent', () => {
           HelperTextComponent,
         ),
       ],
-      imports: [MockModule(EpguLibModule)],
+      imports: [BaseUiModule, FormsModule],
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },

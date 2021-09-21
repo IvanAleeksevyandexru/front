@@ -1,6 +1,5 @@
 import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
 import { DictionaryItem, DictionaryResponse } from './dictionary-api.types';
-import { ListElement, ListItem } from '@epgu/epgu-lib';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -44,6 +43,7 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
 import { getDictKeyByComp } from './dictionary-helper';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { ListElement, ListItem } from '@epgu/ui/models/dropdown';
 
 export type ComponentValue = {
   [key: string]: string | number | object;

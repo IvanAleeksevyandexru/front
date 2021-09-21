@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ListElement, ValidationShowOn } from '@epgu/epgu-lib';
+
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { ListElement } from '@epgu/ui/models/dropdown';
 
 import exampleImportModule from '!!raw-loader!./examples/import/import-module.txt';
 import exampleInsertTemplate from '!!raw-loader!./examples/import/insert-template.html';

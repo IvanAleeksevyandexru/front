@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-form-frontend",
-  "version": "28.4.0",
+  "version": "30.6.1",
   "scripts": {
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "ng": "ng",
@@ -83,10 +83,10 @@
     "@angular/platform-browser-dynamic": "11.0.0",
     "@angular/router": "11.0.0",
     "@datorama/akita": "6.2.0",
-    "@epgu/children-clubs": "28.4.0",
-    "@epgu/epgu-constructor-types": "28.4.0",
-    "@epgu/epgu-constructor-ui-kit": "28.4.0",
-    "@epgu/epgu-lib": "3.0.380-2-core-frontv8",
+    "@epgu/children-clubs": "30.6.1",
+    "@epgu/epgu-constructor-types": "30.6.1",
+    "@epgu/epgu-constructor-ui-kit": "30.6.1",
+    "@epgu/ui": "0.1.121-modules",
     "@epgu/zipkin": "0.0.3",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",

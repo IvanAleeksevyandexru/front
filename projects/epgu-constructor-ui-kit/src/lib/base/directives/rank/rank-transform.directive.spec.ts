@@ -1,4 +1,3 @@
-import { RankTransformDirective } from './rank-transform.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
@@ -10,33 +9,25 @@ import { BaseUiModule } from '../../base-ui.module';
 
 @Component({
   selector: 'epgu-cf-ui-rank-transform-test-component',
-  template: `
-    <input
-      type="text"
-      [epgu-cf-ui-rank-transform]="true"
-      [formControl]="control"
-    />`,
+  template: ' <input type="text" [epgu-cf-ui-rank-transform]="true" [formControl]="control" />',
 })
 class RankTransformTestComponent {
-  control =  new FormControl('');
+  control = new FormControl('');
 }
 
 describe('RankTransformDirective', () => {
   let fixture: ComponentFixture<RankTransformTestComponent>;
-  let comp: RankTransformTestComponent;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [RankTransformTestComponent],
       imports: [RouterTestingModule, BaseUiModule],
       providers: [DecimalPipe, NgControl],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RankTransformTestComponent);
-    comp = fixture.componentInstance;
   });
 
   it('test rank transform directive', () => {

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { DropdownListItem } from '../../dropdown-list.types';
 
 @Component({
@@ -9,5 +10,5 @@ import { DropdownListItem } from '../../dropdown-list.types';
 })
 export class DropdownListComponent {
   @Input() items: DropdownListItem[];
-  searchText: string;
+  searchControl = new FormControl('');
 }

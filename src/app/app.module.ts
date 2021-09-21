@@ -1,13 +1,11 @@
 import { HttpClientModule } from '@angular/common/http';
 import { isDevMode, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EpguLibCommonModule, EpguLibModule, LoadService } from '@epgu/epgu-lib';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
-import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit'
+import { UnsubscribeService, ConfigService, BaseUiModule } from '@epgu/epgu-constructor-ui-kit';
 import { CookieService } from 'ngx-cookie-service';
 import '@angular/common/locales/global/ru';
 import { DeviceDetectorService } from 'ngx-device-detector';
-
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -15,17 +13,18 @@ import { AppService } from './app.service';
 import { ConfigComponent } from './config/config.component';
 import { LayoutModule } from './layout/layout.module';
 import { CommonModule } from '@angular/common';
+import { LoadService } from '@epgu/ui/services/load';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ConfigComponent,
-  ],
+  declarations: [AppComponent, ConfigComponent],
   imports: [
     CommonModule,
-    EpguLibModule,
-    EpguLibCommonModule,
     LayoutModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    BaseUiModule,
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -40,6 +39,7 @@ import { CommonModule } from '@angular/common';
     LoadService,
   ],
   bootstrap: [AppComponent],
+  entryComponents: [ConfigComponent]
 })
 export class AppModule {
   constructor(private loadService: LoadService) {

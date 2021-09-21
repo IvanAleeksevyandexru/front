@@ -5,6 +5,8 @@ import { MatPeriodDescriptionComponent } from './mat-period-description.componen
 import { BaseModule } from '../../../../../../shared/base.module';
 import { AddZeroPennyPipe } from '../../pipe/add-zero-penny.pipe';
 import { configureTestSuite } from 'ng-bullet';
+import { HttpClientModule } from '@angular/common/http';
+import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 
 describe('MatPeriodDescriptionComponent', () => {
   let component: MatPeriodDescriptionComponent;
@@ -13,7 +15,7 @@ describe('MatPeriodDescriptionComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MatPeriodDescriptionComponent, AddZeroPennyPipe],
-      imports: [MockModule(BaseModule)],
+      imports: [MockModule(BaseModule), HttpClientModule, PluralizeModule, ToMoneyModule],
     }).compileComponents();
   });
 

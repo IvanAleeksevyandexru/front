@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 

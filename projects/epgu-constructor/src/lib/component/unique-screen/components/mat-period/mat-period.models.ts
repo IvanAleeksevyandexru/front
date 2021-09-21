@@ -1,5 +1,5 @@
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
 
 export interface MatPeriod {

@@ -1,7 +1,7 @@
 import { MvdGiacLookupComponent } from './mvd-giac-lookup.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
-import { EpguLibModule, ValidationShowOn } from '@epgu/epgu-lib';
+import { MockComponent, MockProvider } from 'ng-mocks';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
@@ -16,8 +16,14 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { configureTestSuite } from 'ng-bullet';
-import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import {
+  DatesToolsService,
+  ConfigService,
+  LoggerService,
+  BaseUiModule,
+} from '@epgu/epgu-constructor-ui-kit';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
@@ -28,7 +34,7 @@ describe('MvdGiacLookupComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MvdGiacLookupComponent, MockComponent(ComponentItemComponent)],
-      imports: [MockModule(EpguLibModule)],
+      imports: [BaseUiModule, HttpClientModule],
       providers: [
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },

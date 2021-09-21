@@ -4,11 +4,11 @@ import { pluck, skip, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { DTOActionAction, KindergartenAttrs, ScreenButton } from '@epgu/epgu-constructor-types';
 import { FormControl, Validators } from '@angular/forms';
-import { NotifierService, NotifierType } from '@epgu/epgu-lib';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { NotifierService } from '@epgu/ui/services/notifier';
+import { NotifierType } from '@epgu/ui/models/notifier';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
-
 import { PriorityItemsService } from '../../services/priority-items/priority-items.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';

@@ -1,4 +1,4 @@
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { DictionaryItem } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';

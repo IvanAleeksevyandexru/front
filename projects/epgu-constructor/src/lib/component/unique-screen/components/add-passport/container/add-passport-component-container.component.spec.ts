@@ -3,7 +3,11 @@ import { MockComponent } from 'ng-mocks';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { EventBusService, FocusManagerService, FocusManagerServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  EventBusService,
+  FocusManagerService,
+  FocusManagerServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -17,6 +21,7 @@ import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-uni
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { configureTestSuite } from 'ng-bullet';
 import { SuggestMonitorService } from '../../../../../shared/services/suggest-monitor/suggest-monitor.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('AddPassportContainerComponent', () => {
   let component: AddPassportContainerComponent;
@@ -39,7 +44,13 @@ describe('AddPassportContainerComponent', () => {
         ScreenPadComponent,
         MockComponent(DefaultUniqueScreenWrapperComponent),
       ],
-      imports: [RouterTestingModule, PassportModule, ReactiveFormsModule, FormsModule],
+      imports: [
+        RouterTestingModule,
+        PassportModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+      ],
       providers: [
         CurrentAnswersService,
         HealthService,

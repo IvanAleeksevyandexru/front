@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { MockComponents, MockProvider } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
 import {
   ScreenPadComponent,
@@ -15,8 +14,8 @@ import {
   HelperTextComponent,
   ModalService,
   ActivatedRouteStub,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { InvitationErrorComponent } from './invitation-error.component';
 import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
@@ -35,19 +34,14 @@ import { DateRestrictionsService } from '../../../../shared/services/date-restri
 import { InvitationErrorService } from '../../invitation-error.service';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;
   let validationService: ValidationService;
-  let locationService: LocationService;
   let fixture: ComponentFixture<InvitationErrorComponent>;
   const mockData = { label: '', attrs: { url: '' }, id: '', type: '' } as ComponentBase;
-  const mockAnswers = {
-    d1: {
-      visited: true,
-      value: '010-732-732 01',
-    },
-  };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -63,7 +57,7 @@ describe('InvitationErrorComponent', () => {
           HelperTextComponent,
         ),
       ],
-      imports: [MockModule(EpguLibModule)],
+      imports: [BaseUiModule, FormsModule, HttpClientModule],
       providers: [
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -86,7 +80,6 @@ describe('InvitationErrorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InvitationErrorComponent);
     validationService = TestBed.inject(ValidationService);
-    locationService = TestBed.inject(LocationService);
     component = fixture.componentInstance;
     component.data = mockData;
     component.config = TestBed.inject(ConfigService);

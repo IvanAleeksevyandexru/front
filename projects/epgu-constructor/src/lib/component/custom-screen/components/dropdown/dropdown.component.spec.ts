@@ -1,16 +1,21 @@
 import { DropdownComponent } from './dropdown.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { MockComponent, MockModule, MockProviders } from 'ng-mocks';
+import { MockComponent, MockProviders } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { DatesToolsService, EventBusService, UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  BaseUiModule,
+  DatesToolsService,
+  EventBusService,
+  UnsubscribeService,
+  UnsubscribeServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
@@ -22,6 +27,7 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DropDownUpdateTypes } from './dropdown.interface';
+import { HttpClientModule } from '@angular/common/http';
 
 const mockComponentId = 'mockComponentID';
 
@@ -70,12 +76,12 @@ const mockDropDowns1 = [];
 mockDropDowns1[mockComponentId] = [
   {
     id: '1',
-    text: 'Test dropdown 1'
+    text: 'Test dropdown 1',
   },
   {
     id: '2',
-    text: 'Test dropdown 2'
-  }
+    text: 'Test dropdown 2',
+  },
 ];
 
 const mockDropDowns2 = [];
@@ -83,12 +89,12 @@ const mockDropDowns2 = [];
 mockDropDowns2[mockComponentId] = [
   {
     id: '3',
-    text: 'Test dropdown 3'
+    text: 'Test dropdown 3',
   },
   {
     id: '4',
-    text: 'Test dropdown 4'
-  }
+    text: 'Test dropdown 4',
+  },
 ];
 
 describe('DropdownComponent', () => {
@@ -100,14 +106,8 @@ describe('DropdownComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        DropdownComponent,
-        MockComponent(ComponentItemComponent)
-      ],
-      imports: [
-        MockModule(EpguLibModule),
-        ValidationTypeModule,
-      ],
+      declarations: [DropdownComponent, MockComponent(ComponentItemComponent)],
+      imports: [ValidationTypeModule, BaseUiModule, HttpClientModule],
       providers: [
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
@@ -119,8 +119,9 @@ describe('DropdownComponent', () => {
           DatesToolsService,
           SuggestHandlerService,
           ValidationService,
-          EventBusService),
-      ]
+          EventBusService,
+        ),
+      ],
     })
       .overrideComponent(DropdownComponent, {
         set: {
@@ -136,7 +137,9 @@ describe('DropdownComponent', () => {
   beforeEach(() => {
     service = TestBed.inject(SuggestHandlerService);
     dictionaryToolsService = TestBed.inject(DictionaryToolsService);
-    formService = (TestBed.inject(ComponentsListFormService) as unknown) as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
 
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
@@ -230,7 +233,9 @@ describe('DropdownComponent', () => {
 
       const selector = 'lib-dropdown';
       const debugEl = fixture.debugElement.query(By.css(selector));
-      expect(debugEl.componentInstance.placeholder).toEqual(mockComponentWithFilledPlaceholder.attrs.placeholder);
+      expect(debugEl.componentInstance.placeholder).toEqual(
+        mockComponentWithFilledPlaceholder.attrs.placeholder,
+      );
       fixture.detectChanges();
     });
   });

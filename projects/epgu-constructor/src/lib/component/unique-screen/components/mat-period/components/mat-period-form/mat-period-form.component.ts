@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';

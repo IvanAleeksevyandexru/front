@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
-import { LoadService } from '@epgu/epgu-lib';
-import { HelperService } from '@epgu/epgu-lib';
 import { isDevMode } from '@angular/core';
+import { LoadService } from '@epgu/ui/services/load';
+import { HelperService } from '@epgu/ui/services/helper';
 
 interface EventInfo {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

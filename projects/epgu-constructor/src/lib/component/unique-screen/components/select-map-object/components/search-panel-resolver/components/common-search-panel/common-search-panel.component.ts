@@ -10,7 +10,7 @@ import {
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
-import { LookupProvider, ListElement } from '@epgu/epgu-lib';
+import { ListElement, LookupProvider } from '@epgu/ui/models/dropdown';
 import { Observable, of } from 'rxjs';
 import { DictionaryYMapItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../../../../../shared/services/dictionary/dictionary-tools.service';

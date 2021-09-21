@@ -8,6 +8,7 @@ import { BaseComponentsModule } from '../../../../shared/components/base-compone
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { Smev3ErrorMessageModule } from '../../../../shared/pipes/smev-3-error-message/smev-3-error-message.module';
 import { CookieService } from 'ngx-cookie-service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ReferralNumberComponent],
@@ -19,6 +20,7 @@ import { CookieService } from 'ngx-cookie-service';
     BaseComponentsModule,
     DefaultUniqueScreenWrapperModule,
     Smev3ErrorMessageModule,
+    FormsModule,
   ],
   providers: [CookieService],
   exports: [ReferralNumberComponent],

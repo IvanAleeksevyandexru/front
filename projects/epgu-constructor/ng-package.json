@@ -3,7 +3,7 @@
   "dest": "../../dist/epgu-constructor",
   "assets": ["src/assets"],
   "allowedNonPeerDependencies": [
-    "@epgu/epgu-lib",
+    "@epgu/ui",
     "@epgu/epgu-constructor-types",
     "@epgu/epgu-constructor-ui-kit",
     "ics",
@@ -22,7 +22,7 @@
       "uuid": "uuid",
       "ngx-webcam": "ngx-webcam",
       "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
-      "@epgu/epgu-lib": "@epgu/epgu-lib",
+      "@epgu/ui": "@epgu/ui",
       "@epgu/epgu-constructor-types": "@epgu/epgu-constructor-types",
       "@epgu/epgu-constructor-ui-kit": "@epgu/epgu-constructor-ui-kit",
       "ics": "ics",

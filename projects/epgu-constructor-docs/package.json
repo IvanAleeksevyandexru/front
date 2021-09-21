@@ -1,6 +1,6 @@
 {
   "name": "epgu-constructor-docs",
-  "version": "28.4.0",
+  "version": "30.6.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -16,9 +16,9 @@
     "@angular/forms": "11.0.0",
     "@angular/localize": "11.0.0",
     "@datorama/akita": "6.2.0",
-    "@epgu/epgu-constructor-types": "28.4.0",
-    "@epgu/epgu-constructor-ui-kit": "28.4.0",
-    "@epgu/epgu-lib": "3.0.380-2-core-frontv8",
+    "@epgu/epgu-constructor-types": "33.0.67880-rc.1",
+    "@epgu/epgu-constructor-ui-kit": "33.0.67880-rc.1",
+    "@epgu/ui": "0.1.121-modules",
     "@taiga-ui/addon-doc": "2.11.2",
     "@taiga-ui/addon-mobile": "2.11.2",
     "@taiga-ui/cdk": "2.11.2",

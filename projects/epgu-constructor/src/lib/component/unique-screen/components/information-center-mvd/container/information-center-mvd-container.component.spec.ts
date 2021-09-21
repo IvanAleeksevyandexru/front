@@ -10,7 +10,8 @@ import {
   DownloadService,
   DatesToolsService,
   ConfigService,
-  LoggerService, ObjectHelperService,
+  LoggerService,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -31,6 +32,7 @@ import { DTOActionAction } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../../core/services/date-ref/date-ref.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;
@@ -78,20 +80,21 @@ describe('InformationCenterMvdContainerComponent', () => {
         MockModule(DefaultUniqueScreenWrapperModule),
         MockModule(BaseModule),
         MockModule(BaseComponentsModule),
+        HttpClientModule,
       ],
       providers: [
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        MockProvider(DateRestrictionsService),
         UnsubscribeService,
         DownloadService,
         ObjectHelperService,
         DateRefService,
-        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,
         ComponentsListRelationsService,
         DateRangeService,
         DatesToolsService,
         RefRelationService,
-        MockProvider(DateRestrictionsService),
         ConfigService,
         LoggerService,
         JsonHelperService,

@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-
-import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal.component';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-// eslint-disable-next-line max-len
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
 import { ModalService, ModalServiceStub, CtaModalComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -18,10 +20,10 @@ import { ActionServiceStub } from '../../../../../../shared/directives/action/ac
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
-import { SmuEventsService } from '@epgu/epgu-lib';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;
@@ -43,10 +45,7 @@ describe('PhotoRequirementsModalComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        PhotoRequirementsModalComponent,
-        MockComponent(CtaModalComponent),
-      ],
+      declarations: [PhotoRequirementsModalComponent, MockComponent(CtaModalComponent)],
       imports: [BaseModule, BaseComponentsModule],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },

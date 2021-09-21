@@ -14,7 +14,7 @@ export class ComponentsListFormServiceStub {
   }
 
   // for simplify stubbing
-  set form(form: FormArray): void {
+  set form(form: FormArray) {
     this._form = form;
   }
 

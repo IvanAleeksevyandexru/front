@@ -7,7 +7,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { BehaviorSubject } from 'rxjs';
 import { filter, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
-import { LoadService } from '@epgu/epgu-lib';
+import { LoadService } from '@epgu/ui/services/load';
 
 import { MicroAppStateService } from '../micro-app-state/micro-app-state.service';
 import { CfAppStateService } from '../../core/services/cf-app-state/cf-app-state.service';

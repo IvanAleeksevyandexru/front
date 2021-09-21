@@ -7,11 +7,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import FilePonyfill from '@tanker/file-ponyfill';
-
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { concatMap, filter, map, reduce, takeUntil, tap } from 'rxjs/operators';
 import { Clarifications } from '@epgu/epgu-constructor-types';
-
 import {
   ModalService,
   DeviceDetectorService,
@@ -19,14 +17,12 @@ import {
   UnsubscribeService,
   ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
   FileResponseToBackendUploadsItem,
   FileUploadItem,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-
 import {
   beforeFilesPlural,
   ErrorActions,
@@ -39,7 +35,6 @@ import {
 
 import { ScreenService } from '../../../../screen/screen.service';
 import { AttachUploadedFilesModalComponent } from '../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
-
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { UploaderManagerService } from '../services/manager/uploader-manager.service';

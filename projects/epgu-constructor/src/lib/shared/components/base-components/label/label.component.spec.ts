@@ -4,7 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
-  SafePipe
+  SafePipe,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 import { ClickableLabelDirective } from '../../../directives/clickable-label/clickable-label.directive';
@@ -18,10 +18,10 @@ import { ActionServiceStub } from '../../../directives/action/action.service.stu
 import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { configureTestSuite } from 'ng-bullet';
-import { SmuEventsService } from '@epgu/epgu-lib';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 import { JsonHelperServiceStub } from '../../../../core/services/json-helper/json-helper.service.stub';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('LabelComponent', () => {
   let component: LabelComponent;

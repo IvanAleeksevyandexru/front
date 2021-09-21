@@ -4,8 +4,7 @@ import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
-import { MockComponent, MockDirective, MockModule, MockProvider } from 'ng-mocks';
-import { EpguLibModule } from '@epgu/epgu-lib';
+import { MockComponent, MockDirective } from 'ng-mocks';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -26,6 +25,8 @@ import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructo
 import { LongButtonComponent } from '@epgu/epgu-constructor-ui-kit';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
+import { PluralizeModule } from '@epgu/ui/pipes';
+import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -74,7 +75,7 @@ describe('FileUploadScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [MockModule(EpguLibModule), ScreenButtonsModule],
+      imports: [ScreenButtonsModule, PluralizeModule, FileSizeModule],
       declarations: [
         FileUploadScreenComponent,
         MockComponent(LongButtonComponent),
@@ -159,7 +160,7 @@ describe('FileUploadScreenComponent', () => {
             value: [fileSample],
           },
         ],
-        totalSize: 100
+        totalSize: 100,
       });
     });
 
@@ -449,8 +450,8 @@ describe('FileUploadScreenComponent', () => {
             attrs: {
               hideTotalAvailableSize: true,
               hideTotalAvailableCount: true,
-            } as FileUploadAttributes
-          }
+            } as FileUploadAttributes,
+          },
         };
         fixture.detectChanges();
 
@@ -464,9 +465,9 @@ describe('FileUploadScreenComponent', () => {
           ...{
             attrs: {
               maxSize: 10000,
-              hideTotalAvailableSize: false
-            } as FileUploadAttributes
-          }
+              hideTotalAvailableSize: false,
+            } as FileUploadAttributes,
+          },
         };
         fixture.detectChanges();
 
@@ -480,9 +481,9 @@ describe('FileUploadScreenComponent', () => {
           ...{
             attrs: {
               maxFileCount: 10,
-              hideTotalAvailableCount: false
-            } as FileUploadAttributes
-          }
+              hideTotalAvailableCount: false,
+            } as FileUploadAttributes,
+          },
         };
         fixture.detectChanges();
 

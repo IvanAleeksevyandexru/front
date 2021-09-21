@@ -7,7 +7,6 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { YaMapService } from '@epgu/epgu-lib';
 import { combineLatest, merge, Observable, of, throwError } from 'rxjs';
 import {
   catchError,
@@ -39,6 +38,7 @@ import {
   YandexMapService,
 } from '@epgu/epgu-constructor-ui-kit';
 
+import { YaMapService } from '@epgu/ui/services/ya-map';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';

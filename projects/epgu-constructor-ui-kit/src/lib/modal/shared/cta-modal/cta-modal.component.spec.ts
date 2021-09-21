@@ -6,9 +6,7 @@ import { DeviceDetectorServiceStub } from '../../../core/services/device-detecto
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { BaseUiModule } from '../../../base/base-ui.module';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
-
 
 describe('ConfirmationModalBaseComponent', () => {
   let component: CtaModalComponent;
@@ -17,7 +15,7 @@ describe('ConfirmationModalBaseComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CtaModalComponent],
-      imports: [BaseUiModule, A11yModule, EpguLibModule.forRoot()],
+      imports: [BaseUiModule, A11yModule, BaseUiModule],
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         EventBusService,

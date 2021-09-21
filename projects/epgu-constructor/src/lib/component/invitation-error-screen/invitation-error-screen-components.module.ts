@@ -8,6 +8,7 @@ import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { BaseModule } from '../../shared/base.module';
 import { InvitationErrorService } from './invitation-error.service';
+import { FormsModule } from '@angular/forms';
 
 const COMPONENTS = [InvitationErrorComponent, LkInvitationInputComponent];
 
@@ -21,6 +22,7 @@ const COMPONENTS = [InvitationErrorComponent, LkInvitationInputComponent];
     ScreenContainerModule,
     ScreenPadModule,
     BaseComponentsModule,
+    FormsModule,
   ],
   providers: [InvitationErrorService],
 })

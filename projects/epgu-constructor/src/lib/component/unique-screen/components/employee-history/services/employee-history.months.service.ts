@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { MonthYear } from '@epgu/epgu-lib';
 import { BehaviorSubject } from 'rxjs';
 
 import {
@@ -13,6 +12,7 @@ import {
   DATE_STRING_LLLL_YYYY_FORMAT,
   DATE_STRING_SLASH_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
+import { MonthYear } from '@epgu/ui/models/date-time';
 
 @Injectable()
 export class EmployeeHistoryMonthsService {
@@ -68,8 +68,8 @@ export class EmployeeHistoryMonthsService {
     return periods
       .filter((period) => period.length)
       .map((period: EmployeeHistoryAvailableDates[]) => {
-        const convertedDates: Date[] = period.map(
-          (stringDate: EmployeeHistoryAvailableDates) => this.getConvertedDates(stringDate),
+        const convertedDates: Date[] = period.map((stringDate: EmployeeHistoryAvailableDates) =>
+          this.getConvertedDates(stringDate),
         );
 
         return {

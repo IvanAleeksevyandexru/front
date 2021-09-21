@@ -1,8 +1,8 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
 import { REQUIRED_FIELD, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { ValidationShowOn, BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { CustomComponent } from '../../components-list.types';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';

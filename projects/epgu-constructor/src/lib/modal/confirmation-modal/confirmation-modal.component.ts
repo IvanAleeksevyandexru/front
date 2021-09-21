@@ -19,7 +19,7 @@ import {
   ConfirmationModalBaseButton,
   ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { NotifierService } from '@epgu/epgu-lib';
+import { NotifierService } from '@epgu/ui/services/notifier';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',

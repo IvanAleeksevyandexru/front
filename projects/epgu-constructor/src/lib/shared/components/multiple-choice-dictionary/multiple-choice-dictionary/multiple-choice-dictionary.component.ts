@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { mapTo, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 

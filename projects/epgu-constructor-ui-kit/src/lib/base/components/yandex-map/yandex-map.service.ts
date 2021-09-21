@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { YaMapService } from '@epgu/epgu-lib';
+import { YaMapService } from '@epgu/ui/services/ya-map';
 import { BehaviorSubject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
@@ -414,9 +414,7 @@ export class YandexMapService implements OnDestroy {
     });
   }
 
-  // TODO нет в epgu-lib интерфейсов
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  private getCustomBalloonContentLayout() {
+  private getCustomBalloonContentLayout(): unknown {
     if (typeof this.ymaps.templateLayoutFactory == 'undefined') {
       return;
     }

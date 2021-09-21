@@ -1,7 +1,7 @@
-import { RelativeDate } from '@epgu/epgu-lib';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../registration-addr/registration-addr-screen.types';
+import { RelativeDate } from '@epgu/ui/models/date-time';
 
 /**
  * @property {Array<object>}attrs

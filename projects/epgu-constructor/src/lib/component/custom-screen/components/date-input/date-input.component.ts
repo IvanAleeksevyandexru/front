@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/epgu-lib';
+import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DateRangeAttrs } from '../../../../shared/services/date-range/date-range.models';

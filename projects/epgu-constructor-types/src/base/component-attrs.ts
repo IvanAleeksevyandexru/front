@@ -110,6 +110,7 @@ export interface ComponentAttrsDto {
   nonStop?: boolean;
   nsi?: string;
   obliged?: boolean;
+  participant?: { role: string; mode: string };
   payCode?: number;
   phoneNumber?: number;
   placeholderText?: string;
@@ -334,12 +335,16 @@ export interface ComponentRefDto {
 }
 
 export interface ComponentFieldDto {
+  attrs?: unknown;
+  errorMsg?: string;
   fieldName?: string;
   label?: string;
-  value?: string;
-  suggestionId?: string;
-  attrs?: unknown;
+  mask?: string[];
+  regexp?: string | RegExp;
   required?: boolean;
+  suggestionId?: string;
+  type?: string;
+  value?: string;
 }
 
 export interface DisplaySubjHead {

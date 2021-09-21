@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { ListElement, ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { ComponentAttrsDto, ScreenButton } from '@epgu/epgu-constructor-types';
 import {
   ConstructorCheckboxComponent,
@@ -8,6 +8,7 @@ import {
   IDay,
   SlotInterface,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ListElement } from '@epgu/ui/models/dropdown';
 
 @Component({
   selector: 'epgu-constructor-time-slot-doctors',

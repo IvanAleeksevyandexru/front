@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ConstructorLookupComponent, YandexMapService } from '@epgu/epgu-constructor-ui-kit';
-import { LookupProvider, ListElement } from '@epgu/epgu-lib';
+import { ListElement, LookupProvider } from '@epgu/ui/models/dropdown';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';

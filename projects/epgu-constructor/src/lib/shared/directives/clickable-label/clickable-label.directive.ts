@@ -5,13 +5,14 @@ import {
   DeviceDetectorService,
   createOpenBrowserEvent,
 } from '@epgu/epgu-constructor-ui-kit';
-import { SmuEvent, SmuEventsService } from '@epgu/epgu-lib';
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { SmuEvent } from '@epgu/ui/models';
 
 const excludedTypesForState = [ActionType.deleteSuggest];
 
@@ -44,8 +45,14 @@ export class ClickableLabelDirective {
     const targetElementActionAttrs = targetElement.getAttribute('data-action-attrs');
     const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
 
-    if (targetElement.hasAttribute('href') && targetElement.getAttribute('href') && this.deviceDetectorService.isWebView) {
-      this.smu.notify(createOpenBrowserEvent(targetElement.getAttribute('href'), false) as SmuEvent);
+    if (
+      targetElement.hasAttribute('href') &&
+      targetElement.getAttribute('href') &&
+      this.deviceDetectorService.isWebView
+    ) {
+      this.smu.notify(
+        createOpenBrowserEvent(targetElement.getAttribute('href'), false) as SmuEvent,
+      );
     }
 
     if (targetElementActionType) {

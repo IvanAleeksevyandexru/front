@@ -11,13 +11,15 @@ import {
   DatesToolsService,
   ImgPrefixerModule,
   SafeModule,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { DenyReason, FinancialSourceType, Group } from '../../../../typings';
 import { GroupItemComponent } from './group-item.component';
 import { DenyReasonTitleComponent } from '../../../base/components/deny-reason-title/deny-reason-title.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
+import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
+import { HttpClientModule } from '@angular/common/http';
 
 const testGroup: Group = {
   uuid: '1234',
@@ -45,15 +47,13 @@ const testState = {
     currentYear: {
       registration_closed: {
         title: 'test title ${orderFrom}',
-        text:
-          '<h6 class=\"deny-reason-text\">test text ${orderTo}</h6>',
+        text: '<h6 class="deny-reason-text">test text ${orderTo}</h6>',
       },
     },
     nextYear: {
       registration_closed: {
         title: 'test2 title ${orderFrom}',
-        text:
-          '<h6 class=\"deny-reason-text\">test2 text ${orderTo}</h6>',
+        text: '<h6 class="deny-reason-text">test2 text ${orderTo}</h6>',
       },
     },
   }),
@@ -66,7 +66,14 @@ describe('GroupItemComponent', () => {
 
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
-      imports: [EpguLibModule, ImgPrefixerModule, SafeModule],
+      imports: [
+        BaseUiModule,
+        ImgPrefixerModule,
+        SafeModule,
+        PluralizeModule,
+        ToMoneyModule,
+        HttpClientModule,
+      ],
       declarations: [GroupItemComponent, DenyReasonTitleComponent],
 
       providers: [
@@ -76,9 +83,11 @@ describe('GroupItemComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         DatesToolsService,
       ],
-    }).overrideComponent(GroupItemComponent,{
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(GroupItemComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -97,7 +106,9 @@ describe('GroupItemComponent', () => {
 
   describe('OnInit', () => {
     it('should set isNextSchoolYear', () => {
-      jest.spyOn(stateQuery, 'state', 'get').mockReturnValue({ testState, ...{ nextSchoolYear: 'true' }});
+      jest
+        .spyOn(stateQuery, 'state', 'get')
+        .mockReturnValue({ testState, ...{ nextSchoolYear: 'true' }});
       expect(component.isNextSchoolYear).toBeFalsy();
       component.ngOnInit();
       expect(component.isNextSchoolYear).toBeTruthy();
@@ -106,7 +117,11 @@ describe('GroupItemComponent', () => {
 
   describe('set data()', () => {
     it('should correctly set sources cost', () => {
-      const source = { cost: 15, monthlyCost: 30, sourceCode: FinancialSourceType.pfdod_certificate };
+      const source = {
+        cost: 15,
+        monthlyCost: 30,
+        sourceCode: FinancialSourceType.pfdod_certificate,
+      };
       const source1 = { cost: 15, monthlyCost: 30, sourceCode: FinancialSourceType.budget };
       testGroup.financingSources.push(source1, source);
 
@@ -134,7 +149,11 @@ describe('GroupItemComponent', () => {
 
     it('should set isMultiPaymentsInfoShown to true', () => {
       const source = { cost: 15, monthlyCost: 30, sourceCode: FinancialSourceType.private };
-      const source1 = { cost: 15, monthlyCost: 30, sourceCode: FinancialSourceType.pfdod_certificate };
+      const source1 = {
+        cost: 15,
+        monthlyCost: 30,
+        sourceCode: FinancialSourceType.pfdod_certificate,
+      };
       testGroup.financingSources.push(source, source1);
 
       component.data = testGroup;
@@ -145,7 +164,6 @@ describe('GroupItemComponent', () => {
     it('should set paymentsInfo to Бесплатно', () => {
       const source = { cost: 0, monthlyCost: 0, sourceCode: FinancialSourceType.budget };
       testGroup.financingSources.push(source);
-      console.log(testGroup);
       component.data = testGroup;
 
       expect(component.paymentsInfo).toBe('Бесплатно');
@@ -154,7 +172,6 @@ describe('GroupItemComponent', () => {
     it('should set paymentsInfo to Бесплатно', () => {
       const source = { cost: 0, monthlyCost: 0, sourceCode: FinancialSourceType.none };
       testGroup.financingSources.push(source);
-      console.log(testGroup);
       component.data = testGroup;
 
       expect(component.paymentsInfo).toBe('Бесплатно');
@@ -163,7 +180,6 @@ describe('GroupItemComponent', () => {
     it('should set paymentsInfo to Сертификатом', () => {
       const source = { cost: 3, monthlyCost: 3, sourceCode: FinancialSourceType.pfdod_certificate };
       testGroup.financingSources.push(source);
-      console.log(testGroup);
       component.data = testGroup;
 
       expect(component.paymentsInfo).toBe('Сертификатом');
@@ -172,39 +188,36 @@ describe('GroupItemComponent', () => {
     it('should set paymentsInfo to Из личных средств', () => {
       const source = { cost: 3, monthlyCost: 3, sourceCode: FinancialSourceType.private };
       testGroup.financingSources.push(source);
-      console.log(testGroup);
       component.data = testGroup;
 
       expect(component.paymentsInfo).toBe('Из личных средств');
     });
-
 
     it('should set paymentsInfo to Из личных средств', () => {
       const source = { cost: 3, monthlyCost: 3, sourceCode: FinancialSourceType.paid };
 
       testGroup.financingSources.push(source);
-      console.log(testGroup);
       component.data = testGroup;
 
       expect(component.paymentsInfo).toBe('Из личных средств');
     });
 
-
     it('should set paymentsInfo to combined value', () => {
       const source = { cost: 3, monthlyCost: 3, sourceCode: FinancialSourceType.paid };
-      const source1 = { cost: 3, monthlyCost: 3, sourceCode: FinancialSourceType.pfdod_certificate };
+      const source1 = {
+        cost: 3,
+        monthlyCost: 3,
+        sourceCode: FinancialSourceType.pfdod_certificate,
+      };
       const source2 = { cost: 0, monthlyCost: 0, sourceCode: FinancialSourceType.none };
       testGroup.financingSources.push(source, source1, source2);
-      console.log(testGroup);
       component.data = testGroup;
 
       expect(component.paymentsInfo).toBe('Бесплатно, сертификатом или из личных средств');
     });
-
   });
 
   describe('getDenyReasonMessage()', () => {
-
     beforeEach(() => {
       component.denyReasonMessage = null;
     });
@@ -212,7 +225,9 @@ describe('GroupItemComponent', () => {
     it('should be deny reason title for current year', () => {
       component.ngOnInit();
 
-      expect(component.denyReasonMessage.text).toBe('<h6 class=\"deny-reason-text\">test text 24.02.2020</h6>');
+      expect(component.denyReasonMessage.text).toBe(
+        '<h6 class="deny-reason-text">test text 24.02.2020</h6>',
+      );
     });
 
     it('should be deny reason text for current year', () => {
@@ -238,7 +253,9 @@ describe('GroupItemComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.denyReasonMessage.text).toBe('<h6 class="deny-reason-text">test2 text 24.02.2020</h6>');
+      expect(component.denyReasonMessage.text).toBe(
+        '<h6 class="deny-reason-text">test2 text 24.02.2020</h6>',
+      );
     });
 
     it('should be null if group is not set', () => {
@@ -272,9 +289,7 @@ describe('GroupItemComponent', () => {
 
       expect(component.denyReasonMessage).toBeNull();
     });
-
   });
-
 
   it('getCost', () => {
     let item = { cost: 9600, monthlyCost: 1200, sourceCode: FinancialSourceType.pfdod_certificate };
@@ -292,5 +307,4 @@ describe('GroupItemComponent', () => {
     item = { cost: 0, monthlyCost: 0, sourceCode: FinancialSourceType.none };
     expect(component['getCost'](item)).toEqual(0);
   });
-
 });

@@ -1,7 +1,6 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import localeRu from '@angular/common/locales/ru';
 import { registerLocaleData } from '@angular/common';
-import { SmuEventsService } from '@epgu/epgu-lib';
 import {
   CoreUiModule,
   MainContainerModule,
@@ -18,12 +17,13 @@ import { ModalModule } from '../modal/modal.module';
 import { BaseModule } from '../shared/base.module';
 import { AutocompleteModule } from '../core/services/autocomplete/autocomplete.module';
 import { LogicScreenModule } from '../component/logic-screen/logic-screen.module';
-
-registerLocaleData(localeRu);
-
-import 'hammerjs';
 import { PrevButtonNavigationService } from '../core/services/prev-button-navigation/prev-button-navigation.service';
 import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { NotifierModule } from '@epgu/ui/components/notifier';
+import 'hammerjs';
+
+registerLocaleData(localeRu);
 
 /**
  * Домен форм плеера. Здесь храняться всё что связано с форм плеером, его интеграцие с форм плеер апи.
@@ -39,6 +39,7 @@ import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifi
     AutocompleteModule,
     LogicScreenModule,
     MainContainerModule,
+    NotifierModule,
     NotifierDisclaimerModule,
   ],
   providers: [

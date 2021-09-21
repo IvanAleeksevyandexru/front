@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { BehaviorSubject } from 'rxjs';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CustomListDropDowns } from '../../components-list.types';

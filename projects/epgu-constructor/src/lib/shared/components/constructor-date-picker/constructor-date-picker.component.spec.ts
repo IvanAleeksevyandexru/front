@@ -4,13 +4,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormControl } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockModule } from 'ng-mocks';
-import { MonthYear } from '@epgu/epgu-lib';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { ConstructorDatePickerComponent } from './constructor-date-picker.component';
 import { BaseModule } from '../../base.module';
 import { configureTestSuite } from 'ng-bullet';
+import { MonthYear } from '@epgu/ui/models/date-time';
 
 describe('ConstructorDatePickerComponent', () => {
   let component: ConstructorDatePickerComponent;
@@ -76,7 +76,6 @@ describe('ConstructorDatePickerComponent', () => {
   });
 
   describe('input event', () => {
-
     it('should call date selected event when input is correct', () => {
       const event = { target: { value: '01.01.2021' }};
       const date = new Date('01.01.2021');
@@ -91,7 +90,5 @@ describe('ConstructorDatePickerComponent', () => {
       debugEl.triggerEventHandler('input', event);
       expect(component.dateSelectedEvent.emit).not.toHaveBeenCalled();
     });
-
   });
-
 });

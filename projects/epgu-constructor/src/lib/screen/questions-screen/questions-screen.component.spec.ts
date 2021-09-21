@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { EpguLibModule, SmuEventsService } from '@epgu/epgu-lib';
 import { MockComponents, MockDirective, MockModule, MockPipe, MockProvider } from 'ng-mocks';
 import {
   ConfigService,
@@ -39,8 +38,8 @@ import {
   Clarifications,
 } from '@epgu/epgu-constructor-types';
 import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
-import { JsonHelperServiceStub } from '../../core/services/json-helper/json-helper.service.stub';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
+import { JsonHelperServiceStub } from '../../core/services/json-helper/json-helper.service.stub';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -85,12 +84,7 @@ describe('QuestionsScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [
-        MockModule(EpguLibModule),
-        MockModule(UserInfoLoaderModule),
-        BaseModule,
-        ScreenButtonsModule,
-      ],
+      imports: [MockModule(UserInfoLoaderModule), BaseModule, ScreenButtonsModule],
       declarations: [
         QuestionsScreenComponent,
         MockComponents(ScreenContainerComponent, PageNameComponent, AnswerButtonComponent),

@@ -9,10 +9,10 @@ import { CtaModalComponent } from '../cta-modal/cta-modal.component';
 import { OutputHtmlComponent } from '@epgu/epgu-constructor/src/lib/shared/components/output-html/output-html.component';
 import { ScreenButtonsComponent } from '@epgu/epgu-constructor/src/lib/shared/components/screen-buttons/screen-buttons.component';
 import { ActionDirective } from '@epgu/epgu-constructor/src/lib/shared/directives/action/action.directive';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { BaseUiModule } from '../../../base/base-ui.module';
 
 const blankModalParameters = {
   clarifications: {},
@@ -33,28 +33,30 @@ describe('ModalContainerComponent', () => {
     service = TestBed.inject(ModalService);
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ConfirmationModalComponent,
-        ModalContainerComponent,
-        MockComponents(CtaModalComponent, OutputHtmlComponent, ScreenButtonsComponent), MockDirectives(ActionDirective)],
-      imports: [
-        MockModule(EpguLibModule)
-      ],
-      providers: [
-        EventBusService,
-        ModalService,
-        { provide: ConfigService, useClass: ConfigServiceStub },
-      ],
-    })
-      .overrideModule(BrowserDynamicTestingModule, {
-        set: {
-          entryComponents: [ConfirmationModalComponent],
-        },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          ConfirmationModalComponent,
+          ModalContainerComponent,
+          MockComponents(CtaModalComponent, OutputHtmlComponent, ScreenButtonsComponent),
+          MockDirectives(ActionDirective),
+        ],
+        imports: [MockModule(BaseUiModule)],
+        providers: [
+          EventBusService,
+          ModalService,
+          { provide: ConfigService, useClass: ConfigServiceStub },
+        ],
       })
-      .compileComponents();
-  }));
+        .overrideModule(BrowserDynamicTestingModule, {
+          set: {
+            entryComponents: [ConfirmationModalComponent],
+          },
+        })
+        .compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     initComponent();

@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { LoadService } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
 import {
   LoadServiceStub,
   MainContainerModule,
   TracingServiceStub,
-  ObjectHelperService
+  ObjectHelperService,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
@@ -43,7 +43,7 @@ import { FormPlayerStartManagerStub } from './services/form-player-start/form-pl
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { SimpleChange } from '@angular/core';
-import { EpguLibModuleInited } from '../shared/base.module';
+import { LoadService } from '@epgu/ui/services/load';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from '../core/services/autocomplete/autocomplete-api.service';
@@ -63,6 +63,8 @@ import { JsonHelperService } from '../core/services/json-helper/json-helper.serv
 import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
 import { FormPlayerApiServiceStub } from './services/form-player-api/form-player-api.service.stub';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
+import { NotifierModule } from '@epgu/ui/components/notifier';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('FormPlayerComponent', () => {
   let fixture: ComponentFixture<FormPlayerComponent>;
@@ -73,12 +75,9 @@ describe('FormPlayerComponent', () => {
   let configService: ConfigService;
   let navService: NavigationService;
   let screenService: ScreenService;
-  let loggerService: LoggerService;
   let autocompleteService: AutocompleteService;
   let tracingService: TracingService;
-  let continueOrderModalService: ContinueOrderModalService;
   let initDataService: InitDataService;
-  let formPlayerStartService: FormPlayerStartManager;
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
@@ -91,7 +90,13 @@ describe('FormPlayerComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [EpguLibModuleInited, MainContainerModule, NotifierDisclaimerModule],
+      imports: [
+        MainContainerModule,
+        NotifierDisclaimerModule,
+        BaseUiModule,
+        NotifierModule,
+        HttpClientModule,
+      ],
       declarations: [
         FormPlayerComponent,
         ScreenResolverComponentMock,
@@ -147,9 +152,6 @@ describe('FormPlayerComponent', () => {
     configService = TestBed.inject(ConfigService);
     navService = TestBed.inject(NavigationService);
     screenService = TestBed.inject(ScreenService);
-    loggerService = TestBed.inject(LoggerService);
-    continueOrderModalService = TestBed.inject(ContinueOrderModalService);
-    formPlayerStartService = TestBed.inject(FormPlayerStartManager);
 
     fixture = TestBed.createComponent(FormPlayerComponent);
     component = fixture.componentInstance;

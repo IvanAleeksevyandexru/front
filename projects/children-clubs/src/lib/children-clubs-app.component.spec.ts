@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import {
   CfAppStateService,
@@ -29,14 +28,16 @@ import {
   ConfigServiceStub,
   ConfigApiService,
   ConfigApiServiceStub,
-  BaseUiModule, LoggerService, LoggerServiceStub,
+  LoggerService,
+  LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
-import { LoadService } from '@epgu/epgu-lib';
 import { BaseModule } from './components/base/base.module';
-import { MockModule } from 'ng-mocks';
+import { LoadService } from '@epgu/ui/services/load';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NotifierModule } from '@epgu/ui/components/notifier';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;
@@ -50,7 +51,8 @@ describe('ChildrenClubsComponent', () => {
         BaseModule,
         SharedModalModule,
         MainContainerModule,
-        MockModule(BaseUiModule),
+        NotifierModule,
+        BrowserAnimationsModule,
       ],
       declarations: [
         ChildrenClubsAppComponent,

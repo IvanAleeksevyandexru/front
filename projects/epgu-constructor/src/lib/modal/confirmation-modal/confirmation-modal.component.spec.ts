@@ -9,8 +9,10 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   EventBusService,
-  ModalService, ObjectHelperService,
+  ModalService,
+  ObjectHelperService,
   DownloadService,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
@@ -20,13 +22,13 @@ import { NavigationServiceStub } from '../../core/services/navigation/navigation
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationModalService } from '../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../core/services/navigation-modal/navigation-modal.service.stub';
-import { MockComponents, MockDirectives, MockModule } from 'ng-mocks';
+import { MockComponents, MockDirectives } from 'ng-mocks';
 import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
-import { EpguLibModule, NotifierService } from '@epgu/epgu-lib';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { ScreenButtonsComponent } from '../../shared/components/screen-buttons/screen-buttons.component';
 import { By } from '@angular/platform-browser';
-import { DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { NotifierService } from '@epgu/ui/services/notifier';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
@@ -53,7 +55,7 @@ describe('ConfirmationModalComponent', () => {
         MockComponents(CtaModalComponent, OutputHtmlComponent, ScreenButtonsComponent),
         MockDirectives(ActionDirective),
       ],
-      imports: [MockModule(EpguLibModule)],
+      imports: [BaseUiModule],
       providers: [
         EventBusService,
         ModalService,
@@ -152,6 +154,7 @@ describe('ConfirmationModalComponent', () => {
       {
         label: 'some button label',
         action: DTOActionAction.editEmail,
+        type: ActionType.legalEdit,
       },
     ];
     fixture.detectChanges();
@@ -163,6 +166,7 @@ describe('ConfirmationModalComponent', () => {
       {
         label: 'some button label',
         action: DTOActionAction.editEmail,
+        type: ActionType.legalEdit,
       },
     ]);
   });

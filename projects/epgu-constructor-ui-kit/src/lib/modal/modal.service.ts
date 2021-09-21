@@ -8,9 +8,9 @@ import {
   RendererFactory2,
   Type,
 } from '@angular/core';
+import { HelperService } from '@epgu/ui/services/helper';
 import { Observable, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { HelperService } from '@epgu/epgu-lib';
 
 @Injectable()
 export class ModalService {

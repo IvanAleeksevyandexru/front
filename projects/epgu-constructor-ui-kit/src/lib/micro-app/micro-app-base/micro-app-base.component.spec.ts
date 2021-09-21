@@ -18,7 +18,6 @@ import { LocalStorageServiceStub } from '../../core/services/local-storage/local
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { MicroAppNavigationRuleService } from '../micro-app-navigation-rule/micro-app-navigation-rule.service';
 import { MicroAppNavigationRuleServiceStub } from '../micro-app-navigation-rule/micro-app-navigation-rule.service.stub';
-import { LoadService } from '@epgu/epgu-lib';
 import { LoadServiceStub } from '../../core/services/config/load-service-stub';
 import { ConfigService } from '../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../core/services/config/config.service.stub';
@@ -27,6 +26,7 @@ import { ConfigApiServiceStub } from '../../core/services/config-api/config-api.
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
+import { LoadService } from '@epgu/ui/services/load';
 
 export interface TestValueType {
   someKey: string;

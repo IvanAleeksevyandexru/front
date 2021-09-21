@@ -6,17 +6,19 @@ import { BaseUiModule } from '../../base-ui.module';
 import { By } from '@angular/platform-browser';
 import { SharedModalModule } from '../../../modal/shared/shared-modal.module';
 import { ModalService } from '../../../modal/modal.service';
+import { HttpClientModule } from '@angular/common/http';
 
 const textMock = 'Opa gangnam style!!!';
 
 @Component({
   selector: 'epgu-cf-ui-test-content',
-  template: `<h2>${textMock}</h2>`
+  template: `<h2>${textMock}</h2>`,
 })
 class TestContentComponent {}
 
 @Component({
-  template: '<epgu-cf-ui-main-container [showLoader]="showLoader"><epgu-cf-ui-test-content></epgu-cf-ui-test-content></epgu-cf-ui-main-container>'
+  template:
+    '<epgu-cf-ui-main-container [showLoader]="showLoader"><epgu-cf-ui-test-content></epgu-cf-ui-test-content></epgu-cf-ui-main-container>',
 })
 class WrapperTestComponent {
   showLoader = true;
@@ -29,10 +31,9 @@ describe('MainContainerComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [WrapperTestComponent, TestContentComponent, MainContainerComponent],
-      imports: [BaseUiModule, SharedModalModule],
-      providers: [ModalService]
-    })
-    .compileComponents();
+      imports: [BaseUiModule, SharedModalModule, HttpClientModule],
+      providers: [ModalService],
+    }).compileComponents();
   });
 
   beforeEach(() => {
