@@ -1778,10 +1778,10 @@
     tslib "^2.0.0"
     zipkin-transport-http "0.22.0"
 
-"@epgu/ui@0.1.121-modules":
-  version "0.1.121-modules"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-0.1.121-modules.tgz#9ea2f39d66fecfb8ebd4d2e64b3d48721a0e3483"
-  integrity sha512-boPXOEGND3/P1MrNCZnkUT9JAwhi7RvYU+ZmhhhdKrx6U/GIQMfOpDaH8aQQns8VaOXjESdjWVaGMGWYVbLYsQ==
+"@epgu/ui@3.0.383-2-core-frontv4":
+  version "3.0.383-2-core-frontv4"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.383-2-core-frontv4.tgz#fa71bbeebecce89448bf391997d22082255142ea"
+  integrity sha512-ZGC9gOedjtNbioib4VKqRsHSoWgir4Q2nm6LwsSCK8ep0CoJF9gjo5+9QuNK4MdWYGgbH8Qdes1jj7v0QxFpQg==
   dependencies:
     tslib "^2.0.0"
 
