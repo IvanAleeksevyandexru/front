@@ -107,12 +107,12 @@
         </ng-container>
 
         <ng-template #availableBtnText>
-          <p class="mb-24 text-color--text-helper fs-sm">
+          <p class="text-color--text-helper fs-sm">
             <ng-container *ngIf="data.groupCount > 0 && data.availableGroupCount === 1; else someGroups">
               Чтобы записаться, выберите открытую группу
             </ng-container>
             <ng-template #someGroups>
-              Чтобы записатся, выберите 1 из {{ data.availableGroupCount }} открытых групп
+              Чтобы записаться, выберите 1 из {{ data.availableGroupCount }} открытых групп
             </ng-template>
           </p>
         </ng-template>
