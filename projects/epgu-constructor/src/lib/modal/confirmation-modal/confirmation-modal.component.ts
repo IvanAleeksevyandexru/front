@@ -8,12 +8,10 @@ import {
   OnInit,
 } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenButton, ConfirmationModal, ActionType } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
-  ModalService,
   UnsubscribeService,
   ModalBaseComponent,
   ConfirmationModalBaseButton,
@@ -34,14 +32,6 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   title?: ConfirmationModal['title'];
   traceId?: ConfirmationModal['traceId'];
   showCloseButton: ConfirmationModal['showCloseButton'] = true;
-  /** use elemEventHandlers to attach event handler to html element (tag).
-   *  E.g. <a id='link'></a>
-   *  =======
-   *  elemEventHandlers = [ { elemId: 'link', event: 'click', handler: () => console.log('Hello') } ]
-   *  =======
-   *  <a id='link' (click)='console.log('Hello')'></a>
-   *  */
-  elemEventHandlers: ConfirmationModal['elemEventHandlers'] = [];
   clarifications?: ConfirmationModal['buttons'];
   componentId?: ConfirmationModal['componentId'];
   preview?: ConfirmationModal['preview'];
@@ -56,7 +46,6 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     public injector: Injector,
     public configService: ConfigService,
     protected elemRef: ElementRef,
-    private modalService: ModalService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,
@@ -90,35 +79,9 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   }
 
   ngAfterViewInit(): void {
-    this.setElemByIdHandler();
     this.setDefaultCloseAction();
     this.setCustomButtons();
     this.cdr.markForCheck();
-  }
-
-  setElemByIdHandler(): void {
-    if (this.clarifications) {
-      this.elemEventHandlers = Object.entries(this.clarifications).map(([id, data]) => {
-        const clarifications = { ...this.clarifications };
-        delete clarifications[id];
-        return {
-          elemId: id,
-          event: 'click',
-          handler: (): Observable<void> =>
-            this.modalService.openModal(ConfirmationModalComponent, {
-              ...data,
-              clarifications,
-            }),
-        };
-      });
-    }
-
-    this.elemEventHandlers.forEach(({ elemId, event, handler }) => {
-      const elem = this.elemRef.nativeElement.querySelector(`#${elemId}`);
-      if (elem) {
-        elem.addEventListener(event, handler.bind(this));
-      }
-    });
   }
 
   setDefaultCloseAction(): void {

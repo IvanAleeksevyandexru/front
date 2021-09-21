@@ -1,51 +1,58 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent } from 'ng-mocks';
-import {
-  ConfigService,
-  DeviceDetectorService,
-  DeviceDetectorServiceStub,
-} from '@epgu/epgu-constructor-ui-kit';
+import { MockComponent, MockDirective } from 'ng-mocks';
+import { configureTestSuite } from 'ng-bullet';
+
+import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub, ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal.component';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
 import { ModalService, ModalServiceStub, CtaModalComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
-import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { configureTestSuite } from 'ng-bullet';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { ClickableLabelDirective } 
+  from 'projects/epgu-constructor/src/lib/shared/directives/clickable-label/clickable-label.directive';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;
   let fixture: ComponentFixture<PhotoRequirementsModalComponent>;
-  let settingMock: PhotoRequirementsModalSetting = {
-    warning:
-      'Убедитесь, что ваша фотография соответствует требованиям ведомства. Это важно, чтобы заявление приняли.',
-    body: [
-      {
-        title: '<b>Фотография ребёнка</b>',
-        text:
-          'К фото ребёнка те же требования, что и к фото взрослого. Ребёнок в кадре должен быть один, без посторонних предметов.',
-        type: 'child',
-        examplePhotos: [{ valid: true, description: 'Смотрит прямо', type: 'eyes-forward' }],
-      },
-    ],
-    footer: '<a id="howtotakephoto">Как сделать фото самостоятельно</a>',
+  const clarifications: Clarifications = {
+    requirements: {
+      type: 'UniqueModal',
+      id: 'PhotoRequirements',
+      setting: {
+        warning: 'Убедитесь, что ваша фотография соответствует требованиям ведомства. Это важно, чтобы заявление приняли.',
+        body: [
+          {
+            title: '<b>Фотография ребёнка</b>',
+            text:
+              'К фото ребёнка те же требования, что и к фото взрослого. Ребёнок в кадре должен быть один, без посторонних предметов.',
+            type: 'child',
+            examplePhotos: [{ valid: true, description: 'Смотрит прямо', type: 'eyes-forward' }],
+          },
+        ],
+        footer: '<a id="howtotakephoto">Как сделать фото самостоятельно</a>',
+      }
+    }
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [PhotoRequirementsModalComponent, MockComponent(CtaModalComponent)],
+      declarations: [
+        PhotoRequirementsModalComponent,
+        MockComponent(CtaModalComponent),
+        MockDirective(ClickableLabelDirective),
+      ],
       imports: [BaseModule, BaseComponentsModule],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -67,31 +74,19 @@ describe('PhotoRequirementsModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PhotoRequirementsModalComponent);
     component = fixture.componentInstance;
-    component.setting = settingMock;
+    component.clarifications = clarifications;
     fixture.detectChanges();
   });
 
-  it('should be create buttons', () => {
-    expect(component.buttons.length).toBeGreaterThan(0);
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  describe('handleClickOnElemById', () => {
-    it('should be close modal', () => {
-      jest.spyOn(component, 'closeModal');
-      jest.spyOn(component.modalResult, 'next');
-      component.detachView = () => null;
-      const event = { target: { id: uploadPhotoElemId.howToTakePhoto }} as any;
-      component.handleClickOnElemById(event);
-      expect(component.closeModal).toHaveBeenCalled();
-      expect(component.modalResult.next).toHaveBeenCalledWith(uploadPhotoElemId.howToTakePhoto);
-    });
+  it('should extend ModalBaseComponent', () => {
+    expect(component).toBeInstanceOf(ModalBaseComponent);
+  });
 
-    it('should be not close modal', () => {
-      jest.spyOn(component, 'closeModal');
-      component.detachView = () => null;
-      const event = { target: { id: '' }} as any;
-      component.handleClickOnElemById(event);
-      expect(component.closeModal).toHaveBeenCalledTimes(0);
-    });
+  it('should create buttons', () => {
+    expect(component.buttons.length).toBeGreaterThan(0);
   });
 });

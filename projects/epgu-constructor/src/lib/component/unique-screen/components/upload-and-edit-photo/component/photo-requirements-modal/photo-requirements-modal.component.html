@@ -20,7 +20,7 @@
               src="{{config.staticDomainContentPath}}/catalog/new/photo/{{
               requirement.type
             }}-{{ photo.type }}.png"
-              alt=""
+              alt
             />
             <div class="req-item__photo-desc">
               <img [src]="photo.valid ? validIconPath : invalidIconPath" alt="" />
@@ -32,8 +32,9 @@
     </div>
     <div
       *ngIf="setting.footer"
-      (click)="handleClickOnElemById($event)"
       class="req-modal__footer"
+      epgu-constructor-clickable-label
+      [clarifications]="clarifications"
       [innerHTML]="setting.footer | safe: 'html'"
     ></div>
   </ng-container>

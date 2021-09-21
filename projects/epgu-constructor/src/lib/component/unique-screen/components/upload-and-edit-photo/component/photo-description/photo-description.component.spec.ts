@@ -1,19 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MockModule } from 'ng-mocks';
-import { of } from 'rxjs';
-
-import { PhotoDescriptionComponent } from './photo-description.component';
-import { SafeModule } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
+import { MockDirective } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
+
+import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { PhotoDescriptionComponent } from './photo-description.component';
+import { ClickableLabelDirective }
+  from '../../../../../../shared/directives/clickable-label/clickable-label.directive';
 
 describe('PhotoDescriptionComponent', () => {
   let component: PhotoDescriptionComponent;
   let fixture: ComponentFixture<PhotoDescriptionComponent>;
-  let modalService: ModalService;
   let mockData: ComponentDto = {
     id: 'pd5',
     type: 'PhotoUploadComponent',
@@ -42,6 +39,8 @@ describe('PhotoDescriptionComponent', () => {
             '<p class="mt-24"><a id=\"requirements\">Требования к фото</a></p>'
         },
         requirements: {
+          type: 'UniqueModal',
+          id: 'PhotoRequirements',
           setting: {
             warning:
               'Убедитесь, что ваша фотография соответствует требованиям ведомства. Это важно, чтобы заявление приняли.',
@@ -69,15 +68,16 @@ describe('PhotoDescriptionComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [PhotoDescriptionComponent],
-      imports: [RouterTestingModule, MockModule(SafeModule)],
-      providers: [{ provide: ModalService, useClass: ModalServiceStub }],
+      declarations: [
+        PhotoDescriptionComponent, 
+        MockDirective(ClickableLabelDirective),
+        SafePipe,
+      ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PhotoDescriptionComponent);
-    modalService = TestBed.inject(ModalService);
     component = fixture.componentInstance;
     component.data = mockData;
     fixture.detectChanges();
@@ -85,87 +85,5 @@ describe('PhotoDescriptionComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('handleClickOnElemById', () => {
-    it('should be call openRequirementsModal', () => {
-      jest.spyOn(component, 'openRequirementsModal');
-      const event = { target: { id: 'howtotakephoto' }};
-      component.handleClickOnElemById(event as any);
-      expect(component.openRequirementsModal).toHaveBeenCalled();
-    });
-
-    it('should be call openHowPhotoModal', () => {
-      jest.spyOn(component, 'openHowPhotoModal');
-      const event = { target: { id: 'requirements' }};
-      component.handleClickOnElemById(event as any);
-      expect(component.openHowPhotoModal).toHaveBeenCalled();
-    });
-  });
-
-  describe('setHowPhotoModalParams', () => {
-    it('should be set params to setHowPhotoModalParams', () => {
-      expect(component.howPhotoModalParameters.text).toEqual(
-        mockData?.attrs?.clarifications[uploadPhotoElemId.howToTakePhoto]?.text,
-      );
-      expect(component.howPhotoModalParameters.elemEventHandlers[0].elemId).toEqual(uploadPhotoElemId.requirements);
-    });
-  });
-
-  describe('setWhyNeedPhotoModalParams', () => {
-    it('should be set params to setWhyNeedPhotoModalParams', () => {
-      expect(component.howPhotoModalParameters.text).toEqual(
-        mockData?.attrs?.clarifications[uploadPhotoElemId.howToTakePhoto]?.text,
-      );
-      expect(component.howPhotoModalParameters.elemEventHandlers[0].elemId).toEqual(uploadPhotoElemId.requirements);
-    });
-  });
-
-  describe('openRequirementsModal', () => {
-    it('should be call openHowPhotoModal if has value', () => {
-      jest.spyOn(modalService, 'openModal').mockReturnValue(of(uploadPhotoElemId.howToTakePhoto));
-      jest.spyOn(component, 'openHowPhotoModal');
-      component.openRequirementsModal();
-      expect(component.openHowPhotoModal).toHaveBeenCalled();
-    });
-
-    it('should be not call openHowPhotoModal', () => {
-      jest.spyOn(modalService, 'openModal').mockReturnValue(of(''));
-      jest.spyOn(component, 'openHowPhotoModal');
-      component.openRequirementsModal();
-      expect(component.openHowPhotoModal).toBeCalledTimes(0);
-    });
-  });
-
-  describe('openHowPhotoModal', () => {
-    it('should be call openRequirementsModal if has value', () => {
-      jest.spyOn(modalService, 'openModal').mockReturnValue(of(uploadPhotoElemId.requirements));
-      jest.spyOn(component, 'openRequirementsModal');
-      component.openHowPhotoModal();
-      expect(component.openRequirementsModal).toHaveBeenCalled();
-    });
-
-    it('should be not call openRequirementsModal', () => {
-      jest.spyOn(modalService, 'openModal').mockReturnValue(of(''));
-      jest.spyOn(component, 'openRequirementsModal');
-      component.openHowPhotoModal();
-      expect(component.openRequirementsModal).toBeCalledTimes(0);
-    });
-  });
-
-  describe('openWhyNeedPhoto', () => {
-    it('should be call openRequirementsModal if has value', () => {
-      jest.spyOn(modalService, 'openModal').mockReturnValue(of(uploadPhotoElemId.requirements));
-      jest.spyOn(component, 'openRequirementsModal');
-      component.openWhyNeedPhoto();
-      expect(component.openRequirementsModal).toHaveBeenCalled();
-    });
-
-    it('should be not call openRequirementsModal', () => {
-      jest.spyOn(modalService, 'openModal').mockReturnValue(of(''));
-      jest.spyOn(component, 'openRequirementsModal');
-      component.openWhyNeedPhoto();
-      expect(component.openRequirementsModal).toBeCalledTimes(0);
-    });
   });
 });
