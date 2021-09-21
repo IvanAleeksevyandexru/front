@@ -212,6 +212,8 @@ export class ValidationService {
         if (hasErrors) {
           if (validation.forChild) {
             control.markAllAsTouched();
+          } else {
+            control.markAsTouched();
           }
           return this.validationErrorMsg(
             validation.errorMsg ? validation.errorMsg : INCORRENT_DATE_FIELD,

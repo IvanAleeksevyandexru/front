@@ -424,7 +424,7 @@ describe('ValidationService', () => {
 
     const range = { min: new Date(2005, 5,5 ), max: new Date(2010, 10, 10) };
     const controlCompound = { value: { first : new Date(2004, 4, 4) }, markAllAsTouched() { return null; } };
-    const controlPlain = { value: new Date(2006, 6, 6) };
+    const controlPlain = { value: new Date(2006, 6, 6), markAsTouched() { return null; } };
 
     it('should return error if min date is greater than value', () => {
       jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
@@ -446,7 +446,7 @@ describe('ValidationService', () => {
       expect(result).toBeUndefined();
     });
 
-    it('should return error if max date is lower than value', () => {
+    it('should return undefined if max date is lower than value', () => {
       jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
       controlPlain.value = new Date(2006, 6, 6);
       const validator = service.dateValidator(plainComponent);
@@ -457,7 +457,7 @@ describe('ValidationService', () => {
 
     });
 
-    it('should return undefined if max date is greater than value', () => {
+    it('should return error if max date is greater than value', () => {
       jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
       controlPlain.value = new Date(2011, 11, 11);
       const validator = service.dateValidator(plainComponent);
