@@ -28,6 +28,7 @@ import { LabelPipe } from '../../pipe/label.pipe';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('MatPeriodFormComponent', () => {
   let component: MatPeriodFormComponent;
@@ -99,17 +100,18 @@ describe('MatPeriodFormComponent', () => {
         MockModule(ErrorModule),
         MockModule(BaseModule),
         MockModule(MemoModule),
+        HttpClientModule,
       ],
       providers: [
+        { provide: ScreenService, use: ScreenServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        MockProvider(DateRestrictionsService),
         FormBuilder,
         DurationService,
         DatesToolsService,
         ValidationService,
         CurrentAnswersService,
         DateRangeService,
-        MockProvider(DateRestrictionsService),
-        { provide: ScreenService, use: ScreenServiceStub },
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         ConfigService,
         LoggerService,
       ],

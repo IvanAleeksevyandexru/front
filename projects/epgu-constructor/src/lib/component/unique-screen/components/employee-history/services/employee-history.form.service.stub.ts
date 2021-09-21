@@ -6,8 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { MonthYear } from '@epgu/epgu-lib';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { MonthYear } from '@epgu/ui/models/date-time';
 import {
   EmployeeType,
   EmployeeHistoryModel,

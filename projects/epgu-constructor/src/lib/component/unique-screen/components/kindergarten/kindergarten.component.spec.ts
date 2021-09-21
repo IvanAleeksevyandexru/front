@@ -23,7 +23,7 @@ import {
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
-import { MockModule, MockProvider } from 'ng-mocks';
+import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
@@ -55,6 +55,7 @@ import { AnimationBuilder } from '@angular/animations';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('KindergartenComponent', () => {
   let component: KindergartenComponent;
@@ -65,29 +66,9 @@ describe('KindergartenComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [KindergartenComponent],
-      imports: [BaseModule, SelectMapObjectModule],
+      imports: [BaseModule, SelectMapObjectModule, HttpClientModule],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
-        ScreenService,
-        MockProvider(UnsubscribeService),
-        MockProvider(CurrentAnswersService),
-        MockProvider(ModalErrorService),
-        MockProvider(DictionaryToolsService),
-        MockProvider(DownloadService),
-        MockProvider(HtmlRemoverService),
-        MockProvider(AutocompleteApiService),
-        MockProvider(EventBusService),
-        MockProvider(JsonHelperService),
-        MockProvider(AddressesToolsService),
-        PrepareComponentsService,
-        MockProvider(CachedAnswersService),
-        MockProvider(RefRelationService),
-        MockProvider(DateRefService),
-        MockProvider(AnimationBuilder),
-        MockProvider(HtmlSelectService),
-        CertificateEaisdoService,
-        EaisdoGroupCostService,
-        MockProvider(ComponentsListRelationsService),
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
@@ -100,6 +81,26 @@ describe('KindergartenComponent', () => {
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: PREV_BUTTON_NAVIGATION, useClass: PrevButtonNavigationService },
+        MockProvider(UnsubscribeService),
+        MockProvider(CurrentAnswersService),
+        MockProvider(ModalErrorService),
+        MockProvider(DictionaryToolsService),
+        MockProvider(DownloadService),
+        MockProvider(HtmlRemoverService),
+        MockProvider(AutocompleteApiService),
+        MockProvider(EventBusService),
+        MockProvider(JsonHelperService),
+        MockProvider(AddressesToolsService),
+        MockProvider(ComponentsListRelationsService),
+        MockProvider(CachedAnswersService),
+        MockProvider(RefRelationService),
+        MockProvider(DateRefService),
+        MockProvider(AnimationBuilder),
+        MockProvider(HtmlSelectService),
+        PrepareComponentsService,
+        CertificateEaisdoService,
+        ScreenService,
+        EaisdoGroupCostService,
       ],
     }).compileComponents();
   });

@@ -37,7 +37,7 @@ import { NavigationModalService } from '../../../core/services/navigation-modal/
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
-import { NotifierService } from '@epgu/epgu-lib';
+import { NotifierService } from '@epgu/ui/services/notifier';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',

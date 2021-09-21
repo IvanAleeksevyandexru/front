@@ -9,14 +9,15 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import {
   ConfigService,
-  ConfigServiceStub, DATE_STRING_DASH_FORMAT,
+  ConfigServiceStub,
   DatesToolsService,
   LocalStorageService,
-  LocalStorageServiceStub
+  LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DatePeriodComponent } from './date-period/date-period.component';
 import { parseISO } from 'date-fns';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('DatePeriodContainerComponent', () => {
   let component: DatePeriodContainerComponent;
@@ -27,7 +28,7 @@ describe('DatePeriodContainerComponent', () => {
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
       declarations: [DatePeriodContainerComponent, MockComponent(DatePeriodComponent)],
-      imports: [MockModule(DefaultUniqueScreenWrapperModule)],
+      imports: [MockModule(DefaultUniqueScreenWrapperModule), HttpClientModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
@@ -48,22 +49,22 @@ describe('DatePeriodContainerComponent', () => {
   });
 
   describe('updateState()', () => {
-
     it('updateState()', () => {
-      component.updateState(
-        { startDate: new Date('01.01.2020'), endDate: new Date('02.01.2020'), isValid: true });
+      component.updateState({
+        startDate: new Date('01.01.2020'),
+        endDate: new Date('02.01.2020'),
+        isValid: true,
+      });
 
       expect(currentAnswersService.isValid).toBe(true);
       expect(currentAnswersService.state).toBe('{"startDate":"2020-01-01","endDate":"2020-02-01"}');
     });
 
     it('updateState()', () => {
-      component.updateState(
-        { startDate: null, endDate: new Date('02.01.2020'), isValid: false });
+      component.updateState({ startDate: null, endDate: new Date('02.01.2020'), isValid: false });
 
       expect(currentAnswersService.isValid).toBe(false);
     });
-
   });
 
   describe('initialState', () => {

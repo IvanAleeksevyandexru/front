@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { CoreModule } from '../../../core/core.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -14,8 +14,9 @@ import {
   ConfigServiceStub,
   LoggerService,
   LoggerServiceStub,
-  UnsubscribeService
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ConstructorDadataWidgetComponent', () => {
   let component: ConstructorDadataWidgetComponent;
@@ -24,7 +25,7 @@ describe('ConstructorDadataWidgetComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorDadataWidgetComponent],
-      imports: [CoreModule, BaseModule, RouterTestingModule],
+      imports: [CoreModule, BaseModule, RouterTestingModule, HttpClientModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DownloadService, useClass: DownloadServiceStub },

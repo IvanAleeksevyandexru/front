@@ -1,4 +1,4 @@
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -6,7 +6,8 @@ import {
   CustomListDictionary,
   CustomListGenericData,
   CustomListReferenceData,
-  CustomScreenComponentTypes, MappingParamsDto,
+  CustomScreenComponentTypes,
+  MappingParamsDto,
 } from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
@@ -49,14 +50,20 @@ export class RestToolsService {
     return this.componentsListRelationsService.restUpdates$.pipe(
       switchMap((updates: ComponentRestUpdates) => {
         const filteredComponents = components
-          .filter(component => updates[component.id] !== undefined || component?.attrs?.needUnfilteredDictionaryToo)
-          .map(component => ({
+          .filter(
+            (component) =>
+              updates[component.id] !== undefined || component?.attrs?.needUnfilteredDictionaryToo,
+          )
+          .map((component) => ({
             ...component,
             attrs: {
               ...component.attrs,
-              ...(updates[component.id] ?
-                this.interpolationService.interpolateObject(updates[component.id].rest, updates[component.id].value):
-                {}),
+              ...(updates[component.id]
+                ? this.interpolationService.interpolateObject(
+                    updates[component.id].rest,
+                    updates[component.id].value,
+                  )
+                : {}),
               emptyWhenNoFilter: !updates[component.id],
             },
           }));
@@ -93,21 +100,18 @@ export class RestToolsService {
 
   public getDictionariesByRest$(
     component: CustomComponent,
-    request: RestAttrsDto
+    request: RestAttrsDto,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
-    return (
-      this.restService.fetch<DictionaryResponse>(request)
-        .pipe(
-          map((response: HttpResponse<DictionaryResponse>) => ({
-            component,
-            data: {
-              items: response.body as unknown as DictionaryItem[],
-              error : null,
-              fieldErrors: [],
-              total: Array.isArray(response.body) ? response.body.length : 0,
-            },
-          })),
-        )
+    return this.restService.fetch<DictionaryResponse>(request).pipe(
+      map((response: HttpResponse<DictionaryResponse>) => ({
+        component,
+        data: {
+          items: (response.body as unknown) as DictionaryItem[],
+          error: null,
+          fieldErrors: [],
+          total: Array.isArray(response.body) ? response.body.length : 0,
+        },
+      })),
     );
   }
 
@@ -166,9 +170,7 @@ export class RestToolsService {
   }
 
   public isDictionaryLike(type: CustomScreenComponentTypes): boolean {
-    return [
-      CustomScreenComponentTypes.RestLookup
-    ].includes(type);
+    return [CustomScreenComponentTypes.RestLookup].includes(type);
   }
 
   public isResultEmpty(component: CustomComponent): boolean {
@@ -216,7 +218,7 @@ export class RestToolsService {
 
     if (
       (compAttrs.url && compAttrs.path) ||
-      (!Array.isArray(compAttrs.ref)) ||
+      !Array.isArray(compAttrs.ref) ||
       compAttrs.emptyWhenNoFilter ||
       compAttrs.needUnfilteredDictionaryToo
     ) {

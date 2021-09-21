@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormArray,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
-import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
 import { HealthService } from '@epgu/epgu-constructor-ui-kit';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -23,6 +28,8 @@ import { DateRestrictionsService } from '../date-restrictions/date-restrictions.
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { get } from 'lodash';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { DatesHelperService } from '@epgu/ui/services/dates-helper';
+import { MonthYear } from '@epgu/ui/models/date-time';
 
 export const CARD_VALIDATION_EVENT = 'CardValidation';
 
@@ -52,8 +59,7 @@ export class ValidationService {
     private currentAnswerService: CurrentAnswersService,
     private health: HealthService,
     private cookie: CookieService,
-  ) {
-  }
+  ) {}
 
   public customValidator(component: CustomComponent): ValidatorFn {
     const componentValidations = component.attrs?.validation;
@@ -76,8 +82,9 @@ export class ValidationService {
           return this.validationErrorMsg(error.errorMsg, error?.errorDesc, true);
         }
         customMessage = validations.find(
-          (validator: CustomComponentAttrValidation) => validator.type === CustomComponentAttrValidator.validationFn
-            || validator.type === CustomComponentAttrValidator.calculatedPredicate,
+          (validator: CustomComponentAttrValidation) =>
+            validator.type === CustomComponentAttrValidator.validationFn ||
+            validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
       }
 
@@ -91,7 +98,10 @@ export class ValidationService {
     };
   }
 
-  public customAsyncValidator(component: CustomComponent, asyncValidationType: string): AsyncValidatorFn {
+  public customAsyncValidator(
+    component: CustomComponent,
+    asyncValidationType: string,
+  ): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
     const onBlurValidations = componentValidations.filter(
       (validationRule) => validationRule.updateOn === 'blur',
@@ -110,8 +120,9 @@ export class ValidationService {
           return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));
         }
         customMessage = onBlurValidations.find(
-          (validator: CustomComponentAttrValidation) => validator.type === CustomComponentAttrValidator.validationFn
-            || validator.type === CustomComponentAttrValidator.calculatedPredicate,
+          (validator: CustomComponentAttrValidation) =>
+            validator.type === CustomComponentAttrValidator.validationFn ||
+            validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
       }
 
@@ -150,11 +161,19 @@ export class ValidationService {
       for (const validation of validations) {
         let hasErrors;
         let minDate =
-          this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.min ||
+          this.dateRestrictionsService.getDateRangeFromStore(
+            component.id,
+            componentsGroupIndex,
+            validation.forChild,
+          )?.min ||
           this.dateRangeService.rangeMap.get(component.id)?.min ||
           DatesHelperService.relativeOrFixedToFixed(component.attrs?.minDate);
         let maxDate =
-          this.dateRestrictionsService.getDateRangeFromStore(component.id, componentsGroupIndex, validation.forChild)?.max ||
+          this.dateRestrictionsService.getDateRangeFromStore(
+            component.id,
+            componentsGroupIndex,
+            validation.forChild,
+          )?.max ||
           this.dateRangeService.rangeMap.get(component.id)?.max ||
           DatesHelperService.relativeOrFixedToFixed(component.attrs?.maxDate);
         let controlValueAsDate: Date | number;
@@ -163,7 +182,10 @@ export class ValidationService {
           controlValueAsDate = control.value.firstDay();
           minDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
           maxDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
-        } else if (validation.forChild && component.type === CustomScreenComponentTypes.CalendarInput) {
+        } else if (
+          validation.forChild &&
+          component.type === CustomScreenComponentTypes.CalendarInput
+        ) {
           controlValueAsDate = control.value[validation.forChild];
         } else {
           controlValueAsDate = control.value;
@@ -191,15 +213,14 @@ export class ValidationService {
           if (validation.forChild) {
             control.markAllAsTouched();
           }
-          return this.validationErrorMsg(validation.errorMsg ?
-            validation.errorMsg :
-            INCORRENT_DATE_FIELD,
+          return this.validationErrorMsg(
+            validation.errorMsg ? validation.errorMsg : INCORRENT_DATE_FIELD,
             undefined,
             !!validation.errorMsg,
-            validation.forChild);
+            validation.forChild,
+          );
         }
       }
-
     };
   }
 
@@ -216,9 +237,11 @@ export class ValidationService {
     const values = this.form?.controls
       .filter((control) => Object.values(refs).includes(control.value?.id))
       .map(({ value }) => value.value?.id || value.value);
-    const [ bik, manualBik, manualCorr ] = values;
+    const [bik, manualBik, manualCorr] = values;
 
-    return manualBik !== null && manualBik !== undefined ? check(rs, manualBik, manualCorr) : check(rs, bik);
+    return manualBik !== null && manualBik !== undefined
+      ? check(rs, manualBik, manualCorr)
+      : check(rs, bik);
   }
 
   public checkCardNumber(cardNumber: string): boolean {
@@ -274,27 +297,40 @@ export class ValidationService {
     if (!customPredicateValidation) {
       return true;
     }
-    let validationExpression = this.replaceValueForPredicateExpression(customPredicateValidation.expr, component.id, value);
+    let validationExpression = this.replaceValueForPredicateExpression(
+      customPredicateValidation.expr,
+      component.id,
+      value,
+    );
     try {
       return eval(validationExpression);
-    } catch (error: unknown) {
+    } catch (error) {
       if (error instanceof SyntaxError) {
         throw new Error(`Ошибка в выражении CalculatedPredicate. Component ID: ${component.id}`);
       }
     }
   }
 
-  private replaceValueForPredicateExpression(expression: string, componentId: string, value: string): string {
+  private replaceValueForPredicateExpression(
+    expression: string,
+    componentId: string,
+    value: string,
+  ): string {
     const takePlaceholdersRegExp = new RegExp(/\${([^\s)]*)}/, 'g');
     const takeRefGroupPlaceholderRegExp = new RegExp(/\${\s?([^\s)]*)\s?}/);
-    return expression.match(takePlaceholdersRegExp)
-      .map(match => match.match(takeRefGroupPlaceholderRegExp)[1])
+    return expression
+      .match(takePlaceholdersRegExp)
+      .map((match) => match.match(takeRefGroupPlaceholderRegExp)[1])
       .reduce((accumulator, currentMatch) => {
         // Конвертируется в Number чтобы избежать скриптинга по эвал
-        let valueToReplace = currentMatch === `${componentId}.value`?
-          Number(value) :
-          Number(get(this.currentAnswerService.state, currentMatch));
-        return accumulator.replace(`\$\{${currentMatch}\}`, isNaN(valueToReplace) ? '' : valueToReplace + '');
+        let valueToReplace =
+          currentMatch === `${componentId}.value`
+            ? Number(value)
+            : Number(get(this.currentAnswerService.state, currentMatch));
+        return accumulator.replace(
+          `\$\{${currentMatch}\}`,
+          isNaN(valueToReplace) ? '' : valueToReplace + '',
+        );
       }, expression);
   }
 
@@ -302,7 +338,7 @@ export class ValidationService {
     error: string = InvalidControlMsg.formatField,
     desc?: string,
     textFromJson = false,
-    forChild?: string
+    forChild?: string,
   ): ValidationErrors {
     return { msg: error, desc, textFromJson, forChild };
   }
@@ -324,7 +360,6 @@ export class ValidationService {
     );
   }
 
-
   private getDateValidators(component: ComponentDto): CustomComponentAttrValidation[] {
     let validations: CustomComponentAttrValidation[] = [];
     if (component.type === CustomScreenComponentTypes.CalendarInput) {
@@ -338,8 +373,10 @@ export class ValidationService {
         }
       }
     } else {
-      validations = component.attrs.validation?.filter((validation) => validation.type === ValidationType.date) ||
-        [];
+      validations =
+        component.attrs.validation?.filter(
+          (validation) => validation.type === ValidationType.date,
+        ) || [];
     }
     return validations;
   }

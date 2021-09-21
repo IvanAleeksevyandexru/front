@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
 } from '@angular/core';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Gender, ComponentDto, ComponentActionDto } from '@epgu/epgu-constructor-types';

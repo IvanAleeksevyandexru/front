@@ -7,7 +7,7 @@ import {
   startOfQuarter,
   startOfYear,
 } from 'date-fns';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { PaymentType } from '../mat-period.models';
 import {

@@ -21,7 +21,6 @@ import {
   UnsubscribeService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
@@ -70,7 +69,6 @@ import { CommonBalloonContentComponent } from './components/balloon-content-reso
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { By } from '@angular/platform-browser';
 import { CommonSearchPanelComponent } from './components/search-panel-resolver/components/common-search-panel/common-search-panel.component';
-import { YaMapService } from '@epgu/epgu-lib';
 import { SelectMapObjectService } from './select-map-object.service';
 import { mockDivorceMapFeature } from './mocks/mock-select-map-mapFeatures';
 import { divorceApplicantAnswers } from './mocks/mock-select-map-divorceAnswers';
@@ -78,11 +76,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
-import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
 import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
-import { ExplicitContext } from '@epgu/zipkin';
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
 import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
+import { YaMapService } from '@epgu/ui/services/ya-map';
+import { FormsModule } from '@angular/forms';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -93,11 +91,8 @@ describe('SelectMapObjectComponent', () => {
   let selectMapObjectService: SelectMapObjectService;
   let yaMapService: YaMapService;
   let modalService: ModalService;
-  let navigationService: NavigationService;
   let MapStore: ScenarioDto;
   let comp;
-  let compValue;
-
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -113,6 +108,7 @@ describe('SelectMapObjectComponent', () => {
         MockModule(PrevButtonModule),
         HttpClientTestingModule,
         DisclaimerModule,
+        FormsModule,
       ],
       providers: [
         AddressesToolsService,
@@ -184,7 +180,6 @@ describe('SelectMapObjectComponent', () => {
     yandexMapService = fixture.debugElement.injector.get(YandexMapService);
     selectMapObjectService = fixture.debugElement.injector.get(SelectMapObjectService);
     modalService = fixture.debugElement.injector.get(ModalService);
-    navigationService = fixture.debugElement.injector.get(NavigationService);
     component = fixture.componentInstance;
     yandexMapService['objectManager'] = {
       objects: {
@@ -220,7 +215,6 @@ describe('SelectMapObjectComponent', () => {
     };
     MapStore = cloneDeep(mockSelectMapObjectStore);
     comp = MapStore.display.components[0];
-    compValue = JSON.parse(comp.value);
     screenService.initScreenStore(MapStore);
     fixture.detectChanges();
   });
@@ -361,7 +355,8 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('applySelectedObjects should apply items from cache', () => {
-    component['valueFromCache'] = '{"items":[{"isSelected":true,"value":"R7700038","attributeValues":{"CODE":"R7700038"}}]}';
+    component['valueFromCache'] =
+      '{"items":[{"isSelected":true,"value":"R7700038","attributeValues":{"CODE":"R7700038"}}]}';
     const dict = cloneDeep(mockMapDictionary);
     component['applySelectedObjects']((dict as unknown) as DictionaryResponseForYMap);
     const val = dict.items.find((item) => item.attributeValues.CODE === 'R7700038');

@@ -7,11 +7,12 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { ListElement, PluralizePipe, ValidationShowOn } from '@epgu/epgu-lib';
-import { MultipleSelectedItems } from '../../../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.models';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { PluralizePipe } from '@epgu/ui/pipes';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { EquipmentChoiceCategory, EquipmentChoiceItem } from '../../equipment-choice.types';
+import { MultipleSelectedItems } from '../../../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.models';
 
 @Component({
   selector: 'epgu-constructor-equipment-category',

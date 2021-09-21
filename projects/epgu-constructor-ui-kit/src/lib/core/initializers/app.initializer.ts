@@ -1,4 +1,4 @@
-import { SmuEventsService } from '@epgu/epgu-lib';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { CookieService } from 'ngx-cookie-service';
 import { MOBILE_VIEW_COOKIE_NAME } from '../services/device-detector/device-detector.service';
 

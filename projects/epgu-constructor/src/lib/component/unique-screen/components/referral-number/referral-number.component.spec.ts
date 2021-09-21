@@ -11,8 +11,8 @@ import {
   ModalServiceStub,
   LocationService,
   LocationServiceStub,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { ReferralNumberComponent } from './referral-number.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -20,7 +20,6 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
 import { DefaultUniqueScreenWrapperComponent } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
@@ -30,6 +29,7 @@ import { NavigationService } from '../../../../core/services/navigation/navigati
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Smev3ErrorMessagePipe } from '../../../../shared/pipes/smev-3-error-message/smev-3-error-message.pipe';
+import { FormsModule } from '@angular/forms';
 
 const mockComponent = {
   id: 'referralNumber',
@@ -42,16 +42,16 @@ const mockComponent = {
   linkedValues: [
     {
       argument: 'eserviceId',
-      source: 'reg1.medicalInfo.eserviceId'
+      source: 'reg1.medicalInfo.eserviceId',
     },
     {
       argument: 'sessionId',
-      source: 'reg1.medicalInfo.sessionId'
-    }
+      source: 'reg1.medicalInfo.sessionId',
+    },
   ],
   attrs: {},
   value: '',
-  visited: false
+  visited: false,
 };
 
 describe('ReferralNumberComponent', () => {
@@ -61,7 +61,6 @@ describe('ReferralNumberComponent', () => {
   let datesToolsService: DatesToolsService;
   let navigationService: NavigationService;
   let modalService: ModalService;
-
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -73,10 +72,7 @@ describe('ReferralNumberComponent', () => {
         MockComponent(DefaultUniqueScreenWrapperComponent),
         Smev3ErrorMessagePipe,
       ],
-      imports: [
-        MockModule(EpguLibModule),
-        MockModule(ScreenPadModule),
-      ],
+      imports: [MockModule(ScreenPadModule), BaseUiModule, FormsModule],
       providers: [
         UnsubscribeService,
         MockProvider(CurrentAnswersService),
@@ -89,9 +85,11 @@ describe('ReferralNumberComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
       ],
-    }).overrideComponent(ReferralNumberComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
-    }).compileComponents();
+    })
+      .overrideComponent(ReferralNumberComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

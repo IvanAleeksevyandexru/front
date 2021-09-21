@@ -5,7 +5,6 @@ import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { SmuEventsService } from '@epgu/epgu-lib';
 import { SmuEventsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { MobilViewEvents } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
@@ -13,6 +12,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { OrgType } from '@epgu/epgu-constructor-types';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('NavigationService', () => {
   let navigationService: NavigationService;

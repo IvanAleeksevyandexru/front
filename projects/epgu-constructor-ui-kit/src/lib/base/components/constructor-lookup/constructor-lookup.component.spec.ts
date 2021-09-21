@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormControlDirective } from '@angular/forms';
-import { LookupProvider, ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { LookupProvider } from '@epgu/ui/models/dropdown';
 import { of } from 'rxjs';
 import { ConstructorLookupComponent } from './constructor-lookup.component';
 import { BaseUiModule } from '../../base-ui.module';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ConstructorLookupComponent', () => {
   let component: ConstructorLookupComponent;
@@ -14,7 +16,7 @@ describe('ConstructorLookupComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ConstructorLookupComponent],
-      imports: [BaseUiModule],
+      imports: [BaseUiModule, HttpClientModule],
       providers: [],
     }).compileComponents();
   });

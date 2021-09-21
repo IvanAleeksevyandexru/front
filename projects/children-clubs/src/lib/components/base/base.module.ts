@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { ProgramFiltersFormComponent } from './components/program-filters-form/program-filters-form.component';
 import {
+  BaseUiModule,
   ConfigService,
   ErrorModule,
   ImgPrefixerModule,
@@ -32,12 +31,12 @@ import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-re
     ChildrenClubsFilterPanelComponent,
     PaymentSelectorComponent,
     NotFoundComponent,
-    DenyReasonTitleComponent
+    DenyReasonTitleComponent,
   ],
   imports: [
     ScreenPadModule,
     CommonModule,
-    EpguLibModule,
+    BaseUiModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModalModule,
@@ -55,11 +54,8 @@ import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-re
     PaymentSelectorComponent,
     ContentModalComponent,
     DenyReasonTitleComponent,
+    BaseUiModule,
   ],
-  entryComponents: [
-    GroupFiltersFormComponent,
-    ProgramFiltersFormComponent,
-    ContentModalComponent,
-  ],
+  entryComponents: [GroupFiltersFormComponent, ProgramFiltersFormComponent, ContentModalComponent],
 })
 export class BaseModule {}

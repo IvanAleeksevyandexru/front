@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PhotoErrorModalComponent } from './photo-error-modal.component';
-import { ButtonComponent } from '@epgu/epgu-lib';
 import { MockComponent } from 'ng-mocks';
 
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
+import { ButtonComponent } from '@epgu/ui/base';
 
 describe('PhotoErrorModalComponent', () => {
   let component: PhotoErrorModalComponent;

@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { RadioComponent } from '@epgu/epgu-lib';
 import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { MonthYear } from '@epgu/epgu-lib';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeHistoryFormComponent } from './employee-history-form.component';
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
@@ -37,6 +35,8 @@ import { DateRestrictionsService } from '../../../../../../shared/services/date-
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
+import { RadioComponent } from '@epgu/ui/controls';
+import { MonthYear } from '@epgu/ui/models/date-time';
 
 describe('EmployeeHistoryFormComponent', () => {
   let component: EmployeeHistoryFormComponent;

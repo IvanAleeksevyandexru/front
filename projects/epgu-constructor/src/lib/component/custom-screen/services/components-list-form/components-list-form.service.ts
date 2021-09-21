@@ -1,6 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ListItem, LookupPartialProvider, LookupProvider } from '@epgu/epgu-lib';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { get, isEqual } from 'lodash';
@@ -32,6 +31,7 @@ import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
 import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
+import { ListItem, LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 
 @Injectable()
 export class ComponentsListFormService {

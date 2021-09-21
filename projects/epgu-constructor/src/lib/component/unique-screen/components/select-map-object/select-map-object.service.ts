@@ -1,7 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { YaMapService } from '@epgu/epgu-lib';
 import {
   ConfigService,
   Icons,
@@ -28,6 +27,7 @@ import { IuikFullDataResponse } from './components/balloon-content-resolver/comp
 import {
   KindergartenSearchPanelService
 } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
+import { YaMapService } from '@epgu/ui/services/ya-map';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
@@ -248,7 +248,10 @@ export class SelectMapObjectService implements OnDestroy {
       electionDate +
       '&electionLevel=' +
       electionLevel;
-    return this.http.get<IuikFullDataResponse>(path, { ...options, withCredentials: true }) as unknown as Observable<IuikFullDataResponse>;
+    return (this.http.get<IuikFullDataResponse>(path, {
+      ...options,
+      withCredentials: true,
+    }) as unknown) as Observable<IuikFullDataResponse>;
   }
 
   public handleMultiSelectCentering(): void {

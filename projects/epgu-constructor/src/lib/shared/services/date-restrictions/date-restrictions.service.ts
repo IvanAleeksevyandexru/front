@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesHelperService, MonthYear } from '@epgu/epgu-lib';
 import { isAfter, isBefore } from 'date-fns';
 import {
   CustomComponent,
@@ -13,6 +12,8 @@ import { FormArray } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { Range } from '../date-range/date-range.models';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
+import { DatesHelperService } from '@epgu/ui/services/dates-helper';
+import { MonthYear } from '@epgu/ui/models/date-time';
 
 @Injectable()
 export class DateRestrictionsService {
@@ -34,7 +35,7 @@ export class DateRestrictionsService {
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     storeAdditionalKey?: string,
-    componentsGroupIndex?: number
+    componentsGroupIndex?: number,
   ): Promise<Range> {
     if (!this.today) {
       this.today = await this.datesToolsService.getToday();
@@ -65,9 +66,14 @@ export class DateRestrictionsService {
     return dateRange;
   }
 
-
-  getDateRangeFromStore(componentId: string, componentsGroupIndex?: number, forChild?: string): Range | undefined {
-    return this.dateRangeStore.get(this.getDateRangeStoreKey(componentId, componentsGroupIndex, forChild));
+  getDateRangeFromStore(
+    componentId: string,
+    componentsGroupIndex?: number,
+    forChild?: string,
+  ): Range | undefined {
+    return this.dateRangeStore.get(
+      this.getDateRangeStoreKey(componentId, componentsGroupIndex, forChild),
+    );
   }
 
   haveDateRef(restriction: DateRestriction): boolean {
@@ -90,8 +96,16 @@ export class DateRestrictionsService {
       });
   }
 
-  public setDateRangeToStore(componentId: string, dateRange: Range, componentsGroupIndex?: number, forChild?: string): void {
-    this.dateRangeStore.set(this.getDateRangeStoreKey(componentId, componentsGroupIndex, forChild), dateRange);
+  public setDateRangeToStore(
+    componentId: string,
+    dateRange: Range,
+    componentsGroupIndex?: number,
+    forChild?: string,
+  ): void {
+    this.dateRangeStore.set(
+      this.getDateRangeStoreKey(componentId, componentsGroupIndex, forChild),
+      dateRange,
+    );
   }
 
   private processDateRange(dateRange: Range): void {
@@ -103,7 +117,11 @@ export class DateRestrictionsService {
     }
   }
 
-  private getDateRangeStoreKey(componentId: string, componentsGroupIndex?: number, forChild?: string): string {
+  private getDateRangeStoreKey(
+    componentId: string,
+    componentsGroupIndex?: number,
+    forChild?: string,
+  ): string {
     let key = componentId;
     if (componentsGroupIndex !== undefined) {
       key += String(componentsGroupIndex);
@@ -161,7 +179,7 @@ export class DateRestrictionsService {
     let date = dateFromComponents || applicantAnswers[dateId]?.value;
     if (applicantAnswers[dateId]?.value) {
       if (precision) {
-        const parsedAnswer = JSON.parse(date as string || '{}');
+        const parsedAnswer = JSON.parse((date as string) || '{}');
         date = parsedAnswer[precision];
       }
       date = this.datesToolsService.parse(date as string);
@@ -175,7 +193,7 @@ export class DateRestrictionsService {
     dateId: string,
     components: CustomComponent[],
     form: FormArray,
-    precision: string
+    precision: string,
   ): Date {
     const component = components.find((component) => component.id === dateId);
 

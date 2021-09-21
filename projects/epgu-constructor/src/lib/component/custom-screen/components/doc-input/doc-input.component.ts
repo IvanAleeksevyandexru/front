@@ -1,6 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ValidationShowOn, BrokenDateFixStrategy } from '@epgu/epgu-lib';
 import {
   TextTransformService,
   UnsubscribeService,
@@ -9,6 +8,7 @@ import {
 import { isEmpty } from 'lodash';
 import { map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
+import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import {

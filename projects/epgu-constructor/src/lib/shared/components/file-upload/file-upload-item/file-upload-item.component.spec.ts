@@ -55,6 +55,7 @@ import { UploaderStatService } from '../services/stat/uploader-stat.service';
 import { UploaderProcessService } from '../services/process/uploader-process.service';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { PluralizeModule } from '@epgu/ui/pipes';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
@@ -118,22 +119,13 @@ describe('FileUploadItemComponent', () => {
   let viewerService: ViewerService;
   let modalService: ModalService;
   let fileUploadService: UploaderLimitsService;
-  let store: UploaderStoreService;
   let uploader: UploaderManagerService;
-  let stat: UploaderStatService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [FileUploadItemComponent],
-      imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule],
+      imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule, PluralizeModule],
       providers: [
-        EventBusService,
-        UploaderLimitsService,
-        UnsubscribeService,
-        AutocompleteService,
-        AutocompletePrepareService,
-        CurrentAnswersService,
-        CompressionService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: DownloadService, useClass: DownloadServiceStub },
@@ -146,6 +138,13 @@ describe('FileUploadItemComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ViewerService, useClass: ViewerServiceStub },
+        EventBusService,
+        UploaderLimitsService,
+        UnsubscribeService,
+        AutocompleteService,
+        AutocompletePrepareService,
+        CurrentAnswersService,
+        CompressionService,
         UploaderStoreService,
         UploaderManagerService,
         UploaderStatService,
@@ -163,8 +162,6 @@ describe('FileUploadItemComponent', () => {
   beforeEach(() => {
     prepateService = TestBed.inject(UploaderValidationService);
     uploader = TestBed.inject(UploaderManagerService);
-    stat = TestBed.inject(UploaderStatService);
-    store = TestBed.inject(UploaderStoreService);
     terabyteService = TestBed.inject(TerraByteApiService);
     screenService = TestBed.inject(ScreenService);
     viewerService = TestBed.inject(ViewerService);

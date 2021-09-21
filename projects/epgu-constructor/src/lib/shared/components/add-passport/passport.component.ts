@@ -21,7 +21,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { FocusState, ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 
 import {
@@ -29,6 +29,7 @@ import {
   FocusManagerService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { FocusState } from '@epgu/ui/services/focus';
 import { ComponentBase } from '../../../screen/screen.types';
 import { PassportAttr, PassportField, PassportFormFields } from './passport.interface';
 import {

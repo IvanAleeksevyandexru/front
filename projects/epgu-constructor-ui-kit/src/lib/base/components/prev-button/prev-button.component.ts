@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { PREV_BUTTON_NAVIGATION, PrevButtonNavigation } from './prev-button.token';
 
+// TODO: посмотреть можно ли заменить lib-back-button из @epgu/ui
 @Component({
   selector: 'epgu-cf-ui-prev-button',
   templateUrl: './prev-button.component.html',

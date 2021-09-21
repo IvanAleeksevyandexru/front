@@ -6,6 +6,7 @@ import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../shared/base.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
+import { SocialShareModule } from '@epgu/ui/components/social-share';
 
 @NgModule({
   declarations: [InfoScreenComponent],
@@ -17,6 +18,7 @@ import { ScreenButtonsModule } from '../../shared/components/screen-buttons/scre
     ScreenContainerModule,
     ScreenPadModule,
     ScreenButtonsModule,
+    SocialShareModule,
   ],
   providers: [],
 })

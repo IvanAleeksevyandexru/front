@@ -1,13 +1,13 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { SmuEventsService } from '@epgu/epgu-lib';
 import {
-  DeviceDetectorService, ERROR_HANDLER_ORDER_PARAMS_SERVICES, ERROR_HANDLER_SERVICE,
+  DeviceDetectorService,
+  ERROR_HANDLER_ORDER_PARAMS_SERVICES,
+  ERROR_HANDLER_SERVICE,
   HEALTH_SERVICE,
   PREV_BUTTON_NAVIGATION,
-  TRACE_ALLOWED_REMOTE_SERVICES
+  TRACE_ALLOWED_REMOTE_SERVICES,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { AutocompleteService } from './services/autocomplete/autocomplete.service';
 import { InitDataService } from './services/init-data/init-data.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
@@ -25,6 +25,7 @@ import { DateRefService } from './services/date-ref/date-ref.service';
 import { TypeCastService } from './services/type-cast/type-cast.service';
 import { HtmlSelectService } from './services/html-select/html-select.service';
 import { JsonHelperService } from './services/json-helper/json-helper.service';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -73,8 +74,8 @@ import { JsonHelperService } from './services/json-helper/json-helper.service';
         FormPlayerNavigation.PREV,
         FormPlayerNavigation.SKIP,
         'getService',
-      ]
-    }
+      ],
+    },
   ],
 })
 export class CoreModule {}

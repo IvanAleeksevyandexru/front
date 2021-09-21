@@ -5,9 +5,9 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ListItem } from '@epgu/epgu-lib';
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { ListItem } from '@epgu/ui/models/dropdown';
 import { DisplayDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import {
   ModalService,

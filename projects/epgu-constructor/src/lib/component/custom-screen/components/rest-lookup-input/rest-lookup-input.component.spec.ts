@@ -4,10 +4,10 @@ import { ComponentsListFormServiceStub } from '../../services/components-list-fo
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { ActivatedRoute } from '@angular/router';
 import {
   ActivatedRouteStub,
+  BaseUiModule,
   ConfigService,
   ConfigServiceStub,
   EventBusService,
@@ -50,12 +50,11 @@ describe('RestLookupInputComponent', () => {
   let fixture: ComponentFixture<RestLookupInputComponent>;
   let restToolsService: RestToolsService;
   let formService: ComponentsListFormServiceStub;
-  let providerSearchSpy;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [RestLookupInputComponent, MockComponent(ComponentItemComponent)],
-      imports: [MockModule(EpguLibModule), MockModule(ValidationTypeModule)],
+      imports: [MockModule(ValidationTypeModule), BaseUiModule],
       providers: [
         MockProvider(RestToolsService),
         MockProvider(SuggestHandlerService),
@@ -94,8 +93,6 @@ describe('RestLookupInputComponent', () => {
     formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(RestLookupInputComponent);
     component = fixture.componentInstance;
-    // @ts-ignore
-    // providerSearchSpy = jest.spyOn<any>(component, 'providerSearch');
     component.componentIndex = 0;
     fixture.detectChanges();
   });

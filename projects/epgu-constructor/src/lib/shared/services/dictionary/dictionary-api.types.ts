@@ -1,4 +1,4 @@
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { PaymentInfoInterface } from '../../../component/unique-screen/components/payment/payment.types';
 
 export interface DictionaryResponse {
@@ -20,7 +20,7 @@ export interface DictionaryResponseError {
   errorDetail?: {
     errorCode: number;
     errorMessage: string;
-  },
+  };
 }
 
 /**

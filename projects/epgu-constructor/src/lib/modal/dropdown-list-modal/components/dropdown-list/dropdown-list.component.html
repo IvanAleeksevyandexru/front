@@ -1,12 +1,12 @@
 <div class="mb-24">
-  <lib-search-bar [(ngModel)]="searchText"></lib-search-bar>
+  <lib-search-bar [formControl]="searchControl"></lib-search-bar>
 </div>
 
-<ng-template ngFor [ngForOf]="items | filter: searchText" let-item let-i="index">
+<ng-template ngFor [ngForOf]="items | filter: searchControl?.value" let-item let-i="index">
   <div class="card-toggle">
     <input type="checkbox" [id]="i" />
     <label class="card-toggle-header" [for]="i">
-      <span class="card-toggle-label" [innerHTML]="item.label | highlight: searchText"></span>
+      <span class="card-toggle-label" [innerHTML]="item.label | highlight: searchControl?.value"></span>
     </label>
     <div class="card-toggle-content">
       <epgu-constructor-output-html [html]="item.content"></epgu-constructor-output-html>

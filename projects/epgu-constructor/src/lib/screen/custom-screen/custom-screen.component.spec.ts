@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { EpguLibModule } from '@epgu/epgu-lib';
-import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
+import { MockComponent, MockModule } from 'ng-mocks';
 import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
 import {
   CustomComponentOutputData,
@@ -40,13 +39,13 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
   let fixture: ComponentFixture<CustomScreenComponent>;
 
   let screenService: ScreenServiceStub;
-  let navigationService: NavigationServiceStub;
   let customScreenService: CustomScreenService;
   let datesToolsService: DatesToolsService;
   let components = [
@@ -76,10 +75,10 @@ describe('CustomScreenComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [
-        MockModule(EpguLibModule),
         MockModule(UserInfoLoaderModule),
         BaseModule,
         ScreenButtonsModule,
+        HttpClientModule,
       ],
       declarations: [
         CustomScreenComponent,
@@ -112,7 +111,6 @@ describe('CustomScreenComponent', () => {
     fixture = TestBed.createComponent(CustomScreenComponent);
     component = fixture.componentInstance;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
-    navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     customScreenService = TestBed.inject(CustomScreenService);
     datesToolsService = TestBed.inject(DatesToolsService);
     screenService.buttons = [];
@@ -333,6 +331,7 @@ describe('CustomScreenComponent', () => {
         {
           label: 'any',
           action: DTOActionAction.getNextStep,
+          type: ActionType.nextStep,
         },
       ];
       fixture.detectChanges();

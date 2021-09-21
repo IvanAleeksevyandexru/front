@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { ListElement, ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { ListElement } from '@epgu/ui/models/dropdown';
 
 @Component({
   selector: 'example-4-epgu-dropdown-component',

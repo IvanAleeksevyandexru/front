@@ -39,6 +39,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { MockModule } from 'ng-mocks';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 import { DisclaimerModule } from '../../../../../../shared/components/disclaimer/disclaimer.module';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('SelectChildrenComponent', () => {
   let component: SelectChildrenComponent;
@@ -65,6 +66,7 @@ describe('SelectChildrenComponent', () => {
         ConstructorDropdownModule,
         ComponentsListModule,
         DisclaimerModule,
+        HttpClientModule,
       ],
       providers: [
         UnsubscribeService,

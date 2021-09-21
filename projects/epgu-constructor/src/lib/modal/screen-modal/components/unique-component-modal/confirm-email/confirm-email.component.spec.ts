@@ -21,6 +21,8 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ConfirmEmailComponent } from './confirm-email.component';
 import { MockModule, MockProvider } from 'ng-mocks';
+import { NavigationServiceStub } from '../../../../../core/services/navigation/navigation.service.stub';
+import { FormatTimeModule } from '@epgu/ui/pipes';
 
 describe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;
@@ -43,14 +45,21 @@ describe('ConfirmEmailComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmEmailComponent, CounterDirective],
-      imports: [BaseModule, CoreModule, MockModule(CoreUiModule), RouterTestingModule, HttpClientTestingModule],
+      imports: [
+        BaseModule,
+        CoreModule,
+        MockModule(CoreUiModule),
+        RouterTestingModule,
+        HttpClientTestingModule,
+        FormatTimeModule,
+      ],
       providers: [
-        MockProvider(UnsubscribeService),
-        MockProvider(NavigationService),
-        MockProvider(LocationService),
-        MockProvider(EventBusService),
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: NavigationService, useClass: NavigationServiceStub },
+        MockProvider(UnsubscribeService),
+        MockProvider(LocationService),
+        MockProvider(EventBusService),
       ],
     }).compileComponents();
   });

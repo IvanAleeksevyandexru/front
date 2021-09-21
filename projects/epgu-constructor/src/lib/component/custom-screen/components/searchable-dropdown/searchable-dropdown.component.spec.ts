@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
-import { EpguLibModule, ValidationShowOn } from '@epgu/epgu-lib';
+import { MockComponent, MockProvider } from 'ng-mocks';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -14,9 +14,15 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { configureTestSuite } from 'ng-bullet';
-import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  ConfigService,
+  LoggerService,
+  BaseUiModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { SearchableDropdownComponent } from './searchable-dropdown.component';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('SearchableDropdownComponent', () => {
   let component: SearchableDropdownComponent;
@@ -29,7 +35,7 @@ describe('SearchableDropdownComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [SearchableDropdownComponent, MockComponent(ComponentItemComponent)],
-      imports: [MockModule(EpguLibModule)],
+      imports: [BaseUiModule, HttpClientModule],
       providers: [
         DictionaryToolsService,
         DatesToolsService,

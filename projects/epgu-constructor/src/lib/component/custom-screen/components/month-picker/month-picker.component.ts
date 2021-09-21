@@ -1,8 +1,10 @@
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DatesHelperService, MonthYear, ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { startWith, takeUntil } from 'rxjs/operators';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { MonthYear } from '@epgu/ui/models/date-time';
+import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { EmployeeHistoryMonthsService } from '../../../unique-screen/components/employee-history/services/employee-history.months.service';
 

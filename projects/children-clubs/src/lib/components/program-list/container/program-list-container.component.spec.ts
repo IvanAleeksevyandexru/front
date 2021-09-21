@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { EpguLibModule } from '@epgu/epgu-lib';
-
 import { ProgramListContainerComponent } from './program-list-container.component';
 import { ProgramListService } from '../../../services/program-list/program-list.service';
 import { ListComponent } from '../components/list/list.component';
 import { configureTestSuite } from 'ng-bullet';
 import { ItemComponent } from '../components/item/item.component';
-
 import {
   AddressesToolsService,
   MicroAppNavigationService,
@@ -48,7 +45,6 @@ describe('ListComponent', () => {
       ],
 
       imports: [
-        EpguLibModule,
         MockModule(ScreenContainerModule),
         MockModule(BaseModule),
         ScreenPadModule,
@@ -81,7 +77,6 @@ describe('ListComponent', () => {
   });
 
   describe('countingFilters()', () => {
-
     it('should count null filters ', () => {
       component.countingFilters(null);
       expect(component.filtersCount$$.getValue()).toBe(0);
@@ -104,7 +99,5 @@ describe('ListComponent', () => {
       component.countingFilters(filters);
       expect(component.filtersCount$$.getValue()).toBe(0);
     });
-
   });
-
 });

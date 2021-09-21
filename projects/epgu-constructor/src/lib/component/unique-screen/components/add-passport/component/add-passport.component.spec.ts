@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { HealthService, SmuEventsService } from '@epgu/epgu-lib';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
@@ -14,7 +13,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   FocusManagerService,
-  FocusManagerServiceStub
+  FocusManagerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -35,6 +34,9 @@ import { HtmlSelectService } from '../../../../../core/services/html-select/html
 import { MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
 import { JsonHelperServiceStub } from '../../../../../core/services/json-helper/json-helper.service.stub';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { HealthService } from '@epgu/ui/services/health';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;
@@ -67,7 +69,13 @@ describe('AddPassportComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [AddPassportComponent, ScreenPadComponent],
-      imports: [RouterTestingModule, PassportModule, ReactiveFormsModule, FormsModule],
+      imports: [
+        RouterTestingModule,
+        PassportModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+      ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

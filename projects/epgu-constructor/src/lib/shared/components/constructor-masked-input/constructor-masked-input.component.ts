@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';

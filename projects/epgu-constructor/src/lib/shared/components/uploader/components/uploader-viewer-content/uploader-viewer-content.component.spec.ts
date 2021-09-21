@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BaseModule } from '../../../../base.module';
 import { ZoomModule } from '../../../zoom/zoom.module';
 import { UploaderViewerContentComponent } from './uploader-viewer-content.component';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { BaseUiModule, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
@@ -21,9 +20,9 @@ import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/da
 import { FilesCollection, ViewerInfo } from '../../data';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';
-import { FileSizePipe } from '@epgu/epgu-lib';
-import { LOCALE_ID } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
+import { HttpClientModule } from '@angular/common/http';
+import { FileSizeModule } from '@epgu/ui/pipes';
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
     fileName: '123.pdf',
@@ -73,16 +72,15 @@ describe('UploaderViewerContentComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [UploaderViewerContentComponent, FileSizePipe],
-      imports: [MockModule(BaseModule), MockModule(ZoomModule)],
+      declarations: [UploaderViewerContentComponent],
+      imports: [BaseUiModule, MockModule(ZoomModule), HttpClientModule, FileSizeModule],
       providers: [
-        SuggestMonitorService,
-        { provide: LOCALE_ID, useValue: 'ru-RU' },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        SuggestMonitorService,
       ],
     })
       .overrideComponent(UploaderViewerContentComponent, {

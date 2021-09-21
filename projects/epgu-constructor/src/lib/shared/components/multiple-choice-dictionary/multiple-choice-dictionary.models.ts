@@ -1,4 +1,4 @@
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 
 export enum FormField {
   checkbox = 'checkbox',
@@ -6,6 +6,6 @@ export enum FormField {
 }
 
 export interface MultipleSelectedItems {
- list: ListElement[];
- amount: number;
+  list: ListElement[];
+  amount: number;
 }

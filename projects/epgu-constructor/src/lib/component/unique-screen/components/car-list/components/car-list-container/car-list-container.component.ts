@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import { ListItem } from '@epgu/epgu-lib';
+import { ListItem } from '@epgu/ui/models/dropdown';
 import { FormControl } from '@angular/forms';
 import {
   DisplayDto,

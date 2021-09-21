@@ -13,7 +13,6 @@ import { UniqueScreenComponentTypes } from '../../../../unique-screen-components
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
-import { DadataWidgetComponent, PlainInputComponent } from '@epgu/epgu-lib';
 import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
@@ -26,6 +25,7 @@ import { FieldNames } from '../../../registration-addr/registration-addr-screen.
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 import { DisclaimerComponent } from '../../../../../../shared/components/disclaimer/disclaimer.component';
 import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
+import { DadataWidgetComponent, PlainInputComponent } from '@epgu/ui/controls';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   const mockData: ConfirmAddressInterface = {

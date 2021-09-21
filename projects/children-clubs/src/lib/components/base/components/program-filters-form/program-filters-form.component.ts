@@ -15,10 +15,8 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { map, takeUntil, tap } from 'rxjs/operators';
-
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ListElement, LookupProvider } from '@epgu/epgu-lib';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ListElement, LookupProvider } from '@epgu/ui/models/dropdown';
 import {
   defaultInlearnoFilters,
   defaultPdfoFilters,
@@ -27,7 +25,6 @@ import {
   HealthListElements,
   LevelListElements,
 } from '../../base.models';
-
 import {
   Filters,
   InlernoPaymentFilters,
@@ -35,7 +32,6 @@ import {
   PfdoPaymentFilters,
   VendorType,
 } from '../../../../typings';
-
 import { StateService } from '../../../../services/state/state.service';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 

@@ -68,6 +68,7 @@ import { RestLookupInputComponent } from './components/rest-lookup-input/rest-lo
 import { InterpolationService } from '../../shared/services/interpolation/interpolation.service';
 import { FormDisclaimerComponent } from './components/form-disclaimer/form-disclaimer.component';
 import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -128,6 +129,7 @@ import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.
     PassportModule,
     TimerModule,
     ValidationTypeModule,
+    FormsModule,
   ],
   providers: [
     AddressHelperService,

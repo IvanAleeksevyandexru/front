@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ButtonComponent, LoaderComponent } from '@epgu/epgu-lib';
 import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -33,6 +32,7 @@ import {
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
+import { ButtonComponent, LoaderComponent } from '@epgu/ui/base';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;

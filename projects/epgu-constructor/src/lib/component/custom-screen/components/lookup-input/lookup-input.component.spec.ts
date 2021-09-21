@@ -6,7 +6,6 @@ import { ComponentsListFormServiceStub } from '../../services/components-list-fo
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ActivatedRoute } from '@angular/router';
@@ -15,7 +14,12 @@ import {
   ConfigServiceStub,
   DatesToolsService,
   EventBusService,
-  ActivatedRouteStub, DatesToolsServiceStub,
+  LoggerService,
+  UnsubscribeService,
+  ActivatedRouteStub,
+  BaseUiModule,
+  DatesToolsServiceStub,
+  UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
@@ -29,6 +33,8 @@ import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -53,14 +59,13 @@ const mockComponent = {
 describe('LookupInputComponent', () => {
   let component: LookupInputComponent;
   let fixture: ComponentFixture<LookupInputComponent>;
-  let dictionaryToolsService: DictionaryToolsService;
-  let formService: ComponentsListFormServiceStub;
+  let formService: ComponentsListFormService;
   let providerSearchSpy;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [LookupInputComponent, MockComponent(ComponentItemComponent)],
-      imports: [MockModule(EpguLibModule), MockModule(ValidationTypeModule)],
+      imports: [MockModule(ValidationTypeModule), MockModule(BaseUiModule), HttpClientModule],
       providers: [
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
@@ -69,11 +74,15 @@ describe('LookupInputComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
         MockProvider(JsonHelperService),
         MockProvider(ComponentsListRelationsService),
         MockProvider(SuggestHandlerService),
         MockProvider(EventBusService),
         MockProvider(SuggestMonitorService),
+        MockProvider(ComponentsListRelationsService),
+        CurrentAnswersService,
+        LoggerService,
       ],
     })
       .overrideComponent(DictionaryComponent, {
@@ -88,10 +97,7 @@ describe('LookupInputComponent', () => {
   let control: FormGroup;
 
   beforeEach(() => {
-    dictionaryToolsService = TestBed.inject(DictionaryToolsService);
-    formService = (TestBed.inject(
-      ComponentsListFormService,
-    ) as unknown) as ComponentsListFormServiceStub;
+    formService = TestBed.inject(ComponentsListFormService);
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
       id: new FormControl(mockComponent.id),

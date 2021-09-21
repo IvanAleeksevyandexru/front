@@ -9,10 +9,9 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ListElement } from '@epgu/epgu-lib';
 import { startWith, takeUntil } from 'rxjs/operators';
-
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import {
   CachedValue,
   FormChangeEvent,

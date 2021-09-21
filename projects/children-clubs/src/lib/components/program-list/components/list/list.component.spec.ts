@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import {
   MicroAppStateQuery,
   MicroAppStateQueryStub,
@@ -11,6 +10,7 @@ import {
   LongButtonModule,
   ScreenPadModule,
   HealthService,
+  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ListComponent } from './list.component';
@@ -38,7 +38,7 @@ describe('ListComponent', () => {
         { provide: StateService, useClass: StateServiceStub },
         { provide: ApiService, useClass: ApiServiceStub },
       ],
-      imports: [EpguLibModule, LongButtonModule, MockModule(CoreUiModule), ScreenPadModule],
+      imports: [BaseUiModule, LongButtonModule, MockModule(CoreUiModule), ScreenPadModule],
     }).compileComponents();
   });
 

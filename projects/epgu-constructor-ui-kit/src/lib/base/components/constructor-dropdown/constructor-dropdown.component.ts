@@ -7,7 +7,8 @@ import {
   Output,
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { ValidationShowOn, ListElement } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { ListElement } from '@epgu/ui/models/dropdown';
 
 @Component({
   selector: 'epgu-cf-ui-constructor-constructor-dropdown',

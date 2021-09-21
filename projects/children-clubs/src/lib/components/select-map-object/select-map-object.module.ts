@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { SelectMapObjectComponent } from './select-map-object.component';
-import { EpguLibModule, NotifierService } from '@epgu/epgu-lib';
 import { CommonModule } from '@angular/common';
-import {
-  Icons,
-  YandexMapModule,
-} from '@epgu/epgu-constructor-ui-kit';
+import { BaseUiModule, Icons, YandexMapModule } from '@epgu/epgu-constructor-ui-kit';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { NotifierModule } from '@epgu/ui/components/notifier';
+import { NotifierService } from '@epgu/ui/services/notifier';
 
 @NgModule({
   declarations: [SelectMapObjectComponent],
@@ -19,12 +17,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     },
   ],
   exports: [SelectMapObjectComponent],
-  imports: [
-    CommonModule,
-    EpguLibModule,
-    PerfectScrollbarModule,
-    YandexMapModule,
-  ],
+  imports: [CommonModule, NotifierModule, BaseUiModule, PerfectScrollbarModule, YandexMapModule],
   entryComponents: [SelectMapObjectComponent],
 })
 export class SelectMapObjectModule {}

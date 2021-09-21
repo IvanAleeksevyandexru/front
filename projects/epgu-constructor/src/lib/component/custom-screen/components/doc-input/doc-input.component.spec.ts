@@ -2,8 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { FormBuilderStub } from './FormBuilder.stub';
-import { EpguLibModule } from '@epgu/epgu-lib';
 import { ActivatedRoute } from '@angular/router';
 import { DocInputComponent } from './doc-input.component';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -25,15 +23,16 @@ import { ValidationServiceStub } from '../../../../shared/services/validation/va
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { DateRangeService } from 'projects/epgu-constructor/src/lib/shared/services/date-range/date-range.service';
-import { DateRestrictionsService } from 'projects/epgu-constructor/src/lib/shared/services/date-restrictions/date-restrictions.service';
-import { ConstructorDatePickerModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-date-picker/constructor-date-picker.module';
-import { ConstructorPlainInputModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-plain-input/constructor-plain-input.module';
-import { ConstructorMaskedInputModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-masked-input/constructor-masked-input.module';
-import { ValidationTypeModule } from 'projects/epgu-constructor/src/lib/shared/directives/validation-type/validation-type.module';
-import { SuggestHandlerService } from 'projects/epgu-constructor/src/lib/shared/services/suggest-handler/suggest-handler.service';
-import { SuggestMonitorService } from 'projects/epgu-constructor/src/lib/shared/services/suggest-monitor/suggest-monitor.service';
+import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
+import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
+import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
+import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
+import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { By } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 const mockComponent = {
   id: 'pd6',
@@ -82,7 +81,6 @@ describe('DocInputComponent', () => {
         FormBuilder,
       ],
       imports: [
-        MockModule(EpguLibModule),
         MockModule(ValidationTypeModule),
         MockModule(ConstructorDatePickerModule),
         MockModule(BaseComponentsModule),
@@ -91,7 +89,8 @@ describe('DocInputComponent', () => {
         MockModule(ErrorModule),
         MockModule(BaseModule),
         MockModule(InputErrorModule),
-    ],
+        HttpClientModule,
+      ],
     }).compileComponents();
   });
 

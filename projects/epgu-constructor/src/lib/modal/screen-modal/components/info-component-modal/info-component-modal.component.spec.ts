@@ -7,7 +7,6 @@ import { ScreenModalService } from '../../screen-modal.service';
 import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { MockComponent, MockDirective } from 'ng-mocks';
-import { ButtonComponent } from '@epgu/epgu-lib';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { InfoScreenBodyComponent } from '../../../../screen/info-screen/info-screen-body/info-screen-body.component';
 import { By } from '@angular/platform-browser';
@@ -22,6 +21,7 @@ import { ActionModule } from '../../../../shared/directives/action/action.module
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { ButtonComponent } from '@epgu/ui/base';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -117,7 +117,9 @@ describe('InfoComponentModalComponent', () => {
     button = fixture.debugElement.query(By.css('.screen-buttons .screen-button'));
     expect(button).toBeTruthy();
 
-    expect(button.query(By.css('button span')).nativeElement.innerHTML.trim()).toBe(screenService.buttons[0].value);
+    expect(button.query(By.css('button span')).nativeElement.innerHTML.trim()).toBe(
+      screenService.buttons[0].value,
+    );
 
     expect(button.componentInstance.disabled).toBeFalsy();
 

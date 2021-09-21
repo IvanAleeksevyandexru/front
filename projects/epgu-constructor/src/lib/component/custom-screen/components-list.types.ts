@@ -1,4 +1,3 @@
-import { BrokenDateFixStrategy, ListItem } from '@epgu/epgu-lib';
 import {
   ComponentDictionaryFilterDto,
   DictionaryOptions,
@@ -14,6 +13,8 @@ import {
   RestAttrsDto,
 } from '@epgu/epgu-constructor-types';
 import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
+import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
+import { ListItem } from '@epgu/ui/models/dropdown';
 import { ComponentBase } from '../../screen/screen.types';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {

@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormControlDirective } from '@angular/forms';
-import { ValidationShowOn } from '@epgu/epgu-lib';
+import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { ConstructorDropdownComponent } from './constructor-dropdown.component';
 import { BaseUiModule } from '../../base-ui.module';
 import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ConstructorDropdownComponent', () => {
   let component: ConstructorDropdownComponent;
@@ -14,12 +15,13 @@ describe('ConstructorDropdownComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ConstructorDropdownComponent],
-      imports: [BaseUiModule],
-      providers: [
-      ],
-    }).overrideComponent(ConstructorDropdownComponent,{
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+      imports: [BaseUiModule, HttpClientModule],
+      providers: [],
+    })
+      .overrideComponent(ConstructorDropdownComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   let control: FormControl;
@@ -62,10 +64,12 @@ describe('ConstructorDropdownComponent', () => {
     component.disabled = true;
     component.localSearch = true;
     component.placeholder = '---';
-    component.items = [{
-      id: 1,
-      text: 'some text'
-    }];
+    component.items = [
+      {
+        id: 1,
+        text: 'some text',
+      },
+    ];
     fixture.detectChanges();
 
     expect(debugEl.nativeElement.id).toBe('456');
@@ -75,10 +79,12 @@ describe('ConstructorDropdownComponent', () => {
     expect(debugEl.componentInstance.clearable).toBeTruthy();
     expect(debugEl.componentInstance.localSearch).toBeTruthy();
     expect(debugEl.componentInstance.placeholder).toBe('---');
-    expect(debugEl.componentInstance.items).toEqual([{
-      id: 1,
-      text: 'some text'
-    }]);
+    expect(debugEl.componentInstance.items).toEqual([
+      {
+        id: 1,
+        text: 'some text',
+      },
+    ]);
   });
 
   it('should emit changed event', () => {
@@ -88,13 +94,13 @@ describe('ConstructorDropdownComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
     debugEl.triggerEventHandler('changed', {
       id: 1,
-      text: 'some text'
+      text: 'some text',
     });
 
     expect(component.changed.emit).toBeCalledTimes(1);
     expect(component.changed.emit).toBeCalledWith({
       id: 1,
-      text: 'some text'
+      text: 'some text',
     });
   });
 });

@@ -1,6 +1,6 @@
 import { ComponentAttrsDto, ComponentDto, ScreenButton } from '@epgu/epgu-constructor-types';
 import { ComponentValue } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { ListElement } from '@epgu/epgu-lib';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { ErrorTemplate } from '@epgu/epgu-constructor-ui-kit';
 
 export interface TimeSlotDoctorsComponentDto extends ComponentDto {
@@ -60,5 +60,5 @@ export interface TimeSlotValueInterface {
 
 export interface lkApiItemAttributes {
   name: string;
-  value: string
+  value: string;
 }

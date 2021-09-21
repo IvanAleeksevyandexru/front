@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { ListElement } from '@epgu/epgu-lib';
-
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ChildI } from '../../select-children.models';

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FocusManagerService } from './focus-manager.service';
-import { EpguLibModule, PlainInputComponent } from '@epgu/epgu-lib';
+import { PlainInputComponent } from '@epgu/ui/controls';
 import { By } from '@angular/platform-browser';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { EventBusService } from '../event-bus/event-bus.service';
@@ -9,9 +9,10 @@ import { TextTransformModule } from '../../../base/directives/text-transform/tex
 import { CurrencyModule } from '../../../base/directives/currency/currency.module';
 import { RankPipeModule } from '../../../base/pipes/rank/rank-pipe.module';
 import { Component } from '@angular/core';
+import { BaseUiModule } from '../../../base/base-ui.module';
 
 @Component({
-  template: '<lib-plain-input [id]="id" [name]="name"></lib-plain-input>'
+  template: '<lib-plain-input [id]="id" [name]="name"></lib-plain-input>',
 })
 class TestPlainInputComponent {
   id = 'testId';
@@ -24,18 +25,8 @@ describe('FocusManagerService', () => {
   let component: TestPlainInputComponent;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        FocusManagerService,
-        DatesToolsService,
-        EventBusService,
-      ],
-      imports: [
-        EpguLibModule,
-        CurrencyModule,
-        TrimModule,
-        TextTransformModule,
-        RankPipeModule,
-      ],
+      providers: [FocusManagerService, DatesToolsService, EventBusService],
+      imports: [BaseUiModule, CurrencyModule, TrimModule, TextTransformModule, RankPipeModule],
       declarations: [TestPlainInputComponent],
     });
     fixture = TestBed.createComponent(TestPlainInputComponent);

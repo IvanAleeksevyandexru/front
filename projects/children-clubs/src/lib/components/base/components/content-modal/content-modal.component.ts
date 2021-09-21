@@ -17,7 +17,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { NotifierService } from '@epgu/epgu-lib';
+import { NotifierService } from '@epgu/ui/services/notifier';
 
 @Component({
   selector: 'children-clubs-content-modal',

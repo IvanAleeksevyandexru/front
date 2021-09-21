@@ -17,6 +17,7 @@ import { ConstructorMaskedInputModule } from '../../../../shared/components/cons
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { AddZeroPennyPipe } from './pipe/add-zero-penny.pipe';
 import { LabelPipe } from './pipe/label.pipe';
+import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,8 @@ import { LabelPipe } from './pipe/label.pipe';
     ConstructorMaskedInputModule,
     ConstructorDatePickerModule,
     ErrorModule,
+    PluralizeModule,
+    ToMoneyModule,
   ],
   providers: [DurationService],
   entryComponents: [MatPeriodContainerComponent],

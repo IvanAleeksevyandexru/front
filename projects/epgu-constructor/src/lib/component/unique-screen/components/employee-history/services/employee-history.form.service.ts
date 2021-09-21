@@ -9,7 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { switchMap, takeUntil } from 'rxjs/operators';
-import { MonthYear } from '@epgu/epgu-lib';
 import { combineLatest, of } from 'rxjs';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import {
@@ -19,9 +18,13 @@ import {
 } from '../employee-history.types';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
-import { EmployeeHistoryErrors, EmployeeHistoryMaxLengthValidators } from '../employee-history.enums';
+import {
+  EmployeeHistoryErrors,
+  EmployeeHistoryMaxLengthValidators,
+} from '../employee-history.enums';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DeclinePipe } from '@epgu/epgu-lib';
+import { DeclinePipe } from '@epgu/ui/pipes';
+import { MonthYear } from '@epgu/ui/models/date-time';
 
 @Injectable()
 export class EmployeeHistoryFormService {
@@ -37,7 +40,7 @@ export class EmployeeHistoryFormService {
     private monthsService: EmployeeHistoryMonthsService,
     private ds: EmployeeHistoryDataSourceService,
     private datesToolsService: DatesToolsService,
-    private declinePipe: DeclinePipe
+    private declinePipe: DeclinePipe,
   ) {
     this.defaultType = 'student';
   }
@@ -98,11 +101,11 @@ export class EmployeeHistoryFormService {
     form
       .get('checkboxToDate')
       .valueChanges.pipe(
-      switchMap((checked: boolean) => {
-        return checked ? this.datesToolsService.getToday() : of(null);
-      }),
-      takeUntil(this.unsubscribeService),
-    )
+        switchMap((checked: boolean) => {
+          return checked ? this.datesToolsService.getToday() : of(null);
+        }),
+        takeUntil(this.unsubscribeService),
+      )
       .subscribe((date: Date) => {
         const value = date ? MonthYear.fromDate(date) : null;
         form.get('to').patchValue(value);
@@ -162,15 +165,12 @@ export class EmployeeHistoryFormService {
         }
       }
       if (toDateMinDateDiff < 0) {
-        form.get('error').setErrors({ error:
-            `${EmployeeHistoryErrors.FailedPeriod} ${this.declinePipe.transform(
-              this.monthsService.years,
-              ['последний', 'последние', 'последние'],
-              false
-            )} ${this.declinePipe.transform(
-              this.monthsService.years,
-              ['год', 'года', 'лет']
-            )}`
+        form.get('error').setErrors({
+          error: `${EmployeeHistoryErrors.FailedPeriod} ${this.declinePipe.transform(
+            this.monthsService.years,
+            ['последний', 'последние', 'последние'],
+            false,
+          )} ${this.declinePipe.transform(this.monthsService.years, ['год', 'года', 'лет'])}`,
         });
       } else {
         form.get('error').setErrors(null);
@@ -185,7 +185,13 @@ export class EmployeeHistoryFormService {
     for (const [key, value] of Object.entries(ds)) {
       if (!missedControls.includes(key)) {
         if (value) {
-          form.get(String(key)).setValidators([Validators.required, this.inputValidators(), this.maxLengthValidators(key)]);
+          form
+            .get(String(key))
+            .setValidators([
+              Validators.required,
+              this.inputValidators(),
+              this.maxLengthValidators(key),
+            ]);
         } else {
           form.get(String(key)).setValidators([Validators.nullValidator]);
         }
