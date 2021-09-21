@@ -90,6 +90,6 @@ export enum DTOActionAction {
   resendLegalEmailConfirmation = 'service/actions/resendLegalEmailConfirmation',
   serviceEditLegalEmail = 'service/actions/editLegalEmail',
   skipStep = 'skipStep',
-  editOms = 'service/actions/editOms',
   spAdapterPdf = 'sp-adapter/pdf',
+  editUserPolicy = 'service/actions/editUserPolicy',
 }
