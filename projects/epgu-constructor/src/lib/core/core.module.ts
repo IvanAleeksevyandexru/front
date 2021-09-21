@@ -17,7 +17,6 @@ import { HttpHeadersInterceptor } from './interceptor/http-headers/http-headers.
 import { ErrorHandlerService } from './services/error-handler/error-handler.service';
 import { PrevButtonNavigationService } from './services/prev-button-navigation/prev-button-navigation.service';
 import { HealthHandlerService } from './services/health-handler/health-handler.service';
-import { FormPlayerNavigation } from '../form-player/form-player.types';
 import {
   ErrorHandlerOrderParamsServiceService
 } from './services/error-handler-order-params-service/error-handler-order-params-service.service';
@@ -70,10 +69,10 @@ import { SmuEventsService } from '@epgu/ui/services/smu-events';
       provide: TRACE_ALLOWED_REMOTE_SERVICES,
       useValue: [
         'api/nsi/v1/dictionary',
-        FormPlayerNavigation.NEXT,
-        FormPlayerNavigation.PREV,
-        FormPlayerNavigation.SKIP,
         'getService',
+        'getNextStep',
+        'getPrevStep',
+        'skipStep',
       ],
     },
   ],
