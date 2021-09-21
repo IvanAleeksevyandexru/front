@@ -1763,17 +1763,17 @@
   dependencies:
     schematics-utilities "^2.0.3"
 
-"@epgu/epgu-constructor-types@28.4.0":
-  version "28.4.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-28.4.0.tgz#9c7cd4e19dc52ea96d9fc379ea0f1c36b0905815"
-  integrity sha512-EWT2/a2XsM3tj69EWIQqsCsPnRoPqUqPsLvukEosfnLx9AzITaehXB9sfqoGY1uioqjpAhRZgCs1YlBV7MzLBQ==
+"@epgu/epgu-constructor-types@33.0.67880-rc.1":
+  version "33.0.67880-rc.1"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-33.0.67880-rc.1.tgz#1e291108da53377de955ebc1490757e229723cd5"
+  integrity sha512-CyTgG2JjfmcAdvqRBx1E/OkpURzVYyjjVTx2sLs95pv1/Tv7CcTAW8GQqnAhnvutrSfUhH/sVd1+m4hhYBLPHA==
 
-"@epgu/epgu-constructor-ui-kit@28.4.0":
-  version "28.4.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-28.4.0.tgz#68d34edc1eaaadccbac8526d455b446d59bbd5bd"
-  integrity sha512-wekwqPYHNr2bkxMaLSNGkwEzIdZMMXcWxKj4jnrpZcsiBvsoy5thuX/dUj4uKrmoLXCA6pR7eNcCqmEF0n0j0Q==
+"@epgu/epgu-constructor-ui-kit@33.0.67880-rc.1":
+  version "33.0.67880-rc.1"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-33.0.67880-rc.1.tgz#73b13f851805149e746ae0f8de1318d0f13563a7"
+  integrity sha512-pl2soLp6oQXZ7y6BaiTLvDvAFi0pkIokLOyd2xD8zOsrptuw7VFfyILj3nChqPCi/Deg/Z/ru7OgaD/csMs/Pg==
   dependencies:
-    "@epgu/epgu-constructor-types" "28.4.0"
+    "@epgu/epgu-constructor-types" "33.0.67880-rc.1"
     "@epgu/zipkin" "0.0.3"
     tslib "^2.0.0"
     zipkin-transport-http "0.22.0"
