@@ -188,6 +188,7 @@ export * from './lib/modal/shared/cta-modal/cta-modal.component';
 export * from './lib/base/constants/helper-texts';
 export * from './lib/base/constants/redirect-event';
 export * from './lib/base/constants/dates';
+export * from './lib/base/constants/regions';
 
 // Interfaces
 export * from './lib/base/components/yandex-map/yandex-map.interface';

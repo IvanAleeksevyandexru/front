@@ -7,6 +7,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { regions } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class ContinueOrderModalService {
@@ -58,7 +59,7 @@ export class ContinueOrderModalService {
     const answerButtons = [];
 
     selectOrderData.orders.forEach((order) => {
-      const orderRegionName = ''; /* TODO: добавить фетчинг региона по коду */
+      const orderRegionName = regions.find((region) => region.okato === order.region)?.name || '';
       const date = this.datesToolsService.format(new Date(order.createdAt), DATE_TIME_HUMAN_FORMAT);
       const answerButton = {
         label: order.name || orderRegionName || order.region,
