@@ -87,6 +87,8 @@ export class DocInputComponent extends AbstractComponentListItemComponent
 
   ngAfterViewInit(): void {
     setTimeout(() => {
+      // updateValueAndValidity необходим для отработки transform функций после первой подстановки значений в форму
+      this.form.updateValueAndValidity();
       this.handleServerErrors();
       this.cdr.markForCheck();
     }); // https://stackoverflow.com/questions/54611631/expressionchangedafterithasbeencheckederror-on-angular-6-while-using-mat-tab
