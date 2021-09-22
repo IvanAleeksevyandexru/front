@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { map } from 'rxjs/operators';
@@ -32,17 +32,19 @@ export class AddPassportContainerComponent {
   constructor(
     public currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.currentAnswersService.isValid = false;
   }
 
   onPassportDataChange({ value, isValid }: Passport): void {
-    if (!value) {
+    if (!value?.rfPasportSeries || !value?.rfPasportNumber) {
       this.currentAnswersService.isValid = false;
       return;
     }
 
     this.currentAnswersService.isValid = isValid;
     this.currentAnswersService.state = JSON.stringify(value);
+    this.cdr.detectChanges();
   }
 }

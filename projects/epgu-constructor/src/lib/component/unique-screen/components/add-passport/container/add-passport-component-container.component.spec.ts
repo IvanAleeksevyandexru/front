@@ -87,4 +87,17 @@ describe('AddPassportContainerComponent', () => {
     expect(currentAnswersService.state).toEqual(JSON.stringify(data.value));
     expect(currentAnswersService.isValid).toEqual(data.isValid);
   });
+
+  it('should not change currentAnswersService state', () => {
+    const data: Passport = {
+      value: {
+        rfPasportNumber: '',
+        rfPasportSeries: '',
+      },
+      isValid: false,
+    };
+    component.onPassportDataChange(data);
+    expect(currentAnswersService.state).toBeUndefined();
+    expect(currentAnswersService.isValid).toEqual(data.isValid);
+  });
 });
