@@ -3,5 +3,7 @@ export interface Clarifications {
     title?: string;
     text?: string;
     setting?: {};
+    type?: string;
+    id?: string;
   };
 }

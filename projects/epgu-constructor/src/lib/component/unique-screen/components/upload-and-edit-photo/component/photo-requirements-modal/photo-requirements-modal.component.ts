@@ -15,6 +15,7 @@ import {
   ConfirmationModalBaseButton,
 } from '@epgu/epgu-constructor-ui-kit';
 
+import { Clarifications } from '@epgu/epgu-constructor-types';
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';
 
@@ -26,6 +27,7 @@ import { uploadPhotoElemId } from '../../../../../../shared/components/upload-an
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoRequirementsModalComponent extends ModalBaseComponent implements OnInit {
+  clarifications: Clarifications;
   setting: PhotoRequirementsModalSetting;
   buttons: ConfirmationModalBaseButton[] = [];
   validIconPath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/icon-valid.svg`;
@@ -42,6 +44,9 @@ export class PhotoRequirementsModalComponent extends ModalBaseComponent implemen
   }
 
   ngOnInit(): void {
+    this.setting = this.clarifications[uploadPhotoElemId.requirements]
+      .setting as PhotoRequirementsModalSetting;
+
     this.buttons = [
       {
         label: 'Закрыть',
@@ -56,13 +61,5 @@ export class PhotoRequirementsModalComponent extends ModalBaseComponent implemen
         this.closeModal();
         this.cdr.markForCheck();
       });
-  }
-
-  handleClickOnElemById($event: Event): void {
-    const targetElementId = ($event.target as HTMLElement).id;
-    if (targetElementId === uploadPhotoElemId.howToTakePhoto) {
-      this.modalResult.next(uploadPhotoElemId.howToTakePhoto);
-      this.closeModal();
-    }
   }
 }

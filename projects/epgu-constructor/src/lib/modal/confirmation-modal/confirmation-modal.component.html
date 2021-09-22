@@ -7,7 +7,12 @@
   [isShortModal]="isShortModal"
 >
   <ng-container modal-content>
-    <epgu-constructor-output-html [html]="text" [componentId]="componentId">
+    <epgu-constructor-output-html
+      [html]="text"
+      [componentId]="componentId"
+      epgu-constructor-clickable-label
+      [clarifications]="clarifications"
+    >
     </epgu-constructor-output-html>
     <div
       class="text--center mt-16 block--content-centered"

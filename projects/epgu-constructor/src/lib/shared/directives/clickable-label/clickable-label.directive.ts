@@ -13,6 +13,7 @@ import { HtmlSelectService } from '../../../core/services/html-select/html-selec
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { SmuEvent } from '@epgu/ui/models';
+import { ClickableLabelUniqueModalTypes } from './clickable-label-unique-modal.types';
 
 const excludedTypesForState = [ActionType.deleteSuggest];
 
@@ -155,12 +156,32 @@ export class ClickableLabelDirective {
 
   private _showModal(targetClarification: { text?: string }, targetElementId: string): void {
     const clarifications = { ...this.clarifications };
-    delete clarifications[targetElementId];
-    this.modalService.openModal(ConfirmationModalComponent, {
+    const { uniqueModalComponent, isValidUniqueModal } = this._handleModalType(this.clarifications, targetElementId);
+    const modalComponent = isValidUniqueModal ? uniqueModalComponent : ConfirmationModalComponent; 
+
+    this.modalService.openModal(modalComponent, {
       ...targetClarification,
       clarifications,
       componentId: this.componentId,
-      showCrossButton: true,
+    }).subscribe((value) => {
+      if (value) {
+        const id = value as string;
+        const newTarget = clarifications[id];
+  
+        if (newTarget) this._showModal(newTarget, id);
+      }
     });
+  }
+
+  private _handleModalType(clarifications: Clarifications, targetElementId: string): {
+    uniqueModalComponent,
+    isValidUniqueModal: boolean
+  } {
+    const uniqueModalComponent = ClickableLabelUniqueModalTypes[clarifications[targetElementId].id];
+
+    return {
+      uniqueModalComponent,
+      isValidUniqueModal: uniqueModalComponent && clarifications[targetElementId].type === 'UniqueModal',
+    };
   }
 }

@@ -1,6 +1,6 @@
 <span
   class="photo-text"
-  (click)="handleClickOnElemById($event)"
-  [innerHTML]="data?.label | safe: 'html'"
   epgu-constructor-clickable-label
+  [clarifications]="data?.attrs?.clarifications"
+  [innerHTML]="data?.label | safe: 'html'"
 ></span>
