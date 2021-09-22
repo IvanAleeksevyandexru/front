@@ -23,6 +23,7 @@ import {
   SlotInterface,
 } from '@epgu/epgu-constructor-ui-kit';
 import { throwError } from 'rxjs/internal/observable/throwError';
+import { FormControl } from '@angular/forms';
 import {
   COMMON_ERROR_MODAL_PARAMS,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
@@ -55,6 +56,7 @@ import { FormPlayerService } from '../../../../form-player/services/form-player/
 export class TimeSlotsComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
+  slotsNotFoundTemplate = this.screenService.component.attrs?.slotsNotFoundTemplate || null;
   isSmev2 = this.screenService.component.attrs?.isSmev2 || false;
 
   public date: Date = null;
@@ -65,8 +67,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public isChosenTimeStrVisible = false;
   public isFinish = new Subject<null>();
 
+  errorTemplateCheckboxControl = new FormControl();
+
   daysNotFoundTemplate = {
-    header: this.isSmev2 ? 'В этот день все заятно' : 'В этом месяце всё занято',
+    header: this.isSmev2 ? 'В этот день всё занято' : 'В этом месяце всё занято',
     description: this.isSmev2
       ? 'Выберите другой день, чтобы забронировать время'
       : 'Выберите другой месяц или подразделение, чтобы забронировать время',
@@ -566,6 +570,9 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           if (this.errorMessage?.includes(STATIC_ERROR_MESSAGE)) {
             this.daysNotFoundTemplate.header = 'Непредвиденная ошибка';
             this.daysNotFoundTemplate.description = this.errorMessage;
+          } else if (this.screenService.component.attrs.slotsNotFoundTemplate) {
+            this.daysNotFoundTemplate.header = '';
+            this.daysNotFoundTemplate.description = '';
           } else if (this.errorMessage?.includes(NO_DATA_MESSAGE)) {
             this.daysNotFoundTemplate.header = 'Нет свободного времени для приёма';
             this.daysNotFoundTemplate.description = `Этот врач занят на ближайшие 14 дней. Выберите другого специалиста`;

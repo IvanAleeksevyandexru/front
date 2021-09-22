@@ -3,13 +3,14 @@ import { TimeSlotsComponent } from './time-slots.component';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule, TimeCalendarModule } from '@epgu/epgu-constructor-ui-kit';
+import { ConstructorCheckboxModule, ScreenContainerModule, TimeCalendarModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { FormsModule } from '@angular/forms';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 
 @NgModule({
   declarations: [TimeSlotsComponent],
@@ -28,6 +29,8 @@ import { FormsModule } from '@angular/forms';
     ScreenPadModule,
     TimeCalendarModule,
     FormsModule,
+    ScreenButtonsModule,
+    ConstructorCheckboxModule,
   ],
   entryComponents: [TimeSlotsComponent],
 })
