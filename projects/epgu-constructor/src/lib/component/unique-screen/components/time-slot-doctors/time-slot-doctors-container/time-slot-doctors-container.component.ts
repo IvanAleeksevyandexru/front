@@ -92,8 +92,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
 
   public activeMonthNumber: number;
   public activeYearNumber: number;
-  public chosenTimeStr: string;
-  public isChosenTimeStrVisible = false;
+  public selectedTimeStr = '';
 
   daysNotFoundTemplate: ErrorTemplate = {
     header: 'Нет свободного времени для приёма',
@@ -303,6 +302,9 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
    * @param slot слот для выбора
    */
   chooseTimeSlot(slot: SlotInterface): void {
+    const time = this.datesHelperService.utcOffset(slot.slotTime, slot.timezone);
+    this.selectedTimeStr = this.datesHelperService.format(time, DATE_TIME_STRING_FULL);
+
     if (this.currentSlot?.slotId === slot.slotId) {
       this.clearDateSelection();
     } else {
@@ -423,7 +425,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
           docLookup: this.timeSlotDoctorService.state$$.getValue().docLookup,
           specLookup: this.timeSlotDoctorService.state$$.getValue().specLookup,
         };
-        this.setBookedTimeStr(this.currentSlot);
         this.currentAnswersService.state = answer;
         this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
         this.changeDetectionRef.markForCheck();
@@ -907,12 +908,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     this.bookedSlot = waitingTimeExpired ? null : bookedSlot;
   }
 
-  private setBookedTimeStr(slot: SlotInterface): void {
-    const time = this.datesHelperService.utcOffset(slot.slotTime, slot.timezone);
-
-    this.chosenTimeStr = this.datesHelperService.format(time, DATE_TIME_STRING_FULL);
-  }
-
   /**
    * Метод очищает выбранные на календаре день и время
    */
@@ -921,6 +916,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     this.currentSlot = null;
     this.currentAnswersService.state = null;
     this.timeSlots = null;
+    this.selectedTimeStr = '';
     this.recalcDaysStyles();
   }
 
@@ -934,9 +930,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     const { waitingTimeExpired } = componentValue;
 
     this.setBookedSlot(timeSlotFromCache, waitingTimeExpired);
-    if (this.bookedSlot) {
-      this.setBookedTimeStr(this.bookedSlot);
-    }
   }
 
   /**
@@ -944,7 +937,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
    * @param isBookedDepartment Флаг показывающий что выбран департамент, на который уже есть бронь
    */
   private async serviceInitHandle(isBookedDepartment: boolean): Promise<void> {
-    this.isChosenTimeStrVisible = isBookedDepartment && !!this.bookedSlot;
     this.errorMessage = undefined;
     this.activeMonthNumber = this.timeSlotDoctorService.getCurrentMonth();
     this.activeYearNumber = this.timeSlotDoctorService.getCurrentYear();
