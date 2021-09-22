@@ -12,6 +12,7 @@ import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
 import { KeyValueMap } from './core.types';
 import { LogicComponentHeaders, LogicComponentMethods } from './logic-component';
+import { ScreenButton } from './screen-buttons';
 
 export interface KindergartenAttrs {
   header?: string;
@@ -185,6 +186,14 @@ export interface ComponentAttrsDto {
   writableComponents?: string[];
   isSmev2?: boolean;
   isMultiSelect?: boolean;
+  slotsNotFoundTemplate?: SlotsNotFoundTemplate;
+}
+
+export interface SlotsNotFoundTemplate {
+  header: string;
+  description: string;
+  checkboxLabel: string;
+  button: ScreenButton;
 }
 
 export type ChildrenListAgeView = 'date' | 'age';

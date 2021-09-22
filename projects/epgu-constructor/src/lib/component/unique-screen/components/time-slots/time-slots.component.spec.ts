@@ -8,6 +8,7 @@ import {
   ObjectHelperService,
   SessionService,
   BaseUiModule,
+  ConstructorCheckboxModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents, MockProvider } from 'ng-mocks';
@@ -54,6 +55,8 @@ import { FormPlayerService } from '../../../../form-player/services/form-player/
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ListItem } from '@epgu/ui/models/dropdown';
 import { FormsModule } from '@angular/forms';
+import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
+import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
 
 const moment = moment_;
 moment.locale('ru');
@@ -71,7 +74,14 @@ describe('TimeSlotsComponent', () => {
   configureTestSuite(() => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TimeCalendarModule, BaseUiModule, FormsModule],
+      imports: [
+        HttpClientTestingModule,
+        TimeCalendarModule,
+        BaseUiModule,
+        FormsModule,
+        ScreenButtonsModule,
+        ConstructorCheckboxModule
+      ],
       declarations: [
         TimeSlotsComponent,
         MockComponents(
@@ -79,6 +89,7 @@ describe('TimeSlotsComponent', () => {
           HelperTextComponent,
           PageNameComponent,
           ScreenContainerComponent,
+          OutputHtmlComponent
         ),
       ],
       providers: [

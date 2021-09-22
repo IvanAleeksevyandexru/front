@@ -39,6 +39,28 @@
           (chooseTimeSlot)="chooseTimeSlot($event)"
           (selectDate)="selectDate($event)"
         ></epgu-cf-ui-constructor-time-calendar>
+
+        <ng-container *ngIf="!isExistsSlots && slotsNotFoundTemplate && !daysNotFoundTemplate.description">
+          <epgu-constructor-output-html
+            [html]="slotsNotFoundTemplate.header + slotsNotFoundTemplate.description"
+          ></epgu-constructor-output-html>
+
+          <div class="mt-8" >
+            <epgu-cf-ui-constructor-constructor-checkbox
+              #checkboxComponent
+              [labelText]="slotsNotFoundTemplate.checkboxLabel"
+              [control]="errorTemplateCheckboxControl"
+            >
+            </epgu-cf-ui-constructor-constructor-checkbox>
+          </div>
+          <div class="mt-8" >
+            <epgu-constructor-screen-buttons
+              class="screen-buttons"
+              [screenButtons]="[slotsNotFoundTemplate.button]"
+              [disabled]="!checkboxComponent?.control?.value"
+            ></epgu-constructor-screen-buttons>
+          </div>
+        </ng-container>
       </div>
     </epgu-cf-ui-constructor-screen-pad>
   </div>
@@ -55,9 +77,9 @@
         (click)="clickSubmit()"
         class="submit-button"
         [disabled]="buttonDisabled()"
-        *ngIf="screenService.button$ | async as button"
+        *ngIf="isExistsSlots || !slotsNotFoundTemplate?.button"
       >
-        <div class="secondary-font">{{ button?.label || 'Продолжить' }}</div>
+        <div class="secondary-font">{{ (screenService.button$ | async)?.label || 'Продолжить' }}</div>
       </lib-button>
     </div>
   </div>

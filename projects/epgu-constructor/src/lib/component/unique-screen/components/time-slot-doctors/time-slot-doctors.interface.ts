@@ -1,7 +1,6 @@
-import { ComponentAttrsDto, ComponentDto, ScreenButton } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { ComponentValue } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ListElement } from '@epgu/ui/models/dropdown';
-import { ErrorTemplate } from '@epgu/epgu-constructor-ui-kit';
 
 export interface TimeSlotDoctorsComponentDto extends ComponentDto {
   attrs: TimeSlotDoctorsAttrs;
@@ -29,12 +28,6 @@ export interface BookingRequestAttrs {
 
 export interface TimeSlotAttrsInterface extends ComponentAttrsDto {
   department: { type: string; value: string };
-  slotsNotFoundTemplate: slotsNotFoundTemplate;
-}
-
-export interface slotsNotFoundTemplate extends ErrorTemplate {
-  checkboxLabel: string;
-  button: ScreenButton;
 }
 
 export interface TimeSlotValueInterface {
