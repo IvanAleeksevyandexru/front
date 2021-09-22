@@ -14,7 +14,7 @@ import {
   ScreenButton,
   ConfirmationModal,
   ActionType,
-  ButtonColor,
+  LongButtonColor,
 } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
@@ -58,7 +58,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   showCrossButton: boolean;
   isShortModal?: ConfirmationModal['isShortModal'];
   backdropDismiss = true;
-  colors = ButtonColor;
+  blueColor = LongButtonColor.BLUE;
 
   constructor(
     public injector: Injector,

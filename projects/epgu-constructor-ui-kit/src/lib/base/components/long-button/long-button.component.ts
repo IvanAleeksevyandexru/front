@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ButtonColor } from '@epgu/epgu-constructor-types';
+import { LongButtonColor } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-cf-ui-long-button',
@@ -19,7 +19,7 @@ export class LongButtonComponent {
   @Input() disabled: boolean;
   @Input() isLoading: boolean;
   @Input() showShadow = true;
-  @Input() color: ButtonColor = ButtonColor.WHITE;
+  @Input() color: LongButtonColor = LongButtonColor.WHITE;
 
-  colors = ButtonColor;
+  colors = LongButtonColor;
 }
