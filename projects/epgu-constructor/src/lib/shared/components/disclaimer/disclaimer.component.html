@@ -7,7 +7,7 @@
     'red-line': isNotifierDisclaimer && type === 'error'
   }"
 >
-  <p class="title">
+  <p class="title" *ngIf="title">
     <ng-container [ngSwitch]="type">
       <span *ngSwitchCase="'warn'" class="yellow-line"></span>
       <span *ngSwitchCase="'info'" class="gray-line"></span>
