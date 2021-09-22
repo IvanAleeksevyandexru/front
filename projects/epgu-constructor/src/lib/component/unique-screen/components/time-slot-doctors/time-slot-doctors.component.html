@@ -111,12 +111,9 @@
 </div>
 <div class="screen-footer">
   <div class="screen-footer--time-slots">
-      <span *ngIf="isChosenTimeStrVisible" class="time">
-        Вы забронировали:
-        <span class="time--bold">
-          {{ chosenTimeStr }}
-        </span>
-      </span>
+    <div *ngIf="selectedTimeStr" class="mb-24">
+      Вы выбрали: <b>{{selectedTimeStr}}</b>
+    </div>
     <lib-button
       *ngIf="!areSlotsNotAvailable || !screenErrorButton"
       [showLoader]="isLoading || inBookingProgress"

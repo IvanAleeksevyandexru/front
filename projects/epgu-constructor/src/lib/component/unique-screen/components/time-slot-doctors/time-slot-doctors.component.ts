@@ -27,8 +27,7 @@ export class TimeSlotDoctorsComponent {
   @Input() screenErrorButton: ScreenButton;
   @Input() label: string;
   @Input() isValid: boolean;
-  @Input() isChosenTimeStrVisible: boolean;
-  @Input() chosenTimeStr: string;
+  @Input() selectedTimeStr = '';
   @Input() inLoadingProgress: boolean;
   @Input() inBookingProgress: boolean;
   @Input() isLoading: boolean;
