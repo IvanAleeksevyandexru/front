@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { ButtonColor, ComponentAnswerDto } from '@epgu/epgu-constructor-types';
+import { LongButtonColor, ComponentAnswerDto } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 
@@ -23,7 +23,7 @@ export class AnswerButtonComponent implements OnInit {
   @Input() isModalCase = false;
   @Input() showShadow = true;
   @Input() isCenteredArrow = false;
-  @Input() color: ButtonColor = ButtonColor.WHITE;
+  @Input() color: LongButtonColor = LongButtonColor.WHITE;
 
   isLoading: boolean;
 
