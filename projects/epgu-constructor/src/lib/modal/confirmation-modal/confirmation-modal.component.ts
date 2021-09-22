@@ -14,6 +14,7 @@ import {
   ConfirmationModal,
   ActionType,
   LongButtonColor,
+  Clarifications,
 } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
@@ -38,7 +39,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   title?: ConfirmationModal['title'];
   traceId?: ConfirmationModal['traceId'];
   showCloseButton: ConfirmationModal['showCloseButton'] = true;
-  clarifications?: ConfirmationModal['buttons'];
+  clarifications?: Clarifications;
   componentId?: ConfirmationModal['componentId'];
   preview?: ConfirmationModal['preview'];
 
