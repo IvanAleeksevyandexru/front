@@ -9,6 +9,7 @@ import {
   DictionaryConditions,
   DictionaryValueTypes,
   AttributeTypes,
+  DictionaryOptions,
 } from '@epgu/epgu-constructor-types';
 import {
   ConfigService,
@@ -377,6 +378,9 @@ describe('DictionaryToolsService', () => {
   describe('dictionaryFiltersLoader()', () => {
     const patchedComponent = {
       ...component,
+      arguments: {
+        id: '["R7800000"]',
+      },
       attrs: {
         ...component.attrs,
         dictionaryFilters: [
@@ -416,6 +420,49 @@ describe('DictionaryToolsService', () => {
       },
     };
 
+    it('filter getDictionaries$', (done) => {
+      const items = [
+        {
+          value: 'R7800001',
+          title: 'TITLE_FOR_R7800001',
+        },
+        {
+          value: 'R7800002',
+          title: 'TITLE_FOR_R7800002',
+        },
+      ];
+      jest.spyOn(service, 'getDictionaries$').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: {
+            error: { code: 0, message: 'operation completed' },
+            fieldErrors: [],
+            total: items.length,
+            items,
+          },
+        }),
+      );
+      const { dictionaryType } = patchedComponent.attrs;
+      const dictionaryOptions: DictionaryOptions = {
+        pageNum: 0,
+        additionalParams: [],
+        excludedParams: [],
+      };
+      service
+        .getDictionaries$(dictionaryType, patchedComponent, dictionaryOptions)
+        .subscribe((response) => {
+          expect(response).toEqual({
+            component: patchedComponent,
+            data: {
+              error: { code: 0, message: 'operation completed' },
+              fieldErrors: [],
+              total: items.length,
+              items,
+            },
+          });
+          done();
+        });
+    });
     it('nulled items', (done) => {
       jest.spyOn(service, 'getDictionaries$').mockReturnValue(
         of({
