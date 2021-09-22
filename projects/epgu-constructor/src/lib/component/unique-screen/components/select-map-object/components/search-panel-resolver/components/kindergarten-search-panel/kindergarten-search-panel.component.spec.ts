@@ -1,15 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ConfigService,
-  ConfigServiceStub, ConstructorLookupComponent,
+  ConfigServiceStub,
+  ConstructorLookupComponent,
   UnsubscribeService,
   YandexMapService, YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
 import { configureTestSuite } from 'ng-bullet';
-import { MockModule, MockProvider } from 'ng-mocks';
+import { MockProvider } from 'ng-mocks';
 import { KindergartenSearchPanelComponent } from './kindergarten-search-panel.component';
-import { KindergartenComponent } from '../../../../../kindergarten/kindergarten.component';
-import { BaseModule } from '@epgu/children-clubs/src/lib/components/base/base.module';
 import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ModalErrorService } from '../../../../../../../../modal/modal-error.service';
@@ -29,12 +28,11 @@ import {
 } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { KindergartenSearchPanelService } from './kindergarten-search-panel.service';
 import { Observable, of } from 'rxjs';
-import { BaseUiModule } from '@epgu/epgu-constructor-ui-kit';
+import { BaseComponentsModule } from '../../../../../../../../shared/components/base-components/base-components.module';
 
 const componentMock = { arguments: {}, attrs: {}, id: 'test', type: '1' };
 
-// TODO: разобратся с работой теста
-xdescribe('KindergartenSearchPanelComponent', () => {
+describe('KindergartenSearchPanelComponent', () => {
   let component: KindergartenSearchPanelComponent;
   let fixture: ComponentFixture<KindergartenSearchPanelComponent>;
   let searchPanelService: KindergartenSearchPanelService;
@@ -42,8 +40,9 @@ xdescribe('KindergartenSearchPanelComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [KindergartenComponent],
-      imports: [BaseModule, MockModule(BaseUiModule), SelectMapObjectModule],
+      declarations: [],
+      imports: [SelectMapObjectModule,
+        BaseComponentsModule],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -68,6 +67,7 @@ xdescribe('KindergartenSearchPanelComponent', () => {
     searchPanelService = TestBed.inject(KindergartenSearchPanelService);
     fixture = TestBed.createComponent(KindergartenSearchPanelComponent);
     component = fixture.componentInstance;
+    component.isNoDepartmentErrorVisible = true;
   });
 
   it('should create', () => {
@@ -190,7 +190,6 @@ xdescribe('KindergartenSearchPanelComponent', () => {
   describe('toggleSelectedKindergartensView()', () => {
 
     it('should reset selected view', () => {
-      console.log(component);
       component['selectMapObjectService'].isSelectedView.next(true);
       const resetSelectedViewSpy = jest.spyOn(component['selectMapObjectService'], 'resetSelectedView').mockImplementation((...args) => null);
       const handleSpy = jest.spyOn(component['selectMapObjectService'], 'handleKindergartenSelection').mockImplementation((...args) => null);
