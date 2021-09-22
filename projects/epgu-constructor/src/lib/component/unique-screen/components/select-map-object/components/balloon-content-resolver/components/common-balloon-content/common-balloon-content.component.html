@@ -17,7 +17,7 @@
   <ng-container *ngIf="!isSelectButtonHidden">
     <ng-container *ngIf="!mapObject.isSelected else isSelected">
       <lib-button
-        [showLoader]="showLoader"
+        [showLoader]="showLoader | async"
         [disabled]="!mapObject.agreement"
         (click)="selectObject(mapObject, $event)"
         class="submit-button"

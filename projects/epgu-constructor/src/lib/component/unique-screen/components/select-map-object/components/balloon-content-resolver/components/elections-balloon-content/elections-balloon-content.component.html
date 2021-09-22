@@ -15,7 +15,11 @@
       </li>
     </ul></span
   >
-  <lib-button (click)="selectObject(extInfo, $event)" class="submit-button" width="wide"
+  <lib-button
+    [showLoader]="showLoader | async"
+    (click)="selectObject(extInfo, $event)"
+    class="submit-button"
+    width="wide"
     >Выбрать
   </lib-button>
 </div>

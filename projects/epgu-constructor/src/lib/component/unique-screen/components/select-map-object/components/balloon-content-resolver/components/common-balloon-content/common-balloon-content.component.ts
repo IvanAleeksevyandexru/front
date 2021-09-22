@@ -11,6 +11,7 @@ import {
   ModalService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
+import { Observable } from 'rxjs';
 import { DictionaryItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { IBalloonContent } from '../../balloon-content-resolver.interface';
@@ -23,7 +24,7 @@ import { IBalloonContent } from '../../balloon-content-resolver.interface';
 })
 export class CommonBalloonContentComponent implements IBalloonContent {
   @Input() isSelectButtonHidden = false;
-  @Input() showLoader = false;
+  @Input() showLoader: Observable<boolean>;
   @Input() mapObject;
   @Input() attrs;
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;

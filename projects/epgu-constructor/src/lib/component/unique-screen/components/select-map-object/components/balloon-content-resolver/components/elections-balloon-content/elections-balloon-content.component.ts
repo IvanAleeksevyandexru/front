@@ -19,7 +19,7 @@ import { IuikFullDataResponse } from './elections-balloon-content.interface';
 })
 export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloonContent {
   @Input() isSelectButtonHidden = false;
-  @Input() showLoader = false;
+  @Input() showLoader: Observable<boolean>;
   @Input() mapObject;
   @Input() attrs;
   public selectObject: Function;
