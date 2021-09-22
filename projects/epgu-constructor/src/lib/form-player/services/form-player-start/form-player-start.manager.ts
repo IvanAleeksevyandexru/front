@@ -22,6 +22,7 @@ import {
   ScenarioDto,
   APP_OUTPUT_KEY,
   FormPlayerApiResponse,
+  SelectOrderData,
 } from '@epgu/epgu-constructor-types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 
@@ -142,11 +143,20 @@ export class FormPlayerStartManager {
     });
   }
 
-  private handleOrder(orderId?: number, invited?: boolean, canStartNew?: boolean): void {
-    if (this.shouldShowContinueOrderModal(orderId, invited, canStartNew)) {
-      this.showContinueOrderModal();
+  private handleOrder(
+    selectOrderData?: SelectOrderData,
+    invited?: boolean,
+    canStartNew?: boolean,
+  ): void {
+    this.initDataService.orderId = selectOrderData?.orders[0]?.id;
+    if (this.shouldShowContinueOrderModal(selectOrderData, invited, canStartNew)) {
+      if (selectOrderData?.orders?.length && selectOrderData?.limitOrders > 1) {
+        this.showSelectOrderModal(selectOrderData);
+      } else {
+        this.showContinueOrderModal();
+      }
     } else {
-      let initOrderId = orderId;
+      let initOrderId = this.initDataService.orderId;
       if (this.localStorageService.hasKey('resetFormPlayer')) {
         this.localStorageService.delete('resetFormPlayer');
         initOrderId = null;
@@ -157,14 +167,14 @@ export class FormPlayerStartManager {
   }
 
   private shouldShowContinueOrderModal(
-    orderId?: number,
+    selectOrderData?: SelectOrderData,
     invited?: boolean,
     canStartNew?: boolean,
   ): boolean {
     return (
       !invited &&
       canStartNew &&
-      !!orderId &&
+      !!selectOrderData?.orders?.length &&
       !this.localStorageService.hasKey('resetFormPlayer') &&
       !this.localStorageService.hasKey(APP_OUTPUT_KEY) &&
       !this.hasLoadFromStorageCase('getLastScreen', LAST_SCENARIO_KEY) &&
@@ -172,6 +182,22 @@ export class FormPlayerStartManager {
       !this.hasLoadFromStorageCase('fromQuiz', QUIZ_SCENARIO_KEY) &&
       !this.hasLoadFromStorageCase('fromOrder', ORDER_TO_ORDER_SCENARIO_KEY)
     );
+  }
+
+  private showSelectOrderModal(selectOrderData: SelectOrderData): void {
+    this.continueOrderModalService
+      .openSelectOrderModal(selectOrderData)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((result) => {
+        const orderId = result ? parseInt(result) : null;
+        this.initDataService.orderId = orderId;
+
+        if (!orderId) {
+          this.localStorageService.set('cachedAnswers', {});
+        }
+
+        this.formPlayerService.initData(orderId);
+      });
   }
 
   private showContinueOrderModal(): void {
@@ -204,11 +230,10 @@ export class FormPlayerStartManager {
   }
 
   private handleOrderDataResponse(checkOrderApiResponse: CheckOrderApiResponse): void {
-    const { isInviteScenario: invited, canStartNew, orderId } = checkOrderApiResponse;
+    const { isInviteScenario: invited, canStartNew, selectOrderData } = checkOrderApiResponse;
     this.initDataService.invited = invited;
-    this.initDataService.orderId = orderId;
     this.initDataService.canStartNew = canStartNew;
-    this.handleOrder(orderId, invited, canStartNew);
+    this.handleOrder(selectOrderData, invited, canStartNew);
   }
 
   private isBookingCase(): boolean {

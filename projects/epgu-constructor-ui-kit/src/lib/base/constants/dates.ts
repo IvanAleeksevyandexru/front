@@ -10,6 +10,7 @@ export const DATE_TIME_STRING_SHORT = 'd MMMM yyyy';
 export const DATE_STRING_YEAR_MONTH = 'yyyy-MM';
 export const DATE_STRING_DASH_FORMAT = 'yyyy-MM-dd';
 export const BEFORE_DATE_FORMAT = 'до dd MMMM';
+export const DATE_TIME_HUMAN_FORMAT = 'dd MMM yyyy HH:mm';
 
 export const months = [
   'Январь',

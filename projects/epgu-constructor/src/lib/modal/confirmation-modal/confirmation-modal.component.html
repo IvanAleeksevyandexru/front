@@ -1,5 +1,5 @@
 <epgu-cf-ui-cta-modal
-  [showButtons]="buttons.length > 0 || actionButtons.length > 0"
+  [showButtons]="buttons.length > 0 || actionButtons.length > 0 || answerButtons.length > 0"
   [title]="title"
   [text]="text"
   [showCrossButton]="showCrossButton"
@@ -22,6 +22,25 @@
           alt="копировать"
         />
       </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="answerButtons.length" modal-answer-buttons>
+    <div class="answer-btns__container">
+      <ng-container
+        *ngFor="let answer of answerButtons"
+      >
+        <epgu-constructor-answer-button
+          [data]="answer"
+          [isModalCase]="true"
+          [showShadow]="false"
+          [isCenteredArrow]="true"
+          [color]="colors.BLUE"
+          class="answer-btn"
+          (click)="onAnswerSelect(answer.value)"
+        >
+        </epgu-constructor-answer-button>
+      </ng-container>
     </div>
   </ng-container>
 

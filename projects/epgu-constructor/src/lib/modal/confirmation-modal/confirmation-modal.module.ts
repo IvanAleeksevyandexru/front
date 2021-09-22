@@ -6,6 +6,7 @@ import { ConfirmationModalComponent } from './confirmation-modal.component';
 import { BaseModule } from '../../shared/base.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 
 @NgModule({
   declarations: [ConfirmationModalComponent],
@@ -18,6 +19,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     ScreenButtonsModule,
     SharedModalModule,
     ClipboardModule,
+    AnswerButtonModule
   ],
   entryComponents: [ConfirmationModalComponent],
 })

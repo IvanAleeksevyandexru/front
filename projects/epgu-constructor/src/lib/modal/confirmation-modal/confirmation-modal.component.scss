@@ -56,4 +56,23 @@
   }
 }
 
+.answer-btns {
+  &__container {
+    display: block;
+    width: 100%;
+  }
+}
+
+.answer-btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 24px;
+  box-shadow: none;
+  border: 0;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
 

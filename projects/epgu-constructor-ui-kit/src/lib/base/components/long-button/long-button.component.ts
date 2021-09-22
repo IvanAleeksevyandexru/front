@@ -1,8 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ButtonColor } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-cf-ui-long-button',
-  template: `<button [class.loading]="isLoading" [disabled]="disabled">
+  template: `<button
+    [class.loading]="isLoading"
+    [class.btn--blue]="color === colors.BLUE"
+    [class.btn--white]="color === colors.WHITE"
+    [class.btn--shadow]="showShadow"
+    [disabled]="disabled"
+  >
     <ng-content></ng-content>
   </button>`,
   styleUrls: ['./long-button.component.scss'],
@@ -11,4 +18,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class LongButtonComponent {
   @Input() disabled: boolean;
   @Input() isLoading: boolean;
+  @Input() showShadow = true;
+  @Input() color: ButtonColor = ButtonColor.WHITE;
+
+  colors = ButtonColor;
 }

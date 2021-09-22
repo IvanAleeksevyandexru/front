@@ -1,4 +1,4 @@
-import { ComponentActionDto } from '@epgu/epgu-constructor-types';
+import { ComponentActionDto, ComponentAnswerDto } from '@epgu/epgu-constructor-types';
 
 export interface ConfirmationModalBaseButton {
   label?: string;
@@ -9,3 +9,5 @@ export interface ConfirmationModalBaseButton {
   action?: ComponentActionDto;
   closeModal?: boolean;
 }
+
+export interface ConfirmationModalAnswerButton extends Partial<ComponentAnswerDto> {}

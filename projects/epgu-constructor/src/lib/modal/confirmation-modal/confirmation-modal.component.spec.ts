@@ -29,6 +29,7 @@ import { ScreenButtonsComponent } from '../../shared/components/screen-buttons/s
 import { By } from '@angular/platform-browser';
 import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { NotifierService } from '@epgu/ui/services/notifier';
+import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
@@ -55,7 +56,7 @@ describe('ConfirmationModalComponent', () => {
         MockComponents(CtaModalComponent, OutputHtmlComponent, ScreenButtonsComponent),
         MockDirectives(ActionDirective),
       ],
-      imports: [BaseUiModule],
+      imports: [BaseUiModule, AnswerButtonModule],
       providers: [
         EventBusService,
         ModalService,

@@ -12,6 +12,7 @@ import { ActionDirective } from '@epgu/epgu-constructor/src/lib/shared/directive
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
+import { AnswerButtonModule } from '@epgu/epgu-constructor/src/lib/shared/components/answer-button/answer-button.module';
 import { BaseUiModule } from '../../../base/base-ui.module';
 
 const blankModalParameters = {
@@ -42,7 +43,7 @@ describe('ModalContainerComponent', () => {
           MockComponents(CtaModalComponent, OutputHtmlComponent, ScreenButtonsComponent),
           MockDirectives(ActionDirective),
         ],
-        imports: [MockModule(BaseUiModule)],
+        imports: [MockModule(BaseUiModule), AnswerButtonModule],
         providers: [
           EventBusService,
           ModalService,

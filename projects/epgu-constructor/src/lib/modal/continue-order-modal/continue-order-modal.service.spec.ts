@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ContinueOrderModalService } from './continue-order-modal.service';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, DatesToolsServiceStub, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('ContinueOrderModalService', () => {
   let service: ContinueOrderModalService;
@@ -9,8 +9,9 @@ describe('ContinueOrderModalService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         ContinueOrderModalService,
-        { provide: ModalService, useClass: ModalServiceStub }
       ]
     });
     service = TestBed.inject(ContinueOrderModalService);
