@@ -162,6 +162,19 @@ export class DictionaryToolsService {
             },
           })),
           map((dictionary) => {
+            if (typeof dictionary.component.arguments?.id === 'string') {
+              const ids = JSON.parse(dictionary.component.arguments.id);
+              const items = dictionary.data.items.filter((item) => !ids.includes(item.value));
+              const data: DictionaryResponse = {
+                ...dictionary.data,
+                items,
+              };
+
+              return {
+                component,
+                data,
+              };
+            }
             // TODO: удалить когда будет реализована фильтрация справочника на строне NSI-справочников в RTLabs
             if (component.attrs.filter) {
               const items = dictionary.data.items.filter((item) => {
