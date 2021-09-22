@@ -34,6 +34,7 @@
 
 <ng-template #buttonsTemplate>
   <div class="conf-modal__controls" *ngIf="showButtons">
+    <ng-content select="[modal-answer-buttons]"></ng-content>
     <ng-content select="[modal-buttons]"></ng-content>
     <ng-content select="[modal-action-buttons]"></ng-content>
   </div>

@@ -29,7 +29,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { cloneDeep } from 'lodash';
 import { configureTestSuite } from 'ng-bullet';
-import { APP_OUTPUT_KEY } from '@epgu/epgu-constructor-types';
+import { APP_OUTPUT_KEY, CheckOrderApiResponse, SelectOrderData } from '@epgu/epgu-constructor-types';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 
@@ -150,7 +150,7 @@ describe('FormPlayerStartManager', () => {
     it('should call handleOrder case', () => {
       initDataService.init({
         ...serviceDataMock,
-        orderId: '2145',
+        orderId: 2145,
         canStartNew: true,
         invited: false,
       });
@@ -160,7 +160,7 @@ describe('FormPlayerStartManager', () => {
     });
 
     it('should call getOrderStatus case', () => {
-      initDataService.init({ ...serviceDataMock, orderId: '2145' });
+      initDataService.init({ ...serviceDataMock, orderId: 2145 });
       spyOn<any>(service, 'handleOrder').and.callThrough();
       service.startPlayer();
       expect(service['handleOrder']).toBeCalled();
@@ -216,7 +216,7 @@ describe('FormPlayerStartManager', () => {
 
     it('should call invited of initDataService', () => {
       spyOn(formPlayerService, 'getOrderStatus').and.returnValue(of(checkIfOrderExistResult));
-      initDataService.init({ ...serviceDataMock, orderId: '123456' });
+      initDataService.init({ ...serviceDataMock, orderId: 123456 });
       spyOn<any>(service, 'handleOrderDataResponse');
       service['getOrderStatus']();
       expect(service['handleOrderDataResponse']).toBeCalledWith(checkIfOrderExistResult);
@@ -240,10 +240,17 @@ describe('FormPlayerStartManager', () => {
 
   describe('handleOrderDataResponse()', () => {
     const checkIfOrderExistResult = {
-      orderId: '123456',
       isInviteScenario: false,
       canStartNew: true,
-    };
+      selectOrderData: {
+        limit: 1,
+        orders: [
+          {
+            id: 123456
+          }
+        ]
+      }
+    } as CheckOrderApiResponse;
 
     it('should call invited of initDataService', () => {
       const spySetter = jest.spyOn(initDataService, 'invited', 'set');
@@ -254,7 +261,7 @@ describe('FormPlayerStartManager', () => {
     it('should call orderId of initDataService', () => {
       const spySetter = jest.spyOn(initDataService, 'orderId', 'set');
       service['handleOrderDataResponse'](checkIfOrderExistResult);
-      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.orderId);
+      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.selectOrderData.orders[0].id);
     });
 
     it('should call canStartNew of initDataService', () => {
@@ -267,28 +274,35 @@ describe('FormPlayerStartManager', () => {
       spyOn<any>(service, 'handleOrder').and.callThrough();
       service['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(service['handleOrder']).toBeCalledWith(
-        checkIfOrderExistResult.orderId,
+        checkIfOrderExistResult.selectOrderData,
         checkIfOrderExistResult.isInviteScenario,
-        checkIfOrderExistResult.canStartNew,
+        checkIfOrderExistResult.canStartNew
       );
     });
   });
 
   describe('handleOrder()', () => {
-    const orderId = '1234';
+    const selectOrderData = {
+      limit: 1,
+      orders: [
+        {
+          id: 123456
+        }
+      ]
+    } as SelectOrderData;
     const invited = false;
     const canStartNew = true;
 
     it('should call shouldShowContinueOrderModal', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.callThrough();
-      service['handleOrder'](orderId, invited, canStartNew);
-      expect(service['shouldShowContinueOrderModal']).toBeCalledWith(orderId, invited, canStartNew);
+      service['handleOrder'](selectOrderData, invited, canStartNew);
+      expect(service['shouldShowContinueOrderModal']).toBeCalledWith(selectOrderData, invited, canStartNew);
     });
 
     it('should call showContinueOrderModal when shouldShowContinueOrderModal return true', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.returnValue(true);
       spyOn<any>(service, 'showContinueOrderModal').and.callThrough();
-      service['handleOrder'](orderId, invited, canStartNew);
+      service['handleOrder'](selectOrderData, invited, canStartNew);
       expect(service['showContinueOrderModal']).toBeCalled();
     });
 
@@ -296,8 +310,8 @@ describe('FormPlayerStartManager', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.returnValue(false);
       spyOn(formPlayerService, 'initData').and.callThrough();
       spyOn(localStorageService, 'set').and.callThrough();
-      service['handleOrder'](orderId, invited, canStartNew);
-      expect(formPlayerService.initData).toBeCalledWith(orderId);
+      service['handleOrder'](selectOrderData, invited, canStartNew);
+      expect(formPlayerService.initData).toBeCalledWith(selectOrderData.orders[0].id);
       expect(localStorageService.set).toBeCalledWith('cachedAnswers', {});
     });
   });
@@ -329,13 +343,20 @@ describe('FormPlayerStartManager', () => {
   });
 
   describe('shouldShowContinueOrderModal()', () => {
-    const orderId = 1234;
+    const selectOrderData = {
+      limit: 1,
+      orders: [
+        {
+          id: 123456
+        }
+      ]
+    } as SelectOrderData;
     const invited = false;
     const canStartNew = true;
 
     it('should return true if not invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        orderId,
+        selectOrderData,
         invited,
         canStartNew,
       );
@@ -345,7 +366,7 @@ describe('FormPlayerStartManager', () => {
     it('should return false if lib output case', () => {
       localStorage.setItem(APP_OUTPUT_KEY, '{}');
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        orderId,
+        selectOrderData,
         invited,
         canStartNew,
       );
@@ -357,7 +378,7 @@ describe('FormPlayerStartManager', () => {
       location.go('/some-page', 'getLastScreen=true');
       localStorage.setItem(LAST_SCENARIO_KEY, JSON.stringify(responseDto));
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        orderId,
+        selectOrderData,
         invited,
         canStartNew,
       );
@@ -376,7 +397,7 @@ describe('FormPlayerStartManager', () => {
 
     it('should return false if invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        orderId,
+        selectOrderData,
         true,
         canStartNew,
       );
@@ -385,7 +406,7 @@ describe('FormPlayerStartManager', () => {
 
     it('should return false if not invited, not canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        orderId,
+        selectOrderData,
         invited,
         false,
       );
@@ -414,7 +435,7 @@ describe('FormPlayerStartManager', () => {
     });
 
     it('should call initData of formPlayerService with orderId', () => {
-      const orderId = '1234';
+      const orderId = 1234;
       spyOn(continueOrderModalService, 'openModal').and.returnValue(of(true));
       initDataService.orderId = orderId;
       spyOn(formPlayerService, 'initData').and.callThrough();

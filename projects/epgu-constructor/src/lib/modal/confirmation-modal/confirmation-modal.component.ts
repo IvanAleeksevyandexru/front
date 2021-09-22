@@ -10,7 +10,12 @@ import {
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ScreenButton, ConfirmationModal, ActionType } from '@epgu/epgu-constructor-types';
+import {
+  ScreenButton,
+  ConfirmationModal,
+  ActionType,
+  ButtonColor,
+} from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
   ModalService,
@@ -18,6 +23,7 @@ import {
   ModalBaseComponent,
   ConfirmationModalBaseButton,
   ConfigService,
+  ConfirmationModalAnswerButton,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierService } from '@epgu/ui/services/notifier';
 
@@ -46,11 +52,13 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   componentId?: ConfirmationModal['componentId'];
   preview?: ConfirmationModal['preview'];
 
+  answerButtons: ConfirmationModalAnswerButton[] = [];
   buttons: ConfirmationModalBaseButton[] = [];
   actionButtons: ScreenButton[] = [];
   showCrossButton: boolean;
   isShortModal?: ConfirmationModal['isShortModal'];
   backdropDismiss = true;
+  colors = ButtonColor;
 
   constructor(
     public injector: Injector,
@@ -150,6 +158,10 @@ export class ConfirmationModalComponent extends ModalBaseComponent
         handler,
       };
     });
+  }
+
+  onAnswerSelect(value: string): void {
+    this.closeModal(value);
   }
 
   copy(traceId: string): void {

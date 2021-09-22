@@ -12,7 +12,6 @@ button {
   width: 100%;
   padding: 16px;
   position: relative;
-  background: $color-white;
   text-align: inherit;
   font-size: 16px;
   line-height: 24px;
@@ -21,15 +20,36 @@ button {
   border: none;
   cursor: pointer;
   outline: none;
-  @include shadow-main();
   @include tablets-up {
     padding: 24px 32px;
   }
 
-  &:hover,
-  &:active,
-  &:focus {
-    background: $color-background;
+
+  &.loading {
+    opacity: 0.7;
+    cursor: progress;
+  }
+}
+
+.btn {
+  &--white {
+    background: $color-white;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background: $color-background;
+    }
+  }
+
+  &--blue {
+    background: $color-azzurro-alice;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background: $color-pervinca;
+    }
   }
 
   &[disabled] {
@@ -37,8 +57,8 @@ button {
     color: $color-text-helper;
     cursor: not-allowed;
   }
-  &.loading {
-    opacity: 0.7;
-    cursor: progress;
+
+  &--shadow {
+    @include shadow-main();
   }
 }

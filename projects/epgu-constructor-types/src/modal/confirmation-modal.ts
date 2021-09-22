@@ -18,6 +18,13 @@ export interface ConfirmationModal {
     closeModal: boolean;
     value?: string;
   }[];
+  answerButtons?: {
+    label: string;
+    value: string;
+    type: string;
+    action: string;
+    description?: string;
+  }[];
   clarifications?: object;
   componentId?: string;
   isShortModal?: boolean;

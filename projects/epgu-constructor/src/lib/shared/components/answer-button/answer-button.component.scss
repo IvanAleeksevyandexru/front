@@ -10,6 +10,14 @@
 .answer-btn {
   &__container {
     display: flex;
+
+    &--pr {
+      padding-right: 32px;
+
+      @include tablets-down {
+        padding-right: 24px;
+      }
+    }
   }
   &__title {
     flex-grow: 1;
@@ -26,6 +34,16 @@
     @include tablets-down {
       margin-left: 16px;
     }
+
+    &--centered {
+      position: absolute;
+      right: 32px;
+      bottom: calc(50% - 12px);
+
+      @include tablets-down {
+        right: 24px;
+      }
+    }
   }
   &__hint { // TODO запрещён к использованию, нужно выпилить
     position: relative;
@@ -40,7 +58,22 @@
     color: $color-text-helper;
     @include typ-plain-small;
     @include tablets-down {
-      margin-top: 16;
+      margin-top: 16px;
+    }
+
+    &--modal {
+      margin-top: 4px;
+      @include tablets-down {
+        margin-top: 8px;
+      }
+    }
+
+    &--pr {
+      padding-right: 32px;
+
+      @include tablets-down {
+        padding-right: 24px;
+      }
     }
   }
 }

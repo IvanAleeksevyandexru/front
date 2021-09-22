@@ -14,6 +14,7 @@ export * from './custom-component-ref';
 export * from './dictionary';
 export * from './gender';
 export * from './logic-component';
+export * from './order-dto';
 export * from './org-type';
 export * from './qustion-component-answer';
 export * from './scenario';
