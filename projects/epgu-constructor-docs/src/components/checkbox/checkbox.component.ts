@@ -45,6 +45,7 @@ export class ExampleEpguCheckboxComponent implements OnInit {
 
   handleClick(event): void {
     if (event.target.id) {
+      // eslint-disable-next-line no-console
       console.log(`${event.target.id}, ${event.target.checked}`);
     }
   }

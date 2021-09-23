@@ -31,6 +31,7 @@ export class ExampleEpguChipComponent implements OnInit {
   readonly id = 'id';
 
   public onClose(id): void {
+    // eslint-disable-next-line no-console
     console.log(id);
   }
 
