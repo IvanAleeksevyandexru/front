@@ -1,5 +1,6 @@
 import { FormPlayerApiErrorStatuses } from './error';
-import { ScenarioDto, SelectOrderData } from '../../base';
+import { ScenarioDto } from '../../base';
+import { OrderDto } from '../../base/order-dto';
 
 /**
  * @property {boolean}[isInternalScenario] - есть шаги когда мы выходим из основного сценария в подсценарий,
@@ -40,9 +41,12 @@ export interface FormPlayerApiErrorResponse {
 export type FormPlayerApiResponse = FormPlayerApiSuccessResponse | FormPlayerApiErrorResponse;
 
 export interface CheckOrderApiResponse {
-  isInviteScenario: boolean;
-  canStartNew: boolean;
-  selectOrderData: SelectOrderData;
+  isInviteScenario?: boolean;
+  canStartNew?: boolean;
+  inviteByOrderId?: number;
+  limitOrders?: number;
+  startNewBlockedByOrderId?: number;
+  orders?: OrderDto[];
 }
 
 export interface ActionApiResponse<T> {

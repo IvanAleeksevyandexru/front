@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-
 import {
   LAST_SCENARIO_KEY,
   NEXT_SCENARIO_KEY,
@@ -13,8 +12,7 @@ import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, LocationService } from '@epgu/epgu-constructor-ui-kit';
 import {
   CheckOrderApiResponse,
   FormPlayerApiSuccessResponse,
@@ -22,7 +20,7 @@ import {
   ScenarioDto,
   APP_OUTPUT_KEY,
   FormPlayerApiResponse,
-  SelectOrderData,
+  OrderDto,
 } from '@epgu/epgu-constructor-types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 
@@ -144,14 +142,15 @@ export class FormPlayerStartManager {
   }
 
   private handleOrder(
-    selectOrderData?: SelectOrderData,
+    orders?: OrderDto[],
     invited?: boolean,
     canStartNew?: boolean,
+    limitOrders?: number,
   ): void {
-    this.initDataService.orderId = selectOrderData?.orders[0]?.id;
-    if (this.shouldShowContinueOrderModal(selectOrderData, invited, canStartNew)) {
-      if (selectOrderData?.orders?.length && selectOrderData?.limitOrders > 1) {
-        this.showSelectOrderModal(selectOrderData);
+    this.initDataService.orderId = orders[0]?.orderId;
+    if (this.shouldShowContinueOrderModal(orders, invited, canStartNew)) {
+      if (orders?.length && limitOrders > 1) {
+        this.showSelectOrderModal(orders, limitOrders);
       } else {
         this.showContinueOrderModal();
       }
@@ -167,14 +166,14 @@ export class FormPlayerStartManager {
   }
 
   private shouldShowContinueOrderModal(
-    selectOrderData?: SelectOrderData,
+    orders?: OrderDto[],
     invited?: boolean,
     canStartNew?: boolean,
   ): boolean {
     return (
       !invited &&
       canStartNew &&
-      !!selectOrderData?.orders?.length &&
+      !!orders?.length &&
       !this.localStorageService.hasKey('resetFormPlayer') &&
       !this.localStorageService.hasKey(APP_OUTPUT_KEY) &&
       !this.hasLoadFromStorageCase('getLastScreen', LAST_SCENARIO_KEY) &&
@@ -184,9 +183,9 @@ export class FormPlayerStartManager {
     );
   }
 
-  private showSelectOrderModal(selectOrderData: SelectOrderData): void {
+  private showSelectOrderModal(orders, limitOrders): void {
     this.continueOrderModalService
-      .openSelectOrderModal(selectOrderData)
+      .openSelectOrderModal(orders, limitOrders)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((result) => {
         const orderId = result ? parseInt(result) : null;
@@ -230,10 +229,10 @@ export class FormPlayerStartManager {
   }
 
   private handleOrderDataResponse(checkOrderApiResponse: CheckOrderApiResponse): void {
-    const { isInviteScenario: invited, canStartNew, selectOrderData } = checkOrderApiResponse;
+    const { isInviteScenario: invited, canStartNew, orders, limitOrders } = checkOrderApiResponse;
     this.initDataService.invited = invited;
     this.initDataService.canStartNew = canStartNew;
-    this.handleOrder(selectOrderData, invited, canStartNew);
+    this.handleOrder(orders, invited, canStartNew, limitOrders);
   }
 
   private isBookingCase(): boolean {
