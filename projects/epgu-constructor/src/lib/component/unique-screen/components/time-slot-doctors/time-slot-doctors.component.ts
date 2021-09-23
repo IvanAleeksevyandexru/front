@@ -32,7 +32,7 @@ export class TimeSlotDoctorsComponent {
   @Input() inBookingProgress: boolean;
   @Input() isLoading: boolean;
   @Input() labelButton: string;
-  @Input() isDoctorsNotAvailable = false;
+  @Input() isDoctorNotAvailable = false;
   @Input() areSlotsNotAvailable = false;
   @Input() isDocLookupDisclaimerShown;
 

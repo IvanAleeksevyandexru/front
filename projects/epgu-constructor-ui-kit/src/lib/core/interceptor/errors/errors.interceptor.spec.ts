@@ -40,6 +40,8 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 import { DictionaryToolsService } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service.stub';
+import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
+import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -61,6 +63,7 @@ describe('ErrorsInterceptor', () => {
       providers: [
         FormPlayerApiService,
         SessionService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

@@ -53,7 +53,7 @@ const ITEMS_REQUEST_TEXT_NO_DATA = `<div class="text_modal_error">
 <span>{textAsset}</span></div>`;
 
 const ITEMS_REQUEST_TEXT_FAILURE = `<div class="text_modal_error">
-<img style="display:block; margin: 24px auto" src="https://gu-st.ru/content/catalog/new/marriage_6_booking_deny.svg">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Ошибка бронирования</h4>
 <span>{textAsset}</span></div>`;
 

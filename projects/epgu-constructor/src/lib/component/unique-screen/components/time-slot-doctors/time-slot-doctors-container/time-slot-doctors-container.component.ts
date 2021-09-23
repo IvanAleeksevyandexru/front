@@ -143,7 +143,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   inLoadingProgress = false;
   inBookingProgress = false;
   changeTSConfirm = false;
-  isDoctorsNotAvailable = false;
+  isDoctorNotAvailable = false;
   areSlotsNotAvailable = false;
   bookedSlot: SlotInterface;
   errorMessage;
@@ -380,43 +380,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         this.inBookingProgress = false;
         if (this.timeSlotDoctorService.hasError()) {
           this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
-
-          if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
-            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
-              .toPromise()
-              .then((result) => {
-                if (result) {
-                  this.formPlayer.initData();
-                }
-              });
-          } else {
-            const params = {
-              ...ITEMS_FAILURE,
-              buttons: [
-                {
-                  label: 'Начать заново',
-                  closeModal: true,
-                  value: 'init',
-                },
-                {
-                  label: 'Попробовать ещё раз',
-                  closeModal: true,
-                },
-              ],
-            };
-            const message = this.errorMessage
-              .replace('FAILURE:', '')
-              .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
-              .replace('NO_DATA:', '');
-            params.text = params.text.replace(/\{textAsset\}?/g, message);
-            this.showModal(params)
-              .toPromise()
-              .then((result) => {
-                if (result) {
-                  this.formPlayer.initData();
-                }
-              });
-          }
+          this.showCustomError(this.errorMessage);
           return;
         }
         const answer = {
@@ -429,12 +393,56 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
         this.changeDetectionRef.markForCheck();
       },
-      () => {
+      (result) => {
         this.inBookingProgress = false;
-        this.showModal(COMMON_ERROR_MODAL_PARAMS);
+        this.showCustomError(result?.error?.errorDetail?.errorMessage);
         this.changeDetectionRef.markForCheck();
       },
     );
+  }
+
+  showCustomError(error: string | undefined): void {
+    if (error != null) {
+      if (error.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
+        this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
+          .toPromise()
+          .then((result) => {
+            if (result) {
+              this.formPlayer.initData();
+            }
+          });
+      } else {
+        const params = {
+          ...ITEMS_FAILURE,
+          buttons: [
+            {
+              label: 'Начать заново',
+              color: 'white',
+              closeModal: true,
+              value: 'init',
+            },
+            {
+              label: 'Попробовать ещё раз',
+              closeModal: true,
+            },
+          ],
+        } as ConfirmationModal;
+        const message = error
+          .replace('FAILURE:', '')
+          .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+          .replace('NO_DATA:', '');
+        params.text = params.text.replace(/\{textAsset\}?/g, message);
+        this.showModal(params)
+          .toPromise()
+          .then((result) => {
+            if (result) {
+              this.formPlayer.initData();
+            }
+          });
+      }
+    } else {
+      this.showModal(COMMON_ERROR_MODAL_PARAMS);
+    }
   }
 
   showError(errorMessage: string): void {
@@ -523,7 +531,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
       const filters = [...attrs.searchProvider.dictionaryFilter];
       const startFilter = attrs.searchProvider?.turnOffStartFilter;
       this.areSlotsNotAvailable = false;
-      this.isDoctorsNotAvailable = false;
+      this.isDoctorNotAvailable = false;
 
       if (!startFilter) {
         filters[0].value = searchString;
@@ -559,7 +567,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
                 !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT) &&
                 !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE)
               ) {
-                this.isDoctorsNotAvailable = true;
+                this.isDoctorNotAvailable = true;
                 const regExp = /\{textAsset\}?/g;
                 errorMessage = errorMessage
                   .replace('FAILURE:', '')
@@ -612,7 +620,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     this.clearDateSelection();
     const value = JSON.parse(this.screenService.component?.value);
     this.areSlotsNotAvailable = false;
-    this.isDoctorsNotAvailable = false;
+    this.isDoctorNotAvailable = false;
     this.isExistsSlots = true;
 
     this.initServiceVariables(value);
@@ -658,10 +666,10 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
           }
         });
     } else if (this.component.attrs.ts.slotsNotFoundTemplate) {
-      this.isDoctorsNotAvailable = true;
+      this.isDoctorNotAvailable = true;
       this.doctorsNotFoundTemplate = this.component.attrs.ts.slotsNotFoundTemplate;
     } else if (this.errorMessage.includes(NO_DATA)) {
-      this.isDoctorsNotAvailable = true;
+      this.isDoctorNotAvailable = true;
       this.doctorsNotFoundTemplate.header = `
             <h6 class='yellow-line mt-24'>
               Нет свободного времени для приёма
@@ -675,7 +683,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         .replace('FAILURE:', '')
         .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
         .replace('NO_DATA:', '');
-      this.isDoctorsNotAvailable = true;
+      this.isDoctorNotAvailable = true;
       this.doctorsNotFoundTemplate.header = `
             <h6 class='yellow-line mt-24'>
               Нет свободного времени для приёма
