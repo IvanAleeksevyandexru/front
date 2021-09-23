@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
 import { ScenarioDto, OrgType } from '@epgu/epgu-constructor-types';
 import { Navigation } from '../../../form-player/form-player.types';
-import { MobilViewEvents, OPTIONS_FEED_EXIT, OPTIONS_FEED_MV } from '@epgu/epgu-constructor-ui-kit';
+import { MobilViewEvents, OPTIONS_FEED_EXIT, OPTIONS_FEED_MV, OPTIONS_PROFILE_MV } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
@@ -106,11 +106,19 @@ export class NavigationService {
     this.locationService.href(url);
   }
 
+  redirectToLKAccount(): void {
+    if (this.isWebView) {
+      this.navigateInsideWebView(MobilViewEvents.OPTIONS_PROFILE_MV);
+    } else {
+      this.locationService.href(`${this.configService.lkUrl}/settings/account`);
+    }
+  }
+
   redirectExternal(url: string): void {
     this.window.open(url, '_blank');
   }
 
-  private navigateInsideWebView(options: typeof OPTIONS_FEED_MV | typeof OPTIONS_FEED_EXIT): void {
+  private navigateInsideWebView(options: typeof OPTIONS_FEED_MV | typeof OPTIONS_FEED_EXIT | typeof OPTIONS_PROFILE_MV): void {
     this.smuEventsService.notify(options);
   }
 }

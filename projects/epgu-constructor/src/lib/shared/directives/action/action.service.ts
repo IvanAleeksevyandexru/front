@@ -122,7 +122,7 @@ export class ActionService {
         this.locationService.reload();
         break;
       case ActionType.redirectToLKAccount:
-        this.navService.redirectTo(`${this.configService.lkUrl}/settings/account`);
+        this.navService.redirectToLKAccount();
         break;
       case ActionType.copyToClipboard:
         this.actionToolsService.copyToClipboard(action);

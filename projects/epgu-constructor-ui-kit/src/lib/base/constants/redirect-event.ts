@@ -25,6 +25,16 @@ export const OPTIONS_FEED_MV: MobileEvent<string> = {
   eventParams: [{ key: 'screen', value: 'Feed' }], // реализовано в новой версии, в нативном МП
 };
 
+/**
+ * Опции для перенаправления на страницу редактирования профиля
+ *  в MobileView (для новая версия приложения - native)
+ */
+
+ export const OPTIONS_PROFILE_MV: MobileEvent<string> = {
+  eventType: MobileEventType.open_screen,
+  eventParams: [{ key: 'screen', value: 'Profile' }], // реализовано в новой версии, в нативном МП
+};
+
 // /**
 //  * Опции для перенаправления на страницу со списком отправленных
 //  * заявлений в MobileView (для страрой версия приложения - xamarin)
