@@ -18,6 +18,7 @@ import { ElectionsBalloonContentComponent } from './components/elections-balloon
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { MapTypes } from '../../select-map-object.service';
 import { KindergartenContentComponent } from './components/kindergarten-balloon-content/kindergarten-balloon-content.component';
+import { ScreenService } from '../../../../../../screen/screen.service';
 
 type ContentTypesComponents =
   | CommonBalloonContentComponent
@@ -57,6 +58,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef,
+    private screenService: ScreenService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -88,6 +90,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
 
   private setInstanceFields(ref): void {
     const { instance } = ref;
+    instance.showLoader = this.screenService.isLoading$;
     instance.mapObject = this.mapObject;
     instance.isSelectButtonHidden = this.isSelectButtonHidden;
     instance.attrs = this.attrs;

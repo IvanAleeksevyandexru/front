@@ -13,6 +13,7 @@ import {
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
 import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { IBalloonShowableContent } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import {
@@ -32,7 +33,7 @@ import { IBalloonContent } from '../../balloon-content-resolver.interface';
 })
 export class KindergartenContentComponent implements IBalloonContent, OnInit {
   @Input() isSelectButtonHidden = false;
-  @Input() showLoader = false;
+  @Input() showLoader: Observable<false>;
   @Input() mapObject;
   public selectObject: Function;
   public expandObject: Function;

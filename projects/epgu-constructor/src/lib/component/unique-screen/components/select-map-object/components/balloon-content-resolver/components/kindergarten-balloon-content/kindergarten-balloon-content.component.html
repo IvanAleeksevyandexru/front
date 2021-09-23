@@ -22,7 +22,7 @@
   <ng-container *ngIf="!isSelectButtonHidden && { deptsLeftToChoose: kindergartenSearchPanelService.deptsLeftToChoose$ | async } as data">
     <lib-button
       *ngIf="!mapObject.isSelected && data.deptsLeftToChoose"
-      [showLoader]="screenService.isLoading$ | async"
+      [showLoader]="showLoader | async"
       [disabled]="!mapObject.agreement"
       (click)="calcGartens(mapObject, $event)"
       class="submit-button"
