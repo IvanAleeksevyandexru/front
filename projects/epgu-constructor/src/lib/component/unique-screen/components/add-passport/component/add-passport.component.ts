@@ -50,7 +50,7 @@ export class AddPassportComponent implements OnInit {
 
   private subscribeToFormChanges(): void {
     this.passportForm.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$), startWith([null]))
+      .pipe(takeUntil(this.ngUnsubscribe$), startWith(this.passportForm.value))
       .subscribe((value) => {
         this.onChangeForm({
           value: value?.passport,
