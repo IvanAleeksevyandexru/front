@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
+import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
@@ -13,11 +14,21 @@ import {
   LocationServiceStub,
   ModalService,
   ModalServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  DatesToolsService,
+  DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../navigation/navigation.service';
 import { NavigationServiceStub } from '../navigation/navigation.service.stub';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '../../../shared/services/dictionary/dictionary-tools.service.stub';
+import { ScreenService } from '../../../screen/screen.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
+import { JsonHelperService } from '../json-helper/json-helper.service';
+import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
+import { DateRefService } from '../date-ref/date-ref.service';
 
 describe('ErrorHandlerService', () => {
   let service: ErrorHandlerService;
@@ -27,6 +38,14 @@ describe('ErrorHandlerService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         ErrorHandlerService,
+        ScreenService,
+        CurrentAnswersService,
+        PrepareComponentsService,
+        CachedAnswersService,
+        JsonHelperService,
+        RefRelationService,
+        DateRefService,
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
@@ -34,6 +53,7 @@ describe('ErrorHandlerService', () => {
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });
   });

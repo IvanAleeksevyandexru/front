@@ -39,6 +39,7 @@ import {
   TimeSlotsTypes,
   STATIC_ERROR_MESSAGE,
   NO_DATA_MESSAGE,
+  SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT,
 } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
 import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
@@ -409,42 +410,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       (response) => {
         if (this.timeSlotsService.hasError()) {
           this.errorMessage = this.timeSlotsService.getErrorMessage();
-          if (this.errorMessage.includes('Закончилось время')) {
-            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
-              .toPromise()
-              .then((value) => {
-                if (value) {
-                  this.formPlayer.initData();
-                }
-              });
-          } else {
-            const params = {
-              ...ITEMS_FAILURE,
-              buttons: [
-                {
-                  label: 'Начать заново',
-                  closeModal: true,
-                  value: 'init',
-                },
-                {
-                  label: 'Попробовать ещё раз',
-                  closeModal: true,
-                },
-              ],
-            };
-            const message = this.errorMessage
-              .replace('FAILURE:', '')
-              .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
-              .replace('NO_DATA:', '');
-            params.text = params.text.replace(/\{textAsset\}?/g, message);
-            this.showModal(params)
-              .toPromise()
-              .then((result) => {
-                if (result) {
-                  this.formPlayer.initData();
-                }
-              });
-          }
+          this.showCustomError(this.errorMessage);
         } else {
           this.inProgress = false;
           const answer = {
@@ -457,11 +423,53 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           this.changeDetectionRef.markForCheck();
         }
       },
-      () => {
+      (result) => {
         this.inProgress = false;
+        this.showCustomError(result?.error?.errorDetail?.errorMessage);
         this.changeDetectionRef.markForCheck();
       },
     );
+  }
+
+  showCustomError(error: string | undefined): void {
+    if (error != null) {
+      if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
+        this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
+          .toPromise()
+          .then((value) => {
+            if (value) {
+              this.formPlayer.initData();
+            }
+          });
+      } else {
+        const params = {
+          ...ITEMS_FAILURE,
+          buttons: [
+            {
+              label: 'Начать заново',
+              closeModal: true,
+              value: 'init',
+            },
+            {
+              label: 'Попробовать ещё раз',
+              closeModal: true,
+            },
+          ],
+        };
+        const message = this.errorMessage
+          .replace('FAILURE:', '')
+          .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+          .replace('NO_DATA:', '');
+        params.text = params.text.replace(/\{textAsset\}?/g, message);
+        this.showModal(params)
+          .toPromise()
+          .then((result) => {
+            if (result) {
+              this.formPlayer.initData();
+            }
+          });
+      }
+    }
   }
 
   showError(errorMessage: string): void {

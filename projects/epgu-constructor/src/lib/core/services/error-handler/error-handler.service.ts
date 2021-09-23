@@ -51,6 +51,7 @@ import {
 } from '../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { finalize } from 'rxjs/operators';
+import { ScreenService } from '../../../screen/screen.service';
 
 export enum ModalFailureType {
   BOOKING,
@@ -64,12 +65,8 @@ export const STATIC_ERROR_MESSAGE = 'Operation completed';
 export const SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST =
   'В настоящее время отсутствуют медицинские должности, в которые доступна запись на прием к врачу через ЕПГУ. Пожалуйста, обратитесь в регистратуру медицинской организации';
 export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE = 'В выбранном Вами регионе услуга';
-export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT1 =
-  'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова';
 export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
   'Закончилось время, отведённое на заполнение формы';
-export const SMEV2_GET_SLOT_RESPONSE_TIMEOUT =
-  'При обработке данных произошла непредвиденная ошибка. Пожалуйста, обновите страницу и попробуйте снова';
 
 export const NO_AVAILABLE_DATA = 'должности в ближайшие 14 дней нет доступного времени';
 
@@ -94,12 +91,15 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private localStorageService: LocalStorageService,
     private formPlayer: FormPlayerService,
     private dictionaryToolsService: DictionaryToolsService,
+    private screenService: ScreenService,
   ) {}
 
   public handleResponse(
     httpRequest: HttpRequest<unknown>,
     httpResponse: HttpResponse<unknown>,
   ): void {
+    const store = this.screenService.getStore();
+    const componentType = store?.display?.components[0]?.type;
     const { status, url, body } = httpResponse;
     const requestBody = httpRequest?.body;
     const refName =
@@ -220,7 +220,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         }
       }
 
-      this.handleItemsRequest(body, url, refName);
+      this.handleItemsRequest(body, url, refName, componentType);
     }
   }
 
@@ -339,7 +339,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
-  private handleItemsRequest(body: unknown, url: string, refName: string | undefined): void {
+  private handleItemsRequest(body: unknown, url: string, refName: string | undefined, type: string): void {
     const error = (body as ItemsErrorResponse)?.error;
     const errorMessage = error?.errorDetail?.errorMessage;
     const errorCode = error?.errorDetail?.errorCode;
@@ -416,7 +416,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)
           ) {
             this.showModal(RESOURCE_NOT_AVAILABLE);
-          } else if (errorMessage.includes(NO_AVAILABLE_DATA)) {
+          } else if (errorMessage.includes(NO_AVAILABLE_DATA) && type !== 'TimeSlotDoctor') {
             this.showModal(NO_DOCTORS).then((value) => {
               switch (value) {
                 case 'init': {
@@ -430,7 +430,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
                 }
               }
             });
-          } else {
+          } else if (type !== 'TimeSlotDoctor') {
             const modalParams = {
               ...LOADING_ERROR_MODAL_PARAMS,
               buttons: [
