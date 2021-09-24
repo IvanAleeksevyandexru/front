@@ -180,9 +180,9 @@ export class ActionToolsService {
         .subscribe(
           ({ responseData }) => {
             const { value: responseValue } = responseData || {};
-            const host = this.locationService.getOrigin();
+            const url = this.locationService.getHref();
             this.copyAndNotify(
-              `${value ? value : ''} ${host ? host : ''}${responseValue ? responseValue : ''}`,
+              `${value ? value : ''} ${url ? url : ''}${responseValue ? responseValue : ''}`,
             );
           },
           (error) => console.log(error),
