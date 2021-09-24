@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { FormPlayerStartManager } from './form-player-start.manager';
 import { FormPlayerNavigation, ServiceEntity } from '../../form-player.types';
 import { of } from 'rxjs';
@@ -11,25 +10,27 @@ import {
 } from '../../../shared/constants/form-player';
 import { FormPlayerServiceStub } from '../form-player/form-player.service.stub';
 import { LoadService } from '@epgu/ui/services/load';
-import { ConfigService, ConfigServiceStub, LoadServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerService } from '../form-player/form-player.service';
-import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
-import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
-import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { Location } from '@angular/common';
 import {
+  LoggerService,
+  LoggerServiceStub,
+  UnsubscribeService,
+  ConfigService,
+  ConfigServiceStub,
+  LoadServiceStub,
   LocationService,
   WINDOW_PROVIDERS,
   LocalStorageService,
   LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { FormPlayerService } from '../form-player/form-player.service';
+import { InitDataService } from '../../../core/services/init-data/init-data.service';
+import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
+import { InitDataServiceStub } from '../../../core/services/init-data/init-data.service.stub';
+import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
+import { Location } from '@angular/common';
 import { cloneDeep } from 'lodash';
 import { configureTestSuite } from 'ng-bullet';
-import { APP_OUTPUT_KEY, CheckOrderApiResponse, SelectOrderData } from '@epgu/epgu-constructor-types';
+import { OrderDto, APP_OUTPUT_KEY, CheckOrderApiResponse } from '@epgu/epgu-constructor-types';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 
@@ -242,14 +243,12 @@ describe('FormPlayerStartManager', () => {
     const checkIfOrderExistResult = {
       isInviteScenario: false,
       canStartNew: true,
-      selectOrderData: {
-        limit: 1,
-        orders: [
-          {
-            id: 123456
-          }
-        ]
-      }
+      limitOrders: 1,
+      orders: [
+        {
+          orderId: 123456,
+        },
+      ],
     } as CheckOrderApiResponse;
 
     it('should call invited of initDataService', () => {
@@ -261,7 +260,7 @@ describe('FormPlayerStartManager', () => {
     it('should call orderId of initDataService', () => {
       const spySetter = jest.spyOn(initDataService, 'orderId', 'set');
       service['handleOrderDataResponse'](checkIfOrderExistResult);
-      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.selectOrderData.orders[0].id);
+      expect(spySetter).toBeCalledWith(checkIfOrderExistResult.orders[0].orderId);
     });
 
     it('should call canStartNew of initDataService', () => {
@@ -274,35 +273,33 @@ describe('FormPlayerStartManager', () => {
       spyOn<any>(service, 'handleOrder').and.callThrough();
       service['handleOrderDataResponse'](checkIfOrderExistResult);
       expect(service['handleOrder']).toBeCalledWith(
-        checkIfOrderExistResult.selectOrderData,
+        checkIfOrderExistResult.orders,
         checkIfOrderExistResult.isInviteScenario,
-        checkIfOrderExistResult.canStartNew
+        checkIfOrderExistResult.canStartNew,
+        checkIfOrderExistResult.limitOrders,
       );
     });
   });
 
   describe('handleOrder()', () => {
-    const selectOrderData = {
-      limit: 1,
-      orders: [
-        {
-          id: 123456
-        }
-      ]
-    } as SelectOrderData;
+    const orders = [
+      {
+        orderId: 123456,
+      },
+    ] as OrderDto[];
     const invited = false;
     const canStartNew = true;
 
     it('should call shouldShowContinueOrderModal', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.callThrough();
-      service['handleOrder'](selectOrderData, invited, canStartNew);
-      expect(service['shouldShowContinueOrderModal']).toBeCalledWith(selectOrderData, invited, canStartNew);
+      service['handleOrder'](orders, invited, canStartNew);
+      expect(service['shouldShowContinueOrderModal']).toBeCalledWith(orders, invited, canStartNew);
     });
 
     it('should call showContinueOrderModal when shouldShowContinueOrderModal return true', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.returnValue(true);
       spyOn<any>(service, 'showContinueOrderModal').and.callThrough();
-      service['handleOrder'](selectOrderData, invited, canStartNew);
+      service['handleOrder'](orders, invited, canStartNew);
       expect(service['showContinueOrderModal']).toBeCalled();
     });
 
@@ -310,8 +307,8 @@ describe('FormPlayerStartManager', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.returnValue(false);
       spyOn(formPlayerService, 'initData').and.callThrough();
       spyOn(localStorageService, 'set').and.callThrough();
-      service['handleOrder'](selectOrderData, invited, canStartNew);
-      expect(formPlayerService.initData).toBeCalledWith(selectOrderData.orders[0].id);
+      service['handleOrder'](orders, invited, canStartNew);
+      expect(formPlayerService.initData).toBeCalledWith(orders[0].orderId);
       expect(localStorageService.set).toBeCalledWith('cachedAnswers', {});
     });
   });
@@ -343,20 +340,17 @@ describe('FormPlayerStartManager', () => {
   });
 
   describe('shouldShowContinueOrderModal()', () => {
-    const selectOrderData = {
-      limit: 1,
-      orders: [
-        {
-          id: 123456
-        }
-      ]
-    } as SelectOrderData;
+    const orders = [
+      {
+        orderId: 123456,
+      },
+    ] as OrderDto[];
     const invited = false;
     const canStartNew = true;
 
     it('should return true if not invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        selectOrderData,
+        orders,
         invited,
         canStartNew,
       );
@@ -366,7 +360,7 @@ describe('FormPlayerStartManager', () => {
     it('should return false if lib output case', () => {
       localStorage.setItem(APP_OUTPUT_KEY, '{}');
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        selectOrderData,
+        orders,
         invited,
         canStartNew,
       );
@@ -378,7 +372,7 @@ describe('FormPlayerStartManager', () => {
       location.go('/some-page', 'getLastScreen=true');
       localStorage.setItem(LAST_SCENARIO_KEY, JSON.stringify(responseDto));
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        selectOrderData,
+        orders,
         invited,
         canStartNew,
       );
@@ -397,7 +391,7 @@ describe('FormPlayerStartManager', () => {
 
     it('should return false if invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        selectOrderData,
+        orders,
         true,
         canStartNew,
       );
@@ -406,7 +400,7 @@ describe('FormPlayerStartManager', () => {
 
     it('should return false if not invited, not canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
-        selectOrderData,
+        orders,
         invited,
         false,
       );

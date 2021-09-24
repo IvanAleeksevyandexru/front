@@ -5,7 +5,7 @@ import {
   DTOActionAction,
   ActionType,
   ActionApiResponse,
-} from '../../../../../../epgu-constructor-types/src';
+} from '@epgu/epgu-constructor-types';
 
 export const mockComponent: ComponentDto = {
   attrs: {},
