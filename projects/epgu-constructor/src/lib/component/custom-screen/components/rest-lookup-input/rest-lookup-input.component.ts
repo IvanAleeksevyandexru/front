@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { map } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConstantsService } from '@epgu/ui/services/constants';
+import { ListItem } from '@epgu/ui/models/dropdown';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { getRestDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
@@ -17,10 +18,8 @@ import { RestToolsService } from '../../../../shared/services/rest-tools/rest-to
 })
 export class RestLookupInputComponent extends AbstractComponentListItemComponent implements OnInit {
   public showNotFound;
-
-  dictionariesList$ = this.restToolsService.dictionaries$.pipe(
-    map((dictionaries) => dictionaries[getRestDictKeyByComp(this.control.value)]?.list),
-  );
+  public forReRenderChildLookup = true;
+  public list: ListItem[] = [];
 
   // eslint-disable-next-line no-restricted-globals
   queryTimeout = !isNaN(Number(this.config.lookupQueryTimeoutMs))
@@ -38,8 +37,28 @@ export class RestLookupInputComponent extends AbstractComponentListItemComponent
     super(injector);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     super.ngOnInit();
     this.showNotFound = !!this.control.value.attrs.hint;
+
+    this.restToolsService.dictionaries$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((dictionaries) => {
+        if (this.list !== dictionaries[getRestDictKeyByComp(this.control.value)]?.list) {
+          this.list = dictionaries[getRestDictKeyByComp(this.control.value)]?.list;
+          this.reRenderChildLookup();
+        }
+      });
+  }
+
+  private reRenderChildLookup(): void {
+    setTimeout(() => {
+      this.forReRenderChildLookup = false;
+      this.cdr.detectChanges();
+    }, 0);
+    setTimeout(() => {
+      this.forReRenderChildLookup = true;
+      this.cdr.detectChanges();
+    }, 0);
   }
 }
