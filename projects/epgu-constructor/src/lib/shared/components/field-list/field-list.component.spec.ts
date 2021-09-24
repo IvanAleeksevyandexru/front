@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { FieldListComponent } from './field-list.component';
 import {
   ImgPrefixerPipe,
   ObjectHelperService,
   UnsubscribeService,
+  UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -19,6 +20,8 @@ import { CertificateEaisdoService } from '../../services/certificate-eaisdo/cert
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { By } from '@angular/platform-browser';
+import { EaisdoGroupCostServiceStub } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service.stub';
+import { JsonHelperServiceStub } from '../../../core/services/json-helper/json-helper.service.stub';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -72,12 +75,12 @@ describe('FieldListComponent', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        EaisdoGroupCostService,
-        CertificateEaisdoService,
-        UnsubscribeService,
-        CurrentAnswersService,
-        JsonHelperService,
-        ObjectHelperService,
+        { provide: EaisdoGroupCostService, useClass: EaisdoGroupCostServiceStub },
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        MockProvider(CertificateEaisdoService),
+        MockProvider(CurrentAnswersService),
+        MockProvider(ObjectHelperService),
       ],
     }).compileComponents();
   });
@@ -91,6 +94,7 @@ describe('FieldListComponent', () => {
   });
 
   it('should create', () => {
+    component.ngOnChanges({});
     expect(component).toBeTruthy();
   });
 
@@ -108,6 +112,10 @@ describe('FieldListComponent', () => {
     it('should return true, if current fieldGroup item passed by index doesn\'t contain visibilityLabel', () => {
       const result = component.calculateVisibility(0);
       expect(result).toBeTruthy();
+    });
+    it('should return true if calculateVisibility(idx) != data.attrs.groupFields[idx]', () => {
+      component.data.attrs.fieldGroups = undefined;
+      expect(component.calculateVisibility(0)).toBeTruthy();
     });
   });
 
