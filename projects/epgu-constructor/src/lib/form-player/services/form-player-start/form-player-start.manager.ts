@@ -146,9 +146,19 @@ export class FormPlayerStartManager {
     invited?: boolean,
     canStartNew?: boolean,
     limitOrders?: number,
+    inviteByOrderId?: number,
+    startNewBlockedByOrderId?: number,
   ): void {
     this.initDataService.orderId = orders[0]?.orderId;
-    if (this.shouldShowContinueOrderModal(orders, invited, canStartNew)) {
+    if (
+      this.shouldShowContinueOrderModal(
+        orders,
+        invited,
+        canStartNew,
+        inviteByOrderId,
+        startNewBlockedByOrderId,
+      )
+    ) {
       if (orders?.length && limitOrders > 1) {
         this.showSelectOrderModal(orders, limitOrders);
       } else {
@@ -169,10 +179,13 @@ export class FormPlayerStartManager {
     orders?: OrderDto[],
     invited?: boolean,
     canStartNew?: boolean,
+    inviteByOrderId?: number,
+    startNewBlockedByOrderId?: number,
   ): boolean {
     return (
       !invited &&
-      canStartNew &&
+      !inviteByOrderId &&
+      (canStartNew === true || !startNewBlockedByOrderId) &&
       !!orders?.length &&
       !this.localStorageService.hasKey('resetFormPlayer') &&
       !this.localStorageService.hasKey(APP_OUTPUT_KEY) &&
@@ -229,10 +242,24 @@ export class FormPlayerStartManager {
   }
 
   private handleOrderDataResponse(checkOrderApiResponse: CheckOrderApiResponse): void {
-    const { isInviteScenario: invited, canStartNew, orders, limitOrders } = checkOrderApiResponse;
+    const {
+      isInviteScenario: invited,
+      canStartNew,
+      orders,
+      limitOrders,
+      inviteByOrderId,
+      startNewBlockedByOrderId,
+    } = checkOrderApiResponse;
     this.initDataService.invited = invited;
     this.initDataService.canStartNew = canStartNew;
-    this.handleOrder(orders, invited, canStartNew, limitOrders);
+    this.handleOrder(
+      orders,
+      invited,
+      canStartNew,
+      limitOrders,
+      inviteByOrderId,
+      startNewBlockedByOrderId,
+    );
   }
 
   private isBookingCase(): boolean {
