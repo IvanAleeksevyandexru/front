@@ -1,9 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DatesToolsService,
+  DatesToolsServiceStub,
+  LoggerService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryAvailableDates, EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { MockProvider } from 'ng-mocks';
 import { MonthYear } from '@epgu/ui/models/date-time';
 
 describe('EmployeeHistoryMonthsService', () => {
@@ -13,7 +19,12 @@ describe('EmployeeHistoryMonthsService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [EmployeeHistoryMonthsService, DatesToolsService, ConfigService, LoggerService],
+      providers: [
+        EmployeeHistoryMonthsService,
+        MockProvider(ConfigService),
+        MockProvider(LoggerService),
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+      ],
     });
   });
 
@@ -27,6 +38,10 @@ describe('EmployeeHistoryMonthsService', () => {
       jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date());
       const dateMock = new MonthYear(1, 2021);
       jest.spyOn(MonthYear, 'fromDate').mockReturnValue(dateMock);
+      jest.spyOn(EmployeeHistoryMonthsService.prototype as any, 'getAvailableMonths').mockReturnValueOnce([
+        { date: '', checked: true },
+        { date: '', checked: true },
+      ]);
       await service.initSettings();
 
       expect(service.minDateFrom).toEqual(dateMock);
@@ -57,8 +72,24 @@ describe('EmployeeHistoryMonthsService', () => {
           date: '01/2020',
         },
       ];
+      jest.spyOn(datesToolsService, 'format').mockImplementation((... args) => 'январь 2020');
       const value = service.getUncheckedPeriods(availableMonths);
       expect(value).toEqual(expectedValue);
+    });
+
+    it('if all month checked periods = []', () => {
+      const availableMonths: EmployeeHistoryAvailableDates[] = [
+        {
+          checked: true,
+          date: '01/2020',
+        },
+        {
+          checked: true,
+          date: '01/2020',
+        },
+      ];
+      const value = service.getUncheckedPeriods(availableMonths);
+      expect(value).toEqual([]);
     });
   });
 
@@ -85,10 +116,11 @@ describe('EmployeeHistoryMonthsService', () => {
       ];
       const dateMock = new MonthYear(1, 2021);
       jest.spyOn(MonthYear, 'fromDate').mockReturnValue(dateMock);
+      jest.spyOn(EmployeeHistoryMonthsService.prototype as any, 'getAvailableMonths').mockReturnValueOnce([{ date: '01/2021', checked: true, }]);
       await service.initSettings();
-      await service.updateAvailableMonths(generation);
       const month = service.availableMonths.find((month) => month.date === '01/2021');
       expect(month).toEqual(expectedMonth);
+      await service.updateAvailableMonths(generation);
     });
 
     it('should be call isMonthComplete$', async () => {
@@ -104,6 +136,18 @@ describe('EmployeeHistoryMonthsService', () => {
       service.isNonStop = true;
       await service.updateAvailableMonths([]);
       expect(service.isMonthComplete$.next).toHaveBeenCalled();
+    });
+
+    it('should be call checkMonthCompleted if (from && to) undefined', async () => {
+      const generation: EmployeeHistoryModel[] = [
+        {
+          from: undefined,
+          to: undefined,
+        }
+      ];
+      const checkMonthCompleted = jest.spyOn(EmployeeHistoryMonthsService.prototype as any, 'checkMonthCompleted');
+      await service.updateAvailableMonths(generation);
+      expect(checkMonthCompleted).toHaveBeenCalled();
     });
   });
 });
