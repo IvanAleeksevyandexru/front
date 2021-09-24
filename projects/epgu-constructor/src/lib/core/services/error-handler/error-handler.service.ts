@@ -31,7 +31,6 @@ import {
   SERVICE_OR_SPEC_NO_SPECIALIST,
   SERVICE_OR_SPEC_NO_AVAILABLE,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
-  // GET_SLOT_RESPONSE_TIMEOUT,
   STATIC_ERROR_MODAL,
   SERVICE_OR_SPEC_SESSION_TIMEOUT_2,
   LOADING_ERROR_MODAL_PARAMS,
@@ -386,8 +385,16 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           } else if (errorMessage != null || errorMessage !== '') {
             STATIC_ERROR_MODAL.text = this.getStaticErrorMessage(STATIC_ERROR_MODAL, errorMessage);
             this.showModal(STATIC_ERROR_MODAL).then((value) => {
-              if (value) {
-                this.formPlayer.initData();
+              switch(value) {
+                case 'init': {
+                  this.formPlayer.initData();
+                  break;
+                }
+
+                case 'prevStep': {
+                  this.navigationService.prev();
+                  break;
+                }
               }
             });
           }
