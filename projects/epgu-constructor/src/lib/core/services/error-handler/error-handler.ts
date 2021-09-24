@@ -448,10 +448,12 @@ export const STATIC_ERROR_MODAL: ConfirmationModal = {
     {
       label: 'Начать заново',
       closeModal: true,
-      value: 'init'
+      color: 'white',
+      value: 'init',
     },
     {
       label: 'Попробовать ещё раз',
+      value: 'prevStep',
       closeModal: true,
     },
   ],
