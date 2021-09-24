@@ -1,0 +1,45 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+
+.text-helper {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.footer {
+  display: block;
+}
+
+.label-helper {
+  @include typ-plain-text;
+  color: $color-text-helper;
+  &:first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.divider {
+  margin: 0 0 24px;
+}
+
+.confirm-personal-data-disclaimer {
+  margin-top: 24px;
+  display: block;
+}
+
+.btn-edit {
+  cursor: pointer;
+  border: 0;
+  display: flex;
+  align-items: center;
+  font-size: $font-dflt;
+  background: none;
+  padding: 0;
+  &__icon {
+    margin-right: 8px;
+  }
+
+  &__text {
+    color: $color-gosblue;
+  }
+}

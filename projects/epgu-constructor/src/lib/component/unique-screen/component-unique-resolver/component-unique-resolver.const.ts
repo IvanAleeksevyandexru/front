@@ -42,6 +42,7 @@ import { RegistrationAddrReadonlyComponent } from '../components/registration-ad
 import { PersonUserInnComponent } from '../components/person-user-inn/person-user-inn.component';
 import { KindergartenComponent } from '../components/kindergarten/kindergarten.component';
 import { EquipmentChoiceContainerComponent } from '../components/equipment-choice/container/equipment-choice-container.component';
+import { ConfirmPersonalPolicyComponent } from '../components/confirm-personal-policy/confirm-personal-policy.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
@@ -69,6 +70,7 @@ type UniqueScreenComponent =
   | ConfirmPersonalUserDataComponent
   | ConfirmPersonalUserLegalDataComponent
   | ConfirmPersonalUserPhoneEmailComponent
+  | ConfirmPersonalPolicyComponent
   | RegistrationAddrComponent
   | AddPassportContainerComponent
   | SelectChildrenScreenContainerComponent
@@ -120,6 +122,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
   ConfirmPersonalUserRegReadOnlyAddr: ConfirmPersonalUserAddressReadonlyComponent,
   ConfirmPersonalUserData: ConfirmPersonalUserDataComponent,
+  ConfirmPersonalPolicy: ConfirmPersonalPolicyComponent,
   ConfirmAnotherUserData: ConfirmPersonalUserDataComponent,
   ConfirmChildData: ConfirmPersonalUserDataComponent,
   ConfirmPersonalUserEmail: ConfirmPersonalUserPhoneEmailComponent,

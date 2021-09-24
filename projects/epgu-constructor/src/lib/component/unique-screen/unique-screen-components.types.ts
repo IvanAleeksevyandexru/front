@@ -32,6 +32,7 @@ export enum UniqueScreenComponentTypes {
   confirmPersonalUserRegReadOnlyAddr = 'ConfirmPersonalUserRegReadOnlyAddr',
   confirmPersonalUserRegAddr = 'ConfirmPersonalUserRegAddr',
   confirmPersonalUserData = 'ConfirmPersonalUserData',
+  confirmPersonalPolicy = 'ConfirmPersonalPolicy',
   confirmAnotherUserData = 'ConfirmAnotherUserData',
   confirmChildData = 'ConfirmChildData',
   confirmPersonalUserEmail = 'ConfirmPersonalUserEmail',
