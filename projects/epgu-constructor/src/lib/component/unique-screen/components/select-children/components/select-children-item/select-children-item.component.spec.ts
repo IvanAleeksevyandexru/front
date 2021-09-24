@@ -1,38 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { SelectChildrenItemComponent } from './select-children-item.component';
+import { configureTestSuite } from 'ng-bullet';
+import { MockComponent, MockModule } from 'ng-mocks';
+
 import {
-  ConstructorDropdownModule,
-  HttpCancelService,
-  LoggerService,
-  LoggerServiceStub,
-  HealthService,
   MemoModule,
   BaseUiModule,
+  ConstructorDropdownComponent,
+  HelperTextComponent
 } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { SelectChildrenItemComponent } from './select-children-item.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ActionService } from '../../../../../../shared/directives/action/action.service';
-import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
-import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
-import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
-import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { configureTestSuite } from 'ng-bullet';
-import { MockModule } from 'ng-mocks';
-import { TypeCastService } from '../../../../../../core/services/type-cast/type-cast.service';
-import { DateRefService } from '../../../../../../core/services/date-ref/date-ref.service';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
+import { ComponentsListComponent } from 'projects/epgu-constructor/src/lib/component/custom-screen/components-list.component';
 
-// TODO: разобраться почему падает с ошибкой 'Cannot read property 'pipe' of undefined'
-xdescribe('SelectChildrenItemComponent', () => {
+describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
   let fixture: ComponentFixture<SelectChildrenItemComponent>;
   let componentMock: any = [
@@ -77,31 +61,19 @@ xdescribe('SelectChildrenItemComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [SelectChildrenItemComponent],
+      declarations: [
+        SelectChildrenItemComponent,
+        MockComponent(ConstructorDropdownComponent),
+        MockComponent(HelperTextComponent),
+        MockComponent(ComponentsListComponent),
+      ],
       imports: [
         MockModule(BaseUiModule),
-        ConstructorDropdownModule,
-        ComponentsListModule,
-        BaseComponentsModule,
         MemoModule,
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: ActionService, useClass: ActionServiceStub },
-        { provide: LoggerService, useClass: LoggerServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        HealthService,
-        DatesToolsService,
         UnsubscribeService,
-        DateRefService,
-        JsonHelperService,
-        CurrentAnswersService,
-        HttpCancelService,
-        DictionaryToolsService,
-        RefRelationService,
-        TypeCastService,
       ],
     }).compileComponents();
   });
@@ -116,6 +88,10 @@ xdescribe('SelectChildrenItemComponent', () => {
     component.components = componentMock;
     component.control = new FormControl();
     fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
   it('should be showComponents', () => {
