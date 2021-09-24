@@ -33,4 +33,8 @@ export class DictionaryToolsServiceStub {
       }
     };
   }
+
+  getValueViaRef() {
+    return null;
+  }
 }

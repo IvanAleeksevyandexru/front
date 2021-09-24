@@ -16,6 +16,8 @@ import { DateRestrictionsService } from '../date-restrictions/date-restrictions.
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '../dictionary/dictionary-tools.service.stub';
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -126,6 +128,7 @@ describe('ValidationService', () => {
         MockProvider(DateRefService),
         ConfigService,
         LoggerService,
+        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
       ],
     });
   });

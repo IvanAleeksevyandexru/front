@@ -197,7 +197,6 @@ export interface DateRestriction {
   type: 'ref' | 'const';
   value: string | Date;
   forChild?: string;
-  precision?: string;
 }
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
@@ -307,3 +306,6 @@ export interface DateRestrictionGroups {
 }
 
 export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';
+export interface Searchable {
+  [key: string] : {value: string|object}
+}

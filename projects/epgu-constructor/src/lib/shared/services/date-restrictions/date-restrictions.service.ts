@@ -3,9 +3,9 @@ import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { isAfter, isBefore } from 'date-fns';
 import {
-  CustomComponent,
   DATE_RESTRICTION_GROUP_DEFAULT_KEY,
   DateRestriction,
+  Searchable,
 } from '../../../component/custom-screen/components-list.types';
 import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { FormArray } from '@angular/forms';
@@ -13,7 +13,7 @@ import { cloneDeep } from 'lodash';
 import { Range } from '../date-range/date-range.models';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
-import { MonthYear } from '@epgu/ui/models/date-time';
+import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 
 @Injectable()
 export class DateRestrictionsService {
@@ -26,12 +26,12 @@ export class DateRestrictionsService {
   constructor(
     private datesToolsService: DatesToolsService,
     private dateRefService: DateRefService,
+    private dictionaryToolsService: DictionaryToolsService
   ) {}
 
   async getDateRange(
     componentId: string,
     dateRestrictions: DateRestriction[],
-    components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     storeAdditionalKey?: string,
@@ -41,7 +41,7 @@ export class DateRestrictionsService {
       this.today = await this.datesToolsService.getToday();
     }
     const restrictions = cloneDeep(dateRestrictions);
-    this.setDateRefs(restrictions, components, form, applicantAnswers);
+    this.setDateRefs(restrictions, form, applicantAnswers);
     const minRestrictions = restrictions.filter((restriction) =>
       this.haveDateConditions(restriction, this.minDateConditions),
     );
@@ -82,7 +82,6 @@ export class DateRestrictionsService {
 
   public setDateRefs(
     restrictions: DateRestriction[],
-    components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
   ): void {
@@ -91,7 +90,7 @@ export class DateRestrictionsService {
       .forEach((restriction, index) => {
         restrictions[index] = {
           ...restriction,
-          value: this.getDateByRef(components, restriction, form, applicantAnswers),
+          value: this.getDateByRef(restriction, form, applicantAnswers),
         };
       });
   }
@@ -166,49 +165,47 @@ export class DateRestrictionsService {
   }
 
   private getDateByRef(
-    components: CustomComponent[],
     dateRestriction: DateRestriction,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
   ): string {
-    const { precision, value } = dateRestriction;
-    const [dateId, dateExpression] = this.dateRefService.extract(value as string);
+    const { value } = dateRestriction;
+    const [datePath, dateExpression] = this.dateRefService.extract(value as string);
 
-    const dateFromComponents = this.getDateFromComponents(dateId, components, form, precision);
+    const formSearchable = {};
+    form.controls.forEach((control) => {
+      formSearchable[control.value.id] = { value: control.value.value };
+    });
+    const valueFromComponents = this.getValueViaRefWithProcessing(formSearchable, datePath);
+    const dateFromComponents = valueFromComponents ? new Date(valueFromComponents) : null;
+    const dateFromApplicantAnswers = this.getDateFromApplicantAnswers(applicantAnswers, datePath);
 
-    let date = dateFromComponents || applicantAnswers[dateId]?.value;
-    if (applicantAnswers[dateId]?.value) {
-      if (precision) {
-        const parsedAnswer = JSON.parse((date as string) || '{}');
-        date = parsedAnswer[precision];
-      }
-      date = this.datesToolsService.parse(date as string);
-    }
+    let date = dateFromComponents || dateFromApplicantAnswers;
     return date
       ? `${this.datesToolsService.format(date, DATE_STRING_DOT_FORMAT)}${dateExpression}`
       : null;
   }
 
-  private getDateFromComponents(
-    dateId: string,
-    components: CustomComponent[],
-    form: FormArray,
-    precision: string,
-  ): Date {
-    const component = components.find((component) => component.id === dateId);
-
-    if (!component) {
-      return;
+  private getDateFromApplicantAnswers(applicantAnswers: Searchable, datePath): Date {
+    const valueFromApplicantAnswers = this.getValueViaRefWithProcessing(applicantAnswers, datePath);
+    if (valueFromApplicantAnswers) {
+      const stringDotParsingResult = this.datesToolsService.parse(valueFromApplicantAnswers, DATE_STRING_DOT_FORMAT);
+      if (this.datesToolsService.isValid(stringDotParsingResult)) {
+        return stringDotParsingResult;
+      } else {
+        const isoStringParsingResult = this.datesToolsService.parse(valueFromApplicantAnswers);
+        if (this.datesToolsService.isValid(isoStringParsingResult)) {
+          return isoStringParsingResult;
+        }
+      }
     }
-    const { value } = form.controls.find((control) => control.value.id === component.id).value;
-    if (precision) {
-      return value[precision] ? new Date(value[precision]) : null;
-    }
+    return null;
+  }
 
-    if (value instanceof MonthYear) {
-      return value.firstDay();
-    }
-
-    return value;
+  private getValueViaRefWithProcessing(searchable: Searchable, path: string): string {
+    let processedPath;
+    const pathArray = path.split('.');
+    processedPath = pathArray.length === 1 ? path+'.value' : path;
+   return this.dictionaryToolsService.getValueViaRef(searchable, processedPath);
   }
 }

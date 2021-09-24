@@ -128,7 +128,7 @@ export class ComponentsListRelationsService {
     componentsGroupIndex?: number
   ): Promise<void> {
     if (component.attrs.dateRestrictions && !initInitialValues) {
-      await this.setLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
+      await this.setLimitDates(component, form, applicantAnswers, componentsGroupIndex);
       return;
     }
 
@@ -367,9 +367,10 @@ export class ComponentsListRelationsService {
       const restriction = relatedComponents[index].attrs.dateRestrictions.find(
         (restriction) =>
         {
-          const [dateId, ] = this.dateRefService.extract(restriction.value as string);
+          const [datePath, ] = this.dateRefService.extract(restriction.value as string);
+          const relatedComponentId = datePath.split('.')[0];
           return this.dateRestrictionsService.haveDateRef(restriction) &&
-          dateId === component.id;
+            relatedComponentId === component.id;
         }
       );
 
@@ -379,7 +380,6 @@ export class ComponentsListRelationsService {
           const dateRange = await this.dateRestrictionsService.getDateRange(
             relatedComponents[index].id,
             value as unknown as DateRestriction[],
-            components,
             form,
             applicantAnswers,
             key,
@@ -394,7 +394,6 @@ export class ComponentsListRelationsService {
 
   private async setLimitDates(
     component: CustomComponent | CustomListFormGroup,
-    components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     componentsGroupIndex?: number): Promise<void> {
@@ -403,7 +402,6 @@ export class ComponentsListRelationsService {
       const dateRange = await this.dateRestrictionsService.getDateRange(
         component.id,
         value as unknown as DateRestriction[],
-        components,
         form,
         applicantAnswers,
         key,
