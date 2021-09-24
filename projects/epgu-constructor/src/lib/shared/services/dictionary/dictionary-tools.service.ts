@@ -1,4 +1,4 @@
-import { CachedAnswers, ScreenStore } from '../../../screen/screen.types';
+import { ScreenStore } from '../../../screen/screen.types';
 import { DictionaryItem, DictionaryResponse } from './dictionary-api.types';
 import {
   CustomComponent,
@@ -10,7 +10,7 @@ import {
   CustomListDropDowns,
   CustomListGenericData,
   CustomListReferenceData,
-  CustomScreenComponentTypes,
+  CustomScreenComponentTypes, Searchable,
 } from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
@@ -18,7 +18,6 @@ import { DictionaryApiService } from './dictionary-api.service';
 // eslint-disable-next-line max-len
 import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
 // eslint-disable-next-line max-len
-import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { concatMap, map, switchMap, take, tap } from 'rxjs/operators';
 import { isUndefined, get } from 'lodash';
 import {
@@ -77,13 +76,13 @@ export class DictionaryToolsService {
 
   constructor(
     private dictionaryApiService: DictionaryApiService,
-    private componentsListRelationsService: ComponentsListRelationsService,
     private datesToolsService: DatesToolsService,
     private jsonHelperService: JsonHelperService,
   ) {}
 
-  public watchForFilters(components: CustomComponent[]): Observable<CustomListReferenceData[]> {
-    return this.componentsListRelationsService.filters$.pipe(
+  public watchForFilters(components: CustomComponent[], filters: Observable<ComponentDictionaryFilters>):
+    Observable<CustomListReferenceData[]> {
+    return filters.pipe(
       switchMap((filters: ComponentDictionaryFilters) => {
         return forkJoin(
           components.reduce(
@@ -514,6 +513,29 @@ export class DictionaryToolsService {
     };
   }
 
+  /**
+   * Получение значения типа ref из dictionaryFilter (настроечный JSON) из applicantAnswers по пути path
+   * @param searchable ответы с экранов в scenarioDto
+   * @param path путь до значения в applicantAnswers (примеp: pd1.value.firstName)
+   */
+  public getValueViaRef(searchable: Searchable, path: string): string {
+    const pathList = path.split('.');
+    if (pathList.length < 2) {
+      return undefined;
+    }
+    const componentId = pathList[0];
+    const value = searchable[componentId]?.value;
+    const resultPath = pathList.splice(2).join('.');
+    return get(
+      this.jsonHelperService.tryToParse(value, {}),
+      resultPath,
+      !this.jsonHelperService.hasJsonStructure(value as string) && resultPath.length === 0
+        ? value
+        : undefined,
+    );
+
+  }
+
   private initDataAfterLoading(references: CustomListReferenceData[]): void {
     references.forEach((reference: CustomListReferenceData) => {
       if (this.isDropdownLike(reference.component.type)) {
@@ -600,28 +622,6 @@ export class DictionaryToolsService {
         compare: (): boolean => false,
       };
     });
-  }
-
-  /**
-   * Получение значения типа ref из dictionaryFilter (настроечный JSON) из applicantAnswers по пути path
-   * @param applicantAnswers ответы с экранов в scenarioDto
-   * @param path путь до значения в applicantAnswers (примеp: pd1.value.firstName)
-   */
-  private getValueViaRef(applicantAnswers: CachedAnswers, path: string): string {
-    const pathList = path.split('.');
-    if (pathList.length < 2) {
-      return undefined;
-    }
-    const value = applicantAnswers[pathList[0]]?.value;
-    const resultPath = pathList.splice(2).join('.');
-
-    return get(
-      this.jsonHelperService.tryToParse(value, {}),
-      resultPath,
-      !this.jsonHelperService.hasJsonStructure(value) && resultPath.length === 0
-        ? value
-        : undefined,
-    );
   }
 
   private getDictionariesByFilter(

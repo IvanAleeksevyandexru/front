@@ -34,6 +34,7 @@ import { DictionaryToolsService } from '../../shared/services/dictionary/diction
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 import { RestToolsService } from '../../shared/services/rest-tools/rest-tools.service';
 import { ValidationService } from '../../shared/services/validation/validation.service';
+import { ComponentsListRelationsService } from './services/components-list-relations/components-list-relations.service';
 
 @Component({
   selector: 'epgu-constructor-components-list',
@@ -70,6 +71,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     private httpCancelService: HttpCancelService,
     private changeDetectionRef: ChangeDetectorRef,
     private validationService: ValidationService,
+    private componentsListRelationsService: ComponentsListRelationsService,
   ) {
     this.changes = this.formService.changes;
   }
@@ -191,7 +193,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   private watchForFilters(components: CustomComponent[]): void {
     this.dictionaryToolsService
-      .watchForFilters(components)
+      .watchForFilters(components, this.componentsListRelationsService.filters$)
       .pipe(
         takeUntil(this.unsubscribeService.ngUnsubscribe$),
         switchMap((references: CustomListReferenceData[]) =>
