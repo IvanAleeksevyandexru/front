@@ -530,7 +530,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
       let additionalParams = {};
       const filters = [...attrs.searchProvider.dictionaryFilter];
       const startFilter = attrs.searchProvider?.turnOffStartFilter;
-      this.areSlotsNotAvailable = false;
       this.isDoctorNotAvailable = false;
 
       if (!startFilter) {
@@ -628,7 +627,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
       async (isBookedDepartment) => {
         if (this.timeSlotDoctorService.hasError()) {
           this.inLoadingProgress = false;
-          this.areSlotsNotAvailable = true;
           this.handleMessageError();
         } else {
           await this.serviceInitHandle(!!isBookedDepartment);
@@ -666,8 +664,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
           }
         });
     } else if (this.component.attrs.ts.slotsNotFoundTemplate) {
-      this.isDoctorNotAvailable = true;
-      this.doctorsNotFoundTemplate = this.component.attrs.ts.slotsNotFoundTemplate;
+      this.areSlotsNotAvailable = true;
     } else if (this.errorMessage.includes(NO_DATA)) {
       this.isDoctorNotAvailable = true;
       this.doctorsNotFoundTemplate.header = `
