@@ -1,0 +1,86 @@
+<section class="policy-input">
+  <div class="policy-input__group">
+    <div
+      class="policy-input__group-item policy-input__number"
+      *ngIf="!getFieldByName(policyInputFieldsTypes.number)?.attrs?.hidden"
+    >
+      <epgu-constructor-label
+        [tips]="getFieldByName(policyInputFieldsTypes.number)?.attrs?.labelHint"
+        [label]="getFieldByName(policyInputFieldsTypes.number)?.label"
+        [for]="policyInputFieldsTypes.number"
+      ></epgu-constructor-label>
+      <epgu-constructor-constructor-plain-input
+        [textTransformType]="getFieldByName(policyInputFieldsTypes.number)?.attrs?.fstuc"
+        [id]="policyInputFieldsTypes.number"
+        [control]="
+          $any(form.get(policyInputFieldsTypes.number))
+        "
+        [placeholder]="getFieldByName(policyInputFieldsTypes.number)?.placeholder"
+        [invalid]="isInvalidAndTouched(policyInputFieldsTypes.number)"
+        [validationShowOn]="validationShowOn"
+        [component]="getFieldByName(policyInputFieldsTypes.number)"
+        [suggestions]="classifiedSuggestionItems[policyInputFieldsTypes.number]"
+        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
+        (blurEvent)="
+          markControlAsDirty(policyInputFieldsTypes.number)
+        "
+      ></epgu-constructor-constructor-plain-input>
+      <epgu-constructor-label
+        *ngIf="getFieldByName(policyInputFieldsTypes.number)?.attrs?.clarifications"
+        [clarifications]="getFieldByName(policyInputFieldsTypes.number)?.attrs?.clarifications"
+      ></epgu-constructor-label>
+      <epgu-cf-ui-constructor-helper-text
+        *ngIf="getFieldByName(policyInputFieldsTypes.number)?.hint as hint"
+        class="policy-input__hint"
+      >
+        {{ hint }}
+      </epgu-cf-ui-constructor-helper-text>
+      <epgu-cf-ui-constructor-input-error>
+        <span *ngIf="isErrorShown(policyInputFieldsTypes.number)">
+          <ng-container *ngIf="!form.get(policyInputFieldsTypes.number).errors.textFromJson">
+            {{ getFieldByName(policyInputFieldsTypes.number)?.label }}:
+          </ng-container>
+          {{ form.get(policyInputFieldsTypes.number).errors.msg }}
+        </span>
+      </epgu-cf-ui-constructor-input-error>
+    </div>
+
+    <div
+      class="policy-input__group-item policy-input__series"
+      *ngIf="!getFieldByName(policyInputFieldsTypes.series)?.attrs?.hidden"
+    >
+      <epgu-constructor-label
+        [tips]="getFieldByName(policyInputFieldsTypes.series)?.attrs?.labelHint"
+        [label]="getFieldByName(policyInputFieldsTypes.series)?.label"
+        [for]="policyInputFieldsTypes.series"
+      ></epgu-constructor-label>
+      <epgu-constructor-constructor-plain-input
+        [textTransformType]="getFieldByName(policyInputFieldsTypes.series)?.attrs?.fstuc"
+        [id]="policyInputFieldsTypes.series"
+        [control]="
+          $any(form.get(policyInputFieldsTypes.series))
+        "
+        [placeholder]="getFieldByName(policyInputFieldsTypes.series)?.placeholder"
+        [invalid]="isInvalidAndTouched(policyInputFieldsTypes.series)"
+        [validationShowOn]="validationShowOn"
+        [component]="getFieldByName(policyInputFieldsTypes.series)"
+        [suggestions]="classifiedSuggestionItems[policyInputFieldsTypes.series]"
+        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
+      ></epgu-constructor-constructor-plain-input>
+      <epgu-cf-ui-constructor-helper-text
+        *ngIf="getFieldByName(policyInputFieldsTypes.series)?.hint as hint"
+        class="policy-input__hint"
+      >
+        {{ hint }}
+      </epgu-cf-ui-constructor-helper-text>
+      <epgu-cf-ui-constructor-input-error>
+        <span *ngIf="isErrorShown(policyInputFieldsTypes.series)">
+          <ng-container *ngIf="!form.get(policyInputFieldsTypes.series).errors.textFromJson">
+            {{ getFieldByName(policyInputFieldsTypes.series)?.label }}:
+          </ng-container>
+          {{ form.get(policyInputFieldsTypes.series).errors.msg }}
+        </span>
+      </epgu-cf-ui-constructor-input-error>
+    </div>
+  </div>
+</section>
