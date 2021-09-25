@@ -30,6 +30,7 @@ export enum CustomScreenComponentTypes {
   CheckBoxList = 'CheckBoxList',
   CheckingAccount = 'CheckingAccount',
   CityInput = 'CityInput',
+  ConfirmPersonalPolicyChange = 'ConfirmPersonalPolicyChange',
   ConfirmPersonalUserRegAddrChange = 'ConfirmPersonalUserRegAddrChange',
   DateInput = 'DateInput',
   CalendarInput = 'CalendarInput',
