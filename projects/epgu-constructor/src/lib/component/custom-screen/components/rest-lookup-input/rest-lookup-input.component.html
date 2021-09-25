@@ -2,10 +2,9 @@
   [control]="control.get('value')"
   [component]="control.value"
   [invalid]="control.invalid"
-  *ngIf="dictionariesList$ | async as list"
 >
   <lib-lookup
-    *ngIf="list && list.length > 0"
+    *ngIf="forReRenderChildLookup"
     epgu-constructor-validation-type
     [showNotFound]="showNotFound"
     [component]="control.value"

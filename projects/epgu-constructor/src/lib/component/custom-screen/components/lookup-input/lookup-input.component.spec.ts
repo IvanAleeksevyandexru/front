@@ -33,8 +33,9 @@ import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
-import { HttpClientModule } from '@angular/common/http';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -59,13 +60,14 @@ const mockComponent = {
 describe('LookupInputComponent', () => {
   let component: LookupInputComponent;
   let fixture: ComponentFixture<LookupInputComponent>;
-  let formService: ComponentsListFormService;
+  let formService: ComponentsListFormServiceStub;
+  let dictionaryToolsService: DictionaryToolsServiceStub;
   let providerSearchSpy;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [LookupInputComponent, MockComponent(ComponentItemComponent)],
-      imports: [MockModule(ValidationTypeModule), MockModule(BaseUiModule), HttpClientModule],
+      imports: [MockModule(ValidationTypeModule), MockModule(BaseUiModule), HttpClientTestingModule],
       providers: [
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
@@ -80,7 +82,6 @@ describe('LookupInputComponent', () => {
         MockProvider(SuggestHandlerService),
         MockProvider(EventBusService),
         MockProvider(SuggestMonitorService),
-        MockProvider(ComponentsListRelationsService),
         CurrentAnswersService,
         LoggerService,
       ],
@@ -97,7 +98,10 @@ describe('LookupInputComponent', () => {
   let control: FormGroup;
 
   beforeEach(() => {
-    formService = TestBed.inject(ComponentsListFormService);
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
+    dictionaryToolsService = TestBed.inject(DictionaryToolsService) as unknown as DictionaryToolsServiceStub;
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
       id: new FormControl(mockComponent.id),
@@ -105,7 +109,7 @@ describe('LookupInputComponent', () => {
       value: valueControl,
       required: new FormControl(mockComponent.required),
     });
-    formService['_form'] = new FormArray([control]);
+    formService.form = new FormArray([control]);
     fixture = TestBed.createComponent(LookupInputComponent);
     component = fixture.componentInstance;
     // @ts-ignore
@@ -135,5 +139,18 @@ describe('LookupInputComponent', () => {
   it('Expect searchProvider to be called once', () => {
     component.provider.search('test').subscribe();
     expect(providerSearchSpy).toBeCalled();
+  });
+
+  it('Should call re-render on dictionary update', () => {
+    const reRenderSpy = jest.spyOn(component, 'reRenderChildLookup');
+    const dictionariesSpy = jest.spyOn(dictionaryToolsService, 'dictionaries$', 'get')
+      .mockReturnValue(of({
+        lookUpInputTypemockComponentID: { list: [{ id: 1, text: 'text' }] }
+      }));
+
+    component.ngOnInit();
+
+    expect(dictionariesSpy).toHaveBeenCalledTimes(1);
+    expect(reRenderSpy).toHaveBeenCalledTimes(1);
   });
 });

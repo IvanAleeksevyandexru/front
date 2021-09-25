@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConstantsService } from '@epgu/ui/services/constants';
-import { ListElement } from '@epgu/ui/models/dropdown';
+import { ListElement, ListItem } from '@epgu/ui/models/dropdown';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
@@ -24,33 +24,14 @@ import { getDictKeyByComp } from '../../../../shared/services/dictionary/diction
 export class LookupInputComponent extends AbstractComponentListItemComponent implements OnInit {
   public provider;
   public searchIconForcedShowing = false;
-
+  public forReRenderChildLookup = true;
   public showNotFound;
+  public list: ListItem[] = [];
 
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
       return suggestions[this.control.value?.id];
     }),
-  );
-
-  dictionariesList$ = this.dictionaryToolsService.dictionaries$.pipe(
-    tap(
-      (dictionaries) => {
-        if (
-          this.searchIconForcedShowing &&
-          this.control.value?.attrs?.searchIconForcedShowing &&
-          dictionaries[getDictKeyByComp(this.control.value)]?.list
-        ) {
-          this.searchIconForcedShowing = false;
-          this.cdr.detectChanges();
-        }
-      },
-      () => {
-        this.searchIconForcedShowing = false;
-        this.cdr.detectChanges();
-      },
-    ),
-    map((dictionaries) => dictionaries[getDictKeyByComp(this.control.value)]?.list),
   );
 
   // eslint-disable-next-line no-restricted-globals
@@ -59,7 +40,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
     : ConstantsService.DEFAULT_QUERY_DEBOUNCE;
 
   readonly validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
-  readonly suggestSeporator = SUGGEST_SEPARATOR_DEFAULT;
+  readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   constructor(
     private dictionaryToolsService: DictionaryToolsService,
@@ -71,7 +52,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
     super(injector);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     super.ngOnInit();
     this.showNotFound = !!this.control.value.attrs.hint;
     if (this.control.value?.attrs?.searchIconForcedShowing) {
@@ -80,6 +61,44 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
     if (this.control.value.attrs.searchProvider) {
       this.provider = { search: this.providerSearch() };
     }
+
+    this.dictionaryToolsService.dictionaries$
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        tap(
+          (dictionaries) => {
+            if (
+              this.searchIconForcedShowing &&
+              this.control.value?.attrs?.searchIconForcedShowing &&
+              dictionaries[getDictKeyByComp(this.control.value)]?.list
+            ) {
+              this.searchIconForcedShowing = false;
+              this.cdr.detectChanges();
+            }
+          },
+          () => {
+            this.searchIconForcedShowing = false;
+            this.cdr.detectChanges();
+          },
+        ),
+      )
+      .subscribe((dictionaries) => {
+        if (this.list !== dictionaries[getDictKeyByComp(this.control.value)]?.list) {
+          this.list = dictionaries[getDictKeyByComp(this.control.value)]?.list;
+          this.reRenderChildLookup();
+        }
+      });
+  }
+
+  private reRenderChildLookup(): void {
+    setTimeout(() => {
+      this.forReRenderChildLookup = false;
+      this.cdr.detectChanges();
+    }, 0);
+    setTimeout(() => {
+      this.forReRenderChildLookup = true;
+      this.cdr.detectChanges();
+    }, 0);
   }
 
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
