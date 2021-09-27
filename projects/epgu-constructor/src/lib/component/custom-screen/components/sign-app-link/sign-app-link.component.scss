@@ -1,0 +1,25 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+
+.app-links {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+
+  @include phones-up {
+    flex-direction: row;
+  }
+}
+
+.app-links__item {
+  display: block;
+  min-width: 135px;
+  min-height: 40px;
+}
+
+.app-links__image {
+  vertical-align: bottom;
+}

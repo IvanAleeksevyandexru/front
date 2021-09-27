@@ -40,7 +40,7 @@ export class ConstructorMaskedInputComponent {
     ISuggestionItem | ISuggestionItemList
   >();
 
-  readonly suggestSeporator = SUGGEST_SEPARATOR_DEFAULT;
+  readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   public onChange($event: Event): void {
     if (this.control.updateOn === 'blur') {

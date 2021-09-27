@@ -68,6 +68,7 @@ import { RestLookupInputComponent } from './components/rest-lookup-input/rest-lo
 import { InterpolationService } from '../../shared/services/interpolation/interpolation.service';
 import { FormDisclaimerComponent } from './components/form-disclaimer/form-disclaimer.component';
 import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
+import { SignAppLinkComponent } from './components/sign-app-link/sign-app-link.component';
 import { FormsModule } from '@angular/forms';
 import { ConfirmPersonalPolicyChangeModule } from './components/confirm-personal-policy-change/confirm-personal-policy-change.module';
 import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-personal-policy-change/confirm-personal-policy-change.component';
@@ -99,6 +100,7 @@ import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-perso
     RadioInputComponent,
     RestLookupInputComponent,
     SearchableDropdownComponent,
+    SignAppLinkComponent,
     ShowComponentPipe,
     TextAreaComponent,
     TimerItemComponent,
@@ -174,6 +176,7 @@ import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-perso
     RadioInputComponent,
     RestLookupInputComponent,
     SearchableDropdownComponent,
+    SignAppLinkComponent,
     TextAreaComponent,
     TimerItemComponent,
   ],

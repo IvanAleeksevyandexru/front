@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { System } from './device-detector.types';
 
 @Injectable()
 export class DeviceDetectorServiceStub {
@@ -11,4 +12,8 @@ export class DeviceDetectorServiceStub {
   initState() {}
 
   initSmuEventsService() {}
+
+  get system() {
+    return System.NotDetermined;
+  }
 }

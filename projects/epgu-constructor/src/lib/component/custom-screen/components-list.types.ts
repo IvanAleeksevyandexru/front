@@ -59,6 +59,7 @@ export enum CustomScreenComponentTypes {
   RadioInput = 'RadioInput',
   RestLookup = 'RestLookup',
   SearchableDropDown = 'SearchableDropDown',
+  SignAppLink = 'SignAppLink',
   SnilsInput = 'SnilsInput',
   StringInput = 'StringInput',
   TextArea = 'TextArea',

@@ -46,7 +46,7 @@ export class ConstructorPlainInputComponent implements AfterViewInit {
 
   @ViewChild('plainInput', { static: false }) plainInput: PlainInputComponent;
 
-  readonly suggestSeporator = SUGGEST_SEPARATOR_DEFAULT;
+  readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   ngAfterViewInit(): void {
     if (this.control.touched && this.plainInput) {

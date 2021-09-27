@@ -3,14 +3,9 @@ import { LoadService } from '@epgu/ui/services/load';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { CookieService } from 'ngx-cookie-service';
 import { LOCAL_STORAGE_PLATFORM_TYPE } from '../config/config.types';
+import { LoadServiceDeviceType, System } from './device-detector.types';
 
 export const MOBILE_VIEW_COOKIE_NAME = 'mobVersion';
-
-export enum LoadServiceDeviceType {
-  'desk' = 'desk',
-  'mob' = 'mob',
-  'tab' = 'tab',
-}
 
 @Injectable()
 export class DeviceDetectorService {
@@ -64,5 +59,26 @@ export class DeviceDetectorService {
     if (isMobileView) {
       this.smuEventsService.init();
     }
+  }
+
+  /**
+   * Возвращает название операционной системы пользователя
+   */
+  get system(): string | null {
+    const userAgent = navigator?.userAgent;
+
+    if (!userAgent) {
+      return System.Error;
+    }
+
+    if (/android/i.test(userAgent)) {
+      return System.Android;
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      return System.iOS;
+    } else if (/Harmony|harmony/.test(userAgent)) {
+      return System.Harmony;
+    }
+
+    return System.NotDetermined;
   }
 }
