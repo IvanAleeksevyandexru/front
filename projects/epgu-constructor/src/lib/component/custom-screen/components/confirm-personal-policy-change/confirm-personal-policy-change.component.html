@@ -25,10 +25,11 @@
           markControlAsDirty(policyInputFieldsTypes.number)
         "
       ></epgu-constructor-constructor-plain-input>
-      <epgu-constructor-label
+      <epgu-constructor-hint
         *ngIf="getFieldByName(policyInputFieldsTypes.number)?.attrs?.clarifications"
+        [hint]="getFieldByName(policyInputFieldsTypes.number)?.attrs?.hint"
         [clarifications]="getFieldByName(policyInputFieldsTypes.number)?.attrs?.clarifications"
-      ></epgu-constructor-label>
+      ></epgu-constructor-hint>
       <epgu-cf-ui-constructor-helper-text
         *ngIf="getFieldByName(policyInputFieldsTypes.number)?.hint as hint"
         class="policy-input__hint"
