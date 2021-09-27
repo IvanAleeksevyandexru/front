@@ -244,6 +244,8 @@ describe('FormPlayerStartManager', () => {
       isInviteScenario: false,
       canStartNew: true,
       limitOrders: 1,
+      inviteByOrderId: 123456,
+      startNewBlockedByOrderId: 123456,
       orders: [
         {
           orderId: 123456,
@@ -277,6 +279,8 @@ describe('FormPlayerStartManager', () => {
         checkIfOrderExistResult.isInviteScenario,
         checkIfOrderExistResult.canStartNew,
         checkIfOrderExistResult.limitOrders,
+        checkIfOrderExistResult.inviteByOrderId,
+        checkIfOrderExistResult.startNewBlockedByOrderId,
       );
     });
   });
@@ -289,11 +293,25 @@ describe('FormPlayerStartManager', () => {
     ] as OrderDto[];
     const invited = false;
     const canStartNew = true;
+    const inviteByOrderId = undefined;
+    const startNewBlockedByOrderId = undefined;
 
     it('should call shouldShowContinueOrderModal', () => {
       spyOn<any>(service, 'shouldShowContinueOrderModal').and.callThrough();
-      service['handleOrder'](orders, invited, canStartNew);
-      expect(service['shouldShowContinueOrderModal']).toBeCalledWith(orders, invited, canStartNew);
+      service['handleOrder'](
+        orders,
+        invited,
+        canStartNew,
+        inviteByOrderId,
+        startNewBlockedByOrderId,
+      );
+      expect(service['shouldShowContinueOrderModal']).toBeCalledWith(
+        orders,
+        invited,
+        canStartNew,
+        inviteByOrderId,
+        startNewBlockedByOrderId,
+      );
     });
 
     it('should call showContinueOrderModal when shouldShowContinueOrderModal return true', () => {
@@ -347,6 +365,8 @@ describe('FormPlayerStartManager', () => {
     ] as OrderDto[];
     const invited = false;
     const canStartNew = true;
+    const inviteByOrderId = undefined;
+    const startNewBlockedByOrderId = undefined;
 
     it('should return true if not invited, canStartNew, not empty orderId, not isNeedToShowLastScreen', () => {
       const shouldShowContinueOrderModal = service['shouldShowContinueOrderModal'](
@@ -375,6 +395,8 @@ describe('FormPlayerStartManager', () => {
         orders,
         invited,
         canStartNew,
+        inviteByOrderId,
+        startNewBlockedByOrderId,
       );
       expect(shouldShowContinueOrderModal).toBe(false);
       localStorage.removeItem(LAST_SCENARIO_KEY);
@@ -385,6 +407,8 @@ describe('FormPlayerStartManager', () => {
         null,
         invited,
         canStartNew,
+        inviteByOrderId,
+        startNewBlockedByOrderId,
       );
       expect(shouldShowContinueOrderModal).toBe(false);
     });
@@ -394,6 +418,8 @@ describe('FormPlayerStartManager', () => {
         orders,
         true,
         canStartNew,
+        inviteByOrderId,
+        startNewBlockedByOrderId,
       );
       expect(shouldShowContinueOrderModal).toBe(false);
     });
@@ -403,6 +429,8 @@ describe('FormPlayerStartManager', () => {
         orders,
         invited,
         false,
+        inviteByOrderId,
+        123456,
       );
       expect(shouldShowContinueOrderModal).toBe(false);
     });

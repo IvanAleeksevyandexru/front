@@ -69,6 +69,8 @@ import { InterpolationService } from '../../shared/services/interpolation/interp
 import { FormDisclaimerComponent } from './components/form-disclaimer/form-disclaimer.component';
 import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
 import { FormsModule } from '@angular/forms';
+import { ConfirmPersonalPolicyChangeModule } from './components/confirm-personal-policy-change/confirm-personal-policy-change.module';
+import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-personal-policy-change/confirm-personal-policy-change.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +110,7 @@ import { FormsModule } from '@angular/forms';
     CheckboxListModule,
     ComponentItemModule,
     ComponentListResolverModule,
+    ConfirmPersonalPolicyChangeModule,
     ConstructorCheckboxModule,
     ConstructorDadataWidgetModule,
     ConstructorDatePickerModule,
@@ -149,6 +152,7 @@ import { FormsModule } from '@angular/forms';
     CheckboxInputComponent,
     CheckboxListComponent,
     CityInputComponent,
+    ConfirmPersonalPolicyChangeComponent,
     DateInputComponent,
     CalendarInputComponent,
     DepartmentLookupComponent,

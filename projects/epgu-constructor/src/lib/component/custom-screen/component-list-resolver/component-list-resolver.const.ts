@@ -27,6 +27,7 @@ import { CertificateEaisdoComponent } from '../components/certificate-eaisdo/cer
 import { CalendarInputComponent } from '../components/calendar-input/calendar-input.component';
 import { RestLookupInputComponent } from '../components/rest-lookup-input/rest-lookup-input.component';
 import { FormDisclaimerComponent } from '../components/form-disclaimer/form-disclaimer.component';
+import { ConfirmPersonalPolicyChangeComponent } from '../components/confirm-personal-policy-change/confirm-personal-policy-change.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -36,6 +37,7 @@ type CustomScreenComponent =
   | CheckboxInputComponent
   | CheckboxListComponent
   | CityInputComponent
+  | ConfirmPersonalPolicyChangeComponent
   | DateInputComponent
   | CalendarInputComponent
   | DepartmentLookupComponent
@@ -70,6 +72,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   CheckBoxList: CheckboxListComponent,
   CheckingAccount: MaskedAndPlainInputComponent,
   CityInput: CityInputComponent,
+  ConfirmPersonalPolicyChange: ConfirmPersonalPolicyChangeComponent,
   ConfirmPersonalUserRegAddrChange: AddressInputComponent,
   DateInput: DateInputComponent,
   CalendarInput: CalendarInputComponent,

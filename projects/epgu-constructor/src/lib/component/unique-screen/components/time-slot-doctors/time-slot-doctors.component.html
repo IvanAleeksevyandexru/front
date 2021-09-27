@@ -58,31 +58,36 @@
 
     </div>
 
-    <epgu-constructor-output-html
-      *ngIf="isDoctorNotAvailable && doctorsNotFoundTemplate"
-      [html]="doctorsNotFoundTemplate.header + doctorsNotFoundTemplate.description"
-    ></epgu-constructor-output-html>
 
-    <ng-container *ngIf="areSlotsNotAvailable">
-      <div  *ngIf="checkboxLabel"
-             class="mt-8" >
+    <ng-container *ngIf="areSlotsNotAvailable && slotsNotFoundTemplate; else commonError">
+      <epgu-constructor-output-html
+        [html]="slotsNotFoundTemplate.header + slotsNotFoundTemplate.description"
+      ></epgu-constructor-output-html>
+
+      <div class="mt-8" >
         <epgu-cf-ui-constructor-constructor-checkbox
           #checkboxComponent
-          [labelText]="checkboxLabel"
+          [labelText]="slotsNotFoundTemplate.checkboxLabel"
           [control]="checkboxControl"
         >
         </epgu-cf-ui-constructor-constructor-checkbox>
       </div>
-      <div  *ngIf="screenErrorButton"
-            class="mt-8" >
+      <div class="mt-8" >
         <epgu-constructor-screen-buttons
           class="screen-buttons"
-          [screenButtons]="[screenErrorButton]"
+          [screenButtons]="[slotsNotFoundTemplate.button]"
           [disabled]="!checkboxComponent?.control?.value"
           [isLoading]="isLoading"
         ></epgu-constructor-screen-buttons>
       </div>
     </ng-container>
+
+    <ng-template #commonError>
+      <epgu-constructor-output-html
+        *ngIf="isDoctorNotAvailable && doctorsNotFoundTemplate"
+        [html]="doctorsNotFoundTemplate.header + doctorsNotFoundTemplate.description"
+      ></epgu-constructor-output-html>
+    </ng-template>
 
     <lib-throbber-hexagon *ngIf="inLoadingProgress" class="mt-24" size="big"></lib-throbber-hexagon>
 
@@ -115,7 +120,7 @@
       Вы выбрали: <b>{{selectedTimeStr}}</b>
     </div>
     <lib-button
-      *ngIf="!areSlotsNotAvailable || !screenErrorButton"
+      *ngIf="!areSlotsNotAvailable || !slotsNotFoundTemplate?.button"
       [showLoader]="isLoading || inBookingProgress"
       (click)="bookSlot.emit()"
       class="submit-button"

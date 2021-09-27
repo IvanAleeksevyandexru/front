@@ -49,6 +49,7 @@ import { IdentificationStreamModule } from './components/identification-stream/i
 import { PersonUserInnModule } from './components/person-user-inn/person-user-inn.module';
 import { KindergartenModule } from './components/kindergarten/kindergarten.module';
 import { EquipmentChoiceModule } from './components/equipment-choice/equipment-choice.module';
+import { ConfirmPersonalPolicyModule } from './components/confirm-personal-policy/confirm-personal-policy.module';
 
 @NgModule({
   imports: [
@@ -75,6 +76,7 @@ import { EquipmentChoiceModule } from './components/equipment-choice/equipment-c
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserAddressReadonlyScreenModule,
     ConfirmPersonalUserDataScreenModule,
+    ConfirmPersonalPolicyModule,
     SelectChildrenScreenModule,
     RegistrationAddrScreenModule,
     ReferralNumberModule,
@@ -113,6 +115,7 @@ import { EquipmentChoiceModule } from './components/equipment-choice/equipment-c
     ConfirmPersonalUserAddressScreenModule,
     ConfirmPersonalUserAddressReadonlyScreenModule,
     ConfirmPersonalUserDataScreenModule,
+    ConfirmPersonalPolicyModule,
     SelectChildrenScreenModule,
     RegistrationAddrScreenModule,
     ReferralNumberModule,

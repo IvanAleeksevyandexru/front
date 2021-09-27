@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { ComponentAttrsDto, ScreenButton } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto, SlotsNotFoundTemplate } from '@epgu/epgu-constructor-types';
 import {
   ConstructorCheckboxComponent,
   ConstructorLookupComponent,
@@ -23,8 +23,8 @@ export class TimeSlotDoctorsComponent {
   @Input() daysNotFoundTemplate: ErrorTemplate;
   @Input() timeNotFoundTemplate: ErrorTemplate;
   @Input() doctorsNotFoundTemplate: ErrorTemplate;
+  @Input() slotsNotFoundTemplate: SlotsNotFoundTemplate;
 
-  @Input() screenErrorButton: ScreenButton;
   @Input() label: string;
   @Input() isValid: boolean;
   @Input() selectedTimeStr = '';
@@ -55,7 +55,6 @@ export class TimeSlotDoctorsComponent {
   @Input() specLookupAttrs: ComponentAttrsDto;
   @Input() docLookupAttrs: ComponentAttrsDto;
   @Input() timeSlotAttrs: ComponentAttrsDto;
-  @Input() checkboxLabel: string;
 
   @Input() isDocLookupShown: boolean;
   @Input() isMapShown: boolean;

@@ -73,7 +73,7 @@ export const STATIC_ERROR_MESSAGE = 'должности в ближайшие 14
 export const STATIC_ERROR_TEMPLATE = `Выберите другую специальность врача или <a data-action-type='prevStep'>другую медицинскую организацию</a>`;
 
 export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT = 'Закончилось время';
-export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE = 'В выбранном Вами регионе услуга ';
+export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE = 'В выбранном Вами регионе услуга';
 export const NO_DATA = 'В настоящее время отсутствуют медицинские должности';
 @Component({
   selector: 'epgu-constructor-time-slot-doctors-container',
@@ -530,7 +530,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
       let additionalParams = {};
       const filters = [...attrs.searchProvider.dictionaryFilter];
       const startFilter = attrs.searchProvider?.turnOffStartFilter;
-      this.areSlotsNotAvailable = false;
       this.isDoctorNotAvailable = false;
 
       if (!startFilter) {
@@ -561,11 +560,18 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         .pipe(
           map((reference) => {
             let errorMessage = reference?.data?.error?.errorDetail?.errorMessage;
+            let refName;
+
+            if (Array.isArray(additionalParams)) {
+              const result = additionalParams.filter((param) => param?.value === 'ServiceOrSpecs');
+              refName = result.length > 0 ? result[0]?.value : undefined;
+            }
 
             if (errorMessage != null && errorMessage !== 'Operation completed') {
               if (
                 !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT) &&
-                !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE)
+                !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) &&
+                refName !== 'ServiceOrSpecs'
               ) {
                 this.isDoctorNotAvailable = true;
                 const regExp = /\{textAsset\}?/g;
@@ -628,7 +634,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
       async (isBookedDepartment) => {
         if (this.timeSlotDoctorService.hasError()) {
           this.inLoadingProgress = false;
-          this.areSlotsNotAvailable = true;
           this.handleMessageError();
         } else {
           await this.serviceInitHandle(!!isBookedDepartment);
@@ -666,8 +671,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
           }
         });
     } else if (this.component.attrs.ts.slotsNotFoundTemplate) {
-      this.isDoctorNotAvailable = true;
-      this.doctorsNotFoundTemplate = this.component.attrs.ts.slotsNotFoundTemplate;
+      this.areSlotsNotAvailable = true;
     } else if (this.errorMessage.includes(NO_DATA)) {
       this.isDoctorNotAvailable = true;
       this.doctorsNotFoundTemplate.header = `

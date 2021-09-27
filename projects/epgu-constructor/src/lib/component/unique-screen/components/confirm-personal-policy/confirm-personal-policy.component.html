@@ -1,0 +1,57 @@
+<epgu-constructor-default-unique-screen-wrapper
+  *ngIf="{ isLoading: screenService.isLoading$ | async } as async"
+  [header]="screenService.header$ | async"
+  [isLoading]="async.isLoading"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <ng-container *ngIf="!(data$ | async).errors?.length">
+    <epgu-constructor-disclaimer
+      class="confirm-personal-data-disclaimer"
+      *ngIf="(data$ | async).attrs?.disclaimer as disclaimer"
+      [type]="disclaimer.type"
+      [title]="disclaimer.title"
+      [description]="disclaimer.description"
+    ></epgu-constructor-disclaimer>
+  </ng-container>
+  <epgu-cf-ui-constructor-screen-pad class="screen-pad-body" *ngIf="data$ | async as data">
+    <ng-container *ngIf="data.errors">
+      <epgu-constructor-disclaimer
+        *ngFor="let error of data.errors"
+        class="mb-16"
+        [type]="error.type"
+        [title]="error.title"
+        [description]="error.desc"
+        [clarifications]="data.attrs?.clarifications"
+      ></epgu-constructor-disclaimer>
+    </ng-container>
+
+    <ng-container *ngIf="!data.errors?.length">
+      <div class="mb-16">
+        <div class="label-helper mb-4">Номер полиса ОМС</div>
+        <div class="text-helper">{{ number }}</div>
+      </div>
+      <div class="mb-16" *ngIf="series">
+        <div class="label-helper">Серия полиса ОМС</div>
+        <div class="text-helper">{{ series }}</div>
+      </div>
+    </ng-container>
+
+    <div class="footer" *ngIf="screenService.action$ | async as action">
+      <div class="divider"></div>
+      <button
+        class="btn-edit"
+        epgu-constructor-action
+        [action]="action"
+        [disabled]="async.isLoading"
+      >
+        <img
+          class="btn-edit__icon"
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/edit.svg"
+        />
+        <span class="btn-edit__text">{{ action.label }}</span>
+      </button>
+    </div>
+  </epgu-cf-ui-constructor-screen-pad>
+</epgu-constructor-default-unique-screen-wrapper>
