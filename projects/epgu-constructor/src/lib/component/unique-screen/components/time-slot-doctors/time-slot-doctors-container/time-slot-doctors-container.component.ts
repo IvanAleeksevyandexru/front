@@ -892,11 +892,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
           this.monthsYears.push(monthForDropdown);
         }
       }
-      if (this.currentMonth) {
-        this.currentMonth = this.monthsYears.find(({ id }) => id === this.currentMonth.id);
-      } else {
-        this.currentMonth = this.monthsYears[0] as ListItem;
-      }
+      this.currentMonth =
+        this.monthsYears.find(({ id }) => id === this.currentMonth.id) || this.monthsYears[0];
     }
   }
 
