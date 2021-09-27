@@ -174,6 +174,17 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('chooseTimeSlot should format string', () => {
+    const slot = {
+      slotId: 'cc2889ce-6fb4-4d16-ac9e-86d3a4eb3b7a',
+      areaId: '2',
+      slotTime: new Date('2021-09-29T08:00:00.000'),
+      timezone: '+03:00',
+    };
+    component.chooseTimeSlot(slot);
+    expect(component.selectedTimeStr).toEqual('29 сентября 2021 года в 08:00, среда');
+  });
+
   describe('filterByAttributeName()', () => {
     it('should return all items after filtration without search string', () => {
       const filteredItems = component.filterByAttributeName(
