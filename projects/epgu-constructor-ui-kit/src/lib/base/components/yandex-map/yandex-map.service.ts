@@ -140,7 +140,7 @@ export class YandexMapService implements OnDestroy {
   }
 
   public getObjectById<T>(id: number): IFeatureItem<T> {
-    return this.objectManager.objects.getById(id);
+    return this.objectManager.objects.getAll().find((mapObj) => mapObj.properties.res.idForMap === id);
   }
 
   public handleFeatureSelection<T>(feature: IFeatureItem<T>): void {
@@ -221,7 +221,7 @@ export class YandexMapService implements OnDestroy {
 
   public selectMapObject<T>(mapObject: YMapItem<T>): void {
     if (!mapObject) return;
-    let chosenMapObject = this.getObjectById(mapObject.objectId);
+    let chosenMapObject = this.getObjectById(mapObject.idForMap);
     if (!chosenMapObject) {
       chosenMapObject = {
         geometry: { type: 'Point', coordinates: [null, null] },

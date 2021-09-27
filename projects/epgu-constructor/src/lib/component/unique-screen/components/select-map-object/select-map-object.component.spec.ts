@@ -20,6 +20,7 @@ import {
   YandexMapService,
   UnsubscribeService,
   YMapItem,
+  IFeatureItem,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -182,6 +183,7 @@ describe('SelectMapObjectComponent', () => {
     modalService = fixture.debugElement.injector.get(ModalService);
     component = fixture.componentInstance;
     const item = { center: [1, 2] } as DictionaryYMapItem;
+    jest.spyOn(component['yandexMapService'], 'getObjectById').mockImplementation(() => mockDivorceMapFeature as unknown as IFeatureItem<unknown>);
     component['selectMapObjectService'].filteredDictionaryItems = [item];
     yandexMapService['objectManager'] = {
       objects: {
