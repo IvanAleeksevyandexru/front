@@ -41,7 +41,7 @@
           [initValue]="form.controls[field.fieldName].value"
           [formControlName]="field.fieldName"
           [suggest]="classifiedSuggestionItems[field.fieldName]"
-          [suggestSeparator]="suggestSeporator"
+          [suggestSeparator]="suggestSeparator"
           (selectSuggest)="suggestHandlerService.handleEvent($event, null, 'DADATA_WIDGET')"
         >
         </lib-dadata-widget>

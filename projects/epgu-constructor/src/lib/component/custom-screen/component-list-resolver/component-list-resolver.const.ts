@@ -27,6 +27,7 @@ import { CertificateEaisdoComponent } from '../components/certificate-eaisdo/cer
 import { CalendarInputComponent } from '../components/calendar-input/calendar-input.component';
 import { RestLookupInputComponent } from '../components/rest-lookup-input/rest-lookup-input.component';
 import { FormDisclaimerComponent } from '../components/form-disclaimer/form-disclaimer.component';
+import { SignAppLinkComponent } from '../components/sign-app-link/sign-app-link.component';
 import { ConfirmPersonalPolicyChangeComponent } from '../components/confirm-personal-policy-change/confirm-personal-policy-change.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
@@ -56,6 +57,7 @@ type CustomScreenComponent =
   | RadioInputComponent
   | RestLookupInputComponent
   | SearchableDropdownComponent
+  | SignAppLinkComponent
   | TextAreaComponent
   | TimerItemComponent;
 
@@ -101,6 +103,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   PhoneNumberChangeInput: MaskedAndPlainInputComponent,
   RadioInput: RadioInputComponent,
   SearchableDropDown: SearchableDropdownComponent,
+  SignAppLink: SignAppLinkComponent,
   SnilsInput: MaskedAndPlainInputComponent,
   StringInput: MaskedAndPlainInputComponent,
   TextArea: TextAreaComponent,

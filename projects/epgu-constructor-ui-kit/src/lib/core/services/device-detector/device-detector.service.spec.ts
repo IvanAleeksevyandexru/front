@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { DeviceDetectorService } from './device-detector.service';
 import { configureTestSuite } from 'ng-bullet';
 import { LoadServiceStub } from '../config/load-service-stub';
+import { System } from './device-detector.types';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { CookieService } from '@epgu/ui/services/cookie';
 import { LoadService } from '@epgu/ui/services/load';
@@ -59,5 +60,28 @@ describe('DeviceDetectorService', () => {
   it('is ChromeIOS', () => {
     userAgent.mockReturnValue('AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75');
     expect(deviceDetectorService.isChromeIOS()).toBe(true);
+  });
+
+  describe('get system', () => {
+    it('should return "Android"', () => {
+      userAgent.mockReturnValue('Android Mozilla');
+
+      const operatingSystem = deviceDetectorService.system;
+      expect(operatingSystem).toEqual(System.Android);
+    });
+
+    it('should return "iOS"', () => {
+      userAgent.mockReturnValue('iPhone Safari');
+
+      const operatingSystem = deviceDetectorService.system;
+      expect(operatingSystem).toEqual(System.iOS);
+    });
+
+    it('should return "Harmony"', () => {
+      userAgent.mockReturnValue('Harmony Chrome');
+
+      const operatingSystem = deviceDetectorService.system;
+      expect(operatingSystem).toEqual(System.Harmony);
+    });
   });
 });

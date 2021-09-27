@@ -1,0 +1,21 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <div class="app-links">
+    <a
+      class="app-links__item"
+      *ngFor="let appLink of appLinks"
+      [href]="appLink.href"
+    >
+      <img
+        class="app-links__image"
+        width="135"
+        height="40"
+        [src]="appLink.image"
+        [alt]="appLink.title"
+      >
+    </a>
+  </div>
+</epgu-constructor-component-item>

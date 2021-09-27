@@ -31,5 +31,5 @@ export class ConstructorDadataWidgetComponent {
     ISuggestionItem | ISuggestionItemList
   >();
 
-  readonly suggestSeporator = SUGGEST_SEPARATOR_DEFAULT;
+  readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 }

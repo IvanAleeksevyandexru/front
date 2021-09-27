@@ -57,7 +57,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   form: FormGroup;
   isRequired: boolean;
   strategy = BrokenDateFixStrategy;
-  readonly suggestSeporator = SUGGEST_SEPARATOR_DEFAULT;
+  readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   constructor(
     public config: ConfigService,
