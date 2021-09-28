@@ -28,6 +28,11 @@ export interface BookingRequestAttrs {
 
 export interface TimeSlotAttrsInterface extends ComponentAttrsDto {
   department: { type: string; value: string };
+  timeSlotType: TimeSlotType;
+}
+
+export interface TimeSlotType {
+  value: string;
 }
 
 export interface TimeSlotValueInterface {
