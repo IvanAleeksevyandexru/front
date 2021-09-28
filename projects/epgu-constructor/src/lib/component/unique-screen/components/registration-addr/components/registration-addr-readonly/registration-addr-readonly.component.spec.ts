@@ -20,6 +20,7 @@ import { IRegistrationAddrReadonlyComponent } from '../../registration-addr-scre
 import { ClickableLabelDirective } from '../../../../../../shared/directives/clickable-label/clickable-label.directive';
 import { DisclaimerModule } from '../../../../../../shared/components/disclaimer/disclaimer.module';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
+import { ValidationServiceStub } from '../../../../../../shared/services/validation/validation.service.stub';
 import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -54,18 +55,18 @@ describe('RegistrationAddrReadonlyComponent', () => {
         MockModule(DisclaimerModule),
       ],
       providers: [
-        UnsubscribeService,
-        CurrentAnswersService,
-        ValidationService,
         MockProviders(
           DateRangeService,
           DateRestrictionsService,
           DatesToolsService,
           HealthService,
           CookieService,
+          UnsubscribeService,
+          CurrentAnswersService,
         ),
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ValidationService, useClass: ValidationServiceStub },
       ],
     }).compileComponents();
   });
