@@ -5,7 +5,9 @@ import { Location } from '@angular/common';
 export class LocationServiceStub extends Location {
   href(): void {}
 
-  getHref(): void {}
+  getHref(): string {
+    return 'https://host.com/600101/1/form';
+  }
 
   getOrigin(): string {
     return 'https://host.com';

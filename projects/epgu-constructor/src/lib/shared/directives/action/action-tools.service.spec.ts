@@ -217,7 +217,7 @@ describe('ActionToolsService', () => {
       const newAction = cloneDeep(copyToClipboardAction);
       newAction.attrs.additionalParams = { screenId: 's1' };
       service.copyToClipboard(newAction);
-      expect(spy).toHaveBeenCalledWith('Скопирована ссылка: https://host.comvalue');
+      expect(spy).toHaveBeenCalledWith('Скопирована ссылка: https://host.com/600101/1/formvalue');
     });
   });
 
