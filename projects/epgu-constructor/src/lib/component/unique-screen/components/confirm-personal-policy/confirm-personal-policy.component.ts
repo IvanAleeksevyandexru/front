@@ -36,6 +36,7 @@ export class ConfirmPersonalPolicyComponent implements OnInit {
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       if (data.value) {
+        this.currentAnswersService.state = data.value;
         const value = this.jsonHelperService.tryToParse(data.value) as {
           series: string;
           number: string;

@@ -36,4 +36,5 @@ export interface IFeatureCollection<T> {
 export type YMapItem<T> = T & {
   expanded?: boolean;
   objectId?: number;
+  idForMap?: number;
 };
