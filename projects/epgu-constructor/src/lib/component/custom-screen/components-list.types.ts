@@ -151,6 +151,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   disabled?: boolean;
   fields?: CustomComponentAttrField;
   filter?: ComponentFilterDto;
+  focusOnInitAndStartSearch?: boolean;
   grid?: string;
   hidden?: boolean;
   hint?: string;

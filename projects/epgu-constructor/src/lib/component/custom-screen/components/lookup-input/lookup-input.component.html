@@ -4,6 +4,7 @@
   [invalid]="control.invalid"
 >
   <lib-lookup
+    #lookupComponent
     *ngIf="forReRenderChildLookup"
     epgu-constructor-validation-type
     [showNotFound]="showNotFound"
@@ -25,6 +26,7 @@
     [itemsProvider]="provider"
     [placeholder]="control.value?.attrs?.placeholder"
     [searchIconForcedShowing]="searchIconForcedShowing"
+    [searchOnFocus]="searchOnFocus"
   >
   </lib-lookup>
 </epgu-constructor-component-item>
