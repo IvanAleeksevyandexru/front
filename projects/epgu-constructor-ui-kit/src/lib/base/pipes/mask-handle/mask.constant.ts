@@ -49,7 +49,10 @@ export const MASKS_HANDLERS = {
     let hadDecimals = false;
 
     return (value: string): (string | RegExp)[] => {
-      const cleanValue = value.replace(cleanupPattern, '');
+      const cleanValue =
+        options.decimalSymbol === ','
+          ? value.replace('.', ',').replace(cleanupPattern, '')
+          : value.replace(cleanupPattern, '');
       const parts: string[] = cleanValue.split(options.decimalSymbol);
       const hasDecimals: boolean = parts.length > 1;
       const [integerPart, decimalPart] = parts;
@@ -58,7 +61,11 @@ export const MASKS_HANDLERS = {
       const mask: (string | RegExp)[] = [];
 
       if (maskForDecimalsShown) {
-        for (let i = 0, length = Math.min(options.decimalLimit, decimalPart.length + 1); i < length; i += 1) {
+        for (
+          let i = 0, length = Math.min(options.decimalLimit, decimalPart.length + 1);
+          i < length;
+          i += 1
+        ) {
           mask.unshift(/\d/);
         }
         mask.unshift(options.decimalSymbol);
