@@ -5,7 +5,6 @@ import {
   ActionType,
   ComponentActionDto,
   DTOActionAction,
-  EaisdoResponse,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import {
@@ -190,10 +189,6 @@ export class ActionToolsService {
       return;
     }
     this.copyAndNotify(value);
-  }
-
-  public downloadSpAdapterPdf(action): void {
-    this.sendAction<EaisdoResponse>(action);
   }
 
   private copyAndNotify(value: string): void {

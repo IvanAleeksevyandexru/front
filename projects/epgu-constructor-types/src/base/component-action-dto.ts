@@ -36,6 +36,7 @@ export enum ActionType {
   deleteSuggest = 'deleteSuggest',
   deliriumNextStep = 'deliriumNextStep',
   download = 'download',
+  downloadSpAdapterPdf = 'downloadSpAdapterPdf',
   dropdownListModal = 'dropdownListModal',
   externalIntegration = 'externalIntegration',
   getNextQuiz = 'getNextQuiz', // для умного поиска
@@ -57,7 +58,6 @@ export enum ActionType {
   restartOrder = 'restartOrder',
   skipStep = 'skipStep',
   saveCacheToDraft = 'saveCacheToDraft',
-  downloadSpAdapterPdf = 'downloadSpAdapterPdf',
 }
 
 export enum DTOActionAction {
@@ -76,6 +76,7 @@ export enum DTOActionAction {
   editPhoneNumber = 'service/actions/editPhoneNumber',
   editUserActualResidence = 'service/actions/editUserAddress/actualResidence',
   editUserPermanentRegistry = 'service/actions/editUserAddress/permanentRegistry',
+  editUserPolicy = 'service/actions/editUserPolicy',
   externalIntegrationAction = 'service/actions/externalIntegration',
   restartOrder = 'restartOrder',
   getNextQuiz = 'getNextQuiz', // для умного поиска
@@ -91,5 +92,4 @@ export enum DTOActionAction {
   serviceEditLegalEmail = 'service/actions/editLegalEmail',
   skipStep = 'skipStep',
   spAdapterPdf = 'sp-adapter/pdf',
-  editUserPolicy = 'service/actions/editUserPolicy',
 }

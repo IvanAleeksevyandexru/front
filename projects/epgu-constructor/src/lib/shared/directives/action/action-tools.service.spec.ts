@@ -221,14 +221,6 @@ describe('ActionToolsService', () => {
     });
   });
 
-  describe('downloadSpAdapterPdf()', () => {
-    it('should call sendAction()', () => {
-      const spy = jest.spyOn(service, 'sendAction');
-      service.downloadSpAdapterPdf(downloadSpAdapterPdfAction);
-      expect(spy).toHaveBeenCalledWith(downloadSpAdapterPdfAction);
-    });
-  });
-
   describe('copyAndNotify()', () => {
     it('should call clipboard.copy() with value', () => {
       const spy = jest.spyOn(clipboard, 'copy');
