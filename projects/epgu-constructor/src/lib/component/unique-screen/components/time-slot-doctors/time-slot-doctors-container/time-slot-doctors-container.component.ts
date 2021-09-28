@@ -167,6 +167,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     tap((component: TimeSlotDoctorsComponentDto) => {
       this.timeSlotDoctorService.isOnlyDocLookupNeeded =
         !component.attrs.ts.department || component.attrs.isOnlyDocLookupNeeded;
+      this.timeSlotDoctorService.timeSlotsType = component.attrs.ts.timeSlotType.value;
       this.component = component;
       this.setProviders(component);
     }),
@@ -892,7 +893,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         }
       }
       this.currentMonth =
-        this.monthsYears.find(({ id }) => id === this.currentMonth?.id) || this.monthsYears[0];
+        (this.currentMonth && this.monthsYears.find(({ id }) => id === this.currentMonth.id)) ||
+        this.monthsYears[0];
     }
   }
 
