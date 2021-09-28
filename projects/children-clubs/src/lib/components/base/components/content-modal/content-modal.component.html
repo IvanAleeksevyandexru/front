@@ -5,7 +5,7 @@
   [showButtons]="showButtons"
 >
   <ng-container modal-content>
-    <div [innerHTML]="text | imgPrefixer | safe: 'html'"></div>
+    <div class="mt-24" [innerHTML]="text | imgPrefixer | safe: 'html'"></div>
     <div
       class="text--center mt-16 block--content-centered"
       *ngIf="configService.showTraceIdOnError && traceId"
