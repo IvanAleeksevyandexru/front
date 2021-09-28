@@ -62,6 +62,7 @@ describe('MaskHandlePipe', () => {
       const { numberMaskTransform } = setup({ decimalSymbol: ',' });
 
       expect(numberMaskTransform('123,99')).toEqual([/\d/, /\d/, /\d/, ',', /\d/, /\d/]);
+      expect(numberMaskTransform('123.99')).toEqual([/\d/, /\d/, /\d/, ',', /\d/, /\d/]);
     });
 
     it('allow to set decimalSymbol', () => {
