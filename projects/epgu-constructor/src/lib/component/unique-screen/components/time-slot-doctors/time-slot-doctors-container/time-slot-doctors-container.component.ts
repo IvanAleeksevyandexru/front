@@ -752,8 +752,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     });
   }
 
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/typedef
   private async renderSingleMonthGrid(output): Promise<void> {
     output.splice(0, output.length); // in-place clear
     const attrs = this.screenService.component?.attrs as TimeSlotDoctorsAttrs;

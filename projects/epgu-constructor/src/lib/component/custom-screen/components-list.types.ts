@@ -125,9 +125,9 @@ export type CustomComponentAttrField = {
 }[];
 
 export interface MappingParamsDto {
- idPath: string;
- textPath: string;
- isRoot?: boolean;
+  idPath: string;
+  textPath: string;
+  isRoot?: boolean;
 }
 
 /**

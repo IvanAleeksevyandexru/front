@@ -52,9 +52,9 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() shouldPendingRequestsBeCancelledAfterDestroy = true;
   @Input() components: CustomComponent[];
   @Input() errors: ScenarioErrorsDto;
-  @Output() changes: EventEmitter<CustomComponentOutputData>; // TODO: подумать тут на рефактором подписочной модели
-  @Output() emitFormStatus = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
-  @Output() emitFormCreated = new EventEmitter(); // TODO: подумать тут на рефактором подписочной модели
+  @Output() changes: EventEmitter<CustomComponentOutputData>;
+  @Output() emitFormStatus = new EventEmitter();
+  @Output() emitFormCreated = new EventEmitter();
 
   readonly componentType = CustomScreenComponentTypes;
 

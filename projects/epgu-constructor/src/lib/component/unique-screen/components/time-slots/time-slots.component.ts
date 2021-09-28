@@ -527,8 +527,6 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     return !this.errorMessage;
   }
 
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/typedef
   renderSingleMonthGrid(output): void {
     output.splice(0, output.length); // in-place clear
     const daysToShow = this.screenService.component?.attrs.daysToShow;
