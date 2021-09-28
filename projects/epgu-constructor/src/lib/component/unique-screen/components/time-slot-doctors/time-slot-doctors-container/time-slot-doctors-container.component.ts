@@ -302,8 +302,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
    * @param slot слот для выбора
    */
   chooseTimeSlot(slot: SlotInterface): void {
-    const time = this.datesHelperService.utcOffset(slot.slotTime, slot.timezone);
-    this.selectedTimeStr = this.datesHelperService.format(time, DATE_TIME_STRING_FULL);
+    this.selectedTimeStr = this.datesHelperService.format(slot.slotTime, DATE_TIME_STRING_FULL);
 
     if (this.currentSlot?.slotId === slot.slotId) {
       this.clearDateSelection();
