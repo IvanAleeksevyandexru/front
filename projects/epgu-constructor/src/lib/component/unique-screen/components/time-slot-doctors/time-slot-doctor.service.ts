@@ -8,7 +8,6 @@ import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { get } from 'lodash';
 import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
-import { TimeSlotsTypes } from '../time-slots/time-slots.constants';
 import { Smev3TimeSlotsRestService } from '../time-slots/smev3-time-slots-rest.service';
 import {
   BookTimeSlotReq,
@@ -50,7 +49,7 @@ export class TimeSlotDoctorService {
   public bookId;
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
   public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
-  public timeSlotsType: TimeSlotsTypes;
+  public timeSlotsType: string;
   public cancelReservation: string[];
 
   public department: DepartmentInterface;
@@ -246,7 +245,7 @@ export class TimeSlotDoctorService {
   }
 
   private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
-    const { eserviceId } = this.configService.timeSlots[TimeSlotsTypes.DOCTOR];
+    const { eserviceId } = this.configService.timeSlots[this.timeSlotsType];
 
     return this.smev3TimeSlotsRestService
       .cancelSlot({
@@ -274,7 +273,7 @@ export class TimeSlotDoctorService {
 
   private getSlotsRequest(): TimeSlotReq {
     const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[
-      TimeSlotsTypes.DOCTOR
+      this.timeSlotsType
       ];
 
     return <TimeSlotReq>this.deleteIgnoreRequestParams({
@@ -329,7 +328,7 @@ export class TimeSlotDoctorService {
       calendarName,
       preliminaryReservationPeriod,
       routeNumber,
-    } = this.configService.timeSlots[TimeSlotsTypes.DOCTOR];
+    } = this.configService.timeSlots[this.timeSlotsType];
 
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
