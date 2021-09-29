@@ -18,7 +18,7 @@
         <div *ngIf="isMonthsRangeVisible" class="months-range">
           {{ monthsRange }}
         </div>
-        <div *ngIf="!isMonthsRangeVisible" class="dropdown-list">
+        <div *ngIf="!isMonthsRangeVisible" class="dropdown-list mt-12">
           <lib-dropdown
             *ngIf="monthsYears.length"
             [disabled]="fixedMonth"
