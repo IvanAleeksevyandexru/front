@@ -50,7 +50,10 @@ export interface UploadContext {
   clarifications: Clarifications;
 }
 
-export const mimeTypeByExtension = { sig: 'application/signature' };
+export const mimeTypeByExtension = {
+  sig: 'application/signature',
+  rar: 'application/x-rar-compressed'
+};
 
 export const extToLowerCase: (name: string) => string = (name: string) => {
   if (!name) {
