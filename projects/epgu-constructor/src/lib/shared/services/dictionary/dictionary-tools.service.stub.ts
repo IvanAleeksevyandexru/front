@@ -37,4 +37,16 @@ export class DictionaryToolsServiceStub {
   getValueViaRef() {
     return null;
   }
+
+  getDictionaryFirstState() {
+    return {};
+  }
+
+  adaptDictionaryToListItem() {
+    return {};
+  }
+
+  dictionaryFiltersLoader() {
+    return new Observable();
+  }
 }
