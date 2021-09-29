@@ -688,7 +688,7 @@ export class DictionaryToolsService {
       },
 
       [DictionaryValueTypes.preset]: (dFilter): ValueForFilter => {
-        const rawValue = componentValue[dFilter.value];
+        const rawValue = get(componentValue, dFilter.value, undefined);
         const filters = this.formatValue(rawValue, dFilter.formatValue);
         const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
         return { rawValue, value };

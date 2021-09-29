@@ -222,6 +222,22 @@ describe('DictionaryToolsService', () => {
       expect(valueForFilter).toEqual({ rawValue: 'R77', value: { asString: 'R77' }});
     });
 
+    it('should calc valueType preset and value originalItem.title', () => {
+      const dFilter = {
+        attributeName: 'CODE',
+        condition: DictionaryConditions.CONTAINS,
+        value: 'originalItem.title',
+        valueType: DictionaryValueTypes.preset,
+      };
+      const compValue = JSON.parse(MapStore.display.components[0].value);
+      compValue.originalItem = {
+        title: 'title77'
+      };
+      const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
+
+      expect(valueForFilter).toEqual({ rawValue: 'title77', value: { asString: 'title77' }});
+    });
+
     it('should calc valueType root', () => {
       const dFilter = {
         attributeName: 'CODE',
