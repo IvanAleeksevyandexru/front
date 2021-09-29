@@ -38,6 +38,7 @@ export class ConfigService implements Config {
   private _isAutocompleteServiceDisabled: boolean;
   private _addToCalendarUrl: string;
   private _zipkinGenerationEnabled: boolean;
+  private _zipkinSendTraceIdToHealth: boolean;
   private _zipkinSpanSendEnabled: boolean;
   private _zipkinUrl: string;
   private _zipkinMaxPayloadSize: number;
@@ -184,6 +185,10 @@ export class ConfigService implements Config {
     return this._zipkinGenerationEnabled;
   }
 
+  get zipkinSendTraceIdToHealth(): boolean {
+    return this._zipkinSendTraceIdToHealth;
+  }
+
   get zipkinSpanSendEnabled(): boolean {
     return this._zipkinSpanSendEnabled;
   }
@@ -285,6 +290,7 @@ export class ConfigService implements Config {
     this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._isAutocompleteServiceDisabled = config.isAutocompleteServiceDisabled || false;
     this._zipkinGenerationEnabled = config.zipkinGenerationEnabled || false;
+    this._zipkinSendTraceIdToHealth = config.zipkinSendTraceIdToHealth || false;
     this._zipkinSpanSendEnabled = config.zipkinSpanSendEnabled || false;
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;

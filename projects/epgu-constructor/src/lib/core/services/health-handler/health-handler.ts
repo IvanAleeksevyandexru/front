@@ -53,6 +53,7 @@ export interface CommonPayload extends HealthPayload {
   typeEvent?: string;
   mnemonicScreen?: string;
   dictionaryUrl?: string;
+  traceId?: string;
 }
 
 export interface UnspecifiedDTO {

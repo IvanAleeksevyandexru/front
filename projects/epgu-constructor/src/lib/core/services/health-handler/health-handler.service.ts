@@ -135,10 +135,17 @@ export class HealthHandlerService implements HealthHandler {
     const responseBody = response?.body || ({} as UnspecifiedDTO);
     const isDictionaryHasError = this.isDictionaryHasExternalError(responseBody);
 
+    const traceId = response?.headers?.get('x-trace-id');
+    const isTraceIdRequire =
+      traceId &&
+      this.configService.zipkinSendTraceIdToHealth &&
+      this.configService.zipkinGenerationEnabled;
+
     this.commonParams = {
       ...this.commonParams,
       method: request.method,
       date: new Date().toISOString(),
+      ...(isTraceIdRequire && { traceId }),
     };
 
     if (this.isValidScenarioDto(responseBody)) {
@@ -185,7 +192,7 @@ export class HealthHandlerService implements HealthHandler {
         };
       }
 
-      this.measureBackendDictionaries(health, this.commonParams.orderId);
+      this.measureBackendDictionaries(health, this.commonParams.orderId, traceId);
       this.measureStaticRequests(this.commonParams, serviceName);
     }
 
@@ -216,7 +223,7 @@ export class HealthHandlerService implements HealthHandler {
       const { id, name, orderId, date, method } = this.commonParams;
       const mnemonic = this.mnemonic;
 
-      payload = { id, name, orderId, mnemonic, date, method };
+      payload = { id, name, orderId, mnemonic, date, method, ...(isTraceIdRequire && { traceId }) };
 
       if (
         serviceName === GET_SLOTS_MODIFIED &&
@@ -239,6 +246,17 @@ export class HealthHandlerService implements HealthHandler {
   }
 
   private handleErrors(exception: HttpErrorResponse, serviceName: string): void {
+    const traceId = exception?.headers?.get('x-trace-id');
+    const isTraceIdRequire =
+      traceId &&
+      this.configService.zipkinSendTraceIdToHealth &&
+      this.configService.zipkinGenerationEnabled;
+
+    this.commonParams = {
+      ...this.commonParams,
+      ...(isTraceIdRequire && { traceId }),
+    };
+
     if (exception.status !== 404) {
       this.commonParams.serverError = exception.status;
 
@@ -251,7 +269,6 @@ export class HealthHandlerService implements HealthHandler {
       } else {
         this.commonParams.errorMessage = this.wordTransformService.cyrillicToLatin(exception.message);
       }
-
       this.endMeasureHealth(
         serviceName,
         RequestStatus.Failed,
@@ -262,6 +279,7 @@ export class HealthHandlerService implements HealthHandler {
           serverError: this.commonParams.serverError,
           dictionaryUrl: this.commonParams.dictionaryUrl,
           errorMessage: this.commonParams.errorMessage,
+          ...(isTraceIdRequire && { traceId }),
         }),
       );
     } else {
@@ -273,6 +291,7 @@ export class HealthHandlerService implements HealthHandler {
           name: this.commonParams.name,
           orderId: this.commonParams.orderId,
           serverError: 404,
+          ...(isTraceIdRequire && { traceId }),
         }),
       );
     }
@@ -348,6 +367,7 @@ export class HealthHandlerService implements HealthHandler {
   private measureBackendDictionaries(
     health: BackendHealthList,
     orderId: string | number | undefined,
+    traceId?: string | null,
   ): void {
     if (
       this.objectHelperService.isDefined(health) &&
@@ -367,6 +387,7 @@ export class HealthHandlerService implements HealthHandler {
             method: dictionary.method,
             orderId: orderId,
             regdictname: RegionSource.Okato,
+            ...(traceId && { traceId })
           }),
         );
       });
