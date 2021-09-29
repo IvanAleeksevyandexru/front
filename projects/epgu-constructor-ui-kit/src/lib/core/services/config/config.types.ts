@@ -42,6 +42,7 @@ export type TimeSlotsApi = {
  * @property {boolean}isAutocompleteServiceDisabled - задизейблить функцию автокомплита для всего форм-плеера
  * @property {string}addToCalendarUrl - url добавления ивента в календарь
  * @property {boolean}zipkinGenerationEnabled  - включена ли генерация traceId для показа в модалках и отправке в запросах на бэк
+ * @property {boolean}zipkinSendTraceIdToHealth  - включена ли отправка traceId в сообщениях для сервиса хелсов
  * @property {boolean}zipkinSpanSendEnabled - включена ли отправка span'ов в Zipkin-backend
  * @property {string}zipkinUrl - API-url до бэк-сервиса Zipkin
  * @property {number}zipkinMaxPayloadSize - максимальный размер payload, передаваемого в span Zipkin'a
@@ -80,6 +81,7 @@ export interface Config {
   isAutocompleteServiceDisabled?: boolean;
   addToCalendarUrl?: string;
   zipkinGenerationEnabled?: boolean;
+  zipkinSendTraceIdToHealth?: boolean;
   zipkinSpanSendEnabled?: boolean;
   zipkinUrl?: string;
   zipkinMaxPayloadSize?: number;
