@@ -22,11 +22,15 @@ export class DatesToolsServiceStub {
 
   isSameOrBefore() {}
 
-  parse() {}
+  parse(value) {
+    return value;
+  }
 
   parseISO() {}
 
-  format() {}
+  format(value) {
+    return value;
+  }
 
   differenceInYears() {}
 
@@ -54,7 +58,9 @@ export class DatesToolsServiceStub {
 
   getMonth() {}
 
-  getDate() {}
+  getDate(value) {
+    return value;
+  }
 
   startOfMonth() {}
 
