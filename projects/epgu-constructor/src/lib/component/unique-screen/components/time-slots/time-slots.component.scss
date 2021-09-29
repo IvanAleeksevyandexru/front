@@ -32,6 +32,7 @@
 
     ::ng-deep.dropdown-field {
       border: none;
+      background-color: transparent;
 
       &.disabled {
         background-color: $color-white;
