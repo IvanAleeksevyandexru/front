@@ -69,7 +69,7 @@ export class ValidationServiceStub {
   replaceValueForPredicateExpression() {}
 
   validationErrorMsg() {
-    return { msg: 'error', desc: 'desc', textFromJson: true, forChild: 'forChild' };
+    return { msg: 'testError2', desc: 'desc', textFromJson: true, forChild: 'forChild' };
   }
 
   getError(
