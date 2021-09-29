@@ -18,7 +18,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-import { get, isEqual as _isEqual } from 'lodash';
+import { get } from 'lodash';
 import {
   ActionType,
   ApplicantAnswersDto,
@@ -261,7 +261,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         DictionaryItem
       >;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
-      if (mapObject.idForMap !== undefined && this.isFiltersSame()) {
+      if (mapObject.idForMap !== undefined && this.isMapObjectExisted(mapObject)) {
         this.yandexMapService.selectMapObject(mapObject);
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
@@ -642,18 +642,11 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
 
-  private isFiltersSame(): boolean {
-    const valueFilters = this.dictionaryToolsService.getFilterOptions(
-      this.componentValue,
-      this.screenStore,
-      this.data.attrs.dictionaryFilter,
+  // Проверяет в справочнике наличие объекта из кэша
+  private isMapObjectExisted(mapObject: YMapItem<DictionaryItem>): boolean {
+    return this.selectMapObjectService.filteredDictionaryItems.some(
+      ({ value }) => value === mapObject.value,
     );
-    const valuePresetFilters = this.dictionaryToolsService.getFilterOptions(
-      this.componentPresetValue,
-      this.screenStore,
-      this.data.attrs.dictionaryFilter,
-    );
-    return _isEqual(valueFilters, valuePresetFilters);
   }
 
   private isSecondReqNeeded(coords: IFillCoordsResponse): boolean {

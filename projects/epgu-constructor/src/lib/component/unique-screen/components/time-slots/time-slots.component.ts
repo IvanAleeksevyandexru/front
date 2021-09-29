@@ -425,6 +425,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       },
       (result) => {
         this.inProgress = false;
+        this.errorMessage = result?.error?.errorDetail?.errorMessage;
         this.showCustomError(result?.error?.errorDetail?.errorMessage);
         this.changeDetectionRef.markForCheck();
       },
