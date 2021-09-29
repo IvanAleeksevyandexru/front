@@ -80,11 +80,6 @@
     <div class="divider info-list-divider"></div>
   </div>
 
-  <epgu-constructor-car-owners
-    *ngIf="carOwnerInfo.vehicleInfo?.ownerPeriods?.length > 0"
-    [ownerPeriods]="carOwnerInfo.vehicleInfo.ownerPeriods"
-  ></epgu-constructor-car-owners>
-
   <epgu-constructor-legal-compliance
     [showSellWarning]="true"
     [searchingTransportFlag]="carOwnerInfo.vehicleInfo?.searchingTransportFlag"
