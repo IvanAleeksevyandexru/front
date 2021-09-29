@@ -4,6 +4,7 @@ import {
   ConfigService,
   ConfigServiceStub,
   UnsubscribeService,
+  UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -15,6 +16,7 @@ import { By } from '@angular/platform-browser';
 import { ConfirmPersonalPolicyComponent } from './confirm-personal-policy.component';
 import { ConfirmPolicyError, PersonalPolicyWithErrors } from './confirm-personal-policy.types';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { JsonHelperServiceStub } from '../../../../core/services/json-helper/json-helper.service.stub';
 
 describe('ConfirmPersonalPolicyComponent', () => {
   let component: ConfirmPersonalPolicyComponent;
@@ -48,10 +50,10 @@ describe('ConfirmPersonalPolicyComponent', () => {
       declarations: [ConfirmPersonalPolicyComponent, ActionDirective],
       providers: [
         CurrentAnswersService,
-        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        UnsubscribeService,
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
       ],
     }).compileComponents();
   });
