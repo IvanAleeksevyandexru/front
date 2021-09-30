@@ -6,7 +6,7 @@
     "types": [],
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "es2015",
+    "target": "es6",
     "lib": ["es2018", "dom"],
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],

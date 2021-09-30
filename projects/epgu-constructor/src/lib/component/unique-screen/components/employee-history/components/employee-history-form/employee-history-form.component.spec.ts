@@ -9,7 +9,11 @@ import { ConstructorMonthPickerModule } from '../../../../../../shared/component
 import { ConstructorCheckboxModule, MemoModule } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
 import { EmployeeHistoryFormServiceStub } from '../../services/employee-history.form.service.stub';
-import { UnsubscribeService, ActivatedRouteStub, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  UnsubscribeService,
+  ActivatedRouteStub,
+  UnsubscribeServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
 import { EmployeeHistoryMonthsServiceStub } from '../../services/employee-history.months.service.stub';
 import { EmployeeHistoryDataSourceService } from '../../services/employee-history.data-source.service';
@@ -92,7 +96,10 @@ describe('EmployeeHistoryFormComponent', () => {
         { provide: EventBusService, useClass: EventBusServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: EmployeeHistoryFormService, useClass: EmployeeHistoryFormServiceStub },
-        { provide: EmployeeHistoryDataSourceService, useClass: EmployeeHistoryDataSourceServiceStub },
+        {
+          provide: EmployeeHistoryDataSourceService,
+          useClass: EmployeeHistoryDataSourceServiceStub,
+        },
         { provide: EmployeeHistoryMonthsService, useClass: EmployeeHistoryMonthsServiceStub },
       ],
     })
