@@ -108,7 +108,7 @@ export class NavigationService {
 
   redirectToLKAccount(): void {
     if (this.isWebView) {
-      this.navigateInsideWebView(MobilViewEvents.OPTIONS_PROFILE_MV);
+      this.locationService.href(`${this.configService.lkUrl}/profile/user`);
     } else {
       this.locationService.href(`${this.configService.lkUrl}/settings/account`);
     }
