@@ -1,0 +1,25 @@
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/functions";
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/typography";
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes";
+
+.marital-status-input {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+
+  &__title {
+    @include typ-h6;
+
+    font-weight: $fw-bold;
+    margin-bottom: 4px;
+  }
+
+  &__group-item {
+    margin-bottom: 24px;
+  }
+
+  &__hint {
+    display: block;
+    margin-top: 4px;
+  }
+}

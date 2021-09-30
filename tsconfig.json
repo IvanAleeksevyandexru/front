@@ -5,7 +5,7 @@
     "lib": [
       "es6", "dom"
     ],
-    "target": "es5",
+    "target": "es6",
     "experimentalDecorators": true,
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
