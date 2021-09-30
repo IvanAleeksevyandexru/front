@@ -9,6 +9,7 @@ import {
   SessionService,
   BaseUiModule,
   ConstructorCheckboxModule,
+  IDay,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents, MockProvider } from 'ng-mocks';
@@ -149,6 +150,22 @@ describe('TimeSlotsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show loader while weeks loading', () => {
+    component.weeks = [];
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.lib-loader'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.screen-footer'))).toBeNull();
+    expect(fixture.debugElement.query(By.css('.time-slots-content'))).toBeNull();
+  });
+
+  it('should show content when weeks are loaded', () => {
+    component.weeks = [[]] as unknown as IDay[][];
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.lib-loader'))).toBeNull();
+    expect(fixture.debugElement.query(By.css('.screen-footer'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.time-slots-content'))).toBeTruthy();
   });
 
   it('correct format of chosenTimeStr', () => {
