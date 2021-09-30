@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { PrevButtonNavigation } from '@epgu/epgu-constructor-types';
-
 import { PrevButtonComponent } from './prev-button.component';
 import { PREV_BUTTON_NAVIGATION } from './prev-button.token';
 import { By } from '@angular/platform-browser';
-
 
 @Injectable()
 class TestService implements PrevButtonNavigation {
@@ -23,17 +21,15 @@ describe('NavigationComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [PrevButtonComponent],
-      providers: [
-        { provide: PREV_BUTTON_NAVIGATION, useClass: TestService }
-      ],
+      providers: [{ provide: PREV_BUTTON_NAVIGATION, useClass: TestService }],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PrevButtonComponent);
     component = fixture.componentInstance;
-    prevButtonNavigation = TestBed.inject(PREV_BUTTON_NAVIGATION) as unknown as TestService;
-    prevSpy  = jest.spyOn(prevButtonNavigation, 'prev');
+    prevButtonNavigation = (TestBed.inject(PREV_BUTTON_NAVIGATION) as unknown) as TestService;
+    prevSpy = jest.spyOn(prevButtonNavigation, 'prev');
     fixture.detectChanges();
   });
 
@@ -41,6 +37,11 @@ describe('NavigationComponent', () => {
     it('should be call prevButtonNavigation.prev when call clickGoBack', () => {
       component.clickGoBack();
       expect(prevSpy).toBeCalled();
+    });
+
+    it('should set isLoading in true state, when call clickGoBack', () => {
+      component.clickGoBack();
+      expect(component.isLoading).toBeTruthy();
     });
 
     it('should be call prevButtonNavigation.prev when click on prev button', () => {
