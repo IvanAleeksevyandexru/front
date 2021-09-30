@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
-import { MockComponents, MockDirective, MockModule } from 'ng-mocks';
+import { MockComponents, MockDirective, MockModule, MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConfigService, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsServiceStub, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -75,17 +74,15 @@ describe('ConfirmPersonalUserAddressComponent', () => {
         MockDirective(TextTransformDirective),
       ],
       providers: [
-        UnsubscribeService,
         CurrentAnswersService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
-        DatesToolsService,
-        SuggestHandlerService,
-        EventBusService,
-        FormBuilder,
-        HttpCancelService,
-        SuggestMonitorService,
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        MockProvider(SuggestHandlerService),
+        MockProvider(EventBusService),
+        MockProvider(HttpCancelService),
+        MockProvider(SuggestMonitorService),
       ],
     })
       .overrideComponent(ConfirmPersonalUserAddressComponent, {
