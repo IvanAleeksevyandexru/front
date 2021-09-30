@@ -1,0 +1,39 @@
+<div
+  class="marital-status-input__group-item marital-status-input__number"
+  *ngIf="!attrs.hidden"
+>
+  <epgu-constructor-label
+    [tips]="attrs?.labelHint"
+    [label]="label"
+    [for]="FieldsTypes.number"
+  ></epgu-constructor-label>
+  <epgu-constructor-masked-input
+    *ngIf="attrs.mask; else plainInputNumber"
+    [textTransformType]="attrs?.fstuc"
+    [id]="FieldsTypes.number"
+    [control]="$any(control)"
+    [mask]="attrs?.mask"
+    [showMaskAsPlaceholder]="!!placeholder"
+    [placeholder]="placeholder"
+    [showConstantMaskSymbols]="true"
+    [invalid]="control.invalid && control.dirty"
+    [validationShowOn]="validationShowOn"
+    [component]="$any({ attrs: attrs })"
+    (blurEvent)="markControlAsDirty()"
+  ></epgu-constructor-masked-input>
+  <ng-template #plainInputNumber>
+    <epgu-constructor-constructor-plain-input
+      [textTransformType]="attrs?.fstuc"
+      [id]="FieldsTypes.number"
+      [control]="$any(control)"
+      [placeholder]="placeholder"
+      [invalid]="control.invalid && control.dirty"
+      [validationShowOn]="validationShowOn"
+      [component]="$any({ attrs: attrs })"
+      (blurEvent)="markControlAsDirty()"
+    ></epgu-constructor-constructor-plain-input>
+  </ng-template>
+  <epgu-cf-ui-constructor-helper-text *ngIf="hint" class="marital-status-input__hint">
+    {{ hint }}
+  </epgu-cf-ui-constructor-helper-text>
+</div>
