@@ -6,16 +6,12 @@
         <div *ngIf="showCrossButton" class="screen-modal__close icon-close" (click)="closeModal()"></div>
       </div>
       <div class="screen-modal__body">
-        <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
-          <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
+        <perfect-scrollbar [config]="scrollConfig">
+          <div class="screen-modal__content">
+            <epgu-constructor-screen-modal-resolver></epgu-constructor-screen-modal-resolver>
+          </div>
         </perfect-scrollbar>
       </div>
     </div>
   </div>
 </ng-container>
-
-<ng-template #contentBlock>
-  <div class="screen-modal__content">
-    <epgu-constructor-screen-modal-resolver></epgu-constructor-screen-modal-resolver>
-  </div>
-</ng-template>
