@@ -6,7 +6,7 @@
   <div class="screen-body">
     <epgu-constructor-page-name *ngIf="data?.header">{{ data.header }}</epgu-constructor-page-name>
 
-    <epgu-cf-ui-constructor-screen-pad>
+    <epgu-cf-ui-constructor-screen-pad class="time-slots-content" *ngIf="weeks.length; else loading">
       <div>
         <div *ngIf="isAreasVisible" class="dropdown-list">
           <lib-dropdown
@@ -64,7 +64,7 @@
       </div>
     </epgu-cf-ui-constructor-screen-pad>
   </div>
-  <div class="screen-footer">
+  <div class="screen-footer" *ngIf="weeks.length">
     <div class="screen-footer--time-slots">
       <span *ngIf="isChosenTimeStrVisible" class="time">
         Вы забронировали:
@@ -84,3 +84,7 @@
     </div>
   </div>
 </epgu-cf-ui-screen-container>
+
+<ng-template #loading>
+  <lib-throbber-hexagon class="lib-loader" size="big"></lib-throbber-hexagon>
+</ng-template>
