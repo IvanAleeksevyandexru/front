@@ -194,13 +194,13 @@ describe('AutocompleteService', () => {
       expect(serviceFieldsSuggestionsApiCallSpy).toBeCalled();
     });
 
-    it('should call loadValuesFromCurrentAnswer() on "suggestionSelectedEvent"', () => {
-      const serviceLoadValuesFromCurrentAnswerSpy = spyOn(
+    it('should call setValuesToCachedAnswersOrCompValue() on "suggestionSelectedEvent"', () => {
+      const servicesetValuesToCachedAnswersOrCompValueSpy = spyOn(
         prepareService,
-        'loadValuesFromCurrentAnswer',
+        'setValuesToCachedAnswersOrCompValue',
       );
       eventBusService.on('suggestionSelectedEvent').subscribe(() => {
-        expect(serviceLoadValuesFromCurrentAnswerSpy).toBeCalled();
+        expect(servicesetValuesToCachedAnswersOrCompValueSpy).toBeCalled();
       });
       eventBusService.emit('suggestionSelectedEvent');
     });

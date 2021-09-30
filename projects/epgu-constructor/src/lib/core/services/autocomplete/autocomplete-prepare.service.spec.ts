@@ -1,22 +1,14 @@
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
-import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
-import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, EventBusServiceStub, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
@@ -25,17 +17,16 @@ import { Gender, ComponentDto, ScreenTypes, ScenarioDto } from '@epgu/epgu-const
 import { ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
-import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
 import {
   LocalStorageService,
   LocalStorageServiceStub,
-  ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { Answer } from '@epgu/epgu-constructor-types';
 import { JsonHelperService } from '../json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
+import { CurrentAnswersServiceStub } from '../../../screen/current-answers-service.stub';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
 describe('AutocompletePrepareService', () => {
   let autocompleteService: AutocompleteService;
@@ -45,6 +36,7 @@ describe('AutocompletePrepareService', () => {
   let repeatableComponents: ComponentDto[][];
   let componentsSuggestionsSet: Set<[string, string]>;
   let parentComponent: ComponentDto;
+  let currentAnswersService: CurrentAnswersService;
 
   let mockData: ScenarioDto = {
     applicantAnswers: {},
@@ -145,33 +137,20 @@ describe('AutocompletePrepareService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
-        HttpClient,
         { provide: ConfigService, useClass: ConfigServiceStub },
-        ScreenService,
-        UnsubscribeService,
-        AutocompleteService,
-        AutocompleteApiService,
+        { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
+        { provide: EventBusService, useClass: EventBusServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        MockProvider(HttpClient),
+        MockProvider(AutocompleteService),
         AutocompletePrepareService,
         AutocompleteAutofillService,
-        HttpHandler,
-        CurrentAnswersService,
-        MockProvider(PrepareComponentsService),
-        CachedAnswersService,
-        DownloadService,
-        ObjectHelperService,
-        DatesToolsService,
-        EventBusService,
-        ModalService,
+        AutocompleteApiService,
         JsonHelperService,
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        DictionaryToolsService,
-        DictionaryApiService,
-        ComponentsListRelationsService,
-        DateRangeService,
-        RefRelationService,
-        MockProvider(DateRestrictionsService),
-        TerraByteApiService,
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        DatesToolsService,
       ],
     });
   });
@@ -182,6 +161,7 @@ describe('AutocompletePrepareService', () => {
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     screenService = TestBed.inject(ScreenService);
     datesToolsService = TestBed.inject(DatesToolsService);
+    currentAnswersService = TestBed.inject(CurrentAnswersService);
     repeatableComponents = [];
     componentsSuggestionsSet = new Set();
     componentsSuggestionsSet.add(['prev_region', 'pd8_1']);
@@ -200,7 +180,7 @@ describe('AutocompletePrepareService', () => {
       const result = [{ value: 'value', mnemonic: 'prev_region' }];
       autocompleteService.init();
       expect(
-        service.getFormattedHints(
+        service['getFormattedHints'](
           repeatableComponents,
           componentsSuggestionsSet,
           fields,
@@ -340,7 +320,8 @@ describe('AutocompletePrepareService', () => {
       };
       const parentComponent = { id: 'pd8' } as ComponentDto;
       const component = { id: 'ai18', value: 'value' } as ComponentDto;
-      const result = service['prepareCachedAnswers'](parentComponent, component, 0);
+      currentAnswersService.state = [{ value: 'value', ai18: 'value' }];
+      const result = service['prepareCachedAnswers'](parentComponent, component, 0, 'value');
       expect(result).toEqual(answer);
     });
   });

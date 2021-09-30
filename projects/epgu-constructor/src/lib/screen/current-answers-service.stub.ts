@@ -7,11 +7,11 @@ export class CurrentAnswersServiceStub {
   _state: string | object;
 
   get state(): string | object {
-    return '{"foo": "bar"}';
+    return this._state || '{"foo": "bar"}';
   }
 
-  set state({}) {
-    this._state = {};
+  set state(value) {
+    this._state = value || {};
   }
 
   get isValid(): boolean {
