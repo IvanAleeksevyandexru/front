@@ -1,5 +1,5 @@
 <ng-container *ngIf="uploads$ | async as uploads">
-  <epgu-constructor-file-upload-container 
+  <epgu-constructor-file-upload-container
     class="file-upload-container"
     *ngFor="let upload of uploads[0].uploads"
     [upload]="[upload, uploads[1]] | memo:getUploadContext:this"

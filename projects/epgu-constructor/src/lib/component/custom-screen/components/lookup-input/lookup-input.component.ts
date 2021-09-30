@@ -1,10 +1,18 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  Injector,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { Observable } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConstantsService } from '@epgu/ui/services/constants';
 import { ListElement, ListItem } from '@epgu/ui/models/dropdown';
+import { LookupComponent } from '@epgu/ui/controls';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
@@ -21,12 +29,15 @@ import { getDictKeyByComp } from '../../../../shared/services/dictionary/diction
   changeDetection: ChangeDetectionStrategy.Default,
   providers: [UnsubscribeService],
 })
-export class LookupInputComponent extends AbstractComponentListItemComponent implements OnInit {
+export class LookupInputComponent extends AbstractComponentListItemComponent
+  implements OnInit, AfterViewInit {
+  @ViewChild('lookupComponent', { static: false }) lookupComponent: LookupComponent;
   public provider;
   public searchIconForcedShowing = false;
   public forReRenderChildLookup = true;
   public showNotFound;
   public list: ListItem[] = [];
+  public searchOnFocus = false;
 
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
@@ -55,6 +66,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
   public ngOnInit(): void {
     super.ngOnInit();
     this.showNotFound = !!this.control.value.attrs.hint;
+    this.searchOnFocus = !!this.control.value.attrs.focusOnInitAndStartSearch;
     if (this.control.value?.attrs?.searchIconForcedShowing) {
       this.searchIconForcedShowing = this.control.value?.attrs?.searchIconForcedShowing;
     }
@@ -90,6 +102,16 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
       });
   }
 
+  public ngAfterViewInit(): void {
+    this.setFocusIfNeeded();
+  }
+
+  private setFocusIfNeeded(): void {
+    if (this.searchOnFocus && this.lookupComponent?.searchBar) {
+      this.lookupComponent.searchBar.setFocus();
+    }
+  }
+
   private reRenderChildLookup(): void {
     setTimeout(() => {
       this.forReRenderChildLookup = false;
@@ -98,6 +120,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent imp
     setTimeout(() => {
       this.forReRenderChildLookup = true;
       this.cdr.detectChanges();
+      this.setFocusIfNeeded();
     }, 0);
   }
 

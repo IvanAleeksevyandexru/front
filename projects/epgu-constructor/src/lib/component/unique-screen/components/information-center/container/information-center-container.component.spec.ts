@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { InformationCenterContainerComponent } from './information-center-container.component';
@@ -23,6 +23,7 @@ import { UniqueScreenComponentTypes } from '../../../unique-screen-components.ty
 import { InformationCenterPfr, PfrAreaType } from '../information-center.models';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '../../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
@@ -131,20 +132,20 @@ describe('InformationCenterContainerComponent', () => {
         HttpClientModule,
       ],
       providers: [
-        UnsubscribeService,
-        CurrentAnswersService,
+        MockProvider(UnsubscribeService),
+        MockProvider(CurrentAnswersService),
+        MockProvider(ComponentsListRelationsService),
+        MockProvider(DateRangeService),
+        MockProvider(DateRefService),
+        MockProvider(DatesToolsService),
+        MockProvider(RefRelationService),
+        MockProvider(DateRestrictionsService),
+        MockProvider(ConfigService),
+        MockProvider(LoggerService),
+        MockProvider(JsonHelperService),
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        DictionaryToolsService,
-        ComponentsListRelationsService,
-        DateRangeService,
-        DateRefService,
-        DatesToolsService,
-        RefRelationService,
-        MockProvider(DateRestrictionsService),
-        ConfigService,
-        LoggerService,
-        JsonHelperService,
+        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
       ],
     }).compileComponents();
   });
@@ -181,7 +182,7 @@ describe('InformationCenterContainerComponent', () => {
       expect(component.changeForm).toHaveBeenCalled();
     });
 
-    it('should be call changeForm from epgu-constructor-information-center-simple', () => {
+    it('should be call changeForm from epgu-constructor-information-center-simple', async () => {
       const mockDataWithSimple: InformationCenterPfr = {
         id: 'dict55',
         type: UniqueScreenComponentTypes.informationCenterPfr,
@@ -217,12 +218,14 @@ describe('InformationCenterContainerComponent', () => {
       screenService.component = mockDataWithSimple;
       fixture.detectChanges();
       jest.spyOn(component, 'changeForm');
-      const debugEl = fixture.debugElement.query(
-        By.css('epgu-constructor-information-center-simple'),
-      );
-      debugEl.triggerEventHandler('formChangeEvent', {});
+      await waitForAsync( () => {
+        const debugEl = fixture.debugElement.query(
+          By.css('epgu-constructor-information-center-simple'),
+        );
+        debugEl.triggerEventHandler('formChangeEvent', {});
 
-      expect(component.changeForm).toHaveBeenCalled();
+        expect(component.changeForm).toHaveBeenCalled();
+      });
     });
   });
 

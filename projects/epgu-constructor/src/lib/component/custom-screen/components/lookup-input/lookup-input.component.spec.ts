@@ -153,4 +153,15 @@ describe('LookupInputComponent', () => {
     expect(dictionariesSpy).toHaveBeenCalledTimes(1);
     expect(reRenderSpy).toHaveBeenCalledTimes(1);
   });
+
+  it('Should call setFocus after re-render if focusOnInitAndStartSearch is true', () => {
+    const setFocusSpy = jest.spyOn(component, 'setFocusIfNeeded');
+
+    jest.useFakeTimers();
+    component['reRenderChildLookup']();
+    jest.runAllTimers();
+    jest.useRealTimers();
+
+    expect(setFocusSpy).toHaveBeenCalledTimes(1);
+  });
 });
