@@ -134,8 +134,8 @@ export class AutocompleteService {
 
         // с помощью автоподстановки будут заполнены некоторые компоненты.
         // для того, чтобы остальные компоненты не потеряли свои значения мы
-        // сохраняем их из currentAnswersService в screenService
-        this.autocompletePrepareService.loadValuesFromCurrentAnswer(
+        // сохраняем их из currentAnswersService в screenService.cachedAnswers
+        this.autocompletePrepareService.setValuesToCachedAnswersOrCompValue(
           this.repeatableComponents,
           this.parentComponent.id,
         );

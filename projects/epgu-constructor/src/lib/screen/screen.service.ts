@@ -53,7 +53,7 @@ export class ScreenService extends ScreenContent {
   }
 
   public setCompValueToCachedAnswer(componentId: string, value: string): void {
-    const cachedAnswers = this.getStore().cachedAnswers || this.cachedAnswers;
+    const cachedAnswers = this.getStore().cachedAnswers;
     if (!componentId) {
       componentId = this.component?.id;
     }

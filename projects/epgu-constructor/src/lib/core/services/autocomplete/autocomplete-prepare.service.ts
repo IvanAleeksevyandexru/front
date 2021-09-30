@@ -25,7 +25,7 @@ export class AutocompletePrepareService {
     private screenService: ScreenService,
     private currentAnswersService: CurrentAnswersService,
     private datesToolsService: DatesToolsService,
-    private jonHelperService: JsonHelperService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public getFormattedList(
@@ -144,6 +144,7 @@ export class AutocompletePrepareService {
       });
     }
     this.setComponentValue(component, componentValue);
+
     if (isChildrenListType(parentComponent)) {
       const cachedAnswer: Answer = this.prepareCachedAnswers(
         parentComponent,
@@ -160,10 +161,13 @@ export class AutocompletePrepareService {
    * Записывает данные из currentAnswersService в screenService. Это делается для того, чтобы
    * введенные пользователем данные не потерялись после вызова screenService.updateScreenContent()
    */
-  public loadValuesFromCurrentAnswer(repeatableComponents, parentComponentId?: string): void {
+  public setValuesToCachedAnswersOrCompValue(
+    repeatableComponents,
+    parentComponentId?: string,
+  ): void {
     if (repeatableComponents.length) {
       let currentAnswerParsedValue;
-      if (this.jonHelperService.hasJsonStructure(this.currentAnswersService.state as string)) {
+      if (this.jsonHelperService.hasJsonStructure(this.currentAnswersService.state as string)) {
         currentAnswerParsedValue = JSON.parse(this.currentAnswersService.state as string);
       } else {
         currentAnswerParsedValue = this.currentAnswersService.state;
@@ -241,7 +245,7 @@ export class AutocompletePrepareService {
     value: string,
     componentMnemonic?: string,
   ): string {
-    if (this.jonHelperService.hasJsonStructure(value)) {
+    if (this.jsonHelperService.hasJsonStructure(value)) {
       let parsedValue = JSON.parse(value);
       // Кейс парсинга значения Repeatable компонентов
       if (repeatableComponents.length && parsedValue.length) {
@@ -329,10 +333,7 @@ export class AutocompletePrepareService {
     }
   }
 
-  // TODO: ниже - боль, которая вызвана присутствием всего лишь одного UNIQUE-компонента - SelectChildren,
-  // под который нужно пилить свое кастомное решение для проброса в компонент выбранного саджеста.
-  // Если в двух словах, то здесь просто собирается единый контекст из разных ошметков в разных местах.
-  // В перспективе - это нужно упразднить в ходе перевода SelectChildren на RepeatableScreens
+  // NOTICE: здесь собирается единый контекст для передачи в SelectChildren через механизм cachedAnswers.
   private prepareCachedAnswers(
     parentComponent: ComponentDto,
     component: ComponentDto,
@@ -340,12 +341,18 @@ export class AutocompletePrepareService {
     componentValue: string,
   ): Answer {
     const cachedAnswer = this.screenService.cachedAnswers[parentComponent.id];
-    const currentAnswerState = this.currentAnswersService.state as Record<string, string>[];
+    const currentAnswerState = (this.currentAnswersService.state as Record<string, string>[]) || [];
     const cachedState = (currentAnswerState && currentAnswerState[componentsGroupIndex]) || {};
     const currentValue = componentValue || component.value;
     if (cachedAnswer) {
       const { value } = cachedAnswer;
       let parsedValue = JSON.parse(value);
+      parsedValue = currentAnswerState.map((stateItem, idx) => {
+        if (idx !== componentsGroupIndex) {
+          return stateItem;
+        }
+        return parsedValue[idx];
+      });
       if (parsedValue[componentsGroupIndex]) {
         parsedValue[componentsGroupIndex] = {
           ...cachedState,
@@ -397,10 +404,10 @@ export class AutocompletePrepareService {
     } else if (component.type === CustomScreenComponentTypes.RadioInput) {
       const componentAttrs = component.attrs as CustomComponentAttr;
       return componentAttrs.supportedValues.find((item) => item.value === value)?.label || value;
-    } else if (!!component.attrs.suggestionPath && this.jonHelperService.hasJsonStructure(value)) {
-      const parsedValue = this.jonHelperService.tryToParse(value);
+    } else if (!!component.attrs.suggestionPath && this.jsonHelperService.hasJsonStructure(value)) {
+      const parsedValue = this.jsonHelperService.tryToParse(value);
       return _get(parsedValue, component.attrs.suggestionPath);
-    } else if (this.jonHelperService.hasJsonStructure(value)) {
+    } else if (this.jsonHelperService.hasJsonStructure(value)) {
       const parsedValue = JSON.parse(value);
       if (Array.isArray(parsedValue)) {
         const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
