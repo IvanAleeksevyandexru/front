@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
 import { ActivatedRoute } from '@angular/router';
@@ -11,8 +11,8 @@ import {
   LoggerService,
   LoggerServiceStub,
   EventBusService,
-  UnsubscribeService,
   ActivatedRouteStub,
+  DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -92,18 +92,17 @@ describe('RegistrationAddrComponent', () => {
         HttpClientModule,
       ],
       providers: [
-        UnsubscribeService,
-        CurrentAnswersService,
+        FormBuilder,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        DatesToolsService,
-        DateValidator,
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
-        FormBuilder,
-        SuggestHandlerService,
-        EventBusService,
-        SuggestMonitorService,
+        MockProvider(CurrentAnswersService),
+        MockProvider(DateValidator),
+        MockProvider(SuggestHandlerService),
+        MockProvider(EventBusService),
+        MockProvider(SuggestMonitorService),
       ],
     }).compileComponents();
   });
@@ -150,15 +149,17 @@ describe('RegistrationAddrComponent', () => {
   });
 
   describe('hintClick', () => {
-    it('should be create regDate', () => {
+    it('should be create regDate', async () => {
       const mockDate = new Date('2021-05-19T09:19:08.327Z');
       const expectedDate = new Date('2021-11-18T09:19:08.327Z');
       // @ts-ignore
       const spy = jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
       component.hintClick({ unit: 'months', amount: 6, label: 'Полгода' });
-      expect(component.redAddrForm.value).toEqual({
-        regAddr: null,
-        regDate: expectedDate,
+      await waitForAsync(() => {
+        expect(component.redAddrForm.value).toEqual({
+          regAddr: null,
+          regDate: expectedDate,
+        });
       });
       spy.mockRestore();
     });
