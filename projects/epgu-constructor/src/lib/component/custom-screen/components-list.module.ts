@@ -72,6 +72,7 @@ import { SignAppLinkComponent } from './components/sign-app-link/sign-app-link.c
 import { FormsModule } from '@angular/forms';
 import { ConfirmPersonalPolicyChangeModule } from './components/confirm-personal-policy-change/confirm-personal-policy-change.module';
 import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-personal-policy-change/confirm-personal-policy-change.component';
+import { MaritalStatusInputModule } from './components/marital-status-input/marital-status-input.module';
 
 @NgModule({
   declarations: [
@@ -130,6 +131,7 @@ import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-perso
     FileUploadModule,
     InputErrorModule,
     MemoModule,
+    MaritalStatusInputModule,
     MultipleChoiceDictionaryModule,
     PassportModule,
     TimerModule,

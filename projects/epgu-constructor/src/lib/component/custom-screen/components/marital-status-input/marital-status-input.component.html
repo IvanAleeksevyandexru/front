@@ -1,0 +1,56 @@
+<section class="marital-status-input">
+  <div *ngIf="control.value.label" class="marital-status-input__title">
+    <span>{{ control.value.label }}</span>
+  </div>
+  <div class="form__error">
+    <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames">
+      <span *ngIf="
+        isInvalidAndTouched(fieldName) &&
+        form.get(fieldName).errors.msg
+      ">
+        <ng-container *ngIf="!form.get(fieldName).errors.textFromJson">
+          {{ getFieldByName(fieldName)?.label }}:
+        </ng-container>
+        {{ form.get(fieldName).errors.msg }}
+      </span>
+    </epgu-cf-ui-constructor-input-error>
+  </div>
+
+  <div class="marital-status-input__group-item" *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.date) as dateField">
+    <epgu-constructor-act-date-input
+      *ngIf="!dateField?.attrs.hidden"
+      [label]="dateField?.label"
+      [attrs]="dateField?.attrs"
+      [hint]="dateField?.hint"
+      [control]="form.get(MaritalStatusInputFieldsTypes.date)"
+      [validationShowOn]="validationShowOn"
+      [brokenDateFixStrategy]="brokenDateFixStrategy"
+    ></epgu-constructor-act-date-input>
+  </div>
+
+  <div class="marital-status-input__group-item" *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.number) as numberField">
+    <epgu-constructor-act-number-input
+      *ngIf="!numberField?.attrs.hidden"
+      [label]="numberField?.label"
+      [attrs]="numberField?.attrs"
+      [hint]="numberField?.hint"
+      [control]="form.get(MaritalStatusInputFieldsTypes.number)"
+      [validationShowOn]="validationShowOn"
+    ></epgu-constructor-act-number-input>
+  </div>
+
+  <div
+    class="marital-status-input__group-item"
+    *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.registrator) as regField"
+  >
+    <epgu-constructor-act-registrator-input
+      *ngIf="form.get(MaritalStatusInputFieldsTypes.date).value && !regField?.attrs.hidden"
+      [label]="regField?.label"
+      [attrs]="regField?.attrs"
+      [hint]="regField?.hint"
+      [control]="form.get(MaritalStatusInputFieldsTypes.registrator)"
+      [validationShowOn]="validationShowOn"
+      [itemsProvider]="itemsProvider"
+    ></epgu-constructor-act-registrator-input>
+  </div>
+</section>
