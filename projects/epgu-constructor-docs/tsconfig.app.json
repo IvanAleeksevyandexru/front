@@ -2,6 +2,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "composite": false,
     "outDir": "../../out-tsc/app",
     "types": [],
     "module": "esnext",
@@ -9,6 +10,9 @@
     "target": "es6",
     "lib": ["es2018", "dom"],
     "paths": {
+      "@angular/*": [
+        "node_modules/@angular/*"
+      ],
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
       "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"]
