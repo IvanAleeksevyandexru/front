@@ -83,7 +83,7 @@ export class ComponentsListRelationsService {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
         dependentComponent.attrs.ref
-          ?.filter((el) => (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id))
+          ?.filter((el) => (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id)) // TODO remove?
           .forEach((reference) => {
             const value = reference.valueFromCache
               ? screenService.cachedAnswers[reference.valueFromCache].value
@@ -142,13 +142,17 @@ export class ComponentsListRelationsService {
     cachedAnswers: CachedAnswers,
   ): CustomListStatusElements {
     return components.reduce(
-      (acc, component: CustomComponent) => ({
+      (acc, component: CustomComponent) => {
+        const hasDisplayOff = this.hasRelation(component, CustomComponentRefRelation.displayOff);
+        const hasDisplayOn = this.hasRelation(component, CustomComponentRefRelation.displayOn);
+
+        return {
         ...acc,
         [component.id]: {
-          relation: CustomComponentRefRelation.displayOn,
-          isShown: !this.hasRelation(component, cachedAnswers),
+          relation: (hasDisplayOff && !hasDisplayOn) ? CustomComponentRefRelation.displayOff : CustomComponentRefRelation.displayOn,
+          isShown: !this.isComponentShown(component, cachedAnswers),
         },
-      }),
+      };},
       {},
     );
   }
@@ -201,7 +205,7 @@ export class ComponentsListRelationsService {
     }
   }
 
-  public hasRelation(component: CustomComponent, cachedAnswers: CachedAnswers): boolean {
+  public isComponentShown(component: CustomComponent, cachedAnswers: CachedAnswers): boolean {
     const refs = component.attrs?.ref;
     const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
     const displayOn = refs?.find((o) => this.refRelationService.isDisplayOnRelation(o.relation));
@@ -218,9 +222,9 @@ export class ComponentsListRelationsService {
         get(this.getRefValue(cachedAnswers[displayOn.relatedRel].value), displayOn.path) ||
           cachedAnswers[displayOn.relatedRel].value,
       );
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
@@ -321,6 +325,13 @@ export class ComponentsListRelationsService {
           dictionaryToolsService,
         );
       });
+  }
+
+  public hasRelation(
+    component: CustomComponent,
+    relation: CustomComponentRefRelation
+  ): boolean {
+    return component.attrs.ref?.some((o) => o.relation === relation);
   }
 
   private createRestrictionGroups(rawRestrictions: DateRestriction[]): DateRestrictionGroups {

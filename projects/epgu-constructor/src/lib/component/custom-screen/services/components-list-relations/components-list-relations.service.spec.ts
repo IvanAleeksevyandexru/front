@@ -427,6 +427,67 @@ describe('ComponentsListRelationsService', () => {
         },
       });
     });
+
+    it('should return relation displayOff if has displayOff refs only', () => {
+      const components = [
+        createComponentMock({
+          id: 'comp1',
+          attrs: {
+            ref: [
+              {
+                relatedRel: 'rf1',
+                val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+                relation: CustomComponentRefRelation.displayOn,
+              },
+            ],
+          },
+        }),
+        createComponentMock({
+          id: 'comp2',
+          attrs: {
+            ref: [
+              {
+                relatedRel: 'rf1',
+                val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+                relation: CustomComponentRefRelation.displayOff,
+              },
+            ],
+          },
+        }),
+        createComponentMock({
+          id: 'comp3',
+          attrs: {
+            ref: [
+              {
+                relatedRel: 'rf1',
+                val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+                relation: CustomComponentRefRelation.displayOn,
+              },
+              {
+                relatedRel: 'rf1',
+                val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+                relation: CustomComponentRefRelation.displayOff,
+              },
+            ],
+          },
+        }),
+      ];
+
+      expect(service.createStatusElements(components, {})).toEqual({
+        comp1: {
+          relation: CustomComponentRefRelation.displayOn,
+          isShown: true,
+        },
+        comp2: {
+          relation: CustomComponentRefRelation.displayOff,
+          isShown: true,
+        },
+        comp3: {
+          relation: CustomComponentRefRelation.displayOn,
+          isShown: true,
+        },
+      });
+    });
   });
 
   describe('getDependentComponentUpdatedShownElements()', () => {
@@ -1370,11 +1431,11 @@ describe('ComponentsListRelationsService', () => {
       },
     };
     it('should return true, if component has identic relation', () => {
-      expect(service.hasRelation(componentMock, cachedAnswers)).toBe(true);
+      expect(service.isComponentShown(componentMock, cachedAnswers)).toBe(true);
     });
     it('should return false, if component has no identic relation', () => {
       const component = { ...componentMock, attrs: { ref: [] }};
-      expect(service.hasRelation(component, cachedAnswers)).toBe(false);
+      expect(service.isComponentShown(component, cachedAnswers)).toBe(false);
     });
   });
 
