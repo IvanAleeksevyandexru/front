@@ -5,6 +5,7 @@
       name="prev"
       (click)="clickGoBack()"
       (keydown)="handleKeyEvent($event)"
+      [disabled]="isLoading"
     >
       <div class="icon-arrow icon-arrow--left icon-arrow--back"></div>
       <span>Назад</span>
