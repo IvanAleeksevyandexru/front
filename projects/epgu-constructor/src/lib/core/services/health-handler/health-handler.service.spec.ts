@@ -15,7 +15,9 @@ import {
   ServiceNameService,
   SessionService,
   ObjectHelperService,
-  WordTransformService
+  WordTransformService,
+  DeviceDetectorServiceStub,
+  DeviceDetectorService
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
@@ -101,6 +103,7 @@ describe('HealthHandlerService', () => {
         { provide: HealthService, useClass: HealthServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
           useClass: TestHealthInterceptor,
