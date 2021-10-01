@@ -124,8 +124,8 @@ export class TimeSlotsService {
         this.activeMonthNumber = selectedSlot.slotTime.getMonth();
         this.activeYearNumber = selectedSlot.slotTime.getFullYear();
       }),
-      catchError((error) => {
-        this.errorMessage = error.message;
+      catchError((error: SmevBookResponseInterface) => {
+        this.errorMessage = error.error.errorDetail.errorMessage;
         return throwError(error);
       }),
     );

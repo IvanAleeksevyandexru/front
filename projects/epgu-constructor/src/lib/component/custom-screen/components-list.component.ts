@@ -200,14 +200,9 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
           this.handleAfterFilterOnRel(references),
         ),
       )
-      .subscribe((references: CustomListReferenceData[]) => {
-        references.forEach((reference: CustomListReferenceData) => {
-          setTimeout(() => {
-            this.formService.patch(reference.component);
-            this.changeDetectionRef.markForCheck();
-          }, 0);
-          this.formService.emitChanges();
-        });
+      .subscribe(() => {
+        this.changeDetectionRef.markForCheck();
+        this.formService.emitChanges();
       });
 
     this.restToolsService

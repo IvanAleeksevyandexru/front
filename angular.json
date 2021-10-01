@@ -91,15 +91,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "sourceMap": {
-            "scripts": true,
-            "styles": true,
-            "vendor": true
-          },
           "options": {
             "host": "local.test.gosuslugi.ru",
             "browserTarget": "epgu-form-frontend:build",
             "port": 4200,
+            "sourceMap": true,
             "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {

@@ -38,6 +38,7 @@ export interface ComponentAttrsDto {
   baloonContent?: ComponentBaloonContentDto[];
   beginDate?: ComponentDateTimeDto;
   beginTime?: ComponentDateTimeDto;
+  bookingErrorHandling?: IBookingErrorHandling[];
   cacheRepeatableFieldsAnswersLocally?: boolean;
   cancelReservation?: string[];
   canDeleteFirstScreen?: boolean;
@@ -415,4 +416,10 @@ export interface ComponentUploadedFileDto {
 export interface CustomValidationDto {
   fields?: string[];
   path?: string;
+}
+
+export interface IBookingErrorHandling {
+  errorCode: string;
+  errorMessageRegExp?: string;
+  modalAttributes: ConfirmationModal;
 }
