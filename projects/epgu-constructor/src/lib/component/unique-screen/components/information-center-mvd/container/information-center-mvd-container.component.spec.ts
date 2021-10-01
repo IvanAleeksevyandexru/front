@@ -5,14 +5,7 @@ import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { InformationCenterMvdContainerComponent } from './information-center-mvd-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
-import {
-  UnsubscribeService,
-  DownloadService,
-  DatesToolsService,
-  ConfigService,
-  LoggerService,
-  ObjectHelperService,
-} from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, UnsubscribeServiceStub, } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
@@ -24,14 +17,8 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
-import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
-import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
-import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DTOActionAction } from '@epgu/epgu-constructor-types';
-import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
-import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
-import { DateRefService } from '../../../../../core/services/date-ref/date-ref.service';
 import { HttpClientModule } from '@angular/common/http';
 
 describe('InformationCenterMvdContainerComponent', () => {
@@ -83,21 +70,10 @@ describe('InformationCenterMvdContainerComponent', () => {
         HttpClientModule,
       ],
       providers: [
+        MockProvider(DictionaryToolsService),
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        MockProvider(DateRestrictionsService),
-        UnsubscribeService,
-        DownloadService,
-        ObjectHelperService,
-        DateRefService,
-        DictionaryToolsService,
-        ComponentsListRelationsService,
-        DateRangeService,
-        DatesToolsService,
-        RefRelationService,
-        ConfigService,
-        LoggerService,
-        JsonHelperService,
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
       ],
     })
       .overrideComponent(InformationCenterMvdContainerComponent, {
