@@ -69,9 +69,6 @@ export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
 
 export const NO_AVAILABLE_DATA = 'должности в ближайшие 14 дней нет доступного времени';
 
-// eslint-disable-next-line max-len
-export const STATIC_ERROR_BOOKING_LIMIT_MESSAGE =
-  'Превышено количество забронированных слотов для данного пользователя для данной услуги. Текущее ограничение - 1 забронированный слот в день';
 
 export enum RefName {
   serviceOrSpecs = 'ServiceOrSpecs',
@@ -109,10 +106,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         (body as FormPlayerApiSuccessResponse)?.scenarioDto?.display?.components[0]?.value,
       );
       const error = (body as ItemsErrorResponse)?.error;
-
-      if (url.includes('equeue/agg/book') && error) {
-        this.handleBookingError(body as ItemsErrorResponse);
-      }
 
       if (
         url.includes('service/booking') &&
@@ -321,20 +314,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           }
         });
         break;
-    }
-  }
-
-  handleBookingError({ error }: ItemsErrorResponse): void {
-    if (error.errorDetail?.errorMessage === STATIC_ERROR_BOOKING_LIMIT_MESSAGE) {
-      LOADING_ERROR_MODAL_PARAMS.text = LOADING_ERROR_MODAL_PARAMS.text.replace(
-        /\{textAsset\}?/g,
-        STATIC_ERROR_BOOKING_LIMIT_MESSAGE,
-      );
-      this.showModal(LOADING_ERROR_MODAL_PARAMS).then((prevStep) => {
-        if (prevStep) {
-          this.navigationService.prev();
-        }
-      });
     }
   }
 
