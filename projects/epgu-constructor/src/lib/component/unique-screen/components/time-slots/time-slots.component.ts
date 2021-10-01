@@ -28,6 +28,7 @@ import {
   COMMON_ERROR_MODAL_PARAMS,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
   ITEMS_FAILURE,
+  NO_DOCTORS_AVAILABLE,
 } from '../../../../core/services/error-handler/error-handler';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -617,6 +618,27 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
                   this.formPlayer.initData();
                 }
               });
+          } else if (
+            this.timeSlotType === TimeSlotsTypes.DOCTOR ||
+            this.timeSlotType === TimeSlotsTypes.VACCINATION
+          ) {
+            const message = this.errorMessage
+              .replace('FAILURE:', '')
+              .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+              .replace('NO_DATA:', '');
+            NO_DOCTORS_AVAILABLE.text = NO_DOCTORS_AVAILABLE.text.replace(
+              /\{textAsset\}?/g,
+              message,
+            );
+            this.showModal(NO_DOCTORS_AVAILABLE)
+              .toPromise()
+              .then((result) => {
+                if (result) {
+                  this.formPlayer.initData();
+                }
+              });
+            this.daysNotFoundTemplate.header = 'Нет свободного времени для приёма';
+            this.daysNotFoundTemplate.description = message;
           } else {
             this.showError(`${this.constants.errorInitialiseService} (${this.errorMessage})`);
           }
