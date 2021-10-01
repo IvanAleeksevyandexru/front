@@ -121,6 +121,12 @@ const NO_DOCTORS_TEXT = `<div class="text_modal_error">
 <span>Выберите другую специальность врача</span>
 </div>`;
 
+const NO_DOCTORS_AVAILABLE_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Нет свободного времени для приёма</h4>
+<span>{textAsset}</span>
+</div>`;
+
 export const RESOURCE_NOT_AVAILABLE: ConfirmationModal = {
   text: RESOURCE_NOT_AVAILABLE_TEXT,
   title: '',
@@ -129,6 +135,26 @@ export const RESOURCE_NOT_AVAILABLE: ConfirmationModal = {
   buttons: [
     {
       label: 'Обновить',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
+export const NO_DOCTORS_AVAILABLE: ConfirmationModal = {
+  text: NO_DOCTORS_AVAILABLE_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: true,
+  buttons: [
+    {
+      label: 'Начать заново',
+      color: 'white',
+      closeModal: true,
+      value: 'init',
+    },
+    {
+      label: 'Попробовать ещё раз',
       closeModal: true,
     },
   ],

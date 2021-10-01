@@ -28,7 +28,7 @@ import { mockScreenDivorceStore } from './mocks/mock-screen-divorce-store';
 import { ScreenStore } from '../../../../screen/screen.types';
 import { cloneDeep } from 'lodash';
 import { Smev3TimeSlotsRestServiceStub } from './stubs/smev3-time-slots-rest.service.stub';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -56,6 +56,7 @@ import { ListItem } from '@epgu/ui/models/dropdown';
 import { FormsModule } from '@angular/forms';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
+import { ITEMS_FAILURE, SERVICE_OR_SPEC_SESSION_TIMEOUT } from '../../../../core/services/error-handler/error-handler';
 
 describe('TimeSlotsComponent', () => {
   let component: TimeSlotsComponent;
@@ -625,4 +626,146 @@ describe('TimeSlotsComponent', () => {
       expect(component.timeSlots[3]).toEqual(component.bookedSlot);
     });
   });
+
+  describe('bookTimeSlot()', () => {
+    let errorResponseMock;
+    beforeEach(() => {
+      errorResponseMock = {
+        bookId: null,
+        esiaId: null,
+        status: {
+          statusCode: null,
+          statusMessage: null,
+        },
+        timeSlot: null,
+        error: {
+          errorDetail: {
+            errorCode: 3333,
+            errorMessage: 'i am error',
+          },
+          fieldErrors: [],
+        },
+        timeStart: null,
+        timeFinish: null,
+      };
+    });
+    it('should handle Закончилось время error', () => {
+      errorResponseMock.error.errorDetail.errorMessage = 'Закончилось время';
+      jest.spyOn(timeSlotsService, 'checkBooking').mockImplementation((...args) => throwError(errorResponseMock as any));
+      const spy = jest.spyOn(component, 'showModal');
+
+      component.bookTimeSlot();
+
+      expect(spy).toHaveBeenCalledWith(SERVICE_OR_SPEC_SESSION_TIMEOUT);
+
+    });
+
+    it('should handle errors described in json', () => {
+      const testModalParams = {
+        title: '',
+        text: '',
+        showCloseButton: false,
+        showCrossButton: false,
+        buttons: [
+          {
+            label: 'На главную',
+            closeModal: true,
+            color: 'white',
+            action: {
+              type: 'redirectToLK'
+            }
+          },
+        ]
+      };
+      component['bookingErrorHandlingParams'] = [{
+        errorCode: '2',
+        modalAttributes: testModalParams as any
+      }];
+      timeSlotsService['errorMessage']  = 'i am error';
+      errorResponseMock.error.errorDetail.errorCode = 2;
+      jest.spyOn(timeSlotsService, 'checkBooking').mockImplementation((...args) => throwError(errorResponseMock as any));
+      const spy = jest.spyOn(component, 'showModal');
+
+      component.bookTimeSlot();
+
+      expect(spy).toHaveBeenCalledWith(testModalParams);
+
+    });
+
+    it('should handle errors described in json with RegExp', () => {
+      const testModalParams = {
+        title: '',
+        text: '',
+        showCloseButton: false,
+        showCrossButton: false,
+        buttons: [
+          {
+            label: 'На главную',
+            closeModal: true,
+            color: 'white',
+            action: {
+              type: 'redirectToLK'
+            }
+          },
+        ]
+      };
+      component['bookingErrorHandlingParams'] = [{
+        errorCode: '2',
+        errorMessageRegExp: 'test123',
+        modalAttributes: testModalParams as any
+      }];
+      timeSlotsService['errorMessage']  = 'i am error';
+      errorResponseMock.error.errorDetail.errorCode = 2;
+      errorResponseMock.error.errorDetail.errorMessage = 'test123';
+      jest.spyOn(timeSlotsService, 'checkBooking').mockImplementation((...args) => throwError(errorResponseMock as any));
+      const spy = jest.spyOn(component, 'showModal');
+
+      component.bookTimeSlot();
+
+      expect(spy).toHaveBeenCalledWith(testModalParams);
+
+    });
+
+    it('should call default error modal if no familiar condition is met ', () => {
+      const params = {
+        ...ITEMS_FAILURE,
+        buttons: [
+          {
+            label: 'Начать заново',
+            closeModal: true,
+            value: 'init',
+          },
+          {
+            label: 'Попробовать ещё раз',
+            closeModal: true,
+          },
+        ],
+      };
+      component['bookingErrorHandlingParams'] = [{
+        errorCode: '2',
+        errorMessageRegExp: 'test123',
+        modalAttributes: {} as any
+      }];
+      errorResponseMock.error.errorDetail.errorMessage = '{textAsset}';
+      jest.spyOn(timeSlotsService, 'checkBooking').mockImplementation((...args) => throwError(errorResponseMock as any));
+      const spy = jest.spyOn(component, 'showModal');
+
+      component.bookTimeSlot();
+
+      expect(spy).toHaveBeenCalledWith(params);
+
+    });
+
+    it('should not show any modals if no errors thrown ', () => {
+      timeSlotsService['errorMessage']  = null ;
+      jest.spyOn(timeSlotsService, 'checkBooking').mockImplementation((...args) => throwError(errorResponseMock as any));
+      const spy = jest.spyOn(component, 'showModal');
+
+      component.bookTimeSlot();
+
+      expect(spy).toHaveBeenCalledTimes(0);
+
+    });
+  });
+
 });
