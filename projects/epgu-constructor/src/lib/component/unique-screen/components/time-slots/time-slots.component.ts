@@ -8,7 +8,7 @@ import {
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ListItem } from '@epgu/ui/models/dropdown';
-import { DisplayDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { DisplayDto, ConfirmationModal, IBookingErrorHandling } from '@epgu/epgu-constructor-types';
 import {
   ModalService,
   UnsubscribeService,
@@ -42,7 +42,12 @@ import {
   SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT,
 } from './time-slots.constants';
 import { TimeSlotsService } from './time-slots.service';
-import { TimeSlot, TimeSlotsAnswerInterface, TimeSlotValueInterface } from './time-slots.types';
+import {
+  ErrorInterface,
+  TimeSlot,
+  TimeSlotsAnswerInterface,
+  TimeSlotValueInterface,
+} from './time-slots.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
@@ -168,6 +173,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private timeSlotType: TimeSlotsTypes;
   private nextStepAction = NEXT_STEP_ACTION;
   private emptySlotsModal: ConfirmationModal = null;
+  private bookingErrorHandlingParams: IBookingErrorHandling[];
   private firstDayOfMainSection: Date;
   private daysInMainSection: number;
   private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
@@ -426,13 +432,13 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       (result) => {
         this.inProgress = false;
         this.errorMessage = result?.error?.errorDetail?.errorMessage;
-        this.showCustomError(result?.error?.errorDetail?.errorMessage);
+        this.showCustomError(result?.error);
         this.changeDetectionRef.markForCheck();
       },
     );
   }
 
-  showCustomError(error: string | undefined): void {
+  showCustomError(error: ErrorInterface | string): void {
     if (error != null) {
       if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
         this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
@@ -443,32 +449,37 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
             }
           });
       } else {
-        const params = {
-          ...ITEMS_FAILURE,
-          buttons: [
-            {
-              label: 'Начать заново',
-              closeModal: true,
-              value: 'init',
-            },
-            {
-              label: 'Попробовать ещё раз',
-              closeModal: true,
-            },
-          ],
-        };
-        const message = this.errorMessage
-          .replace('FAILURE:', '')
-          .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
-          .replace('NO_DATA:', '');
-        params.text = params.text.replace(/\{textAsset\}?/g, message);
-        this.showModal(params)
-          .toPromise()
-          .then((result) => {
-            if (result) {
-              this.formPlayer.initData();
-            }
-          });
+        const errorHandlingParams = this.findJsonParamsForErrorHandling(error);
+        if (errorHandlingParams) {
+          this.showModal(errorHandlingParams.modalAttributes);
+        } else {
+          const params = {
+            ...ITEMS_FAILURE,
+            buttons: [
+              {
+                label: 'Начать заново',
+                closeModal: true,
+                value: 'init',
+              },
+              {
+                label: 'Попробовать ещё раз',
+                closeModal: true,
+              },
+            ],
+          };
+          const message = this.errorMessage
+            .replace('FAILURE:', '')
+            .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+            .replace('NO_DATA:', '');
+          params.text = params.text.replace(/\{textAsset\}?/g, message);
+          this.showModal(params)
+            .toPromise()
+            .then((result) => {
+              if (result) {
+                this.formPlayer.initData();
+              }
+            });
+        }
       }
     }
   }
@@ -554,6 +565,19 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       this.addDayToWeek(output[week], date, this.today);
       date = this.datesHelperService.add(date, 1, 'days');
     }
+  }
+
+  private findJsonParamsForErrorHandling(error: ErrorInterface | string): IBookingErrorHandling {
+    if (typeof error !== 'object') {
+      return null;
+    }
+    const { errorCode } = error.errorDetail;
+    return this.bookingErrorHandlingParams.find((param) => {
+      const isCodesEqual = param.errorCode === String(errorCode);
+      return param.errorMessageRegExp
+        ? isCodesEqual && error.errorDetail.errorMessage.match(param.errorMessageRegExp)
+        : isCodesEqual;
+    });
   }
 
   private setCancelReservation(currentTimeSlotId: string, cancelReservation: string[]): void {
@@ -905,6 +929,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   private initModalsSettings(): void {
     this.emptySlotsModal = this.screenService.component.attrs?.emptySlotsModal;
+    this.bookingErrorHandlingParams = this.screenService.component.attrs?.bookingErrorHandling;
   }
 
   private isDateOutOfSection(

@@ -102,7 +102,7 @@ export interface SmevSlotsResponseInterface {
   error: ErrorInterface;
 }
 
-interface ErrorInterface {
+export interface ErrorInterface {
   errorDetail: {
     errorCode: number;
     errorMessage: string;
