@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SignAppLinkComponent } from './sign-app-link.component';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
@@ -9,7 +9,12 @@ import { ComponentsListFormService } from '../../services/components-list-form/c
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { DeviceDetectorService, EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  EventBusService,
+  System,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ErrorType } from './sign-app-link.types';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 
@@ -66,12 +71,12 @@ describe('SignAppLinkComponent', () => {
         MockComponents(ComponentItemComponent)
       ],
       providers: [
-        MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-        DeviceDetectorService,
-        EventBusService,
-        HttpClient,
-        HttpHandler,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        MockProvider(ComponentsListRelationsService),
+        MockProvider(HttpClient),
+        MockProvider(HttpHandler),
+        MockProvider(EventBusService),
       ],
     })
       .compileComponents();
@@ -115,14 +120,15 @@ describe('SignAppLinkComponent', () => {
   });
 
   describe('Init', () => {
-    it('should emit value when has clientAppLink and has 1 link in array', () => {
-      userAgent.mockReturnValue('Android Mozilla');
-
+    it('should emit value when has clientAppLink and has 1 link in array', async () => {
       const spy = jest.spyOn<any, any>(component, 'emitToParentForm');
+      jest.spyOn(DeviceDetectorService.prototype as any, 'system', 'get').mockReturnValueOnce(System.Android);
       component.ngOnInit();
 
-      expect(spy).toHaveBeenCalledWith(appLinks[0]);
-      expect(component.appLinks.length).toEqual(1);
+      await waitForAsync(() => {
+        expect(spy).toHaveBeenCalledWith(appLinks[0]);
+        expect(component.appLinks.length).toEqual(1);
+      });
     });
 
     it('should emit error when clientSystem not determined and has all links from appLinks', () => {
@@ -135,7 +141,7 @@ describe('SignAppLinkComponent', () => {
       expect(component.appLinks.length).toEqual(control.value.attrs.appLinks.length);
     });
 
-    it('should emit error when JSON does not contain client system app link and has all links from appLinks', () => {
+    it('should emit error when JSON does not contain client system app link and has all links from appLinks', async () => {
       control = new FormGroup({
         id: new FormControl('id'),
         value: new FormControl(SignAppLinkComponent),
@@ -145,22 +151,24 @@ describe('SignAppLinkComponent', () => {
       });
       formService['_form'] = new FormArray([ control ]);
 
-      userAgent.mockReturnValue('iPhone Safari');
-
       const spy = jest.spyOn<SignAppLinkComponent, any>(component, 'emitToParentForm');
+      jest.spyOn(DeviceDetectorService.prototype as any, 'system', 'get').mockReturnValueOnce(System.iOS);
       component.ngOnInit();
 
-      expect(spy).toHaveBeenCalledWith('error', ErrorType.json);
+      await waitForAsync(() => {
+        expect(spy).toHaveBeenCalledWith('error', ErrorType.json);
+      });
       expect(component.appLinks.length).toEqual(control.value.attrs.appLinks.length);
     });
 
-    it('should emit error when navigator.userAgent is not available and has all links from appLinks', () => {
-      userAgent.mockReturnValue(null);
-
+    it('should emit error when navigator.userAgent is not available and has all links from appLinks', async () => {
       const spy = jest.spyOn<SignAppLinkComponent, any>(component, 'emitToParentForm');
+      jest.spyOn(DeviceDetectorService.prototype as any, 'system', 'get').mockReturnValueOnce(System.Error);
       component.ngOnInit();
 
-      expect(spy).toHaveBeenCalledWith('error', ErrorType.userAgent);
+      await waitForAsync(() => {
+        expect(spy).toHaveBeenCalledWith('error', ErrorType.userAgent);
+      });
       expect(component.appLinks.length).toEqual(control.value.attrs.appLinks.length);
     });
   });
