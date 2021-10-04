@@ -82,7 +82,7 @@
           ></epgu-constructor-priority-item-empty>
         </ng-container>
 
-        <ng-container *ngIf="maxKindergarten > 6 || maxKindergarten < items.length">
+        <ng-container *ngIf="maxKindergarten > items.length">
           <button (click)="moreAction()" *ngIf="leftItems > 0" class="link-btn mt-24">
             Показать еще {{ leftItems }}
           </button>
