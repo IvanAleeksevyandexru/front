@@ -27,28 +27,36 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "optimization": {
+              "scripts": false,
+              "styles": {
+                "minify": false,
+                "inlineCritical": false
+              },
+              "fonts": false
+            },
             "assets": [
               "src/favicon.ico",
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "projects/epgu-constructor/src/assets",
+                "input": "./projects/epgu-constructor/src/assets",
                 "output": "assets"
               },
               {
                 "glob": "**/*",
-                "input": "projects/epgu-constructor-ui-kit/src/assets",
+                "input": "./projects/epgu-constructor-ui-kit/src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./projects/children-clubs/src/assets",
                 "output": "assets"
               },
               {
                 "glob": "**/*",
                 "input": "./node_modules/@epgu/ui/assets/",
                 "output": "./lib-assets"
-              },
-              {
-                "glob": "**/*",
-                "input": "projects/children-clubs/src/assets",
-                "output": "assets"
               }
             ],
             "styles": ["src/styles.scss"],
