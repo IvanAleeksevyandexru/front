@@ -75,7 +75,9 @@ export class CarDetailInfoService {
   public fetchVehicleInfo(): Observable<CarDetailInfo<VehicleOwnerInfo>> {
     this.vehicleInfo$.next(null);
     this.isLoadingOwnerCarInfo$.next(true);
-    return this.fetchInfo<CarDetailInfo<VehicleOwnerInfo>>('/form-backend/data/gibdd/vehicleFullInfo').pipe(
+    return this.fetchInfo<CarDetailInfo<VehicleOwnerInfo>>(
+      '/form-backend/data/gibdd/vehicleFullInfo',
+    ).pipe(
       tap((response) => {
         this.isLoadingOwnerCarInfo$.next(false);
         this.vehicleInfo$.next(response);
@@ -105,7 +107,9 @@ export class CarDetailInfoService {
   }
 
   private fetchInfo<T>(url: string): Observable<T> {
-    return this.http.post<T>(`${this.configService.apiUrl}${url}`, this.screenService.getStore());
+    return this.http.post<T>(`${this.configService.apiUrl}${url}`, this.screenService.getStore(), {
+      withCredentials: true,
+    });
   }
 
   private setState(data: [CarDetailInfo<VehicleOwnerInfo>, CarDetailInfo<NotaryInfo>]): void {
