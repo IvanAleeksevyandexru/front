@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-
+import { By } from '@angular/platform-browser';
 import { configureTestSuite } from 'ng-bullet';
+
+import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { Clarifications, DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { FileUploadFormComponent } from './file-upload-form.component';
 import { ChangeDetectionStrategy, Injector } from '@angular/core';
 import { FileUploadItemComponent } from '../../../../shared/components/file-upload/file-upload-item/file-upload-item.component';
 import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
-
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
@@ -17,12 +17,15 @@ import { ComponentsListFormServiceStub } from '../../services/components-list-fo
 import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
 import { CustomComponent } from '../../components-list.types';
 import { UploaderLimitsService } from '../../../../shared/components/file-upload/services/limits/uploader-limits.service';
+import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
+import { PluralizeModule } from '@epgu/ui/pipes';
+import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 describe('FileUploadComponent', () => {
   const fb = new FormBuilder();
   let component: FileUploadFormComponent;
   let fixture: ComponentFixture<FileUploadFormComponent>;
-  let uploadService: UploaderLimitsService;
   let screenService: ScreenService;
   let eventService: EventBusService;
   let formService: ComponentsListFormService;
@@ -30,13 +33,14 @@ describe('FileUploadComponent', () => {
   let mockId = 'test';
   let control: AbstractControl;
   let controlValue: AbstractControl;
+
   const payloadMock = {
     uploadId: '1',
     value: [],
     errors: [],
     files: [],
   };
-  let mockAttributes: FileUploadAttributes = {
+  const mockAttributes: FileUploadAttributes = {
     clarifications: ([] as unknown) as Clarifications,
     maxFileCount: 1,
     maxSize: 1,
@@ -50,7 +54,7 @@ describe('FileUploadComponent', () => {
       },
     ],
   };
-  let mockComponent = {
+  const mockComponent = {
     id: mockId,
     label: '',
     required: false,
@@ -58,7 +62,7 @@ describe('FileUploadComponent', () => {
     type: 'FileUploadComponent',
   } as CustomComponent;
 
-  let mockDisplay: DisplayDto = {
+  const mockDisplay: DisplayDto = {
     id: 'loadFiles',
     name: '',
     type: ScreenTypes.CUSTOM,
@@ -71,6 +75,10 @@ describe('FileUploadComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
+      imports: [
+        PluralizeModule,
+        FileSizeModule
+      ],
       declarations: [
         FileUploadFormComponent,
         MockComponent(FileUploadComponent),
@@ -82,6 +90,8 @@ describe('FileUploadComponent', () => {
         UploaderLimitsService,
         EventBusService,
         Injector,
+        UploaderScreenService,
+        UnsubscribeService
       ],
     })
       .overrideComponent(FileUploadFormComponent, {
@@ -91,15 +101,17 @@ describe('FileUploadComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FileUploadFormComponent);
-    uploadService = TestBed.inject(UploaderLimitsService);
     eventService = TestBed.inject(EventBusService);
     formService = TestBed.inject(ComponentsListFormService);
     screenService = TestBed.inject(ScreenService);
+
+    fixture = TestBed.createComponent(FileUploadFormComponent);
+    screenService.component = mockComponent;
     screenService.display = mockDisplay;
     component = fixture.componentInstance;
     component.componentIndex = 0;
     const { type, attrs, id, label, required } = mockComponent;
+
     form = new FormArray([
       fb.group({
         type,
@@ -122,14 +134,22 @@ describe('FileUploadComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be emit change for formService ', () => {
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should extend AbstractComponentListItemComponent', () => {
+    expect(component).toBeInstanceOf(AbstractComponentListItemComponent);
+  });
+
+  it('should emit change for formService ', () => {
     jest.spyOn(formService, 'emitChanges');
 
     eventService.emit('fileUploadValueChangedEvent', payloadMock);
     expect(formService.emitChanges).toHaveBeenCalled();
   });
 
-  it('should be update property files ', () => {
+  it('should update property files ', () => {
     const payload = { ...payloadMock, files: [{ uploadId: '1' }] };
     eventService.emit('fileUploadValueChangedEvent', payload);
 
@@ -142,6 +162,7 @@ describe('FileUploadComponent', () => {
     eventService.emit('fileUploadValueChangedEvent', payload);
     const check = {
       uploads: payload.files,
+      totalSize: 0
     };
     expect(controlValue.setValue).toHaveBeenCalledWith(check);
   });
@@ -185,5 +206,62 @@ describe('FileUploadComponent', () => {
       done();
     });
     control.updateValueAndValidity();
+  });
+
+  describe('Total size info plate', () => {
+    const selector = '.size-info';
+
+    it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is UNDEFINED', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
+    });
+
+    it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is TRUE', () => {
+      screenService.component = {
+        ...mockComponent,
+        ...{
+          attrs: {
+            hideTotalAvailableSize: true,
+            hideTotalAvailableCount: true,
+          } as FileUploadAttributes,
+        },
+      };
+      fixture.detectChanges();
+
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
+    });
+
+    it('should be visible if attrs.hideTotalAvailableSize is FALSE and attrs.maxSize is defined', () => {
+      screenService.component = {
+        ...mockComponent,
+        ...{
+          attrs: {
+            maxSize: 10000,
+            hideTotalAvailableSize: false,
+          } as FileUploadAttributes,
+        },
+      };
+      fixture.detectChanges();
+
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeTruthy();
+    });
+
+    it('should be visible if attrs.hideTotalAvailableCount is FALSE and attrs.maxFileCount is defined', () => {
+      screenService.component = {
+        ...mockComponent,
+        ...{
+          attrs: {
+            maxFileCount: 10,
+            hideTotalAvailableCount: false,
+          } as FileUploadAttributes,
+        },
+      };
+      fixture.detectChanges();
+
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeTruthy();
+    });
   });
 });

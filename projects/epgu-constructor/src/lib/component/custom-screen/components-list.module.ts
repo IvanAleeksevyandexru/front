@@ -73,6 +73,7 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmPersonalPolicyChangeModule } from './components/confirm-personal-policy-change/confirm-personal-policy-change.module';
 import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-personal-policy-change/confirm-personal-policy-change.component';
 import { MaritalStatusInputModule } from './components/marital-status-input/marital-status-input.module';
+import { PluralizeModule } from '@epgu/ui/pipes';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { MaritalStatusInputModule } from './components/marital-status-input/mari
     TimerModule,
     ValidationTypeModule,
     FormsModule,
+    PluralizeModule
   ],
   providers: [
     AddressHelperService,

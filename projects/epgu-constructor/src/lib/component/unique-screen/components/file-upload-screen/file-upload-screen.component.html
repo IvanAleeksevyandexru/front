@@ -4,7 +4,7 @@
 >
   <div *ngIf="data$ | async as data"
     class="screen-body"
-    [class.with-size-info]="showSizeInfo()"
+    [class.with-size-info]="uploaderScreenService.showLimitsInfo()"
   >
     <epgu-constructor-page-name *ngIf="header$ | async as header">
       {{ header }}
@@ -17,12 +17,14 @@
     >
     </epgu-constructor-file-upload>
 
-    <div class="size-info" *ngIf="showSizeInfo()">
+    <div class="size-info" *ngIf="uploaderScreenService.showLimitsInfo()">
       Можно выбрать еще
-      <span *ngIf="!hideTotalAvailableCount && maxFileCount !== undefined" class="size-info__bold">{{ fileCountLeft }}</span> 
-      {{ ['файл', 'файла', 'файлов'] | pluralize: fileCountLeft }}
-      <ng-container *ngIf="!hideTotalAvailableSize && maxFileSize !== undefined">
-        на <span class="size-info__bold">{{ fileSizeLeft | fileSize }}</span>
+      <span *ngIf="uploaderScreenService.showCountInfo()" class="size-info__bold">
+        {{ uploaderScreenService.getFileCountLeft() }}
+      </span>
+      {{ ['файл', 'файла', 'файлов'] | pluralize:uploaderScreenService.getFileCountLeft() }}
+      <ng-container *ngIf="uploaderScreenService.showSizeInfo()">
+        на <span class="size-info__bold">{{ uploaderScreenService.getFileSizeLeft() | fileSize }}</span>
       </ng-container>
     </div>
   </div>
