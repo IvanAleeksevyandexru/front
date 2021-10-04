@@ -6,15 +6,18 @@ import { NumberMaskOptions } from './mask-options';
   name: 'maskHandle',
 })
 export class MaskHandlePipe implements PipeTransform {
-  public transform(input: string | string[], maskOptions?: object): (string | RegExp)[] {
+  public transform(
+    input: string | string[],
+    maskOptions?: object,
+  ): (string | RegExp)[] | ((value: string) => (string | RegExp)[]) {
     if (typeof input === 'string') {
       switch (input) {
-        case MASKS.KadastrNumberInput:
-          return (MASKS_HANDLERS[MASKS.KadastrNumberInput] as unknown) as (string | RegExp)[];
         case MASKS.NumberMaskInput:
-          return (MASKS_HANDLERS[MASKS.NumberMaskInput](
-            maskOptions as Partial<NumberMaskOptions>,
-          ) as unknown) as (string | RegExp)[];
+          return MASKS_HANDLERS[MASKS.NumberMaskInput](maskOptions as Partial<NumberMaskOptions>);
+        case MASKS.KadastrNumberInput:
+          return MASKS_HANDLERS[MASKS.KadastrNumberInput];
+        case MASKS.PhoneWithCodeMaskInput:
+          return MASKS_HANDLERS[MASKS.PhoneWithCodeMaskInput];
         default:
           return null;
       }

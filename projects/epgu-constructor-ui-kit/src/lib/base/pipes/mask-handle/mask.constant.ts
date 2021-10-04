@@ -12,6 +12,7 @@ export const numberMaskDefaultOptions: Partial<NumberMaskOptions> = {
 export enum MASKS {
   KadastrNumberInput = 'KadastrNumberInput',
   NumberMaskInput = 'NumberMaskInput',
+  PhoneWithCodeMaskInput = 'PhoneWithCodeMaskInput',
 }
 
 export const MASKS_HANDLERS = {
@@ -38,7 +39,7 @@ export const MASKS_HANDLERS = {
   },
   [MASKS.NumberMaskInput]: (
     maskOptions: Partial<NumberMaskOptions>,
-  ): ((string) => (string | RegExp)[]) => {
+  ): ((value: string) => (string | RegExp)[]) => {
     const options = { ...numberMaskDefaultOptions, ...maskOptions };
 
     const cleanupPattern = new RegExp(
@@ -85,5 +86,25 @@ export const MASKS_HANDLERS = {
 
       return mask;
     };
+  },
+  [MASKS.PhoneWithCodeMaskInput]: (value: string): (string | RegExp)[] => {
+    const mask = ['+', '7', ' ', '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
+    const lastChar = value.slice(-1);
+
+    /* NOTICE: тут по необходимости дополняется маска, если вбивается номер телефона с дополнительным кодом (через *)  */
+    if (value.length === 19 && lastChar === '*') {
+      mask.push('*', /\d/);
+    } else if (value.length === 21) {
+      mask.push('*', /\d/, /\d/);
+    } else if (value.length === 22) {
+      mask.push('*', /\d/, /\d/, /\d/);
+    } else if (value.length === 23) {
+      mask.push('*', /\d/, /\d/, /\d/, /\d/);
+    } else if (value.length === 24) {
+      mask.push('*', /\d/, /\d/, /\d/, /\d/, /\d/);
+    } else if (value.length >= 25) {
+      mask.push('*', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/);
+    }
+    return mask;
   },
 };

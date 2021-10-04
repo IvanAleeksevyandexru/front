@@ -6,6 +6,7 @@ import { numberMaskDefaultOptions, NumberMaskOptions } from '@epgu/epgu-construc
 export class MaskTransformService {
   private localeThousandSeparator = this.decimalPipe.transform(1234, '0.0-0').replace(/\d/g, '');
   private localeDecimalSeparator = this.decimalPipe.transform(1.23, '0.2-2').replace(/\d/g, '');
+
   constructor(private decimalPipe: DecimalPipe) {}
 
   public transformNumberMaskInput(value: string, maskOptions: Partial<NumberMaskOptions>): string {
