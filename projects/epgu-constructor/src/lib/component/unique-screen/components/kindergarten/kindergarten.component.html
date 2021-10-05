@@ -1,5 +1,6 @@
 <ng-container *ngIf="kindergartenService.state$ | async as state">
   <epgu-constructor-select-map-object
+    #selectMapObjectComp
     [hidden]="!(state === states.map)"
   ></epgu-constructor-select-map-object>
   <lib-button
@@ -12,5 +13,6 @@
   <epgu-constructor-priority-screen
     [hidden]="!(state === states.priority)"
     (back)="kindergartenService.setState(states.map);"
+    (showMap)="showMap($event)"
   ></epgu-constructor-priority-screen>
 </ng-container>

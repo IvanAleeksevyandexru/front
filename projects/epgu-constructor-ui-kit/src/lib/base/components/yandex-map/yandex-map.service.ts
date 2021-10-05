@@ -110,7 +110,7 @@ export class YandexMapService implements OnDestroy {
    * centers the map by feature
    * @param feature
    */
-  public centeredPlaceMark<T>(feature: IFeatureItem<T> | IClusterItem<T>): void {
+  public centeredPlaceMark<T>(feature: IFeatureItem<T> | IClusterItem<T>, zoomToObject = false): void {
     this.closeBalloon();
     if (
       feature.type === IFeatureTypes.Cluster &&
@@ -126,7 +126,7 @@ export class YandexMapService implements OnDestroy {
     }
     if (coords && coords[0] && coords[1] && feature.type === IFeatureTypes.Feature) {
       this.objectManager.objects.setObjectOptions(feature.id as number, this.icons.red);
-      this.yaMapService.map.setCenter([coords[0], coords[1] + POINT_ON_MAP_OFFSET]);
+      this.yaMapService.map.setCenter([coords[0], coords[1] + POINT_ON_MAP_OFFSET], zoomToObject ? this.MAX_ZOOM : undefined);
     }
 
     const object =
@@ -219,7 +219,7 @@ export class YandexMapService implements OnDestroy {
     }
   }
 
-  public selectMapObject<T>(mapObject: YMapItem<T>): void {
+  public selectMapObject<T>(mapObject: YMapItem<T>, zoomToObject = false): void {
     if (!mapObject) return;
     let chosenMapObject = this.getObjectById(mapObject.idForMap);
     if (!chosenMapObject) {
@@ -231,7 +231,7 @@ export class YandexMapService implements OnDestroy {
       };
       this.centerAllPoints();
     }
-    this.centeredPlaceMark(chosenMapObject);
+    this.centeredPlaceMark(chosenMapObject, zoomToObject);
   }
 
   public getBoundsByCoords(coords: number[][]): [number[], number[]] {
