@@ -10,7 +10,7 @@
   <p class="map-object__address-attribute mt-16 mb-16 ">
     {{ address }}
   </p>
-  <a href="#" (click)="toggleShowAdditionalInfo()">
+  <a (click)="toggleShowAdditionalInfo()">
     {{showAdditionalInfo ? 'Свернуть' : 'Подробнее'}}
   </a>
   <ng-container *ngIf="showAdditionalInfo">
