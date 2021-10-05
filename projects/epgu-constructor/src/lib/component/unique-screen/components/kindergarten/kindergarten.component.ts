@@ -8,6 +8,7 @@ import { KindergartenSearchPanelService } from '../select-map-object/components/
   selector: 'epgu-constructor-kindergarten',
   templateUrl: './kindergarten.component.html',
   styleUrls: ['./kindergarten.component.scss'],
+  providers: [KindergartenService, KindergartenSearchPanelService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KindergartenComponent implements OnInit {

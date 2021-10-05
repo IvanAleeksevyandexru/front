@@ -28,8 +28,6 @@ import { ElectionsBalloonContentComponent } from './components/balloon-content-r
 import { BalloonContentResolverComponent } from './components/balloon-content-resolver/balloon-content-resolver.component';
 import { KindergartenContentComponent } from './components/balloon-content-resolver/components/kindergarten-balloon-content/kindergarten-balloon-content.component';
 import { KindergartenSearchPanelComponent } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.component';
-import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
-import { KindergartenService } from '../kindergarten/kindergarten.service';
 import { NotifierModule } from '@epgu/ui/components/notifier';
 import { FormsModule } from '@angular/forms';
 
@@ -52,8 +50,6 @@ import { FormsModule } from '@angular/forms';
     Icons,
     PriorityItemsService,
     NotifierService,
-    KindergartenSearchPanelService,
-    KindergartenService,
     {
       provide: 'notifierSetting',
       useValue: { singleNotifier: true },
