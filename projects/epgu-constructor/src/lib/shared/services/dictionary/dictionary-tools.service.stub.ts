@@ -49,4 +49,12 @@ export class DictionaryToolsServiceStub {
   dictionaryFiltersLoader() {
     return new Observable();
   }
+
+  loadReferenceData$() {
+    return new Observable();
+  }
+
+  watchForFilters() {
+    return new Observable();
+  }
 }
