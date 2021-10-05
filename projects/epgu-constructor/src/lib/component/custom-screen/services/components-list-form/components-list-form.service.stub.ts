@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { FormArray, FormControl } from '@angular/forms';
 
 import { CustomComponentOutputData, CustomListStatusElements } from '../../components-list.types';
 
@@ -27,4 +27,10 @@ export class ComponentsListFormServiceStub {
   }
 
   emitChanges() {}
+
+  create(): FormArray {
+    return new FormArray([
+      new FormControl()
+    ]);
+  }
 }
