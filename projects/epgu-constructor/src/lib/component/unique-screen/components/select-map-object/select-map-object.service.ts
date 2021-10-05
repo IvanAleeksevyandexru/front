@@ -300,6 +300,7 @@ export class SelectMapObjectService implements OnDestroy {
     return points[minDistanceIdx];
   }
 
+  // TODO: перенести все что относится к Kindergarten из select-map-object в kindergarten.service.ts
   public handleKindergartenSelection(): void {
     const selected = this.filteredDictionaryItems.filter((item) => item.isSelected);
     if (selected.length) {
