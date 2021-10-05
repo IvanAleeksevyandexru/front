@@ -12,13 +12,9 @@ export class KindergartenSearchPanelService implements OnDestroy {
   public bottomLabel$ = new BehaviorSubject('');
   public deptsLeftToChoose$ = new BehaviorSubject(0);
   private _deptsChoosen$ = new BehaviorSubject<number>(0);
-  private _childHomeCoords: number[];
 
   get childHomeCoords(): number[] {
-    if (!this._childHomeCoords) {
-      this._childHomeCoords = this.getChildHomeCoordinates();
-    }
-    return this._childHomeCoords;
+    return this.getChildHomeCoordinates();
   }
 
   get deptsChoosen$(): Observable<number> {
@@ -37,6 +33,7 @@ export class KindergartenSearchPanelService implements OnDestroy {
     });
   }
 
+  // TODO не вызывается из-за того что лежит в провайдерах модуля. Перенести в компонент
   ngOnDestroy(): void {
     this.deptsLeftToChoose$.complete();
     this.topLabel$.complete();

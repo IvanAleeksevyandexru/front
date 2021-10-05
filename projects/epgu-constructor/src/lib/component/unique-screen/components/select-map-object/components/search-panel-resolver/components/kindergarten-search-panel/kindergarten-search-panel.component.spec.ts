@@ -86,7 +86,7 @@ describe('KindergartenSearchPanelComponent', () => {
 
     it('should invoke yandex methods on call ', () => {
       const getObjSpy = jest.spyOn(component['yandexMapService'], 'getObjectById').mockImplementation((...args) => null);
-      component['kindergartenSearchPanelService']['_childHomeCoords'] = [10, 10];
+      jest.spyOn<any, any>(component['kindergartenSearchPanelService'], 'getChildHomeCoordinates').mockImplementation((...args) => [10, 10]);
 
       component.lookupChanged({ center: [9, 11] } as unknown as YMapItem<DictionaryYMapItem>, lookup);
 

@@ -30,6 +30,8 @@ import { KindergartenContentComponent } from './components/balloon-content-resol
 import { KindergartenSearchPanelComponent } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.component';
 import { NotifierModule } from '@epgu/ui/components/notifier';
 import { FormsModule } from '@angular/forms';
+import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
+import { KindergartenService } from '../kindergarten/kindergarten.service';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import { FormsModule } from '@angular/forms';
     Icons,
     PriorityItemsService,
     NotifierService,
+    KindergartenSearchPanelService,
+    KindergartenService,
     {
       provide: 'notifierSetting',
       useValue: { singleNotifier: true },
