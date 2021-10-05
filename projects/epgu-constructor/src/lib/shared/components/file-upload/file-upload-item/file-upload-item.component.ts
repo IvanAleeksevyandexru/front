@@ -74,6 +74,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   beforeFilesPlural = beforeFilesPlural;
   componentId = this.screenService.component?.id || null;
   isMobile: boolean = this.deviceDetectorService.isMobile;
+  isGalleryFilesButtonShown = false;
 
   overLimits = this.stat.stats;
 
@@ -166,6 +167,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       .subscribe((payload: { isAdd: boolean; file: FileItem }) => {
         this.suggest(payload);
       });
+
+    this.isGalleryFilesButtonShown = !!this.galleryFiles.length;
   }
 
   ngOnDestroy(): void {
@@ -242,10 +245,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
   cancel(type: OperationType, file: FileItem): void {
     this.process.cancel(type, file);
-  }
-
-  isGalleryFilesButtonShown(galleryFiles: UploadedFile[]): boolean {
-    return !!galleryFiles.length;
   }
 
   addUpload(file: FileItem): void {

@@ -103,10 +103,8 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   public getImgSrc(file: FileItem): string {
     const urlTemplate = (type: number): string =>
       `${this.fileUploadApiUrl}/${file.item.objectId}/${type}/download?mnemonic=${file.item.mnemonic}`;
-    if (file.item.previewType) {
-      return urlTemplate(file.item.previewType);
-    }
-    return urlTemplate(file.item.objectTypeId);
+
+    return urlTemplate(file.item.previewType || file.item.objectTypeId);
   }
 
   public handleImgError(event: Event, file: FileItem): void {
