@@ -1,5 +1,5 @@
 import { AbstractControl } from '@angular/forms';
-import { CustomComponent, CustomComponentAttrValidation } from '../../components-list.types';
+import { CustomComponent, CustomComponentAttrValidation, UpdateOn } from '../../components-list.types';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 
 interface DocInputControl extends Partial<AbstractControl> {
@@ -34,6 +34,7 @@ interface DocInputField extends CustomComponent {
     fstuc?: TextTransform;
     hidden?: boolean;
     suggestionId?: string;
+    updateOn?: UpdateOn;
   };
 }
 
