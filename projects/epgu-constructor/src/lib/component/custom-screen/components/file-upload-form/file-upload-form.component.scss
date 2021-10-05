@@ -1,7 +1,19 @@
+@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/typography";
+
 :host{
   ::ng-deep.file-upload-custom-wrapper{
     & .fileupload__wrapper{
       padding: 0;
     }
+  }
+}
+
+.size-info {
+  margin-top: 32px;
+  text-align: center;
+  line-height: 24px;
+
+  &__bold {
+    font-weight: $fw-bold;
   }
 }

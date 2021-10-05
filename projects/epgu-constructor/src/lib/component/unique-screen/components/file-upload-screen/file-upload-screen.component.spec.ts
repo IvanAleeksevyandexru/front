@@ -27,6 +27,7 @@ import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { PluralizeModule } from '@epgu/ui/pipes';
 import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
+import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -69,13 +70,17 @@ describe('FileUploadScreenComponent', () => {
   let component: FileUploadScreenComponent;
   let fixture: ComponentFixture<FileUploadScreenComponent>;
 
-  let screenService: ScreenServiceStub;
+  let screenService: ScreenService;
   let currentAnswersService: CurrentAnswersService;
   let eventBusService: EventBusService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [ScreenButtonsModule, PluralizeModule, FileSizeModule],
+      imports: [
+        ScreenButtonsModule,
+        PluralizeModule,
+        FileSizeModule
+      ],
       declarations: [
         FileUploadScreenComponent,
         MockComponent(LongButtonComponent),
@@ -92,6 +97,7 @@ describe('FileUploadScreenComponent', () => {
         CertificateEaisdoService,
         CurrentAnswersService,
         EaisdoGroupCostService,
+        UploaderScreenService
       ],
     }).overrideComponent(FileUploadScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -99,7 +105,7 @@ describe('FileUploadScreenComponent', () => {
   });
 
   beforeEach(() => {
-    screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
+    screenService = TestBed.inject(ScreenService);
     screenService.component = screenServiceComponentMockData;
     screenService.header = '';
     screenService.buttons = [button];
@@ -418,78 +424,60 @@ describe('FileUploadScreenComponent', () => {
     });
   });
 
-  describe('Total files size', () => {
-    it('should be set if files attached', () => {
-      const eventData: FileResponseToBackendUploadsItem = {
-        uploadId: 'id1',
-        files: [
-          {
-            value: [fileSample],
-          },
-        ],
-        errors: [],
-      };
+  describe('Total size info plate', () => {
+    const selector = '.size-info';
 
-      eventBusService.emit('fileUploadValueChangedEvent', eventData);
-
-      expect(component.currentFilesSize).toEqual(100);
+    it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is UNDEFINED', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
     });
 
-    describe('Info plate', () => {
-      const selector = '.size-info';
+    it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is TRUE', () => {
+      screenService.component = {
+        ...screenServiceComponentMockData,
+        ...{
+          attrs: {
+            hideTotalAvailableSize: true,
+            hideTotalAvailableCount: true,
+          } as FileUploadAttributes,
+        },
+      };
+      fixture.detectChanges();
 
-      it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is UNDEFINED', () => {
-        const debugEl = fixture.debugElement.query(By.css(selector));
-        expect(debugEl).toBeNull();
-      });
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
+    });
 
-      it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is TRUE', () => {
-        screenService.component = {
-          ...screenServiceComponentMockData,
-          ...{
-            attrs: {
-              hideTotalAvailableSize: true,
-              hideTotalAvailableCount: true,
-            } as FileUploadAttributes,
-          },
-        };
-        fixture.detectChanges();
+    it('should be visible if attrs.hideTotalAvailableSize is FALSE and attrs.maxSize is defined', () => {
+      screenService.component = {
+        ...screenServiceComponentMockData,
+        ...{
+          attrs: {
+            maxSize: 10000,
+            hideTotalAvailableSize: false,
+          } as FileUploadAttributes,
+        },
+      };
+      fixture.detectChanges();
 
-        const debugEl = fixture.debugElement.query(By.css(selector));
-        expect(debugEl).toBeNull();
-      });
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeTruthy();
+    });
 
-      it('should be visible if attrs.hideTotalAvailableSize is FALSE and attrs.maxSize is defined', () => {
-        screenService.component = {
-          ...screenServiceComponentMockData,
-          ...{
-            attrs: {
-              maxSize: 10000,
-              hideTotalAvailableSize: false,
-            } as FileUploadAttributes,
-          },
-        };
-        fixture.detectChanges();
+    it('should be visible if attrs.hideTotalAvailableCount is FALSE and attrs.maxFileCount is defined', () => {
+      screenService.component = {
+        ...screenServiceComponentMockData,
+        ...{
+          attrs: {
+            maxFileCount: 10,
+            hideTotalAvailableCount: false,
+          } as FileUploadAttributes,
+        },
+      };
+      fixture.detectChanges();
 
-        const debugEl = fixture.debugElement.query(By.css(selector));
-        expect(debugEl).toBeTruthy();
-      });
-
-      it('should be visible if attrs.hideTotalAvailableCount is FALSE and attrs.maxFileCount is defined', () => {
-        screenService.component = {
-          ...screenServiceComponentMockData,
-          ...{
-            attrs: {
-              maxFileCount: 10,
-              hideTotalAvailableCount: false,
-            } as FileUploadAttributes,
-          },
-        };
-        fixture.detectChanges();
-
-        const debugEl = fixture.debugElement.query(By.css(selector));
-        expect(debugEl).toBeTruthy();
-      });
+      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeTruthy();
     });
   });
 });

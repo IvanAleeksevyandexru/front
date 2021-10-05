@@ -8,6 +8,7 @@ import { UserInfoLoaderModule } from '../../../../shared/components/user-info-lo
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { PluralizeModule } from '@epgu/ui/pipes';
 import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
+import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
 
 @NgModule({
   declarations: [FileUploadScreenComponent],
@@ -23,5 +24,6 @@ import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.mod
     FileSizeModule,
   ],
   entryComponents: [FileUploadScreenComponent],
+  providers: [UploaderScreenService]
 })
 export class FileUploadScreenModule {}
