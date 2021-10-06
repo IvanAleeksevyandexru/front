@@ -565,7 +565,7 @@ export class DictionaryToolsService {
       component,
       data: component.attrs?.add
         ? this.loadCycledDropdown(component, cachedAnswers)
-        : this.adaptDropdown(component.attrs.dictionaryList),
+        : this.adaptDropdown(component.attrs?.dictionaryList),
     });
   }
 
@@ -611,7 +611,7 @@ export class DictionaryToolsService {
   }
 
   private adaptDropdown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
-    return items.map((item: CustomComponentDropDownItem, index: number) => {
+    return items && items.map((item: CustomComponentDropDownItem, index: number) => {
       const itemText = item.label || item.title;
       const itemCode = item.code || item?.value || `${itemText}-${index}`;
       return {

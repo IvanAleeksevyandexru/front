@@ -358,7 +358,7 @@ export class ComponentsListFormService {
         value: [
           {
             value: this.componentsListToolsService.convertedValue(component),
-            disabled: component.attrs.disabled,
+            disabled: component.attrs?.disabled,
           },
           validators,
         ],
