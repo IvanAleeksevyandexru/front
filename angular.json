@@ -74,7 +74,7 @@
                 }
               ],
               "aot": true,
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -85,7 +85,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "6mb"
+                  "maximumError": "15mb"
                 },
                 {
                   "type": "anyComponentStyle",
