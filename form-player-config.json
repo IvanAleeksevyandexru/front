@@ -73,7 +73,7 @@
     "isSocialShareDisabled": true,
     "isAutocompleteServiceDisabled": false,
     "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/",
-    "suggestionsApiUrl": "/suggests/api/drafts/v1/suggests",
+    "suggestionsApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/suggests2",
     "staticDomainContentPath": "https://gu-st.ru/content",
     "zipkinGenerationEnabled": false,
     "zipkinSendTraceIdToHealth": false,

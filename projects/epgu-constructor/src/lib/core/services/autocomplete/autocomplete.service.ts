@@ -264,10 +264,9 @@ export class AutocompleteService {
             if (Array.isArray(fields)) {
               fields.forEach((field: ComponentFieldDto) => {
                 const fieldSuggestionId = field.suggestionId;
+
                 this.setFieldsSuggestionIds(
                   fieldSuggestionId,
-                  component.id,
-                  field.fieldName,
                   fieldSuggestionIdsSet,
                 );
               });
@@ -275,15 +274,15 @@ export class AutocompleteService {
               Object.keys(fields).forEach((fieldName) => {
                 const field: { suggestionId: string } = fields[fieldName];
                 const fieldSuggestionId = field?.suggestionId;
+
                 this.setFieldsSuggestionIds(
                   fieldSuggestionId,
-                  component.id,
-                  fieldName,
                   fieldSuggestionIdsSet,
                 );
               });
             }
           }
+
           return suggestionId;
         });
       return [...result, ...Array.from(fieldSuggestionIdsSet)];
@@ -298,12 +297,9 @@ export class AutocompleteService {
 
   private setFieldsSuggestionIds(
     fieldSuggestionId: string,
-    componentId: ComponentDto['id'],
-    fieldName: string,
     fieldSuggestionIdsSet: Set<string>,
   ): void {
     if (fieldSuggestionId) {
-      this.componentsSuggestionsSet.add([fieldSuggestionId, `${componentId}.${fieldName}`]);
       fieldSuggestionIdsSet.add(fieldSuggestionId);
     }
   }
