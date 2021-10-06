@@ -127,22 +127,14 @@ export class AutocompletePrepareService {
       mnemonic,
       componentsGroupIndex,
     );
-    let componentValue = this.findComponentValue(
+    const componentValue = this.findComponentValue(
       component,
       id,
       value,
       mnemonic,
       componentsSuggestionsSet,
     );
-    if (component.type === CustomScreenComponentTypes.DocInput) {
-      const [, fieldName] = Array.from(componentsSuggestionsSet)
-        .find(([suggestId]) => suggestId === mnemonic)[1]
-        .split('.');
-      componentValue = JSON.stringify({
-        ...JSON.parse(component.value),
-        [fieldName]: componentValue,
-      });
-    }
+
     this.setComponentValue(component, componentValue);
 
     if (isChildrenListType(parentComponent)) {
@@ -282,22 +274,31 @@ export class AutocompletePrepareService {
     /* Иногда сюда приходит композитный мнемоник вида `zagran_passport.number`, из которого нужно предварительно
     вытащить "родительский" мнемоник, основного компонента, обслуживающий свои филды, например DocInput */
     const [parentMnemonic] = mnemonic.split('.');
+    const getComponentDto = (
+      componentsList: ComponentDto[],
+      parentMnemonic: string,
+    ): ComponentDto => {
+      return (
+        componentsList.find((component: ComponentDto) => {
+          return Array.from(componentsSuggestionsSet).some(
+            ([componentMnemonic, componentId]) =>
+              componentId === component.id && componentMnemonic === parentMnemonic,
+          );
+        }) ||
+        // TODO: небольшой костыль, от которого следует избавиться в ходе глобального рефактора саджестов
+        componentsList.find((component: ComponentDto) => {
+          return Array.from(componentsSuggestionsSet).some(
+            ([componentMnemonic, componentId]) =>
+              componentId.includes(component.id) && componentMnemonic === parentMnemonic,
+          );
+        })
+      );
+    };
+
     if (repeatableComponents.length && componentsGroupIndex > -1) {
-      return repeatableComponents[componentsGroupIndex].find((component) => {
-        return Array.from(componentsSuggestionsSet).some(
-          ([componentMnemonic, componentId]) =>
-            (componentId === component.id && componentMnemonic === parentMnemonic) ||
-            (componentId.includes(component.id) && componentMnemonic === parentMnemonic),
-        );
-      });
+      return getComponentDto(repeatableComponents[componentsGroupIndex], parentMnemonic);
     } else {
-      return this.screenService.display?.components?.find((component) => {
-        return Array.from(componentsSuggestionsSet).some(
-          ([componentMnemonic, componentId]) =>
-            (componentId === component.id && componentMnemonic === parentMnemonic) ||
-            (componentId.includes(component.id) && componentMnemonic === parentMnemonic),
-        );
-      });
+      return getComponentDto(this.screenService.display?.components, parentMnemonic);
     }
   }
 
@@ -308,9 +309,22 @@ export class AutocompletePrepareService {
     mnemonic: string,
     componentsSuggestionsSet: Set<[string, string]>,
   ): string {
-    const [, fieldName] = Array.from(componentsSuggestionsSet).find(
-      ([componentMnemonic]) => componentMnemonic === mnemonic,
-    );
+    let fieldName: string;
+
+    if (component.type === CustomScreenComponentTypes.DocInput) {
+      fieldName = Array.from(componentsSuggestionsSet)
+        .find(([suggestId]) => suggestId === mnemonic)[1]
+        .split('.')[1];
+      value = JSON.stringify({
+        ...JSON.parse(component.value),
+        [fieldName]: value,
+      });
+    } else {
+      fieldName = Array.from(componentsSuggestionsSet).find(
+        ([componentMnemonic]) => componentMnemonic === mnemonic,
+      )[1];
+    }
+
     const suggestions =
       this.screenService.suggestions[component?.id] || this.screenService.suggestions[fieldName];
     const result = suggestions?.list.find((item) => {
