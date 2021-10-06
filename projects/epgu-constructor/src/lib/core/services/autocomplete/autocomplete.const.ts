@@ -8,19 +8,22 @@ export const prepareClassifiedSuggestionItems = (
   isDadataAddress?: boolean,
 ): { [key: string]: ISuggestionItem } => {
   let result: { [key: string]: ISuggestionItem } = {};
+
   if (suggestions) {
     const { mnemonic } = suggestions;
     suggestions.list.forEach((item) => {
       const { id, originalItem } = item;
       const parsedOriginalItem = JSON.parse(originalItem);
+
       Object.keys(parsedOriginalItem).forEach((fieldName) => {
         const itemList = {
           value: isDadataAddress
             ? parsedOriginalItem[fieldName]['fullAddress']
             : parsedOriginalItem[fieldName],
-          mnemonic: `${mnemonic}.${fieldName}`,
+          mnemonic: `${mnemonic}`,
           id,
         };
+
         if (result[fieldName]) {
           result[fieldName].list.push(itemList);
         } else {
@@ -32,6 +35,7 @@ export const prepareClassifiedSuggestionItems = (
       });
     });
   }
+
   return result;
 };
 
