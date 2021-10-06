@@ -13,6 +13,7 @@
     "lkUrl": "https://pgu-uat-betalk.test.gosuslugi.ru",
     "paymentUrl": "https://oplata.gosuslugi.ru",
     "fileUploadApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files",
+    "galleryApiUrl": "http://pgu-dev-fed.test.gosuslugi.ru/api/gallery",
     "quizDataApiUrl": "http://127.0.0.1:8190/quiz-data/data",
     "childrenClubsApi": "https://dev01.pgu2-pub.test.gosuslugi.ru/api/eaisdo-service/v1",
     "identificationApiUrl": "/v1/identification",
