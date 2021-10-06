@@ -23,9 +23,8 @@ import {
   ComponentBaloonContentDto,
   ComponentDictionaryFilterDto,
 } from '@epgu/epgu-constructor-types';
-  import {
-  IuikFullDataResponse
-} from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
+// eslint-disable-next-line max-len
+import { IuikFullDataResponse } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
 import {
   KindergartenSearchPanelService
 } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
@@ -72,7 +71,7 @@ export class SelectMapObjectService implements OnDestroy {
     private yaMapService: YaMapService,
     private icons: Icons,
     private yandexMapService: YandexMapService,
-    private kindergartenSearchPanel: KindergartenSearchPanelService,
+    private kindergartenSearchPanel: KindergartenSearchPanelService
   ) {
     this.selectedValue.pipe(filter((value) => !value)).subscribe(() => {
       this.mapOpenedBalloonId = null;
@@ -111,9 +110,7 @@ export class SelectMapObjectService implements OnDestroy {
       hashMap[coord.address] = { latitude: coord.latitude, longitude: coord.longitude };
     });
     this.dictionary.items.forEach((item, index) => {
-      const coords = hashMap[
-        item.attributeValues[this.componentAttrs.attributeNameWithAddress]
-      ] as IGeoCoords;
+      const coords = hashMap[item.attributeValues[this.componentAttrs.attributeNameWithAddress]] as IGeoCoords;
       item.objectId = index;
       if (coords) {
         item.center = [coords.longitude, coords.latitude];
@@ -278,10 +275,7 @@ export class SelectMapObjectService implements OnDestroy {
           childHomeCoords,
           filteredDictionaryItems,
         );
-        const reflectionPoint = this.getReflectionPoint(
-          nearestKindergarten.center,
-          childHomeCoords,
-        );
+        const reflectionPoint = this.getReflectionPoint(nearestKindergarten.center, childHomeCoords);
         bounds = this.yandexMapService.getBoundsByCoords([
           nearestKindergarten.center,
           reflectionPoint,
@@ -289,7 +283,7 @@ export class SelectMapObjectService implements OnDestroy {
       }
     }
     this.yandexMapService.setBounds(bounds);
-  }
+}
 
   public findNearestObject(startPoint: number[], points: DictionaryYMapItem[]): DictionaryYMapItem {
     const distances = points.map((item) =>
@@ -302,14 +296,13 @@ export class SelectMapObjectService implements OnDestroy {
 
   // TODO: перенести все что относится к Kindergarten из select-map-object в kindergarten.service.ts
   public handleKindergartenSelection(): void {
-    const selected = this.filteredDictionaryItems.filter((item) => item.isSelected);
+    const selected = this.filteredDictionaryItems.filter(
+      (item) => item.isSelected,
+    );
     if (selected.length) {
       this.isSelectedView.next(true);
-      this.selectedViewItems$.next(
-        selected.map((item) => {
-          return { ...item, expanded: false };
-        }),
-      );
+      this.selectedViewItems$.next(selected.map((item) => { return { ...item, expanded: false };
+      }));
       const processed = selected.map((item) => {
         return {
           center: item.center,
@@ -327,25 +320,18 @@ export class SelectMapObjectService implements OnDestroy {
     this.isSelectedView.next(false);
     this.selectedViewItems$.next([]);
     this.yandexMapService.selectedValue$.next(null);
-    this.yandexMapService.placeObjectsOnMap(
-      this.convertDictionaryItemsToMapPoints(this.filteredDictionaryItems),
-    );
+    this.yandexMapService.placeObjectsOnMap(this.convertDictionaryItemsToMapPoints(this.filteredDictionaryItems));
   }
 
   public placeChildsHomeOnMap(): void {
     const options = this.icons.childsHome;
     this.yandexMapService.addObjectsOnMap(
-      this.yandexMapService.createPlacemark(
-        this.kindergartenSearchPanel.childHomeCoords,
-        CHILDS_HOME_PROPERTIES,
-        options,
-      ),
+      this.yandexMapService.createPlacemark(this.kindergartenSearchPanel.childHomeCoords, CHILDS_HOME_PROPERTIES, options),
     );
   }
 
-  private convertDictionaryItemsToMapPoints(
-    dictionaryItems: DictionaryYMapItem[],
-  ): { obj: DictionaryYMapItem; center: [number, number] }[] {
+  private convertDictionaryItemsToMapPoints
+  (dictionaryItems: DictionaryYMapItem[]): { obj: DictionaryYMapItem; center: [number, number] }[] {
     return dictionaryItems.map((item, idx) => {
       item.objectId = idx;
       return {
@@ -366,7 +352,7 @@ export class SelectMapObjectService implements OnDestroy {
     const minDistanceIdx = distances.indexOf(minDistance);
     return points[minDistanceIdx];
   }
-  /**
+   /**
    * Возвращает точку, симметричную параметру point, относительно параметра center
    * @param point точка
    * @param center центр симметрии

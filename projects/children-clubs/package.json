@@ -7,11 +7,11 @@
     "lint:fix": "cd ../../ && ng lint children-clubs --fix"
   },
   "peerDependencies": {
-    "@angular/common": "12.2.5",
-    "@angular/core": "12.2.5",
-    "@angular/forms": "12.2.5",
-    "@angular/cdk": "12.2.5",
-    "@epgu/ui": "3.0.385-3-core-frontv3",
+    "@angular/common": "11.0.0",
+    "@angular/core": "11.0.0",
+    "@angular/forms": "11.0.0",
+    "@angular/cdk": "11.0.0",
+    "@epgu/ui": "0.1.119-modules41",
     "rxjs": "6.6.6",
     "lodash": ""
   },
