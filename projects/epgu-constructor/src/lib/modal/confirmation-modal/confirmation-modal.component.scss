@@ -1,6 +1,5 @@
 @import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
 
-// TODO Избавиться от ng-deep
 :host::ng-deep {
   .conf-modal__text {
     white-space: pre-line;

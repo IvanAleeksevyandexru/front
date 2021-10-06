@@ -16,10 +16,6 @@ import { CustomComponent } from '../../components-list.types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { EaisdoStateTypes } from './eaisdo.interface';
 
-/* TODO: подумать над возможностью переноса в скоуп @epgu/children-clubs.
-  Текущее решение продиктовано необходимостью экстендится от AbstractComponentListItemComponent для участия в CUSTOM-экранах,
-  на которые завязано слишком много явных и не явных механизмов,
-  которые повлекут за собой тонны дублированного кода в скоупе children-clubs */
 @Component({
   selector: 'epgu-constructor-eaisdo-group-cost',
   templateUrl: './eaisdo-group-cost.component.html',
