@@ -87,31 +87,29 @@ export interface FileUploadItem {
  * Интерфейс для класса подгруженного файла
  */
 export interface UploadedFile {
+  fileName: string;
+  objectId: string;
+  objectTypeId: number;
+  description: string;
+  mnemonic: string;
+  uploaded: boolean;
+  fileSize: number;
+  hasError: boolean;
+  mimeType?: string;
   alternativeMimeTypes?: string[];
-  bucket?: string;
   created?: string;
   deleted?: boolean;
-  description: string;
   fileExt?: string;
-  fileName: string;
-  fileSize: number;
   fileUid?: number;
-  hasError: boolean;
   hasSign?: boolean;
-  isFromSuggests?: boolean;
   metaId?: number;
-  mimeType?: string;
-  mnemonic: string;
   nodeId?: string;
-  objectId: string;
-  objectType?: number;
-  objectTypeId: number;
-  previewType?: number;
   realPath?: string;
   relativePath?: string;
   updated?: string;
-  uploaded: boolean;
   userId?: number;
+  bucket?: string;
+  isFromSuggests?: boolean;
 }
 
 /**

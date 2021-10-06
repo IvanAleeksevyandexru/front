@@ -3,6 +3,7 @@ import { MockComponent } from 'ng-mocks';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
+
 import { FileUploadComponent } from './file-upload.component';
 import { configureTestSuite } from 'ng-bullet';
 import { Clarifications } from '@epgu/epgu-constructor-types';
@@ -78,6 +79,11 @@ describe('FileUploadComponent', () => {
     });
   });
 
+  it('should be getFiles', () => {
+    fixture.detectChanges();
+    expect(component.getFiles()).toEqual([{ uploadId: '1', value: [] }]);
+  });
+
   it('should be set total', () => {
     jest.spyOn(uploadService, 'registerUploader');
     fixture.detectChanges();
@@ -125,8 +131,8 @@ describe('FileUploadComponent', () => {
       files: [{ required: true, uploadId: '1', value: [] }],
     };
     jest.spyOn(eventService, 'emit');
-    component['handleNewValueForItem'](event);
+    component.handleNewValueForItem(event);
     expect(eventService.emit).toHaveBeenCalledWith('fileUploadValueChangedEvent', check);
-    expect(component['value']?.files).toEqual(check.files);
+    expect(component.getFiles()).toEqual(check.files);
   });
 });

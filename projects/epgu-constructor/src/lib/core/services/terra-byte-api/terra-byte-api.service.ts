@@ -50,17 +50,6 @@ export class TerraByteApiService {
     );
   }
 
-    /**
-   * Возвращает список файлов из галереи (ака саджетс-файлы), для определённой мнемоники
-   * @param mnemonic - строковый идентификатор мнемоники
-   */
-  getGalleryByMnemonic(mnemonic: string): Observable<UploadedFile[]> {
-    return this.http.get<UploadedFile[]>(
-      this.getGalleryApiUrl(`/${mnemonic}`),
-      this.getServerRequestOptions(),
-    );
-  }
-
   /**
    * Возвращает информацию по файлу
    * @param options - параметры для получения файла
@@ -207,13 +196,6 @@ export class TerraByteApiService {
    */
   private getTerabyteApiUrl = (relativePath): string => this.config.fileUploadApiUrl + relativePath;
 
-
-  /**
-   * Возвращает путь API адреса для обращений к сервису Gallery
-   *
-   * @param relativePath - относительный путь от API для запросов
-   */
-  private getGalleryApiUrl = (relativePath): string => this.config.galleryApiUrl + relativePath + '/files';
   /**
    * Возращает опции запроса
    * @private
