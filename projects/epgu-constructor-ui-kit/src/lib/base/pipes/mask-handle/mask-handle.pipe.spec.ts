@@ -20,6 +20,11 @@ describe('MaskHandlePipe', () => {
     expect(result).toBe(MASKS_HANDLERS.KadastrNumberInput);
   });
 
+  it('test PhoneWithCodeMaskInput transform', () => {
+    const result = pipe.transform(MASKS.PhoneWithCodeMaskInput);
+    expect(result).toBe(MASKS_HANDLERS.PhoneWithCodeMaskInput);
+  });
+
   it('test NumberMaskInput transform', () => {
     const priceMaskSpy = jest.spyOn(MASKS_HANDLERS, MASKS.NumberMaskInput);
 
