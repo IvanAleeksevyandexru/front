@@ -1,13 +1,6 @@
-import {
-  AfterContentChecked,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+
 import { Align, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { MonthYear } from '@epgu/ui/models/date-time';
 
@@ -16,7 +9,7 @@ import { MonthYear } from '@epgu/ui/models/date-time';
   templateUrl: './constructor-month-picker.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConstructorMonthPickerComponent implements AfterContentChecked {
+export class ConstructorMonthPickerComponent {
   @Input() id: string;
   @Input() control: AbstractControl;
   @Input() minMonth: MonthYear;
@@ -29,11 +22,4 @@ export class ConstructorMonthPickerComponent implements AfterContentChecked {
   @Output() clearedEvent = new EventEmitter<void>();
   @Output() focusEvent = new EventEmitter();
   @Output() blurEvent = new EventEmitter();
-
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  ngAfterContentChecked(): void {
-    // TODO убрать. Узнать почему календарь странно себя ведет (при первом открытии год устанавливается на минимальный)
-    this.cdr.detectChanges();
-  }
 }
