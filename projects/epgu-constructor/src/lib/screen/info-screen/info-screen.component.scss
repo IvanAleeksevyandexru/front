@@ -38,7 +38,7 @@
   &.screen-body ::ng-deep .screen-button {
     margin-top: $screen-pad-40;
     @include tablets-down {
-      margin-top: $screen-pad-32;
+      margin-top: $screen-pad-24;
     }
   }
 }
@@ -46,16 +46,6 @@
 .info-screen--status {
   .divider {
     display: none;
-  }
-}
-
-.info-screen--solution-page,
-.info-screen--solution-page-2 {
-  & > .info__submit > ::ng-deep .screen-button {
-    margin-top: $screen-pad-40;
-    @include tablets-down {
-      margin-top: $screen-pad-32;
-    }
   }
 }
 
