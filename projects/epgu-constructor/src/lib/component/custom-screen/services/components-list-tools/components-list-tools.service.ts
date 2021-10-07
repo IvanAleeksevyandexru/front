@@ -32,7 +32,7 @@ export class ComponentsListToolsService {
       return component.value;
     } else if (typeof component.presetValue === 'string' && component.presetValue.length) {
       return this.parseValue(component.presetValue, isDateAndValue, component.type);
-    } else if (!isUndefined(component.attrs.defaultValue)) {
+    } else if (!isUndefined(component.attrs?.defaultValue)) {
       return this.parseValue(
         (component.attrs.defaultValue as unknown) as string,
         isDateAndValue,

@@ -127,7 +127,7 @@ export class ComponentsListRelationsService {
     initInitialValues: boolean,
     componentsGroupIndex?: number
   ): Promise<void> {
-    if (component.attrs.dateRestrictions && !initInitialValues) {
+    if (component.attrs?.dateRestrictions && !initInitialValues) {
       await this.setLimitDates(component, form, applicantAnswers, componentsGroupIndex);
       return;
     }
@@ -239,7 +239,7 @@ export class ComponentsListRelationsService {
     component: CustomComponent,
   ): CustomComponent[] {
     return components.filter((_component: CustomComponent) =>
-      this.isComponentDependent(_component.attrs.ref, component),
+      this.isComponentDependent(_component.attrs?.ref, component),
     );
   }
 
@@ -331,7 +331,7 @@ export class ComponentsListRelationsService {
     component: CustomComponent,
     relation: CustomComponentRefRelation
   ): boolean {
-    return component.attrs.ref?.some((o) => o.relation === relation);
+    return component.attrs?.ref?.some((o) => o.relation === relation);
   }
 
   private createRestrictionGroups(rawRestrictions: DateRestriction[]): DateRestrictionGroups {
