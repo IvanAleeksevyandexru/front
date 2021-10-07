@@ -34,6 +34,7 @@
     {{ slot.slotTime | date: 'shortTime' }}
   </div>
 </div>
+
 <div class="time-slots-empty" *ngIf="!isExistsSlots && daysNotFoundTemplate">
   <h4>{{ daysNotFoundTemplate.header }}</h4>
   <epgu-cf-ui-constructor-helper-text size="lg">
@@ -46,4 +47,3 @@
     {{ timeNotFoundTemplate.description }}
   </epgu-cf-ui-constructor-helper-text>
 </div>
-

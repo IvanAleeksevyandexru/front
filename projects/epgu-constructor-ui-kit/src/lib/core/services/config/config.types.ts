@@ -2,18 +2,18 @@
  * Перечень поддерживаемых моков
  */
 export type MockApi = 'mvd' | 'selectMap' | 'timeSlot' | 'payment';
-export type TimeSlotsApi = {
-  [key: string]: {
-    subject?: string;
-    calendarName?: string;
-    preliminaryReservation: 'true' | 'false';
-    serviceId: string;
-    serviceCode?: string;
-    eserviceId: string;
-    preliminaryReservationPeriod?: string;
-    routeNumber: string;
-  };
-};
+export interface TimeSlotsApiItem {
+  subject?: string;
+  calendarName?: string;
+  preliminaryReservation: 'true' | 'false';
+  serviceId: string;
+  serviceCode?: string;
+  eserviceId: string;
+  preliminaryReservationPeriod?: string;
+  routeNumber: string;
+}
+
+export type TimeSlotsApi = Record<string, TimeSlotsApiItem>;
 
 /**
  * @property {string}apiUrl - url до форм плеер апи
