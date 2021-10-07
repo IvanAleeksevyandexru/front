@@ -27,7 +27,6 @@ export type TimeSlotsApi = {
  * @property {string}billsApiUrl - url до сервиса по получению информации о счете на оплату, как правило apiHostName/api/pay/v1/bills
  * @property {string}paymentUrl - url до сервиса оплаты, как правило apiHostName
  * @property {string}fileUploadApiUrl - url до хранилища файлов, как правило apiHostName/api/storage/v1/files
- * @property {string}galleryApiUrl - url до галереи файлов (ака саджест-файлы), как правило apiHostName/api/gallery/{galleryCode}/files
  * @property {string}quizDataApiUrl - url до API сервиса quiz-data, отвечающий за кроссплатформенное хранение квиза
  * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
  * @property {string}invitationUrl - url приглашения по емейл
@@ -65,7 +64,6 @@ export interface Config {
   billsApiUrl: string;
   paymentUrl: string;
   fileUploadApiUrl: string;
-  galleryApiUrl: string;
   quizDataApiUrl: string;
   lkUrl: string;
   lkApi: string;

@@ -44,7 +44,6 @@ export enum FileItemStatusText {
 
 export interface UploadContext {
   files: UploadedFile[];
-  galleryFiles: UploadedFile[];
   objectId: string;
   prefixForMnemonic: string;
   data: FileUploadItem;
@@ -93,7 +92,6 @@ export class FileItem {
         type,
       } as File;
       this.isRawMock = true;
-      this.item.objectTypeId = this.item.objectType; // TODO: разобраться откуда взялось дублирование данных
     }
     this.isImage = /^.*\.(jpe?g|gif|png|bmp)$/i.test(this.raw.name);
   }
@@ -151,7 +149,6 @@ export class FileItem {
     return {
       objectId: this.item.objectId,
       objectType: this.item.objectTypeId,
-      objectTypeId: this.item.objectTypeId,
       mnemonic: this.item.mnemonic,
       mimeType: this.item.mimeType,
     } as TerraFileOptions;
