@@ -113,7 +113,7 @@ const mockFileItem: () => FileItem = () =>
 describe('FileUploadItemComponent', () => {
   let component: FileUploadItemComponent;
   let fixture: ComponentFixture<FileUploadItemComponent>;
-  let prepateService: UploaderValidationService;
+  let validation: UploaderValidationService;
   let terabyteService: TerraByteApiService;
   let screenService: ScreenService;
   let viewerService: ViewerService;
@@ -160,7 +160,7 @@ describe('FileUploadItemComponent', () => {
   });
 
   beforeEach(() => {
-    prepateService = TestBed.inject(UploaderValidationService);
+    validation = TestBed.inject(UploaderValidationService);
     uploader = TestBed.inject(UploaderManagerService);
     terabyteService = TestBed.inject(TerraByteApiService);
     screenService = TestBed.inject(ScreenService);
@@ -180,7 +180,7 @@ describe('FileUploadItemComponent', () => {
 
     jest.spyOn(viewerService, 'open').mockImplementation(() => of());
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));
-    jest.spyOn(prepateService, 'prepare').mockImplementation((file: FileItem) => of(file));
+    jest.spyOn(validation, 'prepare').mockImplementation((file: FileItem) => of(file));
     jest.spyOn(terabyteService, 'uploadFile').mockImplementation(() => of(null));
     jest
       .spyOn(terabyteService, 'deleteFile')
@@ -226,18 +226,6 @@ describe('FileUploadItemComponent', () => {
     expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).toBeNull();
   });
 
-  xit('should load file error', () => {
-    jest
-      .spyOn(prepateService, 'prepare')
-      .mockImplementation((file: FileItem) =>
-        of(file.setError({ type: ErrorActions.addUploadErr, text: '' })),
-      );
-    const files = createFileList([createFileMock('test.pdf')]);
-    component.selectFiles(files);
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).not.toBeNull();
-  });
 
   it('should attach file', () => {
     component.suggest({ isAdd: true, file: mockFileItem() });
@@ -280,40 +268,6 @@ describe('FileUploadItemComponent', () => {
     expect(
       fixture.debugElement.query(By.css('.uploader-manager-item__button.remove_button')),
     ).toBeNull();
-  });
-
-  xit('should open link', () => {
-    const files = createFileList([createFileMock('test.pdf', { type: 'application/pdf' })]);
-    component.selectFiles(files);
-    fixture.detectChanges();
-    const name: HTMLDivElement = fixture.debugElement.query(
-      By.css('.uploader-manager-item__title > .name'),
-    )?.nativeElement;
-
-    const link: HTMLLinkElement = fixture.debugElement.query(By.css('.link'))?.nativeElement;
-    jest.spyOn(link, 'click');
-    name.click();
-
-    fixture.detectChanges();
-    expect(link.click).toHaveBeenCalled();
-  });
-
-  xit('should open viewer', () => {
-    const files = createFileList([createFileMock('test.png', { type: 'image/png' })]);
-    component.selectFiles(files);
-    fixture.detectChanges();
-    const manager = fixture.debugElement.query(By.css('epgu-constructor-uploader-manager'))
-      .componentInstance;
-
-    jest.spyOn(manager, 'view');
-
-    const name: HTMLDivElement = fixture.debugElement.query(
-      By.css('.uploader-manager-item__title > .name'),
-    )?.nativeElement;
-    name.click();
-
-    fixture.detectChanges();
-    expect(manager.view).toHaveBeenCalled();
   });
 
   it('should open attached viewer', () => {

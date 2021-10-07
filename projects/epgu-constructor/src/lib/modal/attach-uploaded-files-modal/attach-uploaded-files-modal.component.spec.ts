@@ -22,6 +22,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
+import { of } from 'rxjs';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;
@@ -131,9 +132,9 @@ describe('AttachUploadedFilesModalComponent', () => {
     });
   });
 
-  xdescribe('previewFile()', () => {
+  describe('previewFile()', () => {
     it('should call viewerService.open()', () => {
-      const viewerServiceOpenSpy = spyOn(viewerService, 'open');
+      const viewerServiceOpenSpy = jest.spyOn(viewerService, 'open').mockReturnValue(of());
       component.previewFile(mockFile);
       expect(viewerServiceOpenSpy).toBeCalled();
     });

@@ -143,8 +143,9 @@ describe('DatesToolsService', () => {
   });
 
   describe('isSameDate() method', () => {
-    xit('should return true if two dates are equal', async () => {
+    it('should return true if two dates are equal', async () => {
       const today = new Date();
+      jest.spyOn(service, 'getToday').mockReturnValue(Promise.resolve(today));
       const serviceToday = await service.getToday();
       expect(service.isSameDate(today, serviceToday)).toBeTruthy();
     });
@@ -303,10 +304,21 @@ describe('DatesToolsService', () => {
       ).toEqual('30.09.2014, 00:00:00');
     });
 
-    xit('should return setted date for january', () => {
+    it('should return setted date for january', () => {
       const date = new Date();
-      const resultDate = service.setCalendarDate(date, 2019, 3, 10);
-      expect(resultDate.toISOString()).toEqual('2019-04-10T00:00:00.000Z');
+      const resultDate = service
+        .setCalendarDate(date, 2019, 3, 10);
+      expect(resultDate instanceof Date).toBeTruthy();
+      const expectedDate = new Date('2019-04-10T00:00:00.000Z');
+      const resultYear = resultDate.getFullYear();
+      const expectedYear = expectedDate.getFullYear();
+      const resultMonth = resultDate.getMonth();
+      const expectedMonth = expectedDate.getMonth();
+      const resultDay = resultDate.getDay();
+      const expectedDay = expectedDate.getDay();
+      expect(resultYear).toEqual(expectedYear);
+      expect(resultMonth).toEqual(expectedMonth);
+      expect(resultDay).toEqual(expectedDay);
     });
   });
 
