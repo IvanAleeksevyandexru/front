@@ -1,0 +1,29 @@
+<div class="calendar-table">
+  <div class="calendar-grip-container-wrapper">
+    <div class="calendar-grid-container">
+      <div class="calendar-grid-wrap current-month">
+        <div class="calendar-grid">
+          <div class="calendar-week-days">
+            <div class="calendar-week-day" *ngFor="let name of namesDaysWeek">
+              <span class="calendar-week-day-text">{{ name }}</span>
+            </div>
+          </div>
+          <div class="calendar-week" *ngFor="let week of days$ | async">
+            <epgu-constructor-day
+              *ngFor="let day of week"
+              [today]="today$$ | async"
+              [day]="day.date"
+              [isLocked]="day.locked"
+              [selected]="selected"
+              [daysInMainSection]="daysInMainSection$ | async"
+              [firstDayOfMainSection]="firstDayOfMainSection$ | async"
+              [month]="month$ | async"
+              [lockProvider]="lockProvider$$ | async"
+              (choose)="chooseAction($event)"
+            ></epgu-constructor-day>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

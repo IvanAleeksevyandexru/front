@@ -43,6 +43,7 @@ import {
   DurationTimeTypes,
   StartOfTypes,
 } from '../../../base/constants/dates';
+import { ComponentRestrictionsDto } from '@epgu/epgu-constructor-types';
 
 interface Duration {
   years?: number;
@@ -95,6 +96,11 @@ export class DatesToolsService {
       .map((_, index) => this.format(_setMonth(date, nowMonth + index - 1), formatString));
   }
 
+  public resetTime(date: Date): void {
+    date.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    date.setHours(0, 0, 0, 0);
+  }
+
   /**
    *
    * @param resetTime если true, то сбрасывает время до 00:00:00
@@ -107,8 +113,7 @@ export class DatesToolsService {
       .toPromise();
     const date = new Date(timeString);
     if (resetTime) {
-      date.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-      date.setHours(0, 0, 0, 0);
+      this.resetTime(date);
     }
     return date;
   }
@@ -271,6 +276,44 @@ export class DatesToolsService {
   }
 
   /**
+   * Проверяет дату по ограничениям на валидность
+   * @param {ComponentRestrictionsDto} restrictions набор ограничений
+   * @param {Date} refDate
+   * @param {Date} date дата для валидации
+   * @param startType тип обрезания даты, например, до начала дня ('day'), до начала месяца ('month')
+   * @returns {boolean} false - дата прошла проверки. true - дата инвалидна
+   */
+  public checkDateRestrictions(
+    restrictions: ComponentRestrictionsDto,
+    refDate: Date,
+    date: Date,
+    startType: StartOfTypes = 'day',
+  ): boolean {
+    const refDateResult = this.startOf(refDate, startType);
+
+    const restrictionsMap = restrictions || {};
+    // Объект с функциями проверки дат на заданные ограничения
+    const checks = {
+      minDate: (amount, type): boolean => {
+        let expectedBefore = this.add(refDateResult, amount, type);
+        expectedBefore = this.startOf(expectedBefore, startType);
+        return this.isBefore(date, expectedBefore);
+      },
+      maxDate: (amount, type): boolean => {
+        let expectedAfter = this.add(refDateResult, amount, type);
+        expectedAfter = this.startOf(expectedAfter, startType);
+        return this.isAfter(date, expectedAfter);
+      },
+    };
+    // Перебираем все ключи restrictions из attrs до первого "плохого"
+    // пример: "minDate": [30, "d"],
+    return Object.keys(restrictionsMap).some((key) => {
+      const [amount, type] = restrictionsMap[key];
+      return checks[key](amount, type);
+    });
+  }
+
+  /**
    * Возвращает новую дату плюс указанное количество единиц
    * @param {Date | Number} date отправная дата отсчета
    * @param {Number} amount кол-во ед.
@@ -279,6 +322,15 @@ export class DatesToolsService {
   public add(date: number | Date, amount: number | string, unit: DurationTimeTypes): Date {
     const duration = this.getDuration(amount, unit);
     return _add(date, duration);
+  }
+
+  public isDateOutOfSection(
+    date: Date,
+    firstDayOfMainSection: Date,
+    daysInMainSection: number,
+  ): boolean {
+    const diff = this.differenceInCalendarDays(firstDayOfMainSection, date);
+    return diff < 0 || diff >= daysInMainSection;
   }
 
   /**

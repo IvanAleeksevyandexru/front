@@ -1,0 +1,8 @@
+<div
+  *ngFor="let slot of list"
+  class="time-slot-item"
+  [ngClass]="{ selected: slot?.slotId === currentSlot?.slotId }"
+  (click)="chooseAction(slot)"
+>
+  {{ slot.slotTime | date: 'shortTime' }}
+</div>

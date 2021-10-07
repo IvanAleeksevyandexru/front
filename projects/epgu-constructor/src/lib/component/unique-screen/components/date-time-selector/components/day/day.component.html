@@ -1,0 +1,15 @@
+<div
+  class="calendar-day"
+  (click)="chooseAction()"
+  [ngClass]="{
+    'is-past': isPast$ | async,
+    today: isToday$ | async,
+    locked: isLocked,
+    selected: isSelected$ | async,
+    'outer-month': isOutOfMonth$ | async,
+    'outer-section': isOutOfSection$ | async,
+    visible: isVisible$ | async
+  }"
+>
+  <span class="calendar-day-text">{{ dayNumber$ | async }}</span>
+</div>

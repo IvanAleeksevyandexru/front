@@ -24,6 +24,11 @@ export interface KindergartenAttrs {
   attrs?: ComponentAttrsDto;
 }
 
+export enum SectionType {
+  normal = 'normal',
+  today = 'today',
+}
+
 export interface ComponentAttrsDto {
   accuracy?: string;
   actions?: ComponentActionDto[];
@@ -135,7 +140,7 @@ export interface ComponentAttrsDto {
   sendEmailLabel?: string;
   showMaskSymbols?: boolean;
   singleChild?: boolean;
-  startSection?: string;
+  startSection?: SectionType;
   startTime?: string;
   state?: string;
   states?: ComponentStatesDto;

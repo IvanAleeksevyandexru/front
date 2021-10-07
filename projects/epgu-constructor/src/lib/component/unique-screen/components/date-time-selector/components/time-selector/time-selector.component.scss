@@ -1,0 +1,38 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+.divider {
+  margin: 20px 0 24px;
+}
+:host {
+  margin: 0 -4px -4px -4px;
+  display: flex;
+  flex-flow: wrap;
+
+  .time-slot-item {
+    $margin: 4px;
+    background: $color-alice-blue;
+    border-radius: 8px;
+    color: $color-gosblue;
+    padding: 10px 16px;
+    line-height: 24px;
+    margin: $margin;
+    cursor: pointer;
+    text-align: center;
+    width: calc((100% / 3) - #{2 * $margin});
+    @include phones-up() {
+      width: calc((100% / 4) - #{2 * $margin});
+    }
+    @include tablets-up {
+      width: calc((100% / 6) - #{2 * $margin});
+    }
+
+    &:hover {
+      background: $color-tagline-hit;
+    }
+
+    &.selected {
+      background: $color-gosblue;
+      color: $color-white;
+    }
+  }
+}

@@ -1,0 +1,67 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+
+:host {
+  display: block;
+}
+
+.months-range {
+  @include typ-plain-text;
+  color: $color-gosblue;
+  padding-bottom: 16px;
+}
+
+.dropdown-list,
+.months-range {
+  text-align: center;
+}
+
+.compact-selector {
+  ::ng-deep.dropdown.compact {
+    width: 195px;
+    min-width: 100px;
+
+    ::ng-deep.dropdown-field {
+      border: none;
+
+      &.disabled {
+        background-color: $color-white;
+
+        .dropdown-arrow {
+          opacity: 0;
+        }
+      }
+
+      .dropdown-value > .selected-value-text {
+        color: $color-gosblue !important;
+      }
+    }
+
+    ::ng-deep .dropdown-list-container {
+      background: $color-white;
+      @include shadow-second();
+      border-color: transparent;
+      border-radius: 12px;
+      padding: 24px;
+      width: 195px;
+
+      .dropdown-list-area .dropdown-item {
+        .dropdown-item-text {
+          color: $color-gosblue !important;
+        }
+        &.selected {
+          background-color: $color-white !important;
+          .dropdown-item-text {
+            color: $color-summer-night !important;
+          }
+        }
+        &.highlighted {
+          background-color: $color-white !important;
+          .dropdown-item-text {
+            color: $color-active-item !important;
+          }
+        }
+      }
+    }
+  }
+}
