@@ -2,8 +2,7 @@
 {
   "extends": "./tsconfig.app.json",
   "angularCompilerOptions": {
-    "enableIvy": false,
-    "compilationMode": "full"
+    "enableIvy": false
   },
   "files": [
     "src/main.ts",
