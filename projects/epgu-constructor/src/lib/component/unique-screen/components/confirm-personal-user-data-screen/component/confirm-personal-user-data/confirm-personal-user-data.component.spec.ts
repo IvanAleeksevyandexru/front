@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockModule, MockProvider } from 'ng-mocks';
+import { MockModule, MockPipe, MockProvider } from 'ng-mocks';
 
 import {
   ConfigService,
@@ -49,6 +49,7 @@ import { FormPlayerService } from '../../../../../../form-player/services/form-p
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
+import { ConfirmPersonalUserDataPipe } from './confirm-personal-user-data.pipe';
 
 const componentMock: ComponentBase = {
   attrs: {
@@ -130,7 +131,10 @@ describe('ConfirmPersonalUserDataComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [ConfirmPersonalUserDataComponent],
+      declarations: [
+        ConfirmPersonalUserDataComponent,
+        MockPipe(ConfirmPersonalUserDataPipe, value => value),
+      ],
       imports: [
         MockModule(OutputHtmlModule),
         MockModule(DefaultUniqueScreenWrapperModule),

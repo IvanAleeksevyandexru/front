@@ -6,6 +6,7 @@ describe('InterpolationService', () => {
   let service: InterpolationService;
   let componentAttrs = {
     label: 'Some label ${var1}, ${obj1.var2}',
+    deep: { attrs: 'Some label ${obj1.var2}' },
     value: { var1: 'one var', obj1: { var2: 'second var' }},
   };
 
@@ -43,7 +44,19 @@ describe('InterpolationService', () => {
 
     expect(result).toEqual({
       label: 'Some label one var, second var',
+      deep: { attrs: 'Some label ${obj1.var2}' },
       value: { var1: 'one var', obj1: { var2: 'second var' }},
     });
   });
+
+  it('should interpolate recursive', () => {
+    const result = service.interpolateRecursive([componentAttrs], componentAttrs.value);
+
+    expect(result).toEqual([{
+      label: 'Some label one var, second var',
+      deep: { attrs: 'Some label second var' },
+      value: { var1: 'one var', obj1: { var2: 'second var' }},
+    }]);
+  });
 });
+
