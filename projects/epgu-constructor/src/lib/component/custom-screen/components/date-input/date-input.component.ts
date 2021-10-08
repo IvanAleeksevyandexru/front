@@ -8,7 +8,7 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
 @Component({
   selector: 'epgu-constructor-date-input',
   templateUrl: './date-input.component.html',
-  changeDetection: ChangeDetectionStrategy.Default, // TODO: нужно сделать onPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
 export class DateInputComponent extends AbstractComponentListItemComponent {
