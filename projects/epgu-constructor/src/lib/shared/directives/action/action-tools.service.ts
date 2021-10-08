@@ -25,7 +25,6 @@ import { catchError, filter } from 'rxjs/operators';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ComponentStateForNavigate } from './action.interface';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -47,6 +46,9 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionToolsService {
+  public confirmationModalComponent;
+  public dropdownListModalComponent;
+
   constructor(
     private formPlayerApiService: FormPlayerApiService,
     private autocompleteApiService: AutocompleteApiService,
@@ -80,7 +82,7 @@ export class ActionToolsService {
     const confirmation = confirmations[action.value];
     const confirmationButtons = confirmation.buttons;
 
-    this.modalService.openModal(ConfirmationModalComponent, {
+    this.modalService.openModal(this.confirmationModalComponent, {
       title: confirmation.title || '',
       text: confirmation.text || '',
       componentId: componentId || this.screenService.component.id,
@@ -101,6 +103,13 @@ export class ActionToolsService {
       showCrossButton: true,
       showCloseButton: false,
     });
+  }
+
+  public openDropdownListModal(
+    { value: clarificationId }: ComponentActionDto,
+    componentId: string,
+  ): void {
+    this.modalService.openModal(this.dropdownListModalComponent, { componentId, clarificationId });
   }
 
   public deleteSuggestAction(action: ComponentActionDto, targetElement: HTMLElement): void {

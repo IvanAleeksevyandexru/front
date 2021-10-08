@@ -19,7 +19,7 @@ import { AnswerButtonModule } from '../../shared/components/answer-button/answer
     ScreenButtonsModule,
     SharedModalModule,
     ClipboardModule,
-    AnswerButtonModule
+    AnswerButtonModule,
   ],
   entryComponents: [ConfirmationModalComponent],
 })
