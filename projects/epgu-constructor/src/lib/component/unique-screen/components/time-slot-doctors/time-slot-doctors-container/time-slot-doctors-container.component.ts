@@ -146,6 +146,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   isDoctorNotAvailable = false;
   areSlotsNotAvailable = false;
   bookedSlot: SlotInterface;
+  today: Date;
   errorMessage;
 
   get monthsRange(): string {
@@ -180,7 +181,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   private daysInMainSection: number;
   private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
   private _monthsRange = new Set();
-  private today: Date;
 
   constructor(
     public screenService: ScreenService,
@@ -491,11 +491,83 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     });
   }
 
-  private focusOnFirstLookup(): void {
+  focusOnFirstLookup(): void {
     if (this.timeSlotDoctorService.isOnlyDocLookupNeeded) {
       this.timeSlotDoctorsComponent.docLookup.setFocus();
     } else {
       this.timeSlotDoctorsComponent.specLookup.setFocus();
+    }
+  }
+
+  handleMessageError(): void {
+    this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
+    if (this.errorMessage === 101) {
+      this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
+    }
+    if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
+      this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
+        .toPromise()
+        .then((result) => {
+          if (result) {
+            this.formPlayer.initData();
+          }
+        });
+    } else if (this.component.attrs.ts.slotsNotFoundTemplate) {
+      this.areSlotsNotAvailable = true;
+    } else if (this.errorMessage.includes(NO_DATA)) {
+      this.isDoctorNotAvailable = true;
+      this.doctorsNotFoundTemplate.header = `
+            <h6 class='yellow-line mt-24'>
+              Нет свободного времени для приёма
+            </h6>`;
+      this.doctorsNotFoundTemplate.description = `
+            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
+              Этот врач занят на ближайшие 14 дней. Выберите другого специалиста
+            </div>`;
+    } else {
+      const message = this.errorMessage
+        .replace('FAILURE:', '')
+        .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+        .replace('NO_DATA:', '');
+      this.isDoctorNotAvailable = true;
+      this.doctorsNotFoundTemplate.header = `
+            <h6 class='yellow-line mt-24'>
+              Нет свободного времени для приёма
+            </h6>`;
+      this.doctorsNotFoundTemplate.description = `
+            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
+              ${message}
+            </div>`;
+    }
+  }
+
+  handleLookupProviderErrorMessage(errorMessage: string, refName: string): void {
+    if (errorMessage != null && errorMessage !== 'Operation completed') {
+      if (
+        !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT) &&
+        !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) &&
+        refName !== 'ServiceOrSpecs'
+      ) {
+        this.isDoctorNotAvailable = true;
+        const regExp = /\{textAsset\}?/g;
+        // eslint-disable-next-line no-param-reassign
+        errorMessage = errorMessage
+          .replace('FAILURE:', '')
+          .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+          .replace('NO_DATA:', '');
+
+        if (errorMessage.includes(STATIC_ERROR_MESSAGE)) {
+          this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
+            regExp,
+            STATIC_ERROR_TEMPLATE,
+          );
+        } else {
+          this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
+            regExp,
+            errorMessage,
+          );
+        }
+      }
     }
   }
 
@@ -559,40 +631,14 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         )
         .pipe(
           map((reference) => {
-            let errorMessage = reference?.data?.error?.errorDetail?.errorMessage;
+            const errorMessage = reference?.data?.error?.errorDetail?.errorMessage;
             let refName;
 
             if (Array.isArray(additionalParams)) {
               const result = additionalParams.filter((param) => param?.value === 'ServiceOrSpecs');
               refName = result.length > 0 ? result[0]?.value : undefined;
             }
-
-            if (errorMessage != null && errorMessage !== 'Operation completed') {
-              if (
-                !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT) &&
-                !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) &&
-                refName !== 'ServiceOrSpecs'
-              ) {
-                this.isDoctorNotAvailable = true;
-                const regExp = /\{textAsset\}?/g;
-                errorMessage = errorMessage
-                  .replace('FAILURE:', '')
-                  .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
-                  .replace('NO_DATA:', '');
-
-                if (errorMessage.includes(STATIC_ERROR_MESSAGE)) {
-                  this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
-                    regExp,
-                    STATIC_ERROR_TEMPLATE,
-                  );
-                } else {
-                  this.doctorsNotFoundTemplate.description = this.doctorsNotFoundTemplate.description.replace(
-                    regExp,
-                    errorMessage,
-                  );
-                }
-              }
-            }
+            this.handleLookupProviderErrorMessage(errorMessage, refName);
 
             if (attrs.searchProvider.filterByAttributeName) {
               // eslint-disable-next-line no-param-reassign
@@ -655,48 +701,6 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         this.changeDetectionRef.markForCheck();
       },
     );
-  }
-
-  private handleMessageError(): void {
-    this.errorMessage = this.timeSlotDoctorService.getErrorMessage();
-    if (this.errorMessage === 101) {
-      this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
-    }
-    if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
-      this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
-        .toPromise()
-        .then((result) => {
-          if (result) {
-            this.formPlayer.initData();
-          }
-        });
-    } else if (this.component.attrs.ts.slotsNotFoundTemplate) {
-      this.areSlotsNotAvailable = true;
-    } else if (this.errorMessage.includes(NO_DATA)) {
-      this.isDoctorNotAvailable = true;
-      this.doctorsNotFoundTemplate.header = `
-            <h6 class='yellow-line mt-24'>
-              Нет свободного времени для приёма
-            </h6>`;
-      this.doctorsNotFoundTemplate.description = `
-            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
-              Этот врач занят на ближайшие 14 дней. Выберите другого специалиста
-            </div>`;
-    } else {
-      const message = this.errorMessage
-        .replace('FAILURE:', '')
-        .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
-        .replace('NO_DATA:', '');
-      this.isDoctorNotAvailable = true;
-      this.doctorsNotFoundTemplate.header = `
-            <h6 class='yellow-line mt-24'>
-              Нет свободного времени для приёма
-            </h6>`;
-      this.doctorsNotFoundTemplate.description = `
-            <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
-              ${message}
-            </div>`;
-    }
   }
 
   private addDayToWeek(week: IDay[], date: Date, today: Date): void {
