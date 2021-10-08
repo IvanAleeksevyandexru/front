@@ -143,7 +143,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         }
       }
 
-      if (url.includes('dictionary/mzrf_regions_smev3')) {
+      if (url.includes('dictionary/mzrf_regions_smev3') || url.includes('dictionary/mzrf_regions_vaccination')) {
         const dictionaryError = error as DictionaryResponseError;
         const dictionaryResponse = body as DictionaryResponse;
         if (
