@@ -8,7 +8,11 @@ export class DownloadService {
    * Скачивание файла
    */
   public downloadFile({ value, type }: { value: string; type: string }): void {
-    const blob = new Blob([value], { type });
+    const isBase64 = type.includes(';base64');
+    const data = isBase64 ? this.convertBase64(value) : value;
+    // на мобилке не работает, если не обрезать тип
+    const fileType = isBase64 ? type.replace(';base64', '') : type;
+    const blob = new Blob([data], { type: fileType });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
 
@@ -26,5 +30,9 @@ export class DownloadService {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     }, 200);
+  }
+
+  private convertBase64(value: string): Uint8Array {
+   return new Uint8Array(atob(value).split('').map(char => char.charCodeAt(0)));
   }
 }

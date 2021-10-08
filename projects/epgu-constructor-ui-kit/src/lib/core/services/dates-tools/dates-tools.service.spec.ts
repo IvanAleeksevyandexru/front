@@ -143,6 +143,7 @@ describe('DatesToolsService', () => {
   });
 
   describe('isSameDate() method', () => {
+    // TODO: починить тест
     it('should return true if two dates are equal', async () => {
       const today = new Date();
       jest.spyOn(service, 'getToday').mockReturnValue(Promise.resolve(today));

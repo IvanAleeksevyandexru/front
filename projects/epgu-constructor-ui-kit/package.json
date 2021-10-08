@@ -12,7 +12,7 @@
     "@angular/core": "^12.2.5",
     "@angular/forms": "^12.2.5",
     "@datorama/akita": "6.2.0",
-    "@epgu/ui": "0.1.121-modules",
+    "@epgu/ui": "3.0.385-3-core-frontv3",
     "rxjs": "6.6.6",
     "lodash": "",
     "ngx-perfect-scrollbar": "8.0.0"

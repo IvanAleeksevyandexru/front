@@ -2,13 +2,11 @@
 {
   "extends": "./tsconfig.app.json",
   "angularCompilerOptions": {
-    "enableIvy": false,
+    "enableIvy": true,
     "compilationMode": "full"
   },
   "files": [
     "src/main.ts",
     "src/polyfills.ts",
-    "projects/epgu-constructor-ui-kit/src/lib/modal/modal.service.ts",
-    "projects/epgu-constructor-ui-kit/src/lib/core/decorators/replace-arguments.ts"
   ]
 }

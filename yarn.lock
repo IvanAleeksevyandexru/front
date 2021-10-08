@@ -218,12 +218,12 @@
   dependencies:
     tslib "^2.2.0"
 
-"@angular/cdk@11.2.3":
-  version "11.2.3"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-11.2.3.tgz#e4e0cba88a0db469bfd6e52d1c964461358215da"
-  integrity sha512-QehBMt36nNfXZ8nBGJLLUQlexzQv6rohQmEYXULHarAC3Ily8DnB9wDGJ4emlKyGz1MIVYR0tZP39RmQp0hH+g==
+"@angular/cdk@12.2.5":
+  version "12.2.5"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-12.2.5.tgz#005c91eba34aa015a5a67b309b046008f8e69a5d"
+  integrity sha512-sB+chDISuQ2orEgWumVkEaaQ2Mkf5SDBlNGMwgwUV5a2eSp0wDprZS+3+H8lHc533z2Y4GOh6Apklku8XQT5qw==
   dependencies:
-    tslib "^2.0.0"
+    tslib "^2.2.0"
   optionalDependencies:
     parse5 "^5.0.0"
 
@@ -1791,19 +1791,14 @@
     tslib "^2.0.0"
     zipkin-transport-http "0.22.0"
 
-"@epgu/ui@3.0.383-2-core-frontv4":
-  version "3.0.383-2-core-frontv4"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.383-2-core-frontv4.tgz#fa71bbeebecce89448bf391997d22082255142ea"
-  integrity sha512-ZGC9gOedjtNbioib4VKqRsHSoWgir4Q2nm6LwsSCK8ep0CoJF9gjo5+9QuNK4MdWYGgbH8Qdes1jj7v0QxFpQg==
+"@epgu/ui@3.0.385-3-core-frontv3":
+  version "3.0.385-3-core-frontv3"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.385-3-core-frontv3.tgz#336487d747580527e6b6d2b59af5834a191166de"
+  integrity sha512-nRMzNb49I66AifE5720AJCizbnkwet5ezQowhU+Fh5lTrj4dGBkRNsoeU6Fc+p+GW8S1FgAIXDntITCYH1VYDg==
   dependencies:
+    "@epgu/zipkin" "0.0.3"
     tslib "^2.0.0"
-
-"@epgu/ui@3.0.384-1-core-frontv16":
-  version "3.0.384-1-core-frontv16"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.384-1-core-frontv16.tgz#f9b30ae5255ac368b89a4c194e6065d92d315641"
-  integrity sha512-2FGWkO4STHQFBSidGM+sYVYMIzFf4Wry71BwbnEEFPE9EsuDoNIPyO23lGhfNbRrSSP9jEuvN1Z8dWA2S+z73A==
-  dependencies:
-    tslib "^2.0.0"
+    zipkin-transport-http "0.22.0"
 
 "@epgu/zipkin@0.0.3":
   version "0.0.3"
@@ -6079,9 +6074,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.846:
-  version "1.3.860"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.860.tgz#d612e54ed75fa524c12af8da3ad8121ebfe2802b"
-  integrity sha512-gWwGZ+Wv4Mou2SJRH6JQzhTPjL5f95SX7n6VkLTQ/Q/INsZLZNQ1vH2GlZjozKyvT0kkFuCmWTwIoCj+/hUDPw==
+  version "1.3.861"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.861.tgz#981e37a79af7a7b29bbaeed36376f4795527de13"
+  integrity sha512-GZyflmpMnZRdZ1e2yAyvuFwz1MPSVQelwHX4TJZyXypB8NcxdPvPNwy5lOTxnlkrK13EiQzyTPugRSnj6cBgKg==
 
 emittery@^0.7.1:
   version "0.7.2"
