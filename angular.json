@@ -32,12 +32,12 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "projects/epgu-constructor/src/assets",
+                "input": "./projects/epgu-constructor/src/assets",
                 "output": "assets"
               },
               {
                 "glob": "**/*",
-                "input": "projects/epgu-constructor-ui-kit/src/assets",
+                "input": "./projects/epgu-constructor-ui-kit/src/assets",
                 "output": "assets"
               },
               {
@@ -47,7 +47,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "projects/children-clubs/src/assets",
+                "input": "./projects/children-clubs/src/assets",
                 "output": "assets"
               }
             ],
@@ -56,7 +56,8 @@
           },
           "configurations": {
             "fast": {
-              "tsConfig": "./tsconfig.app.fast.json"
+              "tsConfig": "./tsconfig.app.fast.json",
+              "optimization": false
             },
             "development": {
               "vendorChunk": true,
