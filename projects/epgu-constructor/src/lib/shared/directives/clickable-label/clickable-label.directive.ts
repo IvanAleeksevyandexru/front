@@ -1,5 +1,11 @@
 import { Directive, ElementRef, HostListener, Input, NgZone } from '@angular/core';
-import { Clarifications, ActionType, DTOActionAction, ActionAnswerDto, ComponentActionDto } from '@epgu/epgu-constructor-types';
+import {
+  Clarifications,
+  ActionType,
+  DTOActionAction,
+  ActionAnswerDto,
+  ComponentActionDto,
+} from '@epgu/epgu-constructor-types';
 import {
   ModalService,
   DeviceDetectorService,
@@ -8,12 +14,10 @@ import {
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { SmuEvent } from '@epgu/ui/models';
-import { ClickableLabelUniqueModalTypes } from './clickable-label-unique-modal.types';
 
 const excludedTypesForState = [ActionType.deleteSuggest];
 
@@ -23,6 +27,8 @@ const excludedTypesForState = [ActionType.deleteSuggest];
 export class ClickableLabelDirective {
   @Input() public clarifications: Clarifications;
   @Input() public componentId: string;
+
+  public confirmationModalComponent;
 
   constructor(
     private actionService: ActionService,
@@ -42,7 +48,9 @@ export class ClickableLabelDirective {
     const targetElementActionType = targetElement.getAttribute('data-action-type') as ActionType;
     const targetElementActionValue = targetElement.getAttribute('data-action-value');
     const targetElementActionAction = targetElement.getAttribute('data-action-action');
-    const targetElementActionMultipleAnswers = targetElement.getAttribute('data-action-multipleAnswers');
+    const targetElementActionMultipleAnswers = targetElement.getAttribute(
+      'data-action-multipleAnswers',
+    );
     const targetElementActionAttrs = targetElement.getAttribute('data-action-attrs');
     const needPrevent = targetElement.hasAttribute('href') && !targetElement.getAttribute('href');
 
@@ -132,7 +140,14 @@ export class ClickableLabelDirective {
     }
 
     this.actionService.switchAction(
-      { label: '', type, action: actionDTO, value, multipleAnswers: _multipleAnswers, attrs: _attrs },
+      {
+        label: '',
+        type,
+        action: actionDTO,
+        value,
+        multipleAnswers: _multipleAnswers,
+        attrs: _attrs,
+      },
       this.componentId || this.screenService.component.id,
       targetElement,
     );
@@ -150,38 +165,27 @@ export class ClickableLabelDirective {
   private _startToShowModal(clarifications: Clarifications = {}, targetElementId: string): void {
     const targetElementModalData = clarifications[targetElementId];
     if (targetElementModalData) {
-      this._showModal(targetElementModalData, targetElementId);
+      this._showModal(targetElementModalData);
     }
   }
 
-  private _showModal(targetClarification: { text?: string }, targetElementId: string): void {
+  private _showModal(targetClarification: { text?: string }): void {
     const clarifications = { ...this.clarifications };
-    const { uniqueModalComponent, isValidUniqueModal } = this._handleModalType(this.clarifications, targetElementId);
-    const modalComponent = isValidUniqueModal ? uniqueModalComponent : ConfirmationModalComponent; 
+    const modalComponent = this.confirmationModalComponent;
 
-    this.modalService.openModal(modalComponent, {
-      ...targetClarification,
-      clarifications,
-      componentId: this.componentId,
-    }).subscribe((value) => {
-      if (value) {
-        const id = value as string;
-        const newTarget = clarifications[id];
-  
-        if (newTarget) this._showModal(newTarget, id);
-      }
-    });
-  }
+    this.modalService
+      .openModal(modalComponent, {
+        ...targetClarification,
+        clarifications,
+        componentId: this.componentId,
+      })
+      .subscribe((value) => {
+        if (value) {
+          const id = value as string;
+          const newTarget = clarifications[id];
 
-  private _handleModalType(clarifications: Clarifications, targetElementId: string): {
-    uniqueModalComponent,
-    isValidUniqueModal: boolean
-  } {
-    const uniqueModalComponent = ClickableLabelUniqueModalTypes[clarifications[targetElementId].id];
-
-    return {
-      uniqueModalComponent,
-      isValidUniqueModal: uniqueModalComponent && clarifications[targetElementId].type === 'UniqueModal',
-    };
+          if (newTarget) this._showModal(newTarget);
+        }
+      });
   }
 }

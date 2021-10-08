@@ -12,7 +12,6 @@ import {
   LocalStorageService,
   SessionStorageService,
   ConfigService,
-  ModalService,
   LocationService,
 } from '@epgu/epgu-constructor-ui-kit';
 
@@ -22,7 +21,6 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ActionAnswerDto, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { ORDER_TO_ORDER_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
-import { DropdownListModalComponent } from '../../../modal/dropdown-list-modal/components/dropdown-list-modal.component';
 import { ScreenStore } from '../../../screen/screen.types';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { ActionToolsService } from './action-tools.service';
@@ -43,7 +41,6 @@ export class ActionService {
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
     private sessionStorageService: SessionStorageService,
-    private modalService: ModalService,
     private jsonHelperService: JsonHelperService,
     private locationService: LocationService,
   ) {}
@@ -79,6 +76,9 @@ export class ActionService {
       case ActionType.confirmModalStep:
         this.actionToolsService.openConfirmationModal(action, componentId);
         break;
+      case ActionType.dropdownListModal:
+        this.actionToolsService.openDropdownListModal(action, componentId);
+        break;
       case ActionType.download:
         this.actionToolsService.downloadAction(action);
         break;
@@ -102,9 +102,6 @@ export class ActionService {
         break;
       case ActionType.deleteSuggest:
         this.actionToolsService.deleteSuggestAction(action, targetElement);
-        break;
-      case ActionType.dropdownListModal:
-        this.openDropdownListModal(action, componentId);
         break;
       case ActionType.deliriumNextStep:
         this.actionToolsService.handleDeliriumAction(action, componentId);
@@ -223,13 +220,6 @@ export class ActionService {
 
   private redirectToLegalEdit(): void {
     return this.navService.redirectTo(`${this.configService.lkUrl}/info`);
-  }
-
-  private openDropdownListModal(
-    { value: clarificationId }: ComponentActionDto,
-    componentId: string,
-  ): void {
-    this.modalService.openModal(DropdownListModalComponent, { componentId, clarificationId });
   }
 
   private redirectToPayByUin(): void {

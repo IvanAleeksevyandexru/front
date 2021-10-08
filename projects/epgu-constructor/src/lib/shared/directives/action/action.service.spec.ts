@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ActionService } from './action.service';
-import { ConfigService, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, LocationService, LocationServiceStub, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
@@ -19,7 +19,6 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { configureTestSuite } from 'ng-bullet';
@@ -71,7 +70,6 @@ describe('ActionService', () => {
   let localStorageService: LocalStorageService;
   let sessionStorageService: SessionStorageService;
   let formPlayerApiService: FormPlayerApiService;
-  let modalService: ModalService;
   let currentAnswersService: CurrentAnswersService;
   let locationService: LocationService;
   let hookService: HookService;
@@ -84,27 +82,27 @@ describe('ActionService', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: NavigationService, useClass: NavigationServiceStub },
-        { provide: DownloadService, useClass: DownloadServiceStub },
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
         { provide: HookService, useClass: HookServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
-        HtmlRemoverService,
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         ActionService,
         ActionToolsService,
-        NavigationModalService,
-        CurrentAnswersService,
         AutocompleteApiService,
+        CurrentAnswersService,
+        EaisdoGroupCostService,
+        EventBusService,
+        HtmlRemoverService,
         HttpClient,
         HttpHandler,
-        EventBusService,
-        EaisdoGroupCostService,
         JsonHelperService,
+        NavigationModalService,
       ],
     });
   });
@@ -121,7 +119,6 @@ describe('ActionService', () => {
     localStorageService = TestBed.inject(LocalStorageService);
     sessionStorageService = TestBed.inject(SessionStorageService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
-    modalService = TestBed.inject(ModalService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
@@ -259,9 +256,9 @@ describe('ActionService', () => {
   });
 
   it('should call switchAction openDropdownListModal', () => {
-    spyOn(modalService, 'openModal').and.callThrough();
+    spyOn(actionToolsService, 'openDropdownListModal').and.callThrough();
     actionService.switchAction(openDropdownModalAction, null);
-    expect(modalService.openModal).toHaveBeenCalled();
+    expect(actionToolsService.openDropdownListModal).toHaveBeenCalled();
   });
 
   it('should call switchAction openConfirmationModal', () => {
@@ -275,9 +272,9 @@ describe('ActionService', () => {
         },
       },
     });
-    spyOn(modalService, 'openModal').and.callThrough();
+    spyOn(actionToolsService, 'openConfirmationModal').and.callThrough();
     actionService.switchAction(openConfirmationModalAction, null);
-    expect(modalService.openModal).toHaveBeenCalled();
+    expect(actionToolsService.openConfirmationModal).toHaveBeenCalled();
   });
 
   it('should call switchAction handleDeliriumAction', () => {
