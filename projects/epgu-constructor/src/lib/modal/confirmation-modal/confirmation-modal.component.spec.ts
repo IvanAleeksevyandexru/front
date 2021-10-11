@@ -30,11 +30,8 @@ import { By } from '@angular/platform-browser';
 import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { NotifierService } from '@epgu/ui/services/notifier';
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
-import { ActionToolsService } from '../../shared/directives/action/action-tools.service';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
-import { ClickableLabelModule } from '../../shared/directives/clickable-label/clickable-label.module';
-import { ClickableLabelDirective } from '../../shared/directives/clickable-label/clickable-label.directive';
 import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 
@@ -77,10 +74,8 @@ describe('ConfirmationModalComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        MockProvider(ActionToolsService),
         MockProvider(ActionService),
         MockProvider(CurrentAnswersService),
-        MockProvider(ClickableLabelDirective),
         MockProvider(HtmlSelectService),
         MockProvider(JsonHelperService),
       ],

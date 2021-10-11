@@ -6,7 +6,6 @@ import {
   OnInit,
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-
 import {
   ModalBaseComponent,
   EventBusService,
@@ -14,7 +13,6 @@ import {
   ConfigService,
   ConfirmationModalBaseButton,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { Clarifications } from '@epgu/epgu-constructor-types';
 import { PhotoRequirementsModalSetting } from './photo-requirements-modal.interface';
 import { uploadPhotoElemId } from '../../../../../../shared/components/upload-and-edit-photo-form/upload-and-edit-photo-form.constant';

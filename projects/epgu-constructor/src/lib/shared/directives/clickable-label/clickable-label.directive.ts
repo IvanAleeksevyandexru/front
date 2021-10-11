@@ -28,8 +28,6 @@ export class ClickableLabelDirective {
   @Input() public clarifications: Clarifications;
   @Input() public componentId: string;
 
-  public confirmationModalComponent;
-
   constructor(
     private actionService: ActionService,
     private currentAnswersService: CurrentAnswersService,
@@ -171,10 +169,10 @@ export class ClickableLabelDirective {
 
   private _showModal(targetClarification: { text?: string }): void {
     const clarifications = { ...this.clarifications };
-    const modalComponent = this.confirmationModalComponent;
+    const ConfirmationModalComponent = this.screenService.confirmationModalComponent;
 
     this.modalService
-      .openModal(modalComponent, {
+      .openModal(ConfirmationModalComponent, {
         ...targetClarification,
         clarifications,
         componentId: this.componentId,

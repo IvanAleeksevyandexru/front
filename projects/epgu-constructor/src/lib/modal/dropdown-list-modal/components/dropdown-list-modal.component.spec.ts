@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-
 import { DropdownListModalComponent } from './dropdown-list-modal.component';
 import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
 import { FilterPipe } from '../pipes/filter.pipe';

@@ -7,10 +7,8 @@ import {
   EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
-
 import { DropdownListContent, DropdownListItem } from '../dropdown-list.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import { ActionToolsService } from '../../../shared/directives/action/action-tools.service';
 
 @Component({
   selector: 'epgu-constructor-dropdown-list-modal',
@@ -38,10 +36,9 @@ export class DropdownListModalComponent extends ModalBaseComponent implements On
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
-    private actionToolsService: ActionToolsService,
   ) {
     super(injector);
-    this.actionToolsService.dropdownListModalComponent = this;
+    this.screenService.dropdownListModalComponent = this;
   }
 
   ngOnInit(): void {
