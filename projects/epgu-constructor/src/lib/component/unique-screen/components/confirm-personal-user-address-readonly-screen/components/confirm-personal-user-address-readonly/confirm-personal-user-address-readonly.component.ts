@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TextTransform, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
+
 import {
   UnsubscribeService,
   ConfigService,
@@ -42,6 +44,7 @@ export class ConfirmPersonalUserAddressReadonlyComponent implements OnInit, OnDe
   public isEditAction: boolean;
   public isRequired: boolean;
   public form: FormGroup = new FormGroup({});
+  public readonly strategy = BrokenDateFixStrategy.NONE;
 
   public constructor(
     public config: ConfigService,

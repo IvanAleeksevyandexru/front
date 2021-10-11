@@ -1,4 +1,5 @@
 import { TextTransform, DisclaimerDto, Clarifications } from '@epgu/epgu-constructor-types';
+import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { RelativeDate } from '@epgu/ui/models/date-time';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { FieldNames } from '../../registration-addr/registration-addr-screen.types';
@@ -29,6 +30,7 @@ interface ConfirmAddressInterfaceAttr {
   hideLevels?: string[];
   minDate?: Date | RelativeDate | string;
   maxDate?: Date | RelativeDate | string;
+  brokenDateFixStrategy?: BrokenDateFixStrategy;
   disclaimer?: DisclaimerDto;
 }
 
