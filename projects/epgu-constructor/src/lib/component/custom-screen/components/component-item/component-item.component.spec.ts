@@ -17,7 +17,6 @@ import {
   FocusManagerServiceStub,
   CoreUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { ComponentItemComponent } from './component-item.component';
 import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/webcam-shoot.module';
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
@@ -41,16 +40,16 @@ describe('ComponentItemComponent', () => {
     label: 'fake label',
     attrs: {
       labelHint: 'fake labelHint',
-      clarifications: 'fake clarifications'
+      clarifications: 'fake clarifications',
     },
-    required: true
+    required: true,
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         ComponentItemComponent,
-        MockComponents(LabelComponent, HelperTextComponent, HintComponent)
+        MockComponents(LabelComponent, HelperTextComponent, HintComponent),
       ],
       imports: [
         CoreModule,
@@ -70,15 +69,17 @@ describe('ComponentItemComponent', () => {
         CurrentAnswersService,
         HtmlSelectService,
       ],
-    }).overrideComponent(ComponentItemComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(ComponentItemComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ComponentItemComponent);
     component = fixture.componentInstance;
-    component.control =  new FormControl();
+    component.control = new FormControl();
     component.component = mockComponent as any;
     fixture.detectChanges();
   });

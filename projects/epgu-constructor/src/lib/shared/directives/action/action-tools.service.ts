@@ -46,8 +46,6 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionToolsService {
-  public confirmationModalComponent;
-  public dropdownListModalComponent;
 
   constructor(
     private formPlayerApiService: FormPlayerApiService,
@@ -82,7 +80,7 @@ export class ActionToolsService {
     const confirmation = confirmations[action.value];
     const confirmationButtons = confirmation.buttons;
 
-    this.modalService.openModal(this.confirmationModalComponent, {
+    this.modalService.openModal(this.screenService.confirmationModalComponent, {
       title: confirmation.title || '',
       text: confirmation.text || '',
       componentId: componentId || this.screenService.component.id,
@@ -109,7 +107,7 @@ export class ActionToolsService {
     { value: clarificationId }: ComponentActionDto,
     componentId: string,
   ): void {
-    this.modalService.openModal(this.dropdownListModalComponent, { componentId, clarificationId });
+    this.modalService.openModal(this.screenService.dropdownListModalComponent, { componentId, clarificationId });
   }
 
   public deleteSuggestAction(action: ComponentActionDto, targetElement: HTMLElement): void {

@@ -20,7 +20,6 @@ import {
   ConfigApiService,
   TracingService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen/screen.service';
 import {
@@ -34,6 +33,8 @@ import { FormPlayerService } from './services/form-player/form-player.service';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
+import { ConfirmationModalComponent } from '../modal/confirmation-modal/confirmation-modal.component';
+import { DropdownListModalComponent } from '../modal/dropdown-list-modal/components/dropdown-list-modal.component';
 
 /**
  * Точка входа для приложения, эквивалент AppComponent.
@@ -70,7 +71,10 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     private changeDetectionRef: ChangeDetectorRef,
     private autocompleteService: AutocompleteService,
     private tracingService: TracingService,
-  ) {}
+  ) {
+    this.screenService.confirmationModalComponent = ConfirmationModalComponent;
+    this.screenService.dropdownListModalComponent = DropdownListModalComponent;
+  }
 
   ngOnInit(): void {
     this.initDataService.init(this.service, this.context);

@@ -1,8 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
-
-import { ConfigService, DeviceDetectorService, DeviceDetectorServiceStub, ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  ModalBaseComponent,
+} from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { PhotoRequirementsModalComponent } from './photo-requirements-modal.component';
@@ -20,8 +24,7 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
-import { ClickableLabelDirective } 
-  from 'projects/epgu-constructor/src/lib/shared/directives/clickable-label/clickable-label.directive';
+import { ClickableLabelDirective } from 'projects/epgu-constructor/src/lib/shared/directives/clickable-label/clickable-label.directive';
 
 describe('PhotoRequirementsModalComponent', () => {
   let component: PhotoRequirementsModalComponent;
@@ -31,7 +34,8 @@ describe('PhotoRequirementsModalComponent', () => {
       type: 'UniqueModal',
       id: 'PhotoRequirements',
       setting: {
-        warning: 'Убедитесь, что ваша фотография соответствует требованиям ведомства. Это важно, чтобы заявление приняли.',
+        warning:
+          'Убедитесь, что ваша фотография соответствует требованиям ведомства. Это важно, чтобы заявление приняли.',
         body: [
           {
             title: '<b>Фотография ребёнка</b>',
@@ -42,8 +46,8 @@ describe('PhotoRequirementsModalComponent', () => {
           },
         ],
         footer: '<a id="howtotakephoto">Как сделать фото самостоятельно</a>',
-      }
-    }
+      },
+    },
   };
 
   configureTestSuite(() => {
@@ -55,18 +59,18 @@ describe('PhotoRequirementsModalComponent', () => {
       ],
       imports: [BaseModule, BaseComponentsModule],
       providers: [
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
-        UnsubscribeService,
+        CurrentAnswersService,
         EventBusService,
-        CurrentAnswersService,
-        SmuEventsService,
         HtmlSelectService,
+        SmuEventsService,
+        UnsubscribeService,
       ],
     }).compileComponents();
   });

@@ -15,7 +15,6 @@ import {
   FocusManagerService,
   FocusManagerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -77,25 +76,25 @@ describe('AddPassportComponent', () => {
         HttpClientModule,
       ],
       providers: [
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FocusManagerService, useClass: FocusManagerServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
-        ComponentsListToolsService,
-        HealthService,
-        EventBusService,
-        ValidationService,
-        DateRangeService,
-        SuggestMonitorService,
-        DatesToolsService,
-        CurrentAnswersService,
-        SuggestHandlerService,
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         MockProvider(DateRestrictionsService),
-        SmuEventsService,
+        ComponentsListToolsService,
+        CurrentAnswersService,
+        DateRangeService,
+        DatesToolsService,
+        EventBusService,
+        HealthService,
         HtmlSelectService,
+        SmuEventsService,
+        SuggestHandlerService,
+        SuggestMonitorService,
+        ValidationService,
       ],
     }).compileComponents();
   });
