@@ -14,6 +14,8 @@ export class ScreenService extends ScreenContent {
     return this.isLoadingSubject.asObservable();
   }
 
+  public confirmationModalComponent;
+  public dropdownListModalComponent;
   public isLoaderVisible = new BehaviorSubject<boolean>(false);
 
   private screenStore: ScreenStore = {};

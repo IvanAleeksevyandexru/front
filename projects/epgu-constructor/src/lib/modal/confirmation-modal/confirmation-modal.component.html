@@ -8,9 +8,9 @@
 >
   <ng-container modal-content>
     <epgu-constructor-output-html
+      epgu-constructor-clickable-label
       [html]="text"
       [componentId]="componentId"
-      epgu-constructor-clickable-label
       [clarifications]="clarifications"
     >
     </epgu-constructor-output-html>
@@ -32,9 +32,7 @@
 
   <ng-container *ngIf="answerButtons.length" modal-answer-buttons>
     <div class="answer-btns__container">
-      <ng-container
-        *ngFor="let answer of answerButtons"
-      >
+      <ng-container *ngFor="let answer of answerButtons">
         <epgu-constructor-answer-button
           [data]="answer"
           [isModalCase]="true"

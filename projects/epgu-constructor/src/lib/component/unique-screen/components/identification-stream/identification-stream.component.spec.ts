@@ -2,11 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockProvider } from 'ng-mocks';
 import {
   BaseComponentsModule,
-  ConfigService, CtaModalComponent,
+  ConfigService,
+  CtaModalComponent,
   DeviceDetectorService,
-  DeviceDetectorServiceStub, ModalServiceStub,
+  DeviceDetectorServiceStub,
+  ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { IdentificationStreamComponent } from './identification-stream.component';
@@ -32,7 +33,11 @@ import { HttpClient } from '@angular/common/http';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { of } from 'rxjs';
 
-const mockComponent = { id: 'test', type: UniqueScreenComponentTypes.IdentificationStreamComponent, arguments: { selfieId: 2, faceId: 1 }};
+const mockComponent = {
+  id: 'test',
+  type: UniqueScreenComponentTypes.IdentificationStreamComponent,
+  arguments: { selfieId: 2, faceId: 1 },
+};
 describe('IdentificationStreamComponent', () => {
   let component: IdentificationStreamComponent;
   let fixture: ComponentFixture<IdentificationStreamComponent>;
@@ -43,21 +48,21 @@ describe('IdentificationStreamComponent', () => {
       declarations: [MockComponent(CtaModalComponent)],
       imports: [BaseModule, BaseComponentsModule, IdentificationStreamModule],
       providers: [
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        MockProvider(IdentificationStreamService),
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
-        { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         MockProvider(AutocompletePrepareService),
-        CurrentAnswersService,
-        UnsubscribeService,
         MockProvider(HttpClient),
+        MockProvider(IdentificationStreamService),
+        CurrentAnswersService,
         CurrentAnswersService,
         HtmlSelectService,
+        UnsubscribeService,
       ],
     }).compileComponents();
   });
@@ -76,42 +81,48 @@ describe('IdentificationStreamComponent', () => {
 
   describe('next()', () => {
     it('should call api method()', () => {
-      const spy = jest.spyOn(component['api'], 'videoIdentification').mockImplementation((...args) => of({ data: { quality: [] }} as any));
+      const spy = jest
+        .spyOn(component['api'], 'videoIdentification')
+        .mockImplementation((...args) => of({ data: { quality: [] }} as any));
       component.result = 3 as any;
 
       component.next();
 
       expect(spy).toHaveBeenCalledWith({ faceId: 1, selfieFaceId: 2, snapshot: 3 });
-
     });
 
     it('should call switchAction()', () => {
-      jest.spyOn(component['api'], 'videoIdentification').mockImplementation((...args) => of({ data: { quality: [] }} as any));
-      const spySwitchAction = jest.spyOn(component['actionService'], 'switchAction').mockImplementation((...args) => null);
+      jest
+        .spyOn(component['api'], 'videoIdentification')
+        .mockImplementation((...args) => of({ data: { quality: [] }} as any));
+      const spySwitchAction = jest
+        .spyOn(component['actionService'], 'switchAction')
+        .mockImplementation((...args) => null);
       component.result = 3 as any;
 
       component.next();
 
       expect(spySwitchAction).toHaveBeenCalledTimes(1);
-
     });
-
   });
 
   describe('record()', () => {
     it('should call terabyte upload methods()', () => {
-      jest.spyOn(component['modalService'], 'openModal').mockImplementation((...args) => of({ file: {  }, status: true } as any));
-      const spyUpload = jest.spyOn(component['tera'], 'uploadFile').mockImplementation((...args) => of({ file: {  }, status: true } as any));
-      const spyGet = jest.spyOn(component['tera'], 'uploadFile').mockImplementation((...args) => of({ file: {  }, status: true } as any));
+      jest
+        .spyOn(component['modalService'], 'openModal')
+        .mockImplementation((...args) => of({ file: {}, status: true } as any));
+      const spyUpload = jest
+        .spyOn(component['tera'], 'uploadFile')
+        .mockImplementation((...args) => of({ file: {}, status: true } as any));
+      const spyGet = jest
+        .spyOn(component['tera'], 'uploadFile')
+        .mockImplementation((...args) => of({ file: {}, status: true } as any));
       component.result = 3 as any;
 
       component.record();
 
       expect(spyUpload).toHaveBeenCalledTimes(1);
       expect(spyGet).toHaveBeenCalledTimes(1);
-
     });
-
   });
-
 });

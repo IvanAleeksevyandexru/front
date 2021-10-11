@@ -113,6 +113,19 @@ describe('SelectMapObjectComponent', () => {
         FormsModule,
       ],
       providers: [
+        { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: DownloadService, useClass: DownloadServiceStub },
+        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        { provide: ModalService, useClass: ModalServiceStub },
+        { provide: NavigationModalService, useClass: NavigationModalServiceStub },
+        { provide: NavigationService, useClass: NavigationServiceStub },
+        MockProvider(ActionToolsService),
+        MockProvider(DateRestrictionsService),
+        MockProvider(KindergartenSearchPanelService),
         AddressesToolsService,
         AutocompleteApiService,
         CachedAnswersService,
@@ -125,27 +138,14 @@ describe('SelectMapObjectComponent', () => {
         HtmlRemoverService,
         Icons,
         JsonHelperService,
-        MockProvider(ActionToolsService),
-        MockProvider(DateRestrictionsService),
         ModalErrorService,
         PrepareComponentsService,
+        PriorityItemsService,
         RefRelationService,
         ScreenService,
         SelectMapObjectService,
         UnsubscribeService,
         YandexMapService,
-        PriorityItemsService,
-        MockProvider(KindergartenSearchPanelService),
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
-        { provide: NavigationService, useClass: NavigationServiceStub },
-        { provide: NavigationModalService, useClass: NavigationModalServiceStub },
-        { provide: DownloadService, useClass: DownloadServiceStub },
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: ActionService, useClass: ActionServiceStub },
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, {
@@ -184,7 +184,9 @@ describe('SelectMapObjectComponent', () => {
     modalService = fixture.debugElement.injector.get(ModalService);
     component = fixture.componentInstance;
     const item = { center: [1, 2] } as DictionaryYMapItem;
-    jest.spyOn(component['yandexMapService'], 'getObjectById').mockImplementation(() => mockDivorceMapFeature as unknown as IFeatureItem<unknown>);
+    jest
+      .spyOn(component['yandexMapService'], 'getObjectById')
+      .mockImplementation(() => (mockDivorceMapFeature as unknown) as IFeatureItem<unknown>);
     component['selectMapObjectService'].filteredDictionaryItems = [item];
     yandexMapService['objectManager'] = {
       objects: {
@@ -283,16 +285,21 @@ describe('SelectMapObjectComponent', () => {
       dict.items,
     ) as unknown) as DictionaryYMapItem[];
     const mapObject = { value: 'R7700005' };
-    const isMapObjectExisted = component['isMapObjectExisted'](mapObject as unknown as YMapItem<DictionaryItem>);
+    const isMapObjectExisted = component['isMapObjectExisted'](
+      (mapObject as unknown) as YMapItem<DictionaryItem>,
+    );
     expect(isMapObjectExisted).toBeTruthy();
   });
 
   it('isMapObjectExisted() should return false', () => {
-    const dict = cloneDeep(mockMapDictionary);    selectMapObjectService.filteredDictionaryItems = (addCenterToItems(
+    const dict = cloneDeep(mockMapDictionary);
+    selectMapObjectService.filteredDictionaryItems = (addCenterToItems(
       dict.items,
     ) as unknown) as DictionaryYMapItem[];
     const mapObject = { value: 'R7800005' };
-    const isMapObjectExisted = component['isMapObjectExisted'](mapObject as unknown as YMapItem<DictionaryItem>);
+    const isMapObjectExisted = component['isMapObjectExisted'](
+      (mapObject as unknown) as YMapItem<DictionaryItem>,
+    );
     expect(isMapObjectExisted).toBeFalsy();
   });
 

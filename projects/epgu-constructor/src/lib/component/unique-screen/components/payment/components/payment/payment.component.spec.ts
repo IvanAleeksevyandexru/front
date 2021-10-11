@@ -22,7 +22,6 @@ import { FormPlayerServiceStub } from '../../../../../../form-player/services/fo
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
-import { ActionToolsService } from '../../../../../../shared/directives/action/action-tools.service';
 import { PriorPrefixModule } from '../../../../../../shared/pipes/prior-prefix/prior-prefix.module';
 
 let mockData: ComponentDto;
@@ -59,7 +58,6 @@ describe('PaymentComponent', () => {
         MockProvider(PaymentService),
         MockProvider(CurrentAnswersService),
         MockProvider(LocationService),
-        MockProvider(ActionToolsService),
         MockProvider(DatesToolsService),
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },

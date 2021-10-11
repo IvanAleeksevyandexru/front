@@ -25,14 +25,12 @@ import {
   ConfirmationModalAnswerButton,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierService } from '@epgu/ui/services/notifier';
-import { ActionToolsService } from '../../shared/directives/action/action-tools.service';
-import { ClickableLabelDirective } from '../../shared/directives/clickable-label/clickable-label.directive';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',
   templateUrl: './confirmation-modal.component.html',
   styleUrls: ['./confirmation-modal.component.scss'],
-  providers: [UnsubscribeService, ClickableLabelDirective],
+  providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmationModalComponent extends ModalBaseComponent
@@ -62,13 +60,8 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     private cdr: ChangeDetectorRef,
     private clipboard: Clipboard,
     private notifierService: NotifierService,
-    private actionToolsService: ActionToolsService,
-    private clickableLabelDirective: ClickableLabelDirective,
   ) {
     super(injector);
-    // TODO: подебажить зависимые сервисы на предмет уничтожения, когда умирает этот компонент
-    this.actionToolsService.confirmationModalComponent = this;
-    this.clickableLabelDirective.confirmationModalComponent = this;
   }
 
   ngOnInit(): void {
