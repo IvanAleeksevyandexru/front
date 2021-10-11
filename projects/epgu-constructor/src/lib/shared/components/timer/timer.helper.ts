@@ -7,8 +7,13 @@ import { TimerInterface } from './timer.interface';
  * @param finish - время окончания
  * @param warningTime - промежуток времени когда в секундах для подсветки красным
  */
-export function createTimer(current: number, start: number, finish: number, warningTime: number | undefined): TimerInterface {
-  const isCorrectTime = (finish - current) > 0;
+export function createTimer(
+  current: number,
+  start: number,
+  finish: number,
+  warningTime: number | undefined,
+): TimerInterface {
+  const isCorrectTime = finish - current > 0;
   const time = isCorrectTime ? finish - current : 0;
 
   return {
@@ -16,7 +21,7 @@ export function createTimer(current: number, start: number, finish: number, warn
     isFinish: isFinish(time),
     time,
     start,
-    finish
+    finish,
   };
 }
 
@@ -24,8 +29,8 @@ export function createTimer(current: number, start: number, finish: number, warn
  * Возвращает true, если нужно подсветить таймер закончился
  * @param time - время для сравнения
  */
-export function isFinish(time: number):boolean {
-  return  time === 0;
+export function isFinish(time: number): boolean {
+  return time === 0;
 }
 
 /**
@@ -33,7 +38,7 @@ export function isFinish(time: number):boolean {
  * @param time - время для сравнения
  * @param warningTime - промежуток времени когда в секундах для подсветки красным
  */
-export function isWarning(time: number, warningTime: number | undefined):boolean {
+export function isWarning(time: number, warningTime: number | undefined): boolean {
   if (!warningTime) {
     return false;
   }

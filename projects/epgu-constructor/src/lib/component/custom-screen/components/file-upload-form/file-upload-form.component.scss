@@ -1,8 +1,8 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/typography";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
-:host{
-  ::ng-deep.file-upload-custom-wrapper{
-    & .fileupload__wrapper{
+:host {
+  ::ng-deep.file-upload-custom-wrapper {
+    & .fileupload__wrapper {
       padding: 0;
     }
   }

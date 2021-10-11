@@ -1,28 +1,17 @@
 import { Injectable } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { MonthYear } from '@epgu/ui/models/date-time';
-import {
-  EmployeeType,
-  EmployeeHistoryModel,
-} from '../employee-history.types';
+import { EmployeeType, EmployeeHistoryModel } from '../employee-history.types';
 
 @Injectable()
 export class EmployeeHistoryFormServiceStub {
   employeeHistoryForm: FormArray = this.fb.array([]);
 
- defaultType: EmployeeType;
+  defaultType: EmployeeType;
 
-  constructor(
-    private fb: FormBuilder,
-    private unsubscribeService: UnsubscribeService,
-  ) {
+  constructor(private fb: FormBuilder, private unsubscribeService: UnsubscribeService) {
     this.defaultType = 'student';
   }
 
@@ -73,5 +62,4 @@ export class EmployeeHistoryFormServiceStub {
   inputValidators() {}
 
   maxLengthValidators() {}
-
 }

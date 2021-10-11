@@ -5,13 +5,13 @@ import { MicroAppState, FpHealthPayload } from '@epgu/epgu-constructor-types';
 import { MicroAppStateStore } from './micro-app-state.store';
 
 @Injectable({ providedIn: 'root' })
-export class MicroAppStateQuery<T, U>  extends Query<MicroAppState<T, U>> {
+export class MicroAppStateQuery<T, U> extends Query<MicroAppState<T, U>> {
   store$: Observable<MicroAppState<T, U>> = this.select();
   value$: Observable<T> = this.select('value');
   state$: Observable<U> = this.select('state');
   currentComponent$: Observable<string> = this.select('currentComponent');
 
-  constructor (protected store: MicroAppStateStore<T, U>) {
+  constructor(protected store: MicroAppStateStore<T, U>) {
     super(store);
   }
 

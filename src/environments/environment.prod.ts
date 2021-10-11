@@ -17,13 +17,13 @@ export const environment = {
       timingApiUrl: 'https://pgu-dev-fed.test.gosuslugi.ru/health',
       staticDomain: '',
       staticDomainLibAssetsPath: 'https://gu-st.ru/portal-st/lib-assets/',
-      isEmbedded: false
+      isEmbedded: false,
     },
     data: {
-      user: {}
+      user: {},
     },
     attrs: {
-      deviceType: 'desk'
-    }
-  }
+      deviceType: 'desk',
+    },
+  },
 };

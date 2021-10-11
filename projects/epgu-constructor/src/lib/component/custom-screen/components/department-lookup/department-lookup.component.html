@@ -1,9 +1,4 @@
-<ng-container
-  *ngTemplateOutlet="
-    dropdownTmpl;
-    context: { $implicit: control.value  }
-  "
->
+<ng-container *ngTemplateOutlet="dropdownTmpl; context: { $implicit: control.value }">
 </ng-container>
 
 <ng-template #dropdownTmpl let-component>

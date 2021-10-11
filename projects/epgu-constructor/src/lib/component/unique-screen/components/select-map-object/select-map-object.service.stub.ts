@@ -3,7 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class SelectMapObjectServiceStub {
-
   isMapLoaded = new BehaviorSubject(false);
   public isSelectedView = new BehaviorSubject<boolean>(false);
 
@@ -18,5 +17,4 @@ export class SelectMapObjectServiceStub {
   public handleKindergartenSelection(): void {
     return;
   }
-
 }

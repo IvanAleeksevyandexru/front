@@ -77,8 +77,6 @@ export class ValidationService {
   validateFileName(fileName: string, validations?: ComponentValidationDto[]): string | null {
     if (!validations || validations.length === 0) return null;
 
-    return (
-      validations.find(({ value }) => !new RegExp(value).test(fileName))?.errorMsg || null
-    );
+    return validations.find(({ value }) => !new RegExp(value).test(fileName))?.errorMsg || null;
   }
 }

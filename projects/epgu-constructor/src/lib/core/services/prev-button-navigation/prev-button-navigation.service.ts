@@ -6,10 +6,7 @@ import { NavigationService } from '../navigation/navigation.service';
 
 @Injectable()
 export class PrevButtonNavigationService implements PrevButtonNavigation {
-  constructor(
-    private navService: NavigationService,
-    private screenService: ScreenService
-  ) {}
+  constructor(private navService: NavigationService, private screenService: ScreenService) {}
 
   prev(): void {
     const { firstScreen } = this.screenService.display;

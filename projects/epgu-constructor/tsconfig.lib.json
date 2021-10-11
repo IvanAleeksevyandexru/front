@@ -6,19 +6,14 @@
     "target": "es6",
     "declaration": true,
     "inlineSources": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "typeRoots": ["node_modules/@types"],
     "types": ["node"],
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
       "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"]
     },
-    "lib": [
-      "dom",
-      "es2018"
-    ]
+    "lib": ["dom", "es2018"]
   },
   "angularCompilerOptions": {
     "enableIvy": true,
@@ -29,7 +24,5 @@
     "strictInjectionParameters": true,
     "strictTemplates": true
   },
-  "exclude": [
-    "**/*.spec.ts"
-  ]
+  "exclude": ["**/*.spec.ts"]
 }

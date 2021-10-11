@@ -4,10 +4,7 @@
   </div>
   <div class="form__error">
     <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames">
-      <span *ngIf="
-        isInvalidAndTouched(fieldName) &&
-        form.get(fieldName).errors.msg
-      ">
+      <span *ngIf="isInvalidAndTouched(fieldName) && form.get(fieldName).errors.msg">
         <ng-container *ngIf="!form.get(fieldName).errors.textFromJson">
           {{ getFieldByName(fieldName)?.label }}:
         </ng-container>
@@ -16,7 +13,10 @@
     </epgu-cf-ui-constructor-input-error>
   </div>
 
-  <div class="marital-status-input__group-item" *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.date) as dateField">
+  <div
+    class="marital-status-input__group-item"
+    *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.date) as dateField"
+  >
     <epgu-constructor-act-date-input
       *ngIf="!dateField?.attrs.hidden"
       [label]="dateField?.label"
@@ -28,7 +28,10 @@
     ></epgu-constructor-act-date-input>
   </div>
 
-  <div class="marital-status-input__group-item" *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.number) as numberField">
+  <div
+    class="marital-status-input__group-item"
+    *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.number) as numberField"
+  >
     <epgu-constructor-act-number-input
       *ngIf="!numberField?.attrs.hidden"
       [label]="numberField?.label"

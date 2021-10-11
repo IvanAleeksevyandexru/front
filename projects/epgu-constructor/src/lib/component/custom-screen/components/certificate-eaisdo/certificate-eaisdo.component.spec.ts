@@ -1,6 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockPipe, MockProvider } from 'ng-mocks';
 import { CertificateEaisdoComponent } from './certificate-eaisdo.component';
@@ -9,7 +15,7 @@ import {
   ImgPrefixerPipe,
   LoggerService,
   SafePipe,
-  UnsubscribeService
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
@@ -21,14 +27,19 @@ import { ActionServiceStub } from '../../../../shared/directives/action/action.s
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { ActionApiResponse, ActionType, DTOActionAction, EaisdoResponse } from '@epgu/epgu-constructor-types';
+import {
+  ActionApiResponse,
+  ActionType,
+  DTOActionAction,
+  EaisdoResponse,
+} from '@epgu/epgu-constructor-types';
 
 const mockComponent = {
   id: 'ecr1',
   type: 'CertificateEaisdo',
   label: 'Данные сертификата EaisdoCertificateRequest',
   arguments: {
-    externalIntegration: 'certificateEaisdoRequest'
+    externalIntegration: 'certificateEaisdoRequest',
   },
   attrs: {
     wait: `<img src="https://gu-st.ru/portal-st/lib-assets/gif/throbber-hexagon.gif" class="wait"/>
@@ -38,96 +49,119 @@ const mockComponent = {
       <h5 class="mb-12 text--center">Не удалось получить данные</h5>
       <p class="mt-24 text-color--text-helper text--center">Попробуйте снова сейчас или зайдите позже</p>`,
     errorButton: 'Попробовать снова',
-    orderId: '${orderId}'
+    orderId: '${orderId}',
   },
-  linkedValues: [{
-    argument: 'recipientRegAddress',
-    source: 'c2'
-  }, {
-    argument: 'applicantData',
-    source: 'pd1'
-  }, {
-    argument: 'applicantRegAddress',
-    source: 'pd4'
-  }, {
-    argument: 'LastName',
-    source: 'Шмокодявкин'
-  }, {
-    argument: 'FirstName',
-    source: 'Кузьма'
-  }, {
-    argument: 'MiddleName',
-    source: 'Антихович'
-  }, {
-    argument: 'BirthDate',
-    source: '01.09.2005'
-  }, {
-    argument: 'SNILS',
-    defaultValue: '010-000-309 26'
-  }, {
-    argument: 'GenderType',
-    defaultValue: 'M'
-  }, {
-    argument: 'BirthCertificateSeries',
-    defaultValue: 'XI-ФФ'
-  }, {
-    argument: 'BirthCertificateNumber',
-    defaultValue: '123456'
-  }, {
-    argument: 'BirthCertificateAgency',
-    defaultValue: 'ЗАГС'
-  }, {
-    argument: 'BirthCertificateIssueDate',
-    defaultValue: '01.09.2005'
-  }, {
-    argument: 'isForeign',
-    defaultValue: 'false'
-  }, {
-    argument: 'payment',
-    source: 'pw1'
-  }, {
-    argument: 'applicantPhoneNumber',
-    source: 'pd2'
-  }, {
-    argument: 'applicantEmail',
-    source: 'pd3'
-  }, {
-    argument: 'municipalityCode',
-    source: 'cc5a.value.program.fiasMunicipal'
-  }, {
-    argument: 'municipalityName',
-    source: 'cc5a.value.program.municipalityName'
-  }, {
-    argument: 'regionCode',
-    source: 'cc5a.value.program.fiasRegion'
-  }, {
-    argument: 'regionName',
-    source: 'cc5a.value.program.regionName'
-  }, {
-    argument: 'timeout',
-    defaultValue: '30'
-  }, {
-    argument: 'externalIntegration',
-    defaultValue: 'certificateEaisdoRequest'
-  }
+  linkedValues: [
+    {
+      argument: 'recipientRegAddress',
+      source: 'c2',
+    },
+    {
+      argument: 'applicantData',
+      source: 'pd1',
+    },
+    {
+      argument: 'applicantRegAddress',
+      source: 'pd4',
+    },
+    {
+      argument: 'LastName',
+      source: 'Шмокодявкин',
+    },
+    {
+      argument: 'FirstName',
+      source: 'Кузьма',
+    },
+    {
+      argument: 'MiddleName',
+      source: 'Антихович',
+    },
+    {
+      argument: 'BirthDate',
+      source: '01.09.2005',
+    },
+    {
+      argument: 'SNILS',
+      defaultValue: '010-000-309 26',
+    },
+    {
+      argument: 'GenderType',
+      defaultValue: 'M',
+    },
+    {
+      argument: 'BirthCertificateSeries',
+      defaultValue: 'XI-ФФ',
+    },
+    {
+      argument: 'BirthCertificateNumber',
+      defaultValue: '123456',
+    },
+    {
+      argument: 'BirthCertificateAgency',
+      defaultValue: 'ЗАГС',
+    },
+    {
+      argument: 'BirthCertificateIssueDate',
+      defaultValue: '01.09.2005',
+    },
+    {
+      argument: 'isForeign',
+      defaultValue: 'false',
+    },
+    {
+      argument: 'payment',
+      source: 'pw1',
+    },
+    {
+      argument: 'applicantPhoneNumber',
+      source: 'pd2',
+    },
+    {
+      argument: 'applicantEmail',
+      source: 'pd3',
+    },
+    {
+      argument: 'municipalityCode',
+      source: 'cc5a.value.program.fiasMunicipal',
+    },
+    {
+      argument: 'municipalityName',
+      source: 'cc5a.value.program.municipalityName',
+    },
+    {
+      argument: 'regionCode',
+      source: 'cc5a.value.program.fiasRegion',
+    },
+    {
+      argument: 'regionName',
+      source: 'cc5a.value.program.regionName',
+    },
+    {
+      argument: 'timeout',
+      defaultValue: '30',
+    },
+    {
+      argument: 'externalIntegration',
+      defaultValue: 'certificateEaisdoRequest',
+    },
   ],
   value: '',
-  visited: false
+  visited: false,
 };
 
 const timeoutResponse = {
   message: 'Error Message',
-  status: 'REQUEST_TIMEOUT'
+  status: 'REQUEST_TIMEOUT',
 };
 
 const okResponse = {
   responseData: {
     data: 'some data',
-  }
+  },
 };
 
 const buttonMock = {
-  action: DTOActionAction.externalIntegrationAction
+  action: DTOActionAction.externalIntegrationAction,
 };
 
 describe('CertificateEaisdoComponent', () => {
@@ -147,7 +181,7 @@ describe('CertificateEaisdoComponent', () => {
         SafePipe,
         MockPipe(ImgPrefixerPipe),
       ],
-      imports: [FormsModule, ReactiveFormsModule, ],
+      imports: [FormsModule, ReactiveFormsModule],
       providers: [
         UnsubscribeService,
         MockProvider(LoggerService),
@@ -157,23 +191,29 @@ describe('CertificateEaisdoComponent', () => {
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
       ],
-    }).overrideComponent(CertificateEaisdoComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
-    }).compileComponents();
+    })
+      .overrideComponent(CertificateEaisdoComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
-    formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
-    actionService = TestBed.inject(ActionService) as unknown as ActionServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
+    actionService = (TestBed.inject(ActionService) as unknown) as ActionServiceStub;
     loggerService = TestBed.inject(LoggerService);
     eventBusService = TestBed.inject(EventBusService);
     fixture = TestBed.createComponent(CertificateEaisdoComponent);
     component = fixture.componentInstance;
     control = new FormControl(mockComponent);
-    formService.form = new FormArray([ control ]);
+    formService.form = new FormArray([control]);
     component.componentIndex = 0;
     component.control = control;
-    jest.spyOn(component.control, 'get').mockReturnValue({ setValue: jest.fn() } as unknown as AbstractControl);
+    jest
+      .spyOn(component.control, 'get')
+      .mockReturnValue(({ setValue: jest.fn() } as unknown) as AbstractControl);
   });
 
   const setup = (integrationResponse: Error | Object = okResponse) => {
@@ -184,9 +224,9 @@ describe('CertificateEaisdoComponent', () => {
     jest
       .spyOn(actionService, 'handleExternalIntegrationAction')
       .mockReturnValue(
-        (integrationResponse.constructor.name === 'Error' ?
-          throwError(integrationResponse) :
-          of(integrationResponse)) as unknown as Observable<ActionApiResponse<EaisdoResponse>>
+        ((integrationResponse.constructor.name === 'Error'
+          ? throwError(integrationResponse)
+          : of(integrationResponse)) as unknown) as Observable<ActionApiResponse<EaisdoResponse>>,
       );
 
     fixture.detectChanges();
@@ -237,11 +277,14 @@ describe('CertificateEaisdoComponent', () => {
       const { switchActionSpy } = setup(okResponse);
 
       expect(switchActionSpy).toHaveBeenCalledTimes(1);
-      expect(switchActionSpy).toHaveBeenCalledWith({
-        label: 'nextStep',
-        type: ActionType.nextStep,
-        action: DTOActionAction.getNextStep,
-      }, 'ecr1');
+      expect(switchActionSpy).toHaveBeenCalledWith(
+        {
+          label: 'nextStep',
+          type: ActionType.nextStep,
+          action: DTOActionAction.getNextStep,
+        },
+        'ecr1',
+      );
     });
 
     it('should NOT call logger error', () => {
@@ -255,7 +298,9 @@ describe('CertificateEaisdoComponent', () => {
     const setupSpies = () => {
       const externalIntegrationSpy = jest
         .spyOn(actionService, 'handleExternalIntegrationAction')
-        .mockReturnValue(of(okResponse) as unknown as Observable<ActionApiResponse<EaisdoResponse>>);
+        .mockReturnValue(
+          (of(okResponse) as unknown) as Observable<ActionApiResponse<EaisdoResponse>>,
+        );
       eventBusService.emit('screenButtonClicked', buttonMock);
 
       return { externalIntegrationSpy };
@@ -267,11 +312,14 @@ describe('CertificateEaisdoComponent', () => {
       fixture.detectChanges();
 
       expect(externalIntegrationSpy).toHaveBeenCalledTimes(1);
-      expect(externalIntegrationSpy).toHaveBeenCalledWith({
-         action: 'service/actions/externalIntegration',
-         label: 'Попробовать снова',
-         type: 'externalIntegration',
-       }, 'ecr1');
+      expect(externalIntegrationSpy).toHaveBeenCalledWith(
+        {
+          action: 'service/actions/externalIntegration',
+          label: 'Попробовать снова',
+          type: 'externalIntegration',
+        },
+        'ecr1',
+      );
     });
   });
 });

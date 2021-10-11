@@ -2,11 +2,12 @@ import { fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  HTTP_INTERCEPTORS, HttpClient,
+  HTTP_INTERCEPTORS,
+  HttpClient,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest
+  HttpRequest,
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import {
@@ -23,18 +24,11 @@ import { RequestStatus } from '@epgu/epgu-constructor-types';
 import { HealthHandlerService } from './health-handler.service';
 import { REGION_NAME } from './health-handler';
 
-
-
 @Injectable()
 export class TestHealthInterceptor implements HttpInterceptor {
-  constructor(
-    private healthHandlerService: HealthHandlerService
-  ) {}
+  constructor(private healthHandlerService: HealthHandlerService) {}
 
-  intercept(
-    req: HttpRequest<unknown>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<unknown>> {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return this.healthHandlerService.handleRequest(req, next);
   }
 }
@@ -78,9 +72,7 @@ describe('HealthHandlerService', () => {
   afterEach(waitForAsync(() => httpMock.verify()));
 
   describe('Call start and end measure', () => {
-    it('should call healthService measureStart and measureEnd with name', fakeAsync((
-      done,
-    ) => {
+    it('should call healthService measureStart and measureEnd with name', fakeAsync((done) => {
       const api = 'http://localhost:8180/api/v1/regions';
       const payload = {};
       jest.spyOn(healthService, 'measureStart');
@@ -94,7 +86,11 @@ describe('HealthHandlerService', () => {
       const dataToFlush = {};
       requestToDictionary.flush(dataToFlush);
       expect(healthService.measureStart).toHaveBeenCalledWith(REGION_NAME);
-      expect(healthService.measureEnd).toHaveBeenCalledWith(REGION_NAME, RequestStatus.Succeed, payload);
+      expect(healthService.measureEnd).toHaveBeenCalledWith(
+        REGION_NAME,
+        RequestStatus.Succeed,
+        payload,
+      );
     }));
 
     it('shouldn\'t call healthService measureStart and measureEnd if it\'s not valid request for health', fakeAsync((

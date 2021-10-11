@@ -6,7 +6,6 @@ import { MicroAppStateQueryStub } from '../micro-app-state/micro-app-state.query
 import { WordTransformService } from '../../core/services/word-transform/word-transform.service';
 import { ObjectHelperService } from '../../core/services/object-helper/object-helper.service';
 
-
 describe('MicroAppErrorHandlerOrderParamsServiceService', () => {
   let service: MicroAppErrorHandlerOrderParamsServiceService;
   let appStateQuery: MicroAppStateQuery<unknown, unknown>;
@@ -39,7 +38,7 @@ describe('MicroAppErrorHandlerOrderParamsServiceService', () => {
   it('should return params with id and name', () => {
     const id = 'w42';
     const name = 'Какая та компанента';
-    jest.spyOn(appStateQuery, 'fpHealthPayload', 'get').mockReturnValue({  id, name });
+    jest.spyOn(appStateQuery, 'fpHealthPayload', 'get').mockReturnValue({ id, name });
     expect(service.getParams().id).toBe(id);
     expect(service.getParams().name).toBe('Kakaia ta kompanenta');
   });

@@ -138,7 +138,7 @@ import { PluralizeModule } from '@epgu/ui/pipes';
     TimerModule,
     ValidationTypeModule,
     FormsModule,
-    PluralizeModule
+    PluralizeModule,
   ],
   providers: [
     AddressHelperService,

@@ -8,18 +8,18 @@ import {
   APP_OUTPUT_KEY,
   DataDirectionType,
   InputAppDto,
-  OutputAppDto
+  OutputAppDto,
 } from '@epgu/epgu-constructor-types';
 
 describe('CfAppStateService', () => {
   let service: CfAppStateService;
   let localStorageService: LocalStorageService;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         CfAppStateService,
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub }
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
   });
@@ -46,7 +46,7 @@ describe('CfAppStateService', () => {
         callbackRedirectUrl: '/some/url',
         value: '{}',
         componentType: 'ChildrenClubs',
-        componentId: 'app1'
+        componentId: 'app1',
       };
       const key = DataDirectionType.INPUT;
       service.setState(state, key);
@@ -58,7 +58,7 @@ describe('CfAppStateService', () => {
         isPrevStepCase: false,
         value: '{}',
         componentType: 'ChildrenClubs',
-        componentId: 'app1'
+        componentId: 'app1',
       };
       const key = DataDirectionType.OUTPUT;
       service.setState(state, key);

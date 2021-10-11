@@ -6,7 +6,10 @@
   <div class="card-toggle">
     <input type="checkbox" [id]="i" />
     <label class="card-toggle-header" [for]="i">
-      <span class="card-toggle-label" [innerHTML]="item.label | highlight: searchControl?.value"></span>
+      <span
+        class="card-toggle-label"
+        [innerHTML]="item.label | highlight: searchControl?.value"
+      ></span>
     </label>
     <div class="card-toggle-content">
       <epgu-constructor-output-html [html]="item.content"></epgu-constructor-output-html>

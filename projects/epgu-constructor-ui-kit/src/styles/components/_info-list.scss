@@ -1,4 +1,4 @@
-@import "./../core/palettes";
+@import './../core/palettes';
 @import '../core/typography';
 
 .info-list-title {
@@ -51,5 +51,3 @@
   @include typ-plain-small;
   color: $color-text-helper;
 }
-
-

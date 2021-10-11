@@ -67,10 +67,10 @@ describe('MultipleChoiceDictionaryComponent', () => {
           attributeName: 'ID',
           condition: DictionaryConditions.EQUALS,
           value: {
-            asString: '03'
-          }
-        }
-      }
+            asString: '03',
+          },
+        },
+      },
     };
     fixture.detectChanges();
     component.ngOnInit();
@@ -87,7 +87,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
         dictionaryList: undefined,
         dictionaryType: component.dictionaryType,
         selectedItems: [],
-        dictionaryFilter: component.dictionaryFilter
+        dictionaryFilter: component.dictionaryFilter,
       });
     });
     it('should be open modal without modalHeader', () => {
@@ -98,7 +98,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
         dictionaryList: undefined,
         dictionaryType: component.dictionaryType,
         selectedItems: [],
-        dictionaryFilter: component.dictionaryFilter
+        dictionaryFilter: component.dictionaryFilter,
       });
     });
 
@@ -145,7 +145,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
   });
 
   describe('Readonly', () => {
-    it ('should not render remove button if isReadonly is TRUE', () => {
+    it('should not render remove button if isReadonly is TRUE', () => {
       component.isReadonly = true;
       fixture.detectChanges();
       const debugEl = fixture.debugElement.query(By.css('.link-btn'));

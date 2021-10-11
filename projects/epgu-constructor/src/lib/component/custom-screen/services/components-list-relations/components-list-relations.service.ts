@@ -17,7 +17,11 @@ import { DateRangeService } from '../../../../shared/services/date-range/date-ra
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
-import { ComponentDictionaryFilters, ComponentRestUpdates, ComponentValueChangeDto } from './components-list-relations.interface';
+import {
+  ComponentDictionaryFilters,
+  ComponentRestUpdates,
+  ComponentValueChangeDto,
+} from './components-list-relations.interface';
 import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
 import {
@@ -66,7 +70,7 @@ export class ComponentsListRelationsService {
     private refRelationService: RefRelationService,
     private dateRestrictionsService: DateRestrictionsService,
     private jsonHelperService: JsonHelperService,
-    private dateRefService: DateRefService
+    private dateRefService: DateRefService,
   ) {}
 
   public getUpdatedShownElements(
@@ -83,7 +87,9 @@ export class ComponentsListRelationsService {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
         dependentComponent.attrs.ref
-          ?.filter((el) => (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id)) // TODO remove?
+          ?.filter((el) =>
+            (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id),
+          ) // TODO remove?
           .forEach((reference) => {
             const value = reference.valueFromCache
               ? screenService.cachedAnswers[reference.valueFromCache].value
@@ -125,7 +131,7 @@ export class ComponentsListRelationsService {
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
     initInitialValues: boolean,
-    componentsGroupIndex?: number
+    componentsGroupIndex?: number,
   ): Promise<void> {
     if (component.attrs?.dateRestrictions && !initInitialValues) {
       await this.setLimitDates(component, form, applicantAnswers, componentsGroupIndex);
@@ -133,7 +139,13 @@ export class ComponentsListRelationsService {
     }
 
     if (initInitialValues) {
-      await this.updateLimitDates(component, components, form, applicantAnswers, componentsGroupIndex);
+      await this.updateLimitDates(
+        component,
+        components,
+        form,
+        applicantAnswers,
+        componentsGroupIndex,
+      );
     }
   }
 
@@ -141,20 +153,21 @@ export class ComponentsListRelationsService {
     components: CustomComponent[],
     cachedAnswers: CachedAnswers,
   ): CustomListStatusElements {
-    return components.reduce(
-      (acc, component: CustomComponent) => {
-        const hasDisplayOff = this.hasRelation(component, CustomComponentRefRelation.displayOff);
-        const hasDisplayOn = this.hasRelation(component, CustomComponentRefRelation.displayOn);
+    return components.reduce((acc, component: CustomComponent) => {
+      const hasDisplayOff = this.hasRelation(component, CustomComponentRefRelation.displayOff);
+      const hasDisplayOn = this.hasRelation(component, CustomComponentRefRelation.displayOn);
 
-        return {
+      return {
         ...acc,
         [component.id]: {
-          relation: (hasDisplayOff && !hasDisplayOn) ? CustomComponentRefRelation.displayOff : CustomComponentRefRelation.displayOn,
+          relation:
+            hasDisplayOff && !hasDisplayOn
+              ? CustomComponentRefRelation.displayOff
+              : CustomComponentRefRelation.displayOn,
           isShown: !this.isComponentShown(component, cachedAnswers),
         },
-      };},
-      {},
-    );
+      };
+    }, {});
   }
 
   /**
@@ -228,10 +241,9 @@ export class ComponentsListRelationsService {
   }
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
-    return arr.some((el) => [
-      ...(el.relatedRel ? el.relatedRel.split(';') : []),
-      el.relatedDate
-    ].includes(component.id));
+    return arr.some((el) =>
+      [...(el.relatedRel ? el.relatedRel.split(';') : []), el.relatedDate].includes(component.id),
+    );
   }
 
   public getDependentComponents(
@@ -256,7 +268,7 @@ export class ComponentsListRelationsService {
     componentId: string,
     components: CustomComponent[],
     componentVal: { [key: string]: string } | '', // @todo. проверить, правильно ли указан тип
-    dictionaries: CustomListDictionaries
+    dictionaries: CustomListDictionaries,
   ): unknown {
     const relatedComponent = components.find((item) => item.id === componentId);
 
@@ -279,7 +291,7 @@ export class ComponentsListRelationsService {
 
   public getRelation(
     component: CustomComponent,
-    reference: CustomComponentRef
+    reference: CustomComponentRef,
   ): CustomComponentRef {
     return component.attrs.ref?.find(({ relation }) => relation === reference.relation);
   }
@@ -296,7 +308,7 @@ export class ComponentsListRelationsService {
   public onAfterFilterOnRel(
     dependentComponent: CustomComponent,
     form: FormArray,
-    dictionaryToolsService: DictionaryToolsService | RestToolsService
+    dictionaryToolsService: DictionaryToolsService | RestToolsService,
   ): void {
     if (!Array.isArray(dependentComponent?.attrs?.ref)) {
       return;
@@ -327,15 +339,12 @@ export class ComponentsListRelationsService {
       });
   }
 
-  public hasRelation(
-    component: CustomComponent,
-    relation: CustomComponentRefRelation
-  ): boolean {
+  public hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
     return component.attrs?.ref?.some((o) => o.relation === relation);
   }
 
   private createRestrictionGroups(rawRestrictions: DateRestriction[]): DateRestrictionGroups {
-    const restrictionGroups: {defaultGroup?: DateRestriction[]} = {};
+    const restrictionGroups: { defaultGroup?: DateRestriction[] } = {};
 
     for (const restriction of rawRestrictions) {
       const childKey = restriction.forChild;
@@ -364,7 +373,7 @@ export class ComponentsListRelationsService {
     components: CustomComponent[],
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
-    componentsGroupIndex?: number
+    componentsGroupIndex?: number,
   ): Promise<void> {
     const relatedComponents = components.filter(
       (relatedComponent) =>
@@ -375,30 +384,30 @@ export class ComponentsListRelationsService {
     );
 
     for (let index = 0, len = relatedComponents.length; index < len; index += 1) {
-      const restriction = relatedComponents[index].attrs.dateRestrictions.find(
-        (restriction) =>
-        {
-          const [datePath, ] = this.dateRefService.extract(restriction.value as string);
-          const relatedComponentId = datePath.split('.')[0];
-          return this.dateRestrictionsService.haveDateRef(restriction) &&
-            relatedComponentId === component.id;
-        }
-      );
+      const restriction = relatedComponents[index].attrs.dateRestrictions.find((restriction) => {
+        const [datePath] = this.dateRefService.extract(restriction.value as string);
+        const relatedComponentId = datePath.split('.')[0];
+        return (
+          this.dateRestrictionsService.haveDateRef(restriction) &&
+          relatedComponentId === component.id
+        );
+      });
 
       if (restriction) {
-        const restrictionGroups = this.createRestrictionGroups(relatedComponents[index].attrs.dateRestrictions);
+        const restrictionGroups = this.createRestrictionGroups(
+          relatedComponents[index].attrs.dateRestrictions,
+        );
         for (const [key, value] of Object.entries(restrictionGroups)) {
           const dateRange = await this.dateRestrictionsService.getDateRange(
             relatedComponents[index].id,
-            value as unknown as DateRestriction[],
+            (value as unknown) as DateRestriction[],
             form,
             applicantAnswers,
             key,
-            componentsGroupIndex
+            componentsGroupIndex,
           );
           this.updateFormWithDateRange(form, relatedComponents[index], dateRange, key);
         }
-
       }
     }
   }
@@ -407,33 +416,33 @@ export class ComponentsListRelationsService {
     component: CustomComponent | CustomListFormGroup,
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
-    componentsGroupIndex?: number): Promise<void> {
+    componentsGroupIndex?: number,
+  ): Promise<void> {
     const restrictionGroups = this.createRestrictionGroups(component.attrs.dateRestrictions);
     for (const [key, value] of Object.entries(restrictionGroups)) {
       const dateRange = await this.dateRestrictionsService.getDateRange(
         component.id,
-        value as unknown as DateRestriction[],
+        (value as unknown) as DateRestriction[],
         form,
         applicantAnswers,
         key,
-        componentsGroupIndex
+        componentsGroupIndex,
       );
       this.updateFormWithDateRange(form, component, dateRange, key);
     }
-
   }
 
   private updateFormWithDateRange(
     form: FormArray,
     component: CustomComponent | CustomListFormGroup,
     dateRange: Range,
-    forChild: string
+    forChild: string,
   ): void {
     const control = form.controls.find((control) => control.value.id === component.id);
 
     if (forChild !== DATE_RESTRICTION_GROUP_DEFAULT_KEY) {
       const attrsValue = control.get('attrs').value;
-      const child = attrsValue.components.find(component => component.id === forChild);
+      const child = attrsValue.components.find((component) => component.id === forChild);
       if (child) {
         child.attrs.minDate = dateRange.min;
         child.attrs.maxDate = dateRange.max;
@@ -475,7 +484,8 @@ export class ComponentsListRelationsService {
     }
   }
 
-  private getDependentComponentUpdatedShownElements( // TODO название уже не отражает суть
+  private getDependentComponentUpdatedShownElements(
+    // TODO название уже не отражает суть
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
     componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
@@ -773,7 +783,7 @@ export class ComponentsListRelationsService {
     dependentComponent: CustomComponent,
   ): void {
     dependentControl.get('value').patchValue(reference.defaultValue || '');
-    if ( this.refRelationService.isValueEquals(reference.val, componentVal) ) {
+    if (this.refRelationService.isValueEquals(reference.val, componentVal)) {
       if (this.restUpdates[dependentComponent.id]) {
         this.restUpdates = { [dependentComponent.id]: null };
       }
@@ -783,8 +793,8 @@ export class ComponentsListRelationsService {
           value: {
             ...(this.restUpdates[dependentComponent.id]?.value || {}),
             [reference.relatedRel]: componentVal,
-          }
-        }
+          },
+        },
       };
     } else {
       this.restUpdates = { [dependentComponent.id]: null };

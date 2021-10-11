@@ -3,25 +3,25 @@ import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 export const displayOffRefMock = {
   relatedRel: 's42',
   val: 'true',
-  relation: CustomComponentRefRelation.displayOff
+  relation: CustomComponentRefRelation.displayOff,
 };
 
 export const displayOnRefMock = {
   relatedRel: 's42',
   val: 'true',
-  relation: CustomComponentRefRelation.displayOn
+  relation: CustomComponentRefRelation.displayOn,
 };
 
 export const getValueRefMock = {
   relatedRel: 's42',
   val: 'true',
-  relation: CustomComponentRefRelation.getValue
+  relation: CustomComponentRefRelation.getValue,
 };
 
 export const autofillFromDictionaryRefMock = {
   relatedRel: 's42',
   val: 'true',
-  relation: CustomComponentRefRelation.autofillFromDictionary
+  relation: CustomComponentRefRelation.autofillFromDictionary,
 };
 
 export const calcRefMock = {
@@ -33,11 +33,11 @@ export const calcRefMock = {
 export const disabledRefMock = {
   relatedRel: 's42',
   val: 'true',
-  relation: CustomComponentRefRelation.disabled
+  relation: CustomComponentRefRelation.disabled,
 };
 
 export const filterOnRefMock = {
   relatedRel: 's42',
   val: 'true',
-  relation: CustomComponentRefRelation.filterOn
+  relation: CustomComponentRefRelation.filterOn,
 };

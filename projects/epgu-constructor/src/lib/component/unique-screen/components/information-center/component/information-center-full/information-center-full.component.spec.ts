@@ -86,7 +86,9 @@ describe('InformationCenterFullComponent', () => {
     it('should be call formChangeEvent', () => {
       jest.spyOn(component.formChangeEvent, 'emit');
       jest.spyOn(component, 'handleSelect');
-      const debugEl = fixture.debugElement.query(By.css('epgu-cf-ui-constructor-constructor-lookup'));
+      const debugEl = fixture.debugElement.query(
+        By.css('epgu-cf-ui-constructor-constructor-lookup'),
+      );
       debugEl.triggerEventHandler('changed', {});
 
       expect(component.formChangeEvent.emit).toHaveBeenCalled();

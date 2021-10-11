@@ -13,18 +13,13 @@ import { A11yModule } from '@angular/cdk/a11y';
     ModalBaseComponent,
     CtaModalComponent,
   ],
-  exports: [
-    CommonModalComponent,
-    ModalContainerComponent,
-    ModalBaseComponent,
-    CtaModalComponent,
-  ],
+  exports: [CommonModalComponent, ModalContainerComponent, ModalBaseComponent, CtaModalComponent],
   imports: [BaseUiModule, A11yModule],
   entryComponents: [
     ModalBaseComponent,
     ModalContainerComponent,
     CommonModalComponent,
-    CtaModalComponent
+    CtaModalComponent,
   ],
 })
 export class SharedModalModule {}

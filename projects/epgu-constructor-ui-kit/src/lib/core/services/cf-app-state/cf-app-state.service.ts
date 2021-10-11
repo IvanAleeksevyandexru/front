@@ -10,18 +10,23 @@ import { LocalStorageService } from '../local-storage/local-storage.service';
 
 @Injectable()
 export class CfAppStateService {
-  constructor (private localStorageService: LocalStorageService) {}
+  constructor(private localStorageService: LocalStorageService) {}
 
-  public setState<T extends InputAppDto | OutputAppDto>(state: T, spaDataDirectionType: DataDirectionType): void {
+  public setState<T extends InputAppDto | OutputAppDto>(
+    state: T,
+    spaDataDirectionType: DataDirectionType,
+  ): void {
     const key = this.getKey(spaDataDirectionType);
     this.localStorageService.set(key, state);
   }
 
-  public  getState<T extends InputAppDto | OutputAppDto>(spaDataDirectionType: DataDirectionType): T {
+  public getState<T extends InputAppDto | OutputAppDto>(
+    spaDataDirectionType: DataDirectionType,
+  ): T {
     const key = this.getKey(spaDataDirectionType);
     const state = this.localStorageService.get<T>(key);
 
-    if (key === APP_OUTPUT_KEY ) {
+    if (key === APP_OUTPUT_KEY) {
       this.localStorageService.delete(key);
     }
     return state;

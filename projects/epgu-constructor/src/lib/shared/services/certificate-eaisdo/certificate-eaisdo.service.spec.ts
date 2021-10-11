@@ -7,12 +7,9 @@ describe('CertificateEaisdoService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        CertificateEaisdoService,
-      ]
+      providers: [CertificateEaisdoService],
     });
     service = TestBed.inject(CertificateEaisdoService);
-
   });
 
   it('exists', () => {

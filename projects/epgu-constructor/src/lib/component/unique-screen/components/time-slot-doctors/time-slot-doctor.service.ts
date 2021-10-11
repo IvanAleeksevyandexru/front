@@ -22,7 +22,7 @@ import {
 import {
   TimeSlotDoctorsAttrs,
   TimeSlotDoctorState,
-  TimeSlotValueInterface
+  TimeSlotValueInterface,
 } from './time-slot-doctors.interface';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
@@ -68,8 +68,7 @@ export class TimeSlotDoctorService {
     private datesToolsService: DatesToolsService,
     public screenService: ScreenService,
     public jsonHelperService: JsonHelperService,
-  ) {
-  }
+  ) {}
 
   checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = null;
@@ -185,7 +184,9 @@ export class TimeSlotDoctorService {
     let changed = false;
 
     let department = data.department ? JSON.parse(data.department) : {};
-    this.isBookedDepartment = data.department ? this.getBookedDepartment(cachedAnswer, department) : false;
+    this.isBookedDepartment = data.department
+      ? this.getBookedDepartment(cachedAnswer, department)
+      : false;
 
     if (!this.isBookedDepartment || !data.department) {
       changed = true;
@@ -202,10 +203,12 @@ export class TimeSlotDoctorService {
       serviceCode: data.serviceCode,
       organizationId: data.organizationId || this.state$$.getValue().bookingRequestAttrs.MO_Id,
       bookAttributes:
-        this.jsonHelperService.hasJsonStructure(data.bookAttributes) && JSON.parse(data.bookAttributes),
+        this.jsonHelperService.hasJsonStructure(data.bookAttributes) &&
+        JSON.parse(data.bookAttributes),
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestAttrs,
-      attributeNameWithAddress: (<TimeSlotDoctorsAttrs>this.screenService.component.attrs).ts.attributeNameWithAddress,
+      attributeNameWithAddress: (<TimeSlotDoctorsAttrs>this.screenService.component.attrs).ts
+        .attributeNameWithAddress,
       userSelectedRegion: data.userSelectedRegion,
     };
 
@@ -272,9 +275,7 @@ export class TimeSlotDoctorService {
   }
 
   private getSlotsRequest(): TimeSlotReq {
-    const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[
-      this.timeSlotsType
-      ];
+    const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[this.timeSlotsType];
 
     return <TimeSlotReq>this.deleteIgnoreRequestParams({
       organizationId: [this.config.organizationId as string],
@@ -293,7 +294,7 @@ export class TimeSlotDoctorService {
             name: 'Service_Id',
             value: <string>this.state$$.getValue().specLookup?.id,
           },
-        ].filter(attr => !!attr.value),
+        ].filter((attr) => !!attr.value),
       ],
     });
   }
@@ -357,7 +358,7 @@ export class TimeSlotDoctorService {
             name: 'doctorid',
             value: this.state$$.getValue().docLookup.id,
           },
-        ].filter(attr => !!attr.value),
+        ].filter((attr) => !!attr.value),
       ],
       eserviceId: (this.config.eserviceId as string) || eserviceId,
       serviceCode: (this.config.serviceCode as string) || serviceCode,
@@ -406,10 +407,7 @@ export class TimeSlotDoctorService {
   }
 
   private isCancelCondition(timeslotAnswer: TimeSlotsAnswerInterface): boolean {
-    return (
-      (!this.getBookedDepartment(timeslotAnswer, this.department) ||
-        this.waitingTimeExpired)
-    );
+    return !this.getBookedDepartment(timeslotAnswer, this.department) || this.waitingTimeExpired;
   }
 
   private getSlotsByDate(date: Date, areadId?: string | number): SlotInterface[] {

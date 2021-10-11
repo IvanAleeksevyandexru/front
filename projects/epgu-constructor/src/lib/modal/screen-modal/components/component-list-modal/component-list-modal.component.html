@@ -4,7 +4,8 @@
       [shouldPendingRequestsBeCancelledAfterDestroy]="false"
       [components]="$any((screenService.display$ | async).components)"
       [errors]="screenService.componentErrors$ | async"
-      (changes)="changeComponentsList($event)">
+      (changes)="changeComponentsList($event)"
+    >
     </epgu-constructor-components-list>
   </div>
 

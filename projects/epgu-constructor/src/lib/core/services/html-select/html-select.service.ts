@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class HtmlSelectService {
-
   /**
    * На странице есть несколько мест где в html прилетает блоки с аттрибутов,
    * которые нужно переключать при клике на родителя;

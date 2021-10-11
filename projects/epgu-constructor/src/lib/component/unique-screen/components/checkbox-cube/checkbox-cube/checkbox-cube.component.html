@@ -6,8 +6,7 @@
   ></epgu-constructor-output-html>
 
   <div [formGroup]="formGroup" class="checkbox-cube">
-    <div *ngFor="let checkbox of checkboxes"
-         class="checkbox-cube-item">
+    <div *ngFor="let checkbox of checkboxes" class="checkbox-cube-item">
       <epgu-cf-ui-constructor-constructor-checkbox
         [checkboxId]="checkbox.id"
         [control]="formGroup.get(checkbox.id)"

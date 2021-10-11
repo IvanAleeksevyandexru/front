@@ -1,6 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ContinueOrderModalService } from './continue-order-modal.service';
-import { DatesToolsService, DatesToolsServiceStub, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  DatesToolsServiceStub,
+  ModalService,
+  ModalServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 
 describe('ContinueOrderModalService', () => {
   let service: ContinueOrderModalService;
@@ -12,7 +17,7 @@ describe('ContinueOrderModalService', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         ContinueOrderModalService,
-      ]
+      ],
     });
     service = TestBed.inject(ContinueOrderModalService);
     modalService = TestBed.inject(ModalService);
@@ -25,5 +30,4 @@ describe('ContinueOrderModalService', () => {
       expect(modalService.openModal).toBeCalled();
     });
   });
-
 });

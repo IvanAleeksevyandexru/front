@@ -10,7 +10,7 @@ import {
   MicroAppStateQuery,
   UnsubscribeService,
   ModalServiceStub,
-  ModalService
+  ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { StateService } from '../../../../services/state/state.service';
 import { MockModule } from 'ng-mocks';
@@ -36,7 +36,7 @@ describe('GroupListContainerComponent', () => {
         MicroAppStateStore,
         MicroAppStateQuery,
         DictionaryService,
-        GroupListService
+        GroupListService,
       ],
       imports: [LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, GroupListModule],
     }).compileComponents();
@@ -78,7 +78,11 @@ describe('GroupListContainerComponent', () => {
     });
 
     it('should filter out properties with specific values', () => {
-      const testObject: FindOptionsGroup = { maxPrice: null, age: undefined, isRegistrationOpen: false };
+      const testObject: FindOptionsGroup = {
+        maxPrice: null,
+        age: undefined,
+        isRegistrationOpen: false,
+      };
 
       component.countingFilters(testObject);
 
@@ -86,13 +90,15 @@ describe('GroupListContainerComponent', () => {
     });
 
     it('should specifically count inlearno and pfdo', () => {
-      const testObject: FindOptionsGroup = { inlearnoPayments: { free: true, certificate: true }, pfdoPayments: { certificate: true, personalFunds: true }};
+      const testObject: FindOptionsGroup = {
+        inlearnoPayments: { free: true, certificate: true },
+        pfdoPayments: { certificate: true, personalFunds: true },
+      };
 
       component.countingFilters(testObject);
 
       expect(component.filtersCount$$.getValue()).toBe(4);
     });
-
   });
 
   describe('search', () => {
@@ -104,6 +110,4 @@ describe('GroupListContainerComponent', () => {
       expect(component['state'].groupFilters.query).toBe('тестик');
     });
   });
-
-
 });

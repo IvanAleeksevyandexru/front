@@ -1,8 +1,4 @@
 <div class="chip">
   <span class="chip__text">{{ label }}</span>
-  <span
-    *ngIf="!unselectable"
-    class="cross-btn"
-    (click)="onClose()"
-  ></span>
+  <span *ngIf="!unselectable" class="cross-btn" (click)="onClose()"></span>
 </div>

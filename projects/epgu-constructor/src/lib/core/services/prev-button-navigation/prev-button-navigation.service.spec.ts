@@ -25,19 +25,23 @@ describe('PrevButtonNavigationService', () => {
 
   beforeEach(() => {
     service = TestBed.inject(PrevButtonNavigationService);
-    navigationService = TestBed.inject(NavigationService);;
+    navigationService = TestBed.inject(NavigationService);
     screenService = TestBed.inject(ScreenService);
   });
 
   it('should call redirectToHome', () => {
-    jest.spyOn(screenService, 'display', 'get').mockReturnValue({ firstScreen: true } as DisplayDto);
+    jest
+      .spyOn(screenService, 'display', 'get')
+      .mockReturnValue({ firstScreen: true } as DisplayDto);
     const spy = jest.spyOn(navigationService, 'redirectToHome');
     service.prev();
     expect(spy).toBeCalled();
   });
 
   it('should call prev', () => {
-    jest.spyOn(screenService, 'display', 'get').mockReturnValue({ firstScreen: false } as DisplayDto);
+    jest
+      .spyOn(screenService, 'display', 'get')
+      .mockReturnValue({ firstScreen: false } as DisplayDto);
     const spy = jest.spyOn(navigationService, 'prev');
     service.prev();
     expect(spy).toBeCalled();

@@ -10,20 +10,12 @@
     "target": "es6",
     "lib": ["es2018", "dom"],
     "paths": {
-      "@angular/*": [
-        "node_modules/@angular/*"
-      ],
+      "@angular/*": ["node_modules/@angular/*"],
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
       "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"]
     }
   },
-  "files": [
-    "src/main.ts",
-    "src/polyfills.ts"
-  ],
-  "include": [
-    "src/**/*.d.ts",
-    "src/**/*.ts",
-  ]
+  "files": ["src/main.ts", "src/polyfills.ts"],
+  "include": ["src/**/*.d.ts", "src/**/*.ts"]
 }

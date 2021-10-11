@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 
 import { ConstructorPlainInputComponent } from './constructor-plain-input.component';
-import { TextTransformModule, TrimModule, CurrencyModule, RankPipeModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  TextTransformModule,
+  TrimModule,
+  CurrencyModule,
+  RankPipeModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { BaseModule } from '../../base.module';
 

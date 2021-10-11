@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponents, MockPipe, MockProvider } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
@@ -79,12 +86,7 @@ describe('ComponentsListComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [
-        FormsModule,
-        HttpClientTestingModule,
-        MemoModule,
-        ReactiveFormsModule,
-      ],
+      imports: [FormsModule, HttpClientTestingModule, MemoModule, ReactiveFormsModule],
       declarations: [
         MockPipe(MaskHandlePipe),
         MockComponents(
@@ -102,7 +104,7 @@ describe('ComponentsListComponent', () => {
           PassportComponent,
         ),
         ComponentsListComponent,
-        ShowComponentPipe
+        ShowComponentPipe,
       ],
       providers: [
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
@@ -140,14 +142,16 @@ describe('ComponentsListComponent', () => {
         ValidationService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).overrideComponent(ComponentsListComponent, {
-      set: {
-        changeDetection: ChangeDetectionStrategy.Default,
-        providers: [
-          { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-        ]
-      },
-    }).compileComponents();
+    })
+      .overrideComponent(ComponentsListComponent, {
+        set: {
+          changeDetection: ChangeDetectionStrategy.Default,
+          providers: [
+            { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -172,7 +176,10 @@ describe('ComponentsListComponent', () => {
   describe('ngOnInit()', () => {
     it('should call methods on init', () => {
       const eventBusServiceSpy = jest.spyOn(eventBusService, 'on');
-      const watchForFiltersSpy = jest.spyOn<ComponentsListComponent, any>(component, 'watchForFilters');
+      const watchForFiltersSpy = jest.spyOn<ComponentsListComponent, any>(
+        component,
+        'watchForFilters',
+      );
 
       component.ngOnInit();
 
@@ -184,7 +191,10 @@ describe('ComponentsListComponent', () => {
   describe('ngOnChanges()', () => {
     it('should call methods inside itself', () => {
       const unsubscribeSpy = jest.spyOn<ComponentsListComponent, any>(component, 'unsubscribe');
-      const subscribeOnFormStatusChangingSpy = jest.spyOn<ComponentsListComponent, any>(component, 'subscribeOnFormStatusChanging');
+      const subscribeOnFormStatusChangingSpy = jest.spyOn<ComponentsListComponent, any>(
+        component,
+        'subscribeOnFormStatusChanging',
+      );
       const loadRepository = jest.spyOn<ComponentsListComponent, any>(component, 'loadRepository');
 
       component.ngOnChanges({});
@@ -258,8 +268,14 @@ describe('ComponentsListComponent', () => {
 
   describe('loadRepository()', () => {
     it('should load all needed data from services', () => {
-      const dictionaryLoadReferenceDataSpy = jest.spyOn<DictionaryToolsService, any>(dictionaryToolsService, 'loadReferenceData$');
-      const restLoadReferenceDataSpy = jest.spyOn<RestToolsService, any>(restToolsService, 'loadReferenceData$');
+      const dictionaryLoadReferenceDataSpy = jest.spyOn<DictionaryToolsService, any>(
+        dictionaryToolsService,
+        'loadReferenceData$',
+      );
+      const restLoadReferenceDataSpy = jest.spyOn<RestToolsService, any>(
+        restToolsService,
+        'loadReferenceData$',
+      );
 
       component['loadRepository'](component.components);
 
@@ -286,14 +302,11 @@ describe('ComponentsListComponent', () => {
 
       component.emitFormStatus.observers.push({
         // eslint-disable-next-line no-empty-function
-        complete(): void {
-        },
+        complete(): void {},
         // eslint-disable-next-line no-empty-function
-        error(err: any): void {
-        },
+        error(err: any): void {},
         // eslint-disable-next-line no-empty-function
-        next(value: any): void {
-        }
+        next(value: any): void {},
       });
       component['subscribeOnFormStatusChanging']();
 

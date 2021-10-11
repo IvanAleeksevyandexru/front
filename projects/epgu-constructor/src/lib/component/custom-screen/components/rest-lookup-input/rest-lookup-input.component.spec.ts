@@ -54,7 +54,11 @@ describe('RestLookupInputComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [RestLookupInputComponent, MockComponent(ComponentItemComponent)],
-      imports: [MockModule(ValidationTypeModule), MockModule(BaseUiModule), HttpClientTestingModule],
+      imports: [
+        MockModule(ValidationTypeModule),
+        MockModule(BaseUiModule),
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

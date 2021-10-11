@@ -1,34 +1,46 @@
 <ng-container *ngIf="medicalReferralsList?.length; else emptyMedicalReferralsList">
-  <epgu-cf-ui-constructor-screen-pad class="mb-24" *ngFor="let medicalReferral of medicalReferralsList">
+  <epgu-cf-ui-constructor-screen-pad
+    class="mb-24"
+    *ngFor="let medicalReferral of medicalReferralsList"
+  >
     <div class="referrals-header mb-24">
-      <p class="referrals-number">Направление №{{ medicalReferral.referralNumber }} от
-        {{ medicalReferral.referralStartDate
-          | memo:datesToolsService.parse:null:dashFormat
-          | memo:datesToolsService.format:null:dotFormat }}</p>
+      <p class="referrals-number">
+        Направление №{{ medicalReferral.referralNumber }} от
+        {{
+          medicalReferral.referralStartDate
+            | memo: datesToolsService.parse:null:dashFormat
+            | memo: datesToolsService.format:null:dotFormat
+        }}
+      </p>
       <span class="referrals-end-date">
-      {{ medicalReferral.referralEndDate
-        | memo:datesToolsService.parse:null:dashFormat
-        | memo:datesToolsService.format:null:beforeDateFormat }}
-    </span>
+        {{
+          medicalReferral.referralEndDate
+            | memo: datesToolsService.parse:null:dashFormat
+            | memo: datesToolsService.format:null:beforeDateFormat
+        }}
+      </span>
     </div>
 
     <div class="mb-16">
-      <h5 class="referrals-specialist mb-4" *ngIf="medicalReferral.toSpecsName">{{ medicalReferral.toSpecsName }}</h5>
+      <h5 class="referrals-specialist mb-4" *ngIf="medicalReferral.toSpecsName">
+        {{ medicalReferral.toSpecsName }}
+      </h5>
       <div class="mb-4 referrals-service" *ngIf="medicalReferral.toServiceName">
-        <p class="referrals-service_plain"  *ngIf="medicalReferral.toSpecsName">Процедура: {{ medicalReferral.toServiceName}}</p>
-        <h5 class="referrals-service_heading" *ngIf="!medicalReferral.toSpecsName">{{ medicalReferral.toServiceName }}</h5>
+        <p class="referrals-service_plain" *ngIf="medicalReferral.toSpecsName">
+          Процедура: {{ medicalReferral.toServiceName }}
+        </p>
+        <h5 class="referrals-service_heading" *ngIf="!medicalReferral.toSpecsName">
+          {{ medicalReferral.toServiceName }}
+        </h5>
       </div>
       <epgu-constructor-output-html
         class="referrals-address"
         [html]="medicalReferral.toMoName"
       ></epgu-constructor-output-html>
-
     </div>
 
     <div>
-      <a class="referrals-action"
-         (click)="chooseReferral(medicalReferral)"
-      >
+      <a class="referrals-action" (click)="chooseReferral(medicalReferral)">
         Записаться
       </a>
     </div>

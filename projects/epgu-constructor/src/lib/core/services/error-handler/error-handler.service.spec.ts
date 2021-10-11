@@ -80,7 +80,6 @@ describe('ErrorHandlerService', () => {
         },
       });
 
-
       jest.spyOn(service, 'showModalFailure');
       service.handleResponse({}, response);
       expect(service.showModalFailure).toHaveBeenCalledWith(

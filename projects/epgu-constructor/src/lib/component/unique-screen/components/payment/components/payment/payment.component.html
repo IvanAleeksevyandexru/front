@@ -2,9 +2,10 @@
   [show-nav]="screenService.showNav$ | async"
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
-
   <div class="screen-body">
-    <epgu-constructor-page-name *ngIf="(header$ | async) as header">{{ header }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name *ngIf="header$ | async as header">{{
+      header
+    }}</epgu-constructor-page-name>
 
     <div class="payment" [class.inloading]="inLoading" [ngSwitch]="status">
       <div class="info" *ngSwitchCase="paymentStatus.SUCCESS">
@@ -17,13 +18,24 @@
           {{ sum }} Р
           <span class="del" *ngIf="sumWithoutDiscount.length">{{ sumWithoutDiscount }} Р</span>
         </div>
-        <div class="info__hint" 
-          *ngIf="sumWithoutDiscount.length && validDiscountDate.length && !(screenService.component$ | async).attrs.discountInformation"
+        <div
+          class="info__hint"
+          *ngIf="
+            sumWithoutDiscount.length &&
+            validDiscountDate.length &&
+            !(screenService.component$ | async).attrs.discountInformation
+          "
         >
           Скидка действует при оплате до {{ validDiscountDate }}
         </div>
-        <div class="info__hint" *ngIf="sumWithoutDiscount.length && (screenService.component$ | async).attrs.discountInformation">
-          {{(screenService.component$ | async).attrs.discountInformation}}
+        <div
+          class="info__hint"
+          *ngIf="
+            sumWithoutDiscount.length &&
+            (screenService.component$ | async).attrs.discountInformation
+          "
+        >
+          {{ (screenService.component$ | async).attrs.discountInformation }}
         </div>
         <div class="is__payed" *ngIf="isPaid">
           Оплачено
@@ -60,7 +72,7 @@
 
   <div class="screen-footer" *ngIf="isShown">
     <lib-button [showLoader]="inLoading" (click)="redirectToPayWindow()" class="submit-button">
-      {{ (buttonLabel$ | async) || "Оплатить" }}
+      {{ (buttonLabel$ | async) || 'Оплатить' }}
     </lib-button>
   </div>
 </epgu-cf-ui-screen-container>

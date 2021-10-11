@@ -5,35 +5,31 @@ import { configureTestSuite } from 'ng-bullet';
 
 import { CoreUiModule, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CoreModule } from '../../../../../../core/core.module';
-import { 
+import {
   cachedValueMock,
   equipmentChoiceComponentMock,
   formValueMock,
-  itemsWithMinAmountMock
+  itemsWithMinAmountMock,
 } from '../../equipment-choice.mocks';
-import { EquipmentChoiceFormValue, EquipmentChoiceRequestResult } from '../../equipment-choice.types';
+import {
+  EquipmentChoiceFormValue,
+  EquipmentChoiceRequestResult,
+} from '../../equipment-choice.types';
 import { EquipmentCategoryComponent } from '../equipment-category/equipment-category.component';
 import { EquipmentChoiceComponent } from './equipment-choice.component';
 
 describe('EquipmentChoiceComponent', () => {
-  const equipmentChoiceRequestResult = new EquipmentChoiceRequestResult(equipmentChoiceComponentMock.attrs.result);
+  const equipmentChoiceRequestResult = new EquipmentChoiceRequestResult(
+    equipmentChoiceComponentMock.attrs.result,
+  );
   let component: EquipmentChoiceComponent;
   let fixture: ComponentFixture<EquipmentChoiceComponent>;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        EquipmentChoiceComponent,
-        MockComponent(EquipmentCategoryComponent),
-      ],
-      imports: [
-        CoreModule,
-        MockModule(CoreUiModule),
-        ReactiveFormsModule,
-      ],
-      providers: [
-        UnsubscribeService
-      ]
+      declarations: [EquipmentChoiceComponent, MockComponent(EquipmentCategoryComponent)],
+      imports: [CoreModule, MockModule(CoreUiModule), ReactiveFormsModule],
+      providers: [UnsubscribeService],
     }).compileComponents();
   });
 
@@ -58,7 +54,9 @@ describe('EquipmentChoiceComponent', () => {
 
     it('should set concServiceTypeIds if CONC_SERVICE_TYPE_IDS is exists', () => {
       expect(component.concServiceTypeIds).toBeTruthy();
-      expect(component.concServiceTypeIds).toEqual(equipmentChoiceRequestResult.attrs.CONC_SERVICE_TYPE_IDS);
+      expect(component.concServiceTypeIds).toEqual(
+        equipmentChoiceRequestResult.attrs.CONC_SERVICE_TYPE_IDS,
+      );
     });
 
     it('should init form', () => {

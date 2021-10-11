@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { MicroAppStateQuery, MicroAppStateService } from '@epgu/epgu-constructor-ui-kit';
-import { ChildrenClubsState, ChildrenClubsValue, GroupFiltersModes } from '../../children-clubs.types';
+import {
+  ChildrenClubsState,
+  ChildrenClubsValue,
+  GroupFiltersModes,
+} from '../../children-clubs.types';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
@@ -64,9 +68,12 @@ export class StateService {
       isRegistrationOpen: this.programFilters.isRegistrationOpen,
       maxPrice: this.programFilters.maxPrice,
       age: this.programFilters.age,
-      inlearnoPayments: this.programFilters.inlearnoPayments
-      };
-    if (!this.stateQuery.state?.groupFilters || Object.keys(this.stateQuery.state?.groupFilters).length === 0) {
+      inlearnoPayments: this.programFilters.inlearnoPayments,
+    };
+    if (
+      !this.stateQuery.state?.groupFilters ||
+      Object.keys(this.stateQuery.state?.groupFilters).length === 0
+    ) {
       return defaultFindOptions;
     } else {
       return cloneDeep(this.stateQuery.state?.groupFilters);

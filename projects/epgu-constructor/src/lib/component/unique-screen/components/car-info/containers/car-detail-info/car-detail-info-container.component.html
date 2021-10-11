@@ -49,7 +49,11 @@
         <ng-container
           *ngTemplateOutlet="
             templateError;
-            context: { type: vehicleInfo.externalServiceCallResult, errorType: 'vehicleErrors', title: 'Регистрация ТС' }
+            context: {
+              type: vehicleInfo.externalServiceCallResult,
+              errorType: 'vehicleErrors',
+              title: 'Регистрация ТС'
+            }
           "
         ></ng-container>
         <div class="divider info-list-divider"></div>
@@ -68,16 +72,18 @@
         <ng-container
           *ngTemplateOutlet="
             templateError;
-            context: { type: notaryInfo.externalServiceCallResult, errorType: 'notaryErrors', title: 'Проверка в Федеральной нотариальной палате' }
+            context: {
+              type: notaryInfo.externalServiceCallResult,
+              errorType: 'notaryErrors',
+              title: 'Проверка в Федеральной нотариальной палате'
+            }
           "
         ></ng-container>
       </ng-template>
     </ng-container>
     <ng-container *ngIf="(data$ | async).attrs.helperText as helperText">
       <div class="divider info-list-divider"></div>
-      <epgu-constructor-output-html
-        [html]="helperText"
-      ></epgu-constructor-output-html>
+      <epgu-constructor-output-html [html]="helperText"></epgu-constructor-output-html>
     </ng-container>
   </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

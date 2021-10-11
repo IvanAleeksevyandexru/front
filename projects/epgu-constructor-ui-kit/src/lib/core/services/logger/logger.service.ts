@@ -6,7 +6,7 @@ export const KEY_SHOW_LOG = 'SHOW_LOG';
 export class LoggerService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   log(messages: any[], groupName: string = null): void {
-    if(this.isShowLog()) {
+    if (this.isShowLog()) {
       if (groupName) {
         this.openGroup(groupName);
       }

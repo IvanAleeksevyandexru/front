@@ -9,7 +9,7 @@ describe('UsePaymentsModalComponent', () => {
   let component: UsePaymentsModalComponent;
   let fixture: ComponentFixture<UsePaymentsModalComponent>;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [UsePaymentsModalComponent],
       imports: [MockModule(BaseModule)],

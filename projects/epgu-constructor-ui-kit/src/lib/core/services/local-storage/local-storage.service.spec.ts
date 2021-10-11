@@ -7,7 +7,7 @@ const TEST_KEY = 'TEST_KEY';
 describe('LocalStorageService', () => {
   let service: LocalStorageService;
   const mockObject = {
-    someKey: 'someValue'
+    someKey: 'someValue',
   };
 
   configureTestSuite(() => {

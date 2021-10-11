@@ -15,7 +15,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentsListRelationsService } from '../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
 import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
-import { DeviceDetectorService, DeviceDetectorServiceStub, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  ConfigService,
+  LoggerService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';

@@ -39,12 +39,12 @@ const LETTERS = {
   'э': 'e',
   'ю': 'iu',
   'я': 'ia',
-  'ь': ''
+  'ь': '',
 } as TranslitAlphabet;
 
 @Injectable()
 export class WordTransformService {
-  constructor (private objectHelperService: ObjectHelperService) {}
+  constructor(private objectHelperService: ObjectHelperService) {}
 
   /**
    * Converts cyrillic to latin

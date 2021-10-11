@@ -7,6 +7,6 @@ import { AppScreenComponent } from './app-screen.component';
   declarations: [AppScreenComponent],
   exports: [AppScreenComponent],
   imports: [BaseModule],
-  providers: [EventBusService]
+  providers: [EventBusService],
 })
 export class AppScreenModule {}

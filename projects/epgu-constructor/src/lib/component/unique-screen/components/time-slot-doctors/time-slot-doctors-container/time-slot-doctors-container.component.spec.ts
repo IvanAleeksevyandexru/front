@@ -1,6 +1,6 @@
 import {
   SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE,
-  TimeSlotDoctorsContainerComponent
+  TimeSlotDoctorsContainerComponent,
 } from './time-slot-doctors-container.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
@@ -47,7 +47,10 @@ import { DictionaryApiService } from '../../../../../shared/services/dictionary/
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { MockProvider } from 'ng-mocks';
-import { SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT, TimeSlotsConstants } from '../../time-slots/time-slots.constants';
+import {
+  SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT,
+  TimeSlotsConstants,
+} from '../../time-slots/time-slots.constants';
 import { FormPlayerApiService } from '../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
@@ -65,15 +68,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { TimeSlotDoctorsComponentDto } from '../time-slot-doctors.interface';
 import { of, throwError } from 'rxjs';
 import {
-  COMMON_ERROR_MODAL_PARAMS, ITEMS_FAILURE,
-  SERVICE_OR_SPEC_SESSION_TIMEOUT
+  COMMON_ERROR_MODAL_PARAMS,
+  ITEMS_FAILURE,
+  SERVICE_OR_SPEC_SESSION_TIMEOUT,
 } from '../../../../../core/services/error-handler/error-handler';
-import { ComponentDto, ConfirmationModal, ScreenButton, SlotsNotFoundTemplate } from '@epgu/epgu-constructor-types';
+import {
+  ComponentDto,
+  ConfirmationModal,
+  ScreenButton,
+  SlotsNotFoundTemplate,
+} from '@epgu/epgu-constructor-types';
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { HtmlSelectService } from '../../../../../core/services/html-select/html-select.service';
 import {
   SmevBookResponseInterface,
-  TimeSlotsAnswerInterface
+  TimeSlotsAnswerInterface,
 } from '../../time-slots/time-slots.types';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
@@ -89,7 +98,6 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   let actionService: ActionService;
   let httpCancelService: HttpCancelService;
 
-
   const mockComponent = {
     id: 'ts_doctor_ref',
     type: 'TimeSlotDoctor',
@@ -102,7 +110,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         dictionaryUrlType: 'lkApi',
         mappingParams: {
           idPath: 'attributes[5].value',
-          textPath: 'attributes[6].value'
+          textPath: 'attributes[6].value',
         },
         searchProvider: {
           turnOffStartFilter: true,
@@ -113,52 +121,46 @@ describe('TimeSlotDoctorsContainerComponent', () => {
               condition: 'EQUALS',
               value: 'MedRef.value.convertedAttributes.toSpecsId',
               valueType: 'ref',
-              excludeWrapper: true
+              excludeWrapper: true,
             },
             {
               attributeName: 'Referral_Id',
               condition: 'EQUALS',
               value: 'MedRef.value.convertedAttributes.referralId',
               valueType: 'ref',
-              excludeWrapper: true
+              excludeWrapper: true,
             },
             {
               attributeName: 'MO_OID',
               condition: 'EQUALS',
               value: 'MedRef.value.convertedAttributes.toMoOid',
               valueType: 'ref',
-              excludeWrapper: true
+              excludeWrapper: true,
             },
             {
               attributeName: 'Session_Id',
               condition: 'EQUALS',
               value: 'reg1.value.medicalInfo.sessionId',
               valueType: 'ref',
-              excludeWrapper: true
-            }
+              excludeWrapper: true,
+            },
           ],
           dictionaryOptions: {
-            selectAttributes: [
-              'Resource_Id',
-              'Resource_Name'
-            ],
+            selectAttributes: ['Resource_Id', 'Resource_Name'],
             additionalParams: [
               {
                 name: 'eserviceId',
                 value: 'reg1.value.medicalInfo.eserviceId',
-                type: 'ref'
+                type: 'ref',
               },
               {
                 name: 'refName',
                 value: 'Resource',
-                type: 'value'
-              }
+                type: 'value',
+              },
             ],
-            excludedParams: [
-              'parentRefItemValue',
-              'tx'
-            ]
-          }
+            excludedParams: ['parentRefItemValue', 'tx'],
+          },
         },
         ref: [],
         required: true,
@@ -166,9 +168,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
           {
             type: 'RegExp',
             value: '.+',
-            errorMsg: 'Поле не может быть пустым'
-          }
-        ]
+            errorMsg: 'Поле не может быть пустым',
+          },
+        ],
       },
       specLookup: {
         label: 'Врач',
@@ -176,7 +178,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         dictionaryUrlType: 'lkApi',
         mappingParams: {
           idPath: 'attributes[5].value',
-          textPath: 'attributes[6].value'
+          textPath: 'attributes[6].value',
         },
         searchProvider: {
           turnOffStartFilter: true,
@@ -187,52 +189,46 @@ describe('TimeSlotDoctorsContainerComponent', () => {
               condition: 'EQUALS',
               value: 'MedRef.value.convertedAttributes.toSpecsId',
               valueType: 'ref',
-              excludeWrapper: true
+              excludeWrapper: true,
             },
             {
               attributeName: 'Referral_Id',
               condition: 'EQUALS',
               value: 'MedRef.value.convertedAttributes.referralId',
               valueType: 'ref',
-              excludeWrapper: true
+              excludeWrapper: true,
             },
             {
               attributeName: 'MO_OID',
               condition: 'EQUALS',
               value: 'MedRef.value.convertedAttributes.toMoOid',
               valueType: 'ref',
-              excludeWrapper: true
+              excludeWrapper: true,
             },
             {
               attributeName: 'Session_Id',
               condition: 'EQUALS',
               value: 'reg1.value.medicalInfo.sessionId',
               valueType: 'ref',
-              excludeWrapper: true
-            }
+              excludeWrapper: true,
+            },
           ],
           dictionaryOptions: {
-            selectAttributes: [
-              'Resource_Id',
-              'Resource_Name'
-            ],
+            selectAttributes: ['Resource_Id', 'Resource_Name'],
             additionalParams: [
               {
                 name: 'eserviceId',
                 value: 'reg1.value.medicalInfo.eserviceId',
-                type: 'ref'
+                type: 'ref',
               },
               {
                 name: 'refName',
                 value: 'Resource',
-                type: 'value'
-              }
+                type: 'value',
+              },
             ],
-            excludedParams: [
-              'parentRefItemValue',
-              'tx'
-            ]
-          }
+            excludedParams: ['parentRefItemValue', 'tx'],
+          },
         },
         ref: [],
         required: true,
@@ -240,9 +236,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
           {
             type: 'RegExp',
             value: '.+',
-            errorMsg: 'Поле не может быть пустым'
-          }
-        ]
+            errorMsg: 'Поле не может быть пустым',
+          },
+        ],
       },
       ts: {
         restrictions: { minDate: [30, 'd'], maxDate: [1, 'y'] },
@@ -252,15 +248,16 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         isMonthsRangeVisible: true,
         timeSlotType: {
           type: 'CONST',
-          value: 'DOCTOR'
-        }
-      }
+          value: 'DOCTOR',
+        },
+      },
     },
     arguments: {
       vin: '100',
     },
-    // eslint-disable-next-line max-len
-    value: '{\"orderId\":764189425,\"eserviceId\":\"10000104378\",\"serviceId\":\"-10000006633\",\"serviceCode\":\"-10000006633\",\"department\":\"{\\\"value\\\":\\\"987\\\",\\\"parentValue\\\":null,\\\"title\\\":\\\"Поликлиника 7\\\",\\\"isLeaf\\\":true,\\\"children\\\":null,\\\"attributes\\\":[{\\\"name\\\":\\\"MO_Oid\\\",\\\"type\\\":\\\"STRING\\\",\\\"value\\\":{\\\"asString\\\":\\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\\",\\\"asLong\\\":null,\\\"asDecimal\\\":null,\\\"asDateTime\\\":null,\\\"asDate\\\":null,\\\"asBoolean\\\":null,\\\"typeOfValue\\\":\\\"STRING\\\",\\\"value\\\":\\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\\"},\\\"valueAsOfType\\\":\\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\\"},{\\\"name\\\":\\\"Address_MO\\\",\\\"type\\\":\\\"STRING\\\",\\\"value\\\":{\\\"asString\\\":\\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\\",\\\"asLong\\\":null,\\\"asDecimal\\\":null,\\\"asDateTime\\\":null,\\\"asDate\\\":null,\\\"asBoolean\\\":null,\\\"typeOfValue\\\":\\\"STRING\\\",\\\"value\\\":\\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\\"},\\\"valueAsOfType\\\":\\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\\"},{\\\"name\\\":\\\"Reg_Phone\\\",\\\"type\\\":\\\"STRING\\\",\\\"value\\\":{\\\"asString\\\":\\\"(867) 550-80-91\\\",\\\"asLong\\\":null,\\\"asDecimal\\\":null,\\\"asDateTime\\\":null,\\\"asDate\\\":null,\\\"asBoolean\\\":null,\\\"typeOfValue\\\":\\\"STRING\\\",\\\"value\\\":\\\"(867) 550-80-91\\\"},\\\"valueAsOfType\\\":\\\"(867) 550-80-91\\\"}],\\\"source\\\":null,\\\"attributeValues\\\":{\\\"Address_MO\\\":\\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\\",\\\"MO_Oid\\\":\\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\\",\\\"Reg_Phone\\\":\\\"(867) 550-80-91\\\"},\\\"objectId\\\":3,\\\"center\\\":[44.633343,43.040624],\\\"baloonContent\\\":[{\\\"value\\\":\\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\\",\\\"label\\\":\\\"Адрес\\\"},{\\\"value\\\":\\\"(867) 550-80-91\\\",\\\"label\\\":\\\"Телефон\\\"}],\\\"agreement\\\":true,\\\"idForMap\\\":3,\\\"expanded\\\":true,\\\"okato\\\":\\\"55000000000\\\"}\",\"timeSlotRequestAttrs\":[{\"name\":\"Startdate\",\"value\":\"06.10.2021\"},{\"name\":\"Starttime\",\"value\":\"00:00\"},{\"name\":\"Enddate\",\"value\":\"20.10.2021\"},{\"name\":\"Endtime\",\"value\":\"23:59\"},{\"name\":\"Session_Id\",\"value\":\"f022067e-a026-4ee4-9160-0ab0d09ea569\"},{\"name\":\"Service_Id\",\"value\":\"109::B04.014.004\"},{\"name\":\"ServiceSpec_Id\",\"value\":\"\"},{\"name\":\"MO_Id\",\"value\":\"987\"}],\"bookingRequestAttrs\":[{\"name\":\"doctor\",\"value\":\"врач-терапевт (Вакцинация)\"},{\"name\":\"anotherperson\",\"value\":\"Y\"},{\"name\":\"genderperson\",\"value\":\"Мужской\"},{\"name\":\"ageperson\",\"value\":\"31\"},{\"name\":\"pacientname\",\"value\":\"Ыть Ыть Ыть\"}],\"organizationId\":\"987\",\"bookAttributes\":\"[{\\\"name\\\":\\\"Session_Id\\\",\\\"value\\\":\\\"f022067e-a026-4ee4-9160-0ab0d09ea569\\\"}]\",\"userSelectedRegion\":\"55000000000\"}',
+    value:
+      // eslint-disable-next-line max-len
+      '{"orderId":764189425,"eserviceId":"10000104378","serviceId":"-10000006633","serviceCode":"-10000006633","department":"{\\"value\\":\\"987\\",\\"parentValue\\":null,\\"title\\":\\"Поликлиника 7\\",\\"isLeaf\\":true,\\"children\\":null,\\"attributes\\":[{\\"name\\":\\"MO_Oid\\",\\"type\\":\\"STRING\\",\\"value\\":{\\"asString\\":\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\",\\"asLong\\":null,\\"asDecimal\\":null,\\"asDateTime\\":null,\\"asDate\\":null,\\"asBoolean\\":null,\\"typeOfValue\\":\\"STRING\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\"},\\"valueAsOfType\\":\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\"},{\\"name\\":\\"Address_MO\\",\\"type\\":\\"STRING\\",\\"value\\":{\\"asString\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\",\\"asLong\\":null,\\"asDecimal\\":null,\\"asDateTime\\":null,\\"asDate\\":null,\\"asBoolean\\":null,\\"typeOfValue\\":\\"STRING\\",\\"value\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\"},\\"valueAsOfType\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\"},{\\"name\\":\\"Reg_Phone\\",\\"type\\":\\"STRING\\",\\"value\\":{\\"asString\\":\\"(867) 550-80-91\\",\\"asLong\\":null,\\"asDecimal\\":null,\\"asDateTime\\":null,\\"asDate\\":null,\\"asBoolean\\":null,\\"typeOfValue\\":\\"STRING\\",\\"value\\":\\"(867) 550-80-91\\"},\\"valueAsOfType\\":\\"(867) 550-80-91\\"}],\\"source\\":null,\\"attributeValues\\":{\\"Address_MO\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\",\\"MO_Oid\\":\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\",\\"Reg_Phone\\":\\"(867) 550-80-91\\"},\\"objectId\\":3,\\"center\\":[44.633343,43.040624],\\"baloonContent\\":[{\\"value\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\",\\"label\\":\\"Адрес\\"},{\\"value\\":\\"(867) 550-80-91\\",\\"label\\":\\"Телефон\\"}],\\"agreement\\":true,\\"idForMap\\":3,\\"expanded\\":true,\\"okato\\":\\"55000000000\\"}","timeSlotRequestAttrs":[{"name":"Startdate","value":"06.10.2021"},{"name":"Starttime","value":"00:00"},{"name":"Enddate","value":"20.10.2021"},{"name":"Endtime","value":"23:59"},{"name":"Session_Id","value":"f022067e-a026-4ee4-9160-0ab0d09ea569"},{"name":"Service_Id","value":"109::B04.014.004"},{"name":"ServiceSpec_Id","value":""},{"name":"MO_Id","value":"987"}],"bookingRequestAttrs":[{"name":"doctor","value":"врач-терапевт (Вакцинация)"},{"name":"anotherperson","value":"Y"},{"name":"genderperson","value":"Мужской"},{"name":"ageperson","value":"31"},{"name":"pacientname","value":"Ыть Ыть Ыть"}],"organizationId":"987","bookAttributes":"[{\\"name\\":\\"Session_Id\\",\\"value\\":\\"f022067e-a026-4ee4-9160-0ab0d09ea569\\"}]","userSelectedRegion":"55000000000"}',
     required: true,
   };
 
@@ -319,12 +316,12 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     title: 'Поликлиника 7',
     attributeValues: {
       SpecId: 'specTest',
-    }
+    },
   };
 
   const mockSpecLookup = {
     id: '200',
-    text: 'Тестовая специальность'
+    text: 'Тестовая специальность',
   };
 
   const mockDocLookup = {
@@ -334,10 +331,10 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       attributes: [
         {
           name: 'specId',
-          value: '123'
-        }
-      ]
-    }
+          value: '123',
+        },
+      ],
+    },
   };
 
   configureTestSuite(() => {
@@ -399,16 +396,16 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     fixture = TestBed.createComponent(TimeSlotDoctorsContainerComponent);
     component = fixture.componentInstance;
 
-    screenService.button = { label: 'test' } as unknown as ScreenButton;
-    screenService.component = mockComponent as unknown as ComponentDto;
+    screenService.button = ({ label: 'test' } as unknown) as ScreenButton;
+    screenService.component = (mockComponent as unknown) as ComponentDto;
 
     jest.spyOn(currentAnswersService, 'isValid$', 'get').mockReturnValue(of(true));
     jest.spyOn(component, 'ngAfterViewInit').mockReturnValue(null);
 
-    component.timeSlotDoctors$ = of(mockComponent as unknown as TimeSlotDoctorsComponentDto);
+    component.timeSlotDoctors$ = of((mockComponent as unknown) as TimeSlotDoctorsComponentDto);
     component.today = new Date('2020-01-01T00:00:00Z');
     component.activeMonthNumber = 0;
-    component.component = mockComponent as unknown as TimeSlotDoctorsComponentDto;
+    component.component = (mockComponent as unknown) as TimeSlotDoctorsComponentDto;
 
     timeSlotDoctorService.department = mockDepartment;
     timeSlotDoctorService.isOnlyDocLookupNeeded = true;
@@ -421,7 +418,6 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   });
 
   describe('isToday()', () => {
-
     it('should return false', () => {
       const res = component.isToday(new Date('2020-02-01T00:00:00Z'));
       expect(res).toBeFalsy();
@@ -431,11 +427,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       const res = component.isToday(new Date('2020-01-01T00:00:00Z'));
       expect(res).toBeTruthy();
     });
-
   });
 
   describe('isDateOutOfMonth()', () => {
-
     it('should return false', () => {
       const res = component.isDateOutOfMonth(new Date('2020-02-01T00:00:00Z'));
       expect(res).toBeTruthy();
@@ -445,7 +439,6 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       const res = component.isDateOutOfMonth(new Date('2020-01-01T00:00:00Z'));
       expect(res).toBeFalsy();
     });
-
   });
 
   describe('chooseTimeSlot()', () => {
@@ -534,7 +527,6 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   });
 
   describe('checkExistenceSlots()', () => {
-
     it('when there is at least one date that is not locked', () => {
       component.weeks = [[{ date: new Date('2021-02-28T18:00:00.000Z'), number: 1 }]];
       jest.spyOn(component, 'isDateLocked').mockReturnValue(false);
@@ -554,11 +546,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       component.checkExistenceSlots();
       expect(component.isExistsSlots).toBe(false);
     });
-
   });
 
   describe('showError()', () => {
-
     it('show error and load timeslots by click on retry', () => {
       const confirmationModalParams = {
         ...COMMON_ERROR_MODAL_PARAMS,
@@ -596,7 +586,6 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       expect(component.showModal).toHaveBeenLastCalledWith(confirmationModalParams);
       expect(component['loadTimeSlots']).not.toHaveBeenCalled();
     });
-
   });
 
   it('showModal()', () => {
@@ -604,7 +593,10 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     component.showModal(COMMON_ERROR_MODAL_PARAMS);
 
-    expect(modalService.openModal).toHaveBeenLastCalledWith(ConfirmationModalComponent, COMMON_ERROR_MODAL_PARAMS);
+    expect(modalService.openModal).toHaveBeenLastCalledWith(
+      ConfirmationModalComponent,
+      COMMON_ERROR_MODAL_PARAMS,
+    );
   });
 
   it('handleSpecLookupValue()', () => {
@@ -616,7 +608,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     expect(timeSlotDoctorService.state$$.value).toEqual({
       bookingRequestAttrs: null,
-      specLookup: mockSpecLookup, docLookup: null
+      specLookup: mockSpecLookup,
+      docLookup: null,
     });
     expect(component.docLookupControl.value).toEqual('');
     expect(component.timeSlotDoctorsComponent.docLookup.setFocus).toHaveBeenCalled();
@@ -625,7 +618,6 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   it('handleDocLookupValue()', () => {
     spyOn<any>(component, 'loadTimeSlots');
 
-
     expect(component.doctorWasChosen$$.value).toEqual(false);
 
     component.handleDocLookupValue(mockDocLookup);
@@ -633,7 +625,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     expect(timeSlotDoctorService.state$$.value).toEqual({
       bookingRequestAttrs: { specId: '123' },
       specLookup: null,
-      docLookup: mockDocLookup
+      docLookup: mockDocLookup,
     });
     expect(component.doctorWasChosen$$.value).toEqual(true);
     expect(component['loadTimeSlots']).toHaveBeenCalled();
@@ -664,7 +656,6 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   });
 
   describe('clickSubmit()', () => {
-
     it('should invoke bookTimeSlot function if there is no booked slot', () => {
       component.bookedSlot = null;
 
@@ -676,7 +667,12 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
 
     it('should show confirmation modal', () => {
-      component.bookedSlot = { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' };
+      component.bookedSlot = {
+        slotTime: new Date('2021-08-28T09:00:00Z'),
+        timezone: '',
+        areaId: '',
+        slotId: '',
+      };
 
       jest.spyOn(component, 'showModal');
       jest.spyOn(component as any, 'isCachedValueChanged').mockImplementation(() => true);
@@ -687,8 +683,13 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
 
     it('should invoke next action process', () => {
-      component.bookedSlot = { slotTime: new Date('2021-08-28T09:00:00Z'), timezone: '', areaId: '', slotId: '' };
-      component['cachedAnswer'] = { bookId: '123' } as unknown as TimeSlotsAnswerInterface;
+      component.bookedSlot = {
+        slotTime: new Date('2021-08-28T09:00:00Z'),
+        timezone: '',
+        areaId: '',
+        slotId: '',
+      };
+      component['cachedAnswer'] = ({ bookId: '123' } as unknown) as TimeSlotsAnswerInterface;
 
       jest.spyOn(actionService, 'switchAction').mockReturnValue(null);
       jest.spyOn(component as any, 'isCachedValueChanged').mockImplementation(() => false);
@@ -696,9 +697,11 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       component.clickSubmit();
 
       expect(currentAnswersService.state).toEqual({ bookId: '123' });
-      expect(actionService.switchAction).toHaveBeenLastCalledWith(NEXT_STEP_ACTION, 'ts_doctor_ref');
+      expect(actionService.switchAction).toHaveBeenLastCalledWith(
+        NEXT_STEP_ACTION,
+        'ts_doctor_ref',
+      );
     });
-
   });
 
   describe('bookTimeSlot()', () => {
@@ -708,7 +711,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
 
     it('should set state and invoke next action process (complex test)', () => {
-      jest.spyOn(timeSlotDoctorService, 'checkBooking').mockImplementation(() => of({ bookId: 'test' } as unknown as SmevBookResponseInterface));
+      jest
+        .spyOn(timeSlotDoctorService, 'checkBooking')
+        .mockImplementation(() => of(({ bookId: 'test' } as unknown) as SmevBookResponseInterface));
       spyOn<any>(component, 'loadTimeSlots');
 
       jest.useFakeTimers();
@@ -726,21 +731,27 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         bookId: 'test',
         department: mockDepartment,
         docLookup: mockDocLookup,
-        specLookup: mockSpecLookup
+        specLookup: mockSpecLookup,
       });
-      expect(actionService.switchAction).toHaveBeenLastCalledWith(NEXT_STEP_ACTION, 'ts_doctor_ref');
+      expect(actionService.switchAction).toHaveBeenLastCalledWith(
+        NEXT_STEP_ACTION,
+        'ts_doctor_ref',
+      );
     });
 
     it('when response is failed', () => {
-      jest.spyOn(timeSlotDoctorService, 'checkBooking').mockImplementation(() => throwError({
-        error: {
-          errorDetail: {
-            errorMessage: 'Ошибка запроса'
-          }
-        }
-      }));
-      jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockImplementation(() => 'Ошибка запроса');
-
+      jest.spyOn(timeSlotDoctorService, 'checkBooking').mockImplementation(() =>
+        throwError({
+          error: {
+            errorDetail: {
+              errorMessage: 'Ошибка запроса',
+            },
+          },
+        }),
+      );
+      jest
+        .spyOn(timeSlotDoctorService, 'getErrorMessage')
+        .mockImplementation(() => 'Ошибка запроса');
 
       component.bookTimeSlot();
 
@@ -750,10 +761,13 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
 
     it('when response is OK but there is an error', () => {
-      jest.spyOn(timeSlotDoctorService, 'checkBooking').mockImplementation(() => of({ bookId: 'test' } as unknown as SmevBookResponseInterface));
+      jest
+        .spyOn(timeSlotDoctorService, 'checkBooking')
+        .mockImplementation(() => of(({ bookId: 'test' } as unknown) as SmevBookResponseInterface));
       jest.spyOn(timeSlotDoctorService, 'hasError').mockImplementation(() => true);
-      jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockImplementation(() => 'Ошибка справочника');
-
+      jest
+        .spyOn(timeSlotDoctorService, 'getErrorMessage')
+        .mockImplementation(() => 'Ошибка справочника');
 
       component.bookTimeSlot();
 
@@ -782,37 +796,40 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
 
     it('when response is failed', () => {
-      jest.spyOn(timeSlotDoctorService, 'getAvailableSlots').mockImplementation(() => throwError(''));
-      jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockImplementation(() => 'Ошибка запроса');
-
+      jest
+        .spyOn(timeSlotDoctorService, 'getAvailableSlots')
+        .mockImplementation(() => throwError(''));
+      jest
+        .spyOn(timeSlotDoctorService, 'getErrorMessage')
+        .mockImplementation(() => 'Ошибка запроса');
 
       component.showTimeSlots(new Date());
 
       expect(component.currentSlot).toEqual(null);
       expect(component.timeSlots).toEqual(null);
-      expect(component.showError).toHaveBeenLastCalledWith(`${
-        component.constants.errorLoadingTimeSlots
-      }  (Ошибка запроса)`);
+      expect(component.showError).toHaveBeenLastCalledWith(
+        `${component.constants.errorLoadingTimeSlots}  (Ошибка запроса)`,
+      );
     });
 
     it('when response is OK but there is an error', () => {
       jest.spyOn(timeSlotDoctorService, 'hasError').mockImplementation(() => true);
       jest.spyOn(timeSlotDoctorService, 'getAvailableSlots').mockImplementation(() => of([]));
-      jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockImplementation(() => 'Ошибка справочника');
-
+      jest
+        .spyOn(timeSlotDoctorService, 'getErrorMessage')
+        .mockImplementation(() => 'Ошибка справочника');
 
       component.showTimeSlots(new Date());
 
       expect(component.currentSlot).toEqual(null);
       expect(component.timeSlots).toEqual(null);
-      expect(component.showError).toHaveBeenLastCalledWith(`${
-        component.constants.errorLoadingTimeSlots
-      } (Ошибка справочника)`);
+      expect(component.showError).toHaveBeenLastCalledWith(
+        `${component.constants.errorLoadingTimeSlots} (Ошибка справочника)`,
+      );
     });
   });
 
   describe('showCustomError()', () => {
-
     it('when error is null', () => {
       jest.spyOn(component, 'showModal');
       component.showCustomError(null);
@@ -841,7 +858,10 @@ describe('TimeSlotDoctorsContainerComponent', () => {
           },
         ],
       } as ConfirmationModal;
-      confirmationModalParams.text = confirmationModalParams.text.replace(/\{textAsset\}?/g, 'Другая ошибка');
+      confirmationModalParams.text = confirmationModalParams.text.replace(
+        /\{textAsset\}?/g,
+        'Другая ошибка',
+      );
 
       jest.spyOn(component, 'showModal');
       component.showCustomError('Другая ошибка');
@@ -864,7 +884,10 @@ describe('TimeSlotDoctorsContainerComponent', () => {
           },
         ],
       } as ConfirmationModal;
-      confirmationModalParams.text = confirmationModalParams.text.replace(/\{textAsset\}?/g, 'Другая ошибка');
+      confirmationModalParams.text = confirmationModalParams.text.replace(
+        /\{textAsset\}?/g,
+        'Другая ошибка',
+      );
 
       jest.spyOn(component, 'showModal');
 
@@ -877,7 +900,6 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       component.showCustomError('NO_DATA:Другая ошибка');
       expect(component.showModal).toHaveBeenLastCalledWith(confirmationModalParams);
     });
-
   });
 
   describe('focusOnFirstLookup()', () => {
@@ -911,7 +933,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
 
     it('errorMessage 101', () => {
-      jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockReturnValue(101 as unknown as string);
+      jest
+        .spyOn(timeSlotDoctorService, 'getErrorMessage')
+        .mockReturnValue((101 as unknown) as string);
 
       component.handleMessageError();
 
@@ -931,7 +955,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       jest.spyOn(component, 'showModal');
       jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockReturnValue('');
 
-      component.component.attrs.ts.slotsNotFoundTemplate = {} as unknown as SlotsNotFoundTemplate;
+      component.component.attrs.ts.slotsNotFoundTemplate = ({} as unknown) as SlotsNotFoundTemplate;
 
       component.handleMessageError();
 
@@ -941,7 +965,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     it('no data error when there is a template to show (doctors)', () => {
       jest.spyOn(component, 'showModal');
-      jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockReturnValue('В настоящее время отсутствуют медицинские должности');
+      jest
+        .spyOn(timeSlotDoctorService, 'getErrorMessage')
+        .mockReturnValue('В настоящее время отсутствуют медицинские должности');
       component.handleMessageError();
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
@@ -954,13 +980,15 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         description: `
             <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
               Этот врач занят на ближайшие 14 дней. Выберите другого специалиста
-            </div>`
+            </div>`,
       });
     });
 
     it('other error - FAILURE type (doctors)', () => {
       jest.spyOn(component, 'showModal');
-      jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockReturnValue('FAILURE:Что-то произошло');
+      jest
+        .spyOn(timeSlotDoctorService, 'getErrorMessage')
+        .mockReturnValue('FAILURE:Что-то произошло');
       component.handleMessageError();
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
@@ -973,13 +1001,15 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         description: `
             <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
               Что-то произошло
-            </div>`
+            </div>`,
       });
     });
 
     it('other error - UNKNOWN_REQUEST_DESCRIPTION type (doctors)', () => {
       jest.spyOn(component, 'showModal');
-      jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockReturnValue('UNKNOWN_REQUEST_DESCRIPTION:Что-то произошло');
+      jest
+        .spyOn(timeSlotDoctorService, 'getErrorMessage')
+        .mockReturnValue('UNKNOWN_REQUEST_DESCRIPTION:Что-то произошло');
       component.handleMessageError();
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
@@ -992,13 +1022,15 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         description: `
             <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
               Что-то произошло
-            </div>`
+            </div>`,
       });
     });
 
     it('other error - NO_DATA type (doctors)', () => {
       jest.spyOn(component, 'showModal');
-      jest.spyOn(timeSlotDoctorService, 'getErrorMessage').mockReturnValue('NO_DATA:Что-то произошло');
+      jest
+        .spyOn(timeSlotDoctorService, 'getErrorMessage')
+        .mockReturnValue('NO_DATA:Что-то произошло');
       component.handleMessageError();
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
@@ -1011,15 +1043,13 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         description: `
             <div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
               Что-то произошло
-            </div>`
+            </div>`,
       });
     });
-
   });
 
   describe('handleLookupProviderErrorMessage()', () => {
     it('don\'t need to handle and show template', () => {
-
       component.handleLookupProviderErrorMessage(null, null);
       expect(component.isDoctorNotAvailable).toBeFalsy();
 
@@ -1049,7 +1079,10 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
 
     it('handle error and show template that doctors are not available next 2 weeks', () => {
-      component.handleLookupProviderErrorMessage('FAILURE:должности в ближайшие 14 дней нет доступного времени', '');
+      component.handleLookupProviderErrorMessage(
+        'FAILURE:должности в ближайшие 14 дней нет доступного времени',
+        '',
+      );
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
       expect(component.doctorsNotFoundTemplate).toEqual({
@@ -1095,13 +1128,14 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     </div>`,
       });
     });
-
   });
 
   describe('filterByAttributeName()', () => {
     it('should return all items after filtration without search string', () => {
       const filteredItems = component.filterByAttributeName(
-        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         'Service_Name',
         '',
       );
@@ -1111,7 +1145,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     it('should return filtered items after filtration with search string', () => {
       const filteredItems = component.filterByAttributeName(
-        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         'Service_Name',
         'врач-тер',
       );
@@ -1121,7 +1157,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     it('should return filtered items after filtration with search string. Case insensitive check', () => {
       const filteredItems = component.filterByAttributeName(
-        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         'Service_Name',
         'ВрАЧ',
       );
@@ -1131,7 +1169,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     it('should return empty array if there is no attribute name', () => {
       const filteredItems = component.filterByAttributeName(
-        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         null,
         'ВрАЧ',
       );
@@ -1164,11 +1204,11 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     const listItem = getMonthsListItem('2010-01');
 
-    expect(listItem).toEqual(new ListItem({
-      id: '2010-01',
-      text: 'Январь 2010',
-    }));
+    expect(listItem).toEqual(
+      new ListItem({
+        id: '2010-01',
+        text: 'Январь 2010',
+      }),
+    );
   });
-
-
 });

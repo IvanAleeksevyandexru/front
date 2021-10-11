@@ -16,9 +16,7 @@ describe('ShowComponentPipe', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ShowComponentPipe],
-      providers: [
-        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-      ],
+      providers: [{ provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub }],
     });
   });
 
@@ -42,7 +40,7 @@ describe('ShowComponentPipe', () => {
     expect(result).toBeFalsy();
   });
 
-  it('should return false when not isShown and hidden', () => {;
+  it('should return false when not isShown and hidden', () => {
     const result = pipe.transform(false, true);
     expect(result).toBeFalsy();
   });

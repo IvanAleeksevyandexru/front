@@ -8,7 +8,7 @@ import {
   MemoModule,
   BaseUiModule,
   ConstructorDropdownComponent,
-  HelperTextComponent
+  HelperTextComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { SelectChildrenItemComponent } from './select-children-item.component';
@@ -67,14 +67,8 @@ describe('SelectChildrenItemComponent', () => {
         MockComponent(HelperTextComponent),
         MockComponent(ComponentsListComponent),
       ],
-      imports: [
-        MockModule(BaseUiModule),
-        MemoModule,
-      ],
-      providers: [
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        UnsubscribeService,
-      ],
+      imports: [MockModule(BaseUiModule), MemoModule],
+      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }, UnsubscribeService],
     }).compileComponents();
   });
 

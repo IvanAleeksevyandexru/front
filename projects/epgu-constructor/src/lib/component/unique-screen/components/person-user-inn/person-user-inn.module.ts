@@ -13,9 +13,9 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
     CommonModule,
     DefaultUniqueScreenWrapperModule,
     ScreenPadModule,
-    DisclaimerModule
+    DisclaimerModule,
   ],
   exports: [PersonUserInnComponent],
-  entryComponents: [PersonUserInnComponent]
+  entryComponents: [PersonUserInnComponent],
 })
 export class PersonUserInnModule {}

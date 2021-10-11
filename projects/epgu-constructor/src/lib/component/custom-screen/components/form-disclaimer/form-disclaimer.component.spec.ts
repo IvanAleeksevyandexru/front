@@ -19,11 +19,11 @@ const mockFormDisclaimerComponent = {
     type: 'warn',
     title: 'Some title',
     description: 'Some description',
-    clarifications: 'fake clarifications'
+    clarifications: 'fake clarifications',
   },
   value: '',
   visited: false,
-  required: false
+  required: false,
 };
 
 describe('FormDisclaimerComponent', () => {
@@ -35,25 +35,26 @@ describe('FormDisclaimerComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        FormDisclaimerComponent,
-        MockComponent(DisclaimerComponent)
-      ],
+      declarations: [FormDisclaimerComponent, MockComponent(DisclaimerComponent)],
       providers: [
         FormBuilder,
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
       ],
-    }).overrideComponent(FormDisclaimerComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(FormDisclaimerComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fb = TestBed.inject(FormBuilder);
-    formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
     control = fb.group(mockFormDisclaimerComponent);
-    formService['_form'] = new FormArray([ control ]);
+    formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(FormDisclaimerComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -72,8 +73,12 @@ describe('FormDisclaimerComponent', () => {
       expect(debugEl).toBeTruthy();
       expect(debugEl.componentInstance.type).toBe(mockFormDisclaimerComponent.attrs.type);
       expect(debugEl.componentInstance.title).toBe(mockFormDisclaimerComponent.attrs.title);
-      expect(debugEl.componentInstance.description).toBe(mockFormDisclaimerComponent.attrs.description);
-      expect(debugEl.componentInstance.clarifications).toBe(mockFormDisclaimerComponent.attrs.clarifications);
+      expect(debugEl.componentInstance.description).toBe(
+        mockFormDisclaimerComponent.attrs.description,
+      );
+      expect(debugEl.componentInstance.clarifications).toBe(
+        mockFormDisclaimerComponent.attrs.clarifications,
+      );
     });
   });
 });

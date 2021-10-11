@@ -8,8 +8,19 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { AppScreenComponent } from './app-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, DataDirectionType, DisplayDto, OutputAppDto, ScreenTypes } from '@epgu/epgu-constructor-types';
-import { CfAppStateService, CfAppStateServiceStub, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ComponentDto,
+  DataDirectionType,
+  DisplayDto,
+  OutputAppDto,
+  ScreenTypes,
+} from '@epgu/epgu-constructor-types';
+import {
+  CfAppStateService,
+  CfAppStateServiceStub,
+  LocationService,
+  LocationServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -18,7 +29,7 @@ const componentDtoSample: ComponentDto = {
   attrs: {},
   id: 'id1',
   type: 'type1',
-  valueFromCache: false
+  valueFromCache: false,
 };
 
 const displayDtoSample: DisplayDto = {
@@ -49,10 +60,7 @@ describe('SpaScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppScreenComponent,
-        ComponentUniqueResolverComponent,
-      ],
+      declarations: [AppScreenComponent, ComponentUniqueResolverComponent],
       providers: [
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
@@ -63,9 +71,11 @@ describe('SpaScreenComponent', () => {
         EventBusService,
         CurrentAnswersService,
       ],
-    }).overrideComponent(AppScreenComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default },
-    }).compileComponents();
+    })
+      .overrideComponent(AppScreenComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -88,14 +98,14 @@ describe('SpaScreenComponent', () => {
         isPrevStepCase: false,
         value: '{ value: { a:42, b: 777 }, state: {}}}',
         componentType: 'ChildrenClubs',
-        componentId: 'app1'
+        componentId: 'app1',
       };
       screenService.component = {
         id: 'app1',
         value: '',
         type: 'ChildrenClubs',
         visited: false,
-        attrs: {}
+        attrs: {},
       };
     });
 
@@ -117,7 +127,7 @@ describe('SpaScreenComponent', () => {
         value: '',
         type: 'ChildrenClubs',
         visited: false,
-        attrs: {}
+        attrs: {},
       };
       const nextSpy = jest.spyOn(navigationService, 'next');
       component.ngOnInit();
@@ -147,7 +157,7 @@ describe('SpaScreenComponent', () => {
         value: '',
         type: 'ChildrenClubs',
         visited: false,
-        attrs: {}
+        attrs: {},
       };
       const prevSpy = jest.spyOn(navigationService, 'prev');
       component.ngOnInit();
@@ -171,7 +181,7 @@ describe('SpaScreenComponent', () => {
         value: '',
         type: 'ChildrenClubs',
         visited: false,
-        attrs: {}
+        attrs: {},
       };
       const errorCall = () => {
         component.ngOnInit();
@@ -186,7 +196,7 @@ describe('SpaScreenComponent', () => {
         value: '',
         type: 'ChildrenDanceClubs',
         visited: false,
-        attrs: {}
+        attrs: {},
       };
       const errorCall = () => {
         component.ngOnInit();
@@ -196,7 +206,6 @@ describe('SpaScreenComponent', () => {
   });
 
   describe('Input case', () => {
-
     let currentComponent;
     let currentUrl;
     const appUrl = '/some/redirect/url';
@@ -209,7 +218,7 @@ describe('SpaScreenComponent', () => {
         value: '{ value: { a:42, b: 777 }, state: {}}}',
         type: 'ChildrenClubs',
         visited: false,
-        attrs: {}
+        attrs: {},
       };
       screenService.component = currentComponent;
 
@@ -242,7 +251,7 @@ describe('SpaScreenComponent', () => {
         healthPayload: {
           id: displayDtoSample.id,
           name: displayDtoSample.name,
-          orderId: orderId
+          orderId: orderId,
         },
       };
 
@@ -264,7 +273,7 @@ describe('SpaScreenComponent', () => {
         healthPayload: {
           id: displayDtoSample.id,
           name: displayDtoSample.name,
-          orderId: orderId
+          orderId: orderId,
         },
       };
 

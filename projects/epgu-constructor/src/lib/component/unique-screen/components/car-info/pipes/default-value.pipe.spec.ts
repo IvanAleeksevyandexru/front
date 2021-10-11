@@ -18,5 +18,4 @@ describe('DefaultValuePipe', () => {
   it('should transform a falsy value into a preset default value', () => {
     expect(pipe.transform(null, 'none')).toBe('none');
   });
-
 });

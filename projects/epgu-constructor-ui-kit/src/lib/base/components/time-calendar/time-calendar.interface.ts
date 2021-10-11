@@ -13,5 +13,6 @@ export interface SlotInterface {
 }
 
 export interface ErrorTemplate {
-  header: string; description: string
+  header: string;
+  description: string;
 }

@@ -13,15 +13,17 @@ describe('EmployeeHistoryClarificationComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [EmployeeHistoryClarificationComponent, MockComponent(ClickableLabelDirective)],
-    }).overrideComponent(EmployeeHistoryClarificationComponent, {
+    })
+      .overrideComponent(EmployeeHistoryClarificationComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
-      }).compileComponents();
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EmployeeHistoryClarificationComponent);
     component = fixture.componentInstance;
-    component.clarifications = { student: { position:{}}} as any;
+    component.clarifications = { student: { position: {}}} as any;
     fixture.detectChanges();
   });
 

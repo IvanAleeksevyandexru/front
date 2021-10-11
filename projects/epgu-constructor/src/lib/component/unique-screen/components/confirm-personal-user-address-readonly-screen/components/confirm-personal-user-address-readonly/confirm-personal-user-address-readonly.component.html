@@ -31,7 +31,9 @@
             align="left"
           ></epgu-constructor-constructor-date-picker>
           <div class="address-item-hint" *ngIf="field?.hint">
-            <epgu-cf-ui-constructor-helper-text>{{ field?.hint }}</epgu-cf-ui-constructor-helper-text>
+            <epgu-cf-ui-constructor-helper-text>{{
+              field?.hint
+            }}</epgu-cf-ui-constructor-helper-text>
           </div>
         </div>
       </div>
@@ -60,7 +62,9 @@
           class="btn-edit__icon"
           src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/edit.svg"
         />
-        <span class="btn-edit__text" *ngIf="(screenService.action$ | async) as action">{{ action.label }}</span>
+        <span class="btn-edit__text" *ngIf="screenService.action$ | async as action">{{
+          action.label
+        }}</span>
       </button>
     </div>
   </epgu-cf-ui-constructor-screen-pad>

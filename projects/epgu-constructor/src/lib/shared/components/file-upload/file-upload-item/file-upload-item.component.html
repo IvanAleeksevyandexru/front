@@ -48,7 +48,8 @@
         <div class="uploader-info">
           <span *ngIf="isMobile && !uploader.hasImageTypes">Выберите файл</span>
           <span *ngIf="!isMobile">
-            Перетащите {{ plurals.choosingFiles | pluralize: uploader.maxAmount }} или выберите на компьютере
+            Перетащите {{ plurals.choosingFiles | pluralize: uploader.maxAmount }} или выберите на
+            компьютере
           </span>
           <span *ngIf="isMobile && uploader.hasImageTypes">Выберите файл или сделайте фото</span>
         </div>
@@ -87,7 +88,7 @@
                 class="fileupload__button-icon"
                 alt="Файл"
               />
-              Выбрать {{plurals.uploadingFiles | pluralize: files.getValue().length + 1}}
+              Выбрать {{ plurals.uploadingFiles | pluralize: files.getValue().length + 1 }}
             </button>
           </epgu-constructor-uploader-button>
         </div>

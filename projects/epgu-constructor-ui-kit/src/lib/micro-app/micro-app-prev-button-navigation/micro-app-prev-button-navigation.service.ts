@@ -5,7 +5,7 @@ import { PrevButtonNavigation } from '../../base/components/prev-button/prev-but
 
 @Injectable({ providedIn: 'root' })
 export class MicroAppPrevButtonNavigationService implements PrevButtonNavigation {
-  constructor (private appNavigationService: MicroAppNavigationService) {}
+  constructor(private appNavigationService: MicroAppNavigationService) {}
 
   public prev(): void {
     this.appNavigationService.prev();

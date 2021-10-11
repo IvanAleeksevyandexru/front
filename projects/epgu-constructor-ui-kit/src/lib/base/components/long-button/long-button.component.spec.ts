@@ -9,9 +9,9 @@ const helperTextMock = 'Awesome useful helper text.';
 @Component({
   template: `
     <epgu-cf-ui-long-button [isLoading]="isLoading" [disabled]="disabled">
-        ${helperTextMock}
+      ${helperTextMock}
     </epgu-cf-ui-long-button>
-  `
+  `,
 })
 class WrapperTestComponent {
   @Input() isLoading: boolean;
@@ -24,9 +24,8 @@ describe('LongButtonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ WrapperTestComponent, LongButtonComponent ]
-    })
-    .compileComponents();
+      declarations: [WrapperTestComponent, LongButtonComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -63,8 +62,7 @@ describe('LongButtonComponent', () => {
     });
 
     it('should render passed content', () => {
-      const helperText = fixture.debugElement
-        .query(By.css(selector)).nativeElement.textContent;
+      const helperText = fixture.debugElement.query(By.css(selector)).nativeElement.textContent;
       expect(helperText.includes(helperTextMock)).toBeTruthy();
     });
   });

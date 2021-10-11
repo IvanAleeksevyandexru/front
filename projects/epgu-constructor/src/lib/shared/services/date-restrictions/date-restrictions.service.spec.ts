@@ -56,49 +56,13 @@ describe('DateRestrictionsService', () => {
         max: null,
       });
     });
-
   });
 
   describe('setDateRefs() method', () => {
-
     it('should correctly set refs for current screen components', () => {
-      const refStub = jest.spyOn(service['dictionaryToolsService'], 'getValueViaRef').mockReturnValue('2001-04-24T00:00:00.000Z');
-      const restrictions: DateRestriction[] = [
-          {
-            condition: '>',
-            type: 'ref',
-            value: 'test',
-          },
-        ];
-      service.setDateRefs(
-        restrictions,
-        new FormArray([new FormControl({ value: '2001-04-24T00:00:00.000Z', id: 'test' })]),
-        {},
-      );
-      expect(refStub).toHaveBeenCalledWith({ test: { value: '2001-04-24T00:00:00.000Z' }},  'test.value');
-      expect(restrictions[0].value).toEqual('24.04.2001');
-    });
-
-    it('should correctly set refs for current screen compound components', () => {
-      const refStub = jest.spyOn(service['dictionaryToolsService'], 'getValueViaRef').mockReturnValue('2021-08-23T00:00:00.000Z');
-      const restrictions: DateRestriction[] = [
-        {
-          condition: '>',
-          type: 'ref',
-          value: 'test.value.firstDate',
-        },
-      ];
-      service.setDateRefs(
-        restrictions,
-        new FormArray([new FormControl({ value: { firstDate: '2021-08-23T00:00:00.000Z' }, id: 'test' })]),
-        {},
-      );
-      expect(refStub).toHaveBeenCalledWith({ test: { value: { firstDate: '2021-08-23T00:00:00.000Z' }}}, 'test.value.firstDate');
-      expect(restrictions[0].value).toEqual('23.08.2021');
-    });
-
-    it('should correctly set refs for applicant answers', () => {
-      const refStub = jest.spyOn(service['dictionaryToolsService'], 'getValueViaRef').mockReturnValueOnce(null).mockReturnValueOnce('05.07.1979');
+      const refStub = jest
+        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+        .mockReturnValue('2001-04-24T00:00:00.000Z');
       const restrictions: DateRestriction[] = [
         {
           condition: '>',
@@ -108,15 +72,20 @@ describe('DateRestrictionsService', () => {
       ];
       service.setDateRefs(
         restrictions,
-        new FormArray([]),
-        { test: { visited: true, value: '05.07.1979' }},
+        new FormArray([new FormControl({ value: '2001-04-24T00:00:00.000Z', id: 'test' })]),
+        {},
       );
-      expect(refStub).toHaveBeenCalledWith({ test: { value: '05.07.1979', visited: true }}, 'test.value');
-      expect(restrictions[0].value).toEqual('05.07.1979');
+      expect(refStub).toHaveBeenCalledWith(
+        { test: { value: '2001-04-24T00:00:00.000Z' }},
+        'test.value',
+      );
+      expect(restrictions[0].value).toEqual('24.04.2001');
     });
 
-    it('should correctly set refs for applicant answers', () => {
-      jest.spyOn(service['dictionaryToolsService'], 'getValueViaRef').mockReturnValueOnce(null).mockReturnValueOnce('05.07.1979');
+    it('should correctly set refs for current screen compound components', () => {
+      const refStub = jest
+        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+        .mockReturnValue('2021-08-23T00:00:00.000Z');
       const restrictions: DateRestriction[] = [
         {
           condition: '>',
@@ -126,14 +95,61 @@ describe('DateRestrictionsService', () => {
       ];
       service.setDateRefs(
         restrictions,
-        new FormArray([]),
-        { test: { visited: true, value: '{ "firstDate": "05.07.1979" }' }},
+        new FormArray([
+          new FormControl({ value: { firstDate: '2021-08-23T00:00:00.000Z' }, id: 'test' }),
+        ]),
+        {},
+      );
+      expect(refStub).toHaveBeenCalledWith(
+        { test: { value: { firstDate: '2021-08-23T00:00:00.000Z' }}},
+        'test.value.firstDate',
+      );
+      expect(restrictions[0].value).toEqual('23.08.2021');
+    });
+
+    it('should correctly set refs for applicant answers', () => {
+      const refStub = jest
+        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+        .mockReturnValueOnce(null)
+        .mockReturnValueOnce('05.07.1979');
+      const restrictions: DateRestriction[] = [
+        {
+          condition: '>',
+          type: 'ref',
+          value: 'test',
+        },
+      ];
+      service.setDateRefs(restrictions, new FormArray([]), {
+        test: { visited: true, value: '05.07.1979' },
+      });
+      expect(refStub).toHaveBeenCalledWith(
+        { test: { value: '05.07.1979', visited: true }},
+        'test.value',
       );
       expect(restrictions[0].value).toEqual('05.07.1979');
     });
 
+    it('should correctly set refs for applicant answers', () => {
+      jest
+        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+        .mockReturnValueOnce(null)
+        .mockReturnValueOnce('05.07.1979');
+      const restrictions: DateRestriction[] = [
+        {
+          condition: '>',
+          type: 'ref',
+          value: 'test.value.firstDate',
+        },
+      ];
+      service.setDateRefs(restrictions, new FormArray([]), {
+        test: { visited: true, value: '{ "firstDate": "05.07.1979" }' },
+      });
+      expect(restrictions[0].value).toEqual('05.07.1979');
+    });
+
     it('should correctly set refs for applicant answers iso string', () => {
-      const refStub = jest.spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+      const refStub = jest
+        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
         .mockReturnValueOnce(null)
         .mockReturnValueOnce('1979-07-05T00:00:00.000Z');
       const restrictions: DateRestriction[] = [
@@ -143,15 +159,16 @@ describe('DateRestrictionsService', () => {
           value: 'test.value',
         },
       ];
-      service.setDateRefs(
-        restrictions,
-        new FormArray([]),
-        { test: { visited: true, value: '1979-07-05T00:00:00.000Z' }},
+      service.setDateRefs(restrictions, new FormArray([]), {
+        test: { visited: true, value: '1979-07-05T00:00:00.000Z' },
+      });
+      expect(refStub).toHaveBeenNthCalledWith(
+        2,
+        { test: { value: '1979-07-05T00:00:00.000Z', visited: true }},
+        'test.value',
       );
-      expect(refStub).toHaveBeenNthCalledWith( 2, { test: { value: '1979-07-05T00:00:00.000Z', visited: true }}, 'test.value');
       expect(restrictions[0].value).toEqual('05.07.1979');
     });
-
   });
 
   describe('getDateRangeFromStore() method', () => {
@@ -190,7 +207,7 @@ describe('DateRestrictionsService', () => {
         ],
         new FormArray([]),
         {},
-        'test'
+        'test',
       );
       expect(service.getDateRangeFromStore('compId', undefined, 'test')).toEqual({
         min: new Date('2021-01-02T00:00:00.000Z'),

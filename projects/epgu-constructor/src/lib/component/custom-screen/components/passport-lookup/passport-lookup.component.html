@@ -1,9 +1,4 @@
-<ng-container
-  *ngTemplateOutlet="
-    PassportLookup;
-    context: { $implicit: control.value }
-  "
->
+<ng-container *ngTemplateOutlet="PassportLookup; context: { $implicit: control.value }">
 </ng-container>
 
 <ng-template #PassportLookup let-component>

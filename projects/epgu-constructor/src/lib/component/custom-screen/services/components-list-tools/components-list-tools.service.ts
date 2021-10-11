@@ -18,10 +18,10 @@ export class ComponentsListToolsService {
     CustomScreenComponentTypes.CityInput,
     CustomScreenComponentTypes.PassportLookup,
     CustomScreenComponentTypes.DocInput,
-    CustomScreenComponentTypes.CalendarInput
+    CustomScreenComponentTypes.CalendarInput,
   ];
 
-  constructor(private typeCastService: TypeCastService) { }
+  constructor(private typeCastService: TypeCastService) {}
 
   public convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
@@ -74,7 +74,10 @@ export class ComponentsListToolsService {
   }
 
   public getMaskedPhone(value): string {
-    return value.replace(/^([0-9+]{2})([0-9()]{5})([0-9]{3})([0-9]{2})([0-9]{2})$/, '$1 $2 $3 $4 $5');
+    return value.replace(
+      /^([0-9+]{2})([0-9()]{5})([0-9]{3})([0-9]{2})([0-9]{2})$/,
+      '$1 $2 $3 $4 $5',
+    );
   }
 
   private parseValue(

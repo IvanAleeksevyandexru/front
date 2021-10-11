@@ -1,13 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { MicroAppStateQuery, ConfigService, HealthHandler, HealthService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  MicroAppStateQuery,
+  ConfigService,
+  HealthHandler,
+  HealthService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { catchError, tap } from 'rxjs/operators';
 import { RequestStatus } from '@epgu/epgu-constructor-types';
 import { ChildrenClubsState, ChildrenClubsValue } from '../../children-clubs.types';
 import {
   CommonPayload,
-  CONFIG_API_REQUEST_SUB, DIRECTIONS_NAME,
+  CONFIG_API_REQUEST_SUB,
+  DIRECTIONS_NAME,
   DIRECTIONS_SUB_URL,
   MUNICIPALITIES_NAME,
   MUNICIPALITIES_SUB_URL,
@@ -18,26 +30,20 @@ import {
   SEARCH_GROUP_NAME,
   SEARCH_GROUP_SUB_URL,
   SEARCH_PROGRAM_NAME,
-  SEARCH_PROGRAM_SUB_URL
+  SEARCH_PROGRAM_SUB_URL,
 } from './health-handler';
-
 
 @Injectable()
 export class HealthHandlerService implements HealthHandler {
-
   private serviceName = '';
 
-  constructor (
+  constructor(
     private health: HealthService,
     private configService: ConfigService,
     private appStateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
   ) {}
 
-  public handleRequest<T>(
-    request: HttpRequest<T>,
-    next: HttpHandler
-  ): Observable<HttpEvent<T>> {
-
+  public handleRequest<T>(request: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<T>> {
     this.resetRequestProperties();
 
     if (this.isValidUrl(request)) {
@@ -90,24 +96,34 @@ export class HealthHandlerService implements HealthHandler {
       ...this.appStateQuery.fpHealthPayload,
       method: request.method,
       date: new Date().toISOString(),
-      appComponent: this.appStateQuery.currentComponent
+      appComponent: this.appStateQuery.currentComponent,
     };
   }
 
   private isValidUrl<T>(payload: HttpRequest<T> | HttpEvent<T> | HttpErrorResponse): boolean {
     const url = payload['url'];
-    return url && !url.includes(CONFIG_API_REQUEST_SUB)
-      && url.includes(this.configService.childrenClubsApi);
+    return (
+      url &&
+      !url.includes(CONFIG_API_REQUEST_SUB) &&
+      url.includes(this.configService.childrenClubsApi)
+    );
   }
 
   private initServiceName(url: string): void {
     if (url.includes(this.configService.childrenClubsApi)) {
       this.serviceName = url.includes(REGIONS_SUB_URL) ? REGION_NAME : this.serviceName;
       this.serviceName = url.includes(SEARCH_GROUP_SUB_URL) ? SEARCH_GROUP_NAME : this.serviceName;
-      this.serviceName = url.includes(SEARCH_PROGRAM_SUB_URL) ? SEARCH_PROGRAM_NAME : this.serviceName;
-      this.serviceName = url.includes(MUNICIPALITIES_SUB_URL) ? MUNICIPALITIES_NAME : this.serviceName;
+      this.serviceName = url.includes(SEARCH_PROGRAM_SUB_URL)
+        ? SEARCH_PROGRAM_NAME
+        : this.serviceName;
+      this.serviceName = url.includes(MUNICIPALITIES_SUB_URL)
+        ? MUNICIPALITIES_NAME
+        : this.serviceName;
       this.serviceName = url.includes(DIRECTIONS_SUB_URL) ? DIRECTIONS_NAME : this.serviceName;
-      this.serviceName = url.includes(PROGRAM_DETAIL_SUB_URL) && !this.serviceName ? PROGRAM_DETAIL_NAME : this.serviceName;
+      this.serviceName =
+        url.includes(PROGRAM_DETAIL_SUB_URL) && !this.serviceName
+          ? PROGRAM_DETAIL_NAME
+          : this.serviceName;
     }
   }
 }

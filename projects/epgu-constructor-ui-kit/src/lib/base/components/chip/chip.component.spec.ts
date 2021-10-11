@@ -60,7 +60,7 @@ describe('ChipComponent', () => {
   });
 
   describe('Unselectable', () => {
-    it ('should not render remove button if unselectable is TRUE', () => {
+    it('should not render remove button if unselectable is TRUE', () => {
       component.unselectable = true;
       fixture.detectChanges();
       const debugEl = fixture.debugElement.query(By.css('.cross-btn'));

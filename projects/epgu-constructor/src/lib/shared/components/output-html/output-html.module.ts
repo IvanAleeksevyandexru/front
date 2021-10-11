@@ -9,7 +9,14 @@ import { TableModule } from '../../directives/table/table.module';
 
 @NgModule({
   declarations: [OutputHtmlComponent],
-  imports: [CommonModule, ActionModule, SafeModule, ImgPrefixerModule, ClickableLabelModule, TableModule],
+  imports: [
+    CommonModule,
+    ActionModule,
+    SafeModule,
+    ImgPrefixerModule,
+    ClickableLabelModule,
+    TableModule,
+  ],
   exports: [OutputHtmlComponent],
 })
 export class OutputHtmlModule {}

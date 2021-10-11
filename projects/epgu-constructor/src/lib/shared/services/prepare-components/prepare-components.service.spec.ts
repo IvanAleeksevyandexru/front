@@ -9,9 +9,14 @@ import {
   ConfigService,
   LoggerService,
   DownloadService,
-  DatesToolsService, ObjectHelperService,
+  DatesToolsService,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentAttrsDto, ComponentDto, CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
+import {
+  ComponentAttrsDto,
+  ComponentDto,
+  CustomComponentRefRelation,
+} from '@epgu/epgu-constructor-types';
 import { PrepareComponentsService } from './prepare-components.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers } from '../../../screen/screen.types';
@@ -140,7 +145,8 @@ describe('PrepareComponentsService', () => {
       const cachedAnswers: CachedAnswers = {
         ai4: {
           visited: true,
-          value: '[{"rf1":"Ываыавыва", "rf2": {"biomStu": false,"verifying": false, "exists": false,"snils": "828-054-296 13"}}]',
+          value:
+            '[{"rf1":"Ываыавыва", "rf2": {"biomStu": false,"verifying": false, "exists": false,"snils": "828-054-296 13"}}]',
         },
       };
       const componentMock: ComponentDto = {
@@ -157,7 +163,8 @@ describe('PrepareComponentsService', () => {
               value: '',
               required: true,
               valueFromCache: false,
-            },           {
+            },
+            {
               id: 'rf2',
               type: 'SnilsInput',
               label: 'Снилс',
@@ -246,7 +253,7 @@ describe('PrepareComponentsService', () => {
   describe('loadValueFromCachedAnswer() for RepeatableFields from localStorage', () => {
     it('should return local value if cacheRepeatableFieldsAnswersLocally is TRUE', () => {
       const cachedAnswers = {
-        ai4: [{ rf1:'Ываыавыва' }],
+        ai4: [{ rf1: 'Ываыавыва' }],
       };
       localStorage.setItem('cachedAnswers', JSON.stringify(cachedAnswers));
 
@@ -266,7 +273,7 @@ describe('PrepareComponentsService', () => {
               valueFromCache: false,
             },
           ],
-          cacheRepeatableFieldsAnswersLocally: true
+          cacheRepeatableFieldsAnswersLocally: true,
         },
         value: '',
         required: true,
@@ -288,7 +295,8 @@ describe('PrepareComponentsService', () => {
               required: true,
               valueFromCache: false,
             },
-          ], repeatableComponents: [
+          ],
+          repeatableComponents: [
             [
               {
                 id: 'rf1',
@@ -302,7 +310,7 @@ describe('PrepareComponentsService', () => {
               },
             ],
           ],
-          cacheRepeatableFieldsAnswersLocally: true
+          cacheRepeatableFieldsAnswersLocally: true,
         },
         value: '',
         required: true,
@@ -316,7 +324,7 @@ describe('PrepareComponentsService', () => {
 
     it('should not return local value if cacheRepeatableFieldsAnswersLocally is FALSE', () => {
       const cachedAnswers = {
-        ai4: [{ rf1:'Ываыавыва' }],
+        ai4: [{ rf1: 'Ываыавыва' }],
       };
       localStorage.setItem('cachedAnswers', JSON.stringify(cachedAnswers));
 
@@ -336,7 +344,7 @@ describe('PrepareComponentsService', () => {
               valueFromCache: false,
             },
           ],
-          cacheRepeatableFieldsAnswersLocally: false
+          cacheRepeatableFieldsAnswersLocally: false,
         },
         value: '',
         required: true,
@@ -358,7 +366,8 @@ describe('PrepareComponentsService', () => {
               required: true,
               valueFromCache: false,
             },
-          ], repeatableComponents: [
+          ],
+          repeatableComponents: [
             [
               {
                 id: 'rf1',
@@ -372,7 +381,7 @@ describe('PrepareComponentsService', () => {
               },
             ],
           ],
-          cacheRepeatableFieldsAnswersLocally: false
+          cacheRepeatableFieldsAnswersLocally: false,
         },
         value: '',
         required: true,

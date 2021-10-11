@@ -6,13 +6,10 @@ import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({ providedIn: 'root' })
 export class MicroAppRoutingService {
-
   private appRoutingComponentMap: MicroAppRoutingComponentMap;
   private currentComponent$ = this.appStateQuery.currentComponent$;
 
-  constructor (
-    private appStateQuery: MicroAppStateQuery<unknown, unknown>,
-  ) {}
+  constructor(private appStateQuery: MicroAppStateQuery<unknown, unknown>) {}
 
   public initRouting(appRoutingComponentMap: MicroAppRoutingComponentMap): void {
     this.appRoutingComponentMap = appRoutingComponentMap;
@@ -21,10 +18,10 @@ export class MicroAppRoutingService {
   public get component$(): Observable<Type<unknown>> {
     return this.currentComponent$.pipe(
       distinctUntilChanged(),
-      filter(component => !!component),
-      map(currentComponent  => {
+      filter((component) => !!component),
+      map((currentComponent) => {
         return this.appRoutingComponentMap[currentComponent];
-      })
+      }),
     );
   }
 }

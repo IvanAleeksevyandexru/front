@@ -4,5 +4,5 @@ import { Injectable } from '@angular/core';
 export class CfAppStateServiceStub {
   public setState(): void {}
 
-  public  getState(): void {}
+  public getState(): void {}
 }

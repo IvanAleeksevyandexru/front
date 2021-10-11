@@ -17,9 +17,8 @@ import { HttpHeadersInterceptor } from './interceptor/http-headers/http-headers.
 import { ErrorHandlerService } from './services/error-handler/error-handler.service';
 import { PrevButtonNavigationService } from './services/prev-button-navigation/prev-button-navigation.service';
 import { HealthHandlerService } from './services/health-handler/health-handler.service';
-import {
-  ErrorHandlerOrderParamsServiceService
-} from './services/error-handler-order-params-service/error-handler-order-params-service.service';
+// eslint-disable-next-line max-len
+import { ErrorHandlerOrderParamsServiceService } from './services/error-handler-order-params-service/error-handler-order-params-service.service';
 import { DateRefService } from './services/date-ref/date-ref.service';
 import { TypeCastService } from './services/type-cast/type-cast.service';
 import { HtmlSelectService } from './services/html-select/html-select.service';
@@ -67,13 +66,7 @@ import { SmuEventsService } from '@epgu/ui/services/smu-events';
     },
     {
       provide: TRACE_ALLOWED_REMOTE_SERVICES,
-      useValue: [
-        'api/nsi/v1/dictionary',
-        'getService',
-        'getNextStep',
-        'getPrevStep',
-        'skipStep',
-      ],
+      useValue: ['api/nsi/v1/dictionary', 'getService', 'getNextStep', 'getPrevStep', 'skipStep'],
     },
   ],
 })

@@ -38,10 +38,12 @@ describe('EmployeeHistoryMonthsService', () => {
       jest.spyOn(datesToolsService, 'getToday').mockResolvedValue(new Date());
       const dateMock = new MonthYear(1, 2021);
       jest.spyOn(MonthYear, 'fromDate').mockReturnValue(dateMock);
-      jest.spyOn(EmployeeHistoryMonthsService.prototype as any, 'getAvailableMonths').mockReturnValueOnce([
-        { date: '', checked: true },
-        { date: '', checked: true },
-      ]);
+      jest
+        .spyOn(EmployeeHistoryMonthsService.prototype as any, 'getAvailableMonths')
+        .mockReturnValueOnce([
+          { date: '', checked: true },
+          { date: '', checked: true },
+        ]);
       await service.initSettings();
 
       expect(service.minDateFrom).toEqual(dateMock);
@@ -72,7 +74,7 @@ describe('EmployeeHistoryMonthsService', () => {
           date: '01/2020',
         },
       ];
-      jest.spyOn(datesToolsService, 'format').mockImplementation((... args) => 'январь 2020');
+      jest.spyOn(datesToolsService, 'format').mockImplementation((...args) => 'январь 2020');
       const value = service.getUncheckedPeriods(availableMonths);
       expect(value).toEqual(expectedValue);
     });
@@ -116,7 +118,9 @@ describe('EmployeeHistoryMonthsService', () => {
       ];
       const dateMock = new MonthYear(1, 2021);
       jest.spyOn(MonthYear, 'fromDate').mockReturnValue(dateMock);
-      jest.spyOn(EmployeeHistoryMonthsService.prototype as any, 'getAvailableMonths').mockReturnValueOnce([{ date: '01/2021', checked: true, }]);
+      jest
+        .spyOn(EmployeeHistoryMonthsService.prototype as any, 'getAvailableMonths')
+        .mockReturnValueOnce([{ date: '01/2021', checked: true }]);
       await service.initSettings();
       const month = service.availableMonths.find((month) => month.date === '01/2021');
       expect(month).toEqual(expectedMonth);
@@ -143,9 +147,12 @@ describe('EmployeeHistoryMonthsService', () => {
         {
           from: undefined,
           to: undefined,
-        }
+        },
       ];
-      const checkMonthCompleted = jest.spyOn(EmployeeHistoryMonthsService.prototype as any, 'checkMonthCompleted');
+      const checkMonthCompleted = jest.spyOn(
+        EmployeeHistoryMonthsService.prototype as any,
+        'checkMonthCompleted',
+      );
       await service.updateAvailableMonths(generation);
       expect(checkMonthCompleted).toHaveBeenCalled();
     });

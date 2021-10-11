@@ -22,7 +22,7 @@ describe('InformationCenterFormComponent', () => {
         MockModule(ConstructorDropdownModule),
         MockModule(BaseModule),
         MockModule(BaseComponentsModule),
-        MockModule(ScreenPadModule)
+        MockModule(ScreenPadModule),
       ],
     }).compileComponents();
   });
@@ -60,7 +60,9 @@ describe('InformationCenterFormComponent', () => {
         text: 'Республика Башкортостан',
       };
       jest.spyOn(component.handleSelectEvent, 'emit');
-      const debugEl = fixture.debugElement.query(By.css('epgu-cf-ui-constructor-constructor-dropdown'));
+      const debugEl = fixture.debugElement.query(
+        By.css('epgu-cf-ui-constructor-constructor-dropdown'),
+      );
       debugEl.triggerEventHandler('changed', event);
       expect(component.handleSelectEvent.emit).toHaveBeenCalledWith(event);
     });

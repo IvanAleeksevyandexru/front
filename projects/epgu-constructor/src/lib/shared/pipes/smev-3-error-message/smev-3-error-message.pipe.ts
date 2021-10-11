@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'smev3ErrorMessage'
+  name: 'smev3ErrorMessage',
 })
 export class Smev3ErrorMessagePipe implements PipeTransform {
   transform(value: string): string {

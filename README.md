@@ -2,7 +2,7 @@
 
 ## Файл hosts
 
-Перед началом работы обязательно добавьте `127.0.0.1  local.test.gosuslugi.ru` в /etc/hosts файл
+Перед началом работы обязательно добавьте `127.0.0.1 local.test.gosuslugi.ru` в /etc/hosts файл
 
 ## Установка npm модулей
 
@@ -17,7 +17,6 @@ yarn start:fast
 ```
 
 Изменения во всех файлах отслеживаются. Эта команда запускает config сервер, и запускает `ng serve` с конфигурацией fast.
-
 
 `yarn start:fast` выполнит следующие команды:
 
@@ -77,6 +76,7 @@ yarn start                         # запуск приложения (ng serve
 ```
 
 ## Config server
+
 ```
 yarn start:config
 ```

@@ -10,9 +10,7 @@ describe('LoggerService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        LoggerService,
-      ]
+      providers: [LoggerService],
     });
   });
 

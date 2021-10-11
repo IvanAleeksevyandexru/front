@@ -6,11 +6,7 @@ import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { CycledInfoComponent } from './components/cycled-info/cycled-info.component';
 
 @NgModule({
-  declarations: [
-    UserInfoLoaderComponent,
-    UserInfoComponent,
-    CycledInfoComponent,
-  ],
+  declarations: [UserInfoLoaderComponent, UserInfoComponent, CycledInfoComponent],
   providers: [ScreenService],
   imports: [CommonModule],
   exports: [UserInfoLoaderComponent],

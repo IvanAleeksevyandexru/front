@@ -50,13 +50,13 @@ const imageErrorText = {
     title: 'Ошибка имени файла',
     text: '',
     textRules: '',
-  }
+  },
 };
 
 enum uploadPhotoElemId {
   requirements = 'requirements',
   howToTakePhoto = 'howtotakephoto',
-  whyneedphoto = 'whyneedphoto'
+  whyneedphoto = 'whyneedphoto',
 }
 
 export {

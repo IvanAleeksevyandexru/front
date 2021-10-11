@@ -1,7 +1,7 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
-$form-margin: calc( #{-$screen-pad-16} / 2);
-$item-margin: calc( #{$screen-pad-16} / 2);
+$form-margin: calc(#{-$screen-pad-16} / 2);
+$item-margin: calc(#{$screen-pad-16} / 2);
 
 .date-time-period-title {
   margin-bottom: 8px;

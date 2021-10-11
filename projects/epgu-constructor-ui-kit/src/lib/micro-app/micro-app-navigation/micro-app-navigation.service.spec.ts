@@ -13,13 +13,13 @@ describe('MicroAppNavigationService', () => {
   let appNavigationRuleService: MicroAppNavigationRuleService;
   let eventBusService: EventBusService;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         MicroAppNavigationService,
         EventBusService,
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
-        { provide: MicroAppNavigationRuleService, useClass: MicroAppNavigationRuleServiceStub }
+        { provide: MicroAppNavigationRuleService, useClass: MicroAppNavigationRuleServiceStub },
       ],
     });
   });
@@ -43,7 +43,7 @@ describe('MicroAppNavigationService', () => {
     it('should emmit closeApp event with false payload', (done) => {
       jest.spyOn(appNavigationRuleService, 'getNext').mockReturnValue(undefined);
       const spy = jest.spyOn(appStateService, 'updateCurrentComponent');
-      eventBusService.on('closeApp').subscribe(payload => {
+      eventBusService.on('closeApp').subscribe((payload) => {
         expect(payload).toBe(false);
         done();
       });
@@ -63,12 +63,11 @@ describe('MicroAppNavigationService', () => {
     it('should emmit closeApp event with false true', (done) => {
       jest.spyOn(appNavigationRuleService, 'getPrev').mockReturnValue(undefined);
       const spy = jest.spyOn(appStateService, 'updateCurrentComponent');
-      eventBusService.on('closeApp').subscribe(payload => {
+      eventBusService.on('closeApp').subscribe((payload) => {
         expect(payload).toBe(true);
         done();
       });
       service.prev();
     });
   });
-
 });

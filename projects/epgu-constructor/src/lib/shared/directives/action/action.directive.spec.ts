@@ -5,10 +5,11 @@ import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import {
-  ConfigService, LocationService,
+  ConfigService,
+  LocationService,
   LocationServiceStub,
   SessionStorageService,
-  SessionStorageServiceStub
+  SessionStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';

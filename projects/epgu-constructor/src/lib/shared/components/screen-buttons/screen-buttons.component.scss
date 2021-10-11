@@ -16,7 +16,7 @@
   @include screen-button-width;
   @include tablets-down {
     // Кнопка nextstep всегда первая на mob
-    &[data-button-type="nextstep"]:not(:first-child) {
+    &[data-button-type='nextstep']:not(:first-child) {
       order: -1;
     }
     margin-top: 32px;
@@ -26,7 +26,7 @@
       margin-left: 32px;
     }
     // Кнопка nextstep всегда последняя на tab/desk
-    &[data-button-type="nextstep"]:not(:last-child) {
+    &[data-button-type='nextstep']:not(:last-child) {
       order: 10;
       margin-left: 32px;
       // Если nextstep была первой, следующая за ней без левого отступа

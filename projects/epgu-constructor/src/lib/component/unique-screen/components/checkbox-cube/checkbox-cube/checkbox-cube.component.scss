@@ -1,4 +1,4 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
 $items-in-line: 6;
 $items-in-line-mobile: 3;
 
@@ -12,7 +12,7 @@ $items-in-line-mobile: 3;
   flex: 0 0 calc(100% / #{$items-in-line});
   margin-top: 17px;
 
-  &:nth-child(-n+#{$items-in-line}) {
+  &:nth-child(-n + #{$items-in-line}) {
     margin-top: 0px;
   }
 
@@ -22,7 +22,7 @@ $items-in-line-mobile: 3;
       margin-top: 31px;
     }
 
-    &:nth-child(-n+#{$items-in-line-mobile}) {
+    &:nth-child(-n + #{$items-in-line-mobile}) {
       margin-top: 0px;
     }
   }

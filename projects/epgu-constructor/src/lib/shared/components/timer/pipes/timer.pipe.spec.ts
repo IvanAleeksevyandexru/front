@@ -7,9 +7,7 @@ describe('TimerPipe', () => {
 
   TestBed.configureTestingModule({
     imports: [],
-    providers: [
-      DatesToolsService
-    ],
+    providers: [DatesToolsService],
   });
 
   it('create an instance', () => {

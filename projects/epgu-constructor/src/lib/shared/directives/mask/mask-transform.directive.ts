@@ -10,18 +10,17 @@ export class MaskTransformDirective {
   @Input('epgu-constructor-mask-transform') mask: string | string[];
   @Input() maskOptions?: Partial<NumberMaskOptions>;
 
-  constructor(
-      private ngControl: NgControl,
-      private maskTransformService: MaskTransformService,
-  ) {}
+  constructor(private ngControl: NgControl, private maskTransformService: MaskTransformService) {}
 
   @HostListener('change', ['$event.target'])
   onBlur(target: HTMLInputElement): void {
     if (this.mask === MASKS.NumberMaskInput) {
-      target.value = this.maskTransformService.transformNumberMaskInput(target.value, this.maskOptions);
+      target.value = this.maskTransformService.transformNumberMaskInput(
+        target.value,
+        this.maskOptions,
+      );
       this.ngControl.control.patchValue(target.value, { emitEvent: false });
       this.ngControl.control.updateValueAndValidity();
     }
   }
-
 }

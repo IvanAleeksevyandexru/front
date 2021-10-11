@@ -2,9 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": "./",
-    "lib": [
-      "es6", "dom"
-    ],
+    "lib": ["es6", "dom"],
     "target": "es6",
     "experimentalDecorators": true,
     "paths": {

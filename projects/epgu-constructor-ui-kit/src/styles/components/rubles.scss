@@ -3,8 +3,8 @@
 
 // TODO вынести в глобальную область и избавиться от mixin!
 @mixin rubles($class-name) {
-  #{$class-name}{
-    &::ng-deep .rubles{
+  #{$class-name} {
+    &::ng-deep .rubles {
       display: inline-block;
       position: relative;
       margin-right: 14px;
@@ -12,8 +12,8 @@
       height: 17px;
     }
 
-    &::ng-deep .rubles::after{
-      content: "";
+    &::ng-deep .rubles::after {
+      content: '';
       width: 13px;
       height: 13px;
       position: absolute;

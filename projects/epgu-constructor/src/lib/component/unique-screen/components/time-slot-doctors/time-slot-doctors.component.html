@@ -1,12 +1,6 @@
 <div class="mb-16">
   <epgu-cf-ui-constructor-screen-pad>
-
-    <epgu-constructor-label
-      *ngIf="label"
-      class="mb-24"
-      [label]="label"
-      for="label"
-    >
+    <epgu-constructor-label *ngIf="label" class="mb-24" [label]="label" for="label">
     </epgu-constructor-label>
 
     <div *ngIf="specLookupAttrs">
@@ -26,10 +20,7 @@
       </epgu-cf-ui-constructor-constructor-lookup>
     </div>
 
-
-    <div *ngIf="isDocLookupShown"
-         [class.mt-24]="specLookupAttrs"
-    >
+    <div *ngIf="isDocLookupShown" [class.mt-24]="specLookupAttrs">
       <epgu-constructor-label [label]="docLookupAttrs.label" for="doctors"></epgu-constructor-label>
 
       <epgu-cf-ui-constructor-constructor-lookup
@@ -55,16 +46,14 @@
           [clarifications]="docLookupAttrs.clarifications"
         ></epgu-constructor-disclaimer>
       </ng-container>
-
     </div>
-
 
     <ng-container *ngIf="areSlotsNotAvailable && slotsNotFoundTemplate; else commonError">
       <epgu-constructor-output-html
         [html]="slotsNotFoundTemplate.header + slotsNotFoundTemplate.description"
       ></epgu-constructor-output-html>
 
-      <div class="mt-8" >
+      <div class="mt-8">
         <epgu-cf-ui-constructor-constructor-checkbox
           #checkboxComponent
           [labelText]="slotsNotFoundTemplate.checkboxLabel"
@@ -72,7 +61,7 @@
         >
         </epgu-cf-ui-constructor-constructor-checkbox>
       </div>
-      <div class="mt-8" >
+      <div class="mt-8">
         <epgu-constructor-screen-buttons
           class="screen-buttons"
           [screenButtons]="[slotsNotFoundTemplate.button]"
@@ -92,7 +81,6 @@
     <lib-throbber-hexagon *ngIf="inLoadingProgress" class="mt-24" size="big"></lib-throbber-hexagon>
 
     <div *ngIf="isMapShown" class="mt-24">
-
       <div class="months-range">
         {{ monthsRange }}
       </div>
@@ -108,16 +96,13 @@
         (selectDate)="selectDate.emit($event)"
       >
       </epgu-cf-ui-constructor-time-calendar>
-
     </div>
-
-
   </epgu-cf-ui-constructor-screen-pad>
 </div>
 <div class="screen-footer">
   <div class="screen-footer--time-slots">
     <div *ngIf="selectedTimeStr" class="mb-24">
-      Вы выбрали: <b>{{selectedTimeStr}}</b>
+      Вы выбрали: <b>{{ selectedTimeStr }}</b>
     </div>
     <lib-button
       *ngIf="!areSlotsNotAvailable || !slotsNotFoundTemplate?.button"

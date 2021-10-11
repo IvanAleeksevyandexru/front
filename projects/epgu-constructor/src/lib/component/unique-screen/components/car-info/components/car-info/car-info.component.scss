@@ -1,5 +1,5 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/components/info-list";
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/info-list';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
 .car-info-block:not(:last-child) {
   margin-bottom: 16px;
@@ -9,4 +9,3 @@
   @include typ-plain-small;
   color: $color-text-helper;
 }
-

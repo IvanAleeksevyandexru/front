@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'priorPrefix'
+  name: 'priorPrefix',
 })
 export class PriorPrefixPipe implements PipeTransform {
   transform(value: string): string {

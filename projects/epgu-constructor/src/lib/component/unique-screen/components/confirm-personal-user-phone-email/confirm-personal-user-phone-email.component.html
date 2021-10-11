@@ -37,7 +37,12 @@
 
     <div class="footer" *ngIf="screenService.action$ | async as action">
       <div class="divider"></div>
-      <button class="btn-edit" epgu-constructor-action [action]="action" [disabled]="async.isLoading">
+      <button
+        class="btn-edit"
+        epgu-constructor-action
+        [action]="action"
+        [disabled]="async.isLoading"
+      >
         <img
           class="btn-edit__icon"
           src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/edit.svg"

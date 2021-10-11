@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { LoadServiceDeviceType, LOCAL_STORAGE_PLATFORM_TYPE } from '@epgu/epgu-constructor-ui-kit'
+import { LoadServiceDeviceType, LOCAL_STORAGE_PLATFORM_TYPE } from '@epgu/epgu-constructor-ui-kit';
 
 import { AppConfig, LOCAL_STORAGE_KEY } from './app.type';
 import { environment } from '../environments/environment';
@@ -18,7 +18,7 @@ const initValues: AppConfig = {
   initState: null,
   queryParams: '',
   gepsId: null,
-}
+};
 
 @Injectable()
 export class AppService {
@@ -26,25 +26,25 @@ export class AppService {
   configSubject: BehaviorSubject<AppConfig>;
   config$: Observable<AppConfig>;
 
-  constructor (private route: ActivatedRoute, private ngxDeviceDetector: DeviceDetectorService) {
+  constructor(private route: ActivatedRoute, private ngxDeviceDetector: DeviceDetectorService) {
     this.initConfig();
   }
 
   valuesFromQueryParams(): void {
     const { serviceId, targetId, orderId, invited, canStartNew } = this.route.snapshot.queryParams;
-    if(serviceId) {
+    if (serviceId) {
       this.config.serviceId = serviceId;
     }
-    if(targetId) {
+    if (targetId) {
       this.config.targetId = targetId;
     }
-    if(orderId) {
+    if (orderId) {
       this.config.orderId = orderId;
     }
-    if(invited) {
+    if (invited) {
       this.config.invited = invited;
     }
-    if(canStartNew) {
+    if (canStartNew) {
       this.config.canStartNew = canStartNew;
     }
   }
@@ -52,7 +52,7 @@ export class AppService {
   saveConfig(newConfig: AppConfig) {
     this.config = newConfig;
     window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.config));
-    this.configSubject.next(this.config)
+    this.configSubject.next(this.config);
   }
 
   initConfig() {
@@ -64,24 +64,24 @@ export class AppService {
 
     const initConfig = this.getInitConfigs();
     if (savedConfig) {
-      this.removeNotExistingFieldsFromSavedConfig(savedConfig, initConfig)
+      this.removeNotExistingFieldsFromSavedConfig(savedConfig, initConfig);
     }
 
     this.config = {
       ...initConfig,
-      ...savedConfig
-    }
+      ...savedConfig,
+    };
     this.configSubject = new BehaviorSubject<AppConfig>(this.config);
     this.config$ = this.configSubject.asObservable();
 
     this.valuesFromQueryParams();
-    this.configSubject.next(this.config)
+    this.configSubject.next(this.config);
   }
 
   getInitConfigs() {
     return {
       ...initValues,
-    }
+    };
   }
 
   removeNotExistingFieldsFromSavedConfig(savedConfig: AppConfig, initConfig: AppConfig) {
@@ -89,14 +89,14 @@ export class AppService {
     const initKeys = Object.keys(initConfig);
     const oldKeys = [];
 
-    savedKeys.forEach(savedKey => {
-      if(!initKeys.includes(savedKey)) {
+    savedKeys.forEach((savedKey) => {
+      if (!initKeys.includes(savedKey)) {
         oldKeys.push(savedKey);
       }
     });
 
-    oldKeys.forEach(key => {
-      delete savedConfig[key]
+    oldKeys.forEach((key) => {
+      delete savedConfig[key];
     });
   }
 

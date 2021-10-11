@@ -2,7 +2,8 @@
   [show-nav]="screenService.showNav$ | async"
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
-  <div *ngIf="data$ | async as data"
+  <div
+    *ngIf="data$ | async as data"
     class="screen-body"
     [class.with-size-info]="uploaderScreenService.showLimitsInfo()"
   >
@@ -22,9 +23,12 @@
       <span *ngIf="uploaderScreenService.showCountInfo()" class="size-info__bold">
         {{ uploaderScreenService.getFileCountLeft() }}
       </span>
-      {{ ['файл', 'файла', 'файлов'] | pluralize:uploaderScreenService.getFileCountLeft() }}
+      {{ ['файл', 'файла', 'файлов'] | pluralize: uploaderScreenService.getFileCountLeft() }}
       <ng-container *ngIf="uploaderScreenService.showSizeInfo()">
-        на <span class="size-info__bold">{{ uploaderScreenService.getFileSizeLeft() | fileSize }}</span>
+        на
+        <span class="size-info__bold">{{
+          uploaderScreenService.getFileSizeLeft() | fileSize
+        }}</span>
       </ng-container>
     </div>
   </div>

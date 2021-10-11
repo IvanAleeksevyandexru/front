@@ -18,26 +18,26 @@ const mockComponent = {
       {
         paymentType: PaymentTypes.paid,
         amount: 1000,
-        programType: ProgramType.other
+        programType: ProgramType.other,
       },
       {
         paymentType: PaymentTypes.budget,
         amount: null,
-        programType: ProgramType.preprof
+        programType: ProgramType.preprof,
       },
       {
         paymentType: PaymentTypes.pfdod_certificate,
         amount: 1000,
         programType: null,
-      }
+      },
     ],
     html: {
       paid: 'fake paid html',
-      budget: 'fake budget html'
-    }
+      budget: 'fake budget html',
+    },
   },
   value: '',
-  required: false
+  required: false,
 };
 
 describe('PaymentWayContainerComponent', () => {
@@ -47,14 +47,8 @@ describe('PaymentWayContainerComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        PaymentWayContainerComponent,
-        MockComponent(PaymentWayComponent)
-      ],
-      imports: [
-        MockModule(DefaultUniqueScreenWrapperModule),
-        MockModule(ScreenPadModule)
-      ],
+      declarations: [PaymentWayContainerComponent, MockComponent(PaymentWayComponent)],
+      imports: [MockModule(DefaultUniqueScreenWrapperModule), MockModule(ScreenPadModule)],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         CurrentAnswersService,
@@ -72,11 +66,13 @@ describe('PaymentWayContainerComponent', () => {
   });
 
   describe('init()', () => {
-    const paymentWays = [{
-      paymentType: PaymentTypes.budget,
-      amount: null,
-      programType: ProgramType.preprof
-    }];
+    const paymentWays = [
+      {
+        paymentType: PaymentTypes.budget,
+        amount: null,
+        programType: ProgramType.preprof,
+      },
+    ];
 
     it('should set selected', () => {
       expect(component.paymentWayControl.value).toBe('');
@@ -114,17 +110,18 @@ describe('PaymentWayContainerComponent', () => {
   });
 
   it('should set value if there is only one paymentWay', () => {
-    const specificMockComponent = { ...mockComponent, attrs:
-        {
-          ...mockComponent.attrs,
-          paymentWays: [
-            {
-              paymentType: PaymentTypes.budget,
-              amount: null,
-              programType: ProgramType.preprof
-            },
-          ]
-        }
+    const specificMockComponent = {
+      ...mockComponent,
+      attrs: {
+        ...mockComponent.attrs,
+        paymentWays: [
+          {
+            paymentType: PaymentTypes.budget,
+            amount: null,
+            programType: ProgramType.preprof,
+          },
+        ],
+      },
     };
     const reFixture = TestBed.createComponent(PaymentWayContainerComponent);
     const screenService = TestBed.inject(ScreenService);

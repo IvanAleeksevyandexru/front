@@ -8,9 +8,7 @@ describe('TypeCastService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        TypeCastService
-      ]
+      providers: [TypeCastService],
     });
   });
 

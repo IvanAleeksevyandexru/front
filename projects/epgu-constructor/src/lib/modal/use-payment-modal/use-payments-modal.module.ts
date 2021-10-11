@@ -5,13 +5,9 @@ import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
   declarations: [UsePaymentsModalComponent],
-  providers: [
-    ModalService,
-  ],
+  providers: [ModalService],
   exports: [UsePaymentsModalComponent],
   imports: [BaseModule],
-  entryComponents: [
-    UsePaymentsModalComponent
-  ],
+  entryComponents: [UsePaymentsModalComponent],
 })
 export class UsePaymentsModalModule {}

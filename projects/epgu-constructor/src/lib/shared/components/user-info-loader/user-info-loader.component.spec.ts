@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { ConfigService, ConfigServiceStub, DownloadService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  DownloadService,
+  ObjectHelperService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -18,7 +22,7 @@ import {
   InfoComponentDto,
   ScreenTypes,
   UserInfo,
-  UserInfoComponentTypes
+  UserInfoComponentTypes,
 } from '@epgu/epgu-constructor-types';
 import { componentMock } from '../../../component/unique-screen/components/select-children/components/select-children/mocks/select-children.mock';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
@@ -42,53 +46,46 @@ const mockMaleValue: UserInfo = {
   ageType: AgeType.MATURE,
 };
 
-const mockCycledValue: CycledInfo[] = [{
-  fieldName: 'ai19_1.value',
-  value: 'fake value',
-  isBold: false
-}];
+const mockCycledValue: CycledInfo[] = [
+  {
+    fieldName: 'ai19_1.value',
+    value: 'fake value',
+    isBold: false,
+  },
+];
 
 const mockInfoComponent = {
-  id:'infoComponent',
-  name:'',
+  id: 'infoComponent',
+  name: '',
   type: UserInfoComponentTypes.PersonInfo,
-  label:'',
-  attrs:{
-    fields:[
-      { fieldName:'birthDate' },
-      { fieldName:'firstName' },
-      { fieldName:'gender' }
-    ],
-    hidden:true,
-    refs:{}
+  label: '',
+  attrs: {
+    fields: [{ fieldName: 'birthDate' }, { fieldName: 'firstName' }, { fieldName: 'gender' }],
+    hidden: true,
+    refs: {},
   },
-  arguments:{},
-  value:'{"name":"Илон","ageText":"2 месяца","ageType":"YOUNG","gender":"M"}',
-  required:true
+  arguments: {},
+  value: '{"name":"Илон","ageText":"2 месяца","ageType":"YOUNG","gender":"M"}',
+  required: true,
 } as InfoComponentDto;
 
 const mockCycledComponent = {
-  id:'infoComponent',
-  name:'',
+  id: 'infoComponent',
+  name: '',
   type: UserInfoComponentTypes.CycledInfo,
-  label:'',
-  attrs:{
-    fields:[
-      { fieldName:'birthDate' },
-      { fieldName:'firstName' },
-      { fieldName:'gender' }
-    ],
-    hidden:true,
-    refs:{}
+  label: '',
+  attrs: {
+    fields: [{ fieldName: 'birthDate' }, { fieldName: 'firstName' }, { fieldName: 'gender' }],
+    hidden: true,
+    refs: {},
   },
-  arguments:{},
+  arguments: {},
   value: JSON.stringify(mockCycledValue),
-  required:true
+  required: true,
 } as InfoComponentDto;
 
 const userInfoSelector = 'epgu-constructor-user-info';
 const cycledInfoSelector = 'epgu-constructor-cycled-info';
-
 
 describe('UserInfoLoaderComponent', () => {
   let component: UserInfoLoaderComponent;
@@ -106,22 +103,24 @@ describe('UserInfoLoaderComponent', () => {
     components: [({ id: 'c1', value: mockMaleValue } as unknown) as ComponentDto],
   } as unknown) as DisplayDto;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [UserInfoLoaderComponent, UserInfoComponent, CycledInfoComponent],
-      providers: [
-        DownloadService,
-        ObjectHelperService,
-        JsonHelperService,
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-      ],
-    })
-      .overrideComponent(UserInfoLoaderComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UserInfoLoaderComponent, UserInfoComponent, CycledInfoComponent],
+        providers: [
+          DownloadService,
+          JsonHelperService,
+          ObjectHelperService,
+          { provide: ConfigService, useClass: ConfigServiceStub },
+          { provide: ScreenService, useClass: ScreenServiceStub },
+        ],
       })
-      .compileComponents();
-  }));
+        .overrideComponent(UserInfoLoaderComponent, {
+          set: { changeDetection: ChangeDetectionStrategy.Default },
+        })
+        .compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserInfoLoaderComponent);

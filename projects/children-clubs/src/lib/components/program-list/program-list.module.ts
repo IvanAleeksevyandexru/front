@@ -39,13 +39,7 @@ import { PluralizeModule } from '@epgu/ui/pipes';
     PluralizeModule,
   ],
 
-  providers: [
-    ProgramListService,
-    ModalService,
-    ConfigService,
-    ApiService,
-    StateService,
-  ],
+  providers: [ProgramListService, ModalService, ConfigService, ApiService, StateService],
   exports: [ProgramListContainerComponent, ViewComponent],
   entryComponents: [ProgramListContainerComponent],
 })

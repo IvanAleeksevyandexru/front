@@ -1,23 +1,15 @@
 module.exports = {
   preset: 'jest-preset-angular',
-  modulePaths: [
-    '<rootDir>'
-  ],
-  moduleDirectories: [
-    'node_modules'
-  ],
+  modulePaths: ['<rootDir>'],
+  moduleDirectories: ['node_modules'],
   setupFiles: ['<rootDir>/setup-jest.ts', 'jest-canvas-mock'],
   setupFilesAfterEnv: ['<rootDir>/setup-jest-env.ts'],
-  testPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/dist/',
-    '<rootDir>/src/',
-  ],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/'],
   moduleNameMapper: {
     '@ifc/plugin': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js',
     '@ifc/common': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js',
     '@epgu/epgu-constructor-ui-kit': '<rootDir>/projects/epgu-constructor-ui-kit/src/public-api',
-    '@epgu/epgu-constructor-types': '<rootDir>/projects/epgu-constructor-types/src'
+    '@epgu/epgu-constructor-types': '<rootDir>/projects/epgu-constructor-types/src',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   coverageReporters: ['text', 'cobertura', 'html'],
@@ -29,7 +21,7 @@ module.exports = {
     'projects/**/*.pipe.ts',
     'projects/**/*.strategy.ts',
     'projects/**/*.validators.ts',
-    'projects/**/*.guard.ts'
+    'projects/**/*.guard.ts',
   ],
   globals: {
     'ts-jest': {
@@ -42,11 +34,11 @@ module.exports = {
           'jest-preset-angular/build/StripStylesTransformer',
         ],
       },
-    }
+    },
   },
   testEnvironmentOptions: {
     beforeParse(window) {
-      window.scroll = () => { };
-    }
+      window.scroll = () => {};
+    },
   },
 };

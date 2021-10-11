@@ -4,15 +4,8 @@ import { ModalModule } from '../../modal/modal.module';
 import { BaseModule } from '../../shared/base.module';
 
 @NgModule({
-	declarations: [
-    RedirectComponent
-  ],
-	exports: [
-    RedirectComponent
-  ],
-	imports: [
-    BaseModule,
-    ModalModule
-	],
+  declarations: [RedirectComponent],
+  exports: [RedirectComponent],
+  imports: [BaseModule, ModalModule],
 })
 export class EmptyScreenComponentsModule {}

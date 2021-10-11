@@ -18,7 +18,7 @@ module.exports = {
       10: congiApiProxy,
       11: apiProxy,
     },
-    baseDir: './dist/epgu-form-frontend'
+    baseDir: './dist/epgu-form-frontend',
   },
   port: 4200,
 };

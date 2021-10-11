@@ -6,9 +6,7 @@ import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 export class InvitationErrorServiceStub {
   requestOptions = { withCredentials: true };
 
-  constructor(
-    private http: HttpClient,
-  ) {}
+  constructor(private http: HttpClient) {}
 
   post<T>(path: string, body: T, attrs: ComponentAttrsDto) {
     this.http

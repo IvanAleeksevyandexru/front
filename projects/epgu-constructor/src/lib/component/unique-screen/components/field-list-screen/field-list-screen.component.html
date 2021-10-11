@@ -6,6 +6,8 @@
   [isValid]="currentAnswersService.isValid$ | async"
 >
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
-    <epgu-constructor-field-list [data]="screenService.component$ | async"></epgu-constructor-field-list>
+    <epgu-constructor-field-list
+      [data]="screenService.component$ | async"
+    ></epgu-constructor-field-list>
   </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

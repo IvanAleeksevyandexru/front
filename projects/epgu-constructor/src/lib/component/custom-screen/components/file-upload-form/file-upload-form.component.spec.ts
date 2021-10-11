@@ -67,18 +67,13 @@ describe('FileUploadComponent', () => {
     name: '',
     type: ScreenTypes.CUSTOM,
     header: 'someHeader',
-    components: [
-      mockComponent
-    ],
-    terminal: false
+    components: [mockComponent],
+    terminal: false,
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [
-        PluralizeModule,
-        FileSizeModule
-      ],
+      imports: [PluralizeModule, FileSizeModule],
       declarations: [
         FileUploadFormComponent,
         MockComponent(FileUploadComponent),
@@ -91,7 +86,7 @@ describe('FileUploadComponent', () => {
         EventBusService,
         Injector,
         UploaderScreenService,
-        UnsubscribeService
+        UnsubscribeService,
       ],
     })
       .overrideComponent(FileUploadFormComponent, {
@@ -162,7 +157,7 @@ describe('FileUploadComponent', () => {
     eventService.emit('fileUploadValueChangedEvent', payload);
     const check = {
       uploads: payload.files,
-      totalSize: 0
+      totalSize: 0,
     };
     expect(controlValue.setValue).toHaveBeenCalledWith(check);
   });

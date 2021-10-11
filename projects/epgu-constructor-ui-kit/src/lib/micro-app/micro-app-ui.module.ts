@@ -9,9 +9,8 @@ import { MicroAppUiConfig } from './micro-app-ui.type';
 import { PREV_BUTTON_NAVIGATION } from '../base/components/prev-button/prev-button.token';
 import { MicroAppPrevButtonNavigationService } from './micro-app-prev-button-navigation/micro-app-prev-button-navigation.service';
 import { ERROR_HANDLER_ORDER_PARAMS_SERVICES } from '../core/services/global-error/global-error.token';
-import {
-  MicroAppErrorHandlerOrderParamsServiceService
-} from './micro-app-error-handler-order-params-service/micro-app-error-handler-order-params-service.service';
+// eslint-disable-next-line max-len
+import { MicroAppErrorHandlerOrderParamsServiceService } from './micro-app-error-handler-order-params-service/micro-app-error-handler-order-params-service.service';
 
 export const APP_ROUTING_COMPONENT_MAP = new InjectionToken<string>('appRoutingComponentMap');
 export const APP_NAVIGATION_RULE_MAP = new InjectionToken<string>('appNavigationRuleMap');
@@ -32,9 +31,7 @@ export class MicroAppUiModule {
     this.appRoutingService.initRouting(this.appRoutingComponentMap);
   }
 
-  static forRoot(
-    appUiConfig: MicroAppUiConfig,
-  ): ModuleWithProviders<MicroAppUiModule> {
+  static forRoot(appUiConfig: MicroAppUiConfig): ModuleWithProviders<MicroAppUiModule> {
     return {
       ngModule: MicroAppUiModule,
       providers: [
@@ -50,7 +47,7 @@ export class MicroAppUiModule {
         {
           provide: ERROR_HANDLER_ORDER_PARAMS_SERVICES,
           useClass: MicroAppErrorHandlerOrderParamsServiceService,
-        }
+        },
       ],
     };
   }

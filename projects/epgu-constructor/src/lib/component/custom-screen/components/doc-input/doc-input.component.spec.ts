@@ -110,7 +110,8 @@ describe('DocInputComponent', () => {
               ref: '',
               condition: '',
               errorMsg: 'Поле должно быть заполено',
-            }, {
+            },
+            {
               type: 'RegExp',
               value: '^.{4}$',
               ref: '',

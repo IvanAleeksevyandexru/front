@@ -23,11 +23,7 @@ import { UploaderViewerContentComponent } from './components/uploader-viewer-con
     UploaderViewerContentComponent,
   ],
 
-  providers: [
-    ModalService,
-    ViewerService,
-    SuggestMonitorService,
-  ],
+  providers: [ModalService, ViewerService, SuggestMonitorService],
   imports: [CommonModule, FileSizeModule, BaseModule, ZoomModule],
   exports: [UploaderComponent, UploaderButtonComponent, UploaderManagerComponent],
   entryComponents: [UploaderViewerComponent],

@@ -35,15 +35,15 @@ describe('TimerComponent', () => {
         labels: [
           {
             label: 'a',
-            fromTime: 1
+            fromTime: 1,
           },
           {
             label: 'b',
-            fromTime: 100
-          }
-        ]
-      }
-    }
+            fromTime: 100,
+          },
+        ],
+      },
+    },
   };
   const attrsFromTimeDesc = {
     attrs: {
@@ -53,15 +53,15 @@ describe('TimerComponent', () => {
         labels: [
           {
             label: 'a',
-            fromTime: 100
+            fromTime: 100,
           },
           {
             label: 'b',
-            fromTime: 1
-          }
-        ]
-      }
-    }
+            fromTime: 1,
+          },
+        ],
+      },
+    },
   };
   const attrsFromTimeEqual = {
     attrs: {
@@ -71,15 +71,15 @@ describe('TimerComponent', () => {
         labels: [
           {
             label: 'a',
-            fromTime: 100
+            fromTime: 100,
           },
           {
             label: 'b',
-            fromTime: 100
-          }
-        ]
-      }
-    }
+            fromTime: 100,
+          },
+        ],
+      },
+    },
   };
   const attrsActions = {
     attrs: {
@@ -87,11 +87,11 @@ describe('TimerComponent', () => {
         actions: [
           {
             toTime: 1,
-            fromTime: 10
-          }
-        ]
-      }
-    }
+            fromTime: 10,
+          },
+        ],
+      },
+    },
   };
   const mockDataFullActions: ComponentDto = {
     id: 'booktimer1',
@@ -110,7 +110,7 @@ describe('TimerComponent', () => {
             type: 'redirectToLK',
             action: 'getNextScreen',
             toTime: 0,
-            fromTime: 0
+            fromTime: 0,
           },
           {
             label: 'Забронировать другое время',
@@ -119,17 +119,17 @@ describe('TimerComponent', () => {
             type: 'prevStep',
             action: 'getPrevStep',
             toTime: 0,
-            fromTime: 14400
-          }
+            fromTime: 14400,
+          },
         ],
         labels: [
           {
             label: 'Вы не успели',
-            fromTime: 0
-          }
-        ]
-      }
-    }
+            fromTime: 0,
+          },
+        ],
+      },
+    },
   };
   const mockData: ComponentDto = {
     id: 'booktimer1',
@@ -146,17 +146,17 @@ describe('TimerComponent', () => {
             value: 'Перейти в личный кабинет',
             color: 'white',
             type: 'redirectToLK',
-            action: 'getNextScreen'
-          }
+            action: 'getNextScreen',
+          },
         ],
         labels: [
           {
             label: 'Вы не успели',
-            fromTime: 20
-          }
-        ]
-      }
-    }
+            fromTime: 20,
+          },
+        ],
+      },
+    },
   };
 
   configureTestSuite(() => {
@@ -178,12 +178,11 @@ describe('TimerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TimerComponent);
     component = fixture.componentInstance;
-    component.data = {
-      attrs: { startTime, currentTime, expirationTime }
-    } as any as TimerComponentBase;
+    component.data = ({
+      attrs: { startTime, currentTime, expirationTime },
+    } as any) as TimerComponentBase;
     fixture.detectChanges();
   });
-
 
   it('should support serverTime', () => {
     expect(component.timer.time).toBe(expirationTime - currentTime);
@@ -264,9 +263,9 @@ describe('TimerComponent', () => {
         component.data = {
           attrs: {
             timerRules: {
-              hideTimerFrom: false
-            }
-          }
+              hideTimerFrom: false,
+            },
+          },
         };
         component.startTimerHandler();
         component.timer = { isFinish: true };

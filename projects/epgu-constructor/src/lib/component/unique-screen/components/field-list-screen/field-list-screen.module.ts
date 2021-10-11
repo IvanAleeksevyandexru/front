@@ -7,13 +7,8 @@ import { FieldListModule } from '../../../../shared/components/field-list/field-
 
 @NgModule({
   declarations: [FieldListScreenComponent],
-  imports: [
-    CommonModule,
-    DefaultUniqueScreenWrapperModule,
-    ScreenPadModule,
-    FieldListModule,
-  ],
+  imports: [CommonModule, DefaultUniqueScreenWrapperModule, ScreenPadModule, FieldListModule],
   exports: [FieldListScreenComponent],
-  entryComponents: [FieldListScreenComponent]
+  entryComponents: [FieldListScreenComponent],
 })
 export class FieldListScreenModule {}

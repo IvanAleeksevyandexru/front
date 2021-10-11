@@ -9,10 +9,7 @@ describe('WordTransformService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        WordTransformService,
-        ObjectHelperService,
-      ]
+      providers: [WordTransformService, ObjectHelperService],
     });
   });
 

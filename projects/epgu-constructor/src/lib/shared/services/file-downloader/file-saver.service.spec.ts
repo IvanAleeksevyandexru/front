@@ -31,7 +31,7 @@ describe('FileSaverService', () => {
     const fakeHttpResponseWithHeaders = new HttpResponse({
       status: 200,
       body: fakeFile,
-      headers
+      headers,
     });
     service.saveFile(fakeHttpResponseWithHeaders);
     expect(FileSaver.saveAs).toHaveBeenCalledWith(fakeFile, 'document.pdf');
@@ -42,7 +42,7 @@ describe('FileSaverService', () => {
     const fakeHttpResponse = new HttpResponse({
       status: 200,
       body: fakeFile,
-      headers
+      headers,
     });
     service.saveFile(fakeHttpResponse);
     expect(FileSaver.saveAs).toHaveBeenCalledWith(fakeFile, 'test.pdf');

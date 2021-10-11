@@ -7,10 +7,7 @@ import { Config } from '../config/config.types';
 
 @Injectable()
 export class ConfigApiService {
-  constructor(
-    private http: HttpClient,
-    private configService: ConfigService
-  ) {}
+  constructor(private http: HttpClient, private configService: ConfigService) {}
 
   public getFormPlayerConfig(): Observable<Config> {
     const path = `${this.configService.configApiUrl}/pgu-service-config/config/${this.configService.configId}`;

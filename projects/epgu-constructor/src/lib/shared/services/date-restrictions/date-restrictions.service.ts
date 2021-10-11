@@ -26,7 +26,7 @@ export class DateRestrictionsService {
   constructor(
     private datesToolsService: DatesToolsService,
     private dateRefService: DateRefService,
-    private dictionaryToolsService: DictionaryToolsService
+    private dictionaryToolsService: DictionaryToolsService,
   ) {}
 
   async getDateRange(
@@ -189,7 +189,10 @@ export class DateRestrictionsService {
   private getDateFromApplicantAnswers(applicantAnswers: Searchable, datePath): Date {
     const valueFromApplicantAnswers = this.getValueViaRefWithProcessing(applicantAnswers, datePath);
     if (valueFromApplicantAnswers) {
-      const stringDotParsingResult = this.datesToolsService.parse(valueFromApplicantAnswers, DATE_STRING_DOT_FORMAT);
+      const stringDotParsingResult = this.datesToolsService.parse(
+        valueFromApplicantAnswers,
+        DATE_STRING_DOT_FORMAT,
+      );
       if (this.datesToolsService.isValid(stringDotParsingResult)) {
         return stringDotParsingResult;
       } else {
@@ -205,7 +208,7 @@ export class DateRestrictionsService {
   private getValueViaRefWithProcessing(searchable: Searchable, path: string): string {
     let processedPath;
     const pathArray = path.split('.');
-    processedPath = pathArray.length === 1 ? path+'.value' : path;
-   return this.dictionaryToolsService.getValueViaRef(searchable, processedPath);
+    processedPath = pathArray.length === 1 ? path + '.value' : path;
+    return this.dictionaryToolsService.getValueViaRef(searchable, processedPath);
   }
 }

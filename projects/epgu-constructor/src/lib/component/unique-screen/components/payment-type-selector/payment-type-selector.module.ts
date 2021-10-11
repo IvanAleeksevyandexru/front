@@ -25,6 +25,6 @@ import { PaymentTypeSelectorButtonComponent } from './components/payment-type-se
     ScreenPadModule,
     AnswerButtonModule,
   ],
-  entryComponents: [PaymentTypeSelectorContainerComponent]
+  entryComponents: [PaymentTypeSelectorContainerComponent],
 })
 export class PaymentTypeSelectorModule {}

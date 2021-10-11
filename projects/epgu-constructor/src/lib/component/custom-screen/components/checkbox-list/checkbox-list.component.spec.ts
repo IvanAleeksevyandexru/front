@@ -188,13 +188,14 @@ describe('CheckboxListComponent', () => {
         { id: 'checkbox2', label: 'label2', showOn: false, hidden: true },
       ]);
     }));
-
-
   });
 
   describe('formChanges', () => {
     const currentValue = {
-      checkbox1: false, checkbox2: false, checkbox3: false, checkbox4: false,
+      checkbox1: false,
+      checkbox2: false,
+      checkbox3: false,
+      checkbox4: false,
     };
 
     it('call emitToParentForm', () => {
@@ -217,7 +218,12 @@ describe('CheckboxListComponent', () => {
       expect(component.checkboxes).toEqual([
         { id: 'checkbox1', label: 'Оформление инвалидности', showOn: true, hidden: false },
         { id: 'checkbox2', label: 'Участие в боевых действиях', showOn: true, hidden: false },
-        { id: 'checkbox3', label: 'Исполнение обязанностей военной службы', showOn: false, hidden: true },
+        {
+          id: 'checkbox3',
+          label: 'Исполнение обязанностей военной службы',
+          showOn: false,
+          hidden: true,
+        },
         { id: 'checkbox4', label: 'Великая Отчественная Война', showOn: false, hidden: true },
       ]);
     });

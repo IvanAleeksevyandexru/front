@@ -531,7 +531,11 @@ export class TimeSlotsService {
       serviceId: [(this.config.serviceId as string) || serviceId],
     };
 
-    if ([TimeSlotsTypes.MVD, TimeSlotsTypes.DOCTOR, TimeSlotsTypes.VACCINATION].includes(this.timeSlotsType)) {
+    if (
+      [TimeSlotsTypes.MVD, TimeSlotsTypes.DOCTOR, TimeSlotsTypes.VACCINATION].includes(
+        this.timeSlotsType,
+      )
+    ) {
       requestBody.parentOrderId = this.config.parentOrderId
         ? (this.config.parentOrderId as string)
         : '';

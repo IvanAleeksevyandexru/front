@@ -1,4 +1,4 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
 .confirm-with-code {
   &__helper-text {
@@ -80,7 +80,7 @@
       }
 
       /* Firefox */
-      &[type=number] {
+      &[type='number'] {
         -moz-appearance: textfield;
       }
     }
@@ -97,13 +97,13 @@
     width: 100%;
     margin: 24px auto 0;
   }
-  
+
   &__hint-text {
     @include typ-plain-small;
     color: $color-text-helper;
     text-align: center;
   }
-  
+
   &__timer {
     color: $color-black;
   }

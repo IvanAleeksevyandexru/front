@@ -8,12 +8,9 @@ describe('MicroAppStateService', () => {
   let store: MicroAppStateStore<unknown, unknown>;
   let spyStoreUpdate;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        MicroAppStateService,
-        MicroAppStateStore,
-      ],
+      providers: [MicroAppStateService, MicroAppStateStore],
     });
   });
 

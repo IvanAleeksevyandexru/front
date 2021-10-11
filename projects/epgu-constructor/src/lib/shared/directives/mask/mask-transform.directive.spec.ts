@@ -15,25 +15,24 @@ import {
   ConfigServiceStub,
   CoreUiModule,
   LoggerService,
-  LoggerServiceStub
+  LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockModule } from 'ng-mocks';
 import { MaskTransformService } from './mask-transform.service';
 
 @Component({
   selector: 'epgu-constructor-mask-transform-test-component',
-  template: `
-    <input
-      type="text"
-      [epgu-constructor-mask-transform]="mask"
-      [maskOptions]="maskOptions"
-      [formControl]="control"
-    />`,
+  template: ` <input
+    type="text"
+    [epgu-constructor-mask-transform]="mask"
+    [maskOptions]="maskOptions"
+    [formControl]="control"
+  />`,
 })
 class MaskTransformTestComponent {
   public mask = '';
   public maskOptions = {};
-  control =  new FormControl({ value: '' });
+  control = new FormControl({ value: '' });
 }
 
 describe('MaskTransformDirective', () => {
@@ -52,8 +51,7 @@ describe('MaskTransformDirective', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

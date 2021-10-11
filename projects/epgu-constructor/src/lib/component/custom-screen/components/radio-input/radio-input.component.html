@@ -1,5 +1,4 @@
-<ng-container *ngTemplateOutlet="radioInput; context: { $implicit: control.value }">
-</ng-container>
+<ng-container *ngTemplateOutlet="radioInput; context: { $implicit: control.value }"> </ng-container>
 
 <ng-template #radioInput let-component>
   <epgu-constructor-component-item
@@ -11,9 +10,7 @@
   >
     <div
       class="form__radio"
-      [ngClass]="
-            component?.attrs?.isHorizontal ? 'form__radio--inline' : 'form__radio--block'
-          "
+      [ngClass]="component?.attrs?.isHorizontal ? 'form__radio--inline' : 'form__radio--block'"
     >
       <lib-radio
         *ngFor="let item of component?.attrs?.supportedValues"

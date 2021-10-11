@@ -23,16 +23,17 @@ describe('TableDirective', () => {
   };
 
   configureTestSuite(() => {
-      TestBed.configureTestingModule({
-        declarations: [TableDirective, TableMockComponent, SafePipe],
-      }).overrideComponent(TableMockComponent,{
-        set: { changeDetection: ChangeDetectionStrategy.Default }
+    TestBed.configureTestingModule({
+      declarations: [TableDirective, TableMockComponent, SafePipe],
+    })
+      .overrideComponent(TableMockComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
-    .compileComponents();
+      .compileComponents();
   });
 
   describe('created without .epgu-constructor-table', () => {
-    beforeEach( () => {
+    beforeEach(() => {
       createNewViewChild();
       component.html = '<table><tr><th data-header="test"></th></tr></table>';
       fixture.detectChanges();
@@ -45,7 +46,7 @@ describe('TableDirective', () => {
   });
 
   describe('created without data-header', () => {
-    beforeEach( () => {
+    beforeEach(() => {
       createNewViewChild();
       component.html = '<table class="epgu-constructor-table"><tr><th></th></tr></table>';
       fixture.detectChanges();
@@ -57,9 +58,8 @@ describe('TableDirective', () => {
     });
   });
 
-
   describe('should modify', () => {
-    beforeEach( () => {
+    beforeEach(() => {
       createNewViewChild();
       component.html = `
           <table class="epgu-constructor-table">
@@ -81,7 +81,7 @@ describe('TableDirective', () => {
   });
 
   describe('create with more then one table', () => {
-    beforeEach( () => {
+    beforeEach(() => {
       createNewViewChild();
       component.html = `
           <table class="epgu-constructor-table"></table>
@@ -124,5 +124,4 @@ describe('TableDirective', () => {
       expect(headers[0].innerHTML).toBe('Число месяцев');
     });
   });
-
 });

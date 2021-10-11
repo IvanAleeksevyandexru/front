@@ -8,17 +8,14 @@ describe('LocationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        LocationService,
-        WINDOW_PROVIDERS
-      ],
+      providers: [LocationService, WINDOW_PROVIDERS],
     });
     delete window.location;
-    window.location = {
+    window.location = ({
       href: null,
       origin: 'https://host.com',
-      reload: jest.fn()
-    } as unknown as Location;
+      reload: jest.fn(),
+    } as unknown) as Location;
     locationService = TestBed.inject(LocationService);
   });
 

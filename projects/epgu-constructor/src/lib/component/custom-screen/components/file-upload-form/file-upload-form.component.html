@@ -11,9 +11,10 @@
     <span *ngIf="uploaderScreenService.showCountInfo()" class="size-info__bold">
       {{ uploaderScreenService.getFileCountLeft() }}
     </span>
-    {{ ['файл', 'файла', 'файлов'] | pluralize:uploaderScreenService.getFileCountLeft() }}
+    {{ ['файл', 'файла', 'файлов'] | pluralize: uploaderScreenService.getFileCountLeft() }}
     <ng-container *ngIf="uploaderScreenService.showSizeInfo()">
-      на <span class="size-info__bold">{{ uploaderScreenService.getFileSizeLeft() | fileSize }}</span>
+      на
+      <span class="size-info__bold">{{ uploaderScreenService.getFileSizeLeft() | fileSize }}</span>
     </ng-container>
   </div>
 </ng-container>

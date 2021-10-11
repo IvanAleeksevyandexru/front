@@ -11,12 +11,8 @@ describe('MaskTransformService', () => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [],
-      providers: [
-        DecimalPipe,
-        MaskTransformService,
-      ],
-    })
-      .compileComponents();
+      providers: [DecimalPipe, MaskTransformService],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -28,10 +24,10 @@ describe('MaskTransformService', () => {
     let value = 's1!2$3_1+2s3s';
     let result = service.transformNumberMaskInput(value, {});
     expect(result).toBe('123 123.00');
-    
+
     value = 's1!2$3_1+2s3s,9';
     const maskOptions = {
-      decimalSymbol: ','
+      decimalSymbol: ',',
     };
     result = service.transformNumberMaskInput(value, maskOptions);
     expect(result).toBe('123 123,90');

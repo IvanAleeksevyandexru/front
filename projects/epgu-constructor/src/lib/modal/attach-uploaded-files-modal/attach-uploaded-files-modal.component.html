@@ -1,20 +1,25 @@
 <ng-container>
-  <epgu-cf-ui-cta-modal
-    [title]="title"
-    [showCrossButton]="true"
-    text="previewFiles"
-  >
+  <epgu-cf-ui-cta-modal [title]="title" [showCrossButton]="true" text="previewFiles">
     <ng-container modal-content>
-      <div class="text_modal_error" *ngIf="suggestionsUploadedFiles.length && !suggestionsFiles.length">
-        <img class="text_modal_error__img" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/image-error.svg">
+      <div
+        class="text_modal_error"
+        *ngIf="suggestionsUploadedFiles.length && !suggestionsFiles.length"
+      >
+        <img
+          class="text_modal_error__img"
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/image-error.svg"
+        />
         <h4>Нет подходящих файлов</h4>
         <span>
-        Не удалось найти файлы нужного формата.<br />
-        Загрузите новые
-      </span>
+          Не удалось найти файлы нужного формата.<br />
+          Загрузите новые
+        </span>
       </div>
       <div class="text_modal_error" *ngIf="!suggestionsUploadedFiles.length">
-        <img class="text_modal_error__img" src="{{config.staticDomainAssetsPath}}/assets/icons/svg/stop.svg">
+        <img
+          class="text_modal_error__img"
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/stop.svg"
+        />
         <h4>Найти файлы не удалось</h4>
         <span>Загрузите новые</span>
       </div>
@@ -35,8 +40,8 @@
                     *ngIf="file.isImage"
                     class="img"
                     src="{{ fileUploadApiUrl }}/{{ file.item.objectId }}/{{
-                    file.item.objectTypeId
-                  }}/download?mnemonic={{ file.item.mnemonic }}"
+                      file.item.objectTypeId
+                    }}/download?mnemonic={{ file.item.mnemonic }}"
                     (error)="handleImgError($event, file)"
                     [alt]="file.item.fileName"
                   />
@@ -61,4 +66,3 @@
     </ng-container>
   </epgu-cf-ui-cta-modal>
 </ng-container>
-

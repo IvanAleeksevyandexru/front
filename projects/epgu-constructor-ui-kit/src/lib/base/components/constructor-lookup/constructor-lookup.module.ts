@@ -6,6 +6,6 @@ import { BaseUiModule } from '../../base-ui.module';
 @NgModule({
   declarations: [ConstructorLookupComponent],
   imports: [BaseUiModule],
-  exports: [ConstructorLookupComponent]
+  exports: [ConstructorLookupComponent],
 })
 export class ConstructorLookupModule {}

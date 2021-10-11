@@ -10,7 +10,13 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
 @NgModule({
   declarations: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent],
   exports: [ConfirmPersonalUserDataComponent],
-  imports: [BaseModule, FieldListModule, ScreenPadModule, DefaultUniqueScreenWrapperModule, DisclaimerModule],
-  entryComponents: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent]
+  imports: [
+    BaseModule,
+    FieldListModule,
+    ScreenPadModule,
+    DefaultUniqueScreenWrapperModule,
+    DisclaimerModule,
+  ],
+  entryComponents: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent],
 })
 export class ConfirmPersonalUserDataScreenModule {}

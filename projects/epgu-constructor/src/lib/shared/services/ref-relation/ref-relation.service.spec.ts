@@ -146,7 +146,7 @@ describe('RefRelationService', () => {
           list: [
             { id: 1, text: '123213', originalItem: {}},
             { id: 2, text: 'gfsd', originalItem: {}},
-          ]
+          ],
         });
 
         expect(service['getValueFromComponentVal'](value)).toStrictEqual([

@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ConstructorDropdownModule, InputErrorModule, ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConstructorDropdownModule,
+  InputErrorModule,
+  ScreenPadModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { DatePeriodContainerComponent } from './date-period-container.component';
@@ -11,17 +15,17 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
 
 @NgModule({
   declarations: [DatePeriodContainerComponent, DatePeriodComponent],
-    imports: [
-        BaseModule,
-        BaseComponentsModule,
-        ScreenPadModule,
-        ConstructorDatePickerModule,
-        DefaultUniqueScreenWrapperModule,
-        ConstructorDropdownModule,
-        InputErrorModule,
-        DateTimePeriodModule,
-        DisclaimerModule,
-    ],
+  imports: [
+    BaseModule,
+    BaseComponentsModule,
+    ScreenPadModule,
+    ConstructorDatePickerModule,
+    DefaultUniqueScreenWrapperModule,
+    ConstructorDropdownModule,
+    InputErrorModule,
+    DateTimePeriodModule,
+    DisclaimerModule,
+  ],
   exports: [DatePeriodContainerComponent, DatePeriodComponent],
   entryComponents: [DatePeriodContainerComponent],
 })

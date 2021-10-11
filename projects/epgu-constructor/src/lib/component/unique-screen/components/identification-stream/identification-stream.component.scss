@@ -2,8 +2,7 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
-
-.info-container{
+.info-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -183,7 +182,6 @@ input[type='file'] {
 }
 
 .fileupload__link-button {
-
   display: inline-block;
   margin: 0 11px;
   text-align: center;

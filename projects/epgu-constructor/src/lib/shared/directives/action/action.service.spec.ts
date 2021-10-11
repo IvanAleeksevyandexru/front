@@ -1,6 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { ActionService } from './action.service';
-import { ConfigService, LocationService, LocationServiceStub, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  LocationService,
+  LocationServiceStub,
+  ModalService,
+  ModalServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';

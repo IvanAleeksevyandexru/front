@@ -9,7 +9,8 @@ import {
   LocationService,
   LocationServiceStub,
   DeviceDetectorService,
-  DeviceDetectorServiceStub, ObjectHelperService
+  DeviceDetectorServiceStub,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { CarInfoContainerComponent } from './car-info-container.component';
@@ -46,7 +47,7 @@ describe('CarInfoContainerComponent', () => {
   let fixture: ComponentFixture<CarInfoContainerComponent>;
   const mockData = {} as any;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
         CarInfoComponent,

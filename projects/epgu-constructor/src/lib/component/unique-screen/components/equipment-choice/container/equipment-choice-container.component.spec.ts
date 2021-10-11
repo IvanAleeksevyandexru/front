@@ -49,7 +49,9 @@ describe('EquipmentChoiceContainerComponent', () => {
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService = TestBed.inject(ScreenService);
     component = fixture.componentInstance;
-    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(equipmentChoiceComponentMock));
+    jest
+      .spyOn(screenService, 'component$', 'get')
+      .mockReturnValue(of(equipmentChoiceComponentMock));
     fixture.detectChanges();
   });
 
@@ -68,6 +70,8 @@ describe('EquipmentChoiceContainerComponent', () => {
 
     component.onEquipmentChoiceChange(data);
     expect(currentAnswersService.isValid).toEqual(data.isValid);
-    expect(JSON.parse(currentAnswersService.state as string)).toEqual(new EquipmentChoiceSaveValue(data.value));
+    expect(JSON.parse(currentAnswersService.state as string)).toEqual(
+      new EquipmentChoiceSaveValue(data.value),
+    );
   });
 });

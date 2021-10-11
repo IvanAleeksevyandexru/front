@@ -265,20 +265,14 @@ export class AutocompleteService {
               fields.forEach((field: ComponentFieldDto) => {
                 const fieldSuggestionId = field.suggestionId;
 
-                this.setFieldsSuggestionIds(
-                  fieldSuggestionId,
-                  fieldSuggestionIdsSet,
-                );
+                this.setFieldsSuggestionIds(fieldSuggestionId, fieldSuggestionIdsSet);
               });
             } else {
               Object.keys(fields).forEach((fieldName) => {
                 const field: { suggestionId: string } = fields[fieldName];
                 const fieldSuggestionId = field?.suggestionId;
 
-                this.setFieldsSuggestionIds(
-                  fieldSuggestionId,
-                  fieldSuggestionIdsSet,
-                );
+                this.setFieldsSuggestionIds(fieldSuggestionId, fieldSuggestionIdsSet);
               });
             }
           }

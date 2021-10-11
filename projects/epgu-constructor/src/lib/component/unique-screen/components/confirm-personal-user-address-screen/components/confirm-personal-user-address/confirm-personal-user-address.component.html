@@ -14,11 +14,13 @@
     </div>
   </epgu-cf-ui-constructor-screen-pad>
   <div
-    *ngIf="!(currentAnswersService.isValid$ | async) &&
+    *ngIf="
+      !(currentAnswersService.isValid$ | async) &&
       (screenService.buttons$ | async) &&
-      (data$ | async)?.attrs?.emptyFieldsErrorMsg"
+      (data$ | async)?.attrs?.emptyFieldsErrorMsg
+    "
     class="empty-fields"
-    >
+  >
     {{ (data$ | async)?.attrs?.emptyFieldsErrorMsg }}
   </div>
 </epgu-constructor-default-unique-screen-wrapper>

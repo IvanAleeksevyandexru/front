@@ -7,7 +7,9 @@ import {
   ConfigService,
   ConfigServiceStub,
   MicroAppNavigationService,
-  MicroAppNavigationServiceStub, MicroAppStateStore, MicroAppStateQuery,
+  MicroAppNavigationServiceStub,
+  MicroAppStateStore,
+  MicroAppStateQuery,
 } from '@epgu/epgu-constructor-ui-kit';
 import { StateService } from '../../../../services/state/state.service';
 import { MockModule } from 'ng-mocks';
@@ -30,7 +32,7 @@ describe('ViewComponent', () => {
         MicroAppStateStore,
         MicroAppStateStore,
         MicroAppStateQuery,
-        DictionaryService
+        DictionaryService,
       ],
       imports: [LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, ProgramListModule],
     }).compileComponents();
@@ -46,7 +48,6 @@ describe('ViewComponent', () => {
   });
 
   describe('show()', () => {
-
     it('should call service methods', () => {
       component.data = baseProgramStub;
       const spy = jest.spyOn(component['appNavigationService'], 'next');
@@ -56,8 +57,5 @@ describe('ViewComponent', () => {
       expect(component['stateService'].selectedProgramUUID).toBe(baseProgramStub.uuid);
       expect(spy).toHaveBeenCalledTimes(1);
     });
-
   });
-
-
 });

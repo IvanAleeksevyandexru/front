@@ -6,7 +6,7 @@ import { CurrentAnswersService } from './current-answers.service';
 import { ScreenService } from './screen.service';
 
 // Желательно больше не наследоваться потому что это может усложнить логику.
-export abstract class ScreenBase{
+export abstract class ScreenBase {
   public navigationService: NavigationService;
   public ngUnsubscribe$: UnsubscribeService;
   public screenService: ScreenService;

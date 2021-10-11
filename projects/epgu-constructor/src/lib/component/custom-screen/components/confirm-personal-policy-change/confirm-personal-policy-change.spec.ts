@@ -95,8 +95,8 @@ describe('ConfirmPersonalPolicyChangeComponent', () => {
               type: 'RegExp',
               updateOn: 'blur',
               value: '^[0-9]{0,20}$',
-            }
-          ]
+            },
+          ],
         },
         fieldName: 'number',
         label: 'Номер полиса',
@@ -107,7 +107,7 @@ describe('ConfirmPersonalPolicyChangeComponent', () => {
         hint: 'Для полисов старого образца',
         label: 'Серия полиса',
         type: 'input',
-      }
+      },
     ];
 
     valueControl = new FormControl(mockComponent.value);

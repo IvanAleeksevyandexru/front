@@ -49,8 +49,7 @@ export class ContinueOrderModalService {
       <p class="helper-text" style="text-align: center; margin-top: 8px;">
       Выберите черновик для редактирования или создайте новое заявление</p></div>`;
 
-    const hasLimitedCase =
-      orders && limitOrders <= orders.length;
+    const hasLimitedCase = orders && limitOrders <= orders.length;
 
     const text = defaultText;
     const limitedCaseText = defaultLimitedCaseText;

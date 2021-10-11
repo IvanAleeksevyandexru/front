@@ -9,7 +9,7 @@ describe('MicroAppPrevButtonNavigationService', () => {
   let service: MicroAppPrevButtonNavigationService;
   let appNavigationService: MicroAppNavigationService;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         MicroAppPrevButtonNavigationService,

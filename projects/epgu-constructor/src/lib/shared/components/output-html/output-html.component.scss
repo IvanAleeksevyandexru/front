@@ -62,7 +62,8 @@
   h3,
   h4,
   h5 {
-    > a, > a:hover {
+    > a,
+    > a:hover {
       text-decoration: underline;
       color: inherit;
     }
@@ -71,7 +72,10 @@
   // disclaimer
 
   h6.disclaimer {
-    &, &#{-yellow}, &#{-blue}, &#{-gray} {
+    &,
+    &#{-yellow},
+    &#{-blue},
+    &#{-gray} {
       position: relative;
       padding-left: 32px;
       &:not(:first-child) {

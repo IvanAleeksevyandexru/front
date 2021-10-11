@@ -39,7 +39,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoadService,
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ConfigComponent]
+  entryComponents: [ConfigComponent],
 })
 export class AppModule {
   constructor(private loadService: LoadService) {

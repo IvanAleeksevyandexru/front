@@ -6,8 +6,8 @@
 .form {
   @include flex-container();
   flex-flow: wrap;
-  margin-left: calc( #{-$screen-pad-16} / 2);
-  margin-right: calc( #{-$screen-pad-16} / 2);
+  margin-left: calc(#{-$screen-pad-16} / 2);
+  margin-right: calc(#{-$screen-pad-16} / 2);
   &__item {
     &.show {
       display: flex;
@@ -16,8 +16,8 @@
     display: none;
     justify-content: flex-start;
     flex: 1 1 100%;
-    margin-left: calc( #{$screen-pad-16} / 2);
-    margin-right: calc( #{$screen-pad-16} / 2);
+    margin-left: calc(#{$screen-pad-16} / 2);
+    margin-right: calc(#{$screen-pad-16} / 2);
     max-width: calc(100% - #{$screen-pad-16});
     &::ng-deep > .component-list-resolver {
       & > * > .label {
@@ -33,7 +33,7 @@
         margin-bottom: 0;
       }
     }
-    &[class*="grid"] {
+    &[class*='grid'] {
       .component-list-resolver {
         justify-content: flex-start;
       }
@@ -84,7 +84,7 @@
     }
   }
   & > p:last-of-type + .form__item.show {
-    &[class*="grid"] {
+    &[class*='grid'] {
       > * {
         margin-bottom: $screen-pad-24 !important;
       }

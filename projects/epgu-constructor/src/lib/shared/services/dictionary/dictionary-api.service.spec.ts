@@ -16,22 +16,22 @@ describe('DictionaryApiService', () => {
   let dictionaryName = 'someDictionary';
   let optionsMock = {
     filter: {
-      someFilter: 'asd'
+      someFilter: 'asd',
     },
     treeFiltering: 'TWOLEVEL',
     pageNum: 2,
     pageSize: '3000',
     parentRefItemValue: 'someRef',
     selectAttributes: ['//'],
-    tx: 'someTx'
+    tx: 'someTx',
   };
   let additionalParams = {
     additionalParams: [
       {
         name: 'param1',
-        value: 'value1'
+        value: 'value1',
       },
-    ]
+    ],
   };
   let excludedParams = {
     excludedParams: ['tx'],
@@ -43,8 +43,8 @@ describe('DictionaryApiService', () => {
       providers: [
         DictionaryApiService,
         UnsubscribeService,
-        { provide: ConfigService, useClass: ConfigServiceStub }
-      ]
+        { provide: ConfigService, useClass: ConfigServiceStub },
+      ],
     });
   });
 
@@ -58,7 +58,9 @@ describe('DictionaryApiService', () => {
 
   describe('getDictionary()', () => {
     it('should call http with post method', fakeAsync(() => {
-      service.getDictionary(dictionaryName, optionsMock).subscribe(response => expect(response).toBe(responseMock));
+      service
+        .getDictionary(dictionaryName, optionsMock)
+        .subscribe((response) => expect(response).toBe(responseMock));
       const path = `${dictionaryUrl}/${dictionaryName}`;
       const req = http.expectOne(path);
       expect(req.request.method).toBe('POST');
@@ -67,7 +69,9 @@ describe('DictionaryApiService', () => {
     }));
 
     it('should call http with body if set options', fakeAsync(() => {
-      service.getDictionary(dictionaryName, optionsMock).subscribe(response => expect(response).toBe(responseMock));
+      service
+        .getDictionary(dictionaryName, optionsMock)
+        .subscribe((response) => expect(response).toBe(responseMock));
       const path = `${dictionaryUrl}/${dictionaryName}`;
       const req = http.expectOne(path);
       expect(req.request.body).toEqual({ ...optionsMock });
@@ -76,7 +80,9 @@ describe('DictionaryApiService', () => {
     }));
 
     it('should call http with body if not set options', fakeAsync(() => {
-      service.getDictionary(dictionaryName).subscribe(response => expect(response).toBe(responseMock));
+      service
+        .getDictionary(dictionaryName)
+        .subscribe((response) => expect(response).toBe(responseMock));
       const path = `${dictionaryUrl}/${dictionaryName}`;
       const req = http.expectOne(path);
       expect(req.request.body).toEqual({
@@ -86,26 +92,30 @@ describe('DictionaryApiService', () => {
         pageSize: '10000',
         parentRefItemValue: '',
         selectAttributes: ['*'],
-        tx: ''
+        tx: '',
       });
       req.flush(responseMock);
       tick();
     }));
 
     it('should apply additional params if additionalParams is defined', fakeAsync(() => {
-      service.getDictionary(dictionaryName, { ...optionsMock, ...additionalParams }).subscribe(response => expect(response).toBe(responseMock));
+      service
+        .getDictionary(dictionaryName, { ...optionsMock, ...additionalParams })
+        .subscribe((response) => expect(response).toBe(responseMock));
       const path = `${dictionaryUrl}/${dictionaryName}`;
       const req = http.expectOne(path);
       expect(req.request.body).toEqual({
         ...optionsMock,
-        param1: 'value1'
+        param1: 'value1',
       });
       req.flush(responseMock);
       tick();
     }));
 
     it('should exclude params if excludedParams is defined', fakeAsync(() => {
-      service.getDictionary(dictionaryName, { ...optionsMock, ...excludedParams }).subscribe(response => expect(response).toBe(responseMock));
+      service
+        .getDictionary(dictionaryName, { ...optionsMock, ...excludedParams })
+        .subscribe((response) => expect(response).toBe(responseMock));
       const path = `${dictionaryUrl}/${dictionaryName}`;
       const req = http.expectOne(path);
       const mock = optionsMock;

@@ -9,7 +9,13 @@ import { ValidationService, CARD_VALIDATION_EVENT } from './validation.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ConfigService, DatesToolsService, LoggerService, HealthServiceStub, HealthService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DatesToolsService,
+  LoggerService,
+  HealthServiceStub,
+  HealthService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
@@ -113,7 +119,7 @@ describe('ValidationService', () => {
     required: true,
   };
 
-    configureTestSuite(() => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -184,70 +190,74 @@ describe('ValidationService', () => {
     });
   });
 
-    describe('calculateStringPredicate()', () => {
-      let mockCalcStringComponent: CustomComponent = {
-        id: 'rf2',
-        type: CustomScreenComponentTypes.StringInput,
-        label: 'Сумма',
-        attrs: {
-          dictionaryType: '',
-          ref: [],
-          labelAttr: '',
-          fields: [],
-          validation: [
-            {
-              type: 'CalculatedPredicate',
-              value: '',
-              ref: '',
-              condition: '',
-              dataType: '',
-              expr: '${rf2.value} > ${rf3.value}',
-              errorMsg: 'Полная стоимость путёвки должна превышать оплаченную'
-            }
-          ],
-          value: '',
-        }
+  describe('calculateStringPredicate()', () => {
+    let mockCalcStringComponent: CustomComponent = {
+      id: 'rf2',
+      type: CustomScreenComponentTypes.StringInput,
+      label: 'Сумма',
+      attrs: {
+        dictionaryType: '',
+        ref: [],
+        labelAttr: '',
+        fields: [],
+        validation: [
+          {
+            type: 'CalculatedPredicate',
+            value: '',
+            ref: '',
+            condition: '',
+            dataType: '',
+            expr: '${rf2.value} > ${rf3.value}',
+            errorMsg: 'Полная стоимость путёвки должна превышать оплаченную',
+          },
+        ],
+        value: '',
+      },
+    };
+    it('should evaluate 10 > 12 to false', () => {
+      currentAnswersService.state = {
+        rf3: {
+          value: 12,
+        },
       };
-      it('should evaluate 10 > 12 to false', () => {
-        currentAnswersService.state = {
-          rf3: {
-            value: 12
-          }
-        };
-        const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
-        expect(customValidator).toBeFalsy();
-      });
-
-      it('should evaluate 10 > 8 to true', () => {
-        currentAnswersService.state = {
-          rf3: {
-            value: 8
-          }
-        };
-        const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
-        expect(customValidator).toBeTruthy();
-      });
-
-      it('should throw error on evil script', () => {
-        // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
-         currentAnswersService.state = {
-          rf3: {
-            value: 'throw new Error("Evil code"); 12'
-          }
-        };
-        expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError('Ошибка в выражении CalculatedPredicate. Component ID: rf2');
-      });
-
-      it('should throw error on evil script', () => {
-        // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
-        currentAnswersService.state = {
-          rf3: {
-            value: '12; throw new Error("Evil code")'
-          }
-        };
-        expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError('Ошибка в выражении CalculatedPredicate. Component ID: rf2');
-      });
+      const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
+      expect(customValidator).toBeFalsy();
     });
+
+    it('should evaluate 10 > 8 to true', () => {
+      currentAnswersService.state = {
+        rf3: {
+          value: 8,
+        },
+      };
+      const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
+      expect(customValidator).toBeTruthy();
+    });
+
+    it('should throw error on evil script', () => {
+      // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
+      currentAnswersService.state = {
+        rf3: {
+          value: 'throw new Error("Evil code"); 12',
+        },
+      };
+      expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError(
+        'Ошибка в выражении CalculatedPredicate. Component ID: rf2',
+      );
+    });
+
+    it('should throw error on evil script', () => {
+      // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
+      currentAnswersService.state = {
+        rf3: {
+          value: '12; throw new Error("Evil code")',
+        },
+      };
+      expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError(
+        'Ошибка в выражении CalculatedPredicate. Component ID: rf2',
+      );
+    });
+  });
 
   describe('customValidator', () => {
     it('should return proper error for control value with not enought length', (done) => {
@@ -344,9 +354,13 @@ describe('ValidationService', () => {
       service.form = new FormArray([
         new FormControl({ id: 'bik_dict', value: null }),
         new FormControl({ id: 'bik', value: '004525988' }),
-        new FormControl({ id: 'corr', value: '03100643000000017300' })
+        new FormControl({ id: 'corr', value: '03100643000000017300' }),
       ]);
-      const isValid = service.checkRS('40102810545370000003', { bik_dict: 'bik_dict', bik: 'bik', corr: 'corr' });
+      const isValid = service.checkRS('40102810545370000003', {
+        bik_dict: 'bik_dict',
+        bik: 'bik',
+        corr: 'corr',
+      });
       expect(isValid).toBeTruthy();
     });
 
@@ -392,22 +406,28 @@ describe('ValidationService', () => {
   });
 
   describe('dateValidator()', () => {
-
     const compoundComponent = {
       type: CustomScreenComponentTypes.CalendarInput,
-      attrs: { components: [{
-        id: 'first',
-          type: CustomScreenComponentTypes.DateInput,
-          attrs: {
-            validation: [{
-              type: 'Date',
-              value: '',
-              ref: '',
-              condition: '<',
-              errorMsg: 'Я ошибка',
-              dataType: 'aa'
-            }]
-          }}] },
+      attrs: {
+        components: [
+          {
+            id: 'first',
+            type: CustomScreenComponentTypes.DateInput,
+            attrs: {
+              validation: [
+                {
+                  type: 'Date',
+                  value: '',
+                  ref: '',
+                  condition: '<',
+                  errorMsg: 'Я ошибка',
+                  dataType: 'aa',
+                },
+              ],
+            },
+          },
+        ],
+      },
       id: 'test',
     };
 
@@ -415,22 +435,37 @@ describe('ValidationService', () => {
       type: CustomScreenComponentTypes.DateInput,
       id: 'test',
       attrs: {
-        validation: [{
-          type: 'Date',
-          value: '',
-          ref: '',
-          condition: '>',
-          errorMsg: 'Я ошибка',
-          dataType: 'aa'
-        }] },
+        validation: [
+          {
+            type: 'Date',
+            value: '',
+            ref: '',
+            condition: '>',
+            errorMsg: 'Я ошибка',
+            dataType: 'aa',
+          },
+        ],
+      },
     };
 
-    const range = { min: new Date(2005, 5,5 ), max: new Date(2010, 10, 10) };
-    const controlCompound = { value: { first : new Date(2004, 4, 4) }, markAllAsTouched() { return null; } };
-    const controlPlain = { value: new Date(2006, 6, 6), markAsTouched() { return null; } };
+    const range = { min: new Date(2005, 5, 5), max: new Date(2010, 10, 10) };
+    const controlCompound = {
+      value: { first: new Date(2004, 4, 4) },
+      markAllAsTouched() {
+        return null;
+      },
+    };
+    const controlPlain = {
+      value: new Date(2006, 6, 6),
+      markAsTouched() {
+        return null;
+      },
+    };
 
     it('should return error if min date is greater than value', () => {
-      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => {
+        return range;
+      });
       controlCompound.value.first = new Date(2004, 4, 4);
       const validator = service.dateValidator(compoundComponent);
 
@@ -440,7 +475,9 @@ describe('ValidationService', () => {
     });
 
     it('should return nothing if min date is lower than value', () => {
-      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => {
+        return range;
+      });
       controlCompound.value.first = new Date(2006, 6, 6);
       const validator = service.dateValidator(compoundComponent);
 
@@ -450,18 +487,21 @@ describe('ValidationService', () => {
     });
 
     it('should return undefined if max date is lower than value', () => {
-      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => {
+        return range;
+      });
       controlPlain.value = new Date(2006, 6, 6);
       const validator = service.dateValidator(plainComponent);
 
       const result = validator(controlPlain as AbstractControl);
 
       expect(result).toBeUndefined();
-
     });
 
     it('should return error if max date is greater than value', () => {
-      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => { return range;} );
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => {
+        return range;
+      });
       controlPlain.value = new Date(2011, 11, 11);
       const validator = service.dateValidator(plainComponent);
 
@@ -469,7 +509,5 @@ describe('ValidationService', () => {
 
       expect(result.msg).toEqual('Я ошибка');
     });
-
   });
-
 });

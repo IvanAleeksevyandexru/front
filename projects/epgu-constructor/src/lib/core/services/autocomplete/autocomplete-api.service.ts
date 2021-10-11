@@ -4,32 +4,22 @@ import { Observable } from 'rxjs';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ISuggestionApi } from './autocomplete.inteface';
 
-
 @Injectable()
 export class AutocompleteApiService {
-  constructor(
-    private http: HttpClient,
-    private configService: ConfigService,
-  ) {}
+  constructor(private http: HttpClient, private configService: ConfigService) {}
 
-  public getSuggestionsGroup(
-    groupId: string,
-  ): Observable<ISuggestionApi[]> {
+  public getSuggestionsGroup(groupId: string): Observable<ISuggestionApi[]> {
     const path = `${this.configService.suggestionsApiUrl}?groups=${groupId}`;
     return this.httpGet<ISuggestionApi[]>(path);
   }
 
-  public getSuggestionsFields(
-    fields: string[],
-  ): Observable<ISuggestionApi[]> {
+  public getSuggestionsFields(fields: string[]): Observable<ISuggestionApi[]> {
     const searchQuery = fields.join(',');
     const path = `${this.configService.suggestionsApiUrl}?fields=${searchQuery}`;
     return this.httpGet<ISuggestionApi[]>(path);
   }
 
-  public deleteSuggestionsField(
-    fieldId: number,
-  ): Observable<ISuggestionApi[]> {
+  public deleteSuggestionsField(fieldId: number): Observable<ISuggestionApi[]> {
     const path = `${this.configService.suggestionsApiUrl}`;
     return this.httpDelete<ISuggestionApi[]>(path, [fieldId]);
   }
@@ -59,9 +49,8 @@ export class AutocompleteApiService {
     });
   }
 
-
   private httpDelete<T>(path: string, body?: unknown): Observable<T> {
-    const options: { withCredentials: boolean, body?: unknown } = {
+    const options: { withCredentials: boolean; body?: unknown } = {
       withCredentials: true,
     };
 

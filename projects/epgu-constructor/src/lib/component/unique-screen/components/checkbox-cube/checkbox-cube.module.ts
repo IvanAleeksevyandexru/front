@@ -10,10 +10,7 @@ import { CheckboxCubeComponent } from './checkbox-cube/checkbox-cube.component';
 import { CheckboxCubeContainerComponent } from './checkbox-cube-container/checkbox-cube-container.component';
 import { ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
 
-const COMPONENTS = [
-  CheckboxCubeComponent,
-  CheckboxCubeContainerComponent,
-];
+const COMPONENTS = [CheckboxCubeComponent, CheckboxCubeContainerComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
@@ -25,8 +22,8 @@ const COMPONENTS = [
     ScreenContainerModule,
     ScreenPadModule,
     DefaultUniqueScreenWrapperModule,
-    ConstructorCheckboxModule],
-  entryComponents: [CheckboxCubeContainerComponent]
+    ConstructorCheckboxModule,
+  ],
+  entryComponents: [CheckboxCubeContainerComponent],
 })
-export class CheckboxCubeModule {
-}
+export class CheckboxCubeModule {}

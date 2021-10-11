@@ -17,9 +17,9 @@
           <div class="req-item__photo-item" *ngFor="let photo of requirement.examplePhotos">
             <img
               class="req-item__photo"
-              src="{{config.staticDomainContentPath}}/catalog/new/photo/{{
-              requirement.type
-            }}-{{ photo.type }}.png"
+              src="{{ config.staticDomainContentPath }}/catalog/new/photo/{{ requirement.type }}-{{
+                photo.type
+              }}.png"
               alt
             />
             <div class="req-item__photo-desc">
@@ -48,6 +48,7 @@
       class="conf-modal__button"
       [color]="button.color || ''"
       (click)="button.handler()"
-    >{{ button.label }}</lib-button>
+      >{{ button.label }}</lib-button
+    >
   </ng-container>
 </epgu-cf-ui-cta-modal>

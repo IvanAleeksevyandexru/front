@@ -30,7 +30,7 @@ export const OPTIONS_FEED_MV: MobileEvent<string> = {
  *  в MobileView (для новая версия приложения - native)
  */
 
- export const OPTIONS_PROFILE_MV: MobileEvent<string> = {
+export const OPTIONS_PROFILE_MV: MobileEvent<string> = {
   eventType: MobileEventType.open_screen,
   eventParams: [{ key: 'screen', value: 'Profile' }], // реализовано в новой версии, в нативном МП
 };
@@ -68,7 +68,10 @@ export const createMobileEvent = <T>(
 export const createDownloadEvent: (link: string) => MobileEvent<string> = (link: string) =>
   createMobileEvent(MobileEventType.file_download, [{ key: 'file_path', value: link }]);
 
-export const createOpenBrowserEvent: (link: string, withAuth: boolean) => MobileEvent<unknown> = (link: string, withAuth: boolean) =>
+export const createOpenBrowserEvent: (link: string, withAuth: boolean) => MobileEvent<unknown> = (
+  link: string,
+  withAuth: boolean,
+) =>
   createMobileEvent<unknown>(MobileEventType.open_browser, [
     { key: 'url', value: link },
     { key: 'withAuth', value: withAuth },

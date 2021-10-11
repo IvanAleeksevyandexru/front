@@ -26,7 +26,7 @@ describe('PersonUserInnComponent', () => {
     '234324s36463435345',
     '23^343434343',
     '345ds545',
-    '345аывп545'
+    '345аывп545',
   ];
 
   const mockData: ComponentBase = {

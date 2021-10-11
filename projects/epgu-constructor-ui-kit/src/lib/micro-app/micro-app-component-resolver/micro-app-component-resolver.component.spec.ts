@@ -22,12 +22,12 @@ describe('AppComponentResolverComponent', () => {
   let fixture: ComponentFixture<MicroAppComponentResolverComponent>;
   let appRoutingService: MicroAppRoutingService;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MicroAppComponentResolverComponent, TestComponent, Test2Component],
       providers: [
         UnsubscribeService,
-        { provide: MicroAppRoutingService, useClass: MicroAppRoutingServiceStub }
+        { provide: MicroAppRoutingService, useClass: MicroAppRoutingServiceStub },
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, {

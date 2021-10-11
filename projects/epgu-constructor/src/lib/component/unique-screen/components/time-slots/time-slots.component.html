@@ -6,7 +6,10 @@
   <div class="screen-body">
     <epgu-constructor-page-name *ngIf="data?.header">{{ data.header }}</epgu-constructor-page-name>
 
-    <epgu-cf-ui-constructor-screen-pad class="time-slots-content" *ngIf="weeks.length; else loading">
+    <epgu-cf-ui-constructor-screen-pad
+      class="time-slots-content"
+      *ngIf="weeks.length; else loading"
+    >
       <div>
         <div *ngIf="isAreasVisible" class="dropdown-list">
           <lib-dropdown
@@ -40,12 +43,14 @@
           (selectDate)="selectDate($event)"
         ></epgu-cf-ui-constructor-time-calendar>
 
-        <ng-container *ngIf="!isExistsSlots && slotsNotFoundTemplate && !daysNotFoundTemplate.description">
+        <ng-container
+          *ngIf="!isExistsSlots && slotsNotFoundTemplate && !daysNotFoundTemplate.description"
+        >
           <epgu-constructor-output-html
             [html]="slotsNotFoundTemplate.header + slotsNotFoundTemplate.description"
           ></epgu-constructor-output-html>
 
-          <div class="mt-8" >
+          <div class="mt-8">
             <epgu-cf-ui-constructor-constructor-checkbox
               #checkboxComponent
               [labelText]="slotsNotFoundTemplate.checkboxLabel"
@@ -53,7 +58,7 @@
             >
             </epgu-cf-ui-constructor-constructor-checkbox>
           </div>
-          <div class="mt-8" >
+          <div class="mt-8">
             <epgu-constructor-screen-buttons
               class="screen-buttons"
               [screenButtons]="[slotsNotFoundTemplate.button]"
@@ -79,7 +84,9 @@
         [disabled]="buttonDisabled()"
         *ngIf="isExistsSlots || !slotsNotFoundTemplate?.button"
       >
-        <div class="secondary-font">{{ (screenService.button$ | async)?.label || 'Продолжить' }}</div>
+        <div class="secondary-font">
+          {{ (screenService.button$ | async)?.label || 'Продолжить' }}
+        </div>
       </lib-button>
     </div>
   </div>

@@ -31,13 +31,7 @@ import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
     ToMoneyModule,
   ],
 
-  providers: [
-    GroupListService,
-    ConfigService,
-    ModalService,
-    ApiService,
-    StateService,
-  ],
+  providers: [GroupListService, ConfigService, ModalService, ApiService, StateService],
   exports: [GroupListContainerComponent, GroupItemComponent],
 })
 export class GroupListModule {}

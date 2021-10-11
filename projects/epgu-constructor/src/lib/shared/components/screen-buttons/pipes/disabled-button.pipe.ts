@@ -15,7 +15,9 @@ export class DisabledButtonPipe implements PipeTransform {
       (disabled && disabledForAll) ||
       (disabled &&
         !disabledForAll &&
-        (button.type === ActionType.deliriumNextStep || button.type === ActionType.nextStep || button.type === ActionType.nextStepModal)) ||
+        (button.type === ActionType.deliriumNextStep ||
+          button.type === ActionType.nextStep ||
+          button.type === ActionType.nextStepModal)) ||
       isLoading
     );
   }

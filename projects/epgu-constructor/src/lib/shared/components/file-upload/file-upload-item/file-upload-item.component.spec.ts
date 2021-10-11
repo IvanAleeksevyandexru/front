@@ -226,7 +226,6 @@ describe('FileUploadItemComponent', () => {
     expect(fixture.debugElement.query(By.css('.uploader-manager-item__error-text'))).toBeNull();
   });
 
-
   it('should attach file', () => {
     component.suggest({ isAdd: true, file: mockFileItem() });
     fixture.detectChanges();

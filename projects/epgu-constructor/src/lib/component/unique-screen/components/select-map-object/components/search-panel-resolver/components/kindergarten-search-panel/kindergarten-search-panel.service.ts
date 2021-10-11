@@ -59,8 +59,10 @@ export class KindergartenSearchPanelService implements OnDestroy {
   }
 
   private getChildHomeCoordinates(): number[] {
-    const { childsHome: childsHomeString } = this.screenService.getStore().display.components[0].arguments;
-    const childsHomeValue = JSON.parse(childsHomeString as string || '{}');
+    const {
+      childsHome: childsHomeString,
+    } = this.screenService.getStore().display.components[0].arguments;
+    const childsHomeValue = JSON.parse((childsHomeString as string) || '{}');
     const { geoLon, geoLat } = childsHomeValue;
     return [Number(geoLon), Number(geoLat)];
   }

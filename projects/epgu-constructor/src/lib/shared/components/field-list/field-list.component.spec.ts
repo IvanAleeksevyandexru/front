@@ -58,15 +58,19 @@ describe('FieldListComponent', () => {
     id: '',
   };
 
-  const mockPreparedData = [{
-    groupName: 'groupName',
-    visibilityLabel: 'wait',
-    fields: [{
-      label: 'label',
-      value: '',
-      rank: false,
-    }]
-  }];
+  const mockPreparedData = [
+    {
+      groupName: 'groupName',
+      visibilityLabel: 'wait',
+      fields: [
+        {
+          label: 'label',
+          value: '',
+          rank: false,
+        },
+      ],
+    },
+  ];
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -128,7 +132,7 @@ describe('FieldListComponent', () => {
     });
   });
 
-  describe('data item value html',() => {
+  describe('data item value html', () => {
     it('should render "-" when value is missing', async () => {
       component.preparedData = mockPreparedData;
       fixture.detectChanges();

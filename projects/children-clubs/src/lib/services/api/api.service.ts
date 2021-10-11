@@ -48,7 +48,7 @@ export class ApiService {
       {
         ...this.baseOptions,
         params,
-      }
+      },
     );
   }
 

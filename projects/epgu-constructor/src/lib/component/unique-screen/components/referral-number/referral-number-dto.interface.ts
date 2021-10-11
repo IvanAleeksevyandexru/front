@@ -49,6 +49,6 @@ export interface IGetReferralResponseItemDto {
 export interface IGetReferralResponseDto {
   totalItems: number;
   items: IGetReferralResponseItemDto[];
-  version: null|string;
+  version: null | string;
   error: IGetReferralResponseErrorDto;
 }

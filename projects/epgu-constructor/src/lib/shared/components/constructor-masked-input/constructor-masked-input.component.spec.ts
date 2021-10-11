@@ -19,9 +19,8 @@ describe('ConstructorMaskedInputComponent', () => {
       imports: [MaskModule, MaskHandleModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ConstructorMaskedInputComponent],
-      providers: [EventBusService, NgControl]
-    })
-    .compileComponents();
+      providers: [EventBusService, NgControl],
+    }).compileComponents();
   });
 
   beforeEach(() => {

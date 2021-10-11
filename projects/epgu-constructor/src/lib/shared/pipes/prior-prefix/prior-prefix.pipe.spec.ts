@@ -3,7 +3,7 @@ import { PriorPrefixPipe } from './prior-prefix.pipe';
 describe('PriorPrefixPipe', () => {
   let pipe: PriorPrefixPipe;
 
-  beforeEach( () => {
+  beforeEach(() => {
     pipe = new PriorPrefixPipe();
   });
 

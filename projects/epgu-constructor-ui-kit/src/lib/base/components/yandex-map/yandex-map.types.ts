@@ -1906,9 +1906,7 @@ export declare namespace ymaps {
     class Copyrights {
       constructor(map: Map);
 
-      add(
-        customCopyrights: string | HTMLElement | (string | HTMLElement)[],
-      ): ICopyrightsAccessor;
+      add(customCopyrights: string | HTMLElement | (string | HTMLElement)[]): ICopyrightsAccessor;
 
       addProvider(provider: ICopyrightsProvider): this;
 
@@ -3922,7 +3920,7 @@ export declare namespace ymaps {
   interface IGeometryJson {
     type: string;
     coordinates?: [number, number];
-    radius?: number,
+    radius?: number;
   }
 
   interface IGeoObject<T = IGeometry>

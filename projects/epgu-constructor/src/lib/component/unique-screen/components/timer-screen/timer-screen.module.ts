@@ -7,12 +7,7 @@ import { TimerModule } from '../../../../shared/components/timer/timer.module';
 
 @NgModule({
   declarations: [TimerScreenComponent],
-  imports: [
-    CommonModule,
-    ScreenPadModule,
-    DefaultUniqueScreenWrapperModule,
-    TimerModule,
-  ],
+  imports: [CommonModule, ScreenPadModule, DefaultUniqueScreenWrapperModule, TimerModule],
   exports: [TimerScreenComponent],
 })
 export class TimerScreenModule {}

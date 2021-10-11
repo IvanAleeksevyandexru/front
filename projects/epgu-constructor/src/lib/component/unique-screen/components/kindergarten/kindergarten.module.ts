@@ -6,10 +6,7 @@ import { KindergartenComponent } from './kindergarten.component';
 @NgModule({
   declarations: [KindergartenComponent],
   exports: [KindergartenComponent],
-  imports: [
-    BaseModule,
-    SelectMapObjectModule,
-  ],
-  entryComponents: [KindergartenComponent]
+  imports: [BaseModule, SelectMapObjectModule],
+  entryComponents: [KindergartenComponent],
 })
 export class KindergartenModule {}

@@ -4,9 +4,9 @@ import { Gender } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class EmployeeHistoryDataSourceServiceStub {
-   dataSource: EmployeeHistoryDataSource[];
+  dataSource: EmployeeHistoryDataSource[];
 
-   getDataSourceByGender(gender: Gender = Gender.male) {
+  getDataSourceByGender(gender: Gender = Gender.male) {
     this.dataSource = [
       {
         label: `Я учил${gender === Gender.male ? 'ся' : 'ась'}`,

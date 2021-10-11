@@ -10,10 +10,11 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import {
   ConfigService,
-  ConfigServiceStub, CoreUiModule,
+  ConfigServiceStub,
+  CoreUiModule,
   LoggerService,
   LoggerServiceStub,
-  ScreenPadComponent
+  ScreenPadComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimerModule } from '../../../../shared/components/timer/timer.module';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -32,8 +33,8 @@ const mockData: TimerComponentBase = {
       timeStartRef: '',
       timeFinishRef: '',
       visitTimeRef: '',
-    }
-  }
+    },
+  },
 };
 
 describe('TimerScreenComponent', () => {
@@ -48,11 +49,7 @@ describe('TimerScreenComponent', () => {
         MockComponent(DefaultUniqueScreenWrapperComponent),
         MockComponent(ScreenPadComponent),
       ],
-      imports: [
-        RouterTestingModule,
-        TimerModule,
-        MockModule(CoreUiModule),
-      ],
+      imports: [RouterTestingModule, TimerModule, MockModule(CoreUiModule)],
       providers: [
         CurrentAnswersService,
         DatesToolsService,
@@ -60,7 +57,7 @@ describe('TimerScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
-      ]
+      ],
     }).compileComponents();
   });
 

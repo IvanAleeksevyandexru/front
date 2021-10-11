@@ -19,7 +19,7 @@ const mockCheckboxComponent = {
   attrs: {},
   value: false,
   visited: false,
-  required: false
+  required: false,
 };
 
 describe('CheckboxInputComponent', () => {
@@ -32,24 +32,28 @@ describe('CheckboxInputComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         CheckboxInputComponent,
-        MockComponents(ComponentItemComponent, ConstructorCheckboxComponent)
+        MockComponents(ComponentItemComponent, ConstructorCheckboxComponent),
       ],
       providers: [
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
       ],
-    }).overrideComponent(CheckboxInputComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(CheckboxInputComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
-    formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
     control = new FormGroup({
       id: new FormControl('id'),
-      value: new FormControl(mockCheckboxComponent)
+      value: new FormControl(mockCheckboxComponent),
     });
-    formService['_form'] = new FormArray([ control ]);
+    formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(CheckboxInputComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -68,7 +72,10 @@ describe('CheckboxInputComponent', () => {
 
   it('form__radio--inline/ form__radio--block', () => {
     expect(fixture.debugElement.query(By.css('.form__radio--block'))).toBeTruthy();
-    component.control = new FormControl({ ...mockCheckboxComponent, attrs: { isHorizontal: true }});
+    component.control = new FormControl({
+      ...mockCheckboxComponent,
+      attrs: { isHorizontal: true },
+    });
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('.form__radio--block'))).toBeNull();
     expect(fixture.debugElement.query(By.css('.form__radio--inline'))).toBeTruthy();

@@ -24,7 +24,7 @@
 </epgu-cf-ui-screen-container>
 
 <ng-template #answersButtons>
-  <ng-container *ngFor="let answer of (screenService.answers$ | async)">
+  <ng-container *ngFor="let answer of screenService.answers$ | async">
     <epgu-constructor-answer-button
       [data]="answer"
       class="quiz__item"

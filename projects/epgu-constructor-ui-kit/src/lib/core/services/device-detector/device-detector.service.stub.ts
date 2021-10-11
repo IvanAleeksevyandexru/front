@@ -3,7 +3,6 @@ import { System } from './device-detector.types';
 
 @Injectable()
 export class DeviceDetectorServiceStub {
-
   isMobile = false;
   isTablet = false;
   isDesktop = false;

@@ -1,8 +1,4 @@
-import {
-  Directive,
-  HostBinding,
-  HostListener
-} from '@angular/core';
+import { Directive, HostBinding, HostListener } from '@angular/core';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 
 @Directive({
@@ -12,7 +8,7 @@ import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 export class DragAndDropDirective {
   @HostBinding('class.file-over') fileOver: boolean;
 
-  constructor(private eventBusService: EventBusService) { }
+  constructor(private eventBusService: EventBusService) {}
 
   // Dragover listener
   @HostListener('dragover', ['$event']) onDragOver(evt: DragEvent): void {

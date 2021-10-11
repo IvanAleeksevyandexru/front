@@ -33,7 +33,7 @@ import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/u
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
 
-const displayMock = {
+const displayMock = ({
   id: 's113',
   name: 'Укажите все изменения ФИО',
   type: ScreenTypes.REPEATABLE,
@@ -54,7 +54,7 @@ const displayMock = {
               value: '',
               required: true,
               suggestionId: 'prev_region',
-            }
+            },
           ],
         ],
         repeatAmount: '20',
@@ -143,7 +143,7 @@ const displayMock = {
   impasse: false,
   terminal: false,
   firstScreen: false,
-} as unknown as DisplayDto;
+} as unknown) as DisplayDto;
 
 describe('RepeatableScreenComponent', () => {
   let component: RepeatableScreenComponent;
@@ -326,9 +326,12 @@ describe('RepeatableScreenComponent', () => {
         expect(component.cacheRepeatableFieldsAnswersLocally).toBeTruthy();
 
         jest.spyOn(cachedAnswersService, 'setValueToLocalStorage');
-        component.changeComponentList({
-          pd9: { value: 'Имя', valid: true }
-        }, 0);
+        component.changeComponentList(
+          {
+            pd9: { value: 'Имя', valid: true },
+          },
+          0,
+        );
 
         expect(cachedAnswersService.setValueToLocalStorage).toHaveBeenCalled();
       });
@@ -358,9 +361,12 @@ describe('RepeatableScreenComponent', () => {
         expect(component.cacheRepeatableFieldsAnswersLocally).toBeFalsy();
 
         jest.spyOn(cachedAnswersService, 'setValueToLocalStorage');
-        component.changeComponentList({
-          pd9: { value: 'Имя', valid: true }
-        }, 0);
+        component.changeComponentList(
+          {
+            pd9: { value: 'Имя', valid: true },
+          },
+          0,
+        );
 
         expect(cachedAnswersService.setValueToLocalStorage).not.toHaveBeenCalled();
       });

@@ -9,9 +9,8 @@ describe('ExpansionLinkComponent', () => {
 
   configureTestSuite(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ExpansionLinkComponent ]
-    })
-    .compileComponents();
+      declarations: [ExpansionLinkComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

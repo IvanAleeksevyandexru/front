@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-  SharedModalModule,
-  ModalService,
-} from '@epgu/epgu-constructor-ui-kit';
+import { SharedModalModule, ModalService } from '@epgu/epgu-constructor-ui-kit';
 
 import { UsePaymentsModalModule } from './use-payment-modal/use-payments-modal.module';
 import { ScreenModalModule } from './screen-modal/screen-modal.module';
@@ -17,11 +14,7 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
  * Домен модал. Тут храним что необходимо для модалок.
  */
 @NgModule({
-  providers: [
-    ModalService,
-    ContinueOrderModalService,
-    ModalErrorService,
-  ],
+  providers: [ModalService, ContinueOrderModalService, ModalErrorService],
   imports: [
     BaseModule,
     SharedModalModule,
@@ -38,6 +31,6 @@ import { ConfirmationModalModule } from './confirmation-modal/confirmation-modal
     ScreenModalModule,
     DropdownListModalModule,
     AttachUploadedFilesModalModule,
-  ]
+  ],
 })
 export class ModalModule {}

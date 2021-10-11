@@ -17,16 +17,16 @@
       {{ tipText }}
     </small>
   </div>
-  <div
-    *ngIf="itemsWithAdditionalFields.length > 0"
-    class="equipment-category-inputs"
-  >
+  <div *ngIf="itemsWithAdditionalFields.length > 0" class="equipment-category-inputs">
     <div class="form-item" *ngFor="let item of itemsWithAdditionalFields">
       <div class="equipment-category-item-title">
         {{ item.title }}
       </div>
       <ng-container *ngIf="getFormControl(item.value)?.get('factoryNumber')">
-        <label class="label" [for]="item.attributeValues.CATEGORY_ID + '_i_' + item.value + '_fact'">
+        <label
+          class="label"
+          [for]="item.attributeValues.CATEGORY_ID + '_i_' + item.value + '_fact'"
+        >
           Заводской номер
         </label>
         <epgu-constructor-constructor-plain-input

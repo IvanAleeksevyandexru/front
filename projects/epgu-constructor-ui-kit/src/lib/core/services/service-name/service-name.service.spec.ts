@@ -9,10 +9,7 @@ describe('ServiceNameService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ServiceNameService,
-        ObjectHelperService,
-      ]
+      providers: [ServiceNameService, ObjectHelperService],
     });
   });
 
@@ -32,13 +29,16 @@ describe('ServiceNameService', () => {
 
   describe('getServiceName()', () => {
     it('should return service name', () => {
-      expect(service.getServiceName('https://www.gosuslugi.ru/600101/1/form-item')).toBe('FormItemService');
+      expect(service.getServiceName('https://www.gosuslugi.ru/600101/1/form-item')).toBe(
+        'FormItemService',
+      );
     });
 
     it('shouldn\'t return service name if path is incorrect ', () => {
-      expect(service.getServiceName('https://www.gosuslugi.ru/600101/form')).not.toBe('FormService');
+      expect(service.getServiceName('https://www.gosuslugi.ru/600101/form')).not.toBe(
+        'FormService',
+      );
     });
-
   });
 
   describe('isValidHttpUrl()', () => {

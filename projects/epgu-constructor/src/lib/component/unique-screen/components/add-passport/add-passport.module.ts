@@ -12,6 +12,6 @@ const COMPONENTS = [AddPassportContainerComponent, AddPassportComponent];
   declarations: [...COMPONENTS],
   imports: [BaseModule, PassportModule, ScreenPadModule, DefaultUniqueScreenWrapperModule],
   exports: [...COMPONENTS],
-  entryComponents: [AddPassportContainerComponent]
+  entryComponents: [AddPassportContainerComponent],
 })
 export class AddPassportModule {}

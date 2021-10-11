@@ -2,14 +2,16 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { BillInfoAddAttrsResponse, BillInfoResponse } from '../../payment.types';
 
-
 /**
  * Возвращает значение аттрибута объекта счета или null
  * @param bill - сведения о счете
  * @param attrName - ключ аттрибута, который надо найти
  * @private
  */
-export const getBillAttributeValueByKey = (bill: BillInfoResponse, attrName: string): string | null => {
+export const getBillAttributeValueByKey = (
+  bill: BillInfoResponse,
+  attrName: string,
+): string | null => {
   const attrIndex = bill.addAttrs.findIndex((attrInfo: BillInfoAddAttrsResponse) => {
     return attrInfo.name === attrName;
   });
@@ -22,9 +24,10 @@ export const getBillAttributeValueByKey = (bill: BillInfoResponse, attrName: str
  * @private
  */
 export const getDiscountDate = (bill: BillInfoResponse): string => {
-  const discountDate =
-    getBillAttributeValueByKey(bill, 'DiscountDate') || bill.actualBeforeDate;
-  return discountDate ? new DatesToolsService().format(new Date(discountDate), DATE_STRING_DOT_FORMAT) : '';
+  const discountDate = getBillAttributeValueByKey(bill, 'DiscountDate') || bill.actualBeforeDate;
+  return discountDate
+    ? new DatesToolsService().format(new Date(discountDate), DATE_STRING_DOT_FORMAT)
+    : '';
 };
 
 /**
@@ -51,5 +54,3 @@ export const getDocInfo = (bill: BillInfoResponse): string => {
     getBillAttributeValueByKey(bill, 'number_doc'),
   ].join(' ');
 };
-
-

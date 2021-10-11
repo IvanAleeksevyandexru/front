@@ -63,7 +63,7 @@
   .viewer__info-date,
   .viewer__info-size,
   .viewer__info-name {
-    color:  $color-telegrey-scuro;
+    color: $color-telegrey-scuro;
     white-space: nowrap;
     @include typ-plain-text;
     font-weight: $fw-bold;

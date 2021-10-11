@@ -3,7 +3,11 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from 
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { get, isEqual } from 'lodash';
-import { DatesToolsService, LoggerService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  LoggerService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
@@ -253,9 +257,11 @@ export class ComponentsListFormService {
 
   private changeValidators(component: CustomComponent, control: AbstractControl): void {
     const validators = [this.validationService.customValidator(component)];
-    if (component.type === CustomScreenComponentTypes.DateInput ||
+    if (
+      component.type === CustomScreenComponentTypes.DateInput ||
       component.type === CustomScreenComponentTypes.MonthPicker ||
-    component.type === CustomScreenComponentTypes.CalendarInput) {
+      component.type === CustomScreenComponentTypes.CalendarInput
+    ) {
       validators.push(this.validationService.dateValidator(component, null));
     }
     control.setValidators(validators);
@@ -372,9 +378,7 @@ export class ComponentsListFormService {
 
     this.watchFormGroup$(form)
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(
-      ([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
-
+      .subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
         this.lastChangedComponent = [prev, next];
         if (!isEqual(prev, next)) {
           this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
@@ -391,8 +395,7 @@ export class ComponentsListFormService {
           // TODO: в перспективе избавиться от этой хардкодной логики
           this.checkAndFetchCarModel(next);
         }
-      },
-    );
+      });
 
     return form;
   }

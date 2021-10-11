@@ -3,7 +3,6 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class FormPlayerApiServiceStub {
-
   public checkIfOrderExist(): Observable<{}> {
     return of({});
   }

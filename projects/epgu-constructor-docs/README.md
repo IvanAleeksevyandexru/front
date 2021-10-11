@@ -5,6 +5,7 @@ Standalone application with documentation of Epgu components and interecative li
 ## Code scaffolding
 
 Run `ng generate component component-name --project epgu-constructor` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project epgu-constructor`.
+
 > Note: Don't forget to add `--project epgu-constructor` or else it will be added to the default project in your `angular.json` file.
 
 ## Develop
@@ -14,7 +15,6 @@ Run `ng watch epgu-constructor-docs` to serve local project. Running application
 ## Build
 
 Run `ng build epgu-constructor-docs` to build the project. The build artifacts will be stored in the `dist/` directory.
-
 
 ## Publishing
 

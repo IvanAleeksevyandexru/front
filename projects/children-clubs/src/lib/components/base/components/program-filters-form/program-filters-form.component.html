@@ -86,10 +86,7 @@
 
       <div class="row-item">
         <div class="label">{{ formFieldsLabel[formFields.age] }}</div>
-        <lib-plain-input 
-          [formControlName]="formFields.age"
-          [maxlength]="2"
-        ></lib-plain-input>
+        <lib-plain-input [formControlName]="formFields.age" [maxlength]="2"></lib-plain-input>
         <epgu-cf-ui-constructor-error
           [data]="form.get(formFields.age)"
         ></epgu-cf-ui-constructor-error>
@@ -115,5 +112,4 @@
       <lib-button class="row-item btn" (click)="submit()">Применить</lib-button>
     </div>
   </ng-container>
-
 </epgu-cf-ui-cta-modal>

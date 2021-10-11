@@ -45,8 +45,9 @@ export class ValidationServiceStub {
           return this.validationErrorMsg();
         }
         customMessage = validations.find(
-          (validator: CustomComponentAttrValidation) => validator.type === CustomComponentAttrValidator.validationFn
-            || validator.type === CustomComponentAttrValidator.calculatedPredicate,
+          (validator: CustomComponentAttrValidation) =>
+            validator.type === CustomComponentAttrValidator.validationFn ||
+            validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
       }
     };
@@ -84,7 +85,7 @@ export class ValidationServiceStub {
         (type === ValidationType.regExpException &&
           control.value &&
           new RegExp(value).test(control.value)) ||
-        (type === ValidationType.checkRS),
+        type === ValidationType.checkRS,
     );
   }
 

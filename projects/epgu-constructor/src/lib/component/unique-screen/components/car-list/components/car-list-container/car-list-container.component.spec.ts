@@ -16,7 +16,8 @@ import {
   WINDOW_PROVIDERS,
   HttpCancelService,
   PrevButtonModule,
-  PREV_BUTTON_NAVIGATION, ObjectHelperService
+  PREV_BUTTON_NAVIGATION,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { BaseModule } from '../../../../../../shared/base.module';

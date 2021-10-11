@@ -131,7 +131,7 @@ export class PaymentService {
 
     if (href.includes(historyParam)) {
       return href;
-    } else if(encode) {
+    } else if (encode) {
       return encodeURIComponent(url);
     } else {
       return url;
@@ -151,7 +151,7 @@ export class PaymentService {
   createReturnUrl(value: string | boolean): string {
     const type = typeof value;
 
-    switch(type) {
+    switch (type) {
       case 'string': {
         return value as string;
       }

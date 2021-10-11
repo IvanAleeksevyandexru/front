@@ -1,7 +1,4 @@
-<span
-  class="widget-form__title"
-  [innerHTML]="topLabel | safe: 'html'"
-></span>
+<span class="widget-form__title" [innerHTML]="topLabel | safe: 'html'"></span>
 <div class="widget-form__input">
   <epgu-cf-ui-constructor-constructor-lookup
     *ngIf="!isNoDepartmentErrorVisible"
@@ -18,10 +15,14 @@
   </epgu-cf-ui-constructor-constructor-lookup>
 </div>
 <div class="widget-form__title widget-form__bottom-label">
-  <span [innerHTML]="bottomLabel | safe: 'html'">
+  <span [innerHTML]="bottomLabel | safe: 'html'"> </span>
+  <span
+    *ngIf="kindergartenSearchPanelService.deptsChoosen$ | async"
+    class="widget__form__toggle-button"
+    (click)="toggleSelectedKindergartensView()"
+  >
+    {{
+      selectMapObjectService.isSelectedView.getValue() ? 'Вернуться ко всем садам' : 'Посмотреть'
+    }}
   </span>
-  <span *ngIf="kindergartenSearchPanelService.deptsChoosen$ | async" class="widget__form__toggle-button" (click)="toggleSelectedKindergartensView()">
-  {{selectMapObjectService.isSelectedView.getValue() ? 'Вернуться ко всем садам' : 'Посмотреть'}}
-</span>
 </div>
-

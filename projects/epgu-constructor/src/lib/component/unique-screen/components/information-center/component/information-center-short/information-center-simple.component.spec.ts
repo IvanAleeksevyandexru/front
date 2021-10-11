@@ -37,7 +37,7 @@ describe('InformationCenterPfrSimpleComponent', () => {
 
     it('should call formChangeEvent', () => {
       component.ngOnInit();
-  
+
       expect(component.formChangeEvent.emit).toHaveBeenCalledWith({
         value: { territory: simpleDataMock.items[0] },
         isValid: true,

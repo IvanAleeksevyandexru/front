@@ -8,14 +8,13 @@ const METHODS_WITH_BODY = [LogicComponentMethods.POST, LogicComponentMethods.PUT
 
 @Injectable()
 export class RestService {
-  constructor(
-    private http: HttpClient,
-    private localStorageService: LocalStorageService,
-  ) {}
+  constructor(private http: HttpClient, private localStorageService: LocalStorageService) {}
 
   public fetch<T>(restAttrs: RestAttrsDto): Observable<HttpResponse<T>> {
     const method = restAttrs.method.toLowerCase();
-    const hasBody = METHODS_WITH_BODY.includes(restAttrs.method.toUpperCase() as LogicComponentMethods);
+    const hasBody = METHODS_WITH_BODY.includes(
+      restAttrs.method.toUpperCase() as LogicComponentMethods,
+    );
     this.localStorageService.setRaw(restAttrs.url, restAttrs.body || '');
     const options = {
       headers: new HttpHeaders(restAttrs.headers),
@@ -23,6 +22,8 @@ export class RestService {
       observe: 'response',
     };
 
-    return hasBody ? this.http[method](restAttrs.url, restAttrs.body, options) : this.http[method](restAttrs.url, options);
+    return hasBody
+      ? this.http[method](restAttrs.url, restAttrs.body, options)
+      : this.http[method](restAttrs.url, options);
   }
 }

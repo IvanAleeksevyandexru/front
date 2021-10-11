@@ -220,7 +220,7 @@ export interface CustomComponentAttrValidation {
 
 export enum CustomComponentAttrValidator {
   validationFn = 'validation-fn',
-  calculatedPredicate = 'CalculatedPredicate'
+  calculatedPredicate = 'CalculatedPredicate',
 }
 
 export interface CustomComponentOutputData {
@@ -311,5 +311,5 @@ export interface DateRestrictionGroups {
 
 export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';
 export interface Searchable {
-  [key: string] : {value: string|object}
+  [key: string]: { value: string | object };
 }

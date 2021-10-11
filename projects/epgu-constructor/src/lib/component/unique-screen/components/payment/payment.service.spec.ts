@@ -16,7 +16,6 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { PaymentsAttrs } from './payment.types';
 import { configureTestSuite } from 'ng-bullet';
 
-
 describe('PaymentService', () => {
   let service: PaymentService;
   let http: HttpTestingController;
