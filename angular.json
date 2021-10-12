@@ -57,9 +57,15 @@
           "configurations": {
             "fast": {
               "tsConfig": "./tsconfig.app.fast.json",
-              "optimization": false
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "buildOptimizer": false,
+              "sourceMap": true,
+              "optimization": false,
+              "namedChunks": true
             },
             "development": {
+              "tsConfig": "./tsconfig.app.dev.json",
               "vendorChunk": true,
               "extractLicenses": false,
               "buildOptimizer": false,

@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "paths": {
+      "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
+      "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
+      "@epgu/epgu-constructor": ["projects/epgu-constructor/src/public-api"],
+      "@epgu/epgu-constructor-ui-kit": ["projects/epgu-constructor-ui-kit/src/public-api"],
+      "@epgu/children-clubs": ["projects/children-clubs/src/public-api"],
+      "@epgu/epgu-constructor-types": ["projects/epgu-constructor-types/src"]
+    }
+  }
+}
