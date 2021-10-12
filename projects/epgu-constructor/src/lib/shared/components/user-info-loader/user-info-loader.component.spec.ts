@@ -21,6 +21,7 @@ import {
   UserInfoComponentTypes
 } from '@epgu/epgu-constructor-types';
 import { componentMock } from '../../../component/unique-screen/components/select-children/components/select-children/mocks/select-children.mock';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const displayMock = ({
   id: 's113',
@@ -111,6 +112,7 @@ describe('UserInfoLoaderComponent', () => {
       providers: [
         DownloadService,
         ObjectHelperService,
+        JsonHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
