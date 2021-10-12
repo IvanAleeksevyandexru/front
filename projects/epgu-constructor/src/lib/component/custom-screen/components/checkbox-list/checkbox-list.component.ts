@@ -71,6 +71,8 @@ export class CheckboxListComponent extends AbstractComponentListItemComponent
         }),
         { count: 0, checkboxes: [] },
       ).checkboxes;
+    } else {
+      this.checkboxes = this.checkboxes.map((el) => ({ ...el, hidden: !el.showOn && this.hidden }));
     }
   }
 
