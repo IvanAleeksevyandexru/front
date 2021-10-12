@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import { UploadAndEditPhotoContainerComponent } from './container/upload-and-edit-photo-container.component';
-import { PhotoRequirementsModalComponent } from './component/photo-requirements-modal/photo-requirements-modal.component';
 import { ModalModule } from '../../../../modal/modal.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
@@ -11,10 +10,9 @@ import { UploadAndEditPhotoFormModule } from '../../../../shared/components/uplo
 import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
 
 @NgModule({
-  entryComponents: [PhotoRequirementsModalComponent, UploadAndEditPhotoContainerComponent],
+  entryComponents: [UploadAndEditPhotoContainerComponent],
   declarations: [
     UploadAndEditPhotoContainerComponent,
-    PhotoRequirementsModalComponent,
     PhotoDescriptionComponent,
   ],
   imports: [
