@@ -19,7 +19,7 @@ import {
   DeviceDetectorServiceStub,
   DownloadService,
   EventBusService,
-  HttpCancelService, IDay,
+  HttpCancelService,
   LocalStorageService,
   LocalStorageServiceStub,
   LocationService,
@@ -87,6 +87,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   let timeSlotDoctorService: TimeSlotDoctorService;
   let screenService: ScreenService;
   let actionService: ActionService;
+  let httpCancelService: HttpCancelService;
 
 
   const mockComponent = {
@@ -389,6 +390,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   });
 
   beforeEach(() => {
+    httpCancelService = TestBed.inject(HttpCancelService);
     modalService = TestBed.inject(ModalService);
     timeSlotDoctorService = TestBed.inject(TimeSlotDoctorService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
@@ -635,6 +637,30 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
     expect(component.doctorWasChosen$$.value).toEqual(true);
     expect(component['loadTimeSlots']).toHaveBeenCalled();
+  });
+
+  it('ngOnDestroy()', () => {
+    jest.spyOn(httpCancelService, 'cancelPendingRequests');
+    jest.spyOn(component.timeSlotDoctorsComponent.docLookup, 'setFocus');
+
+    jest.useFakeTimers();
+    component.handleSpecLookupValue(mockSpecLookup);
+    jest.runAllTimers();
+    jest.useRealTimers();
+
+    expect(timeSlotDoctorService.state$$.value).toEqual({
+      bookingRequestAttrs: null,
+      specLookup: mockSpecLookup, docLookup: null
+    });
+
+    component.ngOnDestroy();
+
+    expect(timeSlotDoctorService.state$$.value).toEqual({
+      bookingRequestAttrs: null,
+      specLookup: null,
+      docLookup: null
+    });
+    expect(httpCancelService.cancelPendingRequests).toHaveBeenCalled();
   });
 
   describe('clickSubmit()', () => {

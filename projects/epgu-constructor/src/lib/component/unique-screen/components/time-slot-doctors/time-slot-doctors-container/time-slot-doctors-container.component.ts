@@ -218,6 +218,11 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
   }
 
   ngOnDestroy(): void {
+    this.timeSlotDoctorService.state$$.next({
+      specLookup: null,
+      docLookup: null,
+      bookingRequestAttrs: null,
+    });
     this.httpCancelService.cancelPendingRequests();
   }
 
