@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DoCheck, OnInit } from '@angular/core';
 import {
   ActionType,
   ComponentAttrsDto,
@@ -22,10 +22,23 @@ import { AbstractConfirmPersonalUserDataDirective } from '../abstract-confirm-pe
 })
 export class ConfirmPersonalUserDataComponent
   extends AbstractConfirmPersonalUserDataDirective<ConfirmUserData>
-  implements OnInit {
+  implements OnInit, DoCheck {
   actionType = ActionType;
   errors: ConfirmUserDataError[] = [];
   private readonly sessionStorageService: SessionStorageService = new SessionStorageService();
+
+  ngDoCheck(): void {
+    const error = this.screenService.getStore().errors[
+      this.screenService.getStore().display?.components[0]?.id
+    ];
+    if (typeof error === 'string' && !this.errors.find(({ desc }) => desc === error)) {
+      this.errors.push({
+        type: 'error',
+        title: 'Ошибка',
+        desc: error,
+      } as ConfirmUserDataError);
+    }
+  }
 
   ngOnInit(): void {
     super.ngOnInit();

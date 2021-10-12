@@ -9,10 +9,8 @@ import {
   LocalStorageService,
   LocationService,
   LocationServiceStub,
-  LoggerService,
   ModalService,
   ModalServiceStub,
-  SessionService,
   SessionStorageService,
   SessionStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -114,7 +112,7 @@ const componentMock: ComponentBase = {
   "rfPasportIssuedByIdFormatted":"490-001","citizenship":"РОССИЯ","citizenshipCode":"RUS"},"errors":[]}',
   presetValue: '{}',
   label: '',
-  id: '',
+  id: 'id',
 };
 const actionMock = {
   label: '',
@@ -179,13 +177,23 @@ describe('ConfirmPersonalUserDataComponent', () => {
     sessionStorageService = (TestBed.inject(
       SessionStorageService,
     ) as unknown) as SessionStorageServiceStub;
+    screenService.getStore().errors = {};
+  });
+
+  it('should call ngDoCheck', ()=> {
+    screenService.getStore().errors = {
+      id: 'error'
+    };
+    spyOn(component, 'ngDoCheck').and.callThrough();
+    fixture.detectChanges();
+    expect(component.ngDoCheck).toHaveBeenCalled();
   });
 
   it('should set session param in ngOnInit', () => {
     screenService.cycledApplicantAnswerContext = {
       cycledApplicantAnswerItem: {
-        id: '1'
-      }
+        id: '1',
+      },
     };
     fixture.detectChanges();
 
