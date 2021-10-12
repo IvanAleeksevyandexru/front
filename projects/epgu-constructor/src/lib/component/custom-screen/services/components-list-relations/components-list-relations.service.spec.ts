@@ -1430,12 +1430,12 @@ describe('ComponentsListRelationsService', () => {
         value: 'fake data',
       },
     };
-    it('should return true, if component has identic relation', () => {
-      expect(service.isComponentShown(componentMock, cachedAnswers)).toBe(true);
+    it('should return false, if component has identical relation', () => {
+      expect(service.isComponentShown(componentMock, cachedAnswers, {})).toBe(false);
     });
-    it('should return false, if component has no identic relation', () => {
+    it('should return true, if component has no identical relation', () => {
       const component = { ...componentMock, attrs: { ref: [] }};
-      expect(service.isComponentShown(component, cachedAnswers)).toBe(false);
+      expect(service.isComponentShown(component, cachedAnswers, {})).toBe(true);
     });
   });
 

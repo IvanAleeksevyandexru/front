@@ -86,28 +86,24 @@ export class ComponentsListRelationsService {
   ): CustomListStatusElements {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
-        dependentComponent.attrs.ref
-          ?.filter((el) =>
-            (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id),
-          ) // TODO remove?
-          .forEach((reference) => {
-            const value = reference.valueFromCache
-              ? screenService.cachedAnswers[reference.valueFromCache].value
-              : component.value ?? component.valueFromCache;
+        dependentComponent.attrs.ref.forEach((reference) => {
+          const value = reference.valueFromCache
+            ? screenService.cachedAnswers[reference.valueFromCache].value
+            : component.value ?? component.valueFromCache;
 
-            shownElements = this.getDependentComponentUpdatedShownElements(
-              dependentComponent,
-              reference,
-              value as { [key: string]: string },
-              components,
-              form,
-              shownElements,
-              dictionaries,
-              initInitialValues,
-              dictionaryToolsService,
-              screenService,
-            );
-          });
+          shownElements = this.getDependentComponentUpdatedShownElements(
+            dependentComponent,
+            reference,
+            value as { [key: string]: string },
+            components,
+            form,
+            shownElements,
+            dictionaries,
+            initInitialValues,
+            dictionaryToolsService,
+            screenService,
+          );
+        });
 
         this.updateReferenceLimitDate(dependentComponent, component, form, screenService);
       },
@@ -164,7 +160,7 @@ export class ComponentsListRelationsService {
             hasDisplayOff && !hasDisplayOn
               ? CustomComponentRefRelation.displayOff
               : CustomComponentRefRelation.displayOn,
-          isShown: !this.isComponentShown(component, cachedAnswers),
+          isShown: this.isComponentShown(component, cachedAnswers, acc),
         },
       };
     }, {});
@@ -218,26 +214,30 @@ export class ComponentsListRelationsService {
     }
   }
 
-  public isComponentShown(component: CustomComponent, cachedAnswers: CachedAnswers): boolean {
+  public isComponentShown(
+    component: CustomComponent,
+    cachedAnswers: CachedAnswers,
+    componentListStatus: CustomListStatusElements
+  ): boolean {
     const refs = component.attrs?.ref;
     const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
     const displayOn = refs?.find((o) => this.refRelationService.isDisplayOnRelation(o.relation));
 
-    if (displayOff && cachedAnswers && cachedAnswers[displayOff?.relatedRel]) {
-      return this.refRelationService.isValueEquals(
+    if (displayOff && cachedAnswers && cachedAnswers[displayOff?.relatedRel] && componentListStatus[displayOff?.relatedRel]?.isShown) {
+      return !this.refRelationService.isValueEquals(
         displayOff.val,
         get(this.getRefValue(cachedAnswers[displayOff.relatedRel].value), displayOff.path) ||
           cachedAnswers[displayOff.relatedRel].value,
       );
     } else if (displayOn && cachedAnswers && cachedAnswers[displayOn?.relatedRel]) {
-      return !this.refRelationService.isValueEquals(
+      return this.refRelationService.isValueEquals(
         displayOn.val,
         get(this.getRefValue(cachedAnswers[displayOn.relatedRel].value), displayOn.path) ||
           cachedAnswers[displayOn.relatedRel].value,
       );
     }
 
-    return false;
+    return true;
   }
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
@@ -658,7 +658,8 @@ export class ComponentsListRelationsService {
     dependentControl: AbstractControl,
   ): void {
     const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
-    const isShown = !this.refRelationService.isValueEquals(reference.val, componentVal);
+    const isShown = !shownElements[reference.relatedRel]?.isShown ||
+      !this.refRelationService.isValueEquals(reference.val, componentVal);
 
     if (element.isShown === true || !isDisplayOn) {
       shownElements[dependentComponent.id] = {
