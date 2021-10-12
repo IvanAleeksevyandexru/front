@@ -7,16 +7,15 @@
       {{ propData.header }}
     </epgu-constructor-page-name>
 
-  <ng-container *ngIf="disclaimer">
-    <epgu-constructor-disclaimer
-      class="mb-24"
-      [type]="disclaimer.type"
-      [title]="disclaimer.title"
-      [description]="disclaimer.description"
-      [clarifications]="disclaimer.clarifications"
-    ></epgu-constructor-disclaimer>
-  </ng-container>
-
+    <ng-container *ngIf="disclaimer">
+      <epgu-constructor-disclaimer
+        class="mb-24"
+        [type]="disclaimer.type"
+        [title]="disclaimer.title"
+        [description]="disclaimer.description"
+        [clarifications]="disclaimer.clarifications"
+      ></epgu-constructor-disclaimer>
+    </ng-container>
 
     <div class="common-error" *ngIf="(commonError$ | async)?.hasError">
       <small>

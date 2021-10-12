@@ -53,7 +53,6 @@ describe('ProgramListService', () => {
   });
 
   describe('getNextPage()', () => {
-
     it('should increase page number', () => {
       service.getNextPage();
 
@@ -82,11 +81,9 @@ describe('ProgramListService', () => {
       expect(service.paginatedData$.getValue().length).toBe(13);
       expect(service.isFinish$$.getValue()).toBe(true);
     });
-
   });
 
   describe('resetPagination()', () => {
-
     it('should reset page number and subject array', () => {
       service.data$$.next(programsArray);
       service.getNextPage();
@@ -96,13 +93,10 @@ describe('ProgramListService', () => {
       expect(service.page$$.getValue()).toBe(0);
       expect(service.paginatedData$.getValue().length).toBe(0);
     });
-
   });
 
   describe('reset()', () => {
-
     it('should reset specific fields', () => {
-
       service.reset();
 
       expect(service.page$$.getValue()).toBe(0);
@@ -112,24 +106,19 @@ describe('ProgramListService', () => {
       expect(service.fullLoading$$.getValue()).toBe(true);
       expect(service.data$$.getValue()).toEqual([]);
     });
-
   });
 
   describe('finish()', () => {
-
     it('should set finish to true', () => {
-
       service.isFinish$$.next(false);
 
       service.finish();
 
       expect(service.isFinish$$.getValue()).toBe(true);
     });
-
   });
 
   describe('add()', () => {
-
     it('should set full loading to false if current data is empty ', () => {
       service.data$$.next([]);
 
@@ -161,81 +150,77 @@ describe('ProgramListService', () => {
 
       expect(service.isFinish$$.getValue()).toBeFalsy();
     });
-
   });
 
   describe('processFilters()', () => {
-
     it('should add focus as FocusFilter', () => {
       const state = {
-        programFilters: { focus: { id: 'hudozhestvennoe' }}
+        programFilters: { focus: { id: 'hudozhestvennoe' }},
       };
 
-      const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
+      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
 
       expect(filters.focus).toBe('hudozhestvennoe');
     });
 
     it('should delete focus field if id is null', () => {
       const state = {
-        programFilters: { focus: { id: null }}
+        programFilters: { focus: { id: null }},
       };
 
-      const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
+      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
 
       expect(filters.hasOwnProperty('focus')).toBe(false);
     });
 
     it('should add municipality as string', () => {
       const state = {
-        programFilters: { municipality: { id: '15' }}
+        programFilters: { municipality: { id: '15' }},
       };
 
-      const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
+      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
 
       expect(filters.municipality).toBe('15');
     });
 
     it('should delete direction field if id is null', () => {
       const state = {
-        programFilters: { direction: { id: null }}
+        programFilters: { direction: { id: null }},
       };
 
-      const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
+      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
 
       expect(filters.hasOwnProperty('direction')).toBe(false);
     });
 
     it('should add direction as string', () => {
       const state = {
-        programFilters: { direction: { id: '3' }}
+        programFilters: { direction: { id: '3' }},
       };
 
-      const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
+      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
 
       expect(filters.direction).toBe('3');
     });
 
     it('should delete query if empty', () => {
       const state = {
-        programFilters: { query: '' }
+        programFilters: { query: '' },
       };
 
-      const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
+      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
 
       expect(filters.hasOwnProperty('query')).toBe(false);
     });
 
     it('should not delete query if not empty', () => {
       const state = {
-        programFilters: { query: '1' }
+        programFilters: { query: '1' },
       };
 
-      const { filters } = service.processFilters(state as unknown as ChildrenClubsState);
+      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
 
       expect(filters.hasOwnProperty('query')).toBe(true);
     });
-
   });
-
 });

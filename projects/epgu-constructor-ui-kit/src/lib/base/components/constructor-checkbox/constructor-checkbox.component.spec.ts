@@ -12,8 +12,7 @@ describe('ConstructorCheckboxComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ConstructorCheckboxComponent],
       imports: [BaseUiModule],
-      providers: [
-      ],
+      providers: [],
     }).compileComponents();
   });
 

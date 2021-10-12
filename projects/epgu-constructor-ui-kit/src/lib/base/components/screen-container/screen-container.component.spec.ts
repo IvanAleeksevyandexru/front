@@ -27,7 +27,13 @@ describe('ScreenContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CoreModule, MockModule(CoreUiModule), BaseModule, RouterTestingModule, PrevButtonModule],
+        imports: [
+          CoreModule,
+          MockModule(CoreUiModule),
+          BaseModule,
+          RouterTestingModule,
+          PrevButtonModule,
+        ],
         declarations: [ScreenContainerComponent],
         providers: [
           LocationService,

@@ -1,7 +1,6 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
-
-.webcam__wrapper{
+.webcam__wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,7 +10,7 @@
   background-color: $color-black;
 }
 
-.webcam__video{
+.webcam__video {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +20,7 @@
   margin: 0 auto;
 }
 
-.webcam__buttons{
+.webcam__buttons {
   display: flex;
   justify-content: space-between;
   width: 300px;
@@ -32,7 +31,7 @@
   z-index: 2;
 }
 
-.webcam__button{
+.webcam__button {
   font-size: 16px;
   line-height: 40px;
   width: 130px;

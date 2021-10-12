@@ -1,13 +1,13 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components/rubles';
 
-.payment{
+.payment {
   padding: 24px;
   border-radius: 12px;
   background-color: $color-white;
   @include shadow-main();
 
-  &.inloading{
+  &.inloading {
     opacity: 0.5;
   }
 }
@@ -30,7 +30,7 @@
   margin-bottom: 8px;
 }
 
-.del{
+.del {
   color: $color-text-helper;
   font-size: 14px;
   font-weight: normal;
@@ -43,13 +43,13 @@
 }
 
 .info__hint,
-.info__title{
+.info__title {
   color: $color-text-helper;
   font-size: 14px;
   line-height: 20px;
 }
 
-.is__payed{
+.is__payed {
   display: inline-block;
   color: $color-white;
   background-color: $color-green-sea;
@@ -58,7 +58,7 @@
   border-radius: 16px;
 }
 
-.footer{
+.footer {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,7 +71,7 @@
   }
 }
 
-.footer__item{
+.footer__item {
   margin-bottom: 10px;
 }
 

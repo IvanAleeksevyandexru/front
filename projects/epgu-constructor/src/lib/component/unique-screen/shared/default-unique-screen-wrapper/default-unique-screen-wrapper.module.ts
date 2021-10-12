@@ -21,7 +21,7 @@ import { ScreenButtonsModule } from '../../../../shared/components/screen-button
     FieldListModule,
     ScreenPadModule,
     ActionModule,
-    ScreenButtonsModule
+    ScreenButtonsModule,
   ],
 })
 export class DefaultUniqueScreenWrapperModule {}

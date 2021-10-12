@@ -9,16 +9,15 @@ describe('PageNameComponent', () => {
   let component: PageNameComponent;
   let fixture: ComponentFixture<PageNameComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ PageNameComponent ],
-      providers: [
-        { provide: ScreenService,useClass: ScreenServiceStub },
-      ]
-    })
-    .compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+        declarations: [PageNameComponent],
+        providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
+      }).compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PageNameComponent);

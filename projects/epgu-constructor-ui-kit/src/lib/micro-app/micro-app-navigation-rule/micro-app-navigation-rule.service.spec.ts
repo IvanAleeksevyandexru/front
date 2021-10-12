@@ -9,14 +9,14 @@ describe('MicroAppNavigationRuleService', () => {
   let appStateQuery: MicroAppStateQuery<unknown, unknown>;
   const rules = {
     test1: { next: 'test2' },
-    test2: {}
+    test2: {},
   };
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
         MicroAppNavigationRuleService,
-        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub }
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
       ],
     });
   });
@@ -44,7 +44,7 @@ describe('MicroAppNavigationRuleService', () => {
     it('should throw error when not find first component', () => {
       const rules = {
         test1: { next: 'test2' },
-        test2: { next: 'test1' }
+        test2: { next: 'test1' },
       };
       service.initRule(rules);
       expect(() => service.getFirst()).toThrowError();
@@ -61,7 +61,7 @@ describe('MicroAppNavigationRuleService', () => {
     it('should throw error when not find last component', () => {
       const rules = {
         test1: { next: 'test2' },
-        test2: { next: 'test1' }
+        test2: { next: 'test1' },
       };
       service.initRule(rules);
       expect(() => service.getLast()).toThrowError();

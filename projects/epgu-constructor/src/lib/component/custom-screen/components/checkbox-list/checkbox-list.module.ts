@@ -9,4 +9,4 @@ import { ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ConstructorCheckboxModule],
   exports: [CheckboxListComponent],
 })
-export class CheckboxListModule { }
+export class CheckboxListModule {}

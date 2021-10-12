@@ -23,7 +23,7 @@ const componentMock = {
   type: 'ConfirmLegalData',
   attrs: { fields: [] },
   value: '',
-  visited: false
+  visited: false,
 };
 
 const actionMock = {
@@ -93,7 +93,9 @@ describe('ConfirmPersonalUserLegalDataComponent', () => {
 
     expect(debugEl.componentInstance.header).toBe('some header');
     expect(debugEl.componentInstance.isLoading).toBeTruthy();
-    expect(debugEl.componentInstance.screenButtons).toEqual([{ label: 'some submit label', action: 'fake action' }]);
+    expect(debugEl.componentInstance.screenButtons).toEqual([
+      { label: 'some submit label', action: 'fake action' },
+    ]);
     expect(debugEl.componentInstance.showNav).toBeTruthy();
     expect(debugEl.componentInstance.isValid).toBeTruthy();
   });

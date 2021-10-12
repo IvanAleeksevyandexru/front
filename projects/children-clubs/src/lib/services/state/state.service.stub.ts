@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { MicroAppStateQuery, MicroAppStateService } from '@epgu/epgu-constructor-ui-kit';
-import { ChildrenClubsState, ChildrenClubsValue, GroupFiltersModes } from '../../children-clubs.types';
+import {
+  ChildrenClubsState,
+  ChildrenClubsValue,
+  GroupFiltersModes,
+} from '../../children-clubs.types';
 import { cloneDeep } from 'lodash';
 
 @Injectable()

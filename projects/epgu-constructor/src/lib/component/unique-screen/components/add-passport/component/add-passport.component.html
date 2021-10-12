@@ -1,4 +1,8 @@
-<epgu-cf-ui-constructor-screen-pad class="screen-pad-body" [formGroup]="passportForm" *ngIf="passportForm">
+<epgu-cf-ui-constructor-screen-pad
+  class="screen-pad-body"
+  [formGroup]="passportForm"
+  *ngIf="passportForm"
+>
   <section class="add-passport-screen">
     <div class="add-passport-screen__body">
       <epgu-constructor-passport
@@ -6,7 +10,8 @@
         [attrs]="$any(attrs)"
         formControlName="passport"
         [suggestions]="(suggestions$ | async)[componentId$ | async]"
-        (selectSuggest)="suggestHandlerService.handleEvent($event, null)">
+        (selectSuggest)="suggestHandlerService.handleEvent($event, null)"
+      >
       </epgu-constructor-passport>
     </div>
   </section>

@@ -3,16 +3,13 @@ import { AbstractControl } from '@angular/forms';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 
 interface ValidatorDate {
-  dateVaidator: boolean
+  dateVaidator: boolean;
 }
 
 // TODO: подумать над мерджем этой логики с ValidationService
 @Injectable()
 export class DateValidator {
-
-  constructor(
-    public datesHelperService: DatesToolsService
-  ) {}
+  constructor(public datesHelperService: DatesToolsService) {}
 
   public date = (aControl: AbstractControl): ValidatorDate | null => {
     if (aControl && aControl.value && !this.datesHelperService.isValid(aControl.value)) {

@@ -1,10 +1,10 @@
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
 .timer__container {
   text-align: center;
 }
 
-.label{
+.label {
   @include typ-h6;
   color: $color-black;
   max-width: 400px;
@@ -13,15 +13,15 @@
   margin-bottom: 30px;
 }
 
-.progress__value-wrapper{
+.progress__value-wrapper {
   position: relative;
   max-width: 428px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
 
-  &::before{
-    content: " ";
+  &::before {
+    content: ' ';
     display: block;
     width: 100%;
     height: 2px;
@@ -32,16 +32,16 @@
     z-index: 1;
   }
 
-  &.warning::before{
+  &.warning::before {
     background-color: $color-gosred;
   }
 
-  &.finish::before{
+  &.finish::before {
     background-color: $color-bg-disabled;
   }
 }
 
-.progress__value{
+.progress__value {
   @include typ-h2;
   display: inline-block;
   position: relative;
@@ -52,16 +52,16 @@
   background-color: $color-white;
   z-index: 2;
 
-  .progress__value-wrapper.warning &{
+  .progress__value-wrapper.warning & {
     color: $color-gosred;
   }
 
-  .progress__value-wrapper.finish &{
+  .progress__value-wrapper.finish & {
     color: $color-bg-disabled;
   }
 }
 
-.info__action::ng-deep button{
+.info__action::ng-deep button {
   margin-bottom: 24px;
 }
 

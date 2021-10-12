@@ -6,9 +6,9 @@
   [isValid]="currentAnswersService.isValid$ | async"
 >
   <epgu-cf-ui-constructor-screen-pad>
-   <epgu-constructor-payment-way
-     [paymentControl]="paymentWayControl"
-     [component]="screenService.component$ | async"
-   ></epgu-constructor-payment-way>
+    <epgu-constructor-payment-way
+      [paymentControl]="paymentWayControl"
+      [component]="screenService.component$ | async"
+    ></epgu-constructor-payment-way>
   </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

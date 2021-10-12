@@ -17,12 +17,12 @@ describe('RestService', () => {
     path: 'path',
   };
 
-  const componentGET: RestAttrsDto = {
+  const componentGET: RestAttrsDto = ({
     url: 'url',
     headers: { headers: 'headers' },
     method: 'GET' as LogicComponentMethods,
     path: 'path',
-  } as unknown as RestAttrsDto;
+  } as unknown) as RestAttrsDto;
 
   const componentWithTimeOut: RestAttrsDto = {
     url: 'url',
@@ -36,10 +36,7 @@ describe('RestService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        RestService,
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-      ],
+      providers: [RestService, { provide: LocalStorageService, useClass: LocalStorageServiceStub }],
     });
   });
 

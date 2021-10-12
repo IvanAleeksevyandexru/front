@@ -6,8 +6,6 @@ import { BaseUiModule } from '../../base-ui.module';
 @NgModule({
   declarations: [ConstructorDropdownComponent],
   imports: [BaseUiModule],
-  exports: [
-    ConstructorDropdownComponent
-  ]
+  exports: [ConstructorDropdownComponent],
 })
 export class ConstructorDropdownModule {}

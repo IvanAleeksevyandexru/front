@@ -16,11 +16,10 @@ describe('InformationCenterCardComponent', () => {
     },
     title: '',
   };
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [InformationCenterCardComponent]
-    })
-      .compileComponents();
+      declarations: [InformationCenterCardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

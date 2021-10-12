@@ -6,20 +6,16 @@ import { CounterDirective } from './counter.directive';
 
 @Component({
   selector: 'epgu-constructor-test-counter',
-  template: `
-    <b
-      class="timer"
-      [epgu-constructor-counter]="count"
-      [interval]="countInterval"
-    ></b>
-  `,
+  template: ' <b class="timer" [epgu-constructor-counter]="count" [interval]="countInterval"></b> ',
 })
 class TestCounterComponent {
   count = 0;
   countInterval = 1;
   timer: number;
   constructor(private eventBusService: EventBusService) {
-    this.eventBusService.on('counterValueChanged').subscribe((payload: number) => this.change(payload));
+    this.eventBusService
+      .on('counterValueChanged')
+      .subscribe((payload: number) => this.change(payload));
   }
   change(event: number) {
     this.timer = event;

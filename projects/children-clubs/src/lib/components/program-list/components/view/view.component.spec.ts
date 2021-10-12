@@ -10,7 +10,9 @@ import {
   MicroAppNavigationService,
   MicroAppNavigationServiceStub,
   ModalServiceStub,
-  ModalService, MicroAppStateStore, MicroAppStateQuery,
+  ModalService,
+  MicroAppStateStore,
+  MicroAppStateQuery,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ViewComponent } from './view.component';
 import { StateService } from '../../../../services/state/state.service';
@@ -33,7 +35,7 @@ describe('ViewComponent', () => {
         StateService,
         MicroAppStateStore,
         MicroAppStateQuery,
-        DictionaryService
+        DictionaryService,
       ],
       imports: [LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, ProgramListModule],
     }).compileComponents();
@@ -49,7 +51,6 @@ describe('ViewComponent', () => {
   });
 
   describe('ngOnInit()', () => {
-
     it('should call service methods if program is not selected', () => {
       const spy = jest.spyOn(component['appNavigationService'], 'prev');
 
@@ -65,11 +66,9 @@ describe('ViewComponent', () => {
 
       expect(spy).toHaveBeenCalledTimes(0);
     });
-
   });
 
   describe('next()', () => {
-
     it('should call service methods', () => {
       const spy = jest.spyOn(component['stateService'], 'clearGroupFilters');
       const spy2 = jest.spyOn(component['appNavigationService'], 'next');
@@ -79,11 +78,9 @@ describe('ViewComponent', () => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy2).toHaveBeenCalledTimes(1);
     });
-
   });
 
   describe('prev()', () => {
-
     it('should call service methods', () => {
       const spy = jest.spyOn(component['stateService'], 'clearGroupFilters');
       const spy2 = jest.spyOn(component['appNavigationService'], 'prev');
@@ -93,7 +90,5 @@ describe('ViewComponent', () => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy2).toHaveBeenCalledTimes(1);
     });
-
   });
-
 });

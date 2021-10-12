@@ -1,4 +1,14 @@
-import { addMinutes, endOfDay, format, getHours, getMinutes, parse, setHours, setMinutes, startOfDay } from 'date-fns';
+import {
+  addMinutes,
+  endOfDay,
+  format,
+  getHours,
+  getMinutes,
+  parse,
+  setHours,
+  setMinutes,
+  startOfDay,
+} from 'date-fns';
 
 /**
  * Возвращает массив объектов Date с шагом в stepInMinutes минут для суток с 00:00 до 23:59
@@ -29,7 +39,7 @@ export const getTimeChunksDateObjects = (stepInMinutes: number): Date[] => {
 export const getTimeChunks = (stepInMinutes: number, timeFormat: string): string[] => {
   const dateObjects = getTimeChunksDateObjects(stepInMinutes);
 
-  return dateObjects.map(item => format(item, timeFormat));
+  return dateObjects.map((item) => format(item, timeFormat));
 };
 
 export const getDateTimeObject = (date: Date, time: string, timeFormat: string): Date => {
@@ -40,4 +50,3 @@ export const getDateTimeObject = (date: Date, time: string, timeFormat: string):
 
   return dateTimeObj;
 };
-

@@ -1,14 +1,13 @@
 <section class="doc-input">
-  <div
-    *ngIf="control.value.label"
-    class="doc-input__title"
-  >
+  <div *ngIf="control.value.label" class="doc-input__title">
     <span>{{ control.value.label }}</span>
   </div>
   <div class="form__error">
     <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-1">
       <span *ngIf="isErrorShown([docInputFieldsTypes.seriesNumDate, fieldName])">
-        <ng-container *ngIf="!form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.textFromJson">
+        <ng-container
+          *ngIf="!form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.textFromJson"
+        >
           {{ fields[fieldName]?.label }}:
         </ng-container>
         {{ form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg }}
@@ -42,11 +41,15 @@
         [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.series]?.placeholder"
         [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
         [showConstantMaskSymbols]="true"
-        [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
+        [invalid]="
+          isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
+        "
         [validationShowOn]="validationShowOn"
         [component]="fields[docInputFieldsTypes.series]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
-        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')"
+        (selectSuggest)="
+          suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')
+        "
         (blurEvent)="
           markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
         "
@@ -59,11 +62,15 @@
             $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))
           "
           [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
-          [invalid]="isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
+          [invalid]="
+            isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
+          "
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
+          (selectSuggest)="
+            suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')
+          "
         ></epgu-constructor-constructor-plain-input>
       </ng-template>
       <epgu-cf-ui-constructor-helper-text
@@ -92,11 +99,15 @@
         [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.number]?.placeholder"
         [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
         [showConstantMaskSymbols]="true"
-        [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])"
+        [invalid]="
+          isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+        "
         [validationShowOn]="validationShowOn"
         [component]="fields[docInputFieldsTypes.number]"
         [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
-        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')"
+        (selectSuggest)="
+          suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')
+        "
         (blurEvent)="
           markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
         "
@@ -109,11 +120,15 @@
             $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]))
           "
           [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
-          [invalid]="isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])"
+          [invalid]="
+            isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+          "
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
+          (selectSuggest)="
+            suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')
+          "
           (blurEvent)="
             markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
           "
@@ -126,9 +141,14 @@
         {{ hint }}
       </epgu-cf-ui-constructor-helper-text>
     </div>
-    <div class="doc-input__group-item doc-input__date"
-    *ngIf="!fields[docInputFieldsTypes.date]?.attrs.hidden"
-    [class.collapsed]="fields[docInputFieldsTypes.series]?.attrs.hidden || fields[docInputFieldsTypes.number]?.attrs.hidden">
+    <div
+      class="doc-input__group-item doc-input__date"
+      *ngIf="!fields[docInputFieldsTypes.date]?.attrs.hidden"
+      [class.collapsed]="
+        fields[docInputFieldsTypes.series]?.attrs.hidden ||
+        fields[docInputFieldsTypes.number]?.attrs.hidden
+      "
+    >
       <epgu-constructor-label
         [tips]="fields[docInputFieldsTypes.date]?.attrs?.labelHint"
         [label]="fields[docInputFieldsTypes.date]?.label"
@@ -178,11 +198,15 @@
           [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.series]?.placeholder"
           [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
           [showConstantMaskSymbols]="true"
-          [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
+          [invalid]="
+            isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
+          "
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')"
+          (selectSuggest)="
+            suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')
+          "
           (blurEvent)="
             markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
           "
@@ -195,11 +219,15 @@
               $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))
             "
             [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
-            [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])"
+            [invalid]="
+              isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
+            "
             [validationShowOn]="validationShowOn"
             [component]="fields[docInputFieldsTypes.series]"
             [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.series]"
-            (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
+            (selectSuggest)="
+              suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')
+            "
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
         <epgu-cf-ui-constructor-helper-text
@@ -229,11 +257,15 @@
           [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.number]?.placeholder"
           [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
           [showConstantMaskSymbols]="true"
-          [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])"
+          [invalid]="
+            isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+          "
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.number]"
           [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
-          (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')"
+          (selectSuggest)="
+            suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')
+          "
           (blurEvent)="
             markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
           "
@@ -246,11 +278,15 @@
               $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]))
             "
             [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
-            [invalid]="isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])"
+            [invalid]="
+              isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number])
+            "
             [validationShowOn]="validationShowOn"
             [component]="fields[docInputFieldsTypes.number]"
             [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.number]"
-            (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
+            (selectSuggest)="
+              suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')
+            "
           ></epgu-constructor-constructor-plain-input>
         </ng-template>
         <epgu-cf-ui-constructor-helper-text
@@ -274,7 +310,9 @@
           [control]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
           [minDate]="fields[docInputFieldsTypes.date]?.attrs?.minDate || '-120y'"
           [maxDate]="fields[docInputFieldsTypes.date]?.attrs?.maxDate || 'today'"
-          [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
+          [invalid]="
+            isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
+          "
           [validationShowOn]="validationShowOn"
           [brokenDateFixStrategy]="brokenDateFixStrategy"
           [clearable]="true"
@@ -317,7 +355,10 @@
     </div>
   </ng-template>
 
-  <epgu-cf-ui-constructor-helper-text *ngIf="fields['hint']?.label as label" class="doc-input__hint">
+  <epgu-cf-ui-constructor-helper-text
+    *ngIf="fields['hint']?.label as label"
+    class="doc-input__hint"
+  >
     {{ label }}
   </epgu-cf-ui-constructor-helper-text>
 
@@ -341,11 +382,14 @@
       [control]="$any(form.get(docInputFieldsTypes.emitter))"
       [invalid]="
         form.get(docInputFieldsTypes.emitter).invalid &&
-        form.get(docInputFieldsTypes.emitter).touched"
+        form.get(docInputFieldsTypes.emitter).touched
+      "
       [validationShowOn]="validationShowOn"
       [component]="fields[docInputFieldsTypes.emitter]"
       [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.emitter]"
-      (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
+      (selectSuggest)="
+        suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')
+      "
     ></epgu-constructor-constructor-plain-input>
   </div>
   <epgu-cf-ui-constructor-helper-text

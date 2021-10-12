@@ -100,5 +100,5 @@ export const KINDERGARTEN_SEARCH_RADIUS_IN_METERS = 5000;
 export const KINDERGATEN_MAX_VALUE = 50;
 export const CHILDS_HOME_PROPERTIES = {
   balloonContent: 'Адрес ребенка',
-  hintContent: 'Адрес ребенка'
+  hintContent: 'Адрес ребенка',
 };

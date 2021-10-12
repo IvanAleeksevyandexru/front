@@ -1,4 +1,4 @@
-<ng-container *ngIf="(data$ | async) as data">
+<ng-container *ngIf="data$ | async as data">
   <epgu-cf-ui-cta-modal
     [title]="data.title"
     text="dr_modal"
@@ -7,9 +7,7 @@
   >
     <ng-container modal-content>
       <div class="dr_modal__body">
-        <epgu-constructor-dropdown-list
-          [items]="data.items"
-        ></epgu-constructor-dropdown-list>
+        <epgu-constructor-dropdown-list [items]="data.items"></epgu-constructor-dropdown-list>
       </div>
     </ng-container>
 
@@ -18,7 +16,8 @@
         *ngFor="let button of buttons"
         class="conf-modal__button"
         (click)="button.handler()"
-      >{{ button.label }}</lib-button>
+        >{{ button.label }}</lib-button
+      >
     </ng-container>
   </epgu-cf-ui-cta-modal>
 </ng-container>

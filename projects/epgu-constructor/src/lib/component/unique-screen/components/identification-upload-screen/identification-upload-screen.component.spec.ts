@@ -16,7 +16,10 @@ import { IdentificationApiServiceStub } from '../../shared/identification-api/id
 import { IdentificationUploadScreenComponent } from './identification-upload-screen.component';
 
 import { IdentificationUploadScreenModule } from './identification-upload-screen.module';
-import { FileUploadItem, UploadedFile } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import {
+  FileUploadItem,
+  UploadedFile,
+} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
 import { PassportIdentificationResponse } from '../../shared/identification-api/identification-api.types';
@@ -25,7 +28,11 @@ import { TerraByteApiService } from '../../../../core/services/terra-byte-api/te
 import { TerraByteApiServiceStub } from '../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 
-const componentMock = { id: 'id', type: UniqueScreenComponentTypes.IdentificationUploadComponent, attrs: { uploads: [] }};
+const componentMock = {
+  id: 'id',
+  type: UniqueScreenComponentTypes.IdentificationUploadComponent,
+  attrs: { uploads: [] },
+};
 
 describe('IdentificationUploadScreenComponent', () => {
   let component: IdentificationUploadScreenComponent;
@@ -38,9 +45,7 @@ describe('IdentificationUploadScreenComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [BaseComponentsModule, IdentificationUploadScreenModule],
-      declarations: [
-        MockDirective(ActionDirective),
-      ],
+      declarations: [MockDirective(ActionDirective)],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: IdentificationApiService, useClass: IdentificationApiServiceStub },
@@ -72,7 +77,7 @@ describe('IdentificationUploadScreenComponent', () => {
     const uploadedFile = {} as UploadedFile;
     it('should call selfieIdentification api', () => {
       const spy = jest.spyOn(component['identification'], 'selfieIdentification');
-      screenService.component = { arguments: { faceId: '1' }} as unknown as ComponentDto;
+      screenService.component = ({ arguments: { faceId: '1' }} as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile);
 
@@ -81,7 +86,7 @@ describe('IdentificationUploadScreenComponent', () => {
 
     it('should call selfie passportIdentification api', () => {
       const spy = jest.spyOn(component['identification'], 'passportIdentification');
-      screenService.component = { arguments: { faceId: '' }} as unknown as ComponentDto;
+      screenService.component = ({ arguments: { faceId: '' }} as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile);
 
@@ -89,56 +94,64 @@ describe('IdentificationUploadScreenComponent', () => {
     });
 
     it('should round quality', (done) => {
-      const mockQualityResponse = { quality: { test: 1.211 }} as unknown as PassportIdentificationResponse;
-      const spy = jest.spyOn(component['identification'], 'passportIdentification').mockImplementation((...args) => of(mockQualityResponse));
-      screenService.component = { arguments: { faceId: '' }} as unknown as ComponentDto;
+      const mockQualityResponse = ({
+        quality: { test: 1.211 },
+      } as unknown) as PassportIdentificationResponse;
+      const spy = jest
+        .spyOn(component['identification'], 'passportIdentification')
+        .mockImplementation((...args) => of(mockQualityResponse));
+      screenService.component = ({ arguments: { faceId: '' }} as unknown) as ComponentDto;
 
-      component.getRequest(uploadedFile).subscribe(value => {
-        const state:any = component['currentAnswersService'].state;
+      component.getRequest(uploadedFile).subscribe((value) => {
+        const state: any = component['currentAnswersService'].state;
         expect(state.quality.test).toEqual(121);
         done();
       });
-
     });
 
     it('should round specific fields', (done) => {
-      const mockQualityResponse = {
+      const mockQualityResponse = ({
         quality: { test: 1.211 },
         similarity: 1.211,
         similarityFaceId: 1.211,
-        similaritySelfieFaceId: 1.211 } as unknown as PassportIdentificationResponse;
-      jest.spyOn(component['identification'], 'passportIdentification').mockImplementation((...args) => of(mockQualityResponse));
-      screenService.component = { arguments: { faceId: '' }} as unknown as ComponentDto;
+        similaritySelfieFaceId: 1.211,
+      } as unknown) as PassportIdentificationResponse;
+      jest
+        .spyOn(component['identification'], 'passportIdentification')
+        .mockImplementation((...args) => of(mockQualityResponse));
+      screenService.component = ({ arguments: { faceId: '' }} as unknown) as ComponentDto;
 
-      component.getRequest(uploadedFile).subscribe(value => {
-        const state:any = component['currentAnswersService'].state;
+      component.getRequest(uploadedFile).subscribe((value) => {
+        const state: any = component['currentAnswersService'].state;
         expect(state.similarity).toEqual(121);
         expect(state.similarityFaceId).toEqual(121);
         expect(state.similaritySelfieFaceId).toEqual(121);
         done();
       });
-
     });
-
   });
 
   describe('initUploader()', () => {
     it('should change fields on passed object()', () => {
-      const uploadItem = { maxCountByTypes: 2 } as unknown as  FileUploadItem;
+      const uploadItem = ({ maxCountByTypes: 2 } as unknown) as FileUploadItem;
 
       const res = component.initUploader(uploadItem);
 
       expect(Object.keys(res).length).toBe(3);
       expect(res.maxCountByTypes).toBeUndefined();
-
     });
   });
 
   describe('ngOnInit()', () => {
     let uploaders;
     beforeEach(() => {
-      uploaders = { files: [{ required: true, value: [{ uploaded: true }] }, { required: true, value: [{ uploaded: true }] }], errors: [] };
-
+      uploaders = {
+        files: [
+          { required: true, value: [{ uploaded: true }] },
+          { required: true, value: [{ uploaded: true }] },
+        ],
+        errors: [],
+      };
     });
 
     it('should not disable button', () => {
@@ -147,7 +160,6 @@ describe('IdentificationUploadScreenComponent', () => {
       eventBusService.emit('fileUploadValueChangedEvent', uploaders);
 
       expect(component.disabled$$.getValue()).toBeFalsy();
-
     });
 
     it('should disable button if errors', () => {
@@ -157,7 +169,6 @@ describe('IdentificationUploadScreenComponent', () => {
       eventBusService.emit('fileUploadValueChangedEvent', uploaders);
 
       expect(component.disabled$$.getValue()).toBeTruthy();
-
     });
 
     it('should disable button if no required', () => {
@@ -168,7 +179,6 @@ describe('IdentificationUploadScreenComponent', () => {
       eventBusService.emit('fileUploadValueChangedEvent', uploaders);
 
       expect(component.disabled$$.getValue()).toBeTruthy();
-
     });
 
     it('should disable button if no uploaded', () => {
@@ -178,7 +188,6 @@ describe('IdentificationUploadScreenComponent', () => {
       eventBusService.emit('fileUploadValueChangedEvent', uploaders);
 
       expect(component.disabled$$.getValue()).toBeTruthy();
-
     });
   });
 
@@ -206,14 +215,16 @@ describe('IdentificationUploadScreenComponent', () => {
   describe('collectMaxFilesNumber()', () => {
     it('should count max number to uploads count', (done) => {
       component.allMaxFiles = 0;
-      screenService.component =  { id: 'id', type: UniqueScreenComponentTypes.IdentificationUploadComponent, attrs: { uploads: [{ maxFileCount: 9 }, { maxFileCount: 9 }] }} as any;
+      screenService.component = {
+        id: 'id',
+        type: UniqueScreenComponentTypes.IdentificationUploadComponent,
+        attrs: { uploads: [{ maxFileCount: 9 }, { maxFileCount: 9 }] },
+      } as any;
 
-      component.data$.subscribe(value => {
+      component.data$.subscribe((value) => {
         expect(component.allMaxFiles).toBe(2);
         done();
       });
     });
-
   });
-
 });

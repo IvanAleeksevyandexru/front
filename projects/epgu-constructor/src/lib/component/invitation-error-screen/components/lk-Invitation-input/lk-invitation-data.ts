@@ -4,4 +4,4 @@ export default interface LkInvitationData {
     fio: string;
     gnr?: string;
   };
-};
+}

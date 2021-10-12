@@ -13,18 +13,18 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
 @NgModule({
   declarations: [ConfirmPersonalUserAddressReadonlyComponent],
   exports: [ConfirmPersonalUserAddressReadonlyComponent],
-    imports: [
-        BaseModule,
-        BaseComponentsModule,
-        TrimModule,
-        FieldListModule,
-        TextTransformModule,
-        ScreenPadModule,
-        DefaultUniqueScreenWrapperModule,
-        ConstructorDatePickerModule,
-        DisclaimerModule,
-    ],
+  imports: [
+    BaseModule,
+    BaseComponentsModule,
+    TrimModule,
+    FieldListModule,
+    TextTransformModule,
+    ScreenPadModule,
+    DefaultUniqueScreenWrapperModule,
+    ConstructorDatePickerModule,
+    DisclaimerModule,
+  ],
   providers: [DatePipe],
-  entryComponents: [ConfirmPersonalUserAddressReadonlyComponent]
+  entryComponents: [ConfirmPersonalUserAddressReadonlyComponent],
 })
 export class ConfirmPersonalUserAddressReadonlyScreenModule {}

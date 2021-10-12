@@ -9,12 +9,10 @@ enum EcologyClass {
 }
 
 @Pipe({
-  name: 'ecologyClass'
+  name: 'ecologyClass',
 })
 export class EcologyClassPipe implements PipeTransform {
-
   transform(ecologyNumber: string | number | undefined): string {
     return EcologyClass[ecologyNumber] || null;
   }
-
 }

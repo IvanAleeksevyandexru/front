@@ -27,7 +27,6 @@ import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
 import { MockProvider } from 'ng-mocks';
 
-
 describe('AbstractPaymentComponent', () => {
   let component: AbstractPaymentComponent;
   let fixture: ComponentFixture<AbstractPaymentComponent>;

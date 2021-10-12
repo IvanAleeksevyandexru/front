@@ -3,7 +3,9 @@
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
   <div class="screen-body">
-    <epgu-constructor-page-name *ngIf="(header$ | async) as header">{{ header }}</epgu-constructor-page-name>
+    <epgu-constructor-page-name *ngIf="header$ | async as header">{{
+      header
+    }}</epgu-constructor-page-name>
 
     <div class="payment" [class.inloading]="inLoading">
       <div class="info">
@@ -34,7 +36,6 @@
           Оплачено
         </div>
       </div>
-
     </div>
   </div>
 
@@ -47,7 +48,7 @@
       </div>
       <div class="footer__item">
         <lib-button (click)="nextStep()" class="submit-button">
-          {{ (buttonLabel$ | async) || "Далее" }}
+          {{ (buttonLabel$ | async) || 'Далее' }}
         </lib-button>
       </div>
     </div>

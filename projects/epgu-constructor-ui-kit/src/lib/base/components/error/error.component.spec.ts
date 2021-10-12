@@ -22,7 +22,7 @@ describe('ErrorComponent', () => {
 
   it('should render msg error if invalid and touched', () => {
     component.data.setErrors({
-      msg: 'some msg'
+      msg: 'some msg',
     });
     fixture.detectChanges();
 
@@ -36,7 +36,7 @@ describe('ErrorComponent', () => {
 
   it('should render serverError if has serverError', () => {
     component.data.setErrors({
-      serverError: 'some server error'
+      serverError: 'some server error',
     });
     fixture.detectChanges();
 

@@ -6,7 +6,7 @@ describe('InterpolationService', () => {
   let service: InterpolationService;
   let componentAttrs = {
     label: 'Some label ${var1}, ${obj1.var2}',
-    value: { var1: 'one var', obj1: { var2: 'second var' }}
+    value: { var1: 'one var', obj1: { var2: 'second var' }},
   };
 
   configureTestSuite(() => {
@@ -24,14 +24,18 @@ describe('InterpolationService', () => {
       variable: 'var',
       obj: {
         deep_variable: 'go deeper',
-      }
+      },
     };
-    expect(service.interpolateString('Some ${variable} ${obj.deep_variable}', vars)).toBe('Some var go deeper');
+    expect(service.interpolateString('Some ${variable} ${obj.deep_variable}', vars)).toBe(
+      'Some var go deeper',
+    );
   });
 
   it('should keep variable placeholder if variable not found', () => {
     const vars = { variable: 'var' };
-    expect(service.interpolateString('Some ${variable} ${no.var.here}', vars)).toBe('Some var ${no.var.here}');
+    expect(service.interpolateString('Some ${variable} ${no.var.here}', vars)).toBe(
+      'Some var ${no.var.here}',
+    );
   });
 
   it('should interpolate variables to object', () => {
@@ -39,7 +43,7 @@ describe('InterpolationService', () => {
 
     expect(result).toEqual({
       label: 'Some label one var, second var',
-      value: { var1: 'one var', obj1: { var2: 'second var' }}
+      value: { var1: 'one var', obj1: { var2: 'second var' }},
     });
   });
 });

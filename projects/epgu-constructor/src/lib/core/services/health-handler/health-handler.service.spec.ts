@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest
+  HttpRequest,
 } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
@@ -17,7 +17,7 @@ import {
   ObjectHelperService,
   WordTransformService,
   DeviceDetectorServiceStub,
-  DeviceDetectorService
+  DeviceDetectorService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
@@ -25,28 +25,33 @@ import { InitDataService } from '../init-data/init-data.service';
 import { InitDataServiceStub } from '../init-data/init-data.service.stub';
 import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, LocationServiceStub, HealthService, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  LocationService,
+  LocationServiceStub,
+  HealthService,
+  ActivatedRouteStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import {
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
   RENDER_FORM_SERVICE_NAME,
   UnspecifiedDTO,
 } from './health-handler';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { ActionRequestPayload, DictionaryFilters, RequestStatus } from '@epgu/epgu-constructor-types';
+import {
+  ActionRequestPayload,
+  DictionaryFilters,
+  RequestStatus,
+} from '@epgu/epgu-constructor-types';
 import { HealthHandlerService } from './health-handler.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class TestHealthInterceptor<T extends DictionaryFilters & UnspecifiedDTO> implements HttpInterceptor {
-  constructor(
-    private healthHandlerService: HealthHandlerService
-  ) {}
+export class TestHealthInterceptor<T extends DictionaryFilters & UnspecifiedDTO>
+  implements HttpInterceptor {
+  constructor(private healthHandlerService: HealthHandlerService) {}
 
-  intercept(
-    req: HttpRequest<T>,
-    next: HttpHandler,
-  ): Observable<HttpEvent<T>> {
+  intercept(req: HttpRequest<T>, next: HttpHandler): Observable<HttpEvent<T>> {
     return this.healthHandlerService.handleRequest(req, next);
   }
 }
@@ -151,7 +156,7 @@ describe('HealthHandlerService', () => {
         orderId: orderId,
         method: 'POST',
         date: new Date().toISOString(),
-        typeEvent: 'getNextStep'
+        typeEvent: 'getNextStep',
       };
       expect(healthService.measureStart).toHaveBeenCalledWith('renderForm');
       expect(healthService.measureEnd).toHaveBeenCalledWith('renderForm', 0, params);
@@ -188,7 +193,7 @@ describe('HealthHandlerService', () => {
         empty: true,
         regdictname: 'GOSBAR',
         date: new Date().toISOString(),
-        method: 'POST'
+        method: 'POST',
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(expect.any(String));
       expect(healthService.measureEnd).toHaveBeenCalledWith(expect.any(String), 1, params);
@@ -220,7 +225,7 @@ describe('HealthHandlerService', () => {
         serverError: 101,
         errorMessage: 'Server is not available',
         date: new Date().toISOString(),
-        method: 'POST'
+        method: 'POST',
       };
       expect(healthService.measureStart).toHaveBeenCalledWith(expect.any(String));
       expect(healthService.measureEnd).toHaveBeenCalledWith(expect.any(String), 1, params);

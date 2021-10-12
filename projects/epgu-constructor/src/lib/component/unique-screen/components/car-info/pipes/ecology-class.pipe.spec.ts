@@ -25,5 +25,4 @@ describe('EcologyClassPipe', () => {
     expect(pipe.transform(10)).toEqual(null);
     expect(pipe.transform('10')).toEqual(null);
   });
-
 });

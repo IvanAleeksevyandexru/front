@@ -6,7 +6,6 @@ import { configureTestSuite } from 'ng-bullet';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
-
 describe('HttpCancelInterceptor', () => {
   let interceptor: HttpCancelInterceptor;
   let httpCancelService: HttpCancelService;

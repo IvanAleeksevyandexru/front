@@ -5,8 +5,5 @@
     "enableIvy": true,
     "compilationMode": "full"
   },
-  "files": [
-    "src/main.ts",
-    "src/polyfills.ts",
-  ]
+  "files": ["src/main.ts", "src/polyfills.ts"]
 }

@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { FormPlayerApiSuccessResponse, Gender, QuizDataDtoResponse, ScreenTypes } from '@epgu/epgu-constructor-types';
+import {
+  FormPlayerApiSuccessResponse,
+  Gender,
+  QuizDataDtoResponse,
+  ScreenTypes,
+} from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class FormPlayerServiceStub {
@@ -77,8 +82,8 @@ export class FormPlayerServiceStub {
   getQuizDataByToken(): Observable<QuizDataDtoResponse> {
     return of({
       data: {
-        order: '{}'
-      }
+        order: '{}',
+      },
     } as QuizDataDtoResponse);
   }
 

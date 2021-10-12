@@ -231,7 +231,7 @@ describe('DictionaryToolsService', () => {
       };
       const compValue = JSON.parse(MapStore.display.components[0].value);
       compValue.originalItem = {
-        title: 'title77'
+        title: 'title77',
       };
       const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
 

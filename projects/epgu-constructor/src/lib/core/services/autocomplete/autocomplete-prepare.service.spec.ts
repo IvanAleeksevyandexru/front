@@ -3,7 +3,11 @@ import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ConfigService, EventBusServiceStub, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  EventBusServiceStub,
+  UnsubscribeServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -17,10 +21,7 @@ import { Gender, ComponentDto, ScreenTypes, ScenarioDto } from '@epgu/epgu-const
 import { ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import {
-  LocalStorageService,
-  LocalStorageServiceStub,
-} from '@epgu/epgu-constructor-ui-kit';
+import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { Answer } from '@epgu/epgu-constructor-types';
 import { JsonHelperService } from '../json-helper/json-helper.service';

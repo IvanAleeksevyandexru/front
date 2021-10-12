@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { MockModule, MockProvider } from 'ng-mocks';
 import {
-  ConfigService, ConfigServiceStub,
+  ConfigService,
+  ConfigServiceStub,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -26,10 +27,7 @@ describe('AddressInputComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [AddressInputComponent],
-      imports: [
-        MockModule(ComponentItemModule),
-        MockModule(ConstructorDadataWidgetModule),
-      ],
+      imports: [MockModule(ComponentItemModule), MockModule(ConstructorDadataWidgetModule)],
       providers: [
         MockProvider(UnsubscribeService),
         MockProvider(SuggestHandlerService),
@@ -55,13 +53,13 @@ describe('AddressInputComponent', () => {
   });
 
   describe('processSuggestions()', () => {
-
     it('should parse jsonlike structures', () => {
-      component.control = { value: { id: 'test' }} as unknown as AbstractControl;
-      const testValue = { test: { list: [{ originalItem: '{"fullAddress": "test"}', value: '' }] }};
-      component['processSuggestions'](testValue as unknown as  { [key: string]: ISuggestionItem });
+      component.control = ({ value: { id: 'test' }} as unknown) as AbstractControl;
+      const testValue = {
+        test: { list: [{ originalItem: '{"fullAddress": "test"}', value: '' }] },
+      };
+      component['processSuggestions']((testValue as unknown) as { [key: string]: ISuggestionItem });
       expect(testValue.test.list[0].value).toBe('test');
     });
   });
-
 });

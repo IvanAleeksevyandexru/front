@@ -3,7 +3,9 @@ import { MockComponent, MockProvider } from 'ng-mocks';
 import {
   ConfigService,
   DeviceDetectorService,
-  DeviceDetectorServiceStub, LoggerService, LoggerServiceStub,
+  DeviceDetectorServiceStub,
+  LoggerService,
+  LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -24,10 +26,27 @@ import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { VideoModalComponent } from './video-modal.component';
 import {
   IdentificationStreamService,
-  LunaPassConstructor
+  LunaPassConstructor,
 } from '../../../../shared/identification-stream/identification-stream.service';
 
-const lunaStub = { checkLiveness() { return null; }, id: 1, ws: { close() { return null;} }, video: { srcObject: { getTracks() {return [];} }}} as unknown as LunaPassConstructor;
+const lunaStub = ({
+  checkLiveness() {
+    return null;
+  },
+  id: 1,
+  ws: {
+    close() {
+      return null;
+    },
+  },
+  video: {
+    srcObject: {
+      getTracks() {
+        return [];
+      },
+    },
+  },
+} as unknown) as LunaPassConstructor;
 
 describe('VideoModalComponent', () => {
   let component: VideoModalComponent;
@@ -86,6 +105,4 @@ describe('VideoModalComponent', () => {
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
-
-
 });

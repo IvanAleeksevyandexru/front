@@ -8,11 +8,7 @@ import { ConfirmationModalModule } from '../confirmation-modal/confirmation-moda
 import { HighlightModule } from '@epgu/ui/pipes';
 
 @NgModule({
-  declarations: [
-    DropdownListModalComponent,
-    DropdownListComponent,
-    FilterPipe
-  ],
+  declarations: [DropdownListModalComponent, DropdownListComponent, FilterPipe],
   imports: [BaseModule, ConfirmationModalModule, HighlightModule],
   exports: [DropdownListModalComponent],
   entryComponents: [DropdownListModalComponent],

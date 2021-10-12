@@ -29,8 +29,6 @@ export class WebcamEventFactory {
   }
 }
 
-
-
 /**
  * Типы действий вебкамеры
  */
@@ -38,7 +36,6 @@ export class WebcamEventAction {
   public static readonly CLOSE: string = 'close';
   public static readonly CLOSE_AND_SAVE: string = 'close_and_save';
 }
-
 
 /**
  * События для веб камеры
@@ -126,7 +123,6 @@ export class WebcamEvent {
     this._data = data;
   }
 }
-
 
 export const isCloseWebcamEvent = (event: WebcamEvent): boolean =>
   event.action === WebcamEventAction.CLOSE;

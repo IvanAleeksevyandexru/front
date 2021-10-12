@@ -3,13 +3,15 @@ import { MockComponent, MockModule } from 'ng-mocks';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
 import { PluralizePipe } from '@epgu/ui/pipes';
-import { CoreUiModule, ScreenPadComponent, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CoreUiModule,
+  ScreenPadComponent,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { CoreModule } from '../../../../../../core/core.module';
 import { equipmentCategoryMock, categoryFormTestValue } from '../../equipment-choice.mocks';
-import { MultipleChoiceDictionaryComponent }
-  from '../../../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary/multiple-choice-dictionary.component';
-import { ConstructorPlainInputComponent }
-  from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.component';
+import { MultipleChoiceDictionaryComponent } from '../../../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary/multiple-choice-dictionary.component';
+import { ConstructorPlainInputComponent } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.component';
 import { EquipmentCategoryComponent } from './equipment-category.component';
 
 describe('EquipmentChoiceComponent', () => {
@@ -24,16 +26,8 @@ describe('EquipmentChoiceComponent', () => {
         MockComponent(ScreenPadComponent),
         MockComponent(MultipleChoiceDictionaryComponent),
       ],
-      imports: [
-        CoreModule,
-        MockModule(CoreUiModule),
-        ReactiveFormsModule,
-        FormsModule,
-      ],
-      providers: [
-        PluralizePipe,
-        UnsubscribeService
-      ]
+      imports: [CoreModule, MockModule(CoreUiModule), ReactiveFormsModule, FormsModule],
+      providers: [PluralizePipe, UnsubscribeService],
     }).compileComponents();
   });
 
@@ -42,7 +36,7 @@ describe('EquipmentChoiceComponent', () => {
     component = fixture.componentInstance;
     component.category = equipmentCategoryMock;
     component.categoryFormGroup = new FormGroup({
-      equipment: new FormControl(null)
+      equipment: new FormControl(null),
     });
     fixture.detectChanges();
   });
@@ -58,13 +52,13 @@ describe('EquipmentChoiceComponent', () => {
         id: 15,
         name: 'Оборудование для перевозки',
         equipment: [],
-        minAmount: 2
+        minAmount: 2,
       };
 
       component.ngOnInit();
       expect(component.tipText).toEqual('Минимум 2 варианта');
     });
-    
+
     it('should preselect required equipment if concServiceTypeIds has been set', () => {
       expect(component.isEquipmentUnselectable).toBeFalsy();
       component.concServiceTypeIds = ['1468400'];
@@ -73,7 +67,7 @@ describe('EquipmentChoiceComponent', () => {
       expect(component.isEquipmentUnselectable).toBeTruthy();
       expect(component.categoryFormGroup.value).toEqual(categoryFormTestValue);
     });
-    
+
     it('should change additionalFields on control changes', () => {
       expect(component.itemsWithAdditionalFields.length).toBe(0);
       component.categoryFormGroup.patchValue(categoryFormTestValue);

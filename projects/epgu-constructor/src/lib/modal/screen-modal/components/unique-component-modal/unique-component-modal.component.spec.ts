@@ -11,12 +11,9 @@ describe('UniqueComponentModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UniqueComponentModalComponent],
-      providers: [
-        { provide: ScreenService,useClass: ScreenServiceStub },
-      ],
+      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -29,11 +29,8 @@ describe('ConstructorCheckboxComponent', () => {
       imports: [BaseModule],
       providers: [
         MockProvider(ComponentsListFormService, {
-          form: new FormArray([
-            control1,
-            control2
-          ])
-        })
+          form: new FormArray([control1, control2]),
+        }),
       ],
     }).compileComponents();
   });

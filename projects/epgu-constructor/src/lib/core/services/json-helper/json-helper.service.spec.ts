@@ -9,9 +9,7 @@ describe('JsonHelperService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        JsonHelperService
-      ]
+      providers: [JsonHelperService],
     });
   });
 
@@ -31,5 +29,4 @@ describe('JsonHelperService', () => {
       expect(service.hasJsonStructure(null)).toBe(false);
     });
   });
-
 });

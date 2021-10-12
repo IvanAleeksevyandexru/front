@@ -8,9 +8,7 @@ describe('ObjectHelperService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ObjectHelperService
-      ]
+      providers: [ObjectHelperService],
     });
   });
 
@@ -33,13 +31,19 @@ describe('ObjectHelperService', () => {
 
   describe('filterIncorrectObjectFields()', () => {
     it('should return object with all fields are defined', () => {
-      expect(service.filterIncorrectObjectFields({ nullProperty: null, undefinedProperty: undefined, total: 4 }))
-        .toEqual({ total: 4 });
+      expect(
+        service.filterIncorrectObjectFields({
+          nullProperty: null,
+          undefinedProperty: undefined,
+          total: 4,
+        }),
+      ).toEqual({ total: 4 });
     });
 
     it('shouldn\'t filter fields in all nested objects', () => {
-      expect(service.filterIncorrectObjectFields({ nestedObject: { property: null }}))
-        .toEqual({ nestedObject: { property: null }});
+      expect(service.filterIncorrectObjectFields({ nestedObject: { property: null }})).toEqual({
+        nestedObject: { property: null },
+      });
     });
 
     it('should return {} if object is {} or []', () => {

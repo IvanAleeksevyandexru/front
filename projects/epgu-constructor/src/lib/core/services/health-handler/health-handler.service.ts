@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import {
   BackendDictionary,
   BackendHealthList,
-  CommonPayload, DICTIONARY_CODES, DictionaryError,
+  CommonPayload,
+  DICTIONARY_CODES,
+  DictionaryError,
   DictionaryPayload,
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
-  EXCEPTIONS, FilterType,
+  EXCEPTIONS,
+  FilterType,
   GET_SLOTS,
   GET_SLOTS_MODIFIED,
   NEXT_EVENT_TYPE,
@@ -16,19 +19,32 @@ import {
   RegionSource,
   RENDER_FORM_SERVICE_NAME,
   SlotInfo,
-  UnspecifiedDTO
+  UnspecifiedDTO,
 } from './health-handler';
 
 import {
   ConfigService,
   HealthHandler,
   HealthService,
-  WordTransformService, ObjectHelperService, ServiceNameService
+  WordTransformService,
+  ObjectHelperService,
+  ServiceNameService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { catchError, tap } from 'rxjs/operators';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { DictionaryFilters, DictionarySubFilter, RequestStatus, ScenarioDto } from '@epgu/epgu-constructor-types';
+import {
+  DictionaryFilters,
+  DictionarySubFilter,
+  RequestStatus,
+  ScenarioDto,
+} from '@epgu/epgu-constructor-types';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -50,7 +66,7 @@ export class HealthHandlerService implements HealthHandler {
 
   public handleRequest<T extends DictionaryFilters & UnspecifiedDTO>(
     request: HttpRequest<T>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<T>> {
     let serviceName = '';
     let lastUrlPart = '';
@@ -93,10 +109,14 @@ export class HealthHandlerService implements HealthHandler {
     request: HttpRequest<T>,
     serviceName: string,
   ): string[] {
-    const splittedUrl = this.serviceNameService.getSplittedUrl(request.url).map((el) => el.toLowerCase());
+    const splittedUrl = this.serviceNameService
+      .getSplittedUrl(request.url)
+      .map((el) => el.toLowerCase());
     const lastUrlPart = splittedUrl.slice(-1)[0];
 
-    serviceName = request.url.includes(DICTIONARY) ? `${DICTIONARY}_${uuidv4()}` : this.serviceNameService.getServiceName(request.url);
+    serviceName = request.url.includes(DICTIONARY)
+      ? `${DICTIONARY}_${uuidv4()}`
+      : this.serviceNameService.getServiceName(request.url);
     serviceName =
       serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
     serviceName = serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : serviceName;
@@ -155,7 +175,7 @@ export class HealthHandlerService implements HealthHandler {
 
       const orderId = this.objectHelperService.isDefined(scenarioDto.orderId)
         ? scenarioDto.orderId
-        : callBackOrderId as number;
+        : (callBackOrderId as number);
       const timeSlotValue = components.filter((component) => component.type === 'TimeSlot')[0]
         ?.value;
 
@@ -168,7 +188,9 @@ export class HealthHandlerService implements HealthHandler {
           const timeSlotType = slot.timeSlotType;
           const { serviceCode } = this.configService.timeSlots[timeSlotType];
 
-          this.slotInfo['orgName'] = encodeURIComponent(this.wordTransformService.cyrillicToLatin(orgName));
+          this.slotInfo['orgName'] = encodeURIComponent(
+            this.wordTransformService.cyrillicToLatin(orgName),
+          );
           this.slotInfo['serviceCode'] = serviceCode;
         } catch (e) {}
       }
@@ -180,14 +202,10 @@ export class HealthHandlerService implements HealthHandler {
         orderId: orderId,
       };
 
-      if (
-        serviceName === RENDER_FORM_SERVICE_NAME ||
-        serviceName === PREV_STEP_SERVICE_NAME
-      ) {
+      if (serviceName === RENDER_FORM_SERVICE_NAME || serviceName === PREV_STEP_SERVICE_NAME) {
         this.commonParams = {
           ...this.commonParams,
-          typeEvent:
-            serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
+          typeEvent: serviceName === RENDER_FORM_SERVICE_NAME ? NEXT_EVENT_TYPE : PREV_EVENT_TYPE,
           mnemonicScreen: display?.type,
         };
       }
@@ -267,7 +285,9 @@ export class HealthHandlerService implements HealthHandler {
         this.commonParams.dictionaryUrl = url;
         this.commonParams.errorMessage = this.wordTransformService.cyrillicToLatin(message);
       } else {
-        this.commonParams.errorMessage = this.wordTransformService.cyrillicToLatin(exception.message);
+        this.commonParams.errorMessage = this.wordTransformService.cyrillicToLatin(
+          exception.message,
+        );
       }
       this.endMeasureHealth(
         serviceName,
@@ -304,7 +324,11 @@ export class HealthHandlerService implements HealthHandler {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private isRequestBodyIsFormDataInstance(body: any): boolean {
-    return typeof body === 'object' && typeof body?.append=== 'function' && typeof body?.get === 'function';
+    return (
+      typeof body === 'object' &&
+      typeof body?.append === 'function' &&
+      typeof body?.get === 'function'
+    );
   }
 
   private startMeasureHealth(serviceName: string): void {
@@ -360,7 +384,10 @@ export class HealthHandlerService implements HealthHandler {
     this.endMeasureHealth(
       serviceName,
       dictionaryError ? RequestStatus.Failed : RequestStatus.Succeed,
-      this.objectHelperService.filterIncorrectObjectFields({ ...this.commonParams, ...dictionaryParams }),
+      this.objectHelperService.filterIncorrectObjectFields({
+        ...this.commonParams,
+        ...dictionaryParams,
+      }),
     );
   }
 
@@ -387,7 +414,7 @@ export class HealthHandlerService implements HealthHandler {
             method: dictionary.method,
             orderId: orderId,
             regdictname: RegionSource.Okato,
-            ...(traceId && { traceId })
+            ...(traceId && { traceId }),
           }),
         );
       });
@@ -401,13 +428,16 @@ export class HealthHandlerService implements HealthHandler {
 
   private isThatDictionary(responseBody: UnspecifiedDTO): boolean {
     return (
-      this.objectHelperService.isDefined(responseBody?.fieldErrors) && this.objectHelperService.isDefined(responseBody.total)
+      this.objectHelperService.isDefined(responseBody?.fieldErrors) &&
+      this.objectHelperService.isDefined(responseBody.total)
     );
   }
 
   private getErrorByKey(error: undefined | DictionaryError, key: string): boolean {
     return (
-      this.objectHelperService.isDefined(error) && this.objectHelperService.isDefined(error[key]) && Number(error[key]) !== 0
+      this.objectHelperService.isDefined(error) &&
+      this.objectHelperService.isDefined(error[key]) &&
+      Number(error[key]) !== 0
     );
   }
 
@@ -429,7 +459,10 @@ export class HealthHandlerService implements HealthHandler {
   private isValidHttpEntity<T>(
     payload: HttpRequest<T> | HttpEvent<T> | HttpErrorResponse,
   ): boolean {
-    return this.serviceNameService.isValidHttpUrl(payload['url']) && !this.checkUrlForExceptions(payload['url']);
+    return (
+      this.serviceNameService.isValidHttpUrl(payload['url']) &&
+      !this.checkUrlForExceptions(payload['url'])
+    );
   }
 
   private getFilterType(

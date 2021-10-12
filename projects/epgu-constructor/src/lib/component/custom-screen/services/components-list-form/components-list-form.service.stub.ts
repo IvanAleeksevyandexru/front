@@ -29,8 +29,6 @@ export class ComponentsListFormServiceStub {
   emitChanges() {}
 
   create(): FormArray {
-    return new FormArray([
-      new FormControl()
-    ]);
+    return new FormArray([new FormControl()]);
   }
 }

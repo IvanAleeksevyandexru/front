@@ -41,14 +41,14 @@ const mockComponent = {
         fieldName: 'act_rec_date',
         label: 'Дата актовой записи',
         type: 'input',
-        attrs: {}
+        attrs: {},
       },
       {
         fieldName: 'act_rec_number',
         label: 'Номер актовой записи',
         type: 'input',
         required: true,
-        attrs: {}
+        attrs: {},
       },
       {
         fieldName: 'act_rec_registrator',
@@ -56,25 +56,25 @@ const mockComponent = {
         attrs: {
           mappingParams: {
             idPath: 'code',
-            textPath: 'fullname'
+            textPath: 'fullname',
           },
           searchProvider: {
             dictionaryOptions: {
-              pageSize: 100
+              pageSize: 100,
             },
             dictionaryFilter: [
               {
                 attributeName: 'fullname',
                 condition: 'CONTAINS',
                 value: 'searchString',
-                valueType: 'rawFilter'
+                valueType: 'rawFilter',
               },
               {
                 attributeName: 'dataN',
                 condition: 'LESS_THAN_OR_EQUALS',
                 value: 'act_rec_date',
                 valueType: 'formValue',
-                dateFormat: 'yyyy-MM-dd'
+                dateFormat: 'yyyy-MM-dd',
               },
               {
                 attributeName: 'dataK',
@@ -82,19 +82,19 @@ const mockComponent = {
                 value: 'act_rec_date',
                 valueType: 'formValue',
                 dateFormat: 'yyyy-MM-dd',
-                trueForNull: true
-              }
-            ]
+                trueForNull: true,
+              },
+            ],
           },
           dictionaryType: 'FNS_ZAGS_ALL',
-          dictionaryUrlType: 'nsiSuggest'
-        }
-      }
+          dictionaryUrlType: 'nsiSuggest',
+        },
+      },
     ],
   },
   value: '',
   visited: false,
-  required: false
+  required: false,
 };
 
 describe('MaritalStatusInputComponent', () => {
@@ -134,7 +134,7 @@ describe('MaritalStatusInputComponent', () => {
         MockModule(ErrorModule),
         MockModule(BaseModule),
         MockModule(InputErrorModule),
-    ],
+      ],
     }).compileComponents();
   });
 
@@ -226,8 +226,8 @@ describe('MaritalStatusInputComponent', () => {
             pr3: 'false',
             code: 'R0500092',
             fullname: 'Администрация сельского поселения «село Гагатли» Ботлихского района РД',
-            dataN: '2003-01-01'
-          }
+            dataN: '2003-01-01',
+          },
         },
       };
 
@@ -241,8 +241,8 @@ describe('MaritalStatusInputComponent', () => {
             pr3: 'false',
             code: 'R0500092',
             fullname: 'Администрация сельского поселения «село Гагатли» Ботлихского района РД',
-            dataN: '2003-01-01'
-          }
+            dataN: '2003-01-01',
+          },
         },
       };
       const emitToParentSpy = jest.spyOn(component, 'emitToParentForm');
@@ -288,8 +288,8 @@ describe('MaritalStatusInputComponent', () => {
             pr3: 'false',
             code: 'R0500092',
             fullname: 'Администрация сельского поселения «село Гагатли» Ботлихского района РД',
-            dataN: '2003-01-01'
-          }
+            dataN: '2003-01-01',
+          },
         },
       };
 
@@ -303,8 +303,8 @@ describe('MaritalStatusInputComponent', () => {
             pr3: 'false',
             code: 'R0500092',
             fullname: 'Администрация сельского поселения «село Гагатли» Ботлихского района РД',
-            dataN: '2003-01-01'
-          }
+            dataN: '2003-01-01',
+          },
         },
       };
       const emitChangesSpy = jest.spyOn(formService, 'emitChanges');
@@ -329,8 +329,8 @@ describe('MaritalStatusInputComponent', () => {
             pr3: 'false',
             code: 'R0500092',
             fullname: 'Администрация сельского поселения «село Гагатли» Ботлихского района РД',
-            dataN: '2003-01-01'
-          }
+            dataN: '2003-01-01',
+          },
         },
       };
       const emitChangesSpy = jest.spyOn(formService, 'emitChanges');

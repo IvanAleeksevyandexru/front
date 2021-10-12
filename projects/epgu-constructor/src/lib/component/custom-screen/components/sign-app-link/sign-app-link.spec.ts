@@ -23,20 +23,20 @@ const appLinks = [
     type: 'Android',
     image: 'https://via.placeholder.com/135x40.png?text=Google+Play',
     title: 'Перейти в Google Play',
-    href: 'https://play.google.com/store/apps/details?id=ru.gosuslugi.goskey'
+    href: 'https://play.google.com/store/apps/details?id=ru.gosuslugi.goskey',
   },
   {
     type: 'iOS',
     image: 'https://via.placeholder.com/135x40.png?text=App+Store',
     title: 'Перейти в App Store',
-    href: 'https://apps.apple.com/ru/app/id1566096745'
+    href: 'https://apps.apple.com/ru/app/id1566096745',
   },
   {
     type: 'Harmony',
     image: 'https://via.placeholder.com/135x40.png?text=App+Gallery',
     title: 'Перейти в App Gallery',
-    href: 'https://huaweimobileservices.com/ru/appgallery-russian'
-  }
+    href: 'https://huaweimobileservices.com/ru/appgallery-russian',
+  },
 ];
 
 const mockComponent = {
@@ -44,11 +44,11 @@ const mockComponent = {
   type: 'SignAppLink',
   label: '',
   attrs: {
-    appLinks
+    appLinks,
   },
   value: {},
   visited: false,
-  required: false
+  required: false,
 };
 
 const payloadMock = {
@@ -66,10 +66,7 @@ describe('SignAppLinkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        SignAppLinkComponent,
-        MockComponents(ComponentItemComponent)
-      ],
+      declarations: [SignAppLinkComponent, MockComponents(ComponentItemComponent)],
       providers: [
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
@@ -78,20 +75,21 @@ describe('SignAppLinkComponent', () => {
         MockProvider(HttpHandler),
         MockProvider(EventBusService),
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
     userAgent = jest.spyOn(window.navigator, 'userAgent', 'get');
     eventService = TestBed.inject(EventBusService);
-    formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
     control = new FormGroup({
       id: new FormControl('id'),
       value: new FormControl(SignAppLinkComponent),
       attrs: new FormControl(mockComponent.attrs),
     });
-    formService['_form'] = new FormArray([ control ]);
+    formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(SignAppLinkComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -122,7 +120,9 @@ describe('SignAppLinkComponent', () => {
   describe('Init', () => {
     it('should emit value when has clientAppLink and has 1 link in array', async () => {
       const spy = jest.spyOn<any, any>(component, 'emitToParentForm');
-      jest.spyOn(DeviceDetectorService.prototype as any, 'system', 'get').mockReturnValueOnce(System.Android);
+      jest
+        .spyOn(DeviceDetectorService.prototype as any, 'system', 'get')
+        .mockReturnValueOnce(System.Android);
       component.ngOnInit();
 
       await waitForAsync(() => {
@@ -146,13 +146,15 @@ describe('SignAppLinkComponent', () => {
         id: new FormControl('id'),
         value: new FormControl(SignAppLinkComponent),
         attrs: new FormControl({
-          appLinks: [appLinks[0], appLinks[2]]
+          appLinks: [appLinks[0], appLinks[2]],
         }),
       });
-      formService['_form'] = new FormArray([ control ]);
+      formService['_form'] = new FormArray([control]);
 
       const spy = jest.spyOn<SignAppLinkComponent, any>(component, 'emitToParentForm');
-      jest.spyOn(DeviceDetectorService.prototype as any, 'system', 'get').mockReturnValueOnce(System.iOS);
+      jest
+        .spyOn(DeviceDetectorService.prototype as any, 'system', 'get')
+        .mockReturnValueOnce(System.iOS);
       component.ngOnInit();
 
       await waitForAsync(() => {
@@ -163,7 +165,9 @@ describe('SignAppLinkComponent', () => {
 
     it('should emit error when navigator.userAgent is not available and has all links from appLinks', async () => {
       const spy = jest.spyOn<SignAppLinkComponent, any>(component, 'emitToParentForm');
-      jest.spyOn(DeviceDetectorService.prototype as any, 'system', 'get').mockReturnValueOnce(System.Error);
+      jest
+        .spyOn(DeviceDetectorService.prototype as any, 'system', 'get')
+        .mockReturnValueOnce(System.Error);
       component.ngOnInit();
 
       await waitForAsync(() => {

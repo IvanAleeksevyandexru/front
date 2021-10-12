@@ -6,7 +6,7 @@ import { EventBusService } from '../../core/services/event-bus/event-bus.service
 
 @Injectable({ providedIn: 'root' })
 export class MicroAppNavigationService {
-  constructor (
+  constructor(
     private appStateService: MicroAppStateService<unknown, unknown>,
     private appNavigationRuleService: MicroAppNavigationRuleService,
     private eventBusService: EventBusService,

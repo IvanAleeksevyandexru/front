@@ -9,11 +9,7 @@ import { CarListComponent } from './components/car-list/car-list.component';
 import { CarListContainerComponent } from './components/car-list-container/car-list-container.component';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 
-
-const COMPONENTS = [
-  CarListComponent,
-  CarListContainerComponent,
-];
+const COMPONENTS = [CarListComponent, CarListContainerComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
@@ -27,6 +23,6 @@ const COMPONENTS = [
     ConstructorLookupModule,
     ScreenButtonsModule,
   ],
-  entryComponents: [CarListContainerComponent]
+  entryComponents: [CarListContainerComponent],
 })
-export class CarListModule { }
+export class CarListModule {}

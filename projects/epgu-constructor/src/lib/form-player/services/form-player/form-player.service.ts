@@ -7,7 +7,8 @@ import { FormPlayerApiService } from '../form-player-api/form-player-api.service
 import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
-  FormPlayerApiSuccessResponse, QuizDataDtoResponse,
+  FormPlayerApiSuccessResponse,
+  QuizDataDtoResponse,
   QuizRequestDto,
 } from '@epgu/epgu-constructor-types';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
@@ -170,7 +171,10 @@ export class FormPlayerService extends FormPlayerBaseService {
     this.window.scroll(0, 0);
   }
 
-  private augmentDisplayId(successResponse: FormPlayerApiSuccessResponse, otherScenario: Partial<ScenarioDto>): void {
+  private augmentDisplayId(
+    successResponse: FormPlayerApiSuccessResponse,
+    otherScenario: Partial<ScenarioDto>,
+  ): void {
     // NOTICE: ожидаемая мутация, детали в https://jira.egovdev.ru/browse/EPGUCORE-62843
     successResponse.scenarioDto = successResponse.scenarioDto
       ? successResponse.scenarioDto

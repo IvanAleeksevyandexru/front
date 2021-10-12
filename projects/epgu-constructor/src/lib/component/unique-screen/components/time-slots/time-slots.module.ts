@@ -3,7 +3,11 @@ import { TimeSlotsComponent } from './time-slots.component';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ConstructorCheckboxModule, ScreenContainerModule, TimeCalendarModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConstructorCheckboxModule,
+  ScreenContainerModule,
+  TimeCalendarModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';

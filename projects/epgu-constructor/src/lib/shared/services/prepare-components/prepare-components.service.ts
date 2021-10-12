@@ -85,14 +85,12 @@ export class PrepareComponentsService {
     parentComponent: ComponentDto,
   ): ComponentDto[][] {
     const cachedValue =
-      this.getCache(parentComponent, cachedAnswers) ||
-      parentComponent.value ||
-      null;
+      this.getCache(parentComponent, cachedAnswers) || parentComponent.value || null;
     const cachedValueArray: { [key: string]: string }[] = JSON.parse(cachedValue) || [];
     if (cachedValueArray.length) {
       let repeatableFieldComponents: ComponentDto[][] = [];
       repeatableFieldComponents = cachedValueArray.map((_component, index) => {
-          return this.getCacheRepeatableField(components, cachedValue, index);
+        return this.getCacheRepeatableField(components, cachedValue, index);
       });
       return repeatableFieldComponents;
     } else {
@@ -127,7 +125,9 @@ export class PrepareComponentsService {
 
     if (component.type === CustomScreenComponentTypes.SnilsInput) {
       let parsedJson = JSON.parse(cachedValue);
-      return (parentIndex || parentIndex === 0) && parentId ? parsedJson[parentIndex][parentId].snils: parsedJson.snils;
+      return (parentIndex || parentIndex === 0) && parentId
+        ? parsedJson[parentIndex][parentId].snils
+        : parsedJson.snils;
     }
 
     const isPresetParsable = this.jsonHelperService.hasJsonStructure(preset);
@@ -181,10 +181,10 @@ export class PrepareComponentsService {
 
     if (shouldBeTakenFromTheCache) {
       if (type === 'RepeatableFields' && attrs.cacheRepeatableFieldsAnswersLocally) {
-          return (
-            this.cachedAnswersService.getCachedValueFromLocalStorage(id) ||
-            this.cachedAnswersService.getCachedValueById(cachedAnswers, id)
-          );
+        return (
+          this.cachedAnswersService.getCachedValueFromLocalStorage(id) ||
+          this.cachedAnswersService.getCachedValueById(cachedAnswers, id)
+        );
       }
       return this.cachedAnswersService.getCachedValueById(cachedAnswers, id);
     }
@@ -320,11 +320,7 @@ export class PrepareComponentsService {
             return attrsWithFilter;
           }
 
-          const value: string = get(
-            { value: JSON.parse(cache) },
-            path,
-            '',
-          );
+          const value: string = get({ value: JSON.parse(cache) }, path, '');
 
           return this.putValueToFilters(key, value, attrsWithFilter);
         },

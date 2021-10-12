@@ -11,11 +11,10 @@ import {
   MicroAppStateQuery,
   MicroAppStateQueryStub,
   MicroAppStateService,
-  MicroAppStateServiceStub
+  MicroAppStateServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { groupStub } from '../../stubs/projects.stub';
 import { ChildrenClubsState } from '../../children-clubs.types';
-
 
 describe('GroupListService', () => {
   let service: GroupListService;
@@ -43,9 +42,7 @@ describe('GroupListService', () => {
   });
 
   describe('reset()', () => {
-
     it('should reset specific fields', () => {
-
       service.reset();
 
       expect(service.page$$.getValue()).toBe(0);
@@ -54,11 +51,9 @@ describe('GroupListService', () => {
       expect(service.data$$.getValue().length).toBe(0);
       expect(service.allData$$.getValue().length).toBe(0);
     });
-
   });
 
   describe('resetPagination()', () => {
-
     it('should reset page number ', () => {
       service.page$$.next(678);
 
@@ -66,11 +61,9 @@ describe('GroupListService', () => {
 
       expect(service.page$$.getValue()).toBe(0);
     });
-
   });
 
   describe('setGroupList()', () => {
-
     it('should reset page number ', () => {
       const param = [];
       const spy = jest.spyOn(service, 'next');
@@ -79,11 +72,9 @@ describe('GroupListService', () => {
       expect(service.data).toStrictEqual(param);
       expect(spy).toHaveBeenCalled();
     });
-
   });
 
   describe('next()', () => {
-
     const programsArray = new Array(21).fill(groupStub);
 
     it('should increase page number', () => {
@@ -114,18 +105,14 @@ describe('GroupListService', () => {
       expect(service.data$$.getValue().length).toBe(21);
       expect(service.isFinish$$.getValue()).toBe(true);
     });
-
   });
 
   describe('getGroupList()', () => {
-
     it('should call api and write result to all data', (done) => {
-      service.getGroupList({} as unknown as ChildrenClubsState).subscribe(() => {
+      service.getGroupList(({} as unknown) as ChildrenClubsState).subscribe(() => {
         expect(service.allData$$.getValue().length).toBe(43);
         done();
       });
     });
-
   });
-
 });

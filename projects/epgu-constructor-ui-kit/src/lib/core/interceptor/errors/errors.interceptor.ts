@@ -13,7 +13,9 @@ import { ERROR_HANDLER_SERVICE, ErrorHandlerAbstractService } from './errors.tok
 
 @Injectable()
 export class ErrorsInterceptor implements HttpInterceptor {
-  constructor(@Inject(ERROR_HANDLER_SERVICE) private errorHandleService: ErrorHandlerAbstractService) {}
+  constructor(
+    @Inject(ERROR_HANDLER_SERVICE) private errorHandleService: ErrorHandlerAbstractService,
+  ) {}
 
   public intercept(
     req: HttpRequest<unknown>,

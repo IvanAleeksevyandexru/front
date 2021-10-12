@@ -2,12 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { ObjectHelperService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 
-import {
-  ErrorHandlerOrderParamsServiceService,
-} from './error-handler-order-params-service.service';
+import { ErrorHandlerOrderParamsServiceService } from './error-handler-order-params-service.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-
 
 describe('ErrorHandlerOrderParamsServiceService', () => {
   let service: ErrorHandlerOrderParamsServiceService;

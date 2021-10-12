@@ -2,10 +2,10 @@ import { BehaviorSubject } from 'rxjs';
 
 export class LoadServiceStub {
   public config = {
-    staticDomain: ''
+    staticDomain: '',
   };
   public attributes = {
-    deviceType: 'dev'
+    deviceType: 'dev',
   };
   public loaded = new BehaviorSubject(false);
 }

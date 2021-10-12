@@ -7,7 +7,7 @@ const TEST_KEY = 'TEST_KEY';
 describe('SessionStorageService', () => {
   let service: SessionStorageService;
   const mockObject = {
-    someKey: 'someValue'
+    someKey: 'someValue',
   };
 
   configureTestSuite(() => {

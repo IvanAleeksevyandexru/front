@@ -3,11 +3,13 @@ import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { CycledInfoComponent } from './cycled-info.component';
 
-const mockValue = [{
-  fieldName: 'ai19_1.value',
-  value: 'fake value',
-  isBold: false
-}];
+const mockValue = [
+  {
+    fieldName: 'ai19_1.value',
+    value: 'fake value',
+    isBold: false,
+  },
+];
 
 describe('CycledInfoComponent', () => {
   let component: CycledInfoComponent;

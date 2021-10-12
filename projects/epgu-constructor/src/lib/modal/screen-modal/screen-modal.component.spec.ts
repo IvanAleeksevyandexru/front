@@ -12,8 +12,9 @@ import { ScreenModalService } from './screen-modal.service';
 import { CustomScreenService } from '../../screen/custom-screen/custom-screen.service';
 import {
   DatesToolsService,
-  ERROR_HANDLER_ORDER_PARAMS_SERVICES, ObjectHelperService,
-  WordTransformService
+  ERROR_HANDLER_ORDER_PARAMS_SERVICES,
+  ObjectHelperService,
+  WordTransformService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
@@ -45,7 +46,11 @@ describe('ScreenModalComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [ScreenModalComponent, MockComponent(ComponentListModalComponent), MockComponent(ScreenModalResolverComponent)],
+      declarations: [
+        ScreenModalComponent,
+        MockComponent(ComponentListModalComponent),
+        MockComponent(ScreenModalResolverComponent),
+      ],
       imports: [
         RouterTestingModule,
         BaseModule,
@@ -78,9 +83,8 @@ describe('ScreenModalComponent', () => {
           provide: ERROR_HANDLER_ORDER_PARAMS_SERVICES,
           useClass: ErrorHandlerOrderParamsServiceService,
         },
-      ]
-    })
-    .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -116,16 +120,15 @@ describe('ScreenModalComponent', () => {
       });
     });
     it('should set showModal on playerLoaded$ event ', (done) => {
-      component.screenModalService.playerLoaded$
-        .subscribe(showModal => {
-          expect(showModal).toBeFalsy();
-          done();
-        });
+      component.screenModalService.playerLoaded$.subscribe((showModal) => {
+        expect(showModal).toBeFalsy();
+        done();
+      });
     });
     it('should call nextStep on nextStep$ event ', () => {
       const nextStepSpy = spyOn(component, 'nextStep').and.callThrough();
       const navigation = {
-        options: { isInternalScenarioFinish: true }
+        options: { isInternalScenarioFinish: true },
       };
       component['navModalService'].next(navigation);
       expect(nextStepSpy).toHaveBeenCalled();
@@ -133,7 +136,7 @@ describe('ScreenModalComponent', () => {
     it('should call prevStep on prevStep$ event ', () => {
       const prevStepSpy = spyOn(component, 'prevStep').and.callThrough();
       const navigation = {
-        options: { isInternalScenarioFinish: true }
+        options: { isInternalScenarioFinish: true },
       };
       component['navModalService'].prev(navigation);
       expect(prevStepSpy).toHaveBeenCalled();
@@ -144,7 +147,7 @@ describe('ScreenModalComponent', () => {
     it('sould call closeModalOnNext(), if scenario finished', () => {
       const closeModalSpy = jest.spyOn(component, 'closeModalOnNext');
       const navigation = {
-        options: { isInternalScenarioFinish: true }
+        options: { isInternalScenarioFinish: true },
       };
       component.nextStep(navigation);
       expect(closeModalSpy).toHaveBeenCalled();
@@ -152,7 +155,7 @@ describe('ScreenModalComponent', () => {
     it('sould call navigate(), if scenario not finished', () => {
       const navigateSpy = jest.spyOn(component.screenModalService, 'navigate');
       const navigation = {
-        options: { isInternalScenarioFinish: false }
+        options: { isInternalScenarioFinish: false },
       };
       component.nextStep(navigation);
       expect(navigateSpy).toHaveBeenCalled();
@@ -163,7 +166,7 @@ describe('ScreenModalComponent', () => {
     it('sould call closeModal(), if scenario finished', () => {
       const closeModalSpy = jest.spyOn(component, 'closeModal');
       const navigation = {
-        options: { isInternalScenarioFinish: true }
+        options: { isInternalScenarioFinish: true },
       };
       component.prevStep(navigation);
       expect(closeModalSpy).toHaveBeenCalled();
@@ -171,7 +174,7 @@ describe('ScreenModalComponent', () => {
     it('sould call navigate(), if scenario not finished', () => {
       const navigateSpy = jest.spyOn(component.screenModalService, 'navigate');
       const navigation = {
-        options: { isInternalScenarioFinish: false }
+        options: { isInternalScenarioFinish: false },
       };
       component.prevStep(navigation);
       expect(navigateSpy).toHaveBeenCalled();
@@ -200,5 +203,4 @@ describe('ScreenModalComponent', () => {
       expect(resetStoreSpy).not.toHaveBeenCalled();
     });
   });
-
 });

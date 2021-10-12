@@ -1,9 +1,9 @@
 export class DurationServiceStub {
   initDurations() {}
 
-  getMonthRange()  {}
+  getMonthRange() {}
 
-  getQuarterRange()  {}
+  getQuarterRange() {}
 
   getHalfYearRange() {}
 

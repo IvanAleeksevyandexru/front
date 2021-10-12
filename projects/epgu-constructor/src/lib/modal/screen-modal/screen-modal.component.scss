@@ -125,13 +125,11 @@ $closeBtnWidth: 24px;
   }
 
   @include tablets-up {
-    [ng-reflect-component-type=PhoneNumberChangeInput],
-    [ng-reflect-component-type=NewEmailInput] {
+    [ng-reflect-component-type='PhoneNumberChangeInput'],
+    [ng-reflect-component-type='NewEmailInput'] {
       .form__input {
         width: calc(50% - 14px);
       }
     }
   }
 }
-
-

@@ -10,14 +10,10 @@ import { UniqueScreenComponentsModule } from '../../component/unique-screen/uniq
 @NgModule({
   declarations: [UniqueScreenComponent, AbstractPaymentComponent],
   exports: [UniqueScreenComponent],
-  imports: [
-    BaseModule,
-    ComponentUniqueResolverModule,
-    UniqueScreenComponentsModule
-  ],
+  imports: [BaseModule, ComponentUniqueResolverModule, UniqueScreenComponentsModule],
   providers: [
     EventBusService,
     DatesToolsService, // TODO: чекнуть нужен ли тут этот сервис?
-  ]
+  ],
 })
 export class UniqueScreenModule {}

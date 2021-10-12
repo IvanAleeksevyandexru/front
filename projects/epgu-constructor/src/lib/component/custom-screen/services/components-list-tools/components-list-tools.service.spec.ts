@@ -52,15 +52,20 @@ describe('ComponentsListToolsService', () => {
     it('should return fullAddress string, if json address value passed', () => {
       const component = JSON.parse(JSON.stringify(mockComponent));
       component.type = CustomScreenComponentTypes.AddressInput;
-      // eslint-disable-next-line max-len
-      component.value = '{"region":"Башкортостан","city":"","district":"Учалинский","town":"Рысаево","inCityDist":"","street":"Башкортостан","additionalArea":"","additionalStreet":"","house":"","houseCheckbox":true,"houseCheckboxClosed":true,"building1":"","building2":"","apartment":"","apartmentCheckbox":false,"apartmentCheckboxClosed":false,"index":"453722","geoLat":"54.4767414","geoLon":"59.3850825","fullAddress":"453722, Респ. Башкортостан, р-н. Учалинский, с. Рысаево, ул. Башкортостан","addressStr":"Респ. Башкортостан, р-н. Учалинский, с. Рысаево, ул. Башкортостан","lat":"54.4767414","lng":"59.3850825","fiasCode":"1aae9505-d61a-40a4-a5ce-b0397e8275b2","okato":"80253825002","hasErrors":0,"kladrCode":"02046000074001200","regionCode":"02"}';
-      expect(service.convertedValue(component)).toBe('453722, Респ. Башкортостан, р-н. Учалинский, с. Рысаево, ул. Башкортостан');
+      component.value =
+        // eslint-disable-next-line max-len
+        '{"region":"Башкортостан","city":"","district":"Учалинский","town":"Рысаево","inCityDist":"","street":"Башкортостан","additionalArea":"","additionalStreet":"","house":"","houseCheckbox":true,"houseCheckboxClosed":true,"building1":"","building2":"","apartment":"","apartmentCheckbox":false,"apartmentCheckboxClosed":false,"index":"453722","geoLat":"54.4767414","geoLon":"59.3850825","fullAddress":"453722, Респ. Башкортостан, р-н. Учалинский, с. Рысаево, ул. Башкортостан","addressStr":"Респ. Башкортостан, р-н. Учалинский, с. Рысаево, ул. Башкортостан","lat":"54.4767414","lng":"59.3850825","fiasCode":"1aae9505-d61a-40a4-a5ce-b0397e8275b2","okato":"80253825002","hasErrors":0,"kladrCode":"02046000074001200","regionCode":"02"}';
+      expect(service.convertedValue(component)).toBe(
+        '453722, Респ. Башкортостан, р-н. Учалинский, с. Рысаево, ул. Башкортостан',
+      );
     });
     it('should return origin value string, if json address value is not parsable', () => {
       const component = JSON.parse(JSON.stringify(mockComponent));
       component.type = CustomScreenComponentTypes.AddressInput;
       component.value = '453722, Респ. Башкортостан, р-н. Учалинский, с. Рысаево, ул. Башкортостан';
-      expect(service.convertedValue(component)).toBe('453722, Респ. Башкортостан, р-н. Учалинский, с. Рысаево, ул. Башкортостан');
+      expect(service.convertedValue(component)).toBe(
+        '453722, Респ. Башкортостан, р-н. Учалинский, с. Рысаево, ул. Башкортостан',
+      );
     });
     it('should return parsed ListItem value, if json value passed', () => {
       const component = JSON.parse(JSON.stringify(mockComponent));

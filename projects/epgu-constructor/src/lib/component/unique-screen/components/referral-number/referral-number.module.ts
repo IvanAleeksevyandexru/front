@@ -24,6 +24,6 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [CookieService],
   exports: [ReferralNumberComponent],
-  entryComponents: [ReferralNumberComponent]
+  entryComponents: [ReferralNumberComponent],
 })
-export class ReferralNumberModule { }
+export class ReferralNumberModule {}

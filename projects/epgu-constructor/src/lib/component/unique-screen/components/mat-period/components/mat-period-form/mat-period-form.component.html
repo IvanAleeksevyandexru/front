@@ -43,7 +43,9 @@
     <epgu-constructor-label
       [label]="components[formField.amount].label[form.get(formField.paymentType).value]"
     ></epgu-constructor-label>
-    <epgu-cf-ui-constructor-error [data]="form.get(formField.amount)"></epgu-cf-ui-constructor-error>
+    <epgu-cf-ui-constructor-error
+      [data]="form.get(formField.amount)"
+    ></epgu-cf-ui-constructor-error>
     <epgu-constructor-masked-input
       [control]="$any(form.get(formField.amount))"
       mask="NumberMaskInput"
@@ -70,7 +72,9 @@
       <epgu-constructor-label
         [label]="components[formField.finishPayment].label"
       ></epgu-constructor-label>
-      <epgu-cf-ui-constructor-error [data]="form.get(formField.paymentType)"></epgu-cf-ui-constructor-error>
+      <epgu-cf-ui-constructor-error
+        [data]="form.get(formField.paymentType)"
+      ></epgu-cf-ui-constructor-error>
       <epgu-cf-ui-constructor-constructor-dropdown
         *ngIf="form.get(formField.paymentType).value !== 'year'; else yearDropdown"
         [control]="$any(form.get(formField.finishPayment))"
@@ -90,7 +94,9 @@
         $any(components[formField.paymentDate].label) | label: form.get(formField.paymentType).value
       "
     ></epgu-constructor-label>
-    <epgu-cf-ui-constructor-error [data]="form.get(formField.paymentDate)"></epgu-cf-ui-constructor-error>
+    <epgu-cf-ui-constructor-error
+      [data]="form.get(formField.paymentDate)"
+    ></epgu-cf-ui-constructor-error>
     <epgu-constructor-constructor-plain-input
       *ngIf="form.get(formField.paymentType).value !== 'one'; else paymentDatePicker"
       [control]="$any(form.get(formField.paymentDate))"

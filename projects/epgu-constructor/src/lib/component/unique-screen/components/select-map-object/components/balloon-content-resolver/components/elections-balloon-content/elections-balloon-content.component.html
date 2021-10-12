@@ -1,4 +1,6 @@
-<h5 (click)="expandObject(mapObject)" class="map-object__header">{{ mapObject.balloonContentHeader }}</h5>
+<h5 (click)="expandObject(mapObject)" class="map-object__header">
+  {{ mapObject.balloonContentHeader }}
+</h5>
 <div class="map-object__attr" *ngIf="mapObject.expanded && (extInfo$ | async) as extInfo">
   <span class="map-object__label">{{ extInfo.commissionName }}</span>
   <span class="map-object__value">{{ extInfo.address }}</span>
@@ -10,7 +12,7 @@
       <li *ngFor="let election of extInfo.elections">
         {{ election.electionName }}.
         <ng-container *ngIf="attrs?.isDistrictNoVisible && election.districtNo">
-          <br>Избирательный округ № {{election.districtNo}}
+          <br />Избирательный округ № {{ election.districtNo }}
         </ng-container>
       </li>
     </ul></span

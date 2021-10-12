@@ -30,7 +30,7 @@ export class DictionaryToolsServiceStub {
         treeFiltering: '',
         tx: '',
         withCredentials: true,
-      }
+      },
     };
   }
 

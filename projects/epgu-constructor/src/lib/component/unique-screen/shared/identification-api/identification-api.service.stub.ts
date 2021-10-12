@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 
 @Injectable()
 export class IdentificationApiServiceStub {
-
   passportIdentification(): Observable<unknown> {
     return of({});
   }

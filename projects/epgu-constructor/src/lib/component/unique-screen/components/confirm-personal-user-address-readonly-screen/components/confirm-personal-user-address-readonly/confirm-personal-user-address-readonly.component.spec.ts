@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ConfigService, DATE_STRING_DOT_FORMAT, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DATE_STRING_DOT_FORMAT,
+  HttpCancelService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -45,7 +49,8 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
       disclaimer: {
         type: 'warn',
         title: 'Добавьте адрес',
-        description: 'Адрес постоянной регистрации нужен для отправки заявления. Этот адрес сохранится в профиле, и в будущих заявлениях не придется вводить его заново',
+        description:
+          'Адрес постоянной регистрации нужен для отправки заявления. Этот адрес сохранится в профиле, и в будущих заявлениях не придется вводить его заново',
       },
     },
     id: '',
@@ -223,8 +228,10 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.valueParsed).toEqual({ regAddr: 'Some addr1', regDate: dateService.parse('12.05.2021', DATE_STRING_DOT_FORMAT) });
+      expect(component.valueParsed).toEqual({
+        regAddr: 'Some addr1',
+        regDate: dateService.parse('12.05.2021', DATE_STRING_DOT_FORMAT),
+      });
     });
-
   });
 });

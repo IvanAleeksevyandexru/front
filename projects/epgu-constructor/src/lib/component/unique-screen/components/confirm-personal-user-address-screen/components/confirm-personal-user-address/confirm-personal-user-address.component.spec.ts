@@ -5,7 +5,11 @@ import { MockComponents, MockDirective, MockModule, MockProvider } from 'ng-mock
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConfigService, DatesToolsServiceStub, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DatesToolsServiceStub,
+  HttpCancelService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';

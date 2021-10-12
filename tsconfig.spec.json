@@ -5,20 +5,12 @@
     "module": "CommonJS",
     "emitDecoratorMetadata": true,
     "outDir": "./out-tsc/spec",
-    "types": [
-      "jest",
-      "node"
-    ],
+    "types": ["jest", "node"],
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"]
     }
   },
-  "files": [
-    "src/polyfills.ts"
-  ],
-  "include": [
-    "projects/*/src/**/*.spec.ts",
-    "projects/*/src/**/*.d.ts",
-  ]
+  "files": ["src/polyfills.ts"],
+  "include": ["projects/*/src/**/*.spec.ts", "projects/*/src/**/*.d.ts"]
 }

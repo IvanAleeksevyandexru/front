@@ -12,18 +12,16 @@
       <epgu-constructor-constructor-plain-input
         [textTransformType]="getFieldByName(policyInputFieldsTypes.number)?.attrs?.fstuc"
         [id]="policyInputFieldsTypes.number"
-        [control]="
-          $any(form.get(policyInputFieldsTypes.number))
-        "
+        [control]="$any(form.get(policyInputFieldsTypes.number))"
         [placeholder]="getFieldByName(policyInputFieldsTypes.number)?.placeholder"
         [invalid]="isInvalidAndTouched(policyInputFieldsTypes.number)"
         [validationShowOn]="validationShowOn"
         [component]="getFieldByName(policyInputFieldsTypes.number)"
         [suggestions]="classifiedSuggestionItems[policyInputFieldsTypes.number]"
-        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
-        (blurEvent)="
-          markControlAsDirty(policyInputFieldsTypes.number)
+        (selectSuggest)="
+          suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')
         "
+        (blurEvent)="markControlAsDirty(policyInputFieldsTypes.number)"
       ></epgu-constructor-constructor-plain-input>
       <epgu-constructor-hint
         *ngIf="getFieldByName(policyInputFieldsTypes.number)?.attrs?.clarifications"
@@ -58,15 +56,15 @@
       <epgu-constructor-constructor-plain-input
         [textTransformType]="getFieldByName(policyInputFieldsTypes.series)?.attrs?.fstuc"
         [id]="policyInputFieldsTypes.series"
-        [control]="
-          $any(form.get(policyInputFieldsTypes.series))
-        "
+        [control]="$any(form.get(policyInputFieldsTypes.series))"
         [placeholder]="getFieldByName(policyInputFieldsTypes.series)?.placeholder"
         [invalid]="isInvalidAndTouched(policyInputFieldsTypes.series)"
         [validationShowOn]="validationShowOn"
         [component]="getFieldByName(policyInputFieldsTypes.series)"
         [suggestions]="classifiedSuggestionItems[policyInputFieldsTypes.series]"
-        (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
+        (selectSuggest)="
+          suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')
+        "
       ></epgu-constructor-constructor-plain-input>
       <epgu-cf-ui-constructor-helper-text
         *ngIf="getFieldByName(policyInputFieldsTypes.series)?.hint as hint"

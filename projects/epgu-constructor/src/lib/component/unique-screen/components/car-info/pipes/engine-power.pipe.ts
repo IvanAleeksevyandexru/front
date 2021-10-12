@@ -1,12 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'enginePower'
+  name: 'enginePower',
 })
 export class EnginePowerPipe implements PipeTransform {
-
   transform(enginePowerVt: string, enginePowerHorse: string): string {
-    return enginePowerVt && enginePowerHorse ? `${enginePowerVt}/${enginePowerHorse}`: null;
+    return enginePowerVt && enginePowerHorse ? `${enginePowerVt}/${enginePowerHorse}` : null;
   }
-
 }

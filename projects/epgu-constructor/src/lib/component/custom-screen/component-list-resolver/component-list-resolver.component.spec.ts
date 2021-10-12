@@ -23,7 +23,7 @@ Object.defineProperties(CUSTOM_SCREEN_COMPONENTS, {
   },
   TEST2: {
     value: Test2Component,
-  }
+  },
 });
 
 jest.useFakeTimers();
@@ -33,13 +33,10 @@ describe('ComponentListResolverComponent', () => {
   let fixture: ComponentFixture<ComponentListResolverComponent>;
   let screenService: ScreenServiceStub;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ComponentListResolverComponent, TestComponent, Test2Component],
-      providers: [
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        UnsubscribeService
-      ],
+      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }, UnsubscribeService],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
@@ -72,10 +69,8 @@ describe('ComponentListResolverComponent', () => {
     fixture.detectChanges();
     jest.runAllTimers();
 
-
     expect(component.componentRef.instance).toBeInstanceOf(Test2Component);
   });
-
 
   it('should return screens from UNIQUE_SCREEN_COMPONENTS', () => {
     expect(component.getComponentByType(CustomScreenComponentTypes.AddressInput)).toBe(
@@ -85,7 +80,6 @@ describe('ComponentListResolverComponent', () => {
       CUSTOM_SCREEN_COMPONENTS[CustomScreenComponentTypes.CheckingAccount],
     );
   });
-
 
   it('createComponent() method', () => {
     const unrecognizedType = 'unrecognized type' as any;

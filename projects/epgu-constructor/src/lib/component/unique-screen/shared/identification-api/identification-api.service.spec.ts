@@ -1,15 +1,12 @@
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import {
-  ConfigService,
-  ConfigServiceStub,
-} from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { IdentificationApiService } from './identification-api.service';
 import {
   PassportIdentificationRequestBody,
   SelfieIdentificationRequestBody,
-  VideoIdentificationRequestBody
+  VideoIdentificationRequestBody,
 } from './identification-api.types';
 
 describe('IdentificationApiService', () => {
@@ -40,7 +37,9 @@ describe('IdentificationApiService', () => {
   it('calling passportIdentification expectation', fakeAsync(() => {
     const responseMock = {};
     const requestBody = {} as PassportIdentificationRequestBody;
-    service.passportIdentification(requestBody).subscribe((response) => expect(response).toBe(responseMock));
+    service
+      .passportIdentification(requestBody)
+      .subscribe((response) => expect(response).toBe(responseMock));
     const req = http.expectOne(`${apiUrl}/passport`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(requestBody);
@@ -51,7 +50,9 @@ describe('IdentificationApiService', () => {
   it('calling selfieIdentification expectation', fakeAsync(() => {
     const responseMock = {};
     const requestBody = {} as SelfieIdentificationRequestBody;
-    service.selfieIdentification(requestBody).subscribe((response) => expect(response).toBe(responseMock));
+    service
+      .selfieIdentification(requestBody)
+      .subscribe((response) => expect(response).toBe(responseMock));
     const req = http.expectOne(`${apiUrl}/selfie`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(requestBody);
@@ -62,7 +63,9 @@ describe('IdentificationApiService', () => {
   it('calling selfieIdentification expectation', fakeAsync(() => {
     const responseMock = {};
     const requestBody = {} as VideoIdentificationRequestBody;
-    service.videoIdentification(requestBody).subscribe((response) => expect(response).toBe(responseMock));
+    service
+      .videoIdentification(requestBody)
+      .subscribe((response) => expect(response).toBe(responseMock));
     const req = http.expectOne(`${apiUrl}/video`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(requestBody);

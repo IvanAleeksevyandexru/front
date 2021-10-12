@@ -4,7 +4,7 @@ import { formatNumber } from '@angular/common';
 @Pipe({ name: 'rank' })
 export class RankPipe implements PipeTransform {
   transform(value = '', rank = false, digitsInfo = '0.0-0', locale = 'ru'): string {
-    if(rank) {
+    if (rank) {
       const replacer = (substring: string): string => {
         return formatNumber(+substring, locale, digitsInfo);
       };

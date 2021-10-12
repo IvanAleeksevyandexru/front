@@ -10,7 +10,8 @@ import {
   CustomListDropDowns,
   CustomListGenericData,
   CustomListReferenceData,
-  CustomScreenComponentTypes, Searchable,
+  CustomScreenComponentTypes,
+  Searchable,
 } from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
@@ -80,8 +81,10 @@ export class DictionaryToolsService {
     private jsonHelperService: JsonHelperService,
   ) {}
 
-  public watchForFilters(components: CustomComponent[], filters: Observable<ComponentDictionaryFilters>):
-    Observable<CustomListReferenceData[]> {
+  public watchForFilters(
+    components: CustomComponent[],
+    filters: Observable<ComponentDictionaryFilters>,
+  ): Observable<CustomListReferenceData[]> {
     return filters.pipe(
       switchMap((filters: ComponentDictionaryFilters) => {
         return forkJoin(
@@ -533,7 +536,6 @@ export class DictionaryToolsService {
         ? value
         : undefined,
     );
-
   }
 
   private initDataAfterLoading(references: CustomListReferenceData[]): void {
@@ -611,17 +613,20 @@ export class DictionaryToolsService {
   }
 
   private adaptDropdown(items: CustomComponentDropDownItemList): Partial<ListItem>[] {
-    return items && items.map((item: CustomComponentDropDownItem, index: number) => {
-      const itemText = item.label || item.title;
-      const itemCode = item.code || item?.value || `${itemText}-${index}`;
-      return {
-        id: itemCode,
-        text: `${itemText}`,
-        unselectable: !!item.disable,
-        originalItem: item,
-        compare: (): boolean => false,
-      };
-    });
+    return (
+      items &&
+      items.map((item: CustomComponentDropDownItem, index: number) => {
+        const itemText = item.label || item.title;
+        const itemCode = item.code || item?.value || `${itemText}-${index}`;
+        return {
+          id: itemCode,
+          text: `${itemText}`,
+          unselectable: !!item.disable,
+          originalItem: item,
+          compare: (): boolean => false,
+        };
+      })
+    );
   }
 
   private getDictionariesByFilter(

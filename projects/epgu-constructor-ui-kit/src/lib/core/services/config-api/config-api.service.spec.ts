@@ -6,7 +6,6 @@ import { DEFAULT_CONFIG_ID } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../config/config.service';
 import { ConfigServiceStub } from '../config/config.service.stub';
 
-
 describe('ConfigApiService', () => {
   let service: ConfigApiService;
   let http: HttpTestingController;
@@ -15,10 +14,7 @@ describe('ConfigApiService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        ConfigApiService,
-        { provide: ConfigService, useClass: ConfigServiceStub },
-      ]
+      providers: [ConfigApiService, { provide: ConfigService, useClass: ConfigServiceStub }],
     });
   });
 
@@ -31,7 +27,7 @@ describe('ConfigApiService', () => {
 
   describe('getFormPlayerConfig()', () => {
     it('should call http with get method', fakeAsync(() => {
-      service.getFormPlayerConfig().subscribe(response => expect(response).toBe(responseMock));
+      service.getFormPlayerConfig().subscribe((response) => expect(response).toBe(responseMock));
       const req = http.expectOne(`/api/pgu-service-config/config/${DEFAULT_CONFIG_ID}`);
       expect(req.request.method).toBe('GET');
       req.flush(responseMock);

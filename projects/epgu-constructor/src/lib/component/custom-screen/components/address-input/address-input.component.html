@@ -15,7 +15,9 @@
     [control]="control.get('value')"
     [hideLevels]="control.value?.attrs?.hideLevels"
     [suggestions]="suggestions$ | async"
-    (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'DADATA_WIDGET')"
+    (selectSuggest)="
+      suggestHandlerService.handleEvent($event, componentsGroupIndex, 'DADATA_WIDGET')
+    "
   >
   </epgu-constructor-constructor-dadata-widget>
 </epgu-constructor-component-item>

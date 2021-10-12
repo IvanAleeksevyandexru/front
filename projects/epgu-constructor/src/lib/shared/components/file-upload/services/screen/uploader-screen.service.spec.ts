@@ -5,14 +5,14 @@ import { UploaderScreenService } from './uploader-screen.service';
 import {
   FileUploadAttributes,
   UploadedFile,
-  FileUploadEmitValue
+  FileUploadEmitValue,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 
 const mockAttrs = {
   maxSize: 1000,
   maxFileCount: 10,
   hideTotalAvailableSize: false,
-  hideTotalAvailableCount: false
+  hideTotalAvailableCount: false,
 } as FileUploadAttributes;
 
 const fileSample: UploadedFile = {
@@ -71,7 +71,8 @@ describe('UploaderScreenService', () => {
         ...{
           hideTotalAvailableSize: true,
           hideTotalAvailableCount: true,
-        }});
+        },
+      });
 
       expect(service.showLimitsInfo()).toBeFalsy();
     });
@@ -90,7 +91,8 @@ describe('UploaderScreenService', () => {
         ...mockAttrs,
         ...{
           hideTotalAvailableSize: false,
-        }});
+        },
+      });
 
       expect(service.showLimitsInfo()).toBeTruthy();
     });
@@ -100,7 +102,8 @@ describe('UploaderScreenService', () => {
         ...mockAttrs,
         ...{
           hideTotalAvailableCount: false,
-        }});
+        },
+      });
 
       expect(service.showLimitsInfo()).toBeTruthy();
     });
@@ -111,7 +114,7 @@ describe('UploaderScreenService', () => {
       const emitValue: FileUploadEmitValue = {
         uploadId: 'id1',
         value: [fileSample],
-        required: true
+        required: true,
       };
 
       service.calculateСurrentFiles([emitValue]);

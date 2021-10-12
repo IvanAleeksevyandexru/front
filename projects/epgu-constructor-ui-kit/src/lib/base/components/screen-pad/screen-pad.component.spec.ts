@@ -6,7 +6,9 @@ import { Component } from '@angular/core';
 const helperTextMock = 'Awesome useful helper text.';
 
 @Component({
-  template: `<epgu-cf-ui-constructor-screen-pad>${helperTextMock}</epgu-cf-ui-constructor-screen-pad>`
+  template: `<epgu-cf-ui-constructor-screen-pad
+    >${helperTextMock}</epgu-cf-ui-constructor-screen-pad
+  >`,
 })
 class WrapperTestComponent {}
 
@@ -16,9 +18,8 @@ describe('AppCardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ WrapperTestComponent, ScreenPadComponent ]
-    })
-    .compileComponents();
+      declarations: [WrapperTestComponent, ScreenPadComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

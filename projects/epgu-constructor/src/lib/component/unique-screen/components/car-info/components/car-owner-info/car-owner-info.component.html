@@ -10,11 +10,12 @@
       <div class="info-list-group-item">
         <div class="info-list-subtitle">Паспорт собственника</div>
         <div class="info-list-value">
-          <div>серия и номер: {{ carOwnerInfo.ownerInfo?.document?.seriesAndNumber | defaultValue }}</div>
+          <div>
+            серия и номер: {{ carOwnerInfo.ownerInfo?.document?.seriesAndNumber | defaultValue }}
+          </div>
           <div>дата выдачи: {{ carOwnerInfo.ownerInfo?.document?.issueDate | defaultValue }}</div>
         </div>
       </div>
-
     </div>
 
     <div class="divider info-list-divider"></div>
@@ -24,25 +25,30 @@
     <h5 class="info-list-title">Данные ТС</h5>
 
     <div>
-
       <div class="info-list-group-item">
         <div class="info-list-subtitle">VIN</div>
-        <div class="info-list-value"> {{ carOwnerInfo.vehicleInfo?.vin | defaultValue }}</div>
+        <div class="info-list-value">{{ carOwnerInfo.vehicleInfo?.vin | defaultValue }}</div>
       </div>
 
       <div class="info-list-group-item">
         <div class="info-list-subtitle">Тип ТС</div>
-        <div class="info-list-value">{{ carOwnerInfo.vehicleInfo?.vehicleType | defaultValue}}</div>
+        <div class="info-list-value">
+          {{ carOwnerInfo.vehicleInfo?.vehicleType | defaultValue }}
+        </div>
       </div>
 
       <div class="info-list-group-item">
         <div class="info-list-subtitle">Год выпуска</div>
-        <div class="info-list-value">{{ carOwnerInfo.vehicleInfo?.manufacturedYear | defaultValue }}</div>
+        <div class="info-list-value">
+          {{ carOwnerInfo.vehicleInfo?.manufacturedYear | defaultValue }}
+        </div>
       </div>
 
       <div class="info-list-group-item">
         <div class="info-list-subtitle">Модель двигателя</div>
-        <div class="info-list-value">{{ carOwnerInfo.vehicleInfo?.engineModel | defaultValue }}</div>
+        <div class="info-list-value">
+          {{ carOwnerInfo.vehicleInfo?.engineModel | defaultValue }}
+        </div>
       </div>
 
       <div class="info-list-group-item">
@@ -52,29 +58,38 @@
 
       <div class="info-list-group-item">
         <div class="info-list-subtitle">Номер шасси (рамы)</div>
-        <div class="info-list-value">{{ carOwnerInfo.vehicleInfo?.chassisNumber | defaultValue }}</div>
+        <div class="info-list-value">
+          {{ carOwnerInfo.vehicleInfo?.chassisNumber | defaultValue }}
+        </div>
       </div>
 
       <div class="info-list-group-item">
         <div class="info-list-subtitle">Номер кузова</div>
-        <div class="info-list-value">{{ carOwnerInfo.vehicleInfo?.carcaseNumber | defaultValue }}</div>
+        <div class="info-list-value">
+          {{ carOwnerInfo.vehicleInfo?.carcaseNumber | defaultValue }}
+        </div>
       </div>
 
       <div class="info-list-group-item">
         <div class="info-list-subtitle">Цвет</div>
-        <div class="info-list-value">{{ carOwnerInfo.vehicleInfo?.carcaseColor | defaultValue }}</div>
+        <div class="info-list-value">
+          {{ carOwnerInfo.vehicleInfo?.carcaseColor | defaultValue }}
+        </div>
       </div>
 
       <div class="info-list-group-item">
         <div class="info-list-subtitle">Мощность двигателя, л.с.</div>
-        <div class="info-list-value">{{ carOwnerInfo.vehicleInfo?.enginePowerHorse | defaultValue }}</div>
+        <div class="info-list-value">
+          {{ carOwnerInfo.vehicleInfo?.enginePowerHorse | defaultValue }}
+        </div>
       </div>
 
       <div class="info-list-group-item">
         <div class="info-list-subtitle">Объём двигателя (куб.см)</div>
-        <div class="info-list-value">{{ carOwnerInfo.vehicleInfo?.engineVolume | defaultValue }}</div>
+        <div class="info-list-value">
+          {{ carOwnerInfo.vehicleInfo?.engineVolume | defaultValue }}
+        </div>
       </div>
-
     </div>
 
     <div class="divider info-list-divider"></div>
@@ -91,5 +106,4 @@
     [showSellWarning]="true"
     [isPledged]="carOwnerInfo.notaryInfo?.isPledged"
   ></epgu-constructor-notary-info>
-
 </epgu-cf-ui-constructor-screen-pad>

@@ -18,5 +18,4 @@ describe('ModelMarkNamePipe', () => {
   it('should return an empty string if there aren\'t values at all', () => {
     expect(pipe.transform(null, null, null)).toBe('');
   });
-
 });

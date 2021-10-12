@@ -23,12 +23,10 @@ import {
   ComponentBaloonContentDto,
   ComponentDictionaryFilterDto,
 } from '@epgu/epgu-constructor-types';
-  import {
-  IuikFullDataResponse
-} from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
-import {
-  KindergartenSearchPanelService
-} from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
+// eslint-disable-next-line max-len
+import { IuikFullDataResponse } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
+// eslint-disable-next-line max-len
+import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { YaMapService } from '@epgu/ui/services/ya-map';
 
 export interface SelectMapComponentAttrs {

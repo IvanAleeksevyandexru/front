@@ -12,7 +12,7 @@ class MockElementRef implements ElementRef {
     get offsetHeight(): number {
       let wordsQnt = this.innerText.split(' ').length;
       //ширина строки равна 3м словам
-      let linesQnt = Math.ceil(wordsQnt/3);
+      let linesQnt = Math.ceil(wordsQnt / 3);
       return linesQnt * lineHeight;
     },
     appendChild: () => null,
@@ -31,10 +31,9 @@ describe('ToggleTextComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ToggleTextComponent ],
-      providers: [ WINDOW_PROVIDERS ],
-    })
-    .compileComponents();
+      declarations: [ToggleTextComponent],
+      providers: [WINDOW_PROVIDERS],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -45,9 +44,9 @@ describe('ToggleTextComponent', () => {
     window = TestBed.inject(WINDOW) as Window;
     component['elemRef'] = new MockElementRef();
 
-    jest.spyOn(window, 'getComputedStyle').mockReturnValue({
-      getPropertyValue: () => '' + lineHeight // mock line-height
-    } as unknown as CSSStyleDeclaration);
+    jest.spyOn(window, 'getComputedStyle').mockReturnValue(({
+      getPropertyValue: () => '' + lineHeight, // mock line-height
+    } as unknown) as CSSStyleDeclaration);
   });
 
   it('should show all text if text length < linesQuantity', () => {
@@ -68,7 +67,9 @@ describe('ToggleTextComponent', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    const resultText = fixture.debugElement.query(By.css('.toggle-text')).nativeElement.textContent.trim();
+    const resultText = fixture.debugElement
+      .query(By.css('.toggle-text'))
+      .nativeElement.textContent.trim();
     expect(resultText).toBe('text text2 [...]');
   });
 
@@ -79,12 +80,13 @@ describe('ToggleTextComponent', () => {
     component.ngOnChanges();
     fixture.detectChanges();
 
-    const resultText = fixture.debugElement.query(By.css('.toggle-text')).nativeElement.textContent.trim();
+    const resultText = fixture.debugElement
+      .query(By.css('.toggle-text'))
+      .nativeElement.textContent.trim();
     expect(resultText).toBe('text text2 text3 text4 text5 [...]');
   });
 
   describe('toggleText()', () => {
-
     it('should toggle text', () => {
       component.showAllText = true;
 
@@ -100,7 +102,5 @@ describe('ToggleTextComponent', () => {
 
       expect(component.showAllText).toBeTruthy();
     });
-
   });
-
 });

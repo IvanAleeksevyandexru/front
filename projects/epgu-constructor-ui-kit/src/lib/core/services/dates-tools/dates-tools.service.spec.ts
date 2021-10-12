@@ -307,8 +307,7 @@ describe('DatesToolsService', () => {
 
     it('should return setted date for january', () => {
       const date = new Date();
-      const resultDate = service
-        .setCalendarDate(date, 2019, 3, 10);
+      const resultDate = service.setCalendarDate(date, 2019, 3, 10);
       expect(resultDate instanceof Date).toBeTruthy();
       const expectedDate = new Date('2019-04-10T00:00:00.000Z');
       const resultYear = resultDate.getFullYear();

@@ -104,5 +104,4 @@ describe('FormPlayerApiService', () => {
       req.flush(responseMock);
     }));
   });
-
 });

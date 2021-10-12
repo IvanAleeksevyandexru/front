@@ -4,12 +4,12 @@ import { ObservableInput, of } from 'rxjs';
 import { HookTypes } from './hook.constants';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HookServiceStub {
   private hooks = {};
 
-  constructor() { }
+  constructor() {}
 
   public hasHooks(type: HookTypes): boolean {
     return false;

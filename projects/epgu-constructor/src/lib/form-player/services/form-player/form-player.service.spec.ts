@@ -16,7 +16,11 @@ import { InitDataService } from '../../../core/services/init-data/init-data.serv
 import { FormPlayerService } from './form-player.service';
 import { FormPlayerServiceStub } from './form-player.service.stub';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerApiResponse, FormPlayerApiSuccessResponse, ScreenTypes } from '@epgu/epgu-constructor-types';
+import {
+  FormPlayerApiResponse,
+  FormPlayerApiSuccessResponse,
+  ScreenTypes,
+} from '@epgu/epgu-constructor-types';
 import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';
 
@@ -312,7 +316,9 @@ describe('FormPlayerService', () => {
 
       const getServiceDataSubject = new Subject();
 
-      jest.spyOn(formPlayerApiService, 'getServiceData').mockReturnValue(getServiceDataSubject.asObservable());
+      jest
+        .spyOn(formPlayerApiService, 'getServiceData')
+        .mockReturnValue(getServiceDataSubject.asObservable());
 
       service.initPlayerFromOrder({});
 
@@ -326,7 +332,9 @@ describe('FormPlayerService', () => {
 
       const getServiceDataSubject = new Subject();
 
-      jest.spyOn(formPlayerApiService, 'getServiceData').mockReturnValue(getServiceDataSubject.asObservable());
+      jest
+        .spyOn(formPlayerApiService, 'getServiceData')
+        .mockReturnValue(getServiceDataSubject.asObservable());
 
       service.initPlayerFromOrder({}).subscribe(
         () => null,
@@ -336,7 +344,7 @@ describe('FormPlayerService', () => {
           expect(service['sendDataError']).toBeCalledTimes(1);
           expect(service['sendDataError']).toBeCalledWith('some error');
           done();
-        }
+        },
       );
 
       (service['updateLoading'] as jest.Mock).mockReset();
@@ -358,18 +366,18 @@ describe('FormPlayerService', () => {
       const getServiceDataSubject = new Subject();
       const navigateSubject = new Subject();
 
-      jest.spyOn(formPlayerApiService, 'getServiceData').mockReturnValue(getServiceDataSubject.asObservable());
+      jest
+        .spyOn(formPlayerApiService, 'getServiceData')
+        .mockReturnValue(getServiceDataSubject.asObservable());
       jest.spyOn(formPlayerApiService, 'navigate').mockReturnValue(navigateSubject.asObservable());
 
-      service.initPlayerFromOrder({}).subscribe(
-        (response) => {
-          expect(response).toBe(successNavigateResponse);
+      service.initPlayerFromOrder({}).subscribe((response) => {
+        expect(response).toBe(successNavigateResponse);
 
-          expect(service['processResponse']).toBeCalledTimes(1);
-          expect(service['processResponse']).toBeCalledWith(successNavigateResponse);
-          done();
-        }
-      );
+        expect(service['processResponse']).toBeCalledTimes(1);
+        expect(service['processResponse']).toBeCalledWith(successNavigateResponse);
+        done();
+      });
 
       getServiceDataSubject.next(successGetServiceDataResponse);
       navigateSubject.next(successNavigateResponse);
@@ -695,7 +703,9 @@ describe('FormPlayerService', () => {
 
   describe('augmentDisplayId', () => {
     it('should update display.id in successResponse with last id from finishedAndCurrentScreens', () => {
-      const successResponse = ({ scenarioDto: { display: 'id' }} as unknown) as FormPlayerApiSuccessResponse;
+      const successResponse = ({
+        scenarioDto: { display: 'id' },
+      } as unknown) as FormPlayerApiSuccessResponse;
       const otherScenario = { finishedAndCurrentScreens: ['id1', 'id2'] };
       service['augmentDisplayId'](successResponse, otherScenario);
       expect(successResponse.scenarioDto.display.id).toBe('id2');

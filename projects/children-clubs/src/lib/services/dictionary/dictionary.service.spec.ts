@@ -2,7 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import {
   MicroAppStateQuery,
-  MicroAppStateService, MicroAppStateStore,
+  MicroAppStateService,
+  MicroAppStateStore,
 } from '@epgu/epgu-constructor-ui-kit';
 import { StateService } from '../state/state.service';
 import { ApiService } from '../api/api.service';
@@ -35,9 +36,10 @@ describe('DictionaryService', () => {
   });
 
   describe('normalizeFocusData()', () => {
-
     it('should unshift specific item to focus array if array is not empty', () => {
-      const focusData: FocusDirectionsItem[] = [{ directions: ['top'], focusCode: '2', focusName: '3' }];
+      const focusData: FocusDirectionsItem[] = [
+        { directions: ['top'], focusCode: '2', focusName: '3' },
+      ];
 
       const { focus } = service.normalizeFocusData(focusData);
       expect(focus.length).toBe(2);
@@ -53,7 +55,9 @@ describe('DictionaryService', () => {
     });
 
     it('should unshift specific item to directions array if array is not empty', () => {
-      const focusData: FocusDirectionsItem[] = [{ directions: ['top'], focusCode: '2', focusName: '3' }];
+      const focusData: FocusDirectionsItem[] = [
+        { directions: ['top'], focusCode: '2', focusName: '3' },
+      ];
 
       const { directions } = service.normalizeFocusData(focusData);
 
@@ -68,41 +72,33 @@ describe('DictionaryService', () => {
 
       expect(directions['2'].length).toBe(0);
     });
-
   });
 
   it('should get data from api on subscribe to municipalities', (done) => {
-
     state.changeState({ okato: '1' });
 
-    service.municipalitiesList$.subscribe(value => {
-        expect(value.length).toBe(municipalityStub.length);
-        done();
-      }
-    );
+    service.municipalitiesList$.subscribe((value) => {
+      expect(value.length).toBe(municipalityStub.length);
+      done();
+    });
   });
 
   it('should get data from api on subscribe to program', (done) => {
-
     state.changeState({ selectedProgramUUID: '1' });
 
-    service.program$.subscribe(value => {
-        expect(value).toBe(programStub);
-        done();
-      }
-    );
+    service.program$.subscribe((value) => {
+      expect(value).toBe(programStub);
+      done();
+    });
   });
 
   it('should get data from api on subscribe to focusData', (done) => {
-
     state.changeState({ okato: '1' });
 
-    service.focusData$.subscribe(value => {
-        expect(value.hasOwnProperty('directions')).toBe(true);
-        expect(value.hasOwnProperty('focus')).toBe(true);
-        done();
-      }
-    );
+    service.focusData$.subscribe((value) => {
+      expect(value.hasOwnProperty('directions')).toBe(true);
+      expect(value.hasOwnProperty('focus')).toBe(true);
+      done();
+    });
   });
-
 });

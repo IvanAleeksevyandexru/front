@@ -6,7 +6,6 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { configureTestSuite } from 'ng-bullet';
 
-
 describe('AutocompleteApiService', () => {
   let service: AutocompleteApiService;
   let http: HttpTestingController;
@@ -26,7 +25,7 @@ describe('AutocompleteApiService', () => {
         AutocompleteApiService,
         DatesToolsService,
         { provide: ConfigService, useClass: ConfigServiceStub },
-      ]
+      ],
     });
   });
 
@@ -42,7 +41,9 @@ describe('AutocompleteApiService', () => {
   describe('getSuggestionsGroup()', () => {
     let req;
     beforeEach(fakeAsync(() => {
-      service.getSuggestionsGroup(groupId).subscribe(response => expect(response).toBe(responseMock));
+      service
+        .getSuggestionsGroup(groupId)
+        .subscribe((response) => expect(response).toBe(responseMock));
       req = http.expectOne(`${apiUrl}?groups=${groupId}`);
     }));
 
@@ -69,7 +70,9 @@ describe('AutocompleteApiService', () => {
   describe('getSuggestionsFields()', () => {
     let req;
     beforeEach(fakeAsync(() => {
-      service.getSuggestionsFields(fields).subscribe(response => expect(response).toBe(responseMock));
+      service
+        .getSuggestionsFields(fields)
+        .subscribe((response) => expect(response).toBe(responseMock));
       req = http.expectOne(`${apiUrl}?fields=${fields[0]}`);
     }));
 
@@ -96,7 +99,9 @@ describe('AutocompleteApiService', () => {
   describe('deleteSuggestionsField()', () => {
     let req;
     beforeEach(fakeAsync(() => {
-      service.deleteSuggestionsField(fieldId).subscribe(response => expect(response).toBe(responseMock));
+      service
+        .deleteSuggestionsField(fieldId)
+        .subscribe((response) => expect(response).toBe(responseMock));
       req = http.expectOne(`${apiUrl}`);
     }));
 
@@ -123,7 +128,9 @@ describe('AutocompleteApiService', () => {
   describe('updateSuggestionField()', () => {
     let req;
     beforeEach(fakeAsync(() => {
-      service.updateSuggestionField(fieldId, mnemonic, newValue).subscribe(response => expect(response).toBe(responseMock));
+      service
+        .updateSuggestionField(fieldId, mnemonic, newValue)
+        .subscribe((response) => expect(response).toBe(responseMock));
       req = http.expectOne(`${apiUrl}/update`);
     }));
 

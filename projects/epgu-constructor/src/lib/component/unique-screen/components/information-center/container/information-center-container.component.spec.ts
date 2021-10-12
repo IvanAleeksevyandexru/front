@@ -218,7 +218,7 @@ describe('InformationCenterContainerComponent', () => {
       screenService.component = mockDataWithSimple;
       fixture.detectChanges();
       jest.spyOn(component, 'changeForm');
-      await waitForAsync( () => {
+      await waitForAsync(() => {
         const debugEl = fixture.debugElement.query(
           By.css('epgu-constructor-information-center-simple'),
         );

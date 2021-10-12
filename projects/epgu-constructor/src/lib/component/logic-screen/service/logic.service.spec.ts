@@ -60,7 +60,11 @@ describe('LogicService', () => {
       },
     },
   ];
-  const componentsWithDictionary: { id: string; attrs: LogicComponentAttrsDto; value: ComponentValue }[] = [
+  const componentsWithDictionary: {
+    id: string;
+    attrs: LogicComponentAttrsDto;
+    value: ComponentValue;
+  }[] = [
     {
       id: 'rest1',
       attrs: {
@@ -71,9 +75,9 @@ describe('LogicService', () => {
             attributeType: 'asDecimal',
             condition: 'EQUALS',
             value: 's6lookup.value.originalItem.attributeValues.CODE',
-            valueType: 'ref'
-          }
-        ]
+            valueType: 'ref',
+          },
+        ],
       },
       value: {
         url: 'url',
@@ -141,30 +145,44 @@ describe('LogicService', () => {
   describe('makeRequestAndCall', () => {
     it('should be return request with body', () => {
       const store = { applicantAnswers: {}, cachedAnswers: [] };
-      const filters = [{
-        attributeName: 'LIC_TYPE',
-        attributeType: 'asDecimal',
-        condition: 'EQUALS',
-        value: 's6lookup.value.originalItem.attributeValues.CODE',
-        valueType: 'ref'
-      }];
+      const filters = [
+        {
+          attributeName: 'LIC_TYPE',
+          attributeType: 'asDecimal',
+          condition: 'EQUALS',
+          value: 's6lookup.value.originalItem.attributeValues.CODE',
+          valueType: 'ref',
+        },
+      ];
 
-      const prepareSpy = jest.spyOn(dictionaryToolsService, 'prepareOptions').mockReturnValue({ filter: filters });
-      const getDictionarySpy = jest.spyOn(dictionaryApiService, 'getDictionary').mockReturnValue(of({}));
+      const prepareSpy = jest
+        .spyOn(dictionaryToolsService, 'prepareOptions')
+        .mockReturnValue({ filter: filters });
+      const getDictionarySpy = jest
+        .spyOn(dictionaryApiService, 'getDictionary')
+        .mockReturnValue(of({}));
       service.fetch(componentsWithDictionary)[0].subscribe();
 
       expect(prepareSpy).toHaveBeenCalledWith({}, store, filters);
-      expect(getDictionarySpy).toHaveBeenCalledWith('CONC_COMPETENT_ORG', { filter: filters, pageNum: 0, }, undefined);
+      expect(getDictionarySpy).toHaveBeenCalledWith(
+        'CONC_COMPETENT_ORG',
+        { filter: filters, pageNum: 0 },
+        undefined,
+      );
     });
   });
 
   describe('createLogicAnswers', () => {
     jest.useFakeTimers();
     it('should be create logic answers if success response', () => {
-      jest.spyOn(restService, 'fetch').mockReturnValue(of(new HttpResponse({
-        status: 200,
-        body: { body:'body' }
-      })));
+      jest.spyOn(restService, 'fetch').mockReturnValue(
+        of(
+          new HttpResponse({
+            status: 200,
+            body: { body: 'body' },
+          }),
+        ),
+      );
 
       service.fetch(componentsPOST)[0].subscribe((response) => {
         expect(response).toEqual({
@@ -178,10 +196,14 @@ describe('LogicService', () => {
     });
 
     it('should be create logic answers if error response', () => {
-      jest.spyOn(restService, 'fetch').mockReturnValue(throwError(new HttpErrorResponse({
-        status: 500,
-        error: 'body'
-      })));
+      jest.spyOn(restService, 'fetch').mockReturnValue(
+        throwError(
+          new HttpErrorResponse({
+            status: 500,
+            error: 'body',
+          }),
+        ),
+      );
 
       service.fetch(componentsPOST)[0].subscribe((response) => {
         expect(response).toEqual({
@@ -197,7 +219,7 @@ describe('LogicService', () => {
 
     it('should be remove value from localStorage', () => {
       const spy = jest.spyOn(localStorage, 'delete');
-      const response =  new HttpResponse({ body:'body', url: 'Some_url' });
+      const response = new HttpResponse({ body: 'body', url: 'Some_url' });
       jest.spyOn(restService, 'fetch').mockReturnValue(of(response));
 
       service.fetch(componentsPOST)[0].subscribe();
@@ -206,10 +228,14 @@ describe('LogicService', () => {
     });
 
     it('should be create logic answers if timeout error', () => {
-      jest.spyOn(restService, 'fetch').mockReturnValue(of(new HttpResponse({
-        status: 408,
-        body: '408 Request Timeout'
-      })));
+      jest.spyOn(restService, 'fetch').mockReturnValue(
+        of(
+          new HttpResponse({
+            status: 408,
+            body: '408 Request Timeout',
+          }),
+        ),
+      );
 
       service.fetch(componentsWithTimeOut)[0].subscribe((response) => {
         expect(response).toEqual({

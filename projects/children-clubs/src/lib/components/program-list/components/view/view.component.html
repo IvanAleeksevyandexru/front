@@ -15,11 +15,21 @@
 
             <div class="project__info-item-list">
               <div *ngIf="data?.address" class="project__info-item">
-                <div class="item-icon"><img alt="адрес" src="{{ config.staticDomainAssetsPath }}/assets/icons/address.svg"/></div>
+                <div class="item-icon">
+                  <img
+                    alt="адрес"
+                    src="{{ config.staticDomainAssetsPath }}/assets/icons/address.svg"
+                  />
+                </div>
                 <div class="item-label">{{ data?.address }}</div>
               </div>
               <div *ngIf="data?.teachers" class="project__info-item">
-                <div class="item-icon"><img alt="учитель" src="{{ config.staticDomainAssetsPath }}/assets/icons/teacher.svg"/></div>
+                <div class="item-icon">
+                  <img
+                    alt="учитель"
+                    src="{{ config.staticDomainAssetsPath }}/assets/icons/teacher.svg"
+                  />
+                </div>
                 <div class="item-label">
                   <children-clubs-toggle-text
                     [text]="data?.teachers"
@@ -29,7 +39,10 @@
               </div>
               <div *ngIf="data?.maxPersons" class="project__info-item">
                 <div class="item-icon">
-                  <img alt="размер группы" src="{{ config.staticDomainAssetsPath }}/assets/icons/group.svg"/>
+                  <img
+                    alt="размер группы"
+                    src="{{ config.staticDomainAssetsPath }}/assets/icons/group.svg"
+                  />
                 </div>
                 <div class="item-label">
                   Размер группы до {{ data?.maxPersons }}
@@ -41,7 +54,9 @@
                   <div class="item-icon">
                     <img
                       [alt]="financingTypes[item].text"
-                      src="{{ config.staticDomainAssetsPath }}/assets/icons/{{ financingTypes[item].icon }}"
+                      src="{{ config.staticDomainAssetsPath }}/assets/icons/{{
+                        financingTypes[item].icon
+                      }}"
                     />
                   </div>
                   <div class="item-label">{{ financingTypes[item].text }}</div>
@@ -91,7 +106,11 @@
       </epgu-cf-ui-constructor-screen-pad>
       <div class="project__btn-text">
         <ng-container
-          *ngIf="data.groupCount === 0 || data.groupCount > 0 && data.availableGroupCount === 0; else availableBtnText">
+          *ngIf="
+            data.groupCount === 0 || (data.groupCount > 0 && data.availableGroupCount === 0);
+            else availableBtnText
+          "
+        >
           <h6 class="mt-24 mb-6 red-line">Запись на программу закрыта</h6>
           <p class="mb-24 text-color--text-helper fs-sm" [ngSwitch]="data.groupCount">
             <ng-container *ngSwitchCase="0">
@@ -101,14 +120,17 @@
               В группе нет свободных мест. Вы можете посмотреть группу, чтобы записаться позже
             </ng-container>
             <ng-container *ngSwitchDefault>
-              В группах нет свободных мест. Вы можете посмотреть группы, чтобы выбрать подходящую и записаться позже
+              В группах нет свободных мест. Вы можете посмотреть группы, чтобы выбрать подходящую и
+              записаться позже
             </ng-container>
           </p>
         </ng-container>
 
         <ng-template #availableBtnText>
           <p class="text-color--text-helper fs-sm">
-            <ng-container *ngIf="data.groupCount > 0 && data.availableGroupCount === 1; else someGroups">
+            <ng-container
+              *ngIf="data.groupCount > 0 && data.availableGroupCount === 1; else someGroups"
+            >
               Чтобы записаться, выберите открытую группу
             </ng-container>
             <ng-template #someGroups>
@@ -122,8 +144,12 @@
         <lib-button color="white" (click)="prev()" *ngIf="data.groupCount === 0">
           Назад
         </lib-button>
-        <lib-button color="white" (click)="next()" *ngIf="data.groupCount > 0 && data.availableGroupCount === 0">
-          Посмотреть групп{{data.groupCount === 1 ? 'у' : 'ы'}}
+        <lib-button
+          color="white"
+          (click)="next()"
+          *ngIf="data.groupCount > 0 && data.availableGroupCount === 0"
+        >
+          Посмотреть групп{{ data.groupCount === 1 ? 'у' : 'ы' }}
         </lib-button>
         <lib-button (click)="next()" *ngIf="data.groupCount > 0 && data.availableGroupCount > 0">
           Выбрать группу

@@ -1,6 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponents, MockProviders } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
@@ -24,16 +30,21 @@ describe('PassportLookupComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [PassportLookupComponent, MockComponents(ComponentItemComponent, PassportComponent)],
+      declarations: [
+        PassportLookupComponent,
+        MockComponents(ComponentItemComponent, PassportComponent),
+      ],
       imports: [FormsModule, ReactiveFormsModule],
       providers: [
         MockProviders(ComponentsListRelationsService, SuggestHandlerService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-      ]
-    }).overrideComponent(PassportLookupComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+      ],
+    })
+      .overrideComponent(PassportLookupComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -43,9 +54,9 @@ describe('PassportLookupComponent', () => {
     control = new FormGroup({
       id: new FormControl('someId'),
       value: valueControl,
-      attrs: new FormControl('fake attrs')
+      attrs: new FormControl('fake attrs'),
     });
-    formService['_form'] = new FormArray([ control ]);
+    formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(PassportLookupComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -65,12 +76,12 @@ describe('PassportLookupComponent', () => {
 
   it('epgu-constructor-passport', () => {
     const selector = 'epgu-constructor-passport';
-      const debugEl = fixture.debugElement.query(By.css(selector));
-      expect(debugEl.componentInstance.attrs).toBe('fake attrs');
-      expect(debugEl.componentInstance.suggestions).toBeUndefined();
+    const debugEl = fixture.debugElement.query(By.css(selector));
+    expect(debugEl.componentInstance.attrs).toBe('fake attrs');
+    expect(debugEl.componentInstance.suggestions).toBeUndefined();
 
-      screenService.suggestions = { someId: { value: 'fake suggestion' }} as any;
-      fixture.detectChanges();
-      expect(debugEl.componentInstance.suggestions).toEqual({ value: 'fake suggestion' });
+    screenService.suggestions = { someId: { value: 'fake suggestion' }} as any;
+    fixture.detectChanges();
+    expect(debugEl.componentInstance.suggestions).toEqual({ value: 'fake suggestion' });
   });
 });

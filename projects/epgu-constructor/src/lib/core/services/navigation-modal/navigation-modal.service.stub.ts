@@ -8,9 +8,7 @@ export class NavigationModalServiceStub {
 
   prevStep$ = EMPTY;
 
-  next(navigation: Navigation): void {
-  }
+  next(navigation: Navigation): void {}
 
-  prev(navigation: Navigation): void {
-  }
+  prev(navigation: Navigation): void {}
 }

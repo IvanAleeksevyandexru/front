@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
   CustomComponent,
-  CustomScreenComponentTypes
+  CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
@@ -16,7 +16,7 @@ import {
   ConfigServiceStub,
   EventBusService,
   LoggerService,
-  LoggerServiceStub
+  LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
@@ -77,7 +77,14 @@ describe('ValidationTypeDirective', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
-      imports: [CoreModule, MockModule(CoreUiModule), ValidationTypeModule, RouterTestingModule, BaseModule, HttpClientTestingModule],
+      imports: [
+        CoreModule,
+        MockModule(CoreUiModule),
+        ValidationTypeModule,
+        RouterTestingModule,
+        BaseModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         ValidationService,
         CurrentAnswersService,
@@ -89,7 +96,7 @@ describe('ValidationTypeDirective', () => {
         DateRangeService,
         DatesToolsService,
         UnsubscribeService,
-        MockProvider(DateRestrictionsService)
+        MockProvider(DateRestrictionsService),
       ],
     });
   });

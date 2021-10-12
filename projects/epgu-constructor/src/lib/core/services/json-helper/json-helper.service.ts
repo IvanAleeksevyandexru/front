@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class JsonHelperService {
-
   public hasJsonStructure(string: string): boolean {
     if (typeof string !== 'string') return false;
     try {
@@ -14,8 +13,8 @@ export class JsonHelperService {
     }
   }
 
-  public tryToParse(value: string|object|[], defaultValue: unknown = ''): unknown {
-    if (Array.isArray(value) || typeof value === 'object' && value) {
+  public tryToParse(value: string | object | [], defaultValue: unknown = ''): unknown {
+    if (Array.isArray(value) || (typeof value === 'object' && value)) {
       return value;
     }
 

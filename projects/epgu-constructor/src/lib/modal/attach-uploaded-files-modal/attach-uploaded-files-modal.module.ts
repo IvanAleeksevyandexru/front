@@ -5,9 +5,7 @@ import { AttachUploadedFilesModalComponent } from './attach-uploaded-files-modal
 import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
 
 @NgModule({
-  declarations: [
-    AttachUploadedFilesModalComponent,
-  ],
+  declarations: [AttachUploadedFilesModalComponent],
   imports: [BaseModule, ConfirmationModalModule],
   exports: [AttachUploadedFilesModalComponent],
   entryComponents: [AttachUploadedFilesModalComponent],

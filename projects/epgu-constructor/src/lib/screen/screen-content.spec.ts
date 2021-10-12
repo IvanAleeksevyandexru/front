@@ -8,7 +8,7 @@ import {
   ComponentDto,
   ApplicantAnswersDto,
   Gender,
-  ScreenTypes
+  ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 
 const screenStoreSample: ScreenStore = {

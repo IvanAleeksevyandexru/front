@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {
-  EaisdoStateTypes,
-} from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
+import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
 
 @Injectable()
 export class EaisdoGroupCostServiceStub {

@@ -21,7 +21,7 @@
   <div
     *ngIf="selectedValue"
     class="map-objects-list"
-    [ngClass]="{ 'fixed-height': selectedValue && selectedValue.children?.length > 1 && !isMobile}"
+    [ngClass]="{ 'fixed-height': selectedValue && selectedValue.children?.length > 1 && !isMobile }"
   >
     <perfect-scrollbar [config]="scrollConfig" class="perfect-scrollbar">
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>

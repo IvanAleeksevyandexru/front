@@ -34,7 +34,10 @@ describe('EmployeeHistoryFormService', () => {
         MockProvider(LoggerService),
         MockProvider(DeclinePipe),
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
-        { provide: EmployeeHistoryDataSourceService, useClass: EmployeeHistoryDataSourceServiceStub },
+        {
+          provide: EmployeeHistoryDataSourceService,
+          useClass: EmployeeHistoryDataSourceServiceStub,
+        },
       ],
     });
   });

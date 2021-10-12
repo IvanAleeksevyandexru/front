@@ -1,6 +1,6 @@
 import {
   ConfirmUserDataError,
-  ConfirmUserDataErrorType
+  ConfirmUserDataErrorType,
 } from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import { ComponentBase } from '../../../../screen/screen.types';
 

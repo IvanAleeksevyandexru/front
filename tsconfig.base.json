@@ -12,10 +12,7 @@
     "resolveJsonModule": true,
     "module": "esnext",
     "target": "es6",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "lib": ["es2018", "dom"],
     "paths": {
       "@epgu/epgu-constructor-ui-kit": [
         "dist/epgu-constructor-ui-kit/epgu-cf-ui-kit",

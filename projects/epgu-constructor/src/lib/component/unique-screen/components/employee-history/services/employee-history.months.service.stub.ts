@@ -24,9 +24,7 @@ export class EmployeeHistoryMonthsServiceStub {
     const periods: EmployeeHistoryAvailableDates[][] = [];
     let periodIndex = 0;
 
-    periods[periodIndex] = [
-      { date: '', checked: true },
-    ];
+    periods[periodIndex] = [{ date: '', checked: true }];
 
     return periods
       .filter((period) => period.length)
@@ -36,7 +34,6 @@ export class EmployeeHistoryMonthsServiceStub {
           to: '',
         };
       });
-
   }
 
   updateAvailableMonths() {}

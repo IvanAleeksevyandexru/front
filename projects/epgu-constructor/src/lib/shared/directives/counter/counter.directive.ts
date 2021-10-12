@@ -14,7 +14,10 @@ export class CounterDirective implements OnChanges {
 
   private counter$ = new Subject<{ count: number; interval: number }>();
 
-  constructor(private ngUnsubscribe$: UnsubscribeService, private eventBusService: EventBusService) {
+  constructor(
+    private ngUnsubscribe$: UnsubscribeService,
+    private eventBusService: EventBusService,
+  ) {
     this.counter$
       .pipe(
         switchMap((options) => {

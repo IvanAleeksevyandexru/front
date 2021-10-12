@@ -4,9 +4,7 @@ import { ComponentUniqueResolverComponent } from './component-unique-resolver.co
 
 @NgModule({
   declarations: [ComponentUniqueResolverComponent],
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   exports: [ComponentUniqueResolverComponent],
 })
 export class ComponentUniqueResolverModule {}

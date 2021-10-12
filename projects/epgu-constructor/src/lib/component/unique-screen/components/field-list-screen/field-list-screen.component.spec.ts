@@ -33,14 +33,11 @@ describe('FieldListScreenComponent', () => {
         MockComponent(DefaultUniqueScreenWrapperComponent),
         MockComponent(ScreenPadComponent),
       ],
-      imports: [
-        RouterTestingModule,
-        MockModule(FieldListModule)
-      ],
+      imports: [RouterTestingModule, MockModule(FieldListModule)],
       providers: [
         MockProvider(CurrentAnswersService),
         { provide: ScreenService, useClass: ScreenServiceStub },
-      ]
+      ],
     }).compileComponents();
   });
 

@@ -156,10 +156,10 @@ describe('EaisdoGroupCostComponent', () => {
       const typeOfBudget: string | unknown = null;
       const responseData: ActionApiResponse<EaisdoResponse>['responseData'] = null;
       const result = {
-          disabled: false,
-          value: 'null',
-          visited: true,
-        };
+        disabled: false,
+        value: 'null',
+        visited: true,
+      };
       component['setState'](error, responseType, financialSource, typeOfBudget, responseData);
       expect(currentAnswersService.state[component.component.id]).toEqual(result);
     });

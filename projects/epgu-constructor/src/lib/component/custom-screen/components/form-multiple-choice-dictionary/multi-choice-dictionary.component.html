@@ -1,9 +1,4 @@
-<ng-container
-  *ngTemplateOutlet="
-    multiChoiceDict;
-    context: { $implicit: control.value }
-  "
->
+<ng-container *ngTemplateOutlet="multiChoiceDict; context: { $implicit: control.value }">
 </ng-container>
 
 <ng-template #multiChoiceDict let-component>

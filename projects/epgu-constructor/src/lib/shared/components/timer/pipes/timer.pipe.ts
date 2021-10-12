@@ -8,11 +8,13 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
   name: 'timer',
 })
 export class TimerPipe implements PipeTransform {
-
-  constructor(private datesToolsService: DatesToolsService) { }
+  constructor(private datesToolsService: DatesToolsService) {}
 
   transform(value: number): string {
-    const { hours, minutes, seconds } = this.datesToolsService.intervalToDuration({ start: 0, end: value });
+    const { hours, minutes, seconds } = this.datesToolsService.intervalToDuration({
+      start: 0,
+      end: value,
+    });
     return `${this.getFormatTime(hours)}:${this.getFormatTime(minutes)}:${this.getFormatTime(
       seconds,
     )}`;

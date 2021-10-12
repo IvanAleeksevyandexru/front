@@ -8,9 +8,7 @@ describe('HealthService', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
-      ],
+      providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub }],
     });
   });
 

@@ -5,8 +5,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { PhotoDescriptionComponent } from './photo-description.component';
-import { ClickableLabelDirective }
-  from '../../../../../../shared/directives/clickable-label/clickable-label.directive';
+import { ClickableLabelDirective } from '../../../../../../shared/directives/clickable-label/clickable-label.directive';
 
 describe('PhotoDescriptionComponent', () => {
   let component: PhotoDescriptionComponent;
@@ -34,9 +33,10 @@ describe('PhotoDescriptionComponent', () => {
         },
         whyneedphoto: {
           title: 'Зачем нужно прикладывать фото',
-          text: '<p>Фото необходимо для формирования электронного дела в МВД России</p>' +
+          text:
+            '<p>Фото необходимо для формирования электронного дела в МВД России</p>' +
             '<p class=""mt-24">Требования к электронной фотографии такие же как для бумажной</p>' +
-            '<p class="mt-24"><a id=\"requirements\">Требования к фото</a></p>'
+            '<p class="mt-24"><a id="requirements">Требования к фото</a></p>',
         },
         requirements: {
           type: 'UniqueModal',
@@ -68,11 +68,7 @@ describe('PhotoDescriptionComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        PhotoDescriptionComponent, 
-        MockDirective(ClickableLabelDirective),
-        SafePipe,
-      ],
+      declarations: [PhotoDescriptionComponent, MockDirective(ClickableLabelDirective), SafePipe],
     }).compileComponents();
   });
 

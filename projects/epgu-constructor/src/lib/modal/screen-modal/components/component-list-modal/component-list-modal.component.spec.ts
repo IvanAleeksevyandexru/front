@@ -21,7 +21,7 @@ import {
   ConfigServiceStub,
   HttpCancelService,
   LoggerService,
-  LoggerServiceStub
+  LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockModule } from 'ng-mocks';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
@@ -41,14 +41,12 @@ describe('ComponentListModalComponent', () => {
     header: '',
     id: '',
     name: '',
-    type: ScreenTypes.CUSTOM
+    type: ScreenTypes.CUSTOM,
   };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ComponentListModalComponent
-      ],
+      declarations: [ComponentListModalComponent],
       imports: [
         BaseModule,
         MockModule(CoreUiModule),
@@ -71,9 +69,8 @@ describe('ComponentListModalComponent', () => {
         DateRefService,
         JsonHelperService,
         TypeCastService,
-      ]
-    })
-      .compileComponents();
+      ],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -109,14 +106,14 @@ describe('ComponentListModalComponent', () => {
     const payload = {
       pd1: {
         value: 'true',
-        visited: true
-      }
+        visited: true,
+      },
     };
     component.dataToSend = payload;
     const spy = jest.spyOn(component, 'nextStep');
     component.nextScreen();
     expect(spy).toHaveBeenCalledWith({
-      payload
+      payload,
     });
   });
 
@@ -126,7 +123,7 @@ describe('ComponentListModalComponent', () => {
         value: 'true',
         valid: true,
         isValid: true,
-      }
+      },
     };
 
     it('should be change isValid', () => {
@@ -139,8 +136,8 @@ describe('ComponentListModalComponent', () => {
       expect(component.dataToSend).toEqual({
         pd1: {
           value: 'true',
-          visited: true
-        }
+          visited: true,
+        },
       });
     });
   });

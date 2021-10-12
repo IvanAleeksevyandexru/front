@@ -22,7 +22,7 @@ describe('PaymentTypeSelectorButtonComponent', () => {
     action: 'getNextScreen',
   } as ComponentActionDto;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [PaymentTypeSelectorButtonComponent],
       imports: [MockModule(AnswerButtonModule), MockModule(ActionModule), MockModule(BaseModule)],

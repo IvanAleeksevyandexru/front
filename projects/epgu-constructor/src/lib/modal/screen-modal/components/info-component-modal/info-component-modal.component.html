@@ -1,8 +1,6 @@
 <div class="info" [style.minHeight.px]="screenModalService.minContentHeight$ | async">
   <div class="info__body">
-    <epgu-constructor-info-screen-body
-      [data]="screenService.component$ | async"
-    >
+    <epgu-constructor-info-screen-body [data]="screenService.component$ | async">
     </epgu-constructor-info-screen-body>
   </div>
 

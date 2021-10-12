@@ -29,7 +29,7 @@ export class CustomScreenService {
         if (this.datesToolsService.isValid(dataValue)) {
           value = this.datesToolsService.format(dataValue);
         } else {
-          value = dataValue ? JSON.stringify(dataValue ) : null;
+          value = dataValue ? JSON.stringify(dataValue) : null;
         }
       } else {
         value = dataValue;

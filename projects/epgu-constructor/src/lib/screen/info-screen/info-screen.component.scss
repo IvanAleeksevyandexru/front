@@ -61,7 +61,8 @@
   }
 
   .info-screen--deadlock {
-    .red-line, .yellow-line {
+    .red-line,
+    .yellow-line {
       margin-top: $screen-pad-24;
     }
     p + ul:not(:first-child) {

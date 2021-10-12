@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   FileUploadAttributes,
   FileUploadEmitValue,
-  UploadedFile
+  UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 
 /**

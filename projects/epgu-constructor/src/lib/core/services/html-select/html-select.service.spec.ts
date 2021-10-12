@@ -9,9 +9,7 @@ describe('HtmlSelectService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        HtmlSelectService
-      ]
+      providers: [HtmlSelectService],
     });
   });
 

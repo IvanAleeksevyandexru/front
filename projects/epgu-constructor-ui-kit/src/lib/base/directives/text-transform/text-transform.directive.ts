@@ -16,10 +16,7 @@ export class TextTransformDirective {
   private prevValue: string;
   private prevSelection: [number, number];
 
-  constructor(
-    private control: NgControl,
-    private textTransform: TextTransformService,
-  ) {}
+  constructor(private control: NgControl, private textTransform: TextTransformService) {}
 
   @HostListener('input', ['$event.target'])
   onInput(target: HTMLInputElement): void {

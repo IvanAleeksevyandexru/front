@@ -69,7 +69,6 @@ export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
 
 export const NO_AVAILABLE_DATA = 'должности в ближайшие 14 дней нет доступного времени';
 
-
 export enum RefName {
   serviceOrSpecs = 'ServiceOrSpecs',
   resource = 'Resource',
@@ -143,7 +142,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         }
       }
 
-      if (url.includes('dictionary/mzrf_regions_smev3') || url.includes('dictionary/mzrf_regions_vaccination')) {
+      if (
+        url.includes('dictionary/mzrf_regions_smev3') ||
+        url.includes('dictionary/mzrf_regions_vaccination')
+      ) {
         const dictionaryError = error as DictionaryResponseError;
         const dictionaryResponse = body as DictionaryResponse;
         if (
@@ -317,7 +319,12 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
-  private handleItemsRequest(body: unknown, url: string, refName: string | undefined, type: string): void {
+  private handleItemsRequest(
+    body: unknown,
+    url: string,
+    refName: string | undefined,
+    type: string,
+  ): void {
     const error = (body as ItemsErrorResponse)?.error;
     const errorMessage = error?.errorDetail?.errorMessage;
     const errorCode = error?.errorDetail?.errorCode;
@@ -364,7 +371,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           } else if (errorMessage != null || errorMessage !== '') {
             STATIC_ERROR_MODAL.text = this.getStaticErrorMessage(STATIC_ERROR_MODAL, errorMessage);
             this.showModal(STATIC_ERROR_MODAL).then((value) => {
-              switch(value) {
+              switch (value) {
                 case 'init': {
                   this.formPlayer.initData();
                   break;
@@ -429,7 +436,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
                 {
                   label: 'Попробовать ещё раз',
                   closeModal: true,
-                }
+                },
               ],
             };
             const message = errorMessage

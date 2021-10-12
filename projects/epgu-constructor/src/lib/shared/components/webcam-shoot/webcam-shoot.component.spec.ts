@@ -11,10 +11,9 @@ describe('WebcamShootComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [WebcamModule],
-      declarations: [ WebcamShootComponent ],
-      providers: [WebcamEvents]
-    })
-    .compileComponents();
+      declarations: [WebcamShootComponent],
+      providers: [WebcamEvents],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

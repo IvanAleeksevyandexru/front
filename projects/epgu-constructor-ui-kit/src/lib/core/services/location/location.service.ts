@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@angular/core';
 import { Location, LocationStrategy, PlatformLocation } from '@angular/common';
 import { WINDOW } from '../../providers/window.provider';
 
-
 @Injectable()
 export class LocationService extends Location {
   constructor(
@@ -43,7 +42,10 @@ export class LocationService extends Location {
     if (params) {
       params = params.slice(1);
       paramNames.forEach((paramName) => {
-        params = params.split('&').filter((param) => !param.includes(paramName)).join('&');
+        params = params
+          .split('&')
+          .filter((param) => !param.includes(paramName))
+          .join('&');
       });
       this.replaceState(this.window.location.pathname, params);
     }

@@ -133,11 +133,9 @@ describe('ListComponent', () => {
 
       expect(spy).toHaveBeenCalledTimes(0);
     });
-
   });
 
   describe('next()', () => {
-
     it('should set autoscroll to true', () => {
       listService.autoScroll$$.next(false);
 
@@ -153,11 +151,9 @@ describe('ListComponent', () => {
 
       expect(spy).toHaveBeenCalledTimes(1);
     });
-
   });
 
   describe('getScrollPosition()', () => {
-
     it('should correctly calculate position', () => {
       const element = { scrollTop: 50, offsetHeight: 50, scrollHeight: 100 };
 
@@ -165,7 +161,5 @@ describe('ListComponent', () => {
 
       expect(res).toBe(100);
     });
-
   });
-
 });

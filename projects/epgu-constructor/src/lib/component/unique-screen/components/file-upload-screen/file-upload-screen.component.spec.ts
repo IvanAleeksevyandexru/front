@@ -76,11 +76,7 @@ describe('FileUploadScreenComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ScreenButtonsModule,
-        PluralizeModule,
-        FileSizeModule
-      ],
+      imports: [ScreenButtonsModule, PluralizeModule, FileSizeModule],
       declarations: [
         FileUploadScreenComponent,
         MockComponent(LongButtonComponent),
@@ -97,7 +93,7 @@ describe('FileUploadScreenComponent', () => {
         CertificateEaisdoService,
         CurrentAnswersService,
         EaisdoGroupCostService,
-        UploaderScreenService
+        UploaderScreenService,
       ],
     }).overrideComponent(FileUploadScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },

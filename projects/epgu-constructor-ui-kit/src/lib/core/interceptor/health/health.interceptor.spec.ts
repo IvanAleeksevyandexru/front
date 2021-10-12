@@ -24,7 +24,6 @@ const dto = {
   },
 } as ActionRequestPayload;
 
-
 @Injectable()
 class TestHealthHandlerService implements HealthHandler {
   handleRequest(): Observable<HttpEvent<unknown>> {
@@ -42,7 +41,7 @@ describe('HealthInterceptor', () => {
         HealthInterceptor,
         {
           provide: HEALTH_SERVICE,
-          useClass: TestHealthHandlerService
+          useClass: TestHealthHandlerService,
         },
       ],
     });
@@ -50,7 +49,7 @@ describe('HealthInterceptor', () => {
 
   beforeEach(() => {
     interceptor = TestBed.inject(HealthInterceptor);
-    service = TestBed.inject(HEALTH_SERVICE) as unknown as HealthHandler;
+    service = (TestBed.inject(HEALTH_SERVICE) as unknown) as HealthHandler;
   });
 
   it('should call HealthHandler handleRequest on http request', () => {

@@ -18,15 +18,18 @@ describe('TextAreaComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
-        TextAreaComponent, MockComponents(ComponentItemComponent, ConstructorMultilineInputComponent)
+        TextAreaComponent,
+        MockComponents(ComponentItemComponent, ConstructorMultilineInputComponent),
       ],
       providers: [
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
       ],
-    }).overrideComponent(TextAreaComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(TextAreaComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

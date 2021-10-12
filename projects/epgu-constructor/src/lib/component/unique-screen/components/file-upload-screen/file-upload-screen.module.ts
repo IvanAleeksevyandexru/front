@@ -24,6 +24,6 @@ import { UploaderScreenService } from '../../../../shared/components/file-upload
     FileSizeModule,
   ],
   entryComponents: [FileUploadScreenComponent],
-  providers: [UploaderScreenService]
+  providers: [UploaderScreenService],
 })
 export class FileUploadScreenModule {}

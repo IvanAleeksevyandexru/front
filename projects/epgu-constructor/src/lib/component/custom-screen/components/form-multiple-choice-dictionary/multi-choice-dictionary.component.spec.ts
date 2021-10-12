@@ -1,6 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { configureTestSuite } from 'ng-bullet';
 import { MockComponents, MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
@@ -26,7 +32,7 @@ describe('MultiChoiceDictionaryComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         MultiChoiceDictionaryComponent,
-        MockComponents(ComponentItemComponent, MultipleChoiceDictionaryComponent)
+        MockComponents(ComponentItemComponent, MultipleChoiceDictionaryComponent),
       ],
       imports: [FormsModule, ReactiveFormsModule],
       providers: [
@@ -35,13 +41,17 @@ describe('MultiChoiceDictionaryComponent', () => {
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
-    }).overrideComponent(MultiChoiceDictionaryComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(MultiChoiceDictionaryComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
-    formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
     valueControl = new FormControl('foo');
     control = new FormGroup({
       value: valueControl,
@@ -50,9 +60,9 @@ describe('MultiChoiceDictionaryComponent', () => {
         dictionaryList: new FormControl('fake dictionaryList'),
         dictionaryType: new FormControl('fake dictionaryType'),
         subLabel: new FormControl('fake subLabel'),
-      })
+      }),
     });
-    formService['_form'] = new FormArray([ control ]);
+    formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(MultiChoiceDictionaryComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;

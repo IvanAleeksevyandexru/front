@@ -18,7 +18,7 @@ describe('CachedAnswersService', () => {
         ObjectHelperService,
         JsonHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-      ]
+      ],
     });
     service = TestBed.inject(CachedAnswersService);
 
@@ -31,47 +31,49 @@ describe('CachedAnswersService', () => {
 
     jest.spyOn(localStorageService, 'get').mockReturnValue({
       anotherId: {
-        foo: 'bar'
-      }
+        foo: 'bar',
+      },
     });
     expect(service.getCachedValueFromLocalStorage('someId')).toBeNull();
 
-    expect(service.getCachedValueFromLocalStorage('anotherId')).toBe(JSON.stringify({
-      foo: 'bar'
-    }));
+    expect(service.getCachedValueFromLocalStorage('anotherId')).toBe(
+      JSON.stringify({
+        foo: 'bar',
+      }),
+    );
   });
 
   it('setValueToLocalStorage()', () => {
     jest.spyOn(localStorageService, 'get').mockReturnValue(null);
     const setFn = jest.spyOn(localStorageService, 'set');
     service.setValueToLocalStorage('someId', {
-      a: 'b'
+      a: 'b',
     });
 
     expect(setFn).toBeCalledTimes(1);
     expect(setFn).toBeCalledWith('cachedAnswers', {
       someId: {
-        a: 'b'
-      }
+        a: 'b',
+      },
     });
     setFn.mockClear();
 
     jest.spyOn(localStorageService, 'get').mockReturnValue({
       anotherId: {
-        c: 'd'
-      }
+        c: 'd',
+      },
     });
     service.setValueToLocalStorage('someId', {
-      a: 'b'
+      a: 'b',
     });
     expect(setFn).toBeCalledTimes(1);
     expect(setFn).toBeCalledWith('cachedAnswers', {
       anotherId: {
-        c: 'd'
+        c: 'd',
       },
       someId: {
-        a: 'b'
-      }
+        a: 'b',
+      },
     });
   });
 

@@ -1,14 +1,15 @@
 <ng-container
-  *ngTemplateOutlet="
-    templateContent;
-    context: { type: screenService.componentType$ | async }
-  "
+  *ngTemplateOutlet="templateContent; context: { type: screenService.componentType$ | async }"
 >
 </ng-container>
 
 <ng-template #templateContent let-type="type">
   <ng-container>
-    <epgu-constructor-confirm-with-code *ngIf="confirmWithCodeTypes.includes(type)"></epgu-constructor-confirm-with-code>
-    <epgu-constructor-confirm-email *ngIf="confirmEmailTypes.includes(type)"></epgu-constructor-confirm-email>
+    <epgu-constructor-confirm-with-code
+      *ngIf="confirmWithCodeTypes.includes(type)"
+    ></epgu-constructor-confirm-with-code>
+    <epgu-constructor-confirm-email
+      *ngIf="confirmEmailTypes.includes(type)"
+    ></epgu-constructor-confirm-email>
   </ng-container>
 </ng-template>

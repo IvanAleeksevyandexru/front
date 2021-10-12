@@ -22,9 +22,9 @@ describe('UniquenessErrorsService', () => {
 
   const cachedAnswersMock: CachedAnswersDto = {
     id1: {
-      value: '{\"control1\":\"value\"}',
+      value: '{"control1":"value"}',
       visited: true,
-    }
+    },
   };
   const componentMock: ComponentDto = {
     id: 'id1',
@@ -62,11 +62,15 @@ describe('UniquenessErrorsService', () => {
   });
 
   it('shoult set values on init', () => {
-    jest.spyOn(screenService, 'uniquenessErrors$', 'get').mockReturnValueOnce(of([
-      [{ 1: 'error', 2: 'error2' }],
-      [{ 3: 'error3', 4: 'error4' }],
-      [{ 1: 'error', 5: 'error5' }],
-    ]));
+    jest
+      .spyOn(screenService, 'uniquenessErrors$', 'get')
+      .mockReturnValueOnce(
+        of([
+          [{ 1: 'error', 2: 'error2' }],
+          [{ 3: 'error3', 4: 'error4' }],
+          [{ 1: 'error', 5: 'error5' }],
+        ]),
+      );
     service.init();
 
     expect(service['_initErrors'].length).toBeGreaterThan(0);
@@ -78,7 +82,7 @@ describe('UniquenessErrorsService', () => {
   it('should calculate prepared uniqueness errors', fakeAsync(() => {
     service['_initErrors'] = [[{ 1: 'error', 2: 'error2' }]];
     service['_initValues'] = [{ 1: 'value' }];
-    service['_componendIdErrorsMap'] = { 1.2: [ [ 0, 0 ] ] };
+    service['_componendIdErrorsMap'] = { 1.2: [[0, 0]] };
     spyOn<any>(service, 'triggerComponentErrorsUpdate').and.callThrough();
 
     service.calculatePreparedUniqErrors([{ 1: 'error' }], 0);
@@ -89,12 +93,9 @@ describe('UniquenessErrorsService', () => {
   }));
 
   it('should set _componendIdErrorsMap', () => {
-    service['_initErrors'] = [
-      [{ 1: 'error', 2: 'error2' }],
-      [{ 3: 'error3', 4: 'error4' }],
-    ];
+    service['_initErrors'] = [[{ 1: 'error', 2: 'error2' }], [{ 3: 'error3', 4: 'error4' }]];
 
-    expect(service['getComponentIdErrorsMap']()).toEqual({ 1.2: [ [ 0, 0 ] ], 3.4: [ [ 1, 0 ] ] });
+    expect(service['getComponentIdErrorsMap']()).toEqual({ 1.2: [[0, 0]], 3.4: [[1, 0]] });
   });
 
   it('should get state', () => {
@@ -102,13 +103,12 @@ describe('UniquenessErrorsService', () => {
   });
 
   it('should prepare uniquenessErrors', () => {
-    service['_initErrors'] = [
-      [{ 1: 'error', 2: 'error2' }],
-      [{ 3: 'error3', 4: 'error4' }],
-    ];
+    service['_initErrors'] = [[{ 1: 'error', 2: 'error2' }], [{ 3: 'error3', 4: 'error4' }]];
 
-    expect(service['prepareUniquenessErrors'](service['_initErrors']))
-      .toEqual([{ 1: 'error', 2: 'error2' }, { 3: 'error3', 4: 'error4' }]);
+    expect(service['prepareUniquenessErrors'](service['_initErrors'])).toEqual([
+      { 1: 'error', 2: 'error2' },
+      { 3: 'error3', 4: 'error4' },
+    ]);
   });
 
   it('should update screenService.componentErrors on triggerComponentErrorsUpdate', () => {
@@ -119,11 +119,8 @@ describe('UniquenessErrorsService', () => {
   });
 
   it('should remove last duplicated error', () => {
-    service['_initErrors'] = [
-      [{ 1: 'error', 2: 'error2' }],
-      [{ 3: 'error3', 4: 'error4' }],
-    ];
-    service['_componendIdErrorsMap'] = { 1.2: [ [ 0, 0 ] ], 3.4: [ [ 1, 0 ] ] };
+    service['_initErrors'] = [[{ 1: 'error', 2: 'error2' }], [{ 3: 'error3', 4: 'error4' }]];
+    service['_componendIdErrorsMap'] = { 1.2: [[0, 0]], 3.4: [[1, 0]] };
 
     service['removeLastDuplicateError']('1.2');
 

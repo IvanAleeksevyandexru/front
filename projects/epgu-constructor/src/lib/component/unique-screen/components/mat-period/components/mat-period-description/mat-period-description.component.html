@@ -6,7 +6,9 @@
 <p *ngIf="(durationAmount && balanceAmount) || (paymentType === 'one' && balanceAmount)">
   <span class="helper-text">{{ description.balanceLabel }}</span>
   <br />
-  <span class="balance-amount">{{ balanceAmount | toMoney | addZeroPenny }} <span class="rubles"></span></span>
+  <span class="balance-amount"
+    >{{ balanceAmount | toMoney | addZeroPenny }} <span class="rubles"></span
+  ></span>
 </p>
 
 <p *ngIf="!isValidBalanceAmount">

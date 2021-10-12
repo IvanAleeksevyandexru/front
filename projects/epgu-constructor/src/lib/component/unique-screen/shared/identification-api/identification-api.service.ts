@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ConfigService,
-} from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import {
   PassportIdentificationRequestBody,
   PassportIdentificationResponse,
@@ -15,22 +13,25 @@ import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable()
 export class IdentificationApiService {
-  constructor(
-    private http: HttpClient,
-    private configService: ConfigService,
-  ) {}
+  constructor(private http: HttpClient, private configService: ConfigService) {}
 
-  passportIdentification(passportRequestBody: PassportIdentificationRequestBody): Observable<PassportIdentificationResponse> {
+  passportIdentification(
+    passportRequestBody: PassportIdentificationRequestBody,
+  ): Observable<PassportIdentificationResponse> {
     const url = `${this.configService.identificationApiUrl}/passport`;
     return this.post<PassportIdentificationResponse>(url, passportRequestBody);
   }
 
-  selfieIdentification(selfieRequestBody: SelfieIdentificationRequestBody): Observable<SelfieIdentificationResponse> {
+  selfieIdentification(
+    selfieRequestBody: SelfieIdentificationRequestBody,
+  ): Observable<SelfieIdentificationResponse> {
     const url = `${this.configService.identificationApiUrl}/selfie`;
     return this.post<SelfieIdentificationResponse>(url, selfieRequestBody);
   }
 
-  videoIdentification(videoRequestBody: VideoIdentificationRequestBody): Observable<VideoIdentificationResponse> {
+  videoIdentification(
+    videoRequestBody: VideoIdentificationRequestBody,
+  ): Observable<VideoIdentificationResponse> {
     const url = `${this.configService.identificationApiUrl}/video`;
     return this.post<VideoIdentificationResponse>(url, videoRequestBody);
   }

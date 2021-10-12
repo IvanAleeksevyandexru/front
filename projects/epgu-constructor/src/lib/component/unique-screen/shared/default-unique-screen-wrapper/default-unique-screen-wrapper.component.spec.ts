@@ -39,12 +39,7 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        UserInfoLoaderModule,
-        ScreenButtonsModule,
-        BaseModule,
-      ],
+      imports: [ReactiveFormsModule, UserInfoLoaderModule, ScreenButtonsModule, BaseModule],
       declarations: [
         DefaultUniqueScreenWrapperComponent,
         MockComponents(

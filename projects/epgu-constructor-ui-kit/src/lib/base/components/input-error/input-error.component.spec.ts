@@ -7,7 +7,9 @@ import { Component } from '@angular/core';
 const helperTextMock = 'Awesome useful helper text.';
 
 @Component({
-  template: `<epgu-cf-ui-constructor-input-error>${helperTextMock}</epgu-cf-ui-constructor-input-error>`
+  template: `<epgu-cf-ui-constructor-input-error
+    >${helperTextMock}</epgu-cf-ui-constructor-input-error
+  >`,
 })
 class WrapperTestComponent {}
 
@@ -17,9 +19,8 @@ describe('InputErrorComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ WrapperTestComponent, InputErrorComponent ]
-    })
-    .compileComponents();
+      declarations: [WrapperTestComponent, InputErrorComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -29,8 +30,7 @@ describe('InputErrorComponent', () => {
   });
 
   it('should render passed content', () => {
-    const helperText = fixture.debugElement
-      .query(By.css('.error')).nativeElement.textContent;
+    const helperText = fixture.debugElement.query(By.css('.error')).nativeElement.textContent;
     expect(helperText).toEqual(helperTextMock);
   });
 });

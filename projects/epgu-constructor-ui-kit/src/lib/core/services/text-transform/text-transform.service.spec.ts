@@ -9,9 +9,7 @@ describe('TextTransformService', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        TextTransformService
-      ],
+      providers: [TextTransformService],
     });
   });
 

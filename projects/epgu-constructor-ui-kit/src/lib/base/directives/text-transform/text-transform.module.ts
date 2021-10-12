@@ -7,6 +7,6 @@ import { TextTransformService } from '../../../core/services/text-transform/text
   declarations: [TextTransformDirective],
   imports: [CommonModule],
   exports: [TextTransformDirective],
-  providers: [TextTransformService]
+  providers: [TextTransformService],
 })
 export class TextTransformModule {}

@@ -250,7 +250,6 @@ export const LOADING_ERROR_MODAL_PARAMS: ConfirmationModal = {
   isShortModal: true,
 };
 
-
 export const AUTH_ERROR_MODAL_PARAMS: ConfirmationModal = {
   text: AUTH_ERROR_MODAL_PARAMS_TEXT,
   title: '',
@@ -420,7 +419,7 @@ export const SERVICE_OR_SPEC_SESSION_TIMEOUT: ConfirmationModal = {
       label: 'Начать заново',
       closeModal: true,
       value: 'init',
-    }
+    },
   ],
   isShortModal: true,
 };
@@ -435,7 +434,7 @@ export const SERVICE_OR_SPEC_SESSION_TIMEOUT_2: ConfirmationModal = {
       label: 'Начать заново',
       closeModal: true,
       color: 'white',
-      value: 'init'
+      value: 'init',
     },
     {
       label: 'Обновить',
@@ -455,7 +454,7 @@ export const GET_SLOT_RESPONSE_TIMEOUT: ConfirmationModal = {
       label: 'Начать заново',
       closeModal: true,
       color: 'white',
-      value: 'init'
+      value: 'init',
     },
     {
       label: 'Обновить',

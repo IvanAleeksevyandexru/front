@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { isNull, isUndefined } from 'lodash';
 
-
 @Injectable()
 export class ObjectHelperService {
   public isDefined<T>(value: T | undefined | null): value is T {
@@ -14,5 +13,4 @@ export class ObjectHelperService {
       {},
     );
   }
-
 }

@@ -25,7 +25,7 @@ Object.defineProperties(SCREEN_COMPONENTS, {
   },
   TEST2: {
     value: Test2Component,
-  }
+  },
 });
 
 jest.useFakeTimers();
@@ -35,7 +35,7 @@ describe('ScreenResolverComponent', () => {
   let fixture: ComponentFixture<ScreenResolverComponent>;
   let screenService: ScreenServiceStub;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ScreenResolverComponent, TestComponent, Test2Component],
       providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
@@ -90,5 +90,5 @@ describe('ScreenResolverComponent', () => {
         SCREEN_COMPONENTS[ScreenTypes.UNIQUE],
       );
     });
-   });
+  });
 });

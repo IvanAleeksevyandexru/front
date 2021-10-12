@@ -5,12 +5,17 @@
       <lib-plain-input type="number" [formControl]="configForm.get(fieldName)"></lib-plain-input>
     </ng-container>
     <ng-container *ngIf="!numberFields.includes(fieldName)">
-      <lib-plain-input epgu-constructor-trim [formControl]="configForm.get(fieldName)"></lib-plain-input>
+      <lib-plain-input
+        epgu-constructor-trim
+        [formControl]="configForm.get(fieldName)"
+      ></lib-plain-input>
     </ng-container>
   </div>
 
   <div class="config__cta-wrapper">
-    <lib-button class="config__cta" color="white" (click)="resetConfig()">Вернуть дефолтные</lib-button>
+    <lib-button class="config__cta" color="white" (click)="resetConfig()"
+      >Вернуть дефолтные</lib-button
+    >
     <lib-button class="config__cta" (click)="saveConfig()">Сохранить</lib-button>
   </div>
   <div id="toast">Конфигурация сохранена</div>

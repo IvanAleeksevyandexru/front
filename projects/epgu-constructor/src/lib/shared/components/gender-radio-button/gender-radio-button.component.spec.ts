@@ -11,13 +11,10 @@ describe('GenderRadioButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
-      declarations: [ GenderRadioButtonComponent ],
-      providers: [
-        { provide: LoggerService, useClass: LoggerServiceStub }
-      ]
-    })
-    .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
+      declarations: [GenderRadioButtonComponent],
+      providers: [{ provide: LoggerService, useClass: LoggerServiceStub }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

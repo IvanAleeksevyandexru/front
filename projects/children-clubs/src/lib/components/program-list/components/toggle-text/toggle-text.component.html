@@ -1,7 +1,7 @@
 <div class="toggle-text">
-    <ng-container *ngIf="showAllText">{{ text }}</ng-container>
-    <ng-container *ngIf="!showAllText">
-        {{ truncatedText }}
-        <a class="toggle-text-link" (click)='toggleText()'>[...]</a>
-    </ng-container>
+  <ng-container *ngIf="showAllText">{{ text }}</ng-container>
+  <ng-container *ngIf="!showAllText">
+    {{ truncatedText }}
+    <a class="toggle-text-link" (click)="toggleText()">[...]</a>
+  </ng-container>
 </div>

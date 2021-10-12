@@ -5,7 +5,6 @@ import { InitDataService } from './init-data.service';
 import { FormPlayerContext, ServiceEntity } from '../../../form-player/form-player.types';
 import { configureTestSuite } from 'ng-bullet';
 
-
 describe('InitDataService', () => {
   let service: InitDataService;
   let loggerService: LoggerService;
@@ -14,10 +13,7 @@ describe('InitDataService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        InitDataService,
-        { provide: LoggerService, useClass: LoggerServiceStub },
-      ]
+      providers: [InitDataService, { provide: LoggerService, useClass: LoggerServiceStub }],
     });
   });
 
@@ -26,7 +22,7 @@ describe('InitDataService', () => {
     loggerService = TestBed.inject(LoggerService);
     serviceEntity = {
       serviceId: '10000100',
-      targetId: '-10000100'
+      targetId: '-10000100',
     };
     context = {};
   });
@@ -136,8 +132,8 @@ describe('InitDataService', () => {
         userRegion: {
           name: '',
           path: '',
-          codes: []
-        }
+          codes: [],
+        },
       };
       service['_serviceInfo'] = serviceInfo;
       expect(service.serviceInfo).toBe(serviceInfo);
@@ -198,7 +194,7 @@ describe('InitDataService', () => {
     });
 
     it('should throw error when empty error', () => {
-       serviceEntity = { ...serviceEntity, invited: true };
+      serviceEntity = { ...serviceEntity, invited: true };
       expect(() => service['checkProps'](serviceEntity)).toThrow('Should set orderId when invited');
     });
   });

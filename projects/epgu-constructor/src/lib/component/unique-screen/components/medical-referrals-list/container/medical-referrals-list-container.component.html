@@ -5,12 +5,12 @@
   [isValid]="currentAnswersService.isValid$ | async"
 >
   <div class="mb-24">
-  <epgu-constructor-medical-referrals-list
-    *ngIf="medicalReferralsInfo$ | async as medicalReferralsInfo"
-    [disclaimer]="medicalReferralsInfo.disclaimer"
-    [medicalReferralsList]="medicalReferralsInfo.referrals"
-    (referralWasChosen)="sendReferral($event)"
-  ></epgu-constructor-medical-referrals-list>
+    <epgu-constructor-medical-referrals-list
+      *ngIf="medicalReferralsInfo$ | async as medicalReferralsInfo"
+      [disclaimer]="medicalReferralsInfo.disclaimer"
+      [medicalReferralsList]="medicalReferralsInfo.referrals"
+      (referralWasChosen)="sendReferral($event)"
+    ></epgu-constructor-medical-referrals-list>
   </div>
 
   <epgu-constructor-answer-button

@@ -20,7 +20,7 @@ const mockFormOutputHtmlComponent = {
   attrs: { clarifications: 'fake clarifications' },
   value: '',
   visited: false,
-  required: false
+  required: false,
 };
 
 describe('FormOutputHtmlComponent', () => {
@@ -33,27 +33,28 @@ describe('FormOutputHtmlComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        FormOutputHtmlComponent,
-        MockComponent(OutputHtmlComponent)
-      ],
+      declarations: [FormOutputHtmlComponent, MockComponent(OutputHtmlComponent)],
       providers: [
         FormBuilder,
         MockProvider(ComponentsListRelationsService),
         MockProvider(InterpolationService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
       ],
-    }).overrideComponent(FormOutputHtmlComponent, {
-      set: { changeDetection: ChangeDetectionStrategy.Default }
-    }).compileComponents();
+    })
+      .overrideComponent(FormOutputHtmlComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fb = TestBed.inject(FormBuilder);
-    formService = TestBed.inject(ComponentsListFormService) as unknown as ComponentsListFormServiceStub;
+    formService = (TestBed.inject(
+      ComponentsListFormService,
+    ) as unknown) as ComponentsListFormServiceStub;
     interpolationService = TestBed.inject(InterpolationService);
     control = fb.group(mockFormOutputHtmlComponent);
-    formService['_form'] = new FormArray([ control ]);
+    formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(FormOutputHtmlComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -70,7 +71,9 @@ describe('FormOutputHtmlComponent', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeTruthy();
       expect(debugEl.componentInstance.html).toBe(mockFormOutputHtmlComponent.label);
-      expect(debugEl.componentInstance.clarifications).toBe(mockFormOutputHtmlComponent.attrs.clarifications);
+      expect(debugEl.componentInstance.clarifications).toBe(
+        mockFormOutputHtmlComponent.attrs.clarifications,
+      );
       expect(debugEl.componentInstance.componentId).toBe(mockFormOutputHtmlComponent.id);
     });
 
@@ -79,7 +82,7 @@ describe('FormOutputHtmlComponent', () => {
       expect(fixture.debugElement.query(By.css('.info__text'))).toBeNull();
       component.control = new FormControl({
         ...mockFormOutputHtmlComponent,
-        type: CustomScreenComponentTypes.HtmlString
+        type: CustomScreenComponentTypes.HtmlString,
       });
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css('.label'))).toBeNull();
@@ -87,7 +90,8 @@ describe('FormOutputHtmlComponent', () => {
     });
 
     it('interpolate data if needed', () => {
-      const interpolationStringSpy  = jest.spyOn(interpolationService, 'interpolateString')
+      const interpolationStringSpy = jest
+        .spyOn(interpolationService, 'interpolateString')
         .mockReturnValue('fake label some-data1 some-data2');
 
       component.control = new FormControl({
@@ -100,17 +104,20 @@ describe('FormOutputHtmlComponent', () => {
         label: 'fake label ${anotherComponent1.data} ${anotherComponent2.data}',
         attrs: {
           ...mockFormOutputHtmlComponent.attrs,
-          interpolationEnabled: true
+          interpolationEnabled: true,
         },
       });
 
       fixture.detectChanges();
 
       expect(component.label()).toBe('fake label some-data1 some-data2');
-      expect(interpolationStringSpy).toBeCalledWith('fake label ${anotherComponent1.data} ${anotherComponent2.data}', {
-        anotherComponent1: { data: 'some-data1' },
-        anotherComponent2: { data: 'some-data2' },
-      });
+      expect(interpolationStringSpy).toBeCalledWith(
+        'fake label ${anotherComponent1.data} ${anotherComponent2.data}',
+        {
+          anotherComponent1: { data: 'some-data1' },
+          anotherComponent2: { data: 'some-data2' },
+        },
+      );
     });
   });
 });

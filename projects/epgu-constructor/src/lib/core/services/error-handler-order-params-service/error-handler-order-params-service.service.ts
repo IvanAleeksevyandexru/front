@@ -3,14 +3,14 @@ import {
   ErrorHandlerOrderParams,
   ErrorHandlerOrderParamsAbstractService,
   ObjectHelperService,
-  WordTransformService
+  WordTransformService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenStore } from '../../../screen/screen.types';
 
-
 @Injectable()
-export class ErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderParamsAbstractService {
+export class ErrorHandlerOrderParamsServiceService
+  implements ErrorHandlerOrderParamsAbstractService {
   constructor(
     public screenService: ScreenService,
     private wordTransformService: WordTransformService,
@@ -22,7 +22,9 @@ export class ErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderP
     let orderId = undefined;
 
     if (this.hasOrderId(store)) {
-      orderId = this.objectHelperService.isDefined(store.orderId) ? store.orderId : store.callBackOrderId;
+      orderId = this.objectHelperService.isDefined(store.orderId)
+        ? store.orderId
+        : store.callBackOrderId;
     }
 
     return {
@@ -33,6 +35,9 @@ export class ErrorHandlerOrderParamsServiceService implements ErrorHandlerOrderP
   }
 
   private hasOrderId(store: ScreenStore): boolean {
-    return this.objectHelperService.isDefined(store.orderId) || this.objectHelperService.isDefined(store.callBackOrderId);
+    return (
+      this.objectHelperService.isDefined(store.orderId) ||
+      this.objectHelperService.isDefined(store.callBackOrderId)
+    );
   }
 }

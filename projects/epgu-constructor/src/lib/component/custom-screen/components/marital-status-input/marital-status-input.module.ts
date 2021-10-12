@@ -6,7 +6,7 @@ import {
   ConstructorCheckboxModule,
   ConstructorDropdownModule,
   ConstructorLookupModule,
-  InputErrorModule
+  InputErrorModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDadataWidgetModule } from '../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';

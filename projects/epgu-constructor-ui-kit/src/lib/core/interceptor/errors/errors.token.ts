@@ -6,6 +6,8 @@ export const ERROR_HANDLER_SERVICE = new InjectionToken<string>('epguErrorHandle
 
 export interface ErrorHandlerAbstractService {
   handleResponse: (requst: HttpRequest<unknown>, httpResponse: HttpResponse<unknown>) => void;
-  handleResponseError: (httpErrorResponse: HttpErrorResponse) => Observable<HttpEvent<void | never>>;
+  handleResponseError: (
+    httpErrorResponse: HttpErrorResponse,
+  ) => Observable<HttpEvent<void | never>>;
   isValidRequest: (obj: object) => boolean;
 }

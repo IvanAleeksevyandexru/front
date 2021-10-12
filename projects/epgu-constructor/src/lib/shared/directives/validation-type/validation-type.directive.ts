@@ -10,7 +10,11 @@ import { ValidationService } from '../../services/validation/validation.service'
 export class ValidationTypeDirective {
   @Input() component?: CustomComponent;
 
-  constructor(private validationService: ValidationService, private control: NgControl, private eventBusService: EventBusService) {}
+  constructor(
+    private validationService: ValidationService,
+    private control: NgControl,
+    private eventBusService: EventBusService,
+  ) {}
 
   @HostListener('blur')
   blur(): void {

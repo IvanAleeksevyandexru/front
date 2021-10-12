@@ -7,11 +7,10 @@
 >
   <epgu-constructor-date-time-period
     *ngIf="initialState$ | async as initialState"
-    [component]="(screenService.component$ | async)"
+    [component]="screenService.component$ | async"
     [attrs]="(screenService.component$ | async).attrs"
     [step]="(screenService.component$ | async).attrs.step"
     [initialState]="initialState"
     (updateState)="updateState($event)"
   ></epgu-constructor-date-time-period>
 </epgu-constructor-default-unique-screen-wrapper>
-

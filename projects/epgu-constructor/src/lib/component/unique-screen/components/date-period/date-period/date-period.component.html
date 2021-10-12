@@ -15,9 +15,7 @@
   </epgu-cf-ui-constructor-input-error>
   <div class="form">
     <div class="grid-col-6 grid-col-12-sm form__item">
-      <epgu-constructor-label
-        [label]="attrs.beginDate?.label"
-      ></epgu-constructor-label>
+      <epgu-constructor-label [label]="attrs.beginDate?.label"></epgu-constructor-label>
       <epgu-constructor-label
         [label]="attrs.beginDate?.sublabel"
         [for]="'startDate'"
@@ -41,11 +39,13 @@
   </epgu-cf-ui-constructor-input-error>
   <div class="form">
     <div class="grid-col-6 grid-col-12-sm form__item">
-      <epgu-constructor-label
-        [label]="attrs.endDate?.label"
-      ></epgu-constructor-label>
+      <epgu-constructor-label [label]="attrs.endDate?.label"></epgu-constructor-label>
       <div class="date-time-period-btns" *ngIf="attrs?.hints as hints">
-        <div class="date-time-period-btns__item" *ngFor="let hint of hints" (click)="hintClick(hint)">
+        <div
+          class="date-time-period-btns__item"
+          *ngFor="let hint of hints"
+          (click)="hintClick(hint)"
+        >
           {{ hint.label }}
         </div>
       </div>

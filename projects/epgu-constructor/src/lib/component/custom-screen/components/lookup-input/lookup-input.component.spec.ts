@@ -67,7 +67,11 @@ describe('LookupInputComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [LookupInputComponent, MockComponent(ComponentItemComponent)],
-      imports: [MockModule(ValidationTypeModule), MockModule(BaseUiModule), HttpClientTestingModule],
+      imports: [
+        MockModule(ValidationTypeModule),
+        MockModule(BaseUiModule),
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
@@ -101,7 +105,9 @@ describe('LookupInputComponent', () => {
     formService = (TestBed.inject(
       ComponentsListFormService,
     ) as unknown) as ComponentsListFormServiceStub;
-    dictionaryToolsService = TestBed.inject(DictionaryToolsService) as unknown as DictionaryToolsServiceStub;
+    dictionaryToolsService = (TestBed.inject(
+      DictionaryToolsService,
+    ) as unknown) as DictionaryToolsServiceStub;
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
       id: new FormControl(mockComponent.id),
@@ -143,10 +149,13 @@ describe('LookupInputComponent', () => {
 
   it('Should call re-render on dictionary update', () => {
     const reRenderSpy = jest.spyOn(component, 'reRenderChildLookup');
-    const dictionariesSpy = jest.spyOn(dictionaryToolsService, 'dictionaries$', 'get')
-      .mockReturnValue(of({
-        lookUpInputTypemockComponentID: { list: [{ id: 1, text: 'text' }] }
-      }));
+    const dictionariesSpy = jest
+      .spyOn(dictionaryToolsService, 'dictionaries$', 'get')
+      .mockReturnValue(
+        of({
+          lookUpInputTypemockComponentID: { list: [{ id: 1, text: 'text' }] },
+        }),
+      );
 
     component.ngOnInit();
 

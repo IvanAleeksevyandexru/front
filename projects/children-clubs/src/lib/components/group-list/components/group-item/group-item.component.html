@@ -30,10 +30,11 @@
         </div>
         <div class="group-item__value">
           {{ group.dateBegin | date: (isNextSchoolYear ? 'dd.MM' : 'dd.MM.yyyy') }}
-          <ng-container *ngIf="group?.dateEnd"> - {{ group.dateEnd | date: (isNextSchoolYear ? 'dd.MM' : 'dd.MM.yyyy') }}</ng-container>
+          <ng-container *ngIf="group?.dateEnd">
+            - {{ group.dateEnd | date: (isNextSchoolYear ? 'dd.MM' : 'dd.MM.yyyy') }}</ng-container
+          >
           <ng-container *ngIf="group.hoursYear">
-            ({{ group.hoursYear }}
-            {{ ['час', 'часа', 'часов'] | pluralize: group.hoursYear }})
+            ({{ group.hoursYear }} {{ ['час', 'часа', 'часов'] | pluralize: group.hoursYear }})
           </ng-container>
         </div>
       </div>
@@ -68,10 +69,12 @@
       <div
         *ngIf="denyReasonMessage"
         [innerHTML]="denyReasonMessage.text"
-        class='group-item__deny-reason-text'>
-      </div>
+        class="group-item__deny-reason-text"
+      ></div>
       <div class="btn-container mt-24">
-        <lib-button (click)="finish()" type="button" [disabled]="!available">Записаться в эту группу</lib-button>
+        <lib-button (click)="finish()" type="button" [disabled]="!available"
+          >Записаться в эту группу</lib-button
+        >
       </div>
     </div>
   </div>

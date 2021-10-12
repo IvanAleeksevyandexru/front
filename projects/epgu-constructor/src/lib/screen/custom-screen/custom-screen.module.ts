@@ -19,8 +19,6 @@ import { ScreenButtonsModule } from '../../shared/components/screen-buttons/scre
     ScreenPadModule,
     ScreenButtonsModule,
   ],
-  providers: [
-    CustomScreenService,
-  ]
+  providers: [CustomScreenService],
 })
 export class CustomScreenModule {}

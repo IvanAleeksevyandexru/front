@@ -88,7 +88,26 @@ export const MASKS_HANDLERS = {
     };
   },
   [MASKS.PhoneWithCodeMaskInput]: (value: string): (string | RegExp)[] => {
-    const mask = ['+', '7', ' ', '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
+    const mask = [
+      '+',
+      '7',
+      ' ',
+      '(',
+      /\d/,
+      /\d/,
+      /\d/,
+      ')',
+      ' ',
+      /\d/,
+      /\d/,
+      /\d/,
+      '-',
+      /\d/,
+      /\d/,
+      '-',
+      /\d/,
+      /\d/,
+    ];
     const lastChar = value.slice(-1);
 
     /* NOTICE: тут по необходимости дополняется маска, если вбивается номер телефона с дополнительным кодом (через *)  */

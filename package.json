@@ -35,6 +35,7 @@
     "lint:fix": "ng lint --fix",
     "stylelint": "stylelint \"**/*.scss\" --config .stylelintrc.json",
     "stylelint:fix": "stylelint \"**/*.scss\" --config .stylelintrc.json --fix",
+    "format": "npx prettier --write . && yarn lint:fix",
     "test": "jest --ci",
     "test:dev": "jest --runInBand --watch -o",
     "test:coverage": "jest --ci --coverage --no-cache --reporters=default --reporters=jest-junit --coverageDirectory=coverage/jest",

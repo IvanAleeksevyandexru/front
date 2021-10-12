@@ -4,9 +4,9 @@ import { NgControl } from '@angular/forms';
 import { isEmpty as _isEmpty } from 'lodash';
 
 @Directive({
-  selector: '[epgu-cf-ui-currency-transform]'
+  selector: '[epgu-cf-ui-currency-transform]',
 })
-export class CurrencyTransformDirective implements OnInit{
+export class CurrencyTransformDirective implements OnInit {
   @Input('epgu-cf-ui-currency-transform') currency: boolean;
 
   constructor(
@@ -19,7 +19,7 @@ export class CurrencyTransformDirective implements OnInit{
   @HostListener('keypress', ['$event'])
   onKeyPress(event: KeyboardEvent): boolean {
     if (this.currency) {
-      return event.key != ' ' && (event.key >= '0' && event.key <= '9');
+      return event.key != ' ' && event.key >= '0' && event.key <= '9';
     }
   }
 
@@ -37,14 +37,16 @@ export class CurrencyTransformDirective implements OnInit{
       let price = target.value;
       if (!Number.isNaN(+price)) {
         this.renderer.setProperty(target, 'value', this.normalizeCurrency(price));
-        this.ngControl.control.setValue(price.replace(/\s+/g, ''), { emitModelToViewChange: false });
+        this.ngControl.control.setValue(price.replace(/\s+/g, ''), {
+          emitModelToViewChange: false,
+        });
       }
     }
   }
 
   public ngOnInit(): void {
     const { value } = this.ngControl.control;
-    if(!_isEmpty(value) && this.currency) {
+    if (!_isEmpty(value) && this.currency) {
       const inputEl = this.elRef.nativeElement.querySelector('input');
       this.renderer.setProperty(inputEl, 'value', this.normalizeCurrency(value));
     }

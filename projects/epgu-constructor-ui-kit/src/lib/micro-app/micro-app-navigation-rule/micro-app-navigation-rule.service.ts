@@ -4,10 +4,9 @@ import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 
 @Injectable({ providedIn: 'root' })
 export class MicroAppNavigationRuleService {
-
   private appNavigationRuleMap: MicroAppNavigationRuleMap;
 
-  constructor (private appStateQuery: MicroAppStateQuery<unknown, unknown>) {}
+  constructor(private appStateQuery: MicroAppStateQuery<unknown, unknown>) {}
 
   public initRule(appNavigationRuleMap: MicroAppNavigationRuleMap): void {
     this.appNavigationRuleMap = appNavigationRuleMap;

@@ -110,7 +110,10 @@ export class YandexMapService implements OnDestroy {
    * centers the map by feature
    * @param feature
    */
-  public centeredPlaceMark<T>(feature: IFeatureItem<T> | IClusterItem<T>, zoomToObject = false): void {
+  public centeredPlaceMark<T>(
+    feature: IFeatureItem<T> | IClusterItem<T>,
+    zoomToObject = false,
+  ): void {
     this.closeBalloon();
     if (
       feature.type === IFeatureTypes.Cluster &&
@@ -126,7 +129,10 @@ export class YandexMapService implements OnDestroy {
     }
     if (coords && coords[0] && coords[1] && feature.type === IFeatureTypes.Feature) {
       this.objectManager.objects.setObjectOptions(feature.id as number, this.icons.red);
-      this.yaMapService.map.setCenter([coords[0], coords[1] + POINT_ON_MAP_OFFSET], zoomToObject ? this.MAX_ZOOM : undefined);
+      this.yaMapService.map.setCenter(
+        [coords[0], coords[1] + POINT_ON_MAP_OFFSET],
+        zoomToObject ? this.MAX_ZOOM : undefined,
+      );
     }
 
     const object =
@@ -140,7 +146,9 @@ export class YandexMapService implements OnDestroy {
   }
 
   public getObjectById<T>(id: number): IFeatureItem<T> {
-    return this.objectManager.objects.getAll().find((mapObj) => mapObj.properties.res.idForMap === id);
+    return this.objectManager.objects
+      .getAll()
+      .find((mapObj) => mapObj.properties.res.idForMap === id);
   }
 
   public handleFeatureSelection<T>(feature: IFeatureItem<T>): void {
@@ -235,8 +243,8 @@ export class YandexMapService implements OnDestroy {
   }
 
   public getBoundsByCoords(coords: number[][]): [number[], number[]] {
-    const latitudes = coords.map(coord => coord[0]);
-    const longitudes = coords.map(coord => coord[1]);
+    const latitudes = coords.map((coord) => coord[0]);
+    const longitudes = coords.map((coord) => coord[1]);
     const leftmost = Math.min(...latitudes);
     const rightmost = Math.max(...latitudes);
     const lowest = Math.min(...longitudes);
@@ -260,7 +268,11 @@ export class YandexMapService implements OnDestroy {
    * @param direction направление
    * @param distance расстояние
    */
-  public solveDirectProblem(startPoint: number[], direction: number[], distance: number): IDirectProblemSolution {
+  public solveDirectProblem(
+    startPoint: number[],
+    direction: number[],
+    distance: number,
+  ): IDirectProblemSolution {
     return this.ymaps.coordSystem.geo.solveDirectProblem(startPoint, direction, distance);
   }
 
@@ -271,40 +283,40 @@ export class YandexMapService implements OnDestroy {
   /**
    * Перекрашивает точки на карте
    */
-     public mapPaint(): void {
-      this.objectManager.clusters.getAll().forEach((cluster) => {
-        let isClusterWithActiveObject;
-        let selectedFeatureCnt = 0;
-        let clusterColor;
-        for (let feature of cluster.features) {
-          if (feature.properties.res.objectId === this.activePlacemarkId) {
-            isClusterWithActiveObject = true;
-          }
-          if (feature.properties.res.isSelected) {
-            selectedFeatureCnt++;
-          }
+  public mapPaint(): void {
+    this.objectManager.clusters.getAll().forEach((cluster) => {
+      let isClusterWithActiveObject;
+      let selectedFeatureCnt = 0;
+      let clusterColor;
+      for (let feature of cluster.features) {
+        if (feature.properties.res.objectId === this.activePlacemarkId) {
+          isClusterWithActiveObject = true;
         }
-        if (
-          isClusterWithActiveObject ||
-          (selectedFeatureCnt && cluster.features.length > selectedFeatureCnt)
-        ) {
-          clusterColor = this.icons.clusterBlueRed;
-        } else if (cluster.features.length === selectedFeatureCnt) {
-          clusterColor = this.icons.clusterRed;
-        } else {
-          clusterColor = this.icons.clusterBlue;
+        if (feature.properties.res.isSelected) {
+          selectedFeatureCnt++;
         }
-        const currentColor = JSON.stringify(
-          this.objectManager.clusters.getById(cluster.id).options.clusterIcons,
-        );
-        if (currentColor !== JSON.stringify([clusterColor])) {
-          this.objectManager.clusters.setClusterOptions(cluster.id, {
-            clusterIcons: [clusterColor],
-          });
-        }
-      });
-      this.paintActiveCluster(this.icons.clusterRed);
-    }
+      }
+      if (
+        isClusterWithActiveObject ||
+        (selectedFeatureCnt && cluster.features.length > selectedFeatureCnt)
+      ) {
+        clusterColor = this.icons.clusterBlueRed;
+      } else if (cluster.features.length === selectedFeatureCnt) {
+        clusterColor = this.icons.clusterRed;
+      } else {
+        clusterColor = this.icons.clusterBlue;
+      }
+      const currentColor = JSON.stringify(
+        this.objectManager.clusters.getById(cluster.id).options.clusterIcons,
+      );
+      if (currentColor !== JSON.stringify([clusterColor])) {
+        this.objectManager.clusters.setClusterOptions(cluster.id, {
+          clusterIcons: [clusterColor],
+        });
+      }
+    });
+    this.paintActiveCluster(this.icons.clusterRed);
+  }
 
   private getClusterHash<T>(cluster: IClusterItem<T>): string {
     return cluster.features.map(({ id }) => id).join('$');

@@ -17,18 +17,18 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
 @NgModule({
   declarations: [RegistrationAddrComponent, RegistrationAddrReadonlyComponent],
   exports: [RegistrationAddrComponent],
-    imports: [
-        BaseModule,
-        ConstructorPlainInputModule,
-        ConstructorDadataWidgetModule,
-        BaseComponentsModule,
-        ScreenPadModule,
-        ConstructorDatePickerModule,
-        DefaultUniqueScreenWrapperModule,
-        ClickableLabelModule,
-        DisclaimerModule,
-    ],
+  imports: [
+    BaseModule,
+    ConstructorPlainInputModule,
+    ConstructorDadataWidgetModule,
+    BaseComponentsModule,
+    ScreenPadModule,
+    ConstructorDatePickerModule,
+    DefaultUniqueScreenWrapperModule,
+    ClickableLabelModule,
+    DisclaimerModule,
+  ],
   providers: [DateValidator, DatesToolsService],
-  entryComponents: [RegistrationAddrComponent, RegistrationAddrReadonlyComponent]
+  entryComponents: [RegistrationAddrComponent, RegistrationAddrReadonlyComponent],
 })
 export class RegistrationAddrScreenModule {}

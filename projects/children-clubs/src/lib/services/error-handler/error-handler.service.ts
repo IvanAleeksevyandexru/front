@@ -19,7 +19,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private logger: LoggerService,
     private modalService: ModalService,
     private locationService: LocationService,
-    private navigationService: MicroAppNavigationService
+    private navigationService: MicroAppNavigationService,
   ) {}
 
   public handleResponse(): void {
@@ -31,7 +31,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
   ): Observable<HttpEvent<void | never>> {
     const { status, error, url } = httpErrorResponse;
     const traceId = httpErrorResponse.headers.get('x-trace-id') || error?.traceId;
-    if (status >= 400 && (url.includes(SEARCH_GROUP_SUB_URL) || url.includes(PROGRAM_DETAIL_SUB_URL))) {
+    if (
+      status >= 400 &&
+      (url.includes(SEARCH_GROUP_SUB_URL) || url.includes(PROGRAM_DETAIL_SUB_URL))
+    ) {
       this.navigationService.toDisplay('projectList');
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {

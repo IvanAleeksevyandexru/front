@@ -8,6 +8,6 @@ import { ConfirmPersonalPolicyComponent } from './confirm-personal-policy.compon
   declarations: [ConfirmPersonalPolicyComponent],
   exports: [ConfirmPersonalPolicyComponent],
   imports: [BaseModule, ScreenPadModule, DefaultUniqueScreenWrapperModule, DisclaimerModule],
-  entryComponents: [ConfirmPersonalPolicyComponent]
+  entryComponents: [ConfirmPersonalPolicyComponent],
 })
 export class ConfirmPersonalPolicyModule {}

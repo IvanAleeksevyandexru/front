@@ -13,12 +13,7 @@ describe('StateService', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      providers: [
-        StateService,
-        MicroAppStateService,
-        MicroAppStateQuery,
-        MicroAppStateStore
-      ],
+      providers: [StateService, MicroAppStateService, MicroAppStateQuery, MicroAppStateStore],
     });
     service = TestBed.inject(StateService);
   });
@@ -28,7 +23,6 @@ describe('StateService', () => {
   });
 
   describe('clearGroupFilters()', () => {
-
     it('should call change state with empty filters', () => {
       const spy = jest.spyOn(service, 'changeState');
 
@@ -36,11 +30,9 @@ describe('StateService', () => {
 
       expect(spy).toHaveBeenCalledWith({ groupFilters: {}});
     });
-
   });
 
   describe('get groupFilters()', () => {
-
     it('should return default group filters if group filters is empty', () => {
       const res = service.groupFilters;
 
@@ -54,7 +46,7 @@ describe('StateService', () => {
     });
 
     it('should return existing group filters if object is not empty', () => {
-      service.groupFilters = { pfdoPayments: {} as unknown as PfdoPaymentFilters };
+      service.groupFilters = { pfdoPayments: ({} as unknown) as PfdoPaymentFilters };
 
       const res = service.groupFilters;
 
@@ -67,15 +59,13 @@ describe('StateService', () => {
       expect(res.hasOwnProperty('pfdoPayments')).toBe(true);
       expect(Object.keys(res).length).toBe(7);
     });
-
   });
 
   describe('get programFilters()', () => {
-
     it('should return default programFilters if programFilters is undefined', () => {
       const res = service.programFilters;
 
-      expect(res).toEqual( {});
+      expect(res).toEqual({});
     });
 
     it('should return existing programFilters if programFilters exist', () => {
@@ -85,7 +75,5 @@ describe('StateService', () => {
 
       expect(res).toEqual({ age: 42 });
     });
-
   });
-
 });

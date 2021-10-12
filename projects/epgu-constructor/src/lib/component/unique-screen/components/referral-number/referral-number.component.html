@@ -36,8 +36,8 @@
     <lib-button
       [showLoader]="screenService.isLoading$ | async"
       (click)="navigateToNextStep(referral.value)"
-      [disabled]="!referral.valid || !referral.value">{{
-      data.attrs.findReferralLabel || 'Найти'
-      }}</lib-button>
+      [disabled]="!referral.valid || !referral.value"
+      >{{ data.attrs.findReferralLabel || 'Найти' }}</lib-button
+    >
   </div>
 </epgu-constructor-default-unique-screen-wrapper>

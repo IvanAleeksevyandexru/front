@@ -7,7 +7,9 @@ import { configureTestSuite } from 'ng-bullet';
 const helperTextMock = 'Awesome useful helper text.';
 
 @Component({
-  template: `<epgu-cf-ui-constructor-helper-text>${helperTextMock}</epgu-cf-ui-constructor-helper-text>`
+  template: `<epgu-cf-ui-constructor-helper-text
+    >${helperTextMock}</epgu-cf-ui-constructor-helper-text
+  >`,
 })
 class WrapperTestComponent {}
 
@@ -17,9 +19,8 @@ describe('HelperTextComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [ WrapperTestComponent, HelperTextComponent ]
-    })
-    .compileComponents();
+      declarations: [WrapperTestComponent, HelperTextComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -32,8 +33,7 @@ describe('HelperTextComponent', () => {
   });
 
   it('should render passed content', () => {
-    const helperText = fixture.debugElement
-      .query(By.css('.helper-text')).nativeElement.textContent;
+    const helperText = fixture.debugElement.query(By.css('.helper-text')).nativeElement.textContent;
     expect(helperText).toEqual(helperTextMock);
   });
 });

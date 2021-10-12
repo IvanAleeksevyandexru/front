@@ -33,6 +33,10 @@ export class DownloadService {
   }
 
   private convertBase64(value: string): Uint8Array {
-   return new Uint8Array(atob(value).split('').map(char => char.charCodeAt(0)));
+    return new Uint8Array(
+      atob(value)
+        .split('')
+        .map((char) => char.charCodeAt(0)),
+    );
   }
 }

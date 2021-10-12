@@ -5,7 +5,7 @@ import { configureTestSuite } from 'ng-bullet';
 describe('WebcamService', () => {
   let service: WebcamService;
 
-  configureTestSuite( () => {
+  configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [WebcamService],
     });
@@ -18,7 +18,7 @@ describe('WebcamService', () => {
   describe('isWebcamAllowed', () => {
     beforeEach(() => {
       window.MediaStream = jest.fn().mockImplementation(() => ({
-        getTracks: jest.fn().mockReturnValue([])
+        getTracks: jest.fn().mockReturnValue([]),
       }));
     });
 

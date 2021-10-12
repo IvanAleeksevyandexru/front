@@ -1,21 +1,19 @@
 import { AfterViewInit, Directive, ElementRef, NgZone, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[epgu-constructor-table]'
+  selector: '[epgu-constructor-table]',
 })
 export class TableDirective implements AfterViewInit {
   tableClass = '.epgu-constructor-table';
   attrName = 'data-header';
 
-  constructor(
-    private elRef: ElementRef,
-    private renderer: Renderer2,
-    private zone: NgZone,
-  ) {}
+  constructor(private elRef: ElementRef, private renderer: Renderer2, private zone: NgZone) {}
 
   ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() => {
-      const tables = this.elRef.nativeElement.querySelectorAll(this.tableClass) as HTMLTableElement[];
+      const tables = this.elRef.nativeElement.querySelectorAll(
+        this.tableClass,
+      ) as HTMLTableElement[];
 
       if (tables.length) {
         tables.forEach((table: HTMLTableElement) => {
@@ -38,7 +36,7 @@ export class TableDirective implements AfterViewInit {
         isMediaTable = dataAttrs.length && dataAttrs.some((attr) => Boolean(attr));
       }
 
-      if(isMediaTable) {
+      if (isMediaTable) {
         this.renderer.addClass(table, 'media-table');
         this.modifyCells(cells, dataAttrs);
       }

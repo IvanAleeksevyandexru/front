@@ -47,6 +47,6 @@ import { ClickableLabelModule } from '../../../../shared/directives/clickable-la
     EmployeeHistoryMonthsService,
     DatesToolsService,
   ],
-  entryComponents: [EmployeeHistoryContainerComponent]
+  entryComponents: [EmployeeHistoryContainerComponent],
 })
 export class EmployeeHistoryModule {}

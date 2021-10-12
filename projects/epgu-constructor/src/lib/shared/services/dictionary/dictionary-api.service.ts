@@ -8,7 +8,11 @@ import {
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
-import { DictionaryOptions, AdditionalRequestParam, DictionaryUrlTypes } from '@epgu/epgu-constructor-types';
+import {
+  DictionaryOptions,
+  AdditionalRequestParam,
+  DictionaryUrlTypes,
+} from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class DictionaryApiService {
@@ -118,7 +122,8 @@ export class DictionaryApiService {
     }
     const codeCheck = error.code && error.code !== 0;
     const errorCodeCheck = error.errorCode && error.code !== 0;
-    const errorDetailMessageCheck = error.errorDetail?.errorMessage &&
+    const errorDetailMessageCheck =
+      error.errorDetail?.errorMessage &&
       error.errorDetail.errorMessage.toLowerCase() !== 'operation completed';
     return !!(codeCheck || errorCodeCheck || errorDetailMessageCheck);
   }

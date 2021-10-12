@@ -58,7 +58,9 @@ export class ScreenContent {
   private _isTheSameScreenWithErrors = new BehaviorSubject<boolean>(null);
   private _isPrevStepCase = new BehaviorSubject<boolean>(null);
   private _isLogicComponentLoading = new BehaviorSubject<boolean>(false);
-  private _cycledApplicantAnswerContext = new BehaviorSubject<CycledApplicantAnswerContextDto>(null);
+  private _cycledApplicantAnswerContext = new BehaviorSubject<CycledApplicantAnswerContextDto>(
+    null,
+  );
 
   public get display(): DisplayDto {
     return this._display.getValue();

@@ -12,10 +12,7 @@ export class AddressesToolsService {
    * Returns geo coords of physical addresses array
    * @param items
    */
-  public getCoordsByAddress(
-    addresses: string[],
-  ):
-  Observable<IGeoCoordsResponse> {
+  public getCoordsByAddress(addresses: string[]): Observable<IGeoCoordsResponse> {
     const path = `${this.configService.externalApiUrl}/address/resolve`;
     if (addresses.length) {
       return this.http.post<IGeoCoordsResponse>(path, {

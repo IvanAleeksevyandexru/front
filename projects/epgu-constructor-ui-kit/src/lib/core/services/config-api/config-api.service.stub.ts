@@ -3,7 +3,6 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class ConfigApiServiceStub {
-
   public getFormPlayerConfig(): Observable<{}> {
     return of({});
   }

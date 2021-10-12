@@ -1,17 +1,19 @@
-@import "../core/palettes";
-@import "../core/typography";
-@import "./breakpoint";
+@import '../core/palettes';
+@import '../core/typography';
+@import './breakpoint';
 
 .epgu-constructor-table {
   width: 100%;
-  thead, .header {
+  thead,
+  .header {
     color: $color-text-helper;
     @include typ-plain-small();
   }
   tbody {
     @include typ-plain-text();
   }
-  th, td {
+  th,
+  td {
     vertical-align: top;
     text-align: center;
     padding: 2px 8px;
@@ -22,11 +24,11 @@
     &:last-child {
       padding-right: 0;
     }
-    &.nowrap{
+    &.nowrap {
       white-space: nowrap;
     }
   }
-  & .header{
+  & .header {
     display: none;
   }
 }
@@ -34,19 +36,27 @@
 .epgu-constructor-table.table-bordered {
   border: 2px solid $color-gosblue;
   border-collapse: collapse;
-  th, td {
+  th,
+  td {
     border: 2px solid $color-gosblue;
     padding: 2px 8px;
     text-align: center;
   }
 }
 
-@media(max-width: $screen-sm-max) {
+@media (max-width: $screen-sm-max) {
   .epgu-constructor-table.media-table {
-    &, thead, tbody, th, td, tr{
+    &,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
       display: block;
     }
-    thead tr, th, &:not(thead) tr:first-child {
+    thead tr,
+    th,
+    &:not(thead) tr:first-child {
       display: none;
     }
     td {
@@ -57,13 +67,14 @@
       margin-bottom: 24px;
       padding: 0;
     }
-    & .header{
+    & .header {
       display: block;
       margin-bottom: 4px;
     }
     &.table-bordered {
       border: none;
-      th, td {
+      th,
+      td {
         border: none;
         padding: 0;
         text-align: left;
@@ -78,6 +89,3 @@
     }
   }
 }
-
-
-

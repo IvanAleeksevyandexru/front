@@ -8,7 +8,6 @@ import { BaseModule } from '../../../../shared/base.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 
-
 @NgModule({
   declarations: [ConfirmPersonalUserAddressComponent, AddressItemComponent],
   exports: [ConfirmPersonalUserAddressComponent],
@@ -19,8 +18,9 @@ import { ConstructorDatePickerModule } from '../../../../shared/components/const
     TextTransformModule,
     ScreenPadModule,
     DefaultUniqueScreenWrapperModule,
-    ConstructorDatePickerModule],
+    ConstructorDatePickerModule,
+  ],
   providers: [DatePipe],
-  entryComponents: [ConfirmPersonalUserAddressComponent]
+  entryComponents: [ConfirmPersonalUserAddressComponent],
 })
 export class ConfirmPersonalUserAddressScreenModule {}

@@ -45,9 +45,7 @@ class TextTransformTestComponent {
 
   form: FormGroup;
 
-  constructor(
-    private fb: FormBuilder
-  ) {
+  constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       all: new FormControl({ value: '' }),
       first: new FormControl({ value: '' }),

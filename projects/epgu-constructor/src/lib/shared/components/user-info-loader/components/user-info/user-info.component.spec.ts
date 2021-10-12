@@ -23,16 +23,18 @@ describe('UserInfoComponent', () => {
     gender: Gender.female,
     ageType: AgeType.MATURE,
   };
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [UserInfoComponent],
-      providers: [ObjectHelperService, { provide: ConfigService, useClass: ConfigServiceStub }],
-    })
-      .overrideComponent(UserInfoComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UserInfoComponent],
+        providers: [ObjectHelperService, { provide: ConfigService, useClass: ConfigServiceStub }],
       })
-      .compileComponents();
-  }));
+        .overrideComponent(UserInfoComponent, {
+          set: { changeDetection: ChangeDetectionStrategy.Default },
+        })
+        .compileComponents();
+    }),
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserInfoComponent);

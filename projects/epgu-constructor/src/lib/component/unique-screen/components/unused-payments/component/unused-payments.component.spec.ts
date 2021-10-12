@@ -62,5 +62,4 @@ describe('UnusedPaymentsComponent', () => {
       expect(component.selectPaymentEvent.emit).toHaveBeenCalledWith(component.selectedPayment);
     });
   });
-
 });

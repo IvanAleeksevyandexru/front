@@ -1,7 +1,9 @@
-@import "reset";
-@import "~@epgu/epgu-constructor-ui-kit/src/styles/core";
+@import 'reset';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
 }
 

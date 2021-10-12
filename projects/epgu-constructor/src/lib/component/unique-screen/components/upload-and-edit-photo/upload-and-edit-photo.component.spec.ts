@@ -7,7 +7,7 @@ import {
   LocationService,
   ObjectHelperService,
   WINDOW_PROVIDERS,
-  WordTransformService
+  WordTransformService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService, HealthService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';

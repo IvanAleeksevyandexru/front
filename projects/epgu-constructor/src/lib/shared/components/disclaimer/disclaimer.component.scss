@@ -22,7 +22,7 @@
   &.vertical-line {
     padding-left: calc(16px + 6px);
     position: relative;
-    &[class*="-line"] {
+    &[class*='-line'] {
       &:before {
         display: block;
         position: absolute;
@@ -33,8 +33,8 @@
         top: 0;
       }
     }
-    & .title [class*="-line"] {
-      display:none;
+    & .title [class*='-line'] {
+      display: none;
     }
     & .description {
       color: $color-summer-night;
