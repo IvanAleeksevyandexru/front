@@ -202,15 +202,19 @@ export class DocInputComponent extends AbstractComponentListItemComponent
     this.fieldsNames.forEach((fieldName: string) => {
       const validators = [this.validationService.customValidator(this.fields[fieldName])];
 
+      const updateOnValidation = this.fields[fieldName].attrs.validation?.find(
+        (v) => v.updateOn === 'blur',
+      );
+
       if (Object.prototype.hasOwnProperty.call(seriesNumDate, fieldName)) {
         seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], {
           validators,
-          updateOn: this.fields[fieldName].attrs.updateOn || 'change',
+          updateOn: updateOnValidation?.updateOn || 'change',
         });
       } else {
         emitter[fieldName] = new FormControl(componentValues[fieldName], {
           validators,
-          updateOn: this.fields[fieldName].attrs.updateOn || 'change',
+          updateOn: updateOnValidation?.updateOn || 'change',
         });
       }
     });
