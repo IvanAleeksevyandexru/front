@@ -249,6 +249,14 @@ describe('AutocompleteService', () => {
       });
       eventBusService.emit('suggestionDeleteEvent');
     });
+
+    it('should call autocompletePrepareService.deleteCachedValueItem() on "deleteCachedValueItem"', () => {
+      const prepareServiceDeleteCachedValueItemSpy = spyOn(prepareService, 'deleteCachedValueItem');
+      eventBusService.on('deleteCachedValueItem').subscribe(() => {
+        expect(prepareServiceDeleteCachedValueItemSpy).toBeCalled();
+      });
+      eventBusService.emit('deleteCachedValueItem');
+    });
   });
 
   describe('groupSuggestionsApiCall()', () => {
