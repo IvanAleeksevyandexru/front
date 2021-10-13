@@ -35,7 +35,7 @@ describe('AutocompletePrepareService', () => {
   let datesToolsService: DatesToolsService;
   let screenService: ScreenService;
   let repeatableComponents: ComponentDto[][];
-  let componentsSuggestionsSet: Set<[string, string]>;
+  let componentsSuggestionsList: [string, string][];
   let parentComponent: ComponentDto;
   let currentAnswersService: CurrentAnswersService;
 
@@ -164,8 +164,7 @@ describe('AutocompletePrepareService', () => {
     datesToolsService = TestBed.inject(DatesToolsService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     repeatableComponents = [];
-    componentsSuggestionsSet = new Set();
-    componentsSuggestionsSet.add(['prev_region', 'pd8_1']);
+    componentsSuggestionsList = [['prev_region', 'pd8_1']];
     parentComponent = mockData.display.components[0];
     screenService.display = mockData.display;
     screenService.cachedAnswers = mockData.cachedAnswers;
@@ -183,7 +182,7 @@ describe('AutocompletePrepareService', () => {
       expect(
         service['getFormattedHints'](
           repeatableComponents,
-          componentsSuggestionsSet,
+          componentsSuggestionsList,
           fields,
           componentMnemonic,
         ),
@@ -204,7 +203,7 @@ describe('AutocompletePrepareService', () => {
       autocompleteService.init();
       service.formatAndPassDataToSuggestions(
         repeatableComponents,
-        componentsSuggestionsSet,
+        componentsSuggestionsList,
         mockSuggestionApi,
       );
       expect(screenService.suggestions).toEqual(result);
@@ -216,7 +215,7 @@ describe('AutocompletePrepareService', () => {
       const serviceSetComponentValue = spyOn(service, 'setComponentValue');
       service.findAndUpdateComponentWithValue(
         repeatableComponents,
-        componentsSuggestionsSet,
+        componentsSuggestionsList,
         parentComponent,
         'prev_region',
         'value',
@@ -230,7 +229,7 @@ describe('AutocompletePrepareService', () => {
       newParentComponent.type = UniqueScreenComponentTypes.childrenList;
       service.findAndUpdateComponentWithValue(
         repeatableComponents,
-        componentsSuggestionsSet,
+        componentsSuggestionsList,
         newParentComponent,
         'prev_region',
         'value',
@@ -246,14 +245,14 @@ describe('AutocompletePrepareService', () => {
         const value = '{ "text": "value" }';
         autocompleteService.init();
         expect(
-          service['prepareValue'](repeatableComponents, componentsSuggestionsSet, 'value', value),
+          service['prepareValue'](repeatableComponents, componentsSuggestionsList, 'value', value),
         ).toBe('value');
       });
       it('if value is not json structure', () => {
         const value = mockSuggestionItemList.value;
         autocompleteService.init();
         expect(
-          service['prepareValue'](repeatableComponents, componentsSuggestionsSet, 'value', value),
+          service['prepareValue'](repeatableComponents, componentsSuggestionsList, 'value', value),
         ).toBe('value');
       });
     });
@@ -263,13 +262,13 @@ describe('AutocompletePrepareService', () => {
     it('should return finded component', () => {
       const component = mockData.display.components[0].attrs.components[0];
       const mockRepeatableComponents = [mockData.display.components[0].attrs.components];
-      componentsSuggestionsSet.add(['prev_region1', component.id]);
+      componentsSuggestionsList.push(['prev_region1', component.id]);
       const componentMnemonic = 'prev_region1';
       autocompleteService.init();
       expect(
         service['findComponent'](
           mockRepeatableComponents,
-          componentsSuggestionsSet,
+          componentsSuggestionsList,
           componentMnemonic,
           0,
         ),
@@ -298,7 +297,7 @@ describe('AutocompletePrepareService', () => {
           null,
           componentValue,
           componentMnemonic,
-          componentsSuggestionsSet,
+          componentsSuggestionsList,
         ),
       ).toEqual(componentValue);
     });

@@ -3,7 +3,7 @@ import { Answer, ComponentDto } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
-import { isChildrenListType } from './autocomplete.const';
+import { getFieldNameFromCompositeMnemonic, isChildrenListType } from './autocomplete.const';
 import { get as _get, cloneDeep as _cloneDeep } from 'lodash';
 import {
   ISuggestionApi,
@@ -30,14 +30,14 @@ export class AutocompletePrepareService {
 
   public getFormattedList(
     repeatableComponents: ComponentDto[][],
-    componentsSuggestionsSet: Set<[string, string]>,
+    componentsSuggestionsList: [string, string][],
     fields: ISuggestionApiValueField[],
     id: number,
     componentMnemonic: string,
   ): ISuggestionItemList {
     const hints: { value: string; mnemonic: string }[] = this.getFormattedHints(
       repeatableComponents,
-      componentsSuggestionsSet,
+      componentsSuggestionsList,
       fields,
       componentMnemonic,
     );
@@ -47,7 +47,7 @@ export class AutocompletePrepareService {
     if (field) {
       let { value, mnemonic } = field;
       let originalItem = value;
-      value = this.prepareValue(repeatableComponents, componentsSuggestionsSet, value, mnemonic);
+      value = this.prepareValue(repeatableComponents, componentsSuggestionsList, value, mnemonic);
       return {
         value,
         mnemonic,
@@ -77,20 +77,21 @@ export class AutocompletePrepareService {
 
   public formatAndPassDataToSuggestions(
     repeatableComponents: ComponentDto[][],
-    componentsSuggestionsSet: Set<[string, string]>,
+    componentsSuggestionsList: [string, string][] = [],
     suggestions: ISuggestionApi[],
   ): void {
     let result: { [key: string]: ISuggestionItem } = {};
 
     suggestions.forEach((suggestion) => {
       const { values } = suggestion;
-      const componentsEntries = Array.from(componentsSuggestionsSet) || [];
+
       values.forEach((value) => {
         const { fields, id } = value;
-        componentsEntries.forEach(([componentMnemonic, componentId]: [string, string]) => {
+
+        componentsSuggestionsList.forEach(([componentMnemonic, componentId]: [string, string]) => {
           const componentList: ISuggestionItemList = this.getFormattedList(
             repeatableComponents,
-            componentsSuggestionsSet,
+            componentsSuggestionsList,
             fields,
             id,
             componentMnemonic,
@@ -114,7 +115,7 @@ export class AutocompletePrepareService {
 
   public findAndUpdateComponentWithValue(
     repeatableComponents: ComponentDto[][],
-    componentsSuggestionsSet: Set<[string, string]>,
+    componentsSuggestionsList: [string, string][],
     parentComponent: ComponentDto,
     mnemonic: string,
     value: string,
@@ -123,7 +124,7 @@ export class AutocompletePrepareService {
   ): void {
     const component = this.findComponent(
       repeatableComponents,
-      componentsSuggestionsSet,
+      componentsSuggestionsList,
       mnemonic,
       componentsGroupIndex,
     );
@@ -132,7 +133,7 @@ export class AutocompletePrepareService {
       id,
       value,
       mnemonic,
-      componentsSuggestionsSet,
+      componentsSuggestionsList,
     );
 
     this.setComponentValue(component, componentValue);
@@ -192,16 +193,14 @@ export class AutocompletePrepareService {
 
   private getFormattedHints(
     repeatableComponents: ComponentDto[][],
-    componentsSuggestionsSet: Set<[string, string]>,
+    componentsSuggestionsList: [string, string][],
     fields: ISuggestionApiValueField[],
     componentMnemonic: string,
   ): { value: string; mnemonic: string }[] {
     const isIncludedInComponentsSuggestionsMap = (mnemonic: string): boolean => {
-      return Array.from(componentsSuggestionsSet).some(([suggestId]) => suggestId === mnemonic);
+      return componentsSuggestionsList.some(([suggestId]) => suggestId === mnemonic);
     };
-    const orderByFieldsMnemonics = Array.from(componentsSuggestionsSet).map(
-      ([suggestionId]) => suggestionId,
-    );
+    const orderByFieldsMnemonics = componentsSuggestionsList.map(([suggestionId]) => suggestionId);
 
     return fields
       .reduce((acc: { value: string; mnemonic: string }[], field) => {
@@ -213,7 +212,7 @@ export class AutocompletePrepareService {
         ) {
           value = this.prepareValue(
             repeatableComponents,
-            componentsSuggestionsSet,
+            componentsSuggestionsList,
             value,
             mnemonic,
           );
@@ -222,6 +221,7 @@ export class AutocompletePrepareService {
             mnemonic,
           });
         }
+
         return acc;
       }, [])
       .sort((a, b) => {
@@ -233,7 +233,7 @@ export class AutocompletePrepareService {
 
   private prepareValue(
     repeatableComponents: ComponentDto[][],
-    componentsSuggestionsSet: Set<[string, string]>,
+    componentsSuggestionsList: [string, string][],
     value: string,
     componentMnemonic?: string,
   ): string {
@@ -254,7 +254,7 @@ export class AutocompletePrepareService {
     const componentsGroupIndex = 0;
     const component = this.findComponent(
       repeatableComponents,
-      componentsSuggestionsSet,
+      componentsSuggestionsList,
       componentMnemonic,
       componentsGroupIndex,
     );
@@ -267,7 +267,7 @@ export class AutocompletePrepareService {
 
   private findComponent(
     repeatableComponents: ComponentDto[][],
-    componentsSuggestionsSet: Set<[string, string]>,
+    componentsSuggestionsList: [string, string][],
     mnemonic: string,
     componentsGroupIndex?: number,
   ): ComponentDto {
@@ -280,14 +280,14 @@ export class AutocompletePrepareService {
     ): ComponentDto => {
       return (
         componentsList.find((component: ComponentDto) => {
-          return Array.from(componentsSuggestionsSet).some(
+          return componentsSuggestionsList.some(
             ([componentMnemonic, componentId]) =>
               componentId === component.id && componentMnemonic === parentMnemonic,
           );
         }) ||
         // TODO: небольшой костыль, от которого следует избавиться в ходе глобального рефактора саджестов
         componentsList.find((component: ComponentDto) => {
-          return Array.from(componentsSuggestionsSet).some(
+          return componentsSuggestionsList.some(
             ([componentMnemonic, componentId]) =>
               componentId.includes(component.id) && componentMnemonic === parentMnemonic,
           );
@@ -307,27 +307,22 @@ export class AutocompletePrepareService {
     id: number,
     value: string,
     mnemonic: string,
-    componentsSuggestionsSet: Set<[string, string]>,
+    componentsSuggestionsList: [string, string][],
   ): string {
-    let fieldName: string;
-
-    if (component.type === CustomScreenComponentTypes.DocInput) {
-      fieldName = Array.from(componentsSuggestionsSet)
-        .find(([suggestId]) => suggestId === mnemonic)[1]
-        .split('.')[1];
-      value = JSON.stringify({
-        ...JSON.parse(component.value),
-        [fieldName]: value,
+    const isDocInput = component.type === CustomScreenComponentTypes.DocInput;
+    const prepareDocInputValue = (value, fieldName, suggestItemValue): string =>
+      JSON.stringify({
+        ...(this.jsonHelperService.tryToParse(value) as object),
+        [fieldName]: suggestItemValue,
       });
-    } else {
-      fieldName = Array.from(componentsSuggestionsSet).find(
-        ([componentMnemonic]) => componentMnemonic === mnemonic,
-      )[1];
-    }
-
+    const fieldName: string = isDocInput
+      ? getFieldNameFromCompositeMnemonic(componentsSuggestionsList, mnemonic)
+      : componentsSuggestionsList.find(([componentMnemonic]) => componentMnemonic === mnemonic)[1];
     const suggestions =
-      this.screenService.suggestions[component?.id] || this.screenService.suggestions[fieldName];
-    const result = suggestions?.list.find((item) => {
+      this.screenService.suggestions[component?.id] ||
+      this.screenService.suggestions[fieldName] ||
+      this.screenService.suggestions[`${component?.id}.${fieldName}`];
+    const suggestItem = suggestions?.list.find((item) => {
       if (typeof id === 'number') {
         return item.id === id;
       } else if (item.originalItem.includes(value)) {
@@ -337,7 +332,9 @@ export class AutocompletePrepareService {
       }
     });
 
-    return result?.originalItem || '';
+    return isDocInput
+      ? prepareDocInputValue(component.value, fieldName, suggestItem?.value)
+      : suggestItem?.originalItem || '';
   }
 
   private setComponentValue(component: ComponentDto, value: string): void {
@@ -358,6 +355,7 @@ export class AutocompletePrepareService {
     const currentAnswerState = (this.currentAnswersService.state as Record<string, string>[]) || [];
     const cachedState = (currentAnswerState && currentAnswerState[componentsGroupIndex]) || {};
     const currentValue = componentValue || component.value;
+
     if (cachedAnswer) {
       const { value } = cachedAnswer;
       let parsedValue = JSON.parse(value);
@@ -365,6 +363,7 @@ export class AutocompletePrepareService {
         if (idx !== componentsGroupIndex) {
           return stateItem;
         }
+
         return parsedValue[idx];
       });
       if (parsedValue[componentsGroupIndex]) {
@@ -377,10 +376,12 @@ export class AutocompletePrepareService {
         parsedValue[componentsGroupIndex] = { ...cachedState, [component.id]: currentValue };
       }
       cachedAnswer.value = JSON.stringify(parsedValue);
+
       return cachedAnswer;
     } else {
       let newCachedAnswer = [...currentAnswerState];
       newCachedAnswer[componentsGroupIndex] = { [component.id]: currentValue };
+
       return {
         value: JSON.stringify(newCachedAnswer),
         visited: true,
@@ -404,6 +405,7 @@ export class AutocompletePrepareService {
           : dateValue;
       } else {
         dateValue = (this.datesToolsService.parse(value) as unknown) as string;
+
         return isFormattedReturn && this.datesToolsService.isValid(dateValue)
           ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
           : dateValue;
@@ -417,15 +419,18 @@ export class AutocompletePrepareService {
       }
     } else if (component.type === CustomScreenComponentTypes.RadioInput) {
       const componentAttrs = component.attrs as CustomComponentAttr;
+
       return componentAttrs.supportedValues.find((item) => item.value === value)?.label || value;
     } else if (!!component.attrs.suggestionPath && this.jsonHelperService.hasJsonStructure(value)) {
       const parsedValue = this.jsonHelperService.tryToParse(value);
+
       return _get(parsedValue, component.attrs.suggestionPath);
     } else if (this.jsonHelperService.hasJsonStructure(value)) {
       const parsedValue = JSON.parse(value);
       if (Array.isArray(parsedValue)) {
         const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
         value = parsedItem[component.id];
+
         return typeof value === 'string' ? value : JSON.stringify(value);
       } else if ('snils' in parsedValue) {
         return parsedValue['snils'];

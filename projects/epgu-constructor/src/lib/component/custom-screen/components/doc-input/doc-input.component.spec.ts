@@ -33,6 +33,7 @@ import { SuggestHandlerService } from '../../../../shared/services/suggest-handl
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { By } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 
 const mockComponent = {
   id: 'pd6',
@@ -65,30 +66,31 @@ describe('DocInputComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DocInputComponent],
       providers: [
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ValidationService, useClass: ValidationServiceStub },
-        MockProvider(SuggestHandlerService),
+        MockProvider(AutocompleteService),
+        MockProvider(ConfigService),
         MockProvider(CurrentAnswersService),
-        MockProvider(DatesToolsService),
         MockProvider(DateRangeService),
         MockProvider(DateRestrictionsService),
-        MockProvider(ConfigService),
-        MockProvider(LoggerService),
+        MockProvider(DatesToolsService),
         MockProvider(EventBusService),
+        MockProvider(LoggerService),
+        MockProvider(SuggestHandlerService),
         MockProvider(SuggestMonitorService),
         FormBuilder,
       ],
       imports: [
-        MockModule(ValidationTypeModule),
-        MockModule(ConstructorDatePickerModule),
         MockModule(BaseComponentsModule),
-        MockModule(ConstructorPlainInputModule),
-        MockModule(ConstructorMaskedInputModule),
-        MockModule(ErrorModule),
         MockModule(BaseModule),
+        MockModule(ConstructorDatePickerModule),
+        MockModule(ConstructorMaskedInputModule),
+        MockModule(ConstructorPlainInputModule),
+        MockModule(ErrorModule),
         MockModule(InputErrorModule),
+        MockModule(ValidationTypeModule),
         HttpClientModule,
       ],
     }).compileComponents();
