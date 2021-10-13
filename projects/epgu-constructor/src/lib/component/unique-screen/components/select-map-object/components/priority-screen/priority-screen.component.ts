@@ -2,7 +2,12 @@ import { ChangeDetectionStrategy, Component, Output, EventEmitter } from '@angul
 import { combineLatest } from 'rxjs';
 import { pluck, skip, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-import { DTOActionAction, KindergartenAttrs, ScreenButton } from '@epgu/epgu-constructor-types';
+import {
+  ArgumentsDto,
+  DTOActionAction,
+  KindergartenAttrs,
+  ScreenButton,
+} from '@epgu/epgu-constructor-types';
 import { FormControl, Validators } from '@angular/forms';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierService } from '@epgu/ui/services/notifier';
@@ -36,6 +41,8 @@ export class PriorityScreenComponent {
   attrs$: Observable<KindergartenAttrs> = this.screenService.component$.pipe(
     pluck('attrs', 'mapKindergartenPriorityAttrs'),
   );
+
+  arguments$: Observable<ArgumentsDto> = this.screenService.component$.pipe(pluck('arguments'));
 
   controlCheckbox = new FormControl({ value: true, disabled: false }, Validators.required);
   notifierId = 'NOTIFIERS_CHILDREN_GARDEN';
