@@ -6,8 +6,7 @@
     "noUnusedParameters": true
   },
   "angularCompilerOptions": {
-    "enableIvy": true,
-    "compilationMode": "partial",
+    "enableIvy": false,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": false,
     "enableResourceInlining": true,

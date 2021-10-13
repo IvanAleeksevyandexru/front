@@ -2,8 +2,7 @@
 {
   "extends": "./tsconfig.app.json",
   "angularCompilerOptions": {
-    "enableIvy": true,
-    "compilationMode": "full"
+    "enableIvy": false
   },
   "files": ["src/main.ts", "src/polyfills.ts"]
 }
