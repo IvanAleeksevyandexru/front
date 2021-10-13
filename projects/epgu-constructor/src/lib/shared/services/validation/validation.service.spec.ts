@@ -486,6 +486,18 @@ describe('ValidationService', () => {
       expect(result).toBeUndefined();
     });
 
+    it('should return nothing if min date is equal to value', () => {
+      jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => {
+        return range;
+      });
+      controlCompound.value.first = new Date(2005, 5, 5);
+      const validator = service.dateValidator(compoundComponent);
+
+      const result = validator(controlCompound as AbstractControl);
+
+      expect(result).toBeUndefined();
+    });
+
     it('should return undefined if max date is lower than value', () => {
       jest.spyOn(restrictionService, 'getDateRangeFromStore').mockImplementation((...args) => {
         return range;
