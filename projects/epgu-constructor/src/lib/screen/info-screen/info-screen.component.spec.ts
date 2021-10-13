@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockDirective } from 'ng-mocks';
 import { configureTestSuite } from 'ng-bullet';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import { DeviceDetectorService, DeviceDetectorServiceStub, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
@@ -62,6 +62,7 @@ describe('InfoScreenComponent', () => {
   let screenService: ScreenServiceStub;
   let locationService: LocationService;
   let configService: ConfigService;
+  let deviceDetectorService: DeviceDetectorService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -79,6 +80,7 @@ describe('InfoScreenComponent', () => {
       providers: [
         LocationService,
         WINDOW_PROVIDERS,
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -99,6 +101,7 @@ describe('InfoScreenComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoScreenComponent);
     component = fixture.componentInstance;
+    deviceDetectorService = TestBed.inject(DeviceDetectorService);
     navigationService = (TestBed.inject(NavigationService) as unknown) as NavigationServiceStub;
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     locationService = TestBed.inject(LocationService);
@@ -193,7 +196,7 @@ describe('InfoScreenComponent', () => {
   describe('lib-social-share', () => {
     const selector = 'epgu-cf-ui-screen-container lib-social-share';
 
-    it('should be rendered if not hideSocialShare and not terminal', () => {
+    it('should be rendered if not hideSocialShare and not terminal and not isWebView', () => {
       let debugEl: DebugElement;
       screenService.component = {
         ...componentSample,
@@ -202,6 +205,7 @@ describe('InfoScreenComponent', () => {
         },
       };
       screenService.terminal = false;
+      component.isWebView = false;
       fixture.detectChanges();
       debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeTruthy();
@@ -212,6 +216,7 @@ describe('InfoScreenComponent', () => {
           hideSocialShare: false,
         },
       };
+      component.isWebView = false;
       screenService.terminal = true;
       fixture.detectChanges();
       debugEl = fixture.debugElement.query(By.css(selector));
@@ -223,6 +228,19 @@ describe('InfoScreenComponent', () => {
           hideSocialShare: true,
         },
       };
+      screenService.terminal = false;
+      component.isWebView = false;
+      fixture.detectChanges();
+      debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl).toBeNull();
+
+      screenService.component = {
+        ...componentSample,
+        attrs: {
+          hideSocialShare: false,
+        },
+      };
+      component.isWebView = true;
       screenService.terminal = false;
       fixture.detectChanges();
       debugEl = fixture.debugElement.query(By.css(selector));

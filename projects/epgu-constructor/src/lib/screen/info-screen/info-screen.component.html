@@ -39,7 +39,7 @@
     ></epgu-constructor-screen-buttons>
 
     <lib-social-share
-      *ngIf="!async.hideSocialShare && !async.terminal"
+      *ngIf="!async.hideSocialShare && !async.terminal && !isWebView"
       class="social-share"
       [isNewDesign]="true"
       [isNewDesignDisabled]="configService.isSocialShareDisabled"
