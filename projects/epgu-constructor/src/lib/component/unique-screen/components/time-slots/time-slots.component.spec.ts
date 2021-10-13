@@ -61,6 +61,7 @@ import {
   ITEMS_FAILURE,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
 } from '../../../../core/services/error-handler/error-handler';
+import { IBookingErrorHandling } from '@epgu/epgu-constructor-types';
 
 describe('TimeSlotsComponent', () => {
   let component: TimeSlotsComponent;
@@ -150,6 +151,23 @@ describe('TimeSlotsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('set bookingErrorHandlingParams as empty array if there in no bookingErrorHandlingParams in component attrs ', () => {
+    component.ngOnInit();
+    expect(component['bookingErrorHandlingParams']).toEqual([]);
+  });
+
+  it('setting bookingErrorHandlingParams ', () => {
+    const mockBookingErrorHandling = [{
+      errorCode: 2
+    } as unknown as IBookingErrorHandling];
+    // @ts-ignore
+    screenService.component.attrs?.bookingErrorHandling = mockBookingErrorHandling;
+
+    component.ngOnInit();
+
+    expect(component['bookingErrorHandlingParams']).toEqual(mockBookingErrorHandling);
   });
 
   it('should show loader while weeks loading', () => {
