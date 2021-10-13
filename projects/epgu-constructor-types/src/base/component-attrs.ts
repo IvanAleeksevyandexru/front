@@ -29,6 +29,12 @@ export enum SectionType {
   today = 'today',
 }
 
+export interface FieldGroup {
+  groupName: string;
+  visibilityLabel: string;
+  fields: ComponentFieldDto[];
+}
+
 export interface ComponentAttrsDto {
   accuracy?: string;
   actions?: ComponentActionDto[];
@@ -77,7 +83,7 @@ export interface ComponentAttrsDto {
   expandAllChildrenBlocks?: boolean;
   expirationTime?: string;
   fields?: ComponentFieldDto[];
-  fieldGroups?: { groupName: string; visibilityLabel: string; fields: ComponentFieldDto[] };
+  fieldGroups?: FieldGroup[];
   filter?: ComponentFilterDto;
   fio?: string;
   firstName?: string;
@@ -122,6 +128,7 @@ export interface ComponentAttrsDto {
   phoneNumber?: number;
   placeholderText?: string;
   preset?: ComponentPresetDto;
+  presetValue?: string;
   redirectLabel?: string;
   ref?: ComponentRefDto[] | string | { fiasCode: string } | CustomComponentRef[];
   refDate?: string;

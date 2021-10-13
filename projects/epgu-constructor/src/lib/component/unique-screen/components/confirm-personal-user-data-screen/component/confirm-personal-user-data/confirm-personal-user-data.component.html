@@ -8,7 +8,7 @@
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
     <epgu-constructor-field-list
       *ngIf="data$ | async as data"
-      [data]="data"
+      [data]="data | confirmPersonalUserData"
     ></epgu-constructor-field-list>
     <ng-container *ngIf="errors">
       <epgu-constructor-disclaimer
