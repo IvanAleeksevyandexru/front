@@ -175,7 +175,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           const message = dictionaryError?.message
             .replace('FAILURE:', '')
             .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
-          if (message?.includes('Закончилось время, отведённое на заполнение формы')) {
+          if (message?.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)) {
             MZRF_MODAL.text = MZRF_MODAL.text.replace(
               /\{textAsset\}?/g,
               'Чтобы записаться к врачу, обновите страницу. Если ничего не изменится, начните заполнять форму заново',
@@ -355,11 +355,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
                 this.navigationService.prev();
               }
             });
-          } else if (
-            errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) ||
-            (errorMessage.includes('FAILURE') &&
-              !errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE))
-          ) {
+          } else if (errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)) {
             this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT).then((value) => {
               switch (value) {
                 case 'init': {
