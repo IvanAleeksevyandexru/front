@@ -58,7 +58,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
   filterKey =
     this.stateService.vendor === VendorType.inlearno ? 'inlearnoPayments' : 'pfdoPayments';
 
-  focusData$ = this.dictionary.focusData$.pipe(tap((focus) => this.setFocus(focus)));
+  focusData$ = this.dictionary.focusData$.pipe(tap((focus) => this.setFocusList(focus)));
   focusMap: Record<string, ListElement[]> = {};
   focusList = new BehaviorSubject<ListElement[]>([]);
   directionList = new BehaviorSubject<ListElement[]>([]);
@@ -73,15 +73,14 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
   ) {
     super(injector);
   }
+
   changeFocus(element: ListElement): void {
     const focus = this.focusMap[element.id];
-    if (!focus) {
-      return;
-    }
     this.form.get(this.formFields.direction).setValue(null);
-    this.directionList.next(focus);
+    this.directionList.next(focus || []);
   }
-  setFocus(data: NormalizedFocusData): void {
+
+  setFocusList(data: NormalizedFocusData): void {
     this.focusMap = data.directions;
     this.focusList.next(data.focus);
 
@@ -165,6 +164,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
       [this.formFields.ovzType]: this.healthListElements[0],
       [this.formFields.municipality]: null,
     });
+    this.directionList.next([]);
   }
 
   submit(): void {
