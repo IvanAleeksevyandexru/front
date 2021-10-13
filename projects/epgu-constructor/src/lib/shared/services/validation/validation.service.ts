@@ -191,18 +191,21 @@ export class ValidationService {
           controlValueAsDate = control.value;
         }
         if (controlValueAsDate) {
+          const startOfDayControlValue = this.datesToolsService.startOfDay(controlValueAsDate);
+          const startOfDayMinDate = minDate && this.datesToolsService.startOfDay(minDate);
+          const startOfDayMaxDate = minDate && this.datesToolsService.startOfDay(maxDate);
           switch ((validation.condition as unknown) as DateValidationCondition) {
             case '<':
-              hasErrors = this.datesToolsService.isBefore(controlValueAsDate, minDate);
+              hasErrors = this.datesToolsService.isBefore(startOfDayControlValue, startOfDayMinDate);
               break;
             case '<=':
-              hasErrors = this.datesToolsService.isSameOrBefore(controlValueAsDate, minDate);
+              hasErrors = this.datesToolsService.isSameOrBefore(startOfDayControlValue, startOfDayMinDate);
               break;
             case '>':
-              hasErrors = this.datesToolsService.isAfter(controlValueAsDate, maxDate);
+              hasErrors = this.datesToolsService.isAfter(startOfDayControlValue, startOfDayMaxDate);
               break;
             case '>=':
-              hasErrors = this.datesToolsService.isSameOrAfter(controlValueAsDate, maxDate);
+              hasErrors = this.datesToolsService.isSameOrAfter(startOfDayControlValue, startOfDayMaxDate);
               break;
             default:
               hasErrors = null;
