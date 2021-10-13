@@ -949,7 +949,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   private initModalsSettings(): void {
     this.emptySlotsModal = this.screenService.component.attrs?.emptySlotsModal;
-    this.bookingErrorHandlingParams = this.screenService.component.attrs?.bookingErrorHandling;
+    this.bookingErrorHandlingParams =
+      this.screenService.component.attrs?.bookingErrorHandling || [];
   }
 
   private isDateOutOfSection(
