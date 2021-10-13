@@ -11,10 +11,7 @@ import { ClickableLabelModule } from '../../../../shared/directives/clickable-la
 
 @NgModule({
   entryComponents: [UploadAndEditPhotoContainerComponent],
-  declarations: [
-    UploadAndEditPhotoContainerComponent,
-    PhotoDescriptionComponent,
-  ],
+  declarations: [UploadAndEditPhotoContainerComponent, PhotoDescriptionComponent],
   imports: [
     BaseModule,
     ModalModule,

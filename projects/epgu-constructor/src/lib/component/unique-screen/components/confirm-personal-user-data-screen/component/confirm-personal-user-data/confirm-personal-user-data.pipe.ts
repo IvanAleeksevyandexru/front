@@ -12,8 +12,13 @@ export class ConfirmPersonalUserDataPipe implements PipeTransform {
 
     const { fieldGroups } = componentDto.attrs;
     const { value, presetValue } = componentDto;
-    const parsedValue = (presetValue ? JSON.parse(presetValue) : JSON.parse(value)) as ConfirmUserDataState;
-    const states = this.interpolationService.interpolateRecursive(fieldGroups, parsedValue.storedValues);
+    const parsedValue = (presetValue
+      ? JSON.parse(presetValue)
+      : JSON.parse(value)) as ConfirmUserDataState;
+    const states = this.interpolationService.interpolateRecursive(
+      fieldGroups,
+      parsedValue.storedValues,
+    );
 
     return { ...componentDto, presetValue: JSON.stringify({ ...parsedValue, states }) };
   }

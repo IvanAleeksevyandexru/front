@@ -7,7 +7,7 @@ export class InterpolationService {
 
   public interpolateRecursive(source: unknown, variables: object, keepVariables = true): unknown {
     if (Array.isArray(source)) {
-      return source.map(item => this.interpolateRecursive(item, variables, keepVariables));
+      return source.map((item) => this.interpolateRecursive(item, variables, keepVariables));
     }
 
     if (typeof source === 'object') {

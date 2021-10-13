@@ -34,7 +34,6 @@ import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
-import * as moment_ from 'moment';
 import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
@@ -62,9 +61,6 @@ import {
   ITEMS_FAILURE,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
 } from '../../../../core/services/error-handler/error-handler';
-
-const moment = moment_;
-moment.locale('ru');
 
 describe('TimeSlotsComponent', () => {
   let component: TimeSlotsComponent;

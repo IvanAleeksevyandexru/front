@@ -27,7 +27,6 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -81,11 +80,11 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "aot": true,
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -102,7 +101,8 @@
               ],
               "tsConfig": "./tsconfig.app.prod.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -269,7 +269,6 @@
             "main": "projects/epgu-constructor-docs/src/main.ts",
             "polyfills": "projects/epgu-constructor-docs/src/polyfills.ts",
             "tsConfig": "projects/epgu-constructor-docs/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/epgu-constructor-docs/src/favicon.ico",
               "projects/epgu-constructor-docs/src/assets",
@@ -294,7 +293,13 @@
               "projects/epgu-constructor-docs/node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
               "projects/epgu-constructor-docs/node_modules/@taiga-ui/core/styles/taiga-ui-global.less"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -324,7 +329,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

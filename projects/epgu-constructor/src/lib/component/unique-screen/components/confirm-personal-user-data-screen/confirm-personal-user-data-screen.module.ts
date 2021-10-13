@@ -10,7 +10,11 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
 import { ConfirmPersonalUserDataPipe } from './component/confirm-personal-user-data/confirm-personal-user-data.pipe';
 
 @NgModule({
-  declarations: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent, ConfirmPersonalUserDataPipe],
+  declarations: [
+    ConfirmPersonalUserDataComponent,
+    ConfirmPersonalUserLegalDataComponent,
+    ConfirmPersonalUserDataPipe,
+  ],
   exports: [ConfirmPersonalUserDataComponent],
   imports: [
     BaseModule,

@@ -2,10 +2,8 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": "./",
-    "lib": [
-      "es6", "dom"
-    ],
-    "target": "es5",
+    "lib": ["es6", "dom"],
+    "target": "es6",
     "experimentalDecorators": true,
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],

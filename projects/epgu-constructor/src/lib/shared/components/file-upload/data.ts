@@ -232,8 +232,7 @@ export const BYTES_IN_KB = 1024;
  * Возвращает размер в килобайтах из байт
  * @param bytes - байты для перевода
  */
-export const getSizeInKB = (bytes): number =>
-  Math.round(bytes / BYTES_IN_KB + Number.EPSILON);
+export const getSizeInKB = (bytes): number => Math.round(bytes / BYTES_IN_KB + Number.EPSILON);
 
 /**
  * Возвращает размер в мегабайтах из байт

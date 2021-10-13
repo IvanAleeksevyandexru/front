@@ -94,6 +94,7 @@ describe('SelectMapObjectComponent', () => {
   let modalService: ModalService;
   let MapStore: ScenarioDto;
   let comp;
+
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -382,47 +383,59 @@ describe('SelectMapObjectComponent', () => {
     expect(val.isSelected).toBeTruthy();
   });
 
-    it('selectObject should call mapPaint', () => {
-      const spy = jest.spyOn(yandexMapService, 'mapPaint');
-      component['isMultiSelect'] = true;
-      component.selectObject({ center: [1, 2] } as unknown as YMapItem<DictionaryItem>);
-      expect(spy).toHaveBeenCalled();
-    });
+  it('selectObject should call mapPaint', () => {
+    const spy = jest.spyOn(yandexMapService, 'mapPaint');
+    component['isMultiSelect'] = true;
+    component.selectObject(({ center: [1, 2] } as unknown) as YMapItem<DictionaryItem>);
+    expect(spy).toHaveBeenCalled();
+  });
 
-    it('selectObject should inverse selected on param', () => {
-      component['isMultiSelect'] = true;
-      const testObject = { isSelected: true, center: [1, 2] } as unknown as YMapItem<DictionaryItem>;
+  it('selectObject should inverse selected on param', () => {
+    component['isMultiSelect'] = true;
+    const testObject = ({ isSelected: true, center: [1, 2] } as unknown) as YMapItem<
+      DictionaryItem
+    >;
 
-      component.selectObject(testObject);
+    component.selectObject(testObject);
 
-      expect(testObject.isSelected).toBeFalsy();
-    });
+    expect(testObject.isSelected).toBeFalsy();
+  });
 
-    it('selectObject should inverse selected on param', () => {
-      component['isMultiSelect'] = true;
-      const testObject = { isSelected: false, center: [1, 2] } as unknown as YMapItem<DictionaryItem>;
+  it('selectObject should inverse selected on param', () => {
+    component['isMultiSelect'] = true;
+    const testObject = ({ isSelected: false, center: [1, 2] } as unknown) as YMapItem<
+      DictionaryItem
+    >;
 
-      component.selectObject(testObject);
+    component.selectObject(testObject);
 
-      expect(testObject.isSelected).toBeTruthy();
-    });
+    expect(testObject.isSelected).toBeTruthy();
+  });
 
-    it('selectObject should find appropriate dictionary item and set selected', () => {
-      component['isMultiSelect'] = true;
-      const testObject = { isSelected: false, center: [1, 2] } as unknown as YMapItem<DictionaryItem>;
+  it('selectObject should find appropriate dictionary item and set selected', () => {
+    component['isMultiSelect'] = true;
+    const testObject = ({ isSelected: false, center: [1, 2] } as unknown) as YMapItem<
+      DictionaryItem
+    >;
 
-      component.selectObject(testObject);
+    component.selectObject(testObject);
 
-      expect(component['selectMapObjectService'].filteredDictionaryItems[0].isSelected).toBeTruthy();
-    });
+    expect(component['selectMapObjectService'].filteredDictionaryItems[0].isSelected).toBeTruthy();
+  });
 
   it('selectObject should call handleKindergartenSelection if selectedView is enabled', () => {
     component['selectMapObjectService'].isSelectedView.next(true);
     component['isMultiSelect'] = true;
-    jest.spyOn(component['yandexMapService'], 'placeObjectsOnMap').mockImplementation((...args) => null);
-    jest.spyOn(component['yandexMapService'], 'createPlacemark').mockImplementation((...args) => null);
+    jest
+      .spyOn(component['yandexMapService'], 'placeObjectsOnMap')
+      .mockImplementation((...args) => null);
+    jest
+      .spyOn(component['yandexMapService'], 'createPlacemark')
+      .mockImplementation((...args) => null);
     const spy = jest.spyOn(component['selectMapObjectService'], 'handleKindergartenSelection');
-    const testObject = { isSelected: false, center: [1, 2] } as unknown as YMapItem<DictionaryItem>;
+    const testObject = ({ isSelected: false, center: [1, 2] } as unknown) as YMapItem<
+      DictionaryItem
+    >;
 
     component.selectObject(testObject);
 
@@ -436,15 +449,12 @@ describe('SelectMapObjectComponent', () => {
     objects[3] = testObject;
     component.selectedValue = objects;
 
-    component.expandObject(testObject as unknown as YMapItem<DictionaryItem>);
+    component.expandObject((testObject as unknown) as YMapItem<DictionaryItem>);
 
     expect(testObject.expanded).toBeTruthy();
     const collapsed = component.selectedValue.filter((object) => !object.expanded);
     expect(collapsed.length).toBe(11);
-
   });
-
-
 });
 
 function addCenterToItems(items): void {

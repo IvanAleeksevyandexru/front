@@ -217,13 +217,18 @@ export class ComponentsListRelationsService {
   public isComponentShown(
     component: CustomComponent,
     cachedAnswers: CachedAnswers,
-    componentListStatus: CustomListStatusElements
+    componentListStatus: CustomListStatusElements,
   ): boolean {
     const refs = component.attrs?.ref;
     const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
     const displayOn = refs?.find((o) => this.refRelationService.isDisplayOnRelation(o.relation));
 
-    if (displayOff && cachedAnswers && cachedAnswers[displayOff?.relatedRel] && componentListStatus[displayOff?.relatedRel]?.isShown) {
+    if (
+      displayOff &&
+      cachedAnswers &&
+      cachedAnswers[displayOff?.relatedRel] &&
+      componentListStatus[displayOff?.relatedRel]?.isShown
+    ) {
       return !this.refRelationService.isValueEquals(
         displayOff.val,
         get(this.getRefValue(cachedAnswers[displayOff.relatedRel].value), displayOff.path) ||
@@ -658,7 +663,8 @@ export class ComponentsListRelationsService {
     dependentControl: AbstractControl,
   ): void {
     const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
-    const isShown = !shownElements[reference.relatedRel]?.isShown ||
+    const isShown =
+      !shownElements[reference.relatedRel]?.isShown ||
       !this.refRelationService.isValueEquals(reference.val, componentVal);
 
     if (element.isShown === true || !isDisplayOn) {

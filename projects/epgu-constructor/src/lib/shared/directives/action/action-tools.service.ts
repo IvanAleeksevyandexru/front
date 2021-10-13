@@ -46,7 +46,6 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionToolsService {
-
   constructor(
     private formPlayerApiService: FormPlayerApiService,
     private autocompleteApiService: AutocompleteApiService,
@@ -107,7 +106,10 @@ export class ActionToolsService {
     { value: clarificationId }: ComponentActionDto,
     componentId: string,
   ): void {
-    this.modalService.openModal(this.screenService.dropdownListModalComponent, { componentId, clarificationId });
+    this.modalService.openModal(this.screenService.dropdownListModalComponent, {
+      componentId,
+      clarificationId,
+    });
   }
 
   public deleteSuggestAction(action: ComponentActionDto, targetElement: HTMLElement): void {

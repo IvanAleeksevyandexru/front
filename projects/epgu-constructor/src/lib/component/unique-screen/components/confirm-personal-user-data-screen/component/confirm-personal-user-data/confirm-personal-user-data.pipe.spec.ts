@@ -9,31 +9,31 @@ const componentValue = {
       fields: [
         {
           label: 'Дата рождения',
-          value: '30.09.1987'
-        }
-      ]
+          value: '30.09.1987',
+        },
+      ],
     },
     {
       groupName: 'Паспорт гражданина РФ',
       fields: [
         {
           label: 'Серия и номер',
-          value: '1234 554642'
+          value: '1234 554642',
         },
         {
           label: 'Дата выдачи',
-          value: '08.07.2015'
+          value: '08.07.2015',
         },
         {
           label: 'Кем выдан',
-          value: 'УФМС 5656'
+          value: 'УФМС 5656',
         },
         {
           label: 'Код подразделения',
-          value: '490-001'
-        }
-      ]
-    }
+          value: '490-001',
+        },
+      ],
+    },
   ],
   storedValues: {
     firstName: 'Фёдор',
@@ -50,9 +50,9 @@ const componentValue = {
     rfPasportIssuedById: '490001',
     rfPasportIssuedByIdFormatted: '490-001',
     citizenship: 'РОССИЯ',
-    citizenshipCode: 'RUS'
+    citizenshipCode: 'RUS',
   },
-  errors: []
+  errors: [],
 };
 
 const fieldGroups: FieldGroup[] = [
@@ -61,35 +61,35 @@ const fieldGroups: FieldGroup[] = [
     fields: [
       {
         label: 'Дата рождения',
-        value: '${birthDate}'
-      }
-    ]
+        value: '${birthDate}',
+      },
+    ],
   },
   {
     groupName: 'Паспорт гражданина РФ',
     fields: [
       {
         label: 'Серия и номер',
-        value: '${rfPasportSeries} ${rfPasportNumber}'
+        value: '${rfPasportSeries} ${rfPasportNumber}',
       },
       {
         label: 'Код подразделения',
-        value: '${rfPasportIssuedByIdFormatted}'
+        value: '${rfPasportIssuedByIdFormatted}',
       },
       {
         label: 'Дата выдачи',
-        value: '${rfPasportIssueDate}'
+        value: '${rfPasportIssueDate}',
       },
       {
         label: 'Кем выдан',
-        value: '${rfPasportIssuedBy}'
+        value: '${rfPasportIssuedBy}',
       },
       {
         label: 'Дополнительное рандомное поле',
-        value: '${citizenshipCode} ${citizenship}'
+        value: '${citizenshipCode} ${citizenship}',
       },
-    ]
-  }
+    ],
+  },
 ] as FieldGroup[];
 
 const componentData = {
@@ -101,10 +101,10 @@ const componentData = {
 describe('ConfirmPersonalUserDataPipe', () => {
   let pipe: ConfirmPersonalUserDataPipe;
   let service: InterpolationService;
-  beforeEach( () => {
-    service = {
-      interpolateRecursive: jest.fn().mockReturnValue([{ result: 'resultOfInterpolation' }])
-    } as unknown as InterpolationService;
+  beforeEach(() => {
+    service = ({
+      interpolateRecursive: jest.fn().mockReturnValue([{ result: 'resultOfInterpolation' }]),
+    } as unknown) as InterpolationService;
     pipe = new ConfirmPersonalUserDataPipe(service);
   });
 
@@ -115,7 +115,6 @@ describe('ConfirmPersonalUserDataPipe', () => {
 
   describe('when have fieldGroups', function () {
     const setup = (fieldGroups: FieldGroup[] = null) => {
-
       return { ...componentData, attrs: { ...componentData.attrs, fieldGroups }};
     };
 
@@ -131,7 +130,10 @@ describe('ConfirmPersonalUserDataPipe', () => {
 
       expect(pipe.transform(data)).toStrictEqual(expected);
       expect(service.interpolateRecursive).toHaveBeenCalledTimes(1);
-      expect(service.interpolateRecursive).toHaveBeenCalledWith(fieldGroups, componentValue.storedValues);
+      expect(service.interpolateRecursive).toHaveBeenCalledWith(
+        fieldGroups,
+        componentValue.storedValues,
+      );
     });
   });
 });

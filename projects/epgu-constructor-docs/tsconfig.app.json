@@ -7,7 +7,7 @@
     "types": [],
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "es2015",
+    "target": "es6",
     "lib": ["es2018", "dom"],
     "paths": {
       "@angular/*": ["node_modules/@angular/*"],

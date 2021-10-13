@@ -642,7 +642,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     expect(timeSlotDoctorService.state$$.value).toEqual({
       bookingRequestAttrs: null,
-      specLookup: mockSpecLookup, docLookup: null
+      specLookup: mockSpecLookup,
+      docLookup: null,
     });
 
     component.ngOnDestroy();
@@ -650,7 +651,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     expect(timeSlotDoctorService.state$$.value).toEqual({
       bookingRequestAttrs: null,
       specLookup: null,
-      docLookup: null
+      docLookup: null,
     });
     expect(httpCancelService.cancelPendingRequests).toHaveBeenCalled();
   });

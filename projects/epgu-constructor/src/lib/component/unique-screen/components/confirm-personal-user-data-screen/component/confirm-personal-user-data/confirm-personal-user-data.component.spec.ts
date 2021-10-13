@@ -133,7 +133,7 @@ describe('ConfirmPersonalUserDataComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         ConfirmPersonalUserDataComponent,
-        MockPipe(ConfirmPersonalUserDataPipe, value => value),
+        MockPipe(ConfirmPersonalUserDataPipe, (value) => value),
       ],
       imports: [
         MockModule(OutputHtmlModule),
@@ -184,9 +184,9 @@ describe('ConfirmPersonalUserDataComponent', () => {
     screenService.getStore().errors = {};
   });
 
-  it('should call ngDoCheck', ()=> {
+  it('should call ngDoCheck', () => {
     screenService.getStore().errors = {
-      id: 'error'
+      id: 'error',
     };
     spyOn(component, 'ngDoCheck').and.callThrough();
     fixture.detectChanges();
