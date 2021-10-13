@@ -131,6 +131,7 @@ export class AutocompleteService {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItemList): void => {
         let { mnemonic, value, id, componentsGroupIndex } = payload;
+        const componentsSuggestionsList = Array.from(this.componentsSuggestionsSet);
 
         // с помощью автоподстановки будут заполнены некоторые компоненты.
         // для того, чтобы остальные компоненты не потеряли свои значения мы
@@ -145,7 +146,7 @@ export class AutocompleteService {
             mnemonic = this.screenService.suggestions[componentId].mnemonic;
             this.autocompletePrepareService.findAndUpdateComponentWithValue(
               this.repeatableComponents,
-              this.componentsSuggestionsSet,
+              componentsSuggestionsList,
               this.parentComponent,
               mnemonic,
               value,
@@ -156,7 +157,7 @@ export class AutocompleteService {
         } else {
           this.autocompletePrepareService.findAndUpdateComponentWithValue(
             this.repeatableComponents,
-            this.componentsSuggestionsSet,
+            componentsSuggestionsList,
             this.parentComponent,
             mnemonic,
             value,
@@ -224,9 +225,11 @@ export class AutocompleteService {
     this.autocompleteApiService
       .getSuggestionsGroup(this.suggestionGroupId)
       .subscribe((suggestions: ISuggestionApi[]) => {
+        const componentsSuggestionsList = Array.from(this.componentsSuggestionsSet);
+
         this.autocompletePrepareService.formatAndPassDataToSuggestions(
           this.repeatableComponents,
-          this.componentsSuggestionsSet,
+          componentsSuggestionsList,
           suggestions,
         );
         this.autocompleteAutofillService.autofillIfNeeded(this.parentComponent);
@@ -237,9 +240,11 @@ export class AutocompleteService {
     this.autocompleteApiService
       .getSuggestionsFields(componentsSuggestionsFieldsIds)
       .subscribe((suggestions: ISuggestionApi[]) => {
+        const componentsSuggestionsList = Array.from(this.componentsSuggestionsSet);
+
         this.autocompletePrepareService.formatAndPassDataToSuggestions(
           this.repeatableComponents,
-          this.componentsSuggestionsSet,
+          componentsSuggestionsList,
           suggestions,
         );
         this.autocompleteAutofillService.autofillIfNeeded(this.parentComponent);
@@ -259,26 +264,41 @@ export class AutocompleteService {
         .map((component) => {
           const { suggestionId } = component;
           const { fields } = component.attrs;
+
           this.componentsSuggestionsSet.add([suggestionId, component.id]);
+
           if (allowedAutocompleteComponentsList(component)) {
             if (Array.isArray(fields)) {
               fields.forEach((field: ComponentFieldDto) => {
                 const fieldSuggestionId = field.suggestionId;
 
-                this.setFieldsSuggestionIds(fieldSuggestionId, fieldSuggestionIdsSet);
+                this.setFieldsAndComponentsSuggestionIds(
+                  fieldSuggestionId,
+                  fieldSuggestionIdsSet,
+                  field.fieldName,
+                  this.componentsSuggestionsSet,
+                  component.id,
+                );
               });
             } else {
               Object.keys(fields).forEach((fieldName) => {
                 const field: { suggestionId: string } = fields[fieldName];
                 const fieldSuggestionId = field?.suggestionId;
 
-                this.setFieldsSuggestionIds(fieldSuggestionId, fieldSuggestionIdsSet);
+                this.setFieldsAndComponentsSuggestionIds(
+                  fieldSuggestionId,
+                  fieldSuggestionIdsSet,
+                  fieldName,
+                  this.componentsSuggestionsSet,
+                  component.id,
+                );
               });
             }
           }
 
           return suggestionId;
         });
+
       return [...result, ...Array.from(fieldSuggestionIdsSet)];
     };
 
@@ -289,12 +309,17 @@ export class AutocompleteService {
     }
   }
 
-  private setFieldsSuggestionIds(
+  private setFieldsAndComponentsSuggestionIds(
     fieldSuggestionId: string,
     fieldSuggestionIdsSet: Set<string>,
+    fieldName: string,
+    componentsSuggestionsSet: Set<[string, string]>,
+    componentId: string,
   ): void {
     if (fieldSuggestionId) {
+      componentId = fieldName ? `${componentId}.${fieldName}` : componentId;
       fieldSuggestionIdsSet.add(fieldSuggestionId);
+      componentsSuggestionsSet.add([fieldSuggestionId, componentId]);
     }
   }
 }

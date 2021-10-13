@@ -2,42 +2,62 @@ import { CustomScreenComponentTypes } from '../../../component/custom-screen/com
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { ISuggestionItem } from './autocomplete.inteface';
 import { ComponentDto, DisplayDto } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '../json-helper/json-helper.service';
+
+const jsonHelperService = new JsonHelperService();
 
 export const prepareClassifiedSuggestionItems = (
   suggestions: ISuggestionItem,
   isDadataAddress?: boolean,
+  fieldNames?: string[],
+  componentsSuggestionsList?: [string, string][],
 ): { [key: string]: ISuggestionItem } => {
   let result: { [key: string]: ISuggestionItem } = {};
+  const setItem = (item, fieldName, result) => {
+    if (result[fieldName]) {
+      result[fieldName].list.push(item);
+    } else {
+      result[fieldName] = {
+        mnemonic: fieldName,
+        list: [item],
+      };
+    }
+  };
 
   if (suggestions) {
     const { mnemonic } = suggestions;
     suggestions.list.forEach((item) => {
-      const { id, originalItem } = item;
-      const parsedOriginalItem = JSON.parse(originalItem);
+      if (fieldNames.length) {
+        const fieldName = getFieldNameFromCompositeMnemonic(
+          componentsSuggestionsList,
+          item.mnemonic,
+        );
 
-      Object.keys(parsedOriginalItem).forEach((fieldName) => {
-        const itemList = {
-          value: isDadataAddress
-            ? parsedOriginalItem[fieldName]['fullAddress']
-            : parsedOriginalItem[fieldName],
-          mnemonic: `${mnemonic}`,
-          id,
-        };
+        setItem(item, fieldName, result);
+      } else {
+        const { id, originalItem, value } = item;
+        const parsedOriginalItem = jsonHelperService.tryToParse(originalItem, value);
 
-        if (result[fieldName]) {
-          result[fieldName].list.push(itemList);
-        } else {
-          result[fieldName] = {
-            mnemonic: fieldName,
-            list: [itemList],
+        Object.keys(parsedOriginalItem).forEach((fieldName) => {
+          const item = {
+            value: isDadataAddress
+              ? parsedOriginalItem[fieldName]['fullAddress']
+              : parsedOriginalItem[fieldName],
+            mnemonic: `${mnemonic}`,
+            id,
           };
-        }
-      });
+
+          setItem(item, fieldName, result);
+        });
+      }
     });
   }
 
   return result;
 };
+
+export const getFieldNameFromCompositeMnemonic = (componentsSuggestionsList, mnemonic): string =>
+  componentsSuggestionsList.find(([suggestId]) => suggestId === mnemonic)?.[1].split('.')[1];
 
 export const allowedAutocompleteComponentsList = (component: ComponentDto): boolean => {
   return (
