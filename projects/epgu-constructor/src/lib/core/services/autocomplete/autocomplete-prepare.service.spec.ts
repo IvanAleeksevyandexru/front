@@ -132,6 +132,22 @@ describe('AutocompletePrepareService', () => {
     id: 123,
     componentsGroupIndex: 0,
   };
+  let mockAddressInput = {
+    id: 'ddr1',
+    type: 'AddressInput',
+    label: 'Тест',
+    suggestionId: 'reg_address',
+    attrs: {
+      fields: [
+        {
+          fieldName: 'regAddr',
+          label: 'Адрес',
+          type: 'input'
+        }
+      ]
+    },
+    visited: false
+  };
 
   let deviceDetectorService: DeviceDetectorService;
 
@@ -236,6 +252,20 @@ describe('AutocompletePrepareService', () => {
       );
       expect(spy1).toBeCalled();
       expect(spy2).toBeCalled();
+    });
+    it('should call setComponentValue with findAndUpdateComponentWithValue(... value) if component.type === .AddressInput',() => {
+      const spy = spyOn(service, 'setComponentValue');
+      jest
+        .spyOn(AutocompletePrepareService.prototype as any, 'findComponent')
+        .mockReturnValueOnce(mockAddressInput);
+      service.findAndUpdateComponentWithValue(
+        repeatableComponents,
+        componentsSuggestionsList,
+        { attrs: undefined, id: '', type: '' },
+        'reg_address',
+        'value reg_address',
+      );
+      expect(spy).toHaveBeenCalledWith(mockAddressInput, 'value reg_address');
     });
   });
 

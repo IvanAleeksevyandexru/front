@@ -56,7 +56,7 @@ describe('AddressInputComponent', () => {
     it('should parse jsonlike structures', () => {
       component.control = ({ value: { id: 'test' }} as unknown) as AbstractControl;
       const testValue = {
-        test: { list: [{ originalItem: '{"fullAddress": "test"}', value: '' }] },
+        test: { list: [{ originalItem: '{ "regAddr": {"fullAddress": "test"} }', value: '' }] },
       };
       component['processSuggestions']((testValue as unknown) as { [key: string]: ISuggestionItem });
       expect(testValue.test.list[0].value).toBe('test');

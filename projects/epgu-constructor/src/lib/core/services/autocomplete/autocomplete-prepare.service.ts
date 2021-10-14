@@ -128,25 +128,29 @@ export class AutocompletePrepareService {
       mnemonic,
       componentsGroupIndex,
     );
-    const componentValue = this.findComponentValue(
-      component,
-      id,
-      value,
-      mnemonic,
-      componentsSuggestionsList,
-    );
 
-    this.setComponentValue(component, componentValue);
-
-    if (isChildrenListType(parentComponent)) {
-      const cachedAnswer: Answer = this.prepareCachedAnswers(
-        parentComponent,
+    if (component.type === CustomScreenComponentTypes.AddressInput) {
+      this.setComponentValue(component, value);
+    } else {
+      const componentValue = this.findComponentValue(
         component,
-        componentsGroupIndex,
-        componentValue,
+        id,
+        value,
+        mnemonic,
+        componentsSuggestionsList,
       );
-      this.screenService.cachedAnswers[parentComponent.id] = cachedAnswer;
-      this.screenService.setCompValueToCachedAnswer(parentComponent.id, cachedAnswer?.value);
+      this.setComponentValue(component, componentValue);
+
+      if (isChildrenListType(parentComponent)) {
+        const cachedAnswer: Answer = this.prepareCachedAnswers(
+          parentComponent,
+          component,
+          componentsGroupIndex,
+          componentValue,
+        );
+        this.screenService.cachedAnswers[parentComponent.id] = cachedAnswer;
+        this.screenService.setCompValueToCachedAnswer(parentComponent.id, cachedAnswer?.value);
+      }
     }
   }
 
