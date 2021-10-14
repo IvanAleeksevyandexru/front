@@ -27,7 +27,7 @@ export const prepareClassifiedSuggestionItems = (
   if (suggestions) {
     const { mnemonic } = suggestions;
     suggestions.list.forEach((item) => {
-      if (fieldNames.length) {
+      if (fieldNames?.length) {
         const fieldName = getFieldNameFromCompositeMnemonic(
           componentsSuggestionsList,
           item.mnemonic,
