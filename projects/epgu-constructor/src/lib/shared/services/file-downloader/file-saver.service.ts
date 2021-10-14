@@ -5,11 +5,9 @@ import { saveAs } from 'file-saver';
 @Injectable({ providedIn: 'root' })
 export class FileSaverService {
   saveFile(response: HttpResponse<Blob>, params: { filename?: string } = {}): void {
-    const contentDisposition = response.headers.get('content-disposition');
+    const contentDisposition = response.headers?.get('content-disposition');
     const filename =
-      params.filename ||
-      (contentDisposition && contentDisposition.match('filename="(.+?)"')?.[1]) ||
-      'document.pdf';
+      params.filename || contentDisposition?.match('filename="(.+?)"')?.[1] || 'document.pdf';
     saveAs(response.body, decodeURI(filename));
   }
 }
