@@ -4,11 +4,13 @@ import { merge } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import GenericAttrs from '../../component-list-resolver/GenericAttrs';
+import BaseModel from '../../component-list-resolver/BaseModel';
 
 @Component({
   template: '',
 })
-export class AbstractComponentListItemComponent implements OnInit {
+export class AbstractComponentListItemComponent<T> implements OnInit {
   @Input() componentIndex: number;
   @Input() componentsGroupIndex: number;
   @Input() limit?: number | string;
@@ -22,6 +24,14 @@ export class AbstractComponentListItemComponent implements OnInit {
     this.formService = this.injector.get(ComponentsListFormService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
     this.cdr = this.injector.get(ChangeDetectorRef);
+  }
+
+  get attrs(): T {
+    return this.control?.value?.attrs;
+  }
+
+  get model(): BaseModel<GenericAttrs> {
+    return this.control?.value?.model;
   }
 
   ngOnInit(): void {

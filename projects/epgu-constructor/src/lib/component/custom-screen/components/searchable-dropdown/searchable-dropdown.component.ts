@@ -1,11 +1,10 @@
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
-
-import { BehaviorSubject } from 'rxjs';
+import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { CustomListDropDowns } from '../../components-list.types';
+import { ListItem } from '@epgu/ui/models/dropdown';
+import SearchableDropdownModelAttrs from './SearchableDropdownModelAttrs';
+import AbstractDropdownLikeComponent from '../abstract-component-list-item/abstract-dropdown-like.component';
 
 @Component({
   selector: 'epgu-constructor-searchable-dropdown',
@@ -13,18 +12,22 @@ import { CustomListDropDowns } from '../../components-list.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class SearchableDropdownComponent extends AbstractComponentListItemComponent {
+export class SearchableDropdownComponent
+  extends AbstractDropdownLikeComponent<SearchableDropdownModelAttrs>
+  implements OnInit {
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   public clearable = true;
   public queryMinSymbolsCount = 0;
   public searchCaseSensitive = false;
   public virtualScroll = true;
-  public dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;
+  dropDown$: Observable<Partial<ListItem>[]>;
 
-  public constructor(
-    private dictionaryToolsService: DictionaryToolsService,
-    public injector: Injector,
-  ) {
+  public constructor(public injector: Injector) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.dropDown$ = this.model.dropDown$;
   }
 }

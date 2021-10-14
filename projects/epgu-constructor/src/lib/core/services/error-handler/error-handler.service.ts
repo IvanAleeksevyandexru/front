@@ -48,7 +48,6 @@ import {
   DictionaryResponse,
   DictionaryResponseError,
 } from '../../../shared/services/dictionary/dictionary-api.types';
-import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { finalize } from 'rxjs/operators';
 import { ScreenService } from '../../../screen/screen.service';
 
@@ -85,7 +84,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
     private formPlayer: FormPlayerService,
-    private dictionaryToolsService: DictionaryToolsService,
     private screenService: ScreenService,
   ) {}
 
@@ -154,7 +152,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           dictionaryResponse?.total === 0 &&
           dictionaryResponse.items.length === 0
         ) {
-          this.dictionaryToolsService.dictionaries$.error(dictionaryError);
           const message = dictionaryError?.message
             .replace('FAILURE:', '')
             .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');

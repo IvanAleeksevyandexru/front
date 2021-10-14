@@ -10,10 +10,10 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ActionService } from '../../../../shared/directives/action/action.service';
-import { CustomComponentWithAttrs } from '../../components-list.types';
-import { CertificateEaisdoAttrs } from './certificate-eaisdo.interface';
 import { EXTERNAL_INTEGRATION_ACTION } from '../../../../shared/constants/actions';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
+import CertificateEaisdoModelAttrs from './CertificateEaisdoModelAttrs';
+import CertificateEaisdoModel from './CertificateEaisdoModel';
 
 @Component({
   selector: 'epgu-constructor-certificate-eaisdo',
@@ -22,9 +22,10 @@ import { CertificateEaisdoService } from '../../../../shared/services/certificat
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class CertificateEaisdoComponent extends AbstractComponentListItemComponent
+export class CertificateEaisdoComponent
+  extends AbstractComponentListItemComponent<CertificateEaisdoModelAttrs>
   implements OnInit {
-  public component: CustomComponentWithAttrs<CertificateEaisdoAttrs>;
+  public component: CertificateEaisdoModel;
   private _hasError = false;
 
   public constructor(
@@ -54,7 +55,7 @@ export class CertificateEaisdoComponent extends AbstractComponentListItemCompone
   }
 
   public outputHtml(): string {
-    return this.hasError ? this.component.attrs.error : this.component.attrs.wait;
+    return this.hasError ? this.component?.attrs.error : this.component?.attrs.wait;
   }
 
   private get hasError(): boolean {

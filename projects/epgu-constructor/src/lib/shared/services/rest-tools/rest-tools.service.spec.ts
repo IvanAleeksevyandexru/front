@@ -55,13 +55,4 @@ describe('RestToolsService', () => {
       expect(service).toBeTruthy();
     });
   });
-
-  describe('watchForUpdates', () => {
-    it('should call loadReferenceData$()', () => {
-      const _mockComponent = mockComponent as CustomComponent;
-      const spy = jest.spyOn(service, 'loadReferenceData$');
-      service.watchForUpdates([_mockComponent]).subscribe();
-      expect(spy).toBeCalledWith([]);
-    });
-  });
 });

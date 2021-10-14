@@ -13,7 +13,7 @@
     [invalid]="control.get('value').invalid && control.get('value').touched"
     [validationShowOn]="validationShowOn"
     [formControl]="$any(control.get('value'))"
-    [queryMinSymbolsCount]="control.value?.attrs?.queryMinSymbolsCount || 0"
+    [queryMinSymbolsCount]="attrs?.queryMinSymbolsCount || 0"
     [searchCaseSensitive]="false"
     [fixedItems]="list"
     [virtualScroll]="true"
@@ -24,7 +24,7 @@
     [suggestSeparator]="suggestSeparator"
     (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'LOOKUP')"
     [itemsProvider]="provider"
-    [placeholder]="control.value?.attrs?.placeholder"
+    [placeholder]="attrs?.placeholder"
     [searchIconForcedShowing]="searchIconForcedShowing"
     [searchOnFocus]="searchOnFocus"
   >

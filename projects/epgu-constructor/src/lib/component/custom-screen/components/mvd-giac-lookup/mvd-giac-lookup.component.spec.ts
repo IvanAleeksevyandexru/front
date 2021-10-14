@@ -24,6 +24,10 @@ import {
   BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientModule } from '@angular/common/http';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import MvdGiacLookupModelAttrs from './MvdGiacLookupModelAttrs';
+import MvdGiacLookupModel from './MvdGiacLookupModel';
 
 describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
@@ -39,6 +43,7 @@ describe('MvdGiacLookupComponent', () => {
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         MockProvider(DatesToolsService),
         MockProvider(ComponentsListRelationsService),
         MockProvider(ConfigService),
@@ -61,11 +66,13 @@ describe('MvdGiacLookupComponent', () => {
     formService = (TestBed.inject(
       ComponentsListFormService,
     ) as unknown) as ComponentsListFormServiceStub;
-
+    const attrs = new MvdGiacLookupModelAttrs({ dictionaryList: [] });
     valueControl = new FormControl('some value');
     control = new FormGroup({
       id: new FormControl('someId'),
       value: valueControl,
+      attrs: new FormControl(attrs),
+      model: new FormControl(new MvdGiacLookupModel({ attrs } as any))
     });
     formService['_form'] = new FormArray([control]);
 
@@ -88,10 +95,8 @@ describe('MvdGiacLookupComponent', () => {
     expect(debugEl).toBeTruthy();
 
     expect(debugEl.componentInstance.control).toBe(valueControl);
-    expect(debugEl.componentInstance.component).toEqual({
-      id: 'someId',
-      value: 'some value',
-    });
+    expect(debugEl.componentInstance.component.id).toEqual('someId');
+    expect(debugEl.componentInstance.component.value).toEqual('some value');
     expect(debugEl.componentInstance.invalid).toBeFalsy();
 
     component.control.setErrors({
@@ -110,7 +115,7 @@ describe('MvdGiacLookupComponent', () => {
       // по умолчанию dropDowns пустой массив, соответственно TRUTHY
       expect(debugEl).toBeTruthy();
 
-      dictionaryToolsService.dropDowns$.next(null);
+      component.model['_dropDown$'].next(null);
       fixture.detectChanges();
 
       debugEl = fixture.debugElement.query(By.css(selector));
@@ -138,15 +143,12 @@ describe('MvdGiacLookupComponent', () => {
     it('fixedItems property', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
 
-      expect(debugEl.componentInstance.fixedItems).toBeUndefined();
 
-      dictionaryToolsService.dropDowns$.next(({
-        someId: [
-          {
-            text: 'some text',
-          },
-        ],
-      } as unknown) as CustomListDropDowns);
+      component.model['_dropDown$'].next([
+        {
+          text: 'some text',
+        },
+      ] as unknown as CustomListDropDowns);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.fixedItems).toEqual([
@@ -161,13 +163,11 @@ describe('MvdGiacLookupComponent', () => {
 
       expect(debugEl.componentInstance.disabled).toBeFalsy();
 
-      dictionaryToolsService.dropDowns$.next(({
-        someId: [
-          {
-            text: 'some text',
-          },
-        ],
-      } as unknown) as CustomListDropDowns);
+      component.model['_dropDown$'].next([
+        {
+          text: 'some text',
+        },
+      ] as unknown as CustomListDropDowns);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.disabled).toBeTruthy();

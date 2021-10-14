@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { DeviceDetectorService, System, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { AppLink, ErrorType } from './sign-app-link.types';
+import SingAppLinkModelAttrs from './SingAppLinkModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-os-determinant',
@@ -10,7 +11,8 @@ import { AppLink, ErrorType } from './sign-app-link.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class SignAppLinkComponent extends AbstractComponentListItemComponent implements OnInit {
+export class SignAppLinkComponent extends AbstractComponentListItemComponent<SingAppLinkModelAttrs>
+  implements OnInit {
   public appLinks: AppLink[];
   private clientSystem: string | null;
   private clientAppLink: AppLink;
@@ -22,7 +24,7 @@ export class SignAppLinkComponent extends AbstractComponentListItemComponent imp
   ngOnInit(): void {
     super.ngOnInit();
 
-    this.appLinks = this.control.value?.attrs?.appLinks;
+    this.appLinks = this.attrs?.appLinks;
     this.clientSystem = this.deviceDetectorService.system;
 
     switch (this.clientSystem) {

@@ -12,9 +12,10 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { EXTERNAL_INTEGRATION_ACTION } from '../../../../shared/constants/actions';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
-import { CustomComponent } from '../../components-list.types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { EaisdoStateTypes } from './eaisdo.interface';
+import EaisdoGroupCostAttrs from './EaisdoGroupCostAttrs';
+import EaisdoGroupCostModel from './EaisdoGroupCostModel';
 
 @Component({
   selector: 'epgu-constructor-eaisdo-group-cost',
@@ -23,9 +24,11 @@ import { EaisdoStateTypes } from './eaisdo.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent implements OnInit {
+export class EaisdoGroupCostComponent
+  extends AbstractComponentListItemComponent<EaisdoGroupCostAttrs>
+  implements OnInit {
   isLoading$ = this.screenService.isLoading$;
-  component: CustomComponent;
+  component: EaisdoGroupCostModel;
 
   constructor(
     public injector: Injector,
@@ -44,7 +47,7 @@ export class EaisdoGroupCostComponent extends AbstractComponentListItemComponent
       this.screenService.buttons.find((button) => button.type === ActionType.externalIntegration) ||
       EXTERNAL_INTEGRATION_ACTION;
 
-    this.component = this.control.value;
+    this.component = this.control.value as EaisdoGroupCostModel;
     this.eaisdoGroupCostService.currentState = EaisdoStateTypes.wait;
 
     this.actionService

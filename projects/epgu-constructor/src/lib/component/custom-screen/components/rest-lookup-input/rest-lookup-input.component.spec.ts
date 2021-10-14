@@ -22,25 +22,35 @@ import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
-import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import RestLookupInputModelAttrs from './RestLookupInputModelAttrs';
+import RestLookupInputModel from './RestLookupInputModel';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
+import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
+import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 
 const mockComponent = {
   id: 'mockComponentID',
-  attrs: {
+  attrs: new RestLookupInputModelAttrs({
     dictionaryType: 'lookUpInputType',
     searchProvider: {
       dictionaryOptions: { additionalParams: [] },
       dictionaryFilter: [
         {
           attributeName: 'Session_Id',
-          condition: 'EQUALS',
+          condition: 'EQUALS' as any,
           value: 'value',
           valueType: 'rawFilter',
         },
       ],
     },
-  },
+  }),
   value: 'lookUpInput',
   required: false,
 };
@@ -63,7 +73,9 @@ describe('RestLookupInputComponent', () => {
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
-        MockProvider(ComponentsListRelationsService),
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        MockProvider(InterpolationService),
+        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         MockProvider(RestToolsService),
         MockProvider(SuggestHandlerService),
         MockProvider(EventBusService),
@@ -86,13 +98,13 @@ describe('RestLookupInputComponent', () => {
       ComponentsListFormService,
     ) as unknown) as ComponentsListFormServiceStub;
     restToolsService = TestBed.inject(RestToolsService);
-    jest.spyOn(restToolsService, 'dictionaries$', 'get').mockReturnValue(of({}));
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
       id: new FormControl(mockComponent.id),
       attrs: new FormControl(mockComponent.attrs),
       value: valueControl,
       required: new FormControl(mockComponent.required),
+      model: new FormControl(new RestLookupInputModel({ attrs: mockComponent.attrs } as any)),
     });
     formService.form = new FormArray([control]);
     fixture = TestBed.createComponent(RestLookupInputComponent);
@@ -110,7 +122,7 @@ describe('RestLookupInputComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
     expect(debugEl.componentInstance.control).toBe(valueControl);
-    expect(debugEl.componentInstance.component).toEqual(mockComponent);
+    expect(debugEl.componentInstance.component.id).toEqual(mockComponent.id);
     expect(debugEl.componentInstance.invalid).toBeFalsy();
     component.control.setErrors({
       someErrorKey: true,

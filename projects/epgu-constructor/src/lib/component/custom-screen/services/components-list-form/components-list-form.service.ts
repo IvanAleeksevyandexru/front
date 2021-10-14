@@ -2,12 +2,8 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
-import { get, isEqual } from 'lodash';
-import {
-  DatesToolsService,
-  LoggerService,
-  UnsubscribeService,
-} from '@epgu/epgu-constructor-ui-kit';
+import { isEqual } from 'lodash';
+import { DatesToolsService, LoggerService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
@@ -16,8 +12,6 @@ import {
   CustomComponentAttrValidation,
   CustomComponentOutputData,
   CustomComponentValidationConditions,
-  CustomListDictionaries,
-  CustomListDropDowns,
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes,
@@ -33,9 +27,10 @@ import { ComponentsListRelationsService } from '../components-list-relations/com
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
-import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
-import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
-import { ListItem, LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
+import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
+import BaseModel from '../../component-list-resolver/BaseModel';
+import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
+import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -105,7 +100,6 @@ export class ComponentsListFormService {
         } as CustomComponent,
         this.shownElements,
         this.form,
-        this.dictionaryToolsService.dictionaries,
         false,
         this.screenService,
         this.dictionaryToolsService,
@@ -125,52 +119,19 @@ export class ComponentsListFormService {
   }
 
   public onAfterFilterOnRel(
-    component: CustomComponent,
-    service: DictionaryToolsService | RestToolsService = this.dictionaryToolsService,
+    component: BaseModel<DictionarySharedAttrs>,
   ): void {
+    component.value = this.componentsListToolsService.convertedValue(component) as string;
     this.componentsListRelationsService.onAfterFilterOnRel(
-      {
-        ...component,
-        value: this.componentsListToolsService.convertedValue(component),
-      } as CustomComponent,
+      component,
       this.form,
-      service,
     );
   }
 
-  public patch(component: CustomComponent): void {
+  public patch(component: BaseModel<DictionarySharedAttrs>): void {
     const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
-    const {
-      defaultIndex = undefined,
-      lookupDefaultValue = undefined,
-      lookupFilterPath = undefined,
-    } = component.attrs;
-    const noValue = !component.value;
-    const hasDefaultIndex = defaultIndex !== undefined;
-    const hasDefaultValue = lookupDefaultValue !== undefined;
-    const isDropdownLike = this.dictionaryToolsService.isDropdownLike(component.type);
-    const isDictionaryLike = this.dictionaryToolsService.isDictionaryLike(component.type);
-    const isDropDownDepts = component.type === CustomScreenComponentTypes.DropDownDepts;
-
-    if (hasDefaultIndex && noValue && isDropdownLike) {
-      this.patchDropDownLikeWithDefaultIndex(component, control, defaultIndex);
-    } else if (hasDefaultIndex && isDropDownDepts) {
-      // DropDownDepts has value as address
-      this.patchDropDownDeptsValue(component, control, defaultIndex);
-    } else if (hasDefaultIndex && noValue && !isDropdownLike) {
-      this.patchDictionaryLikeWithDefaultIndex(component, control, defaultIndex);
-    } else if (hasDefaultValue && noValue && isDictionaryLike) {
-      this.patchDictionaryLikeWithDefaultValue(
-        component,
-        control,
-        lookupDefaultValue,
-        lookupFilterPath,
-      );
-    } else if (isDictionaryLike && noValue) {
-      // control.value должен оставаться тем же потому что с бэка приходит пока что пустое значение
-      // Кейс создан для ререндеринга компонента на repeatable-screen при удалении одного, последующие обнулялись пустым значением с Бэка
-      return;
-    } else {
+    const patched = component.patchControlValue && component.patchControlValue(control, this.screenService.getStore());
+    if (!patched) {
       control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
     }
   }
@@ -355,6 +316,7 @@ export class ComponentsListFormService {
 
     const form: FormGroup = this.fb.group(
       {
+        model: component,
         type,
         attrs,
         id,
@@ -386,7 +348,6 @@ export class ComponentsListFormService {
             next,
             this.shownElements,
             this.form,
-            this.dictionaryToolsService.dictionaries,
             true,
             this.screenService,
             this.dictionaryToolsService,
@@ -418,18 +379,16 @@ export class ComponentsListFormService {
         },
       };
 
-      const model: AbstractControl = this.form.controls.find(
+      const carModelControl: AbstractControl = this.form.controls.find(
         (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
       );
 
-      model.get('value').patchValue('');
+      carModelControl.get('value').patchValue('');
 
-      this.dictionaryToolsService
-        .getDictionaries$('MODEL_TS', model?.value, options)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((dictionary) => {
-          this.dictionaryToolsService.initDictionary(dictionary);
-        });
+      // TODO: моделмодел
+      const carModelModel: DictionaryLikeModel = carModelControl.value.model;
+      carModelModel.loadReferenceData$(this.dictionaryToolsService
+        .getDictionaries$('MODEL_TS', carModelModel, options)).subscribe();
     }
   }
 
@@ -447,76 +406,5 @@ export class ComponentsListFormService {
 
   private updateOnValidation(): UpdateOn {
     return 'change';
-  }
-
-  private patchDropDownLikeWithDefaultIndex(
-    component: CustomComponent,
-    control: AbstractControl,
-    defaultIndex: number,
-  ): void {
-    const dicts: CustomListDropDowns = this.dictionaryToolsService.dropDowns$.getValue();
-    const key: string = component.id;
-    const value: ListItem = dicts[key] && dicts[key][defaultIndex];
-
-    control.get('value').patchValue(value);
-  }
-
-  private patchDictionaryLikeWithDefaultIndex(
-    component: CustomComponent,
-    control: AbstractControl,
-    defaultIndex: number,
-  ): void {
-    const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-    const key: string = getDictKeyByComp(component);
-    const value: ListItem = dicts[key]?.list[defaultIndex];
-
-    control.get('value').patchValue(value);
-  }
-
-  private patchDropDownDeptsValue(
-    component: CustomComponent,
-    control: AbstractControl,
-    defaultIndex: number,
-  ): void {
-    const lockedValue = component.attrs?.lockedValue;
-    const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-    const key: string = getDictKeyByComp(component);
-    const repeatedWithNoFilters = dicts[key]?.repeatedWithNoFilters;
-
-    if ((lockedValue && !repeatedWithNoFilters) || dicts[key]?.list?.length === 1) {
-      const value: ListItem = dicts[key]?.list[defaultIndex];
-      control.get('value').patchValue(value);
-    }
-  }
-
-  private patchDictionaryLikeWithDefaultValue(
-    component: CustomComponent,
-    control: AbstractControl,
-    defaultValue: string | number,
-    lookupFilterPath: string,
-  ): void {
-    const dicts: CustomListDictionaries = this.dictionaryToolsService.dictionaries;
-    const key: string = getDictKeyByComp(component);
-    const isRef = String(defaultValue).includes('$');
-    const specialCharactersRegExp = /[&\/\\#^,+()$~%'":*?<>{}]/g;
-    const compareValue = isRef
-      ? String(defaultValue).replace(specialCharactersRegExp, '')
-      : defaultValue;
-
-    let value: ListItem = undefined;
-
-    if (lookupFilterPath) {
-      value = dicts[key]?.list.find(
-        (item: ListItem) =>
-          get(item, lookupFilterPath) ===
-          (isRef ? get(this.screenService.getStore(), compareValue) : compareValue),
-      );
-    } else {
-      value = dicts[key]?.list.find(({ id }) => id === defaultValue);
-    }
-
-    if (value) {
-      control.get('value').patchValue(value);
-    }
   }
 }

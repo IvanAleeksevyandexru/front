@@ -7,6 +7,8 @@ import { MonthYear } from '@epgu/ui/models/date-time';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { EmployeeHistoryMonthsService } from '../../../unique-screen/components/employee-history/services/employee-history.months.service';
+import MonthPickerModelAttrs from './MonthPickerModelAttrs';
+import MonthPickerModel from './MonthPickerModel';
 
 @Component({
   selector: 'epgu-constructor-month-picker',
@@ -14,7 +16,8 @@ import { EmployeeHistoryMonthsService } from '../../../unique-screen/components/
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService, EmployeeHistoryMonthsService],
 })
-export class MonthPickerComponent extends AbstractComponentListItemComponent implements OnInit {
+export class MonthPickerComponent extends AbstractComponentListItemComponent<MonthPickerModelAttrs>
+  implements OnInit {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   align = 'left';
 
@@ -28,7 +31,7 @@ export class MonthPickerComponent extends AbstractComponentListItemComponent imp
   ngOnInit(): void {
     super.ngOnInit();
 
-    const component = this.control?.value;
+    const component = this.control?.value as MonthPickerModel;
     if (component) {
       const { attrs } = component;
 
