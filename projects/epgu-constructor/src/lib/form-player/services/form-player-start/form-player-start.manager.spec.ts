@@ -499,7 +499,7 @@ describe('FormPlayerStartManager', () => {
     it('should prepare valid path and payload for POST request', () => {
       const path = '/api/service/10000100/scenario/external';
       const payload = {
-        answers: [['q1', 'value']],
+        answers: { q1: 'value' },
         screenId: 's1',
         serviceId: '10000100',
         targetId: '-10000100',
