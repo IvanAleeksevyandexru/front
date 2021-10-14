@@ -275,7 +275,10 @@ export class FormPlayerStartManager {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { external, screenId, ...rest } = serviceInfo?.queryParams || {};
 
-    const answers = Object.entries(rest).map(([key, value]) => [key, value]);
+    const answers = Object.entries(rest).reduce(
+      (acc, [key, value]) => ({ ...acc, [key]: value }),
+      {},
+    );
     const payload = {
       serviceId,
       targetId,
