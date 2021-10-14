@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { ConfirmUserDataState } from '../../confirm-personal-user-data-screen.types';
-import { InterpolationService } from '../../../../../../shared/services/interpolation/interpolation.service';
+import { ConfirmUserDataState } from './confirm-personal-user-data-screen.types';
+import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
 
 @Pipe({ name: 'confirmPersonalUserData' })
 export class ConfirmPersonalUserDataPipe implements PipeTransform {

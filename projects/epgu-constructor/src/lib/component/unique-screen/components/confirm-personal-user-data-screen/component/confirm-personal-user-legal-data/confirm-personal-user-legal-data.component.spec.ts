@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { configureTestSuite } from 'ng-bullet';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockPipe } from 'ng-mocks';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { FieldListModule } from '../../../../../../shared/components/field-list/field-list.module';
@@ -17,6 +17,7 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { ActionType } from '@epgu/epgu-constructor-types';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { BaseModule } from '../../../../../../shared/base.module';
+import { ConfirmPersonalUserDataPipe } from '../../confirm-personal-user-data.pipe';
 
 const componentMock = {
   id: 'fakeId',
@@ -41,7 +42,10 @@ describe('ConfirmPersonalUserLegalDataComponent', () => {
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [ConfirmPersonalUserLegalDataComponent],
+      declarations: [
+        ConfirmPersonalUserLegalDataComponent,
+        MockPipe(ConfirmPersonalUserDataPipe, (value) => value),
+      ],
       imports: [
         MockModule(OutputHtmlModule),
         MockModule(DefaultUniqueScreenWrapperModule),

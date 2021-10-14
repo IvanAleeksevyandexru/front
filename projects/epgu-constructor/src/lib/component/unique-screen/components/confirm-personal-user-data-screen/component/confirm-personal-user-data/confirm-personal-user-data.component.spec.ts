@@ -49,7 +49,7 @@ import { FormPlayerService } from '../../../../../../form-player/services/form-p
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
-import { ConfirmPersonalUserDataPipe } from './confirm-personal-user-data.pipe';
+import { ConfirmPersonalUserDataPipe } from '../../confirm-personal-user-data.pipe';
 
 const componentMock: ComponentBase = {
   attrs: {
