@@ -8,7 +8,7 @@
 
     <epgu-cf-ui-constructor-screen-pad
       class="time-slots-content"
-      *ngIf="weeks.length; else loading"
+      *ngIf="!inLoadingSlotsProgress; else loading"
     >
       <div>
         <div *ngIf="isAreasVisible" class="dropdown-list">

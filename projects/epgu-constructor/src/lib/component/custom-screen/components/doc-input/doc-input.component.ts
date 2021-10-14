@@ -5,7 +5,6 @@ import {
   UnsubscribeService,
   DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { isEmpty } from 'lodash';
 import { map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/common-enums';
@@ -21,6 +20,7 @@ import { prepareClassifiedSuggestionItems } from '../../../../core/services/auto
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -50,6 +50,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent
     public injector: Injector,
     public suggestHandlerService: SuggestHandlerService,
     public screenService: ScreenService,
+    private autocompleteService: AutocompleteService,
     private validationService: ValidationService,
     private fb: FormBuilder,
     private datesToolsService: DatesToolsService,
@@ -69,19 +70,21 @@ export class DocInputComponent extends AbstractComponentListItemComponent
     this.screenService.suggestions$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((suggestions) => {
-        this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
-          suggestions[this.control.value?.id],
+        const flatSuggestions: ISuggestionItem = Object.keys(suggestions).reduce(
+          (acc, key) => {
+            if (key.includes(this.control.value?.id)) {
+              acc.list = [...acc.list, ...suggestions[key].list];
+            }
+            return acc;
+          },
+          { mnemonic: '', list: [] },
         );
-
-        if (isEmpty(this.classifiedSuggestionItems)) {
-          this.classifiedSuggestionItems = Object.keys(suggestions)
-            .filter((key) => key.includes(this.control.value?.id))
-            .reduce((acc, key) => {
-              const [, fieldName] = key.split('.');
-              acc[fieldName] = suggestions[key];
-              return { ...acc };
-            }, {});
-        }
+        this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(
+          flatSuggestions,
+          null,
+          this.fieldsNames,
+          Array.from(this.autocompleteService.componentsSuggestionsSet),
+        );
       });
   }
 

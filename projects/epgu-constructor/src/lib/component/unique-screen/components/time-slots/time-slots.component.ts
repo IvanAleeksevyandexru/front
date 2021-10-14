@@ -116,6 +116,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public blockMobileKeyboard = false;
   public fixedMonth = false;
   public inProgress = false;
+  public inLoadingSlotsProgress = false;
   public changeTSConfirm = false;
   bookedSlot: SlotInterface;
   errorMessage;
@@ -134,15 +135,18 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       }),
       switchMap((date: Date) => {
         this.inProgress = true;
+        this.inLoadingSlotsProgress = true;
         return this.timeSlotsService.smev2getSlots(date).pipe(
           tap((slots) => {
             this.timeSlots = slots;
             this.inProgress = false;
+            this.inLoadingSlotsProgress = false;
             this.isExistsSlots = this.timeSlots.length > 0;
             this.changeDetectionRef.markForCheck();
           }),
           catchError((err) => {
             this.inProgress = false;
+            this.inLoadingSlotsProgress = false;
             this.changeDetectionRef.markForCheck();
             return throwError(err);
           }),
@@ -585,6 +589,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   private loadTimeSlots(): void {
     this.inProgress = true;
+    this.inLoadingSlotsProgress = true;
     this.label = this.screenService.component?.label;
     const value = JSON.parse(this.screenService.component?.value);
 
@@ -595,6 +600,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       (isBookedDepartment) => {
         if (this.timeSlotsService.hasError()) {
           this.inProgress = false;
+          this.inLoadingSlotsProgress = false;
           this.errorMessage = this.timeSlotsService.getErrorMessage();
           if (this.errorMessage === 101) {
             this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
@@ -645,6 +651,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         }
 
         this.inProgress = false;
+        this.inLoadingSlotsProgress = false;
 
         this.checkExistenceSlots();
 
@@ -657,6 +664,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorMessage = this.timeSlotsService.getErrorMessage();
         this.inProgress = false;
+        this.inLoadingSlotsProgress = false;
         this.showError(
           `${this.constants.errorInitialiseService} (${this.errorMessage}) (${error})`,
         );
@@ -949,7 +957,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   private initModalsSettings(): void {
     this.emptySlotsModal = this.screenService.component.attrs?.emptySlotsModal;
-    this.bookingErrorHandlingParams = this.screenService.component.attrs?.bookingErrorHandling;
+    this.bookingErrorHandlingParams =
+      this.screenService.component.attrs?.bookingErrorHandling || [];
   }
 
   private isDateOutOfSection(

@@ -12,7 +12,7 @@
     "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3",
     "lkUrl": "https://pgu-uat-betalk.test.gosuslugi.ru",
     "paymentUrl": "https://oplata.gosuslugi.ru",
-    "fileUploadApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/storage/v1/files",
+    "fileUploadApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/storage/v1/files",
     "quizDataApiUrl": "http://127.0.0.1:8190/quiz-data/data",
     "childrenClubsApi": "https://dev01.pgu2-pub.test.gosuslugi.ru/api/eaisdo-service/v1",
     "identificationApiUrl": "/v1/identification",

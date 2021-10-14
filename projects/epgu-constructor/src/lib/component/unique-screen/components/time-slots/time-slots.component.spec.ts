@@ -61,6 +61,7 @@ import {
   ITEMS_FAILURE,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
 } from '../../../../core/services/error-handler/error-handler';
+import { IBookingErrorHandling } from '@epgu/epgu-constructor-types';
 
 describe('TimeSlotsComponent', () => {
   let component: TimeSlotsComponent;
@@ -152,16 +153,42 @@ describe('TimeSlotsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show loader while weeks loading', () => {
-    component.weeks = [];
+  it('set bookingErrorHandlingParams as empty array if there in no bookingErrorHandlingParams in component attrs ', () => {
+    component.ngOnInit();
+    expect(component['bookingErrorHandlingParams']).toEqual([]);
+  });
+
+  it('setting bookingErrorHandlingParams ', () => {
+    const mockBookingErrorHandling = [{
+      errorCode: 2
+    } as unknown as IBookingErrorHandling];
+    // @ts-ignore
+    screenService.component.attrs?.bookingErrorHandling = mockBookingErrorHandling;
+
+    component.ngOnInit();
+
+    expect(component['bookingErrorHandlingParams']).toEqual(mockBookingErrorHandling);
+  });
+
+  it('should show loader while slots loading', () => {
+    component.inLoadingSlotsProgress = true;
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('.lib-loader'))).toBeTruthy();
     expect(fixture.debugElement.query(By.css('.screen-footer'))).toBeNull();
     expect(fixture.debugElement.query(By.css('.time-slots-content'))).toBeNull();
   });
 
-  it('should show content when weeks are loaded', () => {
-    component.weeks = ([[]] as unknown) as IDay[][];
+  it('should show content when slots are loaded with an error', () => {
+    component.inLoadingSlotsProgress = false;
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.lib-loader'))).toBeNull();
+    expect(fixture.debugElement.query(By.css('.screen-footer'))).toBeNull();
+    expect(fixture.debugElement.query(By.css('.time-slots-content'))).toBeTruthy();
+  });
+
+  it('should show content when slots are loaded without errors', () => {
+    component.inLoadingSlotsProgress = false;
+    component.weeks = [[]] as unknown as IDay[][];
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('.lib-loader'))).toBeNull();
     expect(fixture.debugElement.query(By.css('.screen-footer'))).toBeTruthy();

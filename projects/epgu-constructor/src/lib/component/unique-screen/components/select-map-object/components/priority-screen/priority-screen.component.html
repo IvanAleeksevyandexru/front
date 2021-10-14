@@ -4,6 +4,7 @@
     context: {
       displayCssClass: displayCssClass$ | async,
       attrs: attrs$ | async,
+      arguments: arguments$ | async,
       items: items$ | async,
       maxKindergarten: maxKindergarten$ | async,
       screenItems: screenItems$ | async,
@@ -19,6 +20,7 @@
   #screen
   let-displayCssClass="displayCssClass"
   let-attrs="attrs"
+  let-arguments="arguments"
   let-items="items"
   let-maxKindergarten="maxKindergarten"
   let-screenItems="screenItems"
@@ -51,11 +53,18 @@
       </epgu-constructor-page-name>
       <epgu-constructor-output-html
         class="quiz__description"
-        *ngIf="attrs?.label"
+        *ngIf="attrs?.label && !arguments?.priority"
         [html]="attrs.label | imgPrefixer"
         [clarifications]="attrs?.attrs?.clarifications"
       >
       </epgu-constructor-output-html>
+      <epgu-constructor-disclaimer
+        *ngIf="arguments?.priority && attrs?.disclaimer as disclaimer"
+        [type]="'warn'"
+        [title]="disclaimer.title"
+        [description]="disclaimer.description"
+        [clarifications]="attrs.attrs?.clarifications"
+      ></epgu-constructor-disclaimer>
       <epgu-constructor-disclaimer
         *ngIf="hasUnavailable"
         [title]="'В списке есть недоступные сады'"
