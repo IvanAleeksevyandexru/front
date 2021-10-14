@@ -103,7 +103,7 @@ export class GroupFiltersFormComponent extends ModalBaseComponent implements OnI
   }
 
   private numberValidators(): ValidatorFn {
-    const errorMsg = { msg: 'error' };
+    const errorMsg = { msg: 'Неправильное значение для поля' };
     return (control: AbstractControl): ValidationErrors => {
       const regExp = new RegExp(/^\d+$/);
       if (control.value) {
