@@ -330,13 +330,13 @@ describe('ValidationService', () => {
 
   it('should show server validation errors for DateInput', () => {
     const date = new Date('2021-02-20T00:00:00.000+06:00');
-    const dateToolsService = TestBed.inject(DatesToolsService);
+    const dateAsStr = (date as unknown) as string;
     const validationBackendError = service.validationBackendError(
       'Значение не прошло валидацию minDate',
       dateInputComponent,
     );
     const control = new FormControl('input');
-    dateInputComponent.value = dateToolsService.format(date);
+    dateInputComponent.value = dateAsStr;
     control.setValue(date);
     expect(validationBackendError(control)).toEqual({
       serverError: 'Значение не прошло валидацию minDate',
