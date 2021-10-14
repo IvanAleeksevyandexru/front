@@ -7,6 +7,7 @@ import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomp
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import MaskedAndPlainInputModelAttrs from './MaskedAndPlainInputModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-masked-and-plain-input',
@@ -14,7 +15,9 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class MaskedAndPlainInputComponent extends AbstractComponentListItemComponent {
+export class MaskedAndPlainInputComponent extends AbstractComponentListItemComponent<
+  MaskedAndPlainInputModelAttrs
+> {
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => suggestions[this.control.value?.id]),
   );

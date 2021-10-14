@@ -4,14 +4,14 @@
   [invalid]="control.invalid"
 >
   <epgu-constructor-constructor-multiline-input
-    [textTransformType]="control.value?.attrs?.fstuc"
+    [textTransformType]="attrs?.fstuc"
     [invalid]="control.get('value').invalid && control.get('value').touched"
     [name]="control.value?.id"
-    [maxlength]="control.value?.attrs?.charsAmount"
+    [maxlength]="attrs?.charsAmount"
     [control]="$any(control.get('value'))"
     [validationShowOn]="validationShowOn"
-    [readOnly]="control.value?.attrs?.readonly"
-    [placeholder]="control.value?.attrs?.placeholder"
+    [readOnly]="attrs?.readonly"
+    [placeholder]="attrs?.placeholder"
     [component]="control.value"
   >
   </epgu-constructor-constructor-multiline-input>

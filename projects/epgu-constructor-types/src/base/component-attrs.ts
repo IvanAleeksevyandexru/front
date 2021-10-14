@@ -11,7 +11,11 @@ import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
 import { KeyValueMap } from './core.types';
-import { LogicComponentHeaders, LogicComponentMethods } from './logic-component';
+import {
+  LogicComponentEventTypes,
+  LogicComponentHeaders,
+  LogicComponentMethods,
+} from './logic-component';
 import { ScreenButton } from './screen-buttons';
 
 export interface KindergartenAttrs {
@@ -62,7 +66,7 @@ export interface ComponentAttrsDto {
   dateType?: string;
   daysToShow?: number;
   defaultIndex?: number;
-  defaultValue?: boolean;
+  defaultValue?: string;
   dictionaryFilter?: ComponentDictionaryFilterDto[];
   dictionaryGIBDD?: string;
   dictionaryOptions?: DictionaryOptions;
@@ -193,6 +197,7 @@ export interface ComponentAttrsDto {
   path?: string;
   timeout?: string;
   headers?: LogicComponentHeaders;
+  events?: LogicComponentEventTypes[];
   customValidation?: CustomValidationDto;
   balloonAttrs?: KeyValueMap;
   visibleComponents?: string[];

@@ -28,52 +28,56 @@ import { SuggestHandlerService } from '../../../../shared/services/suggest-handl
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DropDownUpdateTypes } from './dropdown.interface';
 import { HttpClientModule } from '@angular/common/http';
+import DropdownModelAttrs from './DropdownModelAttrs';
+import DropdownModel from './DropdownModel';
 
 const mockComponentId = 'mockComponentID';
 
 const mockComponent = {
   id: mockComponentId,
-  attrs: {
+  attrs: new DropdownModelAttrs ({
     dictionaryType: 'someDropdownType',
     isNotDuplicate: false,
-  },
+    dictionaryList: []
+  }),
   value: 'dropdownValue',
   required: false,
 };
 
 const mockComponentWithNotDuplicate = {
   id: mockComponentId,
-  attrs: {
+  attrs: new DropdownModelAttrs ({
     dictionaryType: 'someDropdownType',
     isNotDuplicate: true,
-  },
+    dictionaryList: []
+  }),
   value: 'dropdownValue',
   required: false,
 };
 
 const mockComponentWithEmptyPlaceholder = {
   id: mockComponentId,
-  attrs: {
+  attrs: new DropdownModelAttrs ({
     dictionaryType: 'someDropdownType',
     placeholder: '',
-  },
+    dictionaryList: []
+  }),
   value: 'dropdownValue',
   required: false,
 };
 
 const mockComponentWithFilledPlaceholder = {
   id: mockComponentId,
-  attrs: {
+  attrs: new DropdownModelAttrs ({
     dictionaryType: 'someDropdownType',
     placeholder: 'Выбрать',
-  },
+    dictionaryList: []
+  }),
   value: 'dropdownValue',
   required: false,
 };
 
-const mockDropDowns1 = [];
-
-mockDropDowns1[mockComponentId] = [
+const mockDropDowns1 = [
   {
     id: '1',
     text: 'Test dropdown 1',
@@ -84,9 +88,7 @@ mockDropDowns1[mockComponentId] = [
   },
 ];
 
-const mockDropDowns2 = [];
-
-mockDropDowns2[mockComponentId] = [
+const mockDropDowns2  = [
   {
     id: '3',
     text: 'Test dropdown 3',
@@ -147,6 +149,7 @@ describe('DropdownComponent', () => {
       attrs: new FormControl(mockComponent.attrs),
       value: valueControl,
       required: new FormControl(mockComponent.required),
+      model: new FormControl(new DropdownModel({ attrs: mockComponent.attrs } as any)),
     });
     formService['_form'] = new FormArray([control]);
 
@@ -154,7 +157,7 @@ describe('DropdownComponent', () => {
 
     component = fixture.componentInstance;
     component.componentIndex = 0;
-    dictionaryToolsService.dropDowns$.next(mockDropDowns1);
+
     fixture.detectChanges();
   });
 
@@ -167,7 +170,7 @@ describe('DropdownComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
     expect(debugEl.componentInstance.control).toBe(valueControl);
-    expect(debugEl.componentInstance.component).toEqual(mockComponent);
+    expect(debugEl.componentInstance.component.id).toEqual(mockComponent.id);
     expect(debugEl.componentInstance.invalid).toBeFalsy();
     component.control.setErrors({
       someErrorKey: true,
@@ -201,6 +204,7 @@ describe('DropdownComponent', () => {
         attrs: new FormControl(mockComponentWithEmptyPlaceholder.attrs),
         value: valueControl,
         required: new FormControl(mockComponent.required),
+        model: new FormControl(new DropdownModel({ attrs: mockComponentWithEmptyPlaceholder.attrs } as any)),
       });
       formService['_form'] = new FormArray([control]);
 
@@ -222,6 +226,7 @@ describe('DropdownComponent', () => {
         attrs: new FormControl(mockComponentWithFilledPlaceholder.attrs),
         value: valueControl,
         required: new FormControl(mockComponent.required),
+        model: new FormControl(new DropdownModel({ attrs: mockComponentWithFilledPlaceholder.attrs } as any)),
       });
       formService['_form'] = new FormArray([control]);
 
@@ -247,12 +252,12 @@ describe('DropdownComponent', () => {
   describe('ngOnInit', () => {
     it('should set valid source and active dropDowns', () => {
       component['isNotDuplicate'] = true;
-      dictionaryToolsService.dropDowns$.next(mockDropDowns1);
-      expect(component.dropDowns).toEqual(mockDropDowns1[mockComponentId]);
-      expect(component['sourceDropDowns']).toEqual(mockDropDowns1[mockComponentId]);
-      dictionaryToolsService.dropDowns$.next(mockDropDowns2);
-      expect(component.dropDowns).toEqual(mockDropDowns2[mockComponentId]);
-      expect(component['sourceDropDowns']).toEqual(mockDropDowns2[mockComponentId]);
+      component.model['_dropDown$'].next(mockDropDowns1);
+      expect(component.dropDowns).toEqual(mockDropDowns1);
+      expect(component['sourceDropDowns']).toEqual(mockDropDowns1);
+      component.model['_dropDown$'].next(mockDropDowns2);
+      expect(component.dropDowns).toEqual(mockDropDowns2);
+      expect(component['sourceDropDowns']).toEqual(mockDropDowns2);
     });
   });
 
@@ -262,7 +267,7 @@ describe('DropdownComponent', () => {
       expect(component['selectedDropDown']).toBeUndefined();
       component['isNotDuplicate'] = true;
       fixture.detectChanges();
-      component.onChange(mockDropDowns1[mockComponentId][0]);
+      component.onChange(mockDropDowns1[0]);
       expect(component['selectedDropDown']).not.toBeNull();
       expect(component['updateDropDowns']).toHaveBeenCalledWith(DropDownUpdateTypes.delete);
     });
@@ -288,10 +293,10 @@ describe('DropdownComponent', () => {
     });
   });
 
-  describe('getPreparedDropDowns', () => {
+  xdescribe('getPreparedDropDowns', () => {
     it('should return valid array with prepared dropDowns', () => {
-      const preparedDropDowns = component['getPreparedDropDowns'](mockDropDowns1[mockComponentId]);
-      expect(JSON.stringify(preparedDropDowns)).toEqual(JSON.stringify(mockDropDowns1));
+      const preparedDropDowns = component['getPreparedDropDowns'](mockDropDowns1);
+      expect(JSON.stringify(preparedDropDowns)).toEqual(JSON.stringify('mockDropDowns1'));
     });
   });
 
@@ -303,6 +308,7 @@ describe('DropdownComponent', () => {
         attrs: new FormControl(mockComponentWithNotDuplicate.attrs),
         value: valueControl,
         required: new FormControl(mockComponentWithNotDuplicate.required),
+        model: new FormControl(new DropdownModel({ attrs: mockComponentWithNotDuplicate.attrs } as any)),
       });
       formService['_form'] = new FormArray([control]);
 
@@ -312,12 +318,11 @@ describe('DropdownComponent', () => {
       component.componentIndex = 0;
       fixture.detectChanges();
 
-      component.onChange(mockDropDowns1[mockComponentId][1]);
+      component.onChange(mockDropDowns1[1]);
       component.ngOnInit();
-      const array = [];
-      array[mockComponentId] = mockDropDowns1[mockComponentId][0];
-      dictionaryToolsService.dropDowns$.next(array);
-      expect(component.dropDowns).toContain(mockDropDowns1[mockComponentId][1]);
+      const array = [mockDropDowns1[1]];
+      component.model['_dropDown$'].next(array);
+      expect(component.dropDowns).toContain(mockDropDowns1[1]);
     });
   });
 });

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import TextAreaModelAttrs from './TextAreaModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-text-area',
@@ -9,7 +10,7 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class TextAreaComponent extends AbstractComponentListItemComponent {
+export class TextAreaComponent extends AbstractComponentListItemComponent<TextAreaModelAttrs> {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
 
   constructor(public injector: Injector) {

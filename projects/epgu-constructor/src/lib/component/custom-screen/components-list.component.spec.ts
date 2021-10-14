@@ -176,15 +176,10 @@ describe('ComponentsListComponent', () => {
   describe('ngOnInit()', () => {
     it('should call methods on init', () => {
       const eventBusServiceSpy = jest.spyOn(eventBusService, 'on');
-      const watchForFiltersSpy = jest.spyOn<ComponentsListComponent, any>(
-        component,
-        'watchForFilters',
-      );
 
       component.ngOnInit();
 
       expect(eventBusServiceSpy).toHaveBeenCalled();
-      expect(watchForFiltersSpy).toHaveBeenCalled();
     });
   });
 
@@ -195,13 +190,11 @@ describe('ComponentsListComponent', () => {
         component,
         'subscribeOnFormStatusChanging',
       );
-      const loadRepository = jest.spyOn<ComponentsListComponent, any>(component, 'loadRepository');
 
       component.ngOnChanges({});
 
       expect(unsubscribeSpy).toHaveBeenCalled();
       expect(subscribeOnFormStatusChangingSpy).toHaveBeenCalled();
-      expect(loadRepository).toHaveBeenCalled();
     });
 
     it('should trigger "emitFormCreated" emitter, when has components', () => {
@@ -266,35 +259,6 @@ describe('ComponentsListComponent', () => {
     });
   });
 
-  describe('loadRepository()', () => {
-    it('should load all needed data from services', () => {
-      const dictionaryLoadReferenceDataSpy = jest.spyOn<DictionaryToolsService, any>(
-        dictionaryToolsService,
-        'loadReferenceData$',
-      );
-      const restLoadReferenceDataSpy = jest.spyOn<RestToolsService, any>(
-        restToolsService,
-        'loadReferenceData$',
-      );
-
-      component['loadRepository'](component.components);
-
-      expect(dictionaryLoadReferenceDataSpy).toHaveBeenCalled();
-      expect(restLoadReferenceDataSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('watchForFilters()', () => {
-    it('should subscribe to services updates', () => {
-      const watchForFiltersSpy = jest.spyOn(dictionaryToolsService, 'watchForFilters');
-      const watchForUpdatesSpy = jest.spyOn(restToolsService, 'watchForUpdates');
-
-      component['watchForFilters'](component.components);
-
-      expect(watchForFiltersSpy).toHaveBeenCalled();
-      expect(watchForUpdatesSpy).toHaveBeenCalled();
-    });
-  });
 
   describe('subscribeOnFormStatusChanging()', () => {
     it('should emit form status changes when has observers', () => {

@@ -3,22 +3,23 @@ import { ScreenStore, ServiceInfo } from './screen.types';
 import { map } from 'rxjs/operators';
 import { ISuggestionItem } from '../core/services/autocomplete/autocomplete.inteface';
 import {
+  ApplicantAnswersDto,
+  CachedAnswersDto,
+  ComponentActionDto,
+  ComponentAnswerDto,
+  ComponentDto,
+  CycledApplicantAnswerContextDto,
+  DisclaimerDto,
   DisplayDto,
   DisplaySubjHead,
   Gender,
-  ComponentDto,
+  InfoComponentDto,
+  LogicComponents,
   ScenarioErrorsDto,
   ScreenButton,
-  ComponentAnswerDto,
-  ComponentActionDto,
-  ApplicantAnswersDto,
-  CachedAnswersDto,
-  LogicComponents,
   ScreenTypes,
-  InfoComponentDto,
-  DisclaimerDto,
-  CycledApplicantAnswerContextDto,
 } from '@epgu/epgu-constructor-types';
+import createModel from '../component/custom-screen/component-list-resolver/ModelFactory';
 
 type ComponentValueGeneric<T> = T;
 export type ComponentValue = string | number | ComponentValueGeneric<unknown>;
@@ -452,6 +453,9 @@ export class ScreenContent {
       this.display?.id === display?.id && errors && Object.keys(errors).length !== 0;
     this.isPrevStepCase = isPrevStepCase;
     this.screenType = type;
+    if (type === ScreenTypes.CUSTOM) {
+      display.components = components.map((component) => createModel(component));
+    }
     this.display = display;
     this.infoComponents = infoComponents.length ? infoComponents : [];
     this.showInfoComponent = !!infoComponents.length;

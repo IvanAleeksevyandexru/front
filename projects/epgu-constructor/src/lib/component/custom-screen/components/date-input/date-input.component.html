@@ -4,17 +4,17 @@
   [invalid]="control.invalid"
 >
   <epgu-constructor-constructor-date-picker
-    (clearedEvent)="clearDate(control.value?.id, control.value?.attrs)"
+    (clearedEvent)="clearDate(control.value?.id, attrs)"
     [invalid]="control.get('value').invalid && control.get('value').touched"
     [validationShowOn]="validationShowOn"
     [name]="control.value?.id"
     [control]="$any(control.get('value'))"
     [component]="control.value"
-    [readOnly]="control.value?.attrs?.readonly"
-    [minDate]="control.value?.attrs?.minDate || minDateDefault"
-    [maxDate]="control.value?.attrs?.maxDate || maxDateDefault"
+    [readOnly]="attrs?.readonly"
+    [minDate]="attrs?.minDate || minDateDefault"
+    [maxDate]="attrs?.maxDate || maxDateDefault"
     [clearable]="clearable"
     [align]="align"
-    [brokenDateFixStrategy]="control.value?.attrs?.brokenDateFixStrategy || strategy"
+    [brokenDateFixStrategy]="attrs?.brokenDateFixStrategy || strategy"
   ></epgu-constructor-constructor-date-picker>
 </epgu-constructor-component-item>

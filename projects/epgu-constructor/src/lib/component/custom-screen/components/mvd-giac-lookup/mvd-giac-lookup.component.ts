@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { CustomListDropDowns } from '../../components-list.types';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { ListItem } from '@epgu/ui/models/dropdown';
+import MvdGiacLookupModelAttrs from './MvdGiacLookupModelAttrs';
+import AbstractDropdownLikeComponent from '../abstract-component-list-item/abstract-dropdown-like.component';
 
 @Component({
   selector: 'epgu-constructor-mvd-giac-lookup',
@@ -12,15 +12,21 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class MvdGiacLookupComponent extends AbstractComponentListItemComponent {
+export class MvdGiacLookupComponent extends AbstractDropdownLikeComponent<MvdGiacLookupModelAttrs>
+  implements OnInit {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   clearable = true;
   queryMinSymbolsCount = 0;
   searchCaseSensitive = false;
   virtualScroll = true;
-  dropDowns$: BehaviorSubject<CustomListDropDowns> = this.dictionaryToolsService.dropDowns$;
+  dropDown$: Observable<Partial<ListItem>[]>;
 
-  constructor(private dictionaryToolsService: DictionaryToolsService, public injector: Injector) {
+  constructor(public injector: Injector) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.dropDown$ = this.model.dropDown$;
   }
 }

@@ -5,7 +5,6 @@ import { get, isUndefined, isEmpty } from 'lodash';
 import {
   CustomComponent,
   CustomComponentRef,
-  CustomListDictionaries,
   CustomListFormGroup,
   CustomListStatusElements,
   CustomStatusElement,
@@ -30,10 +29,11 @@ import {
   DictionaryFilters,
 } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
-import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
-import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
+import BaseModel from '../../component-list-resolver/BaseModel';
+import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 
 @Injectable()
 export class ComponentsListRelationsService {
@@ -78,7 +78,6 @@ export class ComponentsListRelationsService {
     component: CustomListFormGroup | CustomComponent,
     shownElements: CustomListStatusElements,
     form: FormArray,
-    dictionaries: CustomListDictionaries,
     initInitialValues = false,
     screenService: ScreenService,
     dictionaryToolsService: DictionaryToolsService,
@@ -91,19 +90,18 @@ export class ComponentsListRelationsService {
             ? screenService.cachedAnswers[reference.valueFromCache].value
             : component.value ?? component.valueFromCache;
 
-          shownElements = this.getDependentComponentUpdatedShownElements(
-            dependentComponent,
-            reference,
-            value as { [key: string]: string },
-            components,
-            form,
-            shownElements,
-            dictionaries,
-            initInitialValues,
-            dictionaryToolsService,
-            screenService,
-          );
-        });
+            shownElements = this.getDependentComponentUpdatedShownElements(
+              dependentComponent,
+              reference,
+              value as { [key: string]: string },
+              components,
+              form,
+              shownElements,
+              initInitialValues,
+              dictionaryToolsService,
+              screenService,
+            );
+          });
 
         this.updateReferenceLimitDate(dependentComponent, component, form, screenService);
       },
@@ -273,24 +271,12 @@ export class ComponentsListRelationsService {
     componentId: string,
     components: CustomComponent[],
     componentVal: { [key: string]: string } | '', // @todo. проверить, правильно ли указан тип
-    dictionaries: CustomListDictionaries,
   ): unknown {
-    const relatedComponent = components.find((item) => item.id === componentId);
-
+    const relatedComponent = components.find((item) => item.id === componentId) as DictionaryLikeModel;
     if (relatedComponent) {
-      const dictKey = getDictKeyByComp(relatedComponent);
 
-      const dictionary = dictionaries[dictKey];
-
-      if (dictionary) {
-        if (componentVal) {
-          const dictionaryItem = dictionary.list.find((item) => item.id === componentVal.id);
-
-          return dictionaryItem.originalItem.attributeValues[dictionaryAttributeName];
-        }
-      }
+      return relatedComponent.getAttributeValue(componentVal, dictionaryAttributeName);
     }
-
     return undefined;
   }
 
@@ -311,9 +297,8 @@ export class ComponentsListRelationsService {
   }
 
   public onAfterFilterOnRel(
-    dependentComponent: CustomComponent,
+    dependentComponent: BaseModel<DictionarySharedAttrs>,
     form: FormArray,
-    dictionaryToolsService: DictionaryToolsService | RestToolsService,
   ): void {
     if (!Array.isArray(dependentComponent?.attrs?.ref)) {
       return;
@@ -339,7 +324,6 @@ export class ComponentsListRelationsService {
           refControl,
           dependentControl,
           dependentComponent,
-          dictionaryToolsService,
         );
       });
   }
@@ -497,7 +481,6 @@ export class ComponentsListRelationsService {
     components: CustomComponent[],
     form: FormArray,
     shownElements: CustomListStatusElements,
-    dictionaries: CustomListDictionaries,
     initInitialValues: boolean,
     dictionaryToolsService: DictionaryToolsService,
     screenService: ScreenService,
@@ -545,7 +528,6 @@ export class ComponentsListRelationsService {
           reference,
           components,
           componentVal,
-          dictionaries,
           dependentControl,
           initInitialValues,
         );
@@ -615,7 +597,6 @@ export class ComponentsListRelationsService {
     reference: CustomComponentRef,
     components: CustomComponent[],
     componentVal: { [key: string]: string },
-    dictionaries: CustomListDictionaries,
     dependentControl: AbstractControl,
     initInitialValues: boolean,
   ): void {
@@ -632,8 +613,7 @@ export class ComponentsListRelationsService {
         attributeName,
         componentId,
         components,
-        componentVal,
-        dictionaries,
+        componentVal
       );
 
       if (dictionaryAttributeValue === undefined) {
@@ -754,11 +734,10 @@ export class ComponentsListRelationsService {
     reference: CustomComponentRef,
     refControl: AbstractControl,
     dependentControl: AbstractControl,
-    dependentComponent: CustomComponent,
-    dictionaryToolsService: DictionaryToolsService | RestToolsService,
+    dependentComponent: BaseModel<DictionarySharedAttrs>,
   ): void {
     if (refControl.touched) {
-      if (dictionaryToolsService.isResultEmpty(dependentComponent)) {
+      if (dependentComponent.isResultEmpty) {
         dependentControl.get('value').patchValue(reference.defaultValue || '');
         dependentControl.get('value').markAsUntouched();
         dependentControl.disable({ onlySelf: true, emitEvent: false });

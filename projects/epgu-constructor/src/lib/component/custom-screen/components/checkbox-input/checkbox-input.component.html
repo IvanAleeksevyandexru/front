@@ -8,7 +8,7 @@
     [invalid]="control.invalid"
     [disableLabel]="true"
   >
-    <div [ngClass]="component?.attrs?.isHorizontal ? 'form__radio--inline' : 'form__radio--block'">
+    <div [ngClass]="attrs?.isHorizontal ? 'form__radio--inline' : 'form__radio--block'">
       <epgu-cf-ui-constructor-constructor-checkbox
         checkboxId="{{ component?.id }}_{{ componentsGroupIndex }}"
         [control]="control.get('value')"

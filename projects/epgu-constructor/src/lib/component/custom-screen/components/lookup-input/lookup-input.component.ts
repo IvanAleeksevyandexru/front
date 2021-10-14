@@ -13,14 +13,11 @@ import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit
 import { ConstantsService } from '@epgu/ui/services/constants';
 import { ListElement, ListItem } from '@epgu/ui/models/dropdown';
 import { LookupComponent } from '@epgu/ui/controls';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
-import { ScreenService } from '../../../../screen/screen.service';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-
 import { SUGGEST_SEPARATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
-import { getDictKeyByComp } from '../../../../shared/services/dictionary/dictionary-helper';
+import LookupInputModelAttrs from './LookupInputModelAttrs';
+import AbstractDictionaryLikeComponent from '../abstract-component-list-item/abstract-dictionary-like.component';
 
 @Component({
   selector: 'epgu-constructor-lookup-input',
@@ -29,7 +26,7 @@ import { getDictKeyByComp } from '../../../../shared/services/dictionary/diction
   changeDetection: ChangeDetectionStrategy.Default,
   providers: [UnsubscribeService],
 })
-export class LookupInputComponent extends AbstractComponentListItemComponent
+export class LookupInputComponent extends AbstractDictionaryLikeComponent<LookupInputModelAttrs>
   implements OnInit, AfterViewInit {
   @ViewChild('lookupComponent', { static: false }) lookupComponent: LookupComponent;
   public provider;
@@ -54,9 +51,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent
   readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   constructor(
-    private dictionaryToolsService: DictionaryToolsService,
     public suggestHandlerService: SuggestHandlerService,
-    private screenService: ScreenService,
     private config: ConfigService,
     public injector: Injector,
   ) {
@@ -65,24 +60,24 @@ export class LookupInputComponent extends AbstractComponentListItemComponent
 
   public ngOnInit(): void {
     super.ngOnInit();
-    this.showNotFound = !!this.control.value.attrs.hint;
-    this.searchOnFocus = !!this.control.value.attrs.focusOnInitAndStartSearch;
-    if (this.control.value?.attrs?.searchIconForcedShowing) {
+    this.showNotFound = !!this.attrs?.hint;
+    this.searchOnFocus = !!this.attrs?.focusOnInitAndStartSearch;
+    if (this.attrs?.searchIconForcedShowing) {
       this.searchIconForcedShowing = this.control.value?.attrs?.searchIconForcedShowing;
     }
-    if (this.control.value.attrs.searchProvider) {
+    if (this.attrs?.searchProvider) {
       this.provider = { search: this.providerSearch() };
     }
 
-    this.dictionaryToolsService.dictionaries$
+    this.model.dictionary$
       .pipe(
         takeUntil(this.ngUnsubscribe$),
         tap(
-          (dictionaries) => {
+          (dictionary) => {
             if (
               this.searchIconForcedShowing &&
-              this.control.value?.attrs?.searchIconForcedShowing &&
-              dictionaries[getDictKeyByComp(this.control.value)]?.list
+              this.attrs?.searchIconForcedShowing &&
+              dictionary.list
             ) {
               this.searchIconForcedShowing = false;
               this.cdr.detectChanges();
@@ -94,11 +89,9 @@ export class LookupInputComponent extends AbstractComponentListItemComponent
           },
         ),
       )
-      .subscribe((dictionaries) => {
-        if (this.list !== dictionaries[getDictKeyByComp(this.control.value)]?.list) {
-          this.list = dictionaries[getDictKeyByComp(this.control.value)]?.list;
-          this.reRenderChildLookup();
-        }
+      .subscribe((dictionary) => {
+        this.list = dictionary.list;
+        this.reRenderChildLookup();
       });
   }
 
@@ -126,7 +119,7 @@ export class LookupInputComponent extends AbstractComponentListItemComponent
 
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
-      const filters = [...this.control.value.attrs.searchProvider.dictionaryFilter];
+      const filters = [...this.attrs?.searchProvider.dictionaryFilter];
       filters[0].value = searchString;
 
       const dictionaryOptions = this.dictionaryToolsService.getFilterOptions(
@@ -136,8 +129,8 @@ export class LookupInputComponent extends AbstractComponentListItemComponent
       );
 
       return this.dictionaryToolsService
-        .getDictionaries$(this.control.value.attrs.dictionaryType, this.control.value, {
-          ...this.control.value.attrs.searchProvider.dictionaryOptions,
+        .getDictionaries$(this.attrs?.dictionaryType as string, this.control.value, {
+          ...this.attrs?.searchProvider.dictionaryOptions,
           ...dictionaryOptions,
         })
         .pipe(

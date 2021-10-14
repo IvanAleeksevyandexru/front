@@ -7,6 +7,7 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import AddressInputModelAttrs from './AddressInputModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-address-input',
@@ -14,7 +15,9 @@ import { ScreenService } from '../../../../screen/screen.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class AddressInputComponent extends AbstractComponentListItemComponent {
+export class AddressInputComponent extends AbstractComponentListItemComponent<
+  AddressInputModelAttrs
+> {
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
       return this.processSuggestions(suggestions);

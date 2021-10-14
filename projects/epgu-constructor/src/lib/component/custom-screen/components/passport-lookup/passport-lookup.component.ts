@@ -6,6 +6,7 @@ import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomp
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import PassportLookupModelAttrs from './PassportLookupModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-passport-lookup',
@@ -13,7 +14,9 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class PassportLookupComponent extends AbstractComponentListItemComponent {
+export class PassportLookupComponent extends AbstractComponentListItemComponent<
+  PassportLookupModelAttrs
+> {
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {
       return suggestions[this.control.value?.id];

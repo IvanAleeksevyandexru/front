@@ -4,8 +4,9 @@ import { takeUntil } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { CustomComponent } from '../../components-list.types';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
+import CalendarInputModelAttrs from './CalendarInputModelAttrs';
+import { CustomComponent } from '../../components-list.types';
 
 @Component({
   selector: 'epgu-constructor-calendar-input',
@@ -14,7 +15,8 @@ import { ComponentsListToolsService } from '../../services/components-list-tools
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class CalendarInputComponent extends AbstractComponentListItemComponent
+export class CalendarInputComponent
+  extends AbstractComponentListItemComponent<CalendarInputModelAttrs>
   implements OnInit, AfterViewInit {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   minDateDefault = '-120y';
@@ -33,7 +35,7 @@ export class CalendarInputComponent extends AbstractComponentListItemComponent
   }
 
   get components(): CustomComponent[] {
-    return this.control?.value?.attrs?.components || [];
+    return this.attrs?.components || [];
   }
 
   ngOnInit(): void {

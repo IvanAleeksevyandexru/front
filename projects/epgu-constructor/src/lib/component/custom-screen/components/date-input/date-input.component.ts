@@ -4,6 +4,7 @@ import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DateRangeAttrs } from '../../../../shared/services/date-range/date-range.models';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import DateInputModelAttrs from './DateInputModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-date-input',
@@ -11,13 +12,13 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
   changeDetection: ChangeDetectionStrategy.Default, // TODO: нужно сделать onPush
   providers: [UnsubscribeService],
 })
-export class DateInputComponent extends AbstractComponentListItemComponent {
+export class DateInputComponent extends AbstractComponentListItemComponent<DateInputModelAttrs> {
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   minDateDefault = '-120y';
   maxDateDefault = '+50y';
   clearable = true;
   align = 'left';
-  strategy = BrokenDateFixStrategy;
+  strategy = BrokenDateFixStrategy.NONE;
 
   constructor(public injector: Injector, private dateRangeService: DateRangeService) {
     super(injector);

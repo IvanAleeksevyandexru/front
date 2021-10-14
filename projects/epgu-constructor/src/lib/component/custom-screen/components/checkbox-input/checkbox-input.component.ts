@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import CheckboxInputModelAttrs from './CheckboxInputModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-checkbox-input',
@@ -9,7 +10,9 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class CheckboxInputComponent extends AbstractComponentListItemComponent {
+export class CheckboxInputComponent extends AbstractComponentListItemComponent<
+  CheckboxInputModelAttrs
+> {
   constructor(public injector: Injector) {
     super(injector);
   }
