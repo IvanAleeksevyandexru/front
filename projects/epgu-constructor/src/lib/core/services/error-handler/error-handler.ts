@@ -373,7 +373,7 @@ export const SESSION_TIMEOUT: ConfirmationModal = {
     {
       label: 'В начало',
       closeModal: true,
-      value: 'reload',
+      value: 'init',
     },
   ],
   isShortModal: true,
