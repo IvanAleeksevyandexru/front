@@ -139,18 +139,27 @@ export class ValidationService {
   public validationBackendError(errorMsg: string, component: CustomComponent): ValidatorFn {
     return (control: AbstractControl): ValidationErrors => {
       let controlValue = control.value;
+      let componentValue = component.value as unknown;
+      let valueChanged: boolean;
 
-      if (CustomScreenComponentTypes.DateInput === component.type && controlValue instanceof Date) {
+      if (
+        CustomScreenComponentTypes.DateInput === component.type &&
+        controlValue instanceof Date &&
+        componentValue instanceof Date
+      ) {
         controlValue = this.datesToolsService.format(controlValue);
+        componentValue = this.datesToolsService.format(componentValue);
       }
 
-      const valueChanged = component.value !== controlValue;
+      valueChanged = componentValue !== controlValue;
 
       if (valueChanged) {
         return null;
       } else if (errorMsg) {
         return { serverError: errorMsg };
       }
+
+      return null;
     };
   }
 
