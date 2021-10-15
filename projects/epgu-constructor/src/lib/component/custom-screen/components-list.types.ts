@@ -114,9 +114,9 @@ export interface CustomListGenericData<T> {
 export type CustomComponentDropDownItemList = CustomComponentDropDownItem[];
 export type CustomComponentDropDownItem = {
   title?: string;
-  label?: string; // TODO нужно удалить после обновления JSON, вместо него поле value
+  label?: string;
   value?: string;
-  code?: string; // TODO нужно удалить после обновления JSON, вместо него поле value
+  code?: string;
   disable: boolean;
 };
 

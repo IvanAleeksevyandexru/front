@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
+import { ListItem } from '@epgu/ui/models/dropdown';
 import { BehaviorSubject, Observable } from 'rxjs';
 import {
+  CustomComponentDropDownItem,
+  CustomComponentDropDownItemList,
   CustomListDictionaries,
   CustomListDropDowns,
 } from '../../../component/custom-screen/components-list.types';

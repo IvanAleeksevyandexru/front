@@ -2,14 +2,15 @@ import { ScreenStore } from '../../../screen/screen.types';
 import { DictionaryItem, DictionaryResponse } from './dictionary-api.types';
 import {
   CustomComponent,
-  CustomListGenericData, CustomScreenComponentTypes,
+  CustomListGenericData,
+  CustomScreenComponentTypes,
   Searchable,
 } from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DictionaryApiService } from './dictionary-api.service';
-import {  map, } from 'rxjs/operators';
-import {  get } from 'lodash';
+import { map } from 'rxjs/operators';
+import { get } from 'lodash';
 import {
   ComponentDictionaryFilterDto,
   DictionaryFilters,
@@ -205,7 +206,7 @@ export class DictionaryToolsService {
     }));
   }
 
-  clearTemporaryFilter(rawFilter: DictionarySubFilter): DictionarySubFilter {
+  public clearTemporaryFilter(rawFilter: DictionarySubFilter): DictionarySubFilter {
     const filter = { ...rawFilter };
 
     if (filter?.simple) {
@@ -214,7 +215,7 @@ export class DictionaryToolsService {
     }
     return filter;
   }
-  clearTemporaryOptions(options: DictionaryOptions): DictionaryOptions {
+  public clearTemporaryOptions(options: DictionaryOptions): DictionaryOptions {
     const filter = this.clearTemporaryFilter(
       options.filter as DictionarySubFilter,
     ) as DictionaryFilters['filter'];
@@ -276,7 +277,6 @@ export class DictionaryToolsService {
         : undefined,
     );
   }
-
 
   public isDictionaryLike(type: CustomScreenComponentTypes): boolean {
     return [
