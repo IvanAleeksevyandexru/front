@@ -89,7 +89,7 @@ export class ActionService {
         this.orderToOrder(action);
         break;
       case ActionType.redirectToLK:
-        this.navService.redirectToLKByOrgType();
+        this.navService.redirectToLKByOrgType(action);
         break;
       case ActionType.profileEdit:
         this.redirectToEdit(action);
