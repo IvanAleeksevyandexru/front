@@ -4,6 +4,7 @@ import {
   ActionRequestPayload,
   ActionType,
   ComponentActionDto,
+  CurrentValueDto,
   DTOActionAction,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
@@ -131,8 +132,8 @@ export class ActionToolsService {
   }
 
   public downloadRawPdfAction(action: ComponentActionDto): void {
-    const pdfType = 'application/pdf';
-    const options = { responseType: pdfType };
+    const pdfType = 'application/octet-stream';
+    const options = { responseType: 'blob' };
     this.sendAction<unknown>(action, options).subscribe((payload: unknown) => {
       const file = payload as string;
       this.downloadService.downloadFile(file, pdfType, 'document.pdf');
@@ -184,6 +185,22 @@ export class ActionToolsService {
       bodyResult.scenarioDto = {
         ...bodyResult.scenarioDto,
         currentUrl: this.configService.addToCalendarUrl,
+      };
+    }
+
+    if (action.action === DTOActionAction.spAdapterPdf) {
+      // Принудительно эмулируем передачу в ДТО текущего стейта, чтобы на бэк был передан недостающий контекст
+      const state: CurrentValueDto = {
+        [this.screenService.component.id]: {
+          value: JSON.stringify(this.currentAnswersService.state),
+          visited: true,
+        },
+      };
+
+      bodyResult.scenarioDto = {
+        ...bodyResult.scenarioDto,
+        currentValue: state,
+        applicantAnswers: state,
       };
     }
 
