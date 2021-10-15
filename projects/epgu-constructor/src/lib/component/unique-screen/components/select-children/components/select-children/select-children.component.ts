@@ -204,13 +204,18 @@ export class SelectChildrenComponent implements OnInit {
   removeChild(index: number): void {
     const { controlId } = this.items[index];
     const formStatus = this.selectChildrenForm.status;
+
     this.items.splice(index, 1);
     this.itemsComponents.splice(index, 1);
     this.selectChildrenForm.removeControl(controlId);
     if (formStatus === ItemStatus.invalid) {
       this.selectChildrenForm.setErrors({ invalidForm: true });
     }
+
     this.passDataToSend(this.items, index);
+    this.eventBusService.emit('deleteCachedValueItem', {
+      index,
+    });
   }
 
   /**
@@ -285,6 +290,12 @@ export class SelectChildrenComponent implements OnInit {
       isNewRef: this.items[index].isNewRef,
       ...event,
     };
+
+    if (!event && index !== undefined) {
+      this.eventBusService.emit('deleteCachedValueItem', {
+        index,
+      });
+    }
 
     if (event && event[this.idRef] === this.NEW_ID) {
       const newChild = this.createNewChild();
