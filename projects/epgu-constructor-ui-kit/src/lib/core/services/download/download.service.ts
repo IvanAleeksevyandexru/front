@@ -7,7 +7,7 @@ export class DownloadService {
   /**
    * Скачивание файла
    */
-  public downloadFile({ value, type }: { value: string; type: string }): void {
+  public downloadFile(value: string, type: string, fileName?: string): void {
     const isBase64 = type.includes(';base64');
     const data = isBase64 ? this.convertBase64(value) : value;
     // на мобилке не работает, если не обрезать тип
@@ -20,7 +20,7 @@ export class DownloadService {
     link.href = url;
 
     if (!this.deviceDetector.isWebView) {
-      link.setAttribute('download', 'file');
+      link.setAttribute('download', fileName || 'file');
     }
 
     document.body.appendChild(link);
