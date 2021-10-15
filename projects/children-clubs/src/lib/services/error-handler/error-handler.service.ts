@@ -48,10 +48,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     return throwError(httpErrorResponse);
   }
 
-  public isValidRequest(_: object): boolean {
-    return false;
-  }
-
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {
     return this.modalService.openModal(ContentModalComponent, { ...params, traceId }).toPromise();
   }

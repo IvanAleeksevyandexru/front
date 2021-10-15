@@ -380,7 +380,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private handleError(error): Observable<null> {
-    if ((error?.message || error) === INTERNAL_ERROR_MESSAGE) {
+    if ((error?.message || error) === INTERNAL_ERROR_MESSAGE && this.notSpecificDictionary()) {
       this.modalService
         .openModal(ConfirmationModalComponent, {
           ...COMMON_ERROR_MODAL_PARAMS,
@@ -396,10 +396,19 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
           ],
         })
         .toPromise();
-    } else {
+    } else if (this.notSpecificDictionary()) {
       this.modalErrorService.showError(error);
     }
     return of(null);
+  }
+
+  private notSpecificDictionary(): boolean {
+    const dictionaryType = this.getDictionaryType();
+    return (
+      dictionaryType !== 'mzrf_lpu_equeue_smev3' &&
+      dictionaryType !== 'mzrf_equeue_lpu' &&
+      dictionaryType !== 'mzrf_lpu_vaccination'
+    );
   }
 
   private handleGettingCoordinatesResponse(coords: IGeoCoordsResponse): void {
