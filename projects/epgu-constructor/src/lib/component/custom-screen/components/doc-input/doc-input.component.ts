@@ -4,6 +4,7 @@ import {
   TextTransformService,
   UnsubscribeService,
   DatesToolsService,
+  DATE_STRING_DOT_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
 import { map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
@@ -164,13 +165,16 @@ export class DocInputComponent extends AbstractComponentListItemComponent
   }
 
   formatFormFields(formFields: DocInputFormFields): DocInputFields {
-    const expirationDate = this.hasExpirationDate
-      ? {
-          expirationDate: formFields[this.docInputFieldsTypes.expirationDate]
-            ? this.datesToolsService.format(formFields[this.docInputFieldsTypes.expirationDate])
-            : null,
-        }
-      : {};
+    const expirationDateField = formFields[this.docInputFieldsTypes.expirationDate];
+    const isValidExpirationDate = this.datesToolsService.isValid(expirationDateField);
+    const expirationDate =
+      this.hasExpirationDate && isValidExpirationDate
+        ? {
+            expirationDate: expirationDateField
+              ? this.datesToolsService.format(expirationDateField)
+              : null,
+          }
+        : {};
     const { seriesNumDate } = formFields;
 
     return {
@@ -236,9 +240,8 @@ export class DocInputComponent extends AbstractComponentListItemComponent
     }
 
     if (this.hasExpirationDate) {
-      const expirationDate = componentValues[this.docInputFieldsTypes.expirationDate]
-        ? new Date(componentValues[this.docInputFieldsTypes.expirationDate])
-        : null;
+      const expirationDate = componentValues[this.docInputFieldsTypes.expirationDate];
+
       this.form.setControl(
         this.docInputFieldsTypes.expirationDate,
         new FormControl(expirationDate, [
@@ -280,7 +283,12 @@ export class DocInputComponent extends AbstractComponentListItemComponent
 
     return {
       ...componentValues,
-      date: componentValues.date ? new Date(componentValues.date) : null,
+      date: componentValues.date
+        ? this.datesToolsService.parse(componentValues.date, DATE_STRING_DOT_FORMAT)
+        : null,
+      expirationDate: componentValues.expirationDate
+        ? this.datesToolsService.parse(componentValues.expirationDate, DATE_STRING_DOT_FORMAT)
+        : null,
     };
   }
 }
