@@ -34,25 +34,27 @@ import { ValidationTypeModule } from '../../../../shared/directives/validation-t
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import LookupInputModelAttrs from './LookupInputModelAttrs';
+import LookupInputModel from './LookupInputModel';
+import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 
 const mockComponent = {
   id: 'mockComponentID',
-  attrs: {
+  attrs: new LookupInputModelAttrs({
     dictionaryType: 'lookUpInputType',
     searchProvider: {
       dictionaryOptions: { additionalParams: [] },
       dictionaryFilter: [
         {
           attributeName: 'Session_Id',
-          condition: 'EQUALS',
+          condition: 'EQUALS' as any,
           value: 'value',
           valueType: 'rawFilter',
         },
       ],
     },
-  },
+  }),
   value: 'lookUpInput',
   required: false,
 };
@@ -82,7 +84,7 @@ describe('LookupInputComponent', () => {
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
         MockProvider(JsonHelperService),
-        MockProvider(ComponentsListRelationsService),
+        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         MockProvider(SuggestHandlerService),
         MockProvider(EventBusService),
         MockProvider(SuggestMonitorService),
@@ -114,6 +116,7 @@ describe('LookupInputComponent', () => {
       attrs: new FormControl(mockComponent.attrs),
       value: valueControl,
       required: new FormControl(mockComponent.required),
+      model: new FormControl(new LookupInputModel({ attrs: mockComponent.attrs } as any))
     });
     formService.form = new FormArray([control]);
     fixture = TestBed.createComponent(LookupInputComponent);
@@ -133,7 +136,7 @@ describe('LookupInputComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
     expect(debugEl.componentInstance.control).toBe(valueControl);
-    expect(debugEl.componentInstance.component).toEqual(mockComponent);
+    expect(debugEl.componentInstance.component.id).toEqual(mockComponent.id);
     expect(debugEl.componentInstance.invalid).toBeFalsy();
     component.control.setErrors({
       someErrorKey: true,
@@ -149,18 +152,11 @@ describe('LookupInputComponent', () => {
 
   it('Should call re-render on dictionary update', () => {
     const reRenderSpy = jest.spyOn(component, 'reRenderChildLookup');
-    const dictionariesSpy = jest
-      .spyOn(dictionaryToolsService, 'dictionaries$', 'get')
-      .mockReturnValue(
-        of({
-          lookUpInputTypemockComponentID: { list: [{ id: 1, text: 'text' }] },
-        }),
-      );
-
     component.ngOnInit();
 
-    expect(dictionariesSpy).toHaveBeenCalledTimes(1);
-    expect(reRenderSpy).toHaveBeenCalledTimes(1);
+    component.model['_dictionary$'].next({ list: [{ id: 1, text: 'text' } ] }  as any );
+
+    expect(reRenderSpy).toHaveBeenCalled();
   });
 
   it('Should call setFocus after re-render if focusOnInitAndStartSearch is true', () => {

@@ -6,7 +6,7 @@
   <lib-dropdown
     *ngIf="list$ | async as list"
     [invalid]="control.get('value').invalid && control.get('value').touched"
-    [items]="list"
+    [items]="$any(list)"
     [validationShowOn]="validationShowOn"
     [disabled]="list?.length === 1"
     [formControl]="$any(control.get('value'))"

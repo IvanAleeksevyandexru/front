@@ -11,11 +11,11 @@ import { AddressHelperService } from '../../../../shared/services/address-helper
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import {
-  DatesToolsService,
-  UnsubscribeService,
-  ConfigService,
-  LoggerService,
   ActivatedRouteStub,
+  ConfigService,
+  DatesToolsService,
+  LoggerService,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -23,12 +23,8 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
-import {
-  CustomComponent,
-  CustomListFormGroup,
-  CustomScreenComponentTypes,
-} from '../../components-list.types';
-import { Observable } from 'rxjs';
+import { CustomComponent, CustomListFormGroup, CustomScreenComponentTypes, } from '../../components-list.types';
+import { Observable, of } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
@@ -40,6 +36,10 @@ import { MockProvider } from 'ng-mocks';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import DropdownModel from '../../components/dropdown/DropdownModel';
+import LookupInputModel from '../../components/lookup-input/LookupInputModel';
+import StringInputModel from '../../components/masked-and-plain-input/StringInputModel';
+import DepartmentLookupModel from '../../components/department-lookup/DepartmentLookupModel';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -197,34 +197,16 @@ describe('ComponentsListFormService', () => {
 
   describe('patch()', () => {
     const setup = (
-      type = CustomScreenComponentTypes.DropDown,
-      attrs = { defaultIndex: 0 },
-      dictionaryItemsCount = 2,
+      type,
+      attrs: any = { defaultIndex: 0 },
       value = '',
     ) => {
-      const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
       const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
-      const component = JSON.parse(JSON.stringify(componentMockData));
+      const component = type ? new type({ id: 'testable', attrs, type: CustomScreenComponentTypes.DropDown }) :
+        new DropdownModel({ id: 'testable', attrs, type: CustomScreenComponentTypes.DropDown });
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
-      const getDictionariesSpy = jest.fn(() => ({
-        [`${component.attrs.dictionaryType}${component.id}`]: {
-          list: Array(dictionaryItemsCount)
-            .fill({})
-            .map((_, index) => ({
-              id: `index ${index}`,
-              ...dictionaryMock(index),
-            })),
-        },
-      }));
-
-      Object.defineProperty(dictionaryToolsService, 'dictionaries', {
-        get: getDictionariesSpy,
-        set: jest.fn(),
-      });
 
       extraComponent.id = 'someID';
-      component.type = type;
-      component.attrs = { ...component.attrs, ...attrs };
       component.value = value;
       service.create([component, extraComponent], {});
 
@@ -233,112 +215,100 @@ describe('ComponentsListFormService', () => {
 
       return {
         convertedValueSpy,
-        dropDownsSpy,
         component,
-        getDictionariesSpy,
         control,
         controlPatchSpy,
       };
     };
 
-    it('should call convertedValue if value exists', () => {
-      const dropDownsSpy = jest.spyOn(dictionaryToolsService.dropDowns$, 'getValue');
-      const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
-      const component = JSON.parse(JSON.stringify(componentMockData));
-      const extraComponent = JSON.parse(JSON.stringify(componentMockData));
 
-      component.type = CustomScreenComponentTypes.DropDown;
-      component.attrs.defaultIndex = 0;
-      component.value = 'SomeValue';
+    describe('when component has value', () => {
+      it('should call convertedValue if value exists', () => {
+        const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
+        const { component } = setup(LookupInputModel, {}, 'val');
+        service.patch(component);
 
-      service.create([componentMockData, extraComponent], {});
-      service.patch(component);
-
-      expect(dropDownsSpy).not.toHaveBeenCalled();
-      expect(convertedValueSpy).toHaveBeenCalled();
+        expect(convertedValueSpy).toHaveBeenCalled();
+      });
     });
 
     describe('when component has no value', () => {
       it('should call dictionaryToolsService.dropDowns$.getValue(), if component type isDropdownLike, has defaultIndex and no value', () => {
-        const { dropDownsSpy, component } = setup();
+        const { component } = setup(DropdownModel);
+        const spy = jest.spyOn(component, 'patchControlValue').mockImplementation((...args) => true);
         service.patch(component);
-        expect(dropDownsSpy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalled();
       });
 
       it('should call componentsListToolsService.convertedValue(), if component type is something else', () => {
-        const { convertedValueSpy, component } = setup();
+        const { convertedValueSpy, component } = setup(StringInputModel);
         service.patch(component);
         expect(convertedValueSpy).toHaveBeenCalled();
       });
 
       it('should pass defaultIndex if it is provided', () => {
-        const { getDictionariesSpy, controlPatchSpy, component } = setup(
-          CustomScreenComponentTypes.Lookup,
+        const { controlPatchSpy, component } = setup(
+          LookupInputModel,
         );
-
+        component['_dictionary$'].next({ list: [1] } as any);
         service.patch(component);
-        expect(getDictionariesSpy).toHaveBeenCalled();
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
+        expect(controlPatchSpy).toHaveBeenCalledWith(1);
       });
 
       it('should pass lookupDefaultValue if it is provided', () => {
         const {
-          getDictionariesSpy,
           controlPatchSpy,
           component,
-        } = setup(CustomScreenComponentTypes.Lookup, { lookupDefaultValue: 'index 1' });
-
+        } = setup(LookupInputModel, { lookupDefaultValue: 'index1' });
+        component['_dictionary$'].next({ list: [{ id: 'index1' }] } as any);
         service.patch(component);
-        expect(getDictionariesSpy).toHaveBeenCalled();
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 1', ...dictionaryMock(1) });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index1' });
       });
 
       it('should pass lookupDefaultValue with lookupFilterPath if it is provided', () => {
-        const { getDictionariesSpy, controlPatchSpy, component } = setup(
-          CustomScreenComponentTypes.Lookup,
+        const {  controlPatchSpy, component } = setup(
+         LookupInputModel,
           {
             lookupDefaultValue: '40000000000',
             lookupFilterPath: 'originalItem.attributeValues.OKATO',
           },
         );
-
+        component['_dictionary$'].next({ list: [{ originalItem: { attributeValues: { OKATO: '40000000000' }}}] } as any);
         service.patch(component);
-        expect(getDictionariesSpy).toHaveBeenCalled();
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
+        expect(controlPatchSpy).toHaveBeenCalledWith({ originalItem: { attributeValues: { OKATO: '40000000000' }}});
       });
     });
 
     describe('when it is DropDownDepts and has defaultIndex', () => {
       it('should patchDropDownDeptsValue when lockedValue is true', () => {
-        const { controlPatchSpy, component } = setup(CustomScreenComponentTypes.DropDownDepts, {
+        const { controlPatchSpy, component } = setup(DepartmentLookupModel, {
           defaultIndex: 0,
           lockedValue: true,
         });
-
+        component['_dictionary$'].next({ list: [1] } as any);
         service.patch(component);
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
+        expect(controlPatchSpy).toHaveBeenCalledWith(1);
       });
 
       it('should patchDropDownDeptsValue when there is one element', () => {
         const { controlPatchSpy, component } = setup(
-          CustomScreenComponentTypes.DropDownDepts,
+          DepartmentLookupModel,
           { defaultIndex: 0, lockedValue: false },
-          1,
+          '1',
         );
-
+        component['_dictionary$'].next({ list: [1] } as any);
         service.patch(component);
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
-        expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index 0', ...dictionaryMock(0) });
+        expect(controlPatchSpy).toHaveBeenCalledWith(1);
       });
 
       it('should dont call patch when there is no value ', () => {
         const { controlPatchSpy, component } = setup(
-          CustomScreenComponentTypes.Lookup,
+          LookupInputModel,
           { lockedValue: false },
-          1,
           '',
         );
         service.patch(component);
@@ -650,10 +620,10 @@ describe('ComponentsListFormService', () => {
 
   describe('checkAndFetchCarModel()', () => {
     it('should call dictionaryToolsService.getDictionaries$() and initDictionary(), if MARKI_TS has place', () => {
-      const getDictionariesSpy = jest.spyOn(dictionaryToolsService, 'getDictionaries$');
-      const initDictionarySpy = jest.spyOn(dictionaryToolsService, 'initDictionary');
+
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       extraComponent.attrs.dictionaryType = 'MODEL_TS';
+      extraComponent.id = 'rf2';
       const { id, label, required, type, value, attrs } = componentMockData;
       const prev: CustomListFormGroup = {
         attrs,
@@ -665,10 +635,11 @@ describe('ComponentsListFormService', () => {
       };
       const next: CustomListFormGroup = JSON.parse(JSON.stringify(prev));
       next.value = 'new_value';
-      service.create([component.componentMockData, extraComponent], {});
-      service['checkAndFetchCarModel'](next, prev);
-      expect(getDictionariesSpy).toHaveBeenCalled();
-      expect(initDictionarySpy).toHaveBeenCalled();
+      service.create([new LookupInputModel(component.componentMockData), new LookupInputModel(extraComponent)], {});
+      const spyControl = service.form.controls.find(control => control.value.id === extraComponent.id);
+      const spyMethod = jest.spyOn(spyControl.value.model, 'loadReferenceData$').mockImplementation((...args) => of(null));
+      service['checkAndFetchCarModel'](next);
+      expect(spyMethod).toHaveBeenCalled();
     });
   });
 

@@ -2,18 +2,17 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { combineLatest, Observable } from 'rxjs';
 import { first, mapTo, startWith, take, takeUntil, tap } from 'rxjs/operators';
 import { flatten as _flatten } from 'lodash';
-
 import { UnsubscribeService, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
   FileResponseToBackendUploadsItem,
-  FileUploadAttributes,
   FileUploadEmitValue,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
+import FileUploadModelAttrs from './FileUploadModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-file-upload-form',
@@ -22,14 +21,15 @@ import { UploaderScreenService } from '../../../../shared/components/file-upload
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService, UploaderScreenService],
 })
-export class FileUploadFormComponent extends AbstractComponentListItemComponent implements OnInit {
+export class FileUploadFormComponent
+  extends AbstractComponentListItemComponent<FileUploadModelAttrs>
+  implements OnInit {
   data$: Observable<ComponentBase> = this.screenService.component$.pipe(
     tap((data: ComponentBase) => {
-      const attrs: FileUploadAttributes = data.attrs as FileUploadAttributes;
+      const attrs: FileUploadModelAttrs = data.attrs as FileUploadModelAttrs;
       this.uploaderScreenService.setValuesFromAttrs(attrs);
     }),
   );
-
   prefixForMnemonic$: Observable<string>;
   files: FileUploadEmitValue[] = [];
 
@@ -87,7 +87,7 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
   }
 
   private isValidMinFileOrRequired(): boolean {
-    const { minFileCount } = this.control.value.attrs as FileUploadAttributes;
+    const { minFileCount } = this.attrs;
     const uploadedFileCount = this.getUploadedFiles().length;
 
     if (minFileCount) {
@@ -101,7 +101,7 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
   }
 
   private isValidMaxFileSize(): boolean {
-    const { maxSize } = this.control.value.attrs as FileUploadAttributes;
+    const { maxSize } = this.attrs;
     if (maxSize) {
       const uploadedFileSize = this.getUploadedFiles().reduce(
         (count, { fileSize }) => count + fileSize,
@@ -113,7 +113,7 @@ export class FileUploadFormComponent extends AbstractComponentListItemComponent 
   }
 
   private isValidMaxFileCount(): boolean {
-    const { maxFileCount } = this.control.value.attrs as FileUploadAttributes;
+    const { maxFileCount } = this.attrs;
     if (maxFileCount) {
       const uploadedFileCount = this.getUploadedFiles().length;
       return maxFileCount >= uploadedFileCount;

@@ -22,6 +22,7 @@ import { SuggestHandlerService } from '../../../../shared/services/suggest-handl
 import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
+import DocInputModelAttrs from './DocInputModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -30,7 +31,7 @@ import { AutocompleteService } from '../../../../core/services/autocomplete/auto
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class DocInputComponent extends AbstractComponentListItemComponent
+export class DocInputComponent extends AbstractComponentListItemComponent<DocInputModelAttrs>
   implements OnInit, AfterViewInit {
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   docInputFieldsTypes = DocInputFieldsTypes;
@@ -62,7 +63,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.fields = this.control.value.attrs.fields;
+    this.fields = (this.attrs?.fields as unknown) as { [fieldName: string]: DocInputField };
     this.hasExpirationDate = !!this.fields?.expirationDate;
     this.addFormGroupControls();
     this.subscribeOnFormChange();

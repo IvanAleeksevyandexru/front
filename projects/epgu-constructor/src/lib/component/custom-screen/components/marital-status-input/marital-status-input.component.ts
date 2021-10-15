@@ -19,6 +19,7 @@ import { SuggestHandlerService } from '../../../../shared/services/suggest-handl
 import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import MaritalStatusInputModelAttrs from './MaritalStatusInputModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-marital-status-input',
@@ -27,7 +28,8 @@ import { DictionaryToolsService } from '../../../../shared/services/dictionary/d
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MaritalStatusInputComponent extends AbstractComponentListItemComponent
+export class MaritalStatusInputComponent
+  extends AbstractComponentListItemComponent<MaritalStatusInputModelAttrs>
   implements OnInit, AfterViewInit {
   public itemsProvider;
   public classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
@@ -59,7 +61,7 @@ export class MaritalStatusInputComponent extends AbstractComponentListItemCompon
   public ngOnInit(): void {
     super.ngOnInit();
     this.itemsProvider = { search: this.providerSearch() };
-    this.fields = this.control.value.attrs.fields;
+    this.fields = this.attrs?.fields as MaritalStatusInputField[];
     this.addFormGroupControls();
     this.subscribeOnFormChange();
     this.updateParentIfNotValid();

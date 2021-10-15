@@ -4,6 +4,7 @@ import { DictionaryFilters } from '@epgu/epgu-constructor-types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import MultipleChoiceDictionaryModelAttrs from './MultipleChoiceDictionaryModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-multi-choice-dictionary',
@@ -11,7 +12,8 @@ import { ScreenService } from '../../../../screen/screen.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class MultiChoiceDictionaryComponent extends AbstractComponentListItemComponent
+export class MultiChoiceDictionaryComponent
+  extends AbstractComponentListItemComponent<MultipleChoiceDictionaryModelAttrs>
   implements OnInit {
   dictionaryFilter: DictionaryFilters;
   constructor(
@@ -27,7 +29,7 @@ export class MultiChoiceDictionaryComponent extends AbstractComponentListItemCom
     this.dictionaryFilter = this.dictionaryToolsService.getFilterOptions(
       this.formService.form,
       this.screenService.getStore(),
-      this.control.value.attrs.dictionaryFilter,
+      this.attrs.dictionaryFilter,
     );
   }
 }

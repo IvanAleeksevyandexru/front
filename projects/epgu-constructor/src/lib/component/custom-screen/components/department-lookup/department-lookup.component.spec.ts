@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
@@ -19,12 +19,133 @@ import { ComponentsListFormServiceStub } from '../../services/components-list-fo
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { CustomListDictionaries } from '../../components-list.types';
+import { CustomComponent, CustomListDictionary, CustomScreenComponentTypes } from '../../components-list.types';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import DepartmentLookupModelAttrs from './DepartmentLookupModelAttrs';
+import DepartmentLookupModel from './DepartmentLookupModel';
+import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
+import { of } from 'rxjs';
+import { DictionaryConditions, DictionaryOptions } from '@epgu/epgu-constructor-types';
+import { ScreenStore } from '../../../../screen/screen.types';
 
+
+const mockPatchedBase: CustomComponent = new DepartmentLookupModel({
+  id: 'dict2',
+  type: CustomScreenComponentTypes.DropDownDepts,
+  label: 'Информационный центр',
+  attrs: {
+    dictionaryType: 'FNS_ZAGS_ORGANIZATION_AREA',
+    lockedValue: true,
+    repeatWithNoFilters: true,
+
+    dictionaryFilter: [
+      {
+        attributeName: 'SHOW_ON_MAP',
+        condition: DictionaryConditions.EQUALS,
+        value: '{"asString":"true"}',
+        valueType: 'value',
+      },
+      {
+        attributeName: 'SOLEMN',
+        condition: DictionaryConditions.EQUALS,
+        value: '{"asString":"true"}',
+        valueType: 'value',
+      },
+      {
+        attributeName: 'CODE',
+        condition: DictionaryConditions.CONTAINS,
+        value: 'regCode',
+        valueType: 'preset',
+      },
+      {
+        attributeName: 'PR2',
+        condition: DictionaryConditions.EQUALS,
+        value: '{"asString":"true"}',
+        valueType: 'value',
+      },
+    ],
+    secondaryDictionaryFilter: [
+      {
+        attributeName: 'CODE',
+        condition: DictionaryConditions.CONTAINS,
+        value: 'regCode',
+        valueType: 'preset',
+      },
+    ],
+    ref: [],
+    defaultIndex: 0,
+  },
+  value: '',
+  required: false,
+});
+
+
+const patchedComponent = new DepartmentLookupModel({
+  ...mockPatchedBase,
+  arguments: {
+    id: '["R7800000"]',
+  },
+  attrs: {
+    ...mockPatchedBase.attrs,
+    dictionaryFilters: [
+      [
+        {
+          attributeName: 'SHOW_ON_MAP',
+          condition: DictionaryConditions.EQUALS,
+          value: '{"asString":"true"}',
+          valueType: 'value',
+        },
+      ],
+      [
+        {
+          attributeName: 'SOLEMN',
+          condition: DictionaryConditions.EQUALS,
+          value: '{"asString":"true"}',
+          valueType: 'value',
+        },
+      ],
+      [
+        {
+          attributeName: 'CODE',
+          condition: DictionaryConditions.CONTAINS,
+          value: 'regCode',
+          valueType: 'preset',
+        },
+      ],
+      [
+        {
+          attributeName: 'PR2',
+          condition: DictionaryConditions.EQUALS,
+          value: '{"asString":"true"}',
+          valueType: 'value',
+        },
+      ],
+    ],
+  },
+});
+
+
+const getDictionary = (count = 0) => {
+  const items = [];
+
+  for (let i = 0; i < count; i += 1) {
+    items.push({
+      value: `R780000${i}`,
+      title: `TITLE_FOR_R780000${i}`,
+    });
+  }
+
+  return {
+    error: { code: 0, message: 'operation completed' },
+    fieldErrors: [],
+    total: items.length,
+    items,
+  };
+};
+const screenStore: ScreenStore = {};
 const mockComponent = {
   id: 'SomeId',
-  attrs: { dictionaryType: 'someDictionaryType' },
+  attrs: new DepartmentLookupModelAttrs({ dictionaryType: 'someDictionaryType' }),
   value: 'some value',
   required: false,
 };
@@ -44,7 +165,8 @@ describe('DepartmentLookupComponent', () => {
         DictionaryToolsService,
         JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),
+        MockProviders(DatesToolsService, SuggestHandlerService),
+        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
       ],
@@ -65,13 +187,14 @@ describe('DepartmentLookupComponent', () => {
       ComponentsListFormService,
     ) as unknown) as ComponentsListFormServiceStub;
 
-    valueControl = new FormControl(mockComponent.value);
+    valueControl = new FormControl(patchedComponent.value);
 
     control = new FormGroup({
-      id: new FormControl(mockComponent.id),
-      attrs: new FormControl(mockComponent.attrs),
+      id: new FormControl(patchedComponent.id),
+      attrs: new FormControl(patchedComponent.attrs),
       value: valueControl,
-      required: new FormControl(mockComponent.required),
+      required: new FormControl(patchedComponent.required),
+      model: new FormControl(new DepartmentLookupModel({ attrs: patchedComponent.attrs } as any)),
     });
 
     formService['_form'] = new FormArray([control]);
@@ -91,7 +214,7 @@ describe('DepartmentLookupComponent', () => {
 
     expect(debugEl).toBeTruthy();
     expect(debugEl.componentInstance.control).toBe(valueControl);
-    expect(debugEl.componentInstance.component).toEqual(mockComponent);
+    expect(debugEl.componentInstance.component.id).toEqual(patchedComponent.id);
     expect(debugEl.componentInstance.invalid).toBeFalsy();
 
     component.control.setErrors({
@@ -106,17 +229,11 @@ describe('DepartmentLookupComponent', () => {
     const selector = 'epgu-constructor-drop-down-depts';
 
     beforeEach(() => {
-      dictionaryToolsService.dictionaries$.next(({
-        someDictionaryTypeSomeId: [
-          {
-            text: 'some text',
-          },
-        ],
-      } as unknown) as CustomListDictionaries);
+      component.model['_dictionary$'].next(
+       { id: 1, text: 'some-text' } as unknown as CustomListDictionary);
     });
 
     it('should be rendered if dropDowns is TRUTHY', () => {
-      expect(fixture.debugElement.query(By.css(selector))).toBeNull();
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector))).toBeTruthy();
     });
@@ -142,12 +259,172 @@ describe('DepartmentLookupComponent', () => {
       fixture.detectChanges();
       const debugEl = fixture.debugElement.query(By.css(selector));
 
-      expect(debugEl.componentInstance.component).toStrictEqual(mockComponent);
-      expect(debugEl.componentInstance.dictionary).toStrictEqual([{ text: 'some text' }]);
+      expect(debugEl.componentInstance.component.id).toStrictEqual(patchedComponent.id);
+      expect(debugEl.componentInstance.dictionary).toStrictEqual({ id: 1, text: 'some-text' });
       expect(debugEl.componentInstance.validationShowOn).toBe(ValidationShowOn.TOUCHED_UNFOCUSED);
       expect(debugEl.componentInstance.control).toBe(valueControl);
       expect(debugEl.componentInstance.required).toBeFalsy();
-      expect(debugEl.componentInstance.attrs).toBe(mockComponent.attrs);
+      expect(debugEl.componentInstance.attrs).toBe(patchedComponent.attrs);
     });
   });
+
+  describe('dictionaryFiltersLoader', () => {
+
+    it('filter getDictionaries$', (done) => {
+      const items = [
+        {
+          value: 'R7800001',
+          title: 'TITLE_FOR_R7800001',
+        },
+        {
+          value: 'R7800002',
+          title: 'TITLE_FOR_R7800002',
+        },
+      ];
+      jest.spyOn(dictionaryToolsService, 'getDictionaries$').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: {
+            error: { code: 0, message: 'operation completed' },
+            fieldErrors: [],
+            total: items.length,
+            items,
+          },
+        } as any),
+      );
+      const { dictionaryType } = patchedComponent.attrs;
+      const dictionaryOptions: DictionaryOptions = {
+        pageNum: 0,
+        additionalParams: [],
+        excludedParams: [],
+      };
+      dictionaryToolsService
+        .getDictionaries$(dictionaryType, patchedComponent, dictionaryOptions)
+        .subscribe((response) => {
+          expect(response).toEqual({
+            component: patchedComponent,
+            data: {
+              error: { code: 0, message: 'operation completed' },
+              fieldErrors: [],
+              total: items.length,
+              items,
+            },
+          });
+          done();
+        });
+    });
+
+    it('nulled items', (done) => {
+      jest.spyOn(dictionaryToolsService, 'getDictionaries$').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: getDictionary(0),
+        } as any),
+      );
+      const { dictionaryType } = patchedComponent.attrs;
+      component['dictionaryFiltersLoader'](
+          patchedComponent as any,
+          screenStore,
+          dictionaryType,
+          patchedComponent.attrs.dictionaryFilters,
+        )
+        .subscribe(() => {
+          expect(dictionaryToolsService.getDictionaries$).toHaveBeenCalledTimes(4);
+          done();
+        });
+    });
+    it('not nulled items', (done) => {
+      jest.spyOn(dictionaryToolsService, 'getDictionaries$').mockReturnValue(
+        of({
+          component: patchedComponent,
+          data: getDictionary(1),
+        } as any),
+      );
+      const { dictionaryType } = patchedComponent.attrs;
+
+      component['dictionaryFiltersLoader'](
+          patchedComponent as any,
+          screenStore,
+          dictionaryType,
+          patchedComponent.attrs.dictionaryFilters,
+        )
+        .subscribe(() => {
+          expect(dictionaryToolsService.getDictionaries$).toHaveBeenCalledTimes(1);
+          done();
+        });
+    });
+  });
+
+  describe('getDropDownDepts$()', () => {
+    it('should dictionaryFilters', (done) => {
+
+     const spy = jest.spyOn(component, 'dictionaryFiltersLoader');
+
+      component.loadReferenceData$().subscribe(() => {
+        expect(spy).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    describe('when repeatWithNoFilters is false and there is no items', () => {
+
+      const data = {
+        component: patchedComponent,
+        data: getDictionary(0),
+      };
+
+      it('should NOT re-fetch data from nsi dictionary', fakeAsync(() => {
+        jest.spyOn(dictionaryToolsService, 'getDictionaries$').mockReturnValue(of(data) as any);
+        control.value.attrs['repeatWithNoFilters'] = false;
+        control.value.attrs['dictionaryFilters'] = [];
+
+        component.loadReferenceData$().subscribe((response) =>
+          expect(response.repeatedWithNoFilters).toBeFalsy()
+        );
+        tick();
+      }));
+    });
+
+    describe('when repeatWithNoFilters is true', () => {
+
+
+      describe('when there is no items for filtered fetch', () => {
+        const data = {
+          component: patchedComponent,
+          data: getDictionary(0),
+        };
+
+        it('should re-fetch data from nsi dictionary', fakeAsync(() => {
+          control.value.attrs['repeatWithNoFilters'] = true;
+          control.value.attrs['dictionaryFilters'] = [];
+          jest.spyOn(dictionaryToolsService, 'getDictionaries$').mockReturnValue(of(data) as any);
+
+          component.loadReferenceData$().subscribe((response) => {
+              expect(response.repeatedWithNoFilters).toEqual(true);
+              expect(response.list.length).toBe(0);
+          }
+
+          );
+          tick();
+        }));
+      });
+
+      describe('when there is at least one item for filtered fetch', () => {
+        const data = {
+          component: patchedComponent,
+          data: getDictionary(1),
+        };
+
+        it('should re-fetch data from nsi dictionary', fakeAsync(() => {
+          jest.spyOn(dictionaryToolsService, 'getDictionaries$').mockReturnValue(of(data) as any);
+
+          component.loadReferenceData$().subscribe((response) =>
+            expect(response.repeatedWithNoFilters).toBeFalsy()
+          );
+          tick();
+        }));
+      });
+    });
+  });
+
 });

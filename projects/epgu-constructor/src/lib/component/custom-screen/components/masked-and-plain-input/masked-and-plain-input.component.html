@@ -6,7 +6,7 @@
 >
   <ng-container
     *ngTemplateOutlet="
-      control.value?.attrs?.mask ? maskedInput : plainInput;
+      attrs?.mask ? maskedInput : plainInput;
       context: { $implicit: control.value }
     "
   >

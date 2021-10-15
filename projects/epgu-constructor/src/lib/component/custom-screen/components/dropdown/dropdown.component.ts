@@ -6,17 +6,18 @@ import { ListItem } from '@epgu/ui/models/dropdown';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { SUGGEST_SEPARATOR_DEFAULT } from '../../../../core/services/autocomplete/autocomplete.const';
 import { CustomListDropDowns } from '../../components-list.types';
 import { DropDownUpdateTypes } from './dropdown.interface';
+import DropdownModelAttrs from './DropdownModelAttrs';
+import AbstractDropdownLikeComponent from '../abstract-component-list-item/abstract-dropdown-like.component';
 
 @Component({
   selector: 'epgu-constructor-dropdown',
   templateUrl: './dropdown.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DropdownComponent extends AbstractComponentListItemComponent
+export class DropdownComponent extends AbstractDropdownLikeComponent<DropdownModelAttrs>
   implements OnInit, OnDestroy {
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   public readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
@@ -41,16 +42,15 @@ export class DropdownComponent extends AbstractComponentListItemComponent
   ngOnInit(): void {
     super.ngOnInit();
 
-    this.isNotDuplicate = this.control.value.attrs.isNotDuplicate;
-
-    this.dropDowns$ = this.dictionaryToolsService.dropDowns$;
+    this.isNotDuplicate = this.attrs?.isNotDuplicate;
+    this.dropDowns$ = this.model.dropDown$;
     this.dropDowns$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       if (!this.isNotDuplicate) {
-        this.dropDowns = data[this.control?.value?.id];
+        this.dropDowns = data;
         return;
       }
 
-      this.sourceDropDowns = data[`${this.control?.value?.id}${this.sourceDropDownPostfix}`];
+      this.sourceDropDowns = data[`${this.sourceDropDownPostfix}`];
 
       if (this.sourceDropDowns) {
         this.dropDowns = this.sourceDropDowns.filter((sessionDropDown) => {
@@ -60,7 +60,7 @@ export class DropdownComponent extends AbstractComponentListItemComponent
           );
         });
       } else {
-        this.sourceDropDowns = data[this.control?.value?.id];
+        this.sourceDropDowns = data;
         this.dropDowns = this.sourceDropDowns.slice();
       }
     });
@@ -91,10 +91,8 @@ export class DropdownComponent extends AbstractComponentListItemComponent
 
   private getPreparedDropDowns(dropDowns): CustomListDropDowns {
     const preparedDropDowns = [];
-    preparedDropDowns[
-      `${this.control?.value?.id}${this.sourceDropDownPostfix}`
-    ] = this.sourceDropDowns;
-    preparedDropDowns[this.control.value.id] = dropDowns;
+    preparedDropDowns[`${this.sourceDropDownPostfix}`] = this.sourceDropDowns;
+    preparedDropDowns[this.control?.value.id] = dropDowns;
     return preparedDropDowns;
   }
 

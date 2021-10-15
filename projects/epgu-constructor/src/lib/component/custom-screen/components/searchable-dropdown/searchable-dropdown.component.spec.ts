@@ -23,6 +23,10 @@ import {
 import { SearchableDropdownComponent } from './searchable-dropdown.component';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import SearchableDropdownModelAttrs from './SearchableDropdownModelAttrs';
+import SearchableDropdownModel from './SearchableDropdownModel';
 
 describe('SearchableDropdownComponent', () => {
   let component: SearchableDropdownComponent;
@@ -41,6 +45,7 @@ describe('SearchableDropdownComponent', () => {
         DatesToolsService,
         JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         MockProvider(ComponentsListRelationsService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         ConfigService,
@@ -63,9 +68,12 @@ describe('SearchableDropdownComponent', () => {
     ) as unknown) as ComponentsListFormServiceStub;
 
     valueControl = new FormControl('some value');
+    const attrs = new SearchableDropdownModelAttrs({ dictionaryList: [] });
     control = new FormGroup({
       id: new FormControl('someId'),
       value: valueControl,
+      attrs: new FormControl(attrs),
+      model: new FormControl(new SearchableDropdownModel({ attrs } as any))
     });
     formService['_form'] = new FormArray([control]);
 
@@ -73,7 +81,6 @@ describe('SearchableDropdownComponent', () => {
     component = fixture.componentInstance;
 
     component.componentIndex = 0;
-
     fixture.detectChanges();
   });
 
@@ -88,10 +95,9 @@ describe('SearchableDropdownComponent', () => {
     expect(debugEl).toBeTruthy();
 
     expect(debugEl.componentInstance.control).toBe(valueControl);
-    expect(debugEl.componentInstance.component).toEqual({
-      id: 'someId',
-      value: 'some value',
-    });
+    expect(debugEl.componentInstance.component.id).toEqual('someId');
+    expect(debugEl.componentInstance.component.value).toEqual('some value');
+
     expect(debugEl.componentInstance.invalid).toBeFalsy();
 
     component.control.setErrors({
@@ -109,8 +115,7 @@ describe('SearchableDropdownComponent', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
       // по умолчанию dropDowns пустой массив, соответственно TRUTHY
       expect(debugEl).toBeTruthy();
-
-      dictionaryToolsService.dropDowns$.next(null);
+      component.model['_dropDown$'].next(null);
       fixture.detectChanges();
 
       debugEl = fixture.debugElement.query(By.css(selector));
@@ -138,15 +143,11 @@ describe('SearchableDropdownComponent', () => {
     it('fixedItems property', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
 
-      expect(debugEl.componentInstance.fixedItems).toBeUndefined();
-
-      dictionaryToolsService.dropDowns$.next(({
-        someId: [
+      component.model['_dropDown$'].next([
           {
             text: 'some text',
           },
-        ],
-      } as unknown) as CustomListDropDowns);
+        ] as unknown as CustomListDropDowns);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.fixedItems).toEqual([
@@ -161,13 +162,11 @@ describe('SearchableDropdownComponent', () => {
 
       expect(debugEl.componentInstance.disabled).toBeFalsy();
 
-      dictionaryToolsService.dropDowns$.next(({
-        someId: [
+      component.model['_dropDown$'].next([
           {
             text: 'some text',
           },
-        ],
-      } as unknown) as CustomListDropDowns);
+        ] as unknown as CustomListDropDowns);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.disabled).toBeTruthy();

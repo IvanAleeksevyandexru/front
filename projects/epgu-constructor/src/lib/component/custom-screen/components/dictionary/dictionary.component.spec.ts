@@ -20,13 +20,20 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { By } from '@angular/platform-browser';
-import { CustomListDictionaries } from '../../components-list.types';
-import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
+import { CustomListDictionary } from '../../components-list.types';
+
 import { HttpClientModule } from '@angular/common/http';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import DictionaryModelAttrs from './DictionaryModelAttrs';
+import DictionaryModel from './DictionaryModel';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
+import { of } from 'rxjs';
 
 const mockComponent = {
   id: 'mockComponentID',
-  attrs: { dictionaryType: 'someDictionaryType' },
+  attrs: new DictionaryModelAttrs({ dictionaryType: 'someDictionaryType' }),
   value: 'dictionaryValue',
   required: false,
 };
@@ -42,11 +49,13 @@ describe('DictionaryComponent', () => {
       declarations: [DictionaryComponent, MockComponent(ComponentItemComponent)],
       imports: [BaseUiModule, HttpClientModule],
       providers: [
-        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
+        DictionaryToolsService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         MockProvider(DatesToolsService),
-        MockProvider(ComponentsListRelationsService),
+        JsonHelperService,
         MockProvider(UnsubscribeService),
         MockProvider(ConfigService),
         MockProvider(LoggerService),
@@ -73,6 +82,7 @@ describe('DictionaryComponent', () => {
     control = new FormGroup({
       id: new FormControl(mockComponent.id),
       attrs: new FormControl(mockComponent.attrs),
+      model: new FormControl(new DictionaryModel({ attrs: mockComponent.attrs } as any)),
       value: valueControl,
       required: new FormControl(mockComponent.required),
     });
@@ -94,7 +104,7 @@ describe('DictionaryComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
     expect(debugEl.componentInstance.control).toBe(valueControl);
-    expect(debugEl.componentInstance.component).toEqual(mockComponent);
+    expect(debugEl.componentInstance.component.id).toEqual(mockComponent.id);
     expect(debugEl.componentInstance.invalid).toBeFalsy();
     component.control.setErrors({
       someErrorKey: true,
@@ -107,15 +117,12 @@ describe('DictionaryComponent', () => {
     const selector = 'lib-dropdown';
 
     beforeEach(() => {
-      dictionaryToolsService.dictionaries$.next(({
-        someDictionaryTypemockComponentID: {
+      component.model['_dictionary$'].next({
           list: [{ id: 1, text: 'some-text' }],
-        },
-      } as unknown) as CustomListDictionaries);
+        } as unknown as CustomListDictionary);
     });
 
     it('Should render Lib DropDown', () => {
-      expect(fixture.debugElement.query(By.css(selector))).toBeNull();
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector))).toBeTruthy();
     });
@@ -123,14 +130,12 @@ describe('DictionaryComponent', () => {
     it('Should render Lib DropDown', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector)).componentInstance.disabled).toBeTruthy();
-      dictionaryToolsService.dictionaries$.next(({
-        someDictionaryTypemockComponentID: {
-          list: [
-            { id: 1, text: 'some-text' },
-            { id: 2, text: 'some-text2' },
-          ],
-        },
-      } as unknown) as CustomListDictionaries);
+      component.model['_dictionary$'].next({
+        list: [
+          { id: 1, text: 'some-text' },
+          { id: 2, text: 'some-text2' },
+        ],
+      } as unknown as CustomListDictionary);
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector)).componentInstance.disabled).toBeFalsy();
     });
@@ -141,9 +146,124 @@ describe('DictionaryComponent', () => {
         text: 'some-text',
       };
 
-      dictionaryToolsService.dictionaries$.next((mockItem as unknown) as CustomListDictionaries);
+      component.model['_dictionary$'].next(mockItem as unknown as CustomListDictionary);
       fixture.detectChanges();
       expect(formService['_form'].value[0].value).toEqual(mockItem);
+    });
+  });
+
+  describe('loadReferenceData$', () => {
+    it('should use filter from dictionaryOptions if there is no dictionaryFilter', () => {
+      control.value.attrs = new DictionaryModelAttrs({
+        dictionaryOptions: {
+          parentRefItemValue: '00000000000',
+          filter: {
+            simple: {
+              attributeName: 'Id_Mark',
+              condition: 'EQUALS' as any,
+              value: { asString: '123' },
+            },
+          },
+          additionalParams: [],
+          excludedParams: [],
+        },
+      });
+
+
+      const res = component['prepareOptions']();
+
+      expect(res).toEqual({
+          ...control.value.attrs.dictionaryOptions,
+          pageNum: 0
+        }
+      );
+    });
+
+    it('should use dictionaryFilter if it exists', () => {
+      control.value.attrs = new DictionaryModelAttrs({
+        dictionaryFilter: [
+          {
+            attributeName: 'ID',
+            value: 'dogovor_number.value',
+            valueType: 'ref',
+            condition: 'EQUALS' as any,
+          },
+        ],
+      });
+      const dictionaryOptions = {
+        filter: {
+          simple: {
+            attributeName: 'ID',
+            condition: 'EQUALS',
+            value: {
+              asString: 'val',
+            },
+          },
+        },
+        pageNum: 0,
+        additionalParams: [],
+        excludedParams: [],
+      };
+
+      const screenStoreSpy = jest.spyOn(component['screenService'], 'getStore')
+        .mockReturnValue(   { applicantAnswers: { dogovor_number: { value: 'val' }}} as any);
+
+      const res = component['prepareOptions']();
+
+      expect(res).toEqual(
+        dictionaryOptions,
+      );
+    });
+
+    it('should combine dictionaryFilter and params from dictionaryOptions', () => {
+      control.value.attrs =  new DictionaryModelAttrs({
+        dictionaryFilter: [
+          {
+            attributeName: 'ID',
+            value: 'dogovor_number.value',
+            valueType: 'ref',
+            condition: 'EQUALS' as any,
+          },
+        ],
+        dictionaryOptions: {
+          parentRefItemValue: '00000000000',
+          filter: {
+            simple: {
+              attributeName: 'Id_Mark',
+              condition: 'EQUALS' as any,
+              value: { asString: '123' },
+            },
+          },
+          additionalParams: [],
+          excludedParams: [],
+        },
+      });
+      const dictionaryOptions = {
+        parentRefItemValue: '00000000000',
+        filter: {
+          simple: {
+            attributeName: 'ID',
+            condition: 'EQUALS',
+            value: {
+              asString: 'val',
+            },
+          },
+        },
+        pageNum: 0,
+        additionalParams: [],
+        excludedParams: [],
+      };
+
+
+
+      const screenStoreSpy = jest.spyOn(component['screenService'], 'getStore')
+        .mockReturnValue(   { applicantAnswers: { dogovor_number: { value: 'val' }}} as any);
+
+      const res = component['prepareOptions']();
+
+      expect(res).toEqual(
+        dictionaryOptions,
+      );
     });
   });
 });

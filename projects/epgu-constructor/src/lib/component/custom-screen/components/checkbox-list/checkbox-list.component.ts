@@ -9,12 +9,9 @@ import {
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import {
-  CheckboxList,
-  CheckboxListComponentAttrsDto,
-  CheckboxListElement,
-} from './checkbox-list.types';
+import { CheckboxList, CheckboxListElement } from './checkbox-list.types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import CheckboxListModelAttrs from './CheckboxListModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-checkbox-list',
@@ -23,7 +20,8 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class CheckboxListComponent extends AbstractComponentListItemComponent
+export class CheckboxListComponent
+  extends AbstractComponentListItemComponent<CheckboxListModelAttrs>
   implements AfterViewInit, OnInit, OnChanges {
   checkboxes: CheckboxList[];
   labels = { show: 'Показать больше', hide: 'Показать меньше' };
@@ -82,7 +80,7 @@ export class CheckboxListComponent extends AbstractComponentListItemComponent
     if (cachedValue) {
       const values = JSON.parse(cachedValue) as { [key: string]: boolean };
       Object.entries(values).forEach(([boxName, value]) => {
-        this.control.value.attrs.checkBoxes[boxName].value = value;
+        this.attrs.checkBoxes[boxName].value = value;
       });
     }
   }
@@ -102,7 +100,7 @@ export class CheckboxListComponent extends AbstractComponentListItemComponent
   }
 
   updateCheckboxes(): void {
-    const { checkBoxes, ...cmpAttrs } = this.control.value.attrs;
+    const { checkBoxes, ...cmpAttrs } = this.attrs;
     this.initFormGroup(checkBoxes);
     this.setLabels(cmpAttrs);
     this.setCheckboxes(checkBoxes);
@@ -139,10 +137,7 @@ export class CheckboxListComponent extends AbstractComponentListItemComponent
     );
   }
 
-  private setLabels({
-    labelShow = null,
-    labelHide = null,
-  }: Partial<CheckboxListComponentAttrsDto>): void {
+  private setLabels({ labelShow = null, labelHide = null }: Partial<CheckboxListModelAttrs>): void {
     if (labelShow) {
       this.labels.show = labelShow;
     }

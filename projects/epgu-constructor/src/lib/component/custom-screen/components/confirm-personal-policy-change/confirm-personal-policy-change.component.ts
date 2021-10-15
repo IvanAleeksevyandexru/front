@@ -13,6 +13,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { CustomComponent, CustomComponentAttr } from '../../components-list.types';
 import { PolicyInputFields, PolicyInputFieldsTypes } from './confirm-personal-policy-change.types';
+import ConfirmPersonalPolicyChangeModelAttrs from './ConfirmPersonalPolicyChangeModelAttrs';
 
 interface Fields extends CustomComponent {
   fieldName: string;
@@ -36,7 +37,8 @@ interface Fields extends CustomComponent {
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfirmPersonalPolicyChangeComponent extends AbstractComponentListItemComponent
+export class ConfirmPersonalPolicyChangeComponent
+  extends AbstractComponentListItemComponent<ConfirmPersonalPolicyChangeModelAttrs>
   implements OnInit, AfterViewInit {
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   policyInputFieldsTypes = PolicyInputFieldsTypes;
@@ -59,7 +61,7 @@ export class ConfirmPersonalPolicyChangeComponent extends AbstractComponentListI
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.fields = this.control.value.attrs.fields;
+    this.fields = this.attrs?.fields as Fields[];
 
     this.addFormGroupControls();
     this.subscribeOnFormChange();

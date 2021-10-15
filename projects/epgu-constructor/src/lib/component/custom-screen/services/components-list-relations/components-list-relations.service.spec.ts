@@ -19,7 +19,7 @@ import { DictionaryApiService } from '../../../../shared/services/dictionary/dic
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentsListRelationsService } from './components-list-relations.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
@@ -34,6 +34,11 @@ import { DateRestrictionsService } from '../../../../shared/services/date-restri
 import { MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import DictionaryModel from '../../components/dictionary/DictionaryModel';
+import { DictionaryComponent } from '../../components/dictionary/dictionary.component';
+import LookupInputModel from '../../components/lookup-input/LookupInputModel';
+import BaseModel from '../../component-list-resolver/BaseModel';
+import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -194,7 +199,6 @@ describe('ComponentsListRelationsService', () => {
         }),
         shownElements,
         form,
-        dictionaries,
         false,
         screenService,
         dictionaryToolsService,
@@ -229,7 +233,6 @@ describe('ComponentsListRelationsService', () => {
         }),
         shownElements,
         form,
-        dictionaries,
         false,
         screenService,
         dictionaryToolsService,
@@ -278,7 +281,6 @@ describe('ComponentsListRelationsService', () => {
         }),
         shownElements,
         form,
-        dictionaries,
         initInitialValues,
         screenService,
         dictionaryToolsService,
@@ -326,7 +328,6 @@ describe('ComponentsListRelationsService', () => {
         component,
         shownElements,
         form,
-        dictionaries,
         false,
         screenService,
         dictionaryToolsService,
@@ -365,7 +366,6 @@ describe('ComponentsListRelationsService', () => {
         }),
         shownElements,
         form,
-        dictionaries,
         false,
         screenService,
         dictionaryToolsService,
@@ -505,7 +505,6 @@ describe('ComponentsListRelationsService', () => {
       dependentComponent = createComponentMock({
         id: 'dependentComponentId',
       });
-      components = [createComponentMock()];
       dependentComponentStatus = {
         isShown: true,
         relation: CustomComponentRefRelation.autofillFromDictionary,
@@ -519,7 +518,6 @@ describe('ComponentsListRelationsService', () => {
       });
       form = new FormArray([dependentControl]);
       initInitialValues = false;
-      dictionaries = [];
     });
 
     describe('if relation === displayOff', () => {
@@ -546,7 +544,6 @@ describe('ComponentsListRelationsService', () => {
               relation: CustomComponentRefRelation.displayOn,
             },
           },
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -573,7 +570,6 @@ describe('ComponentsListRelationsService', () => {
               relation: CustomComponentRefRelation.displayOn,
             },
           },
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -602,7 +598,6 @@ describe('ComponentsListRelationsService', () => {
               relation: CustomComponentRefRelation.getValue,
             },
           },
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -643,7 +638,6 @@ describe('ComponentsListRelationsService', () => {
               relation: CustomComponentRefRelation.displayOff,
             },
           },
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -670,7 +664,6 @@ describe('ComponentsListRelationsService', () => {
               relation: CustomComponentRefRelation.displayOff,
             },
           },
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -698,7 +691,6 @@ describe('ComponentsListRelationsService', () => {
               relation: CustomComponentRefRelation.getValue,
             },
           },
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -761,7 +753,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -800,7 +791,7 @@ describe('ComponentsListRelationsService', () => {
         // Несмотря на то, что это тип CustomListDictionaries
         // (type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;)
         dictionaries = {} as CustomListDictionaries;
-
+        dependentComponent = new DictionaryModel(dependentComponent);
         service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
@@ -808,7 +799,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -826,7 +816,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -843,21 +832,20 @@ describe('ComponentsListRelationsService', () => {
         });
         form = new FormArray([dependentControl]);
         dependentControl.markAsTouched();
-        dictionaries = ({
-          rf1: {
-            list: [
-              {
-                id: 'foo',
-                originalItem: {
-                  attributeValues: {
-                    [reference.val as string]: 'some attribute value',
-                  },
+        components[0] = new LookupInputModel(components[0]);
+        components[0].id = 'rf1';
+        components[0]['_dictionary$'].next({
+          list: [
+            {
+              id: 'foo',
+              originalItem: {
+                attributeValues: {
+                  [reference.val as string]: 'some attribute value',
                 },
               },
-            ],
-          },
-        } as unknown) as CustomListDictionaries;
-
+            },
+          ],
+        } as any);
         service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
           reference,
@@ -865,7 +853,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -910,7 +897,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -956,7 +942,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -991,7 +976,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1025,7 +1009,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1057,7 +1040,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1104,7 +1086,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1124,7 +1105,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1145,7 +1125,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1197,7 +1176,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1222,7 +1200,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1272,7 +1249,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1304,7 +1280,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1326,7 +1301,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1401,7 +1375,6 @@ describe('ComponentsListRelationsService', () => {
           components,
           form,
           shownElements,
-          dictionaries,
           initInitialValues,
           dictionaryToolsService,
           screenService,
@@ -1480,17 +1453,15 @@ describe('ComponentsListRelationsService', () => {
       const componentId = 'comp1';
 
       const components = [
-        createComponentMock({
+        new LookupInputModel(createComponentMock({
           id: 'comp1',
-        }),
-        createComponentMock({
+        })),
+        new LookupInputModel(createComponentMock({
           id: 'comp2',
-        }),
+        })),
       ];
 
       const componentVal = { id: 'foo' };
-
-      let dictionaries = {} as CustomListDictionaries;
 
       // undefined потому что в словаре нет нет значения для компонента comp1
       expect(
@@ -1499,32 +1470,25 @@ describe('ComponentsListRelationsService', () => {
           componentId,
           components,
           componentVal,
-          dictionaries,
         ),
       ).toBeUndefined();
 
-      dictionaries = ({
-        comp1: {
-          list: [
-            {
-              id: 'foo',
-              originalItem: {
-                attributeValues: {
-                  someAttributeName: 'some attribute value',
-                },
+      components[0]['_dictionary$'].next({ list: [
+          {
+            id: 'foo',
+            originalItem: {
+              attributeValues: {
+                someAttributeName: 'some attribute value',
               },
             },
-          ],
-        },
-      } as unknown) as CustomListDictionaries;
-
+          },
+        ] } as any);
       expect(
         service.getDictionaryAttributeValue(
           dictionaryAttributeName,
           componentId,
           components,
           componentVal,
-          dictionaries,
         ),
       ).toBe('some attribute value');
     });
@@ -1628,7 +1592,7 @@ describe('ComponentsListRelationsService', () => {
         },
       ],
     ) => {
-      const dependentComponent = {
+      const dependentComponent = new LookupInputModel({
         id: 'acc_org',
         type: 'Lookup',
         required: true,
@@ -1638,7 +1602,7 @@ describe('ComponentsListRelationsService', () => {
         },
         value: '',
         visited: false,
-      };
+      } as unknown as BaseModel<DictionarySharedAttrs>);
 
       const fb = new FormBuilder();
       const mockForm = new FormArray([
@@ -1655,7 +1619,7 @@ describe('ComponentsListRelationsService', () => {
       const { dependentControl, mockForm } = setup(null);
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
 
-      service.onAfterFilterOnRel(componentMock, mockForm, dictionaryToolsService);
+      service.onAfterFilterOnRel(componentMock, mockForm);
 
       expect(dependentControlSpy).not.toBeCalled();
     });
@@ -1664,8 +1628,7 @@ describe('ComponentsListRelationsService', () => {
       const { dependentControl, control, mockForm, dependentComponent } = setup();
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
       control.markAsTouched();
-
-      dictionaryToolsService.initDictionary({
+      dependentComponent.loadReferenceData$(of({
         component: dependentComponent as CustomComponent,
         data: {
           error: { code: 0, message: 'emptyDictionary' },
@@ -1673,12 +1636,10 @@ describe('ComponentsListRelationsService', () => {
           items: [],
           total: 0,
         },
-      });
-
+      }));
       service.onAfterFilterOnRel(
-        dependentComponent as CustomComponent,
+        dependentComponent,
         mockForm,
-        dictionaryToolsService,
       );
 
       expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
@@ -1710,7 +1671,7 @@ describe('ComponentsListRelationsService', () => {
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
       control.markAsTouched();
 
-      dictionaryToolsService.initDictionary({
+      dependentComponent.loadReferenceData$(of({
         component: dependentComponent as CustomComponent,
         data: {
           error: { code: 0, message: 'emptyDictionary' },
@@ -1718,12 +1679,11 @@ describe('ComponentsListRelationsService', () => {
           items: [],
           total: 0,
         },
-      });
+      }));
 
       service.onAfterFilterOnRel(
-        dependentComponent as CustomComponent,
+        dependentComponent,
         mockForm,
-        dictionaryToolsService,
       );
 
       expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });

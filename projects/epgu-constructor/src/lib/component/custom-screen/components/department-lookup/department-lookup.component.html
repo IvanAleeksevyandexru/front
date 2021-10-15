@@ -11,7 +11,7 @@
       *ngIf="dictionaries$ | async as dictionaries"
       [component]="component"
       [invalid]="control.get('value').invalid && control.get('value').touched"
-      [dictionary]="dictionaries"
+      [dictionary]="$any(dictionaries)"
       [validationShowOn]="validationShowOn"
       [control]="control.get('value')"
       [required]="component.required"

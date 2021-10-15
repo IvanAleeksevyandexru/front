@@ -3,6 +3,7 @@ import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CustomScreenComponentTypes } from '../../components-list.types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
+import FormOutputModelAttrs from './FormOutputModelAttrs';
 
 @Component({
   selector: 'epgu-constructor-form-output-html',
@@ -11,7 +12,9 @@ import { InterpolationService } from '../../../../shared/services/interpolation/
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class FormOutputHtmlComponent extends AbstractComponentListItemComponent {
+export class FormOutputHtmlComponent extends AbstractComponentListItemComponent<
+  FormOutputModelAttrs
+> {
   outputHtmlClass: Partial<Record<CustomScreenComponentTypes, string>> = {
     [CustomScreenComponentTypes.LabelSection]: 'label',
     [CustomScreenComponentTypes.HtmlString]: 'info__text',
@@ -22,7 +25,7 @@ export class FormOutputHtmlComponent extends AbstractComponentListItemComponent 
   }
 
   public label(): string {
-    return this.control?.value?.attrs?.interpolationEnabled
+    return this.attrs?.interpolationEnabled
       ? this.interpolationService.interpolateString(
           this.control?.value?.label,
           this.control?.value?.value,

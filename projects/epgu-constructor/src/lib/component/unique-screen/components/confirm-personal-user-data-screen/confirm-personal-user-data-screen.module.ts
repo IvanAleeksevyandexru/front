@@ -7,7 +7,7 @@ import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-sc
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserLegalDataComponent } from './component/confirm-personal-user-legal-data/confirm-personal-user-legal-data.component';
 import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
-import { ConfirmPersonalUserDataPipe } from './component/confirm-personal-user-data/confirm-personal-user-data.pipe';
+import { ConfirmPersonalUserDataPipe } from './confirm-personal-user-data.pipe';
 
 @NgModule({
   declarations: [

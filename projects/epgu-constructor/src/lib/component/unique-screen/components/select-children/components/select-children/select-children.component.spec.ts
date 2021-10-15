@@ -186,6 +186,14 @@ describe('SelectChildrenComponent', () => {
 
       expect(component.items.length).toBe(0);
     });
+
+    it('should call deleteCachedValueItem', () => {
+      fixture.detectChanges();
+      const eventEmitterSpy = jest.spyOn(eventBusService, 'emit');
+      component.removeChild(0);
+
+      expect(eventEmitterSpy).toBeCalledWith('deleteCachedValueItem', { index: 0 });
+    });
   });
 
   describe('createNewChild()', () => {

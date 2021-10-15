@@ -11,12 +11,12 @@
     <epgu-constructor-multiple-choice-dictionary
       [formControl]="$any(control.get('value'))"
       [dictionaryFilter]="dictionaryFilter"
-      [dictionaryList]="component.attrs?.dictionaryList"
-      [dictionaryType]="component.attrs?.dictionaryType"
-      [subLabel]="component.attrs?.subLabel"
-      [modalHeader]="component.attrs?.modalHeader"
+      [dictionaryList]="attrs?.dictionaryList"
+      [dictionaryType]="attrs?.dictionaryType"
+      [subLabel]="attrs?.subLabel"
+      [modalHeader]="attrs?.modalHeader"
       [label]="component.label"
-      [withAmount]="component.attrs?.withAmount"
+      [withAmount]="attrs?.withAmount"
     ></epgu-constructor-multiple-choice-dictionary>
   </epgu-constructor-component-item>
 </ng-template>

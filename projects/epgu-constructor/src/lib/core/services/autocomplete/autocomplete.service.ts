@@ -154,6 +154,10 @@ export class AutocompleteService {
               componentsGroupIndex,
             );
           });
+          this.screenService.setCompValueToCachedAnswer(
+            this.parentComponent.id,
+            this.screenService.cachedAnswers[this.parentComponent.id]?.value
+          );
         } else {
           this.autocompletePrepareService.findAndUpdateComponentWithValue(
             this.repeatableComponents,
@@ -208,6 +212,15 @@ export class AutocompleteService {
         } else {
           this.fieldsSuggestionsApiCall([mnemonic]);
         }
+      });
+
+    this.eventBusService
+      .on('deleteCachedValueItem')
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: { index: number }): void => {
+        const { index } = payload;
+
+        this.autocompletePrepareService.deleteCachedValueItem(this.parentComponent.id, index);
       });
   }
 

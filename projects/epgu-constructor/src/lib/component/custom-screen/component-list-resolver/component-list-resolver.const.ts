@@ -61,7 +61,9 @@ type CustomScreenComponent =
   | SearchableDropdownComponent
   | SignAppLinkComponent
   | TextAreaComponent
-  | TimerItemComponent;
+  | TimerItemComponent
+  | DictionaryComponent
+  | DropdownComponent;
 
 export type ScreenComponentTypes = CustomScreenComponent;
 

@@ -1,11 +1,7 @@
-// @ts-ignore
 import { DurationTimeTypes } from '@epgu/epgu-constructor-ui-kit';
-import {
-  CustomComponentAttr,
-  CustomComponentRef,
-} from '../../../component/custom-screen/components-list.types';
+import { CustomComponentRef } from '../../../component/custom-screen/components-list.types';
 
-export interface DateRangeAttrs extends CustomComponentAttr {
+export interface DateRangeAttrs {
   limit?: string;
   to?: string;
   from?: string;

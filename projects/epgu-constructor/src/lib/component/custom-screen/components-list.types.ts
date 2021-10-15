@@ -12,7 +12,6 @@ import {
   CustomComponentRefRelation,
   RestAttrsDto,
 } from '@epgu/epgu-constructor-types';
-import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { ListItem } from '@epgu/ui/models/dropdown';
 import { ComponentBase } from '../../screen/screen.types';
@@ -21,6 +20,9 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
+import { CheckboxListElement } from './components/checkbox-list/checkbox-list.types';
+import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
+import { AppLink } from './components/sign-app-link/sign-app-link.types';
 
 export enum CustomScreenComponentTypes {
   AddressInput = 'AddressInput',
@@ -84,7 +86,7 @@ export interface CustomListDictionary {
   loadError: boolean;
   loadEnd: boolean;
   paginationLoading: boolean;
-  origin: CustomComponent;
+  origin?: CustomComponent;
   data: DictionaryResponse;
   list: ListItem[];
   page: number;
@@ -102,7 +104,7 @@ export interface CustomStatusElement {
 }
 
 export interface CustomListGenericData<T> {
-  component: CustomComponent;
+  component?: CustomComponent;
   data: T;
   meta?: {
     repeatedWithNoFilters: boolean;
@@ -143,7 +145,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   customUnrecLabel?: string;
   dateRestrictions?: DateRestriction[];
   defaultIndex?: number;
-  defaultValue?: boolean;
+  defaultValue?: string;
   dictionaryFilter?: ComponentDictionaryFilterDto[];
   dictionaryFilters?: ComponentDictionaryFilterDto[][];
   dictionaryList?: CustomComponentDropDownItemList;
@@ -194,6 +196,38 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   interpolationEnabled?: boolean;
   readonly?: boolean;
   brokenDateFixStrategy?: BrokenDateFixStrategy;
+  currentTime?: string;
+  placeholder?: string;
+  hideHouseCheckbox?: boolean;
+  hideApartmentCheckbox?: boolean;
+  selectHouseCheckbox?: boolean;
+  selectApartmentCheckbox?: boolean;
+  hideLevels?: string[];
+  wait?: string;
+  errorButton?: string;
+  orderId?: string;
+  isHorizontal?: boolean;
+  labelShow?: string;
+  labelHide?: string;
+  checkBoxes?: {
+    [id: string]: CheckboxListElement;
+  };
+  localSearch?: boolean;
+  title?: string;
+  type?: string;
+  description?: string;
+  modalHeader?: string;
+  searchIconForcedShowing?: boolean;
+  queryMinSymbolsCount?: number;
+  price?: number;
+  showPlaceholderOnFocus?: boolean;
+  isNonStop?: boolean;
+  titleHide?: boolean;
+  charsAmount?: number;
+  to?: string;
+  from?: string;
+  limit?: string;
+  appLinks?: AppLink[];
 }
 
 export interface DateRestriction {

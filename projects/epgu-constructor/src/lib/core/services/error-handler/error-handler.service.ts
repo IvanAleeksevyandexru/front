@@ -48,7 +48,6 @@ import {
   DictionaryResponse,
   DictionaryResponseError,
 } from '../../../shared/services/dictionary/dictionary-api.types';
-import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { finalize } from 'rxjs/operators';
 import { ScreenService } from '../../../screen/screen.service';
 
@@ -85,7 +84,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private configService: ConfigService,
     private localStorageService: LocalStorageService,
     private formPlayer: FormPlayerService,
-    private dictionaryToolsService: DictionaryToolsService,
     private screenService: ScreenService,
   ) {}
 
@@ -116,11 +114,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           const regExp = /\{addressLink\}?/g;
           BOOKING_ONLINE_ERROR.text = BOOKING_ONLINE_ERROR.text.replace(regExp, addressLink);
 
-          this.showModal(BOOKING_ONLINE_ERROR).then((redirectToLk) => {
-            if (redirectToLk) {
-              this.navigationService.redirectToLK();
-            }
-          });
+          this.showModal(BOOKING_ONLINE_ERROR).then((value) => this.handleModalAction(value));
         } catch (e) {}
       }
 
@@ -154,7 +148,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           dictionaryResponse?.total === 0 &&
           dictionaryResponse.items.length === 0
         ) {
-          this.dictionaryToolsService.dictionaries$.error(dictionaryError);
           const message = dictionaryError?.message
             .replace('FAILURE:', '')
             .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
@@ -187,11 +180,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
                 value: 'init',
               },
             ];
-            this.showModal(MZRF_MODAL).then((value) => {
-              if (value) {
-                this.formPlayer.initData();
-              }
-            });
+            this.showModal(MZRF_MODAL).then((value) => this.handleModalAction(value));
           } else {
             MZRF_MODAL.text = MZRF_MODAL.text.replace(/\{textAsset\}?/g, message);
             MZRF_MODAL.buttons = [
@@ -205,11 +194,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
                 closeModal: true,
               },
             ];
-            this.showModal(MZRF_MODAL).then((value) => {
-              if (value) {
-                this.formPlayer.initData();
-              }
-            });
+            this.showModal(MZRF_MODAL).then((value) => this.handleModalAction(value));
           }
         }
       }
@@ -245,34 +230,18 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       this.showModal(TIME_INVITATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
     } else if (status === 403) {
       if (error?.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
-        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR).then((redirectToLk) => {
-          if (redirectToLk) {
-            this.navigationService.redirectToLK();
-          }
-        }); // TODO: переделать кейс на errorModalWindow
+        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR).then((value) => this.handleModalAction(value)); // TODO: переделать кейс на errorModalWindow
       }
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
-        this.showModal(DRAFT_STATEMENT_NOT_FOUND, traceId).then((redirectToLk) => {
-          if (redirectToLk) {
-            this.navigationService.redirectToLK();
-          }
-        });
+        this.showModal(DRAFT_STATEMENT_NOT_FOUND, traceId).then((value) => this.handleModalAction(value));
       } else if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
       } else {
-        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then((prevStep) => {
-          if (prevStep) {
-            this.navigationService.prev();
-          }
-        });
+        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then((value) => this.handleModalAction(value));
       }
     } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
-      this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, traceId).then((reload) => {
-        if (reload) {
-          this.locationService.reload();
-        }
-      });
+      this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, traceId).then((value) => this.handleModalAction(value));
     }
     return throwError(httpErrorResponse);
   }
@@ -289,20 +258,12 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     switch (modal) {
       case ModalFailureType.FAILURE:
         ITEMS_FAILURE.text = ITEMS_FAILURE.text.replace(/\{textAsset\}?/g, message);
-        this.showModal(ITEMS_FAILURE).then((redirectToLk) => {
-          if (redirectToLk) {
-            this.navigationService.redirectToLK();
-          }
-        });
+        this.showModal(ITEMS_FAILURE).then((value) => this.handleModalAction(value));
         break;
 
       case ModalFailureType.SESSION:
         SESSION_TIMEOUT.text = SESSION_TIMEOUT.text.replace(/\{textAsset\}?/g, message);
-        this.showModal(SESSION_TIMEOUT).then((reload) => {
-          if (reload) {
-            this.formPlayer.initData();
-          }
-        });
+        this.showModal(SESSION_TIMEOUT).then((value) => this.handleModalAction(value));
         break;
 
       case ModalFailureType.BOOKING:
@@ -310,11 +271,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
           ...NEW_BOOKING_ERROR,
           text: NEW_BOOKING_ERROR.text.replace(/\{textAsset\}?/g, message),
         };
-        this.showModal(modal).then((redirectToLk) => {
-          if (redirectToLk) {
-            this.navigationService.redirectToLK();
-          }
-        });
+        this.showModal(modal).then((value) => this.handleModalAction(value));
         break;
     }
   }
@@ -344,41 +301,14 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             (errorCode === 2 && errorMessage.includes(SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST)) ||
             errorMessage.includes('NO_DATA')
           ) {
-            this.showModal(SERVICE_OR_SPEC_NO_SPECIALIST).then((prevStep) => {
-              if (prevStep) {
-                this.navigationService.prev();
-              }
-            });
+            this.showModal(SERVICE_OR_SPEC_NO_SPECIALIST).then((value) => this.handleModalAction(value));
           } else if (errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE)) {
-            this.showModal(SERVICE_OR_SPEC_NO_AVAILABLE).then((prevStep) => {
-              if (prevStep) {
-                this.navigationService.prev();
-              }
-            });
+            this.showModal(SERVICE_OR_SPEC_NO_AVAILABLE).then((value) => this.handleModalAction(value));
           } else if (errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)) {
-            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT).then((value) => {
-              switch (value) {
-                case 'init': {
-                  this.formPlayer.initData();
-                  break;
-                }
-              }
-            });
+            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT).then((value) => this.handleModalAction(value));
           } else if (errorMessage != null || errorMessage !== '') {
             STATIC_ERROR_MODAL.text = this.getStaticErrorMessage(STATIC_ERROR_MODAL, errorMessage);
-            this.showModal(STATIC_ERROR_MODAL).then((value) => {
-              switch (value) {
-                case 'init': {
-                  this.formPlayer.initData();
-                  break;
-                }
-
-                case 'prevStep': {
-                  this.navigationService.prev();
-                  break;
-                }
-              }
-            });
+            this.showModal(STATIC_ERROR_MODAL).then((value) => this.handleModalAction(value));
           }
           break;
         }
@@ -395,30 +325,14 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
                 value: 'init',
               },
             ];
-            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT_2).then((value) => {
-              if (value) {
-                this.formPlayer.initData();
-              }
-            });
+            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT_2).then((value) => this.handleModalAction(value));
           } else if (
             errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) &&
             !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)
           ) {
             this.showModal(RESOURCE_NOT_AVAILABLE);
           } else if (errorMessage.includes(NO_AVAILABLE_DATA) && type !== 'TimeSlotDoctor') {
-            this.showModal(NO_DOCTORS).then((value) => {
-              switch (value) {
-                case 'init': {
-                  this.formPlayer.initData();
-                  break;
-                }
-
-                case 'prevStep': {
-                  this.navigationService.prev();
-                  break;
-                }
-              }
-            });
+            this.showModal(NO_DOCTORS).then((value) => this.handleModalAction(value));
           } else if (type !== 'TimeSlotDoctor') {
             const modalParams = {
               ...LOADING_ERROR_MODAL_PARAMS,
@@ -432,6 +346,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
                 {
                   label: 'Попробовать ещё раз',
                   closeModal: true,
+                  value: 'prevStep',
                 },
               ],
             };
@@ -440,11 +355,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
               .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
               .replace('NO_DATA:', '');
             modalParams.text = modalParams.text.replace(/\{textAsset\}?/g, message);
-            this.showModal(modalParams as ConfirmationModal).then((resultValue) => {
-              if (resultValue) {
-                this.formPlayer.initData();
-              }
-            });
+            this.showModal(modalParams as ConfirmationModal).then((value) => this.handleModalAction(value));
           }
           break;
         }
@@ -488,5 +399,25 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     const helperText = params.content.helperText ? `<span>${params.content.helperText}</span>` : '';
     confirmationModalParams.text = `<div class="text_modal_error">${statusIcon}${header}${helperText}</div>`;
     return confirmationModalParams;
+  }
+
+  private handleModalAction(actionValue: unknown): void {
+    switch (actionValue) {
+      case 'init':
+        this.formPlayer.initData();
+        break;
+
+      case 'prevStep':
+        this.navigationService.prev();
+        break;
+
+      case 'redirectToLk':
+        this.navigationService.redirectToLK();
+        break;
+
+      case 'reload':
+        this.locationService.reload();
+        break;
+    }
   }
 }

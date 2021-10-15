@@ -4,10 +4,10 @@
   [invalid]="control.invalid"
 >
   <lib-lookup
-    *ngIf="dropDowns$ | async as dropdownList"
+    *ngIf="dropDown$ | async as dropdown"
     [invalid]="control.get('value').invalid && control.get('value').touched"
-    [fixedItems]="$any(dropdownList[control.value?.id])"
-    [disabled]="$any(dropdownList[control.value?.id]?.length === 1)"
+    [fixedItems]="$any(dropdown)"
+    [disabled]="$any(dropdown?.length === 1)"
     [validationShowOn]="validationShowOn"
     [formControl]="$any(control.get('value'))"
     [clearable]="clearable"

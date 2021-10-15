@@ -128,25 +128,28 @@ export class AutocompletePrepareService {
       mnemonic,
       componentsGroupIndex,
     );
-    const componentValue = this.findComponentValue(
-      component,
-      id,
-      value,
-      mnemonic,
-      componentsSuggestionsList,
-    );
 
-    this.setComponentValue(component, componentValue);
-
-    if (isChildrenListType(parentComponent)) {
-      const cachedAnswer: Answer = this.prepareCachedAnswers(
-        parentComponent,
+    if (component.type === CustomScreenComponentTypes.AddressInput) {
+      this.setComponentValue(component, value);
+    } else {
+      const componentValue = this.findComponentValue(
         component,
-        componentsGroupIndex,
-        componentValue,
+        id,
+        value,
+        mnemonic,
+        componentsSuggestionsList,
       );
-      this.screenService.cachedAnswers[parentComponent.id] = cachedAnswer;
-      this.screenService.setCompValueToCachedAnswer(parentComponent.id, cachedAnswer?.value);
+      this.setComponentValue(component, componentValue);
+
+      if (isChildrenListType(parentComponent)) {
+        const cachedAnswer: Answer = this.prepareCachedAnswers(
+          parentComponent,
+          component,
+          componentsGroupIndex,
+          componentValue,
+        );
+        this.setCachedAnswer(parentComponent.id, cachedAnswer);
+      }
     }
   }
 
@@ -188,6 +191,24 @@ export class AutocompletePrepareService {
       for (const component of this.screenService.display.components) {
         component.value = this.currentAnswersService.state[component.id]?.value || '';
       }
+    }
+  }
+
+  /**
+   * Удаляем запись из кэша по индексу
+   * @param componentId id родительского компонента
+   * @param index порядковый номер записи
+   */
+  public deleteCachedValueItem(componentId: string, index: number): void {
+    const cachedAnswer = this.getCachedAnswer(componentId);
+
+    if (cachedAnswer) {
+      const { value } = cachedAnswer;
+      let parsedValue = JSON.parse(value);
+      delete parsedValue[index];
+
+      cachedAnswer.value = JSON.stringify(parsedValue);
+      this.setCachedAnswer(componentId, cachedAnswer);
     }
   }
 
@@ -344,14 +365,14 @@ export class AutocompletePrepareService {
     }
   }
 
-  // NOTICE: здесь собирается единый контекст для передачи в SelectChildren через механизм cachedAnswers.
+  // Здесь собирается единый контекст для передачи в SelectChildren через механизм cachedAnswers.
   private prepareCachedAnswers(
     parentComponent: ComponentDto,
     component: ComponentDto,
     componentsGroupIndex: number,
     componentValue: string,
   ): Answer {
-    const cachedAnswer = this.screenService.cachedAnswers[parentComponent.id];
+    const cachedAnswer = this.getCachedAnswer(parentComponent.id);
     const currentAnswerState = (this.currentAnswersService.state as Record<string, string>[]) || [];
     const cachedState = (currentAnswerState && currentAnswerState[componentsGroupIndex]) || {};
     const currentValue = componentValue || component.value;
@@ -359,6 +380,11 @@ export class AutocompletePrepareService {
     if (cachedAnswer) {
       const { value } = cachedAnswer;
       let parsedValue = JSON.parse(value);
+
+      /**
+       * если в кеше есть элемент с таким индексом (вне зависимоти от значений) -> возвращаем его из кэша
+       * если нет -> берём текущее значение формы
+      */
       parsedValue = currentAnswerState.map((stateItem, idx) => {
         if (idx !== componentsGroupIndex) {
           return stateItem;
@@ -366,6 +392,10 @@ export class AutocompletePrepareService {
 
         return parsedValue[idx];
       });
+
+      /**
+       * Объединяем значения из кэша, формы и suggestions
+       */
       if (parsedValue[componentsGroupIndex]) {
         parsedValue[componentsGroupIndex] = {
           ...cachedState,
@@ -437,5 +467,14 @@ export class AutocompletePrepareService {
       }
     }
     return value;
+  }
+
+  private getCachedAnswer(componentId: string): Answer {
+    return this.screenService.cachedAnswers[componentId];
+  }
+
+  private setCachedAnswer(componentId: string, newAnswer: Answer): void {
+    this.screenService.cachedAnswers[componentId] = newAnswer;
+    this.screenService.setCompValueToCachedAnswer(componentId, newAnswer?.value);
   }
 }
