@@ -125,7 +125,7 @@ export class ActionService {
         this.actionToolsService.copyToClipboard(action);
         break;
       case ActionType.downloadSpAdapterPdf:
-        this.actionToolsService.downloadAction(action);
+        this.actionToolsService.downloadRawPdfAction(action);
         break;
     }
   }

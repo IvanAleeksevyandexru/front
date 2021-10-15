@@ -343,7 +343,7 @@ describe('ActionToolsService', () => {
         scenarioDto: { cachedAnswers: [], display: undefined },
       };
       service['sendAction'](downloadSpAdapterPdfAction);
-      expect(spy).toHaveBeenCalledWith(path, payload);
+      expect(spy).toHaveBeenCalledWith(path, payload, undefined);
     });
   });
 

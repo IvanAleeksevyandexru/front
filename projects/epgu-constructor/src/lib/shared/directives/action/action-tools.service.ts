@@ -36,6 +36,8 @@ import { HtmlRemoverService } from '../../services/html-remover/html-remover.ser
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { NotifierService } from '@epgu/ui/services/notifier';
+import { FileSaverService } from '../../services/file-downloader/file-saver.service';
+import { HttpResponse } from '@angular/common/http';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -48,6 +50,7 @@ const navActionToNavMethodMap = {
 export class ActionToolsService {
   constructor(
     private formPlayerApiService: FormPlayerApiService,
+    private fileSaver: FileSaverService,
     private autocompleteApiService: AutocompleteApiService,
     private configService: ConfigService,
     private clipboard: Clipboard,
@@ -127,6 +130,14 @@ export class ActionToolsService {
         ({ responseData }) => this.downloadService.downloadFile(responseData),
         (error) => console.log(error),
       );
+  }
+
+  public downloadRawPdfAction(action: ComponentActionDto): void {
+    const options = { responseType: 'application/octet-stream' };
+    this.sendAction<unknown>(action, options).subscribe((payload) => {
+      const response = ({ body: payload } as unknown) as HttpResponse<Blob>;
+      this.fileSaver.saveFile(response, {});
+    });
   }
 
   public navigate(action: ComponentActionDto, componentId: string, stepType: string): void {
@@ -280,13 +291,16 @@ export class ActionToolsService {
     };
   }
 
-  private sendAction<T>(action: ComponentActionDto): Observable<ActionApiResponse<T>> {
+  private sendAction<T>(
+    action: ComponentActionDto,
+    options?: object,
+  ): Observable<ActionApiResponse<T>> {
     const data = this.getActionDTO(action);
     const queryParams = action.value;
     const path = `${action.action}${queryParams ? '?' + queryParams : ''}`;
     const payload = JSON.parse(JSON.stringify(data));
     payload.scenarioDto.display = this.htmlRemoverService.delete(payload.scenarioDto.display);
-    return this.formPlayerApiService.sendAction<T>(path, payload);
+    return this.formPlayerApiService.sendAction<T>(path, payload, options);
   }
 
   private isTimerComponent(componentId: string): boolean {
