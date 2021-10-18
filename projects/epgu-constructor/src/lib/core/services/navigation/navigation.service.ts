@@ -1,7 +1,7 @@
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { Observable, Subject } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
-import { ScenarioDto, OrgType } from '@epgu/epgu-constructor-types';
+import { ScenarioDto, OrgType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { Navigation } from '../../../form-player/form-player.types';
 import {
   MobilViewEvents,
@@ -85,18 +85,21 @@ export class NavigationService {
     this.locationService.href(`${this.configService.lkUrl}/settings/edit`);
   }
 
-  redirectToLK(isLegal?: boolean): void {
+  redirectToLK(isLegal?: boolean, action?: ComponentActionDto): void {
+    const queryParams = action?.queryParams;
+    const preparedQueryParams = queryParams ? `?${new URLSearchParams(queryParams).toString()}` : '';
+
     if (this.isWebView || isLegal) {
       this.locationService.href(`${this.configService.lkUrl}/notifications`);
     } else {
-      this.locationService.href(`${this.configService.lkUrl}/orders/all`);
+      this.locationService.href(`${this.configService.lkUrl}/orders/all${preparedQueryParams}`);
     }
   }
 
-  redirectToLKByOrgType(): void {
+  redirectToLKByOrgType(action): void {
     const { additionalParameters } = this.screenService.getStore();
     const isLegal = [OrgType.Legal, OrgType.Business].includes(additionalParameters?.orgType);
-    this.redirectToLK(isLegal);
+    this.redirectToLK(isLegal, action);
   }
 
   redirectToHome(): void {

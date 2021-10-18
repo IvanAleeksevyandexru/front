@@ -21,6 +21,9 @@ export interface ComponentActionDto {
   link?: string;
   modalHtml?: string;
   multipleAnswers?: ActionAnswerDto[]; // для умного поиска
+  queryParams?: {
+    [key: string]: string;
+  }; // для фильтрации показа списка заявлений
   serviceCode?: string; // для умного поиска
   target?: TargetType; // для умного поиска
   targetCode?: string; // для умного поиска

@@ -22,6 +22,19 @@ describe('NavigationService', () => {
   let locationService: LocationService;
   let screenService: ScreenService;
 
+  const mockAction = {
+    label: 'В личный кабинет',
+    value: 'В личный кабинет',
+    type: 'redirectToLK',
+    action: 'getNextScreen',
+  };
+
+  const mockQueryParams = {
+    queryParams: {
+      type: 'EQUEUE',
+    },
+  };
+
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -115,13 +128,17 @@ describe('NavigationService', () => {
   it('test redirectToLKByOrgType', () => {
     spyOn(navigationService, 'redirectToLK').and.callThrough();
     screenService.initScreenStore({ additionalParameters: {}});
-    navigationService.redirectToLKByOrgType();
-    expect(navigationService.redirectToLK).toHaveBeenCalledWith(false);
+    navigationService.redirectToLKByOrgType(mockAction);
+    expect(navigationService.redirectToLK).toHaveBeenCalledWith(false, mockAction);
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all`);
+    screenService.initScreenStore({ additionalParameters: {}});
+    navigationService.redirectToLKByOrgType({ ...mockAction, ...mockQueryParams });
+    expect(navigationService.redirectToLK).toHaveBeenCalledWith(false, mockAction);
+    expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all?${Object.keys(mockQueryParams.queryParams)[0]}=${Object.values(mockQueryParams.queryParams)[0]}`);
     screenService.initScreenStore({ additionalParameters: { orgType: OrgType.Legal }});
     spyOn(smuEventsService, 'notify').and.callThrough();
-    navigationService.redirectToLKByOrgType();
-    expect(navigationService.redirectToLK).toHaveBeenCalledWith(true);
+    navigationService.redirectToLKByOrgType(mockAction);
+    expect(navigationService.redirectToLK).toHaveBeenCalledWith(true, mockAction);
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/notifications`);
   });
   it('test redirectToHome', () => {
