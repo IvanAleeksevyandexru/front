@@ -116,7 +116,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public blockMobileKeyboard = false;
   public fixedMonth = false;
   public inProgress = false;
-  public inLoadingSlotsProgress = false;
+  public inLoadingSlotsProgress = true;
   public changeTSConfirm = false;
   bookedSlot: SlotInterface;
   errorMessage;
@@ -135,18 +135,15 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       }),
       switchMap((date: Date) => {
         this.inProgress = true;
-        this.inLoadingSlotsProgress = true;
         return this.timeSlotsService.smev2getSlots(date).pipe(
           tap((slots) => {
             this.timeSlots = slots;
             this.inProgress = false;
-            this.inLoadingSlotsProgress = false;
             this.isExistsSlots = this.timeSlots.length > 0;
             this.changeDetectionRef.markForCheck();
           }),
           catchError((err) => {
             this.inProgress = false;
-            this.inLoadingSlotsProgress = false;
             this.changeDetectionRef.markForCheck();
             return throwError(err);
           }),
@@ -227,6 +224,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.initServiceVariables(value);
     this.timeSlotType = type;
     this.timeSlotsService.smev2Init(value, this.cachedAnswer, type);
+    this.inLoadingSlotsProgress = false;
     this.serviceInitHandle(false);
     this.changeDetectionRef.detectChanges();
   }
@@ -596,6 +594,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.initServiceVariables(value);
     this.timeSlotType = value.timeSlotType;
 
+    this.changeDetectionRef.markForCheck();
     this.timeSlotsService.init(value, this.cachedAnswer, value.timeSlotType).subscribe(
       (isBookedDepartment) => {
         if (this.timeSlotsService.hasError()) {
