@@ -5,6 +5,7 @@
     "composite": false,
     "outDir": "../../out-tsc/app",
     "types": [],
+    "inlineSources": true,
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es6",
@@ -17,5 +18,8 @@
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts", "src/**/*.ts"]
+  "include": ["src/**/*.d.ts", "src/**/*.ts"],
+  "angularCompilerOptions": {
+    "enableIvy": true
+  }
 }
