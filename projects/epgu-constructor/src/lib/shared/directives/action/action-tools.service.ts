@@ -4,6 +4,7 @@ import {
   ActionRequestPayload,
   ActionType,
   ComponentActionDto,
+  CurrentValueDto,
   DTOActionAction,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
@@ -36,8 +37,6 @@ import { HtmlRemoverService } from '../../services/html-remover/html-remover.ser
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { NotifierService } from '@epgu/ui/services/notifier';
-import { FileSaverService } from '../../services/file-downloader/file-saver.service';
-import { HttpResponse } from '@angular/common/http';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -50,7 +49,6 @@ const navActionToNavMethodMap = {
 export class ActionToolsService {
   constructor(
     private formPlayerApiService: FormPlayerApiService,
-    private fileSaver: FileSaverService,
     private autocompleteApiService: AutocompleteApiService,
     private configService: ConfigService,
     private clipboard: Clipboard,
@@ -127,16 +125,18 @@ export class ActionToolsService {
     this.sendAction<string>(action)
       .pipe(filter((response) => !response.errorList.length))
       .subscribe(
-        ({ responseData }) => this.downloadService.downloadFile(responseData),
+        ({ responseData }) =>
+          this.downloadService.downloadFile(responseData.value, responseData.type),
         (error) => console.log(error),
       );
   }
 
   public downloadRawPdfAction(action: ComponentActionDto): void {
-    const options = { responseType: 'application/octet-stream' };
-    this.sendAction<unknown>(action, options).subscribe((payload) => {
-      const response = ({ body: payload } as unknown) as HttpResponse<Blob>;
-      this.fileSaver.saveFile(response, {});
+    const pdfType = 'application/octet-stream';
+    const options = { responseType: 'blob' };
+    this.sendAction<unknown>(action, options).subscribe((payload: unknown) => {
+      const file = payload as string;
+      this.downloadService.downloadFile(file, pdfType, 'document.pdf');
     });
   }
 
@@ -185,6 +185,22 @@ export class ActionToolsService {
       bodyResult.scenarioDto = {
         ...bodyResult.scenarioDto,
         currentUrl: this.configService.addToCalendarUrl,
+      };
+    }
+
+    if (action.action === DTOActionAction.spAdapterPdf) {
+      // Принудительно эмулируем передачу в ДТО текущего стейта, чтобы на бэк был передан недостающий контекст
+      const state: CurrentValueDto = {
+        [this.screenService.component.id]: {
+          value: JSON.stringify(this.currentAnswersService.state),
+          visited: true,
+        },
+      };
+
+      bodyResult.scenarioDto = {
+        ...bodyResult.scenarioDto,
+        currentValue: state,
+        applicantAnswers: state,
       };
     }
 

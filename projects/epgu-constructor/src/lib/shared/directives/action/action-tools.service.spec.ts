@@ -340,7 +340,12 @@ describe('ActionToolsService', () => {
       const path = 'sp-adapter/pdf?pdfName=Название_файла';
       const payload = {
         additionalParams: {},
-        scenarioDto: { cachedAnswers: [], display: undefined },
+        scenarioDto: {
+          applicantAnswers: { 12: { visited: true }},
+          cachedAnswers: [],
+          currentValue: { 12: { visited: true }},
+          display: undefined,
+        },
       };
       service['sendAction'](downloadSpAdapterPdfAction);
       expect(spy).toHaveBeenCalledWith(path, payload, undefined);
