@@ -55,7 +55,6 @@ export class CheckboxListComponent
   checkShownElements(changes): void {
     const countOfTruthfulCheckboxes = Object.values(changes).filter((value) => value).length;
     if (countOfTruthfulCheckboxes >= this.limit) {
-      this.hidden = !this.hidden;
       this.checkboxes = this.checkboxes.reduce(
         ({ count, checkboxes }: { count: number; checkboxes: CheckboxList[] }, checkbox) => ({
           count: changes[checkbox.id] ? count + 1 : count,
@@ -63,7 +62,7 @@ export class CheckboxListComponent
             ...checkboxes,
             {
               ...checkbox,
-              hidden: count >= this.limit || (!changes[checkbox.id] && this.hidden),
+              hidden: count >= this.limit || !changes[checkbox.id],
             },
           ],
         }),
