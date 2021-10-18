@@ -56,7 +56,7 @@ export const CUSTOM_SCREEN_MODELS = {
   DropDownDepts: DepartmentLookupModel,
   EaisdoGroupCost: EaisdoGroupCostModel,
   FieldList: FieldListModel,
-  FileUploadModel: FileUploadModel,
+  FileUploadComponent: FileUploadModel,
   HtmlString: HtmlStringModel,
   LabelSection: LabelSectionModel,
   LegalInnInput: LegalInnInputModel ,
