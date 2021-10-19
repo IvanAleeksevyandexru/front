@@ -11,7 +11,6 @@ import {
   LocationService,
   ErrorHandlerAbstractService,
   ConfigService,
-  LocalStorageService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
@@ -35,7 +34,6 @@ import {
   SERVICE_OR_SPEC_SESSION_TIMEOUT_2,
   LOADING_ERROR_MODAL_PARAMS,
   REGIONS_MODAL,
-  MZRF_MODAL,
   RESOURCE_NOT_AVAILABLE,
   NO_DOCTORS,
 } from './error-handler';
@@ -45,7 +43,6 @@ import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import {
-  DictionaryResponse,
   DictionaryResponseError,
 } from '../../../shared/services/dictionary/dictionary-api.types';
 import { finalize } from 'rxjs/operators';
@@ -75,6 +72,8 @@ export enum RefName {
   bookResponse = 'bookResponse',
 }
 
+// @todo. написать тесты на обработку ошибок
+
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
   constructor(
@@ -82,7 +81,6 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private locationService: LocationService,
     private navigationService: NavigationService,
     private configService: ConfigService,
-    private localStorageService: LocalStorageService,
     private formPlayer: FormPlayerService,
     private screenService: ScreenService,
   ) {}
@@ -118,20 +116,44 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         } catch (e) {}
       }
 
-      if (url.includes('dictionary/mzrf_lpu_equeue_smev3')) {
+      if (
+        url.includes('dictionary/mzrf_lpu_equeue_smev3') ||
+        url.includes('dictionary/mzrf_equeue_lpu') ||
+        url.includes('dictionary/mzrf_lpu_vaccination')
+      ) {
         const dictionaryError = error as DictionaryResponseError;
-        const dictionaryResponse = body as DictionaryResponse;
+
         if (
-          dictionaryError?.code === 0 &&
-          dictionaryError?.message === 'operation crashed' &&
-          dictionaryResponse?.items?.length &&
-          dictionaryResponse.items[0]?.value === 'FAILURE'
+          !dictionaryError?.message.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) &&
+          dictionaryError?.code !== 0
         ) {
-          this.localStorageService.set('resetFormPlayer', 1);
-          this.showModalFailure(
-            'Время сессии истекло, перейдите к началу',
-            true,
-            ModalFailureType.SESSION,
+          const modalParams = {
+            ...LOADING_ERROR_MODAL_PARAMS,
+            buttons: [
+              {
+                label: 'Начать заново',
+                color: 'white',
+                closeModal: true,
+                value: 'init',
+              },
+              {
+                label: 'Попробовать ещё раз',
+                closeModal: true,
+                value: 'prevStep',
+              },
+            ],
+          };
+          const message = dictionaryError?.message
+            .replace('FAILURE:', '')
+            .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+            .replace('NO_DATA:', '');
+          modalParams.text = modalParams.text.replace(/\{textAsset\}?/g, message);
+          this.showModal(modalParams as ConfirmationModal).then((value) =>
+            this.handleModalAction(value),
+          );
+        } else if (dictionaryError?.message.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)) {
+          this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT).then((value) =>
+            this.handleModalAction(value),
           );
         }
       }
@@ -141,61 +163,12 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         url.includes('dictionary/mzrf_regions_vaccination')
       ) {
         const dictionaryError = error as DictionaryResponseError;
-        const dictionaryResponse = body as DictionaryResponse;
-        if (
-          dictionaryError?.code !== 0 &&
-          dictionaryResponse?.fieldErrors.length === 0 &&
-          dictionaryResponse?.total === 0 &&
-          dictionaryResponse.items.length === 0
-        ) {
+        if (dictionaryError?.code !== 0) {
           const message = dictionaryError?.message
             .replace('FAILURE:', '')
             .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
           REGIONS_MODAL.text = REGIONS_MODAL.text.replace(/\{textAsset\}?/g, message);
           this.showModal(REGIONS_MODAL);
-        }
-      }
-
-      if (url.includes('dictionary/mzrf_equeue_lpu')) {
-        const dictionaryError = error as DictionaryResponseError;
-        const dictionaryResponse = body as DictionaryResponse;
-        if (
-          dictionaryError?.code !== 0 &&
-          dictionaryResponse?.fieldErrors.length === 0 &&
-          dictionaryResponse?.total === 0 &&
-          dictionaryResponse.items.length === 0
-        ) {
-          const message = dictionaryError?.message
-            .replace('FAILURE:', '')
-            .replace('UNKNOWN_REQUEST_DESCRIPTION:', '');
-          if (message?.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)) {
-            MZRF_MODAL.text = MZRF_MODAL.text.replace(
-              /\{textAsset\}?/g,
-              'Чтобы записаться к врачу, обновите страницу. Если ничего не изменится, начните заполнять форму заново',
-            );
-            MZRF_MODAL.buttons = [
-              {
-                label: 'Начать заново',
-                closeModal: true,
-                value: 'init',
-              },
-            ];
-            this.showModal(MZRF_MODAL).then((value) => this.handleModalAction(value));
-          } else {
-            MZRF_MODAL.text = MZRF_MODAL.text.replace(/\{textAsset\}?/g, message);
-            MZRF_MODAL.buttons = [
-              {
-                label: 'Начать заново',
-                closeModal: true,
-                value: 'init',
-              },
-              {
-                label: 'Попробовать ещё раз',
-                closeModal: true,
-              },
-            ];
-            this.showModal(MZRF_MODAL).then((value) => this.handleModalAction(value));
-          }
         }
       }
 
@@ -230,24 +203,28 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       this.showModal(TIME_INVITATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
     } else if (status === 403) {
       if (error?.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
-        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR).then((value) => this.handleModalAction(value)); // TODO: переделать кейс на errorModalWindow
+        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR).then((value) =>
+          this.handleModalAction(value),
+        ); // TODO: переделать кейс на errorModalWindow
       }
     } else if (status !== 404) {
       if (error?.description?.includes('Заявление не совместимо с услугой')) {
-        this.showModal(DRAFT_STATEMENT_NOT_FOUND, traceId).then((value) => this.handleModalAction(value));
+        this.showModal(DRAFT_STATEMENT_NOT_FOUND, traceId).then((value) =>
+          this.handleModalAction(value),
+        );
       } else if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
       } else {
-        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then((value) => this.handleModalAction(value));
+        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then((value) =>
+          this.handleModalAction(value),
+        );
       }
     } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
-      this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, traceId).then((value) => this.handleModalAction(value));
+      this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, traceId).then((value) =>
+        this.handleModalAction(value),
+      );
     }
     return throwError(httpErrorResponse);
-  }
-
-  public isValidRequest(obj: object): boolean {
-    return 'scenarioDto' in obj || 'items' in obj || 'bookId' in obj;
   }
 
   public showModalFailure(errorMessage: string, replace: boolean, modal: ModalFailureType): void {
@@ -301,11 +278,20 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
             (errorCode === 2 && errorMessage.includes(SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST)) ||
             errorMessage.includes('NO_DATA')
           ) {
-            this.showModal(SERVICE_OR_SPEC_NO_SPECIALIST).then((value) => this.handleModalAction(value));
-          } else if (errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE)) {
-            this.showModal(SERVICE_OR_SPEC_NO_AVAILABLE).then((value) => this.handleModalAction(value));
+            this.showModal(SERVICE_OR_SPEC_NO_SPECIALIST).then((value) =>
+              this.handleModalAction(value),
+            );
+          } else if (
+            errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) &&
+            type !== 'TimeSlotDoctor'
+          ) {
+            this.showModal(SERVICE_OR_SPEC_NO_AVAILABLE).then((value) =>
+              this.handleModalAction(value),
+            );
           } else if (errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)) {
-            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT).then((value) => this.handleModalAction(value));
+            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT).then((value) =>
+              this.handleModalAction(value),
+            );
           } else if (errorMessage != null || errorMessage !== '') {
             STATIC_ERROR_MODAL.text = this.getStaticErrorMessage(STATIC_ERROR_MODAL, errorMessage);
             this.showModal(STATIC_ERROR_MODAL).then((value) => this.handleModalAction(value));
@@ -325,13 +311,32 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
                 value: 'init',
               },
             ];
-            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT_2).then((value) => this.handleModalAction(value));
+            this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT_2).then((value) =>
+              this.handleModalAction(value),
+            );
           } else if (
             errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) &&
-            !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2)
+            !errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) &&
+            type !== 'TimeSlotDoctor'
           ) {
-            this.showModal(RESOURCE_NOT_AVAILABLE);
-          } else if (errorMessage.includes(NO_AVAILABLE_DATA) && type !== 'TimeSlotDoctor') {
+            const modalParams = {
+              ...RESOURCE_NOT_AVAILABLE,
+              buttons: [
+                {
+                  label: 'Начать заново',
+                  color: 'white',
+                  closeModal: true,
+                  value: 'init',
+                },
+                {
+                  label: 'Попробовать ещё раз',
+                  closeModal: true,
+                  value: 'prevStep',
+                },
+              ],
+            } as ConfirmationModal;
+            this.showModal(modalParams).then((value) => this.handleModalAction(value));
+          } else if (errorMessage.includes(NO_AVAILABLE_DATA)) {
             this.showModal(NO_DOCTORS).then((value) => this.handleModalAction(value));
           } else if (type !== 'TimeSlotDoctor') {
             const modalParams = {
@@ -355,7 +360,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
               .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
               .replace('NO_DATA:', '');
             modalParams.text = modalParams.text.replace(/\{textAsset\}?/g, message);
-            this.showModal(modalParams as ConfirmationModal).then((value) => this.handleModalAction(value));
+            this.showModal(modalParams as ConfirmationModal).then((value) =>
+              this.handleModalAction(value),
+            );
           }
           break;
         }

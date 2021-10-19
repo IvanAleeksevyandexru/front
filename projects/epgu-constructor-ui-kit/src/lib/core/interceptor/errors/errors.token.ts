@@ -9,5 +9,4 @@ export interface ErrorHandlerAbstractService {
   handleResponseError: (
     httpErrorResponse: HttpErrorResponse,
   ) => Observable<HttpEvent<void | never>>;
-  isValidRequest: (obj: object) => boolean;
 }

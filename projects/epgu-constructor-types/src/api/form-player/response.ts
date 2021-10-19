@@ -23,6 +23,7 @@ export interface ItemsErrorFieldResponse {
 
 export interface ItemsErrorResponse {
   error: {
+    message?: string;
     errorDetail: {
       errorCode: number;
       errorMessage: string;
