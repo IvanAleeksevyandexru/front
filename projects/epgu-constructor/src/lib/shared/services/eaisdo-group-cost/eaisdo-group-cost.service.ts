@@ -67,13 +67,18 @@ export class EaisdoGroupCostService {
   }
 
   public calculateState(error, responseType, financialSource, typeOfBudget): EaisdoStateTypes {
+    const states = {
+      RETRY: [ActionType.externalIntegration, ActionType.prevStep, ActionType.quizToOrder],
+      NEXT: [ActionType.nextStep, ActionType.prevStep, ActionType.quizToOrder],
+    };
+
     if (responseType === EaisdoResponseTypes.groupCostIneffectualResponse) {
-      this.currentButtonsState = [ActionType.nextStep, ActionType.quizToOrder];
+      this.currentButtonsState = states.NEXT;
       return EaisdoStateTypes.errorIneffectual;
     }
 
     if (responseType === EaisdoResponseTypes.groupCostBadCalculationDataResponse) {
-      this.currentButtonsState = [ActionType.externalIntegration, ActionType.quizToOrder];
+      this.currentButtonsState = states.RETRY;
       return EaisdoStateTypes.errorBad;
     }
 
@@ -81,7 +86,7 @@ export class EaisdoGroupCostService {
       responseType === EaisdoResponseTypes.groupCostCertificateExhaustedResponse &&
       financialSource === EaisdoFinancialSourceTypes.pfdod_certificate
     ) {
-      this.currentButtonsState = [ActionType.externalIntegration, ActionType.quizToOrder];
+      this.currentButtonsState = states.RETRY;
       return EaisdoStateTypes.errorExhaustedСertificate;
     }
 
@@ -90,7 +95,7 @@ export class EaisdoGroupCostService {
       (financialSource === EaisdoFinancialSourceTypes.budget ||
         financialSource === EaisdoFinancialSourceTypes.none)
     ) {
-      this.currentButtonsState = [ActionType.externalIntegration, ActionType.quizToOrder];
+      this.currentButtonsState = states.RETRY;
       return EaisdoStateTypes.errorExhaustedProgram;
     }
 
@@ -99,7 +104,7 @@ export class EaisdoGroupCostService {
       (financialSource === EaisdoFinancialSourceTypes.paid ||
         financialSource === EaisdoFinancialSourceTypes.private)
     ) {
-      this.currentButtonsState = [ActionType.nextStep, ActionType.quizToOrder];
+      this.currentButtonsState = states.NEXT;
       return EaisdoStateTypes.paid;
     }
 
@@ -107,12 +112,12 @@ export class EaisdoGroupCostService {
       responseType === EaisdoResponseTypes.groupCostCalculationResponse &&
       financialSource === EaisdoFinancialSourceTypes.pfdod_certificate
     ) {
-      this.currentButtonsState = [ActionType.nextStep, ActionType.quizToOrder];
+      this.currentButtonsState = states.NEXT;
       return EaisdoStateTypes.certificate;
     }
 
     if (error) {
-      this.currentButtonsState = [ActionType.externalIntegration, ActionType.quizToOrder];
+      this.currentButtonsState = states.RETRY;
       return EaisdoStateTypes.errorTimeOut;
     }
 
@@ -120,7 +125,7 @@ export class EaisdoGroupCostService {
       responseType === EaisdoResponseTypes.groupCostFreeOfChargeResponse &&
       typeOfBudget === EaisdoTypeOfBudgetTypes.free
     ) {
-      this.currentButtonsState = [ActionType.nextStep, ActionType.quizToOrder];
+      this.currentButtonsState = states.NEXT;
       return EaisdoStateTypes.free;
     }
 
@@ -128,7 +133,7 @@ export class EaisdoGroupCostService {
       responseType === EaisdoResponseTypes.groupCostFreeOfChargeResponse &&
       typeOfBudget === EaisdoTypeOfBudgetTypes.preprof
     ) {
-      this.currentButtonsState = [ActionType.nextStep, ActionType.quizToOrder];
+      this.currentButtonsState = states.NEXT;
       return EaisdoStateTypes.preprof;
     }
 
@@ -136,7 +141,7 @@ export class EaisdoGroupCostService {
       responseType === EaisdoResponseTypes.groupCostFreeOfChargeResponse &&
       typeOfBudget === EaisdoTypeOfBudgetTypes.valued
     ) {
-      this.currentButtonsState = [ActionType.nextStep, ActionType.quizToOrder];
+      this.currentButtonsState = states.NEXT;
       return EaisdoStateTypes.valued;
     }
 
@@ -144,11 +149,11 @@ export class EaisdoGroupCostService {
       responseType === EaisdoResponseTypes.groupCostFreeOfChargeResponse &&
       typeOfBudget === EaisdoTypeOfBudgetTypes.other
     ) {
-      this.currentButtonsState = [ActionType.nextStep, ActionType.quizToOrder];
+      this.currentButtonsState = states.NEXT;
       return EaisdoStateTypes.other;
     }
 
-    this.currentButtonsState = [ActionType.nextStep, ActionType.quizToOrder];
+    this.currentButtonsState = states.NEXT;
     return EaisdoStateTypes.wait;
   }
 
