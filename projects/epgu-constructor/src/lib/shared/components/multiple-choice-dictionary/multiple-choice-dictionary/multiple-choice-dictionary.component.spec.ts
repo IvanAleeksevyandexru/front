@@ -4,7 +4,6 @@ import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
 import { ChipModule, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-
 import { MultipleChoiceDictionaryComponent } from './multiple-choice-dictionary.component';
 import { BaseModule } from '../../../base.module';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
