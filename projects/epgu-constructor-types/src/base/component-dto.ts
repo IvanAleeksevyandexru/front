@@ -34,4 +34,5 @@ export interface ComponentDto {
   pronounceText?: string; // для умного поиска
   pronounceTextType?: string; // для умного поиска
   linkedValues?: ILinkedValue[];
+  header?: string;
 }

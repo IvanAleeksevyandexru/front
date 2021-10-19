@@ -12,6 +12,7 @@ import {
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
 import { DictionaryItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { IBalloonContent } from '../../balloon-content-resolver.interface';
@@ -26,7 +27,7 @@ export class CommonBalloonContentComponent implements IBalloonContent {
   @Input() isSelectButtonHidden = false;
   @Input() showLoader: Observable<boolean>;
   @Input() mapObject;
-  @Input() attrs;
+  @Input() attrs: KeyValueMap = {};
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
   public selectObject: Function;

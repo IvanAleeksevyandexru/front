@@ -1,0 +1,23 @@
+<div class="widget-form__input">
+  <span>{{data.header}}</span>
+  <epgu-cf-ui-constructor-constructor-lookup
+    *ngIf="!isNoDepartmentErrorVisible"
+    [control]="searchControl"
+    [showNotFound]="true"
+    [searchCaseSensitive]="false"
+    [itemsProvider]="provider"
+    [showSuggestion]="true"
+    [disabled]="!mapIsLoaded"
+    (changed)="lookupChanged($event?.originalItem)"
+    [showExpandCollapse]="false"
+    [queryMinSymbolsCount]="0"
+    #libLookup
+  >
+  </epgu-cf-ui-constructor-constructor-lookup>
+  <span
+    class="clickable-label"
+    epgu-constructor-clickable-label
+    [clarifications]="data?.attrs?.clarifications"
+    [innerHTML]="data?.label | safe: 'html'"
+  ></span>
+</div>

@@ -44,7 +44,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
   @Input() mapObject;
   @Input() isSelectButtonHidden = false;
   @Input() contentType = ContentTypes[MapTypes.commonMap];
-  @Input() attrs;
+  @Input() attrs = {};
   @Output() selectObject = new EventEmitter<YMapItem<DictionaryItem>>();
   @Output() expandObjectEvent = new EventEmitter<YMapItem<DictionaryItem>>();
   private balloonContentComponentRef: ComponentRef<ContentTypesComponents>;
@@ -53,6 +53,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
     [ContentTypes[MapTypes.commonMap]]: CommonBalloonContentComponent,
     [ContentTypes[MapTypes.electionsMap]]: ElectionsBalloonContentComponent,
     [ContentTypes[MapTypes.kindergartenMap]]: KindergartenContentComponent,
+    undefined: CommonBalloonContentComponent,
   };
 
   constructor(
@@ -93,7 +94,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
     instance.showLoader = this.screenService.isLoading$;
     instance.mapObject = this.mapObject;
     instance.isSelectButtonHidden = this.isSelectButtonHidden;
-    instance.attrs = this.attrs;
+    instance.attrs = this.attrs || {};
     instance.selectObject = (obj, evt: Event): void => {
       evt.stopPropagation();
       this.selectObject.emit(obj);

@@ -5,7 +5,7 @@
     [disclaimer]="data.attrs.disclaimer"
     [showNav]="screenService.showNav$ | async"
     [noDepartmentsErrorMsg]="data.attrs.noDepartmentsErrorMsg"
-    [isNoDepartmentErrorVisible]="isNoDepartmentErrorVisible"
+    [isNoDepartmentErrorVisible]="selectMapObjectService.isNoDepartmentErrorVisible | async"
   ></epgu-constructor-search-panel-resolver>
   <lib-map
     *ngIf="showMap"
@@ -15,7 +15,7 @@
     [center]="mapCenter"
     [redraw]="selectMapObjectService.isMapLoaded.getValue()"
     [controls]="mapControls"
-    [zoom]="data.attrs.mapOptions?.initZoom"
+    [zoom]="initZoom"
   >
   </lib-map>
   <div

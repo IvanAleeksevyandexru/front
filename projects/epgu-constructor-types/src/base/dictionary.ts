@@ -56,7 +56,7 @@ export enum AttributeTypes {
   asDecimal = 'asDecimal',
 }
 
-export type DictionaryValue = { [key in AttributeTypes]?: string };
+export type DictionaryValue = { [key in AttributeTypes]?: string | number };
 
 export enum DictionaryUrlTypes {
   dictionary = 'dictionary',

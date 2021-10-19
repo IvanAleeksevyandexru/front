@@ -56,6 +56,18 @@ export class Icons {
     };
   }
 
+  get userOrange(): ymaps.IGeoObjectOptions {
+    return {
+      iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/userOrange.svg`,
+      iconShape: {
+        type: 'Circle',
+        // Круг описывается в виде центра и радиуса
+        coordinates: [0, -20],
+        radius: 20,
+      },
+    };
+  }
+
   get clusterBlue(): iconType {
     return {
       href: `${this.config.staticDomainAssetsPath}/assets/icons/svg/clusterblue.svg`,

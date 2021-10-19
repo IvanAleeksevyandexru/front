@@ -1,0 +1,17 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+
+::ng-deep {
+  .selected-placemark {
+    background-image: url('./../../../../../../../../../assets/icons/svg/userOrange.svg');
+    position: absolute;
+    width: 32px;
+    height: 41px;
+    left: -17px;
+    top: -38px;
+  }
+}
+
+.clickable-label {
+  display: block;
+  padding-top: 8px;
+}

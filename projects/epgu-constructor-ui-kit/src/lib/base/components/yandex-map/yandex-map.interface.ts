@@ -1,7 +1,9 @@
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
 import { ymaps } from './yandex-map.types';
 
 export interface IYMapPoint<T> {
   center: [number, number];
+  id?: number;
   obj: T & {
     isSelected?: boolean;
   };
@@ -18,6 +20,7 @@ export interface IFeatureItem<T> {
   geometry: ymaps.IGeometry;
   properties?: {
     res?: T;
+    attributeValues?: KeyValueMap;
   };
 }
 
@@ -31,6 +34,7 @@ export interface IClusterItem<T> extends Pick<IFeatureItem<T>, 'type' | 'id' | '
 export interface IFeatureCollection<T> {
   type: string;
   features: IFeatureItem<T>[];
+  metadata?: KeyValueMap;
 }
 
 export type YMapItem<T> = T & {

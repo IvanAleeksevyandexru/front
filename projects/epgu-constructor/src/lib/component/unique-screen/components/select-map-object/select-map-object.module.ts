@@ -32,6 +32,8 @@ import { NotifierModule } from '@epgu/ui/components/notifier';
 import { FormsModule } from '@angular/forms';
 import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { KindergartenService } from '../kindergarten/kindergarten.service';
+import { JusticeSearchPanelComponent } from './components/search-panel-resolver/components/justice-search-panel/justice-search-panel.component';
+import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { KindergartenService } from '../kindergarten/kindergarten.service';
     SearchPanelResolverComponent,
     CommonSearchPanelComponent,
     ElectionsSearchPanelComponent,
+    JusticeSearchPanelComponent,
     KindergartenSearchPanelComponent,
     BalloonContentResolverComponent,
     CommonBalloonContentComponent,
@@ -74,6 +77,7 @@ import { KindergartenService } from '../kindergarten/kindergarten.service';
     ConstructorDadataWidgetModule,
     NotifierModule,
     FormsModule,
+    ClickableLabelModule,
   ],
   entryComponents: [
     SelectMapObjectComponent,
@@ -81,6 +85,7 @@ import { KindergartenService } from '../kindergarten/kindergarten.service';
     CommonSearchPanelComponent,
     ElectionsSearchPanelComponent,
     KindergartenSearchPanelComponent,
+    JusticeSearchPanelComponent,
     BalloonContentResolverComponent,
     CommonBalloonContentComponent,
     ElectionsBalloonContentComponent,

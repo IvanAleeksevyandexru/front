@@ -36,6 +36,7 @@ export interface SelectMapComponentAttrs {
   dictionaryFilter: ComponentDictionaryFilterDto[];
   electionDate?: string;
   electionLevel?: string;
+  arePolygonsVisible?: boolean;
 }
 
 export interface IFillCoordsResponse extends IGeoCoordsResponse {
@@ -46,6 +47,7 @@ export enum MapTypes {
   commonMap = 'commonMap',
   electionsMap = 'electionsMap',
   kindergartenMap = 'kindergartenMap',
+  justiceMap = 'justiceMap',
 }
 
 @Injectable()
@@ -54,6 +56,7 @@ export class SelectMapObjectService implements OnDestroy {
   public filteredDictionaryItems: DictionaryYMapItem[] = [];
   public selectedValue = new Subject();
   public selectedViewItems$ = new BehaviorSubject<DictionaryItem[]>([]);
+  public isNoDepartmentErrorVisible = new Subject<boolean>();
   public ymaps;
   public componentAttrs: SelectMapComponentAttrs; // Атрибуты компонента из getNextStep
   public mapEvents; // events от карт, устанавливаются при создание балуна
@@ -341,6 +344,28 @@ export class SelectMapObjectService implements OnDestroy {
     );
   }
 
+  /**
+   * Подготавливает массив с данными из справочника для отображения в балуне
+   * @param attrs массив с атрибутами для отображения в балуне
+   * @param item
+   */
+     public getMappedAttrsForBaloon(
+      attrs: { name: string; label: string }[],
+      item: DictionaryYMapItem,
+    ): { value: string; label: string }[] {
+      const res = [];
+      attrs.forEach((attr) => {
+        let itemValue = item.attributeValues[attr.name];
+        if (itemValue) {
+          res.push({
+            value: itemValue,
+            label: attr.label,
+          });
+        }
+      });
+      return res;
+    }
+
   private convertDictionaryItemsToMapPoints(
     dictionaryItems: DictionaryYMapItem[],
   ): { obj: DictionaryYMapItem; center: [number, number] }[] {
@@ -410,27 +435,5 @@ export class SelectMapObjectService implements OnDestroy {
     });
     this.dictionary.items = newItems;
     this.filteredDictionaryItems = newItems;
-  }
-
-  /**
-   * Returns array with attributes to show in balloon on map
-   * @param attrs map with attributes to extract
-   * @param item
-   */
-  private getMappedAttrsForBaloon(
-    attrs: { name: string; label: string }[],
-    item: DictionaryYMapItem,
-  ): { value: string; label: string }[] {
-    const res = [];
-    attrs.forEach((attr) => {
-      let itemValue = item.attributeValues[attr.name];
-      if (itemValue) {
-        res.push({
-          value: itemValue,
-          label: attr.label,
-        });
-      }
-    });
-    return res;
   }
 }

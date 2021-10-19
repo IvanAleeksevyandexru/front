@@ -38,7 +38,7 @@ export class ScreenService extends ScreenContent {
     return this.screenStore;
   }
 
-  public getCompFromDisplay(componentId: string): ScreenStoreComponentDtoI {
+  public getCompFromDisplay(componentId: string = this.component.id): ScreenStoreComponentDtoI {
     return this.display?.components.find((comp) => comp.id === componentId);
   }
 

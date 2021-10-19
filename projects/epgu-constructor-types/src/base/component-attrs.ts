@@ -205,6 +205,8 @@ export interface ComponentAttrsDto {
   isSmev2?: boolean;
   isMultiSelect?: boolean;
   slotsNotFoundTemplate?: SlotsNotFoundTemplate;
+  searchPanel?: ComponentDto;
+  isCommonDictionary?: boolean;
 }
 
 export interface SlotsNotFoundTemplate {
