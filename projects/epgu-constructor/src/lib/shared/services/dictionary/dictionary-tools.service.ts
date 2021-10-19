@@ -286,12 +286,6 @@ export class DictionaryToolsService {
     ].includes(type);
   }
 
-  /**
-   * Получение значение для фильтра dictionary
-   * @param componentValue значение value пришедшение с бэкэнда
-   * @param scenarioDto значение scenarioDto пришедшение с бэкэнда
-   * @param dFilter фильтр из атрибутов компонента
-   */
   private getValueForFilter(
     componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
@@ -300,22 +294,28 @@ export class DictionaryToolsService {
   ): ValueForFilter {
     const attributeType: AttributeTypes =
       (dFilter as ComponentDictionaryFilterDto)?.attributeType || AttributeTypes.asString;
+
+    const valueTypeFilterHandler = (dFilter): ValueForFilter => {
+      const rawValue = JSON.parse(dFilter.value);
+      return { rawValue, value: rawValue };
+    };
+
+    const presetTypeFilterHandler = (dFilter): ValueForFilter => {
+        const rawValue = get(componentValue, dFilter.value, undefined);
+        const filters = this.formatValue(rawValue, dFilter.formatValue);
+        const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
+        return { rawValue, value };
+      };
+
     //TODO разобраться с типами
     // @ts-ignore
     const filterTypes: {
       [key in DictionaryValueTypes]: (string) => ValueForFilter;
     } = {
-      [DictionaryValueTypes.value]: (dFilter): ValueForFilter => {
-        const rawValue = JSON.parse(dFilter.value);
-        return { rawValue, value: rawValue };
-      },
-
-      [DictionaryValueTypes.preset]: (dFilter): ValueForFilter => {
-        const rawValue = get(componentValue, dFilter.value, undefined);
-        const filters = this.formatValue(rawValue, dFilter.formatValue);
-        const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
-        return { rawValue, value };
-      },
+      [DictionaryValueTypes.value]: valueTypeFilterHandler,
+      [DictionaryValueTypes.serviceInfo]: presetTypeFilterHandler,
+      [DictionaryValueTypes.queryparams]: valueTypeFilterHandler,
+      [DictionaryValueTypes.preset]: presetTypeFilterHandler,
       [DictionaryValueTypes.root]: (dFilter): ValueForFilter => {
         const rawValue = get(screenStore, dFilter.value, undefined);
         const value = {

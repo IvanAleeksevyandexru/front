@@ -72,6 +72,8 @@ export enum DictionaryUnionKind {
 
 export enum DictionaryValueTypes {
   value = 'value',
+  serviceInfo = 'serviceInfo', // fallback for preset
+  queryparams = 'queryparams', // fallback for value
   preset = 'preset',
   root = 'root',
   ref = 'ref',
