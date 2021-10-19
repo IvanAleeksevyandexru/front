@@ -50,6 +50,7 @@ import {
   COMMON_ERROR_MODAL_PARAMS,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
   ITEMS_FAILURE,
+  SERVICE_OR_SPEC_NO_AVAILABLE,
 } from '../../../../../core/services/error-handler/error-handler';
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { DateTypeTypes, TimeSlotsConstants } from '../../time-slots/time-slots.constants';
@@ -573,6 +574,19 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
           );
         }
       }
+
+      if (errorMessage.includes(SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE) && refName === 'Resource') {
+        const modalParams = {
+          ...SERVICE_OR_SPEC_NO_AVAILABLE,
+          buttons: [
+            {
+              label: 'Обновить',
+              closeModal: true,
+            },
+          ],
+        };
+        this.showModal(modalParams);
+      }
     }
   }
 
@@ -640,7 +654,9 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
             let refName;
 
             if (Array.isArray(additionalParams)) {
-              const result = additionalParams.filter((param) => param?.value === 'ServiceOrSpecs');
+              const result = additionalParams.filter(
+                (param) => param?.value === 'ServiceOrSpecs' || param?.value === 'Resource',
+              );
               refName = result.length > 0 ? result[0]?.value : undefined;
             }
             this.handleLookupProviderErrorMessage(errorMessage, refName);

@@ -27,8 +27,7 @@ export class ErrorsInterceptor implements HttpInterceptor {
         if (
           res instanceof HttpResponse &&
           res?.body &&
-          typeof res.body === 'object' &&
-          this.errorHandleService.isValidRequest(res.body)
+          typeof res.body === 'object'
         ) {
           this.errorHandleService.handleResponse(req, res);
         }

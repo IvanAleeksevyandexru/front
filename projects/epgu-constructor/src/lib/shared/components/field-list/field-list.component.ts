@@ -24,7 +24,7 @@ import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const defaultStyle: ConfirmUserDataStyle = {
-  group: 'mb-16',
+  group: 'mb-24',
   groupTitle: 'mb-12',
   value: '',
   label: 'mb-4',
