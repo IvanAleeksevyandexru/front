@@ -336,13 +336,16 @@ export class AutocompletePrepareService {
         ...(this.jsonHelperService.tryToParse(value) as object),
         [fieldName]: suggestItemValue,
       });
+
     const fieldName: string = isDocInput
       ? getFieldNameFromCompositeMnemonic(componentsSuggestionsList, mnemonic)
       : componentsSuggestionsList.find(([componentMnemonic]) => componentMnemonic === mnemonic)[1];
+
     const suggestions =
       this.screenService.suggestions[component?.id] ||
       this.screenService.suggestions[fieldName] ||
       this.screenService.suggestions[`${component?.id}.${fieldName}`];
+
     const suggestItem = suggestions?.list.find((item) => {
       if (typeof id === 'number') {
         return item.id === id;
@@ -360,8 +363,7 @@ export class AutocompletePrepareService {
 
   private setComponentValue(component: ComponentDto, value: string): void {
     if (component && value) {
-      value = this.getFormattedValue(component, value);
-      component.value = value;
+      component.value = this.getFormattedValue(component, value);
     }
   }
 
@@ -450,7 +452,9 @@ export class AutocompletePrepareService {
     } else if (component.type === CustomScreenComponentTypes.RadioInput) {
       const componentAttrs = component.attrs as CustomComponentAttr;
 
-      return componentAttrs.supportedValues.find((item) => item.value === value)?.label || value;
+      return isFormattedReturn ?
+        componentAttrs.supportedValues.find((item) => item.value === value)?.label || value
+        : value;
     } else if (!!component.attrs.suggestionPath && this.jsonHelperService.hasJsonStructure(value)) {
       const parsedValue = this.jsonHelperService.tryToParse(value);
 
