@@ -85,7 +85,10 @@ export class ComponentsListRelationsService {
   ): CustomListStatusElements {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
-        dependentComponent.attrs.ref.forEach((reference) => {
+        dependentComponent.attrs.ref
+        // апдейт только при изменении значений компонента, у которого указаны связи
+        ?.filter((el) => (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id))
+        .forEach((reference) => {
           const value = reference.valueFromCache
             ? screenService.cachedAnswers[reference.valueFromCache].value
             : component.value ?? component.valueFromCache;
