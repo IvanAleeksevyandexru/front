@@ -22,6 +22,7 @@ import {
   DeviceDetectorService,
   UnsubscribeService,
   WordTransformService,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
@@ -101,7 +102,7 @@ export class PhotoFormComponent implements OnChanges, OnInit {
     this.acceptType = this.getAcceptType();
 
     this.eventBusService
-      .on('fileDropped')
+      .on(BusEventType.FileDropped)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileList) => {
         this.onFileSelected(payload);

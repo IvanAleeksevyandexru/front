@@ -14,6 +14,7 @@ import {
   HealthService,
   EventBusService,
   MemoModule,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -222,7 +223,7 @@ describe('SelectChildrenComponent', () => {
 
     it('should be call addMoreChild() after emit cloneButtonClickEvent', () => {
       jest.spyOn(component, 'addMoreChild');
-      eventBusService.emit('cloneButtonClickEvent');
+      eventBusService.emit(BusEventType.CloneButtonClickEvent);
 
       expect(component.addMoreChild).toHaveBeenCalled();
     });
@@ -238,7 +239,7 @@ describe('SelectChildrenComponent', () => {
       expect(control.valid).toBeTruthy();
       fixture.detectChanges();
       expect(control.valid).toBeFalsy();
-      eventBusService.emit('cloneButtonClickEvent');
+      eventBusService.emit(BusEventType.CloneButtonClickEvent);
       expect(control.valid).toBeFalsy();
     });
   });

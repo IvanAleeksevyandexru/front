@@ -2,7 +2,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DTOActionAction } from '@epgu/epgu-constructor-types';
-import { EventBusService, UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  EventBusService,
+  UnsubscribeService,
+  ConfigService,
+  BusEventType,
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 
@@ -41,7 +46,7 @@ export class ConfirmEmailComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventBusService
-      .on('counterValueChanged')
+      .on(BusEventType.CounterValueChanged)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: number) => {
         this.timerChange(payload);

@@ -17,6 +17,7 @@ import {
   DatesToolsService,
   DATE_STRING_DASH_FORMAT,
   DATE_TIME_STRING_SHORT,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { ErrorActions, FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
@@ -87,7 +88,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
         this.suggestionsFiles,
       );
     });
-
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
       .on('closeModalEvent_previewFiles')
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -96,18 +97,21 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       });
 
     this.eventBusService
-      .on('fileDeletedEvent')
+      .on(BusEventType.FileDeletedEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileItem) => this.handleFileDeleted(payload));
 
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.delete.subscribe((payload) => {
       this.eventBusService.emit(`fileDeleteEvent_${this.modalId}`, payload);
     });
 
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.download.subscribe((payload) => {
       this.eventBusService.emit(`fileDownloadEvent_${this.modalId}`, payload);
     });
 
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.suggest.subscribe((payload) => {
       this.eventBusService.emit(`fileSuggestEvent_${this.modalId}`, payload);
     });

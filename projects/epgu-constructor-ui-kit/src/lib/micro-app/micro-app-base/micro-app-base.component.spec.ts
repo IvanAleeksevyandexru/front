@@ -27,6 +27,7 @@ import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
 import { LoadService } from '@epgu/ui/services/load';
+import { BusEventType } from '../../core/services/event-bus/event-bus.service.interface';
 
 export interface TestValueType {
   someKey: string;
@@ -251,13 +252,13 @@ describe('MicroAppBaseComponent', () => {
 
     it('should call close with false micro-app if emit closeApp event is not prevStepCase', () => {
       const closeSpy = jest.spyOn(component, 'closeApp');
-      eventBusService.emit('closeApp', false);
+      eventBusService.emit(BusEventType.CloseApp, false);
       expect(closeSpy).toBeCalledWith(false);
     });
 
     it('should call close with true micro-app if emit closeApp event is prevStepCase', () => {
       const closeSpy = jest.spyOn(component, 'closeApp');
-      eventBusService.emit('closeApp', true);
+      eventBusService.emit(BusEventType.CloseApp, true);
       expect(closeSpy).toBeCalledWith(true);
     });
 

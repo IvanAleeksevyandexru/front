@@ -113,6 +113,7 @@ export * from './lib/core/services/device-detector/device-detector.types';
 export * from './lib/core/services/device-detector/smu-events.service.stub';
 export * from './lib/core/services/event-bus/event-bus.service';
 export * from './lib/core/services/event-bus/event-bus.service.stub';
+export * from './lib/core/services/event-bus/event-bus.service.interface';
 export * from './lib/core/services/logger/logger.service';
 export * from './lib/core/services/logger/logger.service.stub';
 export * from './lib/core/services/config/config.types';

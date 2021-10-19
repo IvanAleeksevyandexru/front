@@ -13,6 +13,7 @@ import {
   UnsubscribeService,
   LocalStorageService,
   LocalStorageServiceStub,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -247,7 +248,7 @@ describe('RepeatableScreenComponent', () => {
       displayMock.components[0].attrs.components[1],
     ];
     const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
-    eventBusService.emit('cloneButtonClickEvent', 'any');
+    eventBusService.emit(BusEventType.CloneButtonClickEvent, 'any');
     expect(setNewScreenSpy).toBeCalledTimes(1);
     expect(setNewScreenSpy).toBeCalledWith(components, true);
   });

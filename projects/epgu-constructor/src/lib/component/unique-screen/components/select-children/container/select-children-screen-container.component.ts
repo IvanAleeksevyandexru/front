@@ -8,7 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { ComponentActionDto, ComponentDto, ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
-import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenStoreComponentDtoI } from '../../../../../screen/screen.types';
@@ -67,7 +67,7 @@ export class SelectChildrenScreenContainerComponent implements OnInit, AfterView
   ngOnInit(): void {
     this.component = this.screenService.component;
     this.eventBusService
-      .on('updateCurrentAnswerServiceStateEvent')
+      .on(BusEventType.UpdateCurrentAnswerServiceStateEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(({ state, index }) => {
         this.updateCurrentAnswersState(state, index);

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { combineLatest, Observable } from 'rxjs';
 import { first, mapTo, startWith, take, takeUntil, tap } from 'rxjs/operators';
 import { flatten as _flatten } from 'lodash';
-import { UnsubscribeService, EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, EventBusService, BusEventType } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -52,7 +52,7 @@ export class FileUploadFormComponent
 
     combineLatest([
       this.control.valueChanges.pipe(first(), startWith('')),
-      this.eventBusService.on('fileUploadValueChangedEvent'),
+      this.eventBusService.on(BusEventType.FileUploadValueChangedEvent),
     ])
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([, uploads]) => this.updateParentForm(uploads));

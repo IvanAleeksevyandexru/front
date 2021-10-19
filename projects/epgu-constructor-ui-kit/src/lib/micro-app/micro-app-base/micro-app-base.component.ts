@@ -15,11 +15,12 @@ import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 import { LocationService } from '../../core/services/location/location.service';
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 import { MicroAppNavigationRuleService } from '../micro-app-navigation-rule/micro-app-navigation-rule.service';
-import { EventBusService } from '../../core/services/event-bus/event-bus.service';
 import { ConfigService } from '../../core/services/config/config.service';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { ConfigApiService } from '../../core/services/config-api/config-api.service';
 import { LoggerService } from '../../core/services/logger/logger.service';
+import { EventBusService } from '../../core/services/event-bus/event-bus.service';
+import { BusEventType } from '../../core/services/event-bus/event-bus.service.interface';
 
 export const getAppStorageKey = (componentType: string, componentId: string): string => {
   return `APP_STORAGE_${componentType.toUpperCase()}_${componentId.toUpperCase()}`;
@@ -67,9 +68,11 @@ export class MicroAppBaseComponent<T, U> {
     this.cdr = this.injector.get(ChangeDetectorRef);
     this.logger = this.injector.get(LoggerService);
     this.ngUnsubscribe$ = this.injector.get(UnsubscribeService);
-    this.eventSub = this.eventBusService.on('closeApp').subscribe((isPrevStepCase: boolean) => {
-      this.closeApp(isPrevStepCase);
-    });
+    this.eventSub = this.eventBusService
+      .on(BusEventType.CloseApp)
+      .subscribe((isPrevStepCase: boolean) => {
+        this.closeApp(isPrevStepCase);
+      });
     this.isCoreConfigLoaded$ = this.loadService.loaded.pipe(filter((loaded: boolean) => loaded));
   }
 

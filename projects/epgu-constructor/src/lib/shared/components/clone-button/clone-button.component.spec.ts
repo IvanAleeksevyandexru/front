@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { CloneButtonComponent } from './clone-button.component';
 
 describe('CloneButtonComponent', () => {
@@ -29,7 +29,7 @@ describe('CloneButtonComponent', () => {
     it('should call eventBusService.emit() with right context', () => {
       const spy = jest.spyOn(eventBusService, 'emit');
       component.onClick();
-      expect(spy).toBeCalledWith('cloneButtonClickEvent');
+      expect(spy).toBeCalledWith(BusEventType.CloneButtonClickEvent);
     });
   });
 });

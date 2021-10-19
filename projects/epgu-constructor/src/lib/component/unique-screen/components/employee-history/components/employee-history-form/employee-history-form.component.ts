@@ -12,7 +12,7 @@ import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { Gender, TextTransform, ComponentDto, Clarifications } from '@epgu/epgu-constructor-types';
-import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 import {
   EmployeeHistoryDataSource,
@@ -60,7 +60,7 @@ export class EmployeeHistoryFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.eventBusService
-      .on('cloneButtonClickEvent')
+      .on(BusEventType.CloneButtonClickEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
         this.employeeFormService.newGeneration();

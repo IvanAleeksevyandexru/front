@@ -53,6 +53,7 @@ export class CtaModalComponent implements AfterViewInit {
   }
 
   closeModal(): void {
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService.emit(`closeModalEvent_${this.text}`);
   }
 }

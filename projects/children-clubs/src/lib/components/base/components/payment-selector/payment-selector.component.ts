@@ -8,8 +8,12 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { EventBusService, ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-
+import {
+  BusEventType,
+  EventBusService,
+  ModalService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { takeUntil } from 'rxjs/operators';
 import { InlernoPaymentFilters, PfdoPaymentFilters, VendorType } from '../../../../typings';
@@ -59,7 +63,7 @@ export class PaymentSelectorComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value) => this.changes.emit(value));
     this.eventBusService
-      .on('RESET_FILTER')
+      .on(BusEventType.ResetFilter)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.reset());
   }

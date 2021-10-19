@@ -1,7 +1,7 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../services/validation/validation.service';
 
 @Directive({
@@ -28,6 +28,6 @@ export class ValidationTypeDirective {
     this.control.control.setAsyncValidators(onBlurValidatorFns);
     this.control.control.updateValueAndValidity();
     this.control.control.clearAsyncValidators();
-    this.eventBusService.emit('validateOnBlur');
+    this.eventBusService.emit(BusEventType.ValidateOnBlur);
   }
 }

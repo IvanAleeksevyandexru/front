@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 
 import {
+  BusEventType,
   EventBusService,
   ModalBaseComponent,
   UnsubscribeService,
@@ -67,6 +68,7 @@ export class GroupFiltersFormComponent extends ModalBaseComponent implements OnI
 
   ngOnInit(): void {
     this.initForm(this.stateService.groupFilters);
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
       .on(`closeModalEvent_${this.modalId}`)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -90,7 +92,7 @@ export class GroupFiltersFormComponent extends ModalBaseComponent implements OnI
   }
 
   resetForm(): void {
-    this.eventBusService.emit('RESET_FILTER');
+    this.eventBusService.emit(BusEventType.ResetFilter);
     this.form.reset();
   }
 

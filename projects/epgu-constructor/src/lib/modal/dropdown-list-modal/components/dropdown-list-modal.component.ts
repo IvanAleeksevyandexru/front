@@ -42,6 +42,7 @@ export class DropdownListModalComponent extends ModalBaseComponent implements On
   }
 
   ngOnInit(): void {
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
       .on('closeModalEvent_dr_modal')
       .pipe(takeUntil(this.ngUnsubscribe$))

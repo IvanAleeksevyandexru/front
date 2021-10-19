@@ -17,6 +17,7 @@ import {
   UnsubscribeService,
   ConfigService,
   HttpCancelService,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractControl, FormArray } from '@angular/forms';
 import {
@@ -69,7 +70,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.eventBusService
-      .on('validateOnBlur')
+      .on(BusEventType.ValidateOnBlur)
       .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
       .subscribe(() => this.formService.emitChanges());
   }

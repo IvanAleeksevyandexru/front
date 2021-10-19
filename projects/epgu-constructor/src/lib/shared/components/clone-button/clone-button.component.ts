@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-clone-button',
@@ -13,6 +13,6 @@ export class CloneButtonComponent {
   constructor(private eventBusService: EventBusService) {}
 
   onClick(): void {
-    this.eventBusService.emit('cloneButtonClickEvent');
+    this.eventBusService.emit(BusEventType.CloneButtonClickEvent);
   }
 }

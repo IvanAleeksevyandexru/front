@@ -20,7 +20,7 @@ import {
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject, combineLatest, from, of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 import {
   FileResponseToBackendUploadsItem,
@@ -56,7 +56,7 @@ export class FileUploadComponent implements OnInit {
   set attributes(attrs: FileUploadAttributes) {
     this.attrs.next(attrs);
     this.value.files = this.fillUploadsDefaultValue();
-    this.eventBusService.emit('fileUploadValueChangedEvent', this.value);
+    this.eventBusService.emit(BusEventType.FileUploadValueChangedEvent, this.value);
   }
   get attributes(): FileUploadAttributes {
     return this.attrs.getValue();
@@ -159,7 +159,7 @@ export class FileUploadComponent implements OnInit {
     this.setUploadersRestrictions();
 
     this.eventBusService
-      .on('fileUploadItemValueChangedEvent')
+      .on(BusEventType.FileUploadItemValueChangedEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileResponseToBackendUploadsItem) => {
         this.handleNewValueForItem(payload);
@@ -208,7 +208,7 @@ export class FileUploadComponent implements OnInit {
     });
     this.value.errors = $eventData.errors;
 
-    this.eventBusService.emit('fileUploadValueChangedEvent', this.value);
+    this.eventBusService.emit(BusEventType.FileUploadValueChangedEvent, this.value);
   }
 
   /**

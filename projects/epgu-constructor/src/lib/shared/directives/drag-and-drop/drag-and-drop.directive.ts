@@ -1,5 +1,5 @@
 import { Directive, HostBinding, HostListener } from '@angular/core';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
@@ -31,7 +31,7 @@ export class DragAndDropDirective {
     this.fileOver = false;
     let files = evt.dataTransfer.files;
     if (files.length > 0) {
-      this.eventBusService.emit('fileDropped', files as FileList);
+      this.eventBusService.emit(BusEventType.FileDropped, files as FileList);
     }
   }
 }

@@ -69,6 +69,7 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
     super(injector);
   }
   ngOnInit(): void {
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
       .on(`closeModalEvent_multi-choice-dictionary`)
       .pipe(takeUntil(this.ngUnsubscribe$))
