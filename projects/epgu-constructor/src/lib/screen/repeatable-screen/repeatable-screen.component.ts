@@ -18,7 +18,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { isEqual } from 'lodash';
-import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import {
@@ -121,7 +121,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     this.init$.subscribe();
     this.uniquenessErrorsService.init();
     this.eventBusService
-      .on('cloneButtonClickEvent')
+      .on(BusEventType.CloneButtonClickEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.createScreen(this.propData.components[0].attrs, true, true));
   }

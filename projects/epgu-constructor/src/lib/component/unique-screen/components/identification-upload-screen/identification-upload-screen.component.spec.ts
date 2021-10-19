@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BaseComponentsModule, EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BaseComponentsModule, BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { MockDirective, MockProvider } from 'ng-mocks';
@@ -157,7 +157,7 @@ describe('IdentificationUploadScreenComponent', () => {
     it('should not disable button', () => {
       component.ngOnInit();
 
-      eventBusService.emit('fileUploadValueChangedEvent', uploaders);
+      eventBusService.emit(BusEventType.FileUploadValueChangedEvent, uploaders);
 
       expect(component.disabled$$.getValue()).toBeFalsy();
     });
@@ -166,7 +166,7 @@ describe('IdentificationUploadScreenComponent', () => {
       uploaders.errors.push(1);
       component.ngOnInit();
 
-      eventBusService.emit('fileUploadValueChangedEvent', uploaders);
+      eventBusService.emit(BusEventType.FileUploadValueChangedEvent, uploaders);
 
       expect(component.disabled$$.getValue()).toBeTruthy();
     });
@@ -176,7 +176,7 @@ describe('IdentificationUploadScreenComponent', () => {
       uploaders.files[1].required = false;
       component.ngOnInit();
 
-      eventBusService.emit('fileUploadValueChangedEvent', uploaders);
+      eventBusService.emit(BusEventType.FileUploadValueChangedEvent, uploaders);
 
       expect(component.disabled$$.getValue()).toBeTruthy();
     });
@@ -185,7 +185,7 @@ describe('IdentificationUploadScreenComponent', () => {
       uploaders.files[0].value[0].uploaded = false;
       component.ngOnInit();
 
-      eventBusService.emit('fileUploadValueChangedEvent', uploaders);
+      eventBusService.emit(BusEventType.FileUploadValueChangedEvent, uploaders);
 
       expect(component.disabled$$.getValue()).toBeTruthy();
     });
@@ -195,18 +195,18 @@ describe('IdentificationUploadScreenComponent', () => {
     it('should be processing event status = true', () => {
       jest.spyOn(component.uploaderProcessing, 'next');
       jest.spyOn(screenService, 'updateLoading');
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: true, uploadId: '1' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: true, uploadId: '1' });
       expect(component.uploaderProcessing.next).toHaveBeenCalledWith(['1']);
       expect(screenService.updateLoading).toHaveBeenCalledWith(true);
     });
 
     it('should be processing event status = false', () => {
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: true, uploadId: '1' });
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: true, uploadId: '2' });
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: false, uploadId: '2' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: true, uploadId: '1' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: true, uploadId: '2' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: false, uploadId: '2' });
       jest.spyOn(component.uploaderProcessing, 'next');
       jest.spyOn(screenService, 'updateLoading');
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: false, uploadId: '1' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: false, uploadId: '1' });
       expect(component.uploaderProcessing.next).toHaveBeenCalledWith([]);
       expect(screenService.updateLoading).toHaveBeenCalledWith(false);
     });

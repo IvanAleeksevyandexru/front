@@ -3,7 +3,12 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
 
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { ModalService, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ModalService,
+  EventBusService,
+  UnsubscribeService,
+  BusEventType,
+} from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
@@ -100,7 +105,7 @@ export class FileUploadScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.eventBusService
-      .on('fileUploadValueChangedEvent')
+      .on(BusEventType.FileUploadValueChangedEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileResponseToBackendUploadsItem) => {
         this.handleNewValueSet(payload);
@@ -112,7 +117,7 @@ export class FileUploadScreenComponent implements OnInit {
     this.uploaderProcessing$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
 
     this.eventBusService
-      .on('UPLOADER_PROCESSING_STATUS')
+      .on(BusEventType.UploaderProcessingStatus)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: { uploadId: string; status: boolean }) =>
         this.setProcessingStatus(payload),

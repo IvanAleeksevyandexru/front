@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import { DownloadService, ModalService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, DownloadService, ModalService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
@@ -199,10 +199,10 @@ describe('AutocompleteService', () => {
         prepareService,
         'setValuesToCachedAnswersOrCompValue',
       );
-      eventBusService.on('suggestionSelectedEvent').subscribe(() => {
+      eventBusService.on(BusEventType.SuggestionSelectedEvent).subscribe(() => {
         expect(servicesetValuesToCachedAnswersOrCompValueSpy).toBeCalled();
       });
-      eventBusService.emit('suggestionSelectedEvent');
+      eventBusService.emit(BusEventType.SuggestionSelectedEvent);
     });
 
     it('should call findAndUpdateComponentWithValue() on "suggestionSelectedEvent"', () => {
@@ -210,52 +210,52 @@ describe('AutocompleteService', () => {
         prepareService,
         'findAndUpdateComponentWithValue',
       );
-      eventBusService.on('suggestionSelectedEvent').subscribe(() => {
+      eventBusService.on(BusEventType.SuggestionSelectedEvent).subscribe(() => {
         expect(serviceFindAndUpdateComponentWithValueSpy).toBeCalled();
       });
-      eventBusService.emit('suggestionSelectedEvent', mockSuggestionItemList);
+      eventBusService.emit(BusEventType.SuggestionSelectedEvent, mockSuggestionItemList);
     });
 
     it('should call screenService.updateScreenContent() on "suggestionSelectedEvent"', () => {
       const screenServiceUpdateScreenContentSpy = spyOn(screenService, 'updateScreenContent');
-      eventBusService.on('suggestionSelectedEvent').subscribe(() => {
+      eventBusService.on(BusEventType.SuggestionSelectedEvent).subscribe(() => {
         expect(screenServiceUpdateScreenContentSpy).toBeCalled();
       });
-      eventBusService.emit('suggestionSelectedEvent');
+      eventBusService.emit(BusEventType.SuggestionSelectedEvent);
     });
 
     it('should call modalService.openModal() on "suggestionsEditEvent"', () => {
       const modalServiceOpenModalSpy = spyOn(modalService, 'openModal');
-      eventBusService.on('suggestionsEditEvent').subscribe(() => {
+      eventBusService.on(BusEventType.SuggestionsEditEvent).subscribe(() => {
         expect(modalServiceOpenModalSpy).toBeCalled();
       });
-      eventBusService.emit('suggestionsEditEvent');
+      eventBusService.emit(BusEventType.SuggestionsEditEvent);
     });
 
     it('should call groupSuggestionsApiCall() on "suggestionDeleteEvent"', () => {
       const serviceGroupSuggestionsApiCallSpy = spyOn(service, 'groupSuggestionsApiCall');
-      eventBusService.on('suggestionDeleteEvent').subscribe(() => {
+      eventBusService.on(BusEventType.SuggestionDeleteEvent).subscribe(() => {
         expect(serviceGroupSuggestionsApiCallSpy).toBeCalled();
       });
-      eventBusService.emit('suggestionDeleteEvent');
+      eventBusService.emit(BusEventType.SuggestionDeleteEvent);
     });
 
     it('should call fieldsSuggestionsApiCall() on "suggestionDeleteEvent"', () => {
       const serviceFieldsSuggestionsApiCallSpy = spyOn(service, 'fieldsSuggestionsApiCall');
       const display = _cloneDeep(mockData.display);
       delete display.suggestion;
-      eventBusService.on('suggestionDeleteEvent').subscribe(() => {
+      eventBusService.on(BusEventType.SuggestionDeleteEvent).subscribe(() => {
         expect(serviceFieldsSuggestionsApiCallSpy).toBeCalled();
       });
-      eventBusService.emit('suggestionDeleteEvent');
+      eventBusService.emit(BusEventType.SuggestionDeleteEvent);
     });
 
     it('should call autocompletePrepareService.deleteCachedValueItem() on "deleteCachedValueItem"', () => {
       const prepareServiceDeleteCachedValueItemSpy = spyOn(prepareService, 'deleteCachedValueItem');
-      eventBusService.on('deleteCachedValueItem').subscribe(() => {
+      eventBusService.on(BusEventType.DeleteCachedValueItem).subscribe(() => {
         expect(prepareServiceDeleteCachedValueItemSpy).toBeCalled();
       });
-      eventBusService.emit('deleteCachedValueItem');
+      eventBusService.emit(BusEventType.DeleteCachedValueItem);
     });
   });
 

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ScreenButton } from '@epgu/epgu-constructor-types';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-screen-buttons',
@@ -20,6 +20,6 @@ export class ScreenButtonsComponent {
 
   setClickedButton(button: ScreenButton): void {
     this.clickedButton = button;
-    this.eventBusService.emit('screenButtonClicked', button);
+    this.eventBusService.emit(BusEventType.ScreenButtonClicked, button);
   }
 }

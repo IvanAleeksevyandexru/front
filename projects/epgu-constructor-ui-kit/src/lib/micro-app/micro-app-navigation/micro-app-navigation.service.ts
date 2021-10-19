@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MicroAppStateService } from '../micro-app-state/micro-app-state.service';
 import { MicroAppNavigationRuleService } from '../micro-app-navigation-rule/micro-app-navigation-rule.service';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
+import { BusEventType } from '../../core/services/event-bus/event-bus.service.interface';
 
 @Injectable({ providedIn: 'root' })
 export class MicroAppNavigationService {
@@ -17,7 +18,7 @@ export class MicroAppNavigationService {
     if (next) {
       this.appStateService.updateCurrentComponent(next);
     } else {
-      this.eventBusService.emit('closeApp', false);
+      this.eventBusService.emit(BusEventType.CloseApp, false);
     }
   }
 
@@ -26,7 +27,7 @@ export class MicroAppNavigationService {
     if (prev) {
       this.appStateService.updateCurrentComponent(prev);
     } else {
-      this.eventBusService.emit('closeApp', true);
+      this.eventBusService.emit(BusEventType.CloseApp, true);
     }
   }
 

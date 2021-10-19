@@ -9,6 +9,7 @@ import {
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import {
+  BusEventType,
   ConfigService,
   DownloadService,
   EventBusService,
@@ -117,7 +118,7 @@ export class ActionToolsService {
     const [mnemonic, value, id] = action.value.split(':');
     targetElement.setAttribute('disabled', 'disabled');
     this.autocompleteApiService.deleteSuggestionsField(Number(id)).subscribe(() => {
-      this.eventBusService.emit('suggestionDeleteEvent', { mnemonic, value, id });
+      this.eventBusService.emit(BusEventType.SuggestionDeleteEvent, { mnemonic, value, id });
     });
   }
 

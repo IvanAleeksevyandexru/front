@@ -24,6 +24,7 @@ import {
   DisclaimerDto,
 } from '@epgu/epgu-constructor-types';
 import {
+  BusEventType,
   DATE_STRING_DOT_FORMAT,
   EventBusService,
   UnsubscribeService,
@@ -89,7 +90,7 @@ export class SelectChildrenComponent implements OnInit {
       });
 
     this.eventBusService
-      .on('cloneButtonClickEvent')
+      .on(BusEventType.CloneButtonClickEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
         this.addMoreChild();
@@ -213,7 +214,7 @@ export class SelectChildrenComponent implements OnInit {
     }
 
     this.passDataToSend(this.items, index);
-    this.eventBusService.emit('deleteCachedValueItem', {
+    this.eventBusService.emit(BusEventType.DeleteCachedValueItem, {
       index,
     });
   }
@@ -233,7 +234,7 @@ export class SelectChildrenComponent implements OnInit {
       }
       return childToSend;
     });
-    this.eventBusService.emit('updateCurrentAnswerServiceStateEvent', {
+    this.eventBusService.emit(BusEventType.UpdateCurrentAnswerServiceStateEvent, {
       state: itemsToSend,
       index,
     });
@@ -292,7 +293,7 @@ export class SelectChildrenComponent implements OnInit {
     };
 
     if (!event && index !== undefined) {
-      this.eventBusService.emit('deleteCachedValueItem', {
+      this.eventBusService.emit(BusEventType.DeleteCachedValueItem, {
         index,
       });
     }

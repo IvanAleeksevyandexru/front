@@ -25,6 +25,7 @@ import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 
 import {
+  BusEventType,
   EventBusService,
   FocusManagerService,
   UnsubscribeService,
@@ -133,7 +134,7 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
         filter(() => this.passportForm.valid),
       )
       .subscribe((value: ComponentBase) => {
-        this.eventBusService.emit('passportValueChangedEvent', value);
+        this.eventBusService.emit(BusEventType.PassportValueChangedEvent, value);
         this.cdr.markForCheck();
       });
   }

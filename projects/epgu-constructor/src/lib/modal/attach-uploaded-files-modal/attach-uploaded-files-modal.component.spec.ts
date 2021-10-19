@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeviceDetectorServiceStub, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, DeviceDetectorServiceStub, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { AttachUploadedFilesModalComponent } from './attach-uploaded-files-modal.component';
 import { BaseModule } from '../../shared/base.module';
@@ -117,18 +117,20 @@ describe('AttachUploadedFilesModalComponent', () => {
 
     it('should call closeModal() on "closeModalEvent_previewFiles"', () => {
       const componentCloseModalSpy = spyOn(component, 'closeModal');
+      // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
       eventBusService.on('closeModalEvent_previewFiles').subscribe(() => {
         expect(componentCloseModalSpy).toBeCalled();
       });
+      // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
       eventBusService.emit('closeModalEvent_previewFiles');
     });
 
     it('should call handleFileDeleted() on "fileDeletedEvent"', () => {
       const handleFileDeletedSpy = spyOn(component, 'handleFileDeleted');
-      eventBusService.on('fileDeletedEvent').subscribe(() => {
+      eventBusService.on(BusEventType.FileDeletedEvent).subscribe(() => {
         expect(handleFileDeletedSpy).toBeCalled();
       });
-      eventBusService.emit('fileDeletedEvent');
+      eventBusService.emit(BusEventType.FileDeletedEvent);
     });
   });
 

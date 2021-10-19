@@ -16,6 +16,7 @@ import {
   EventBusService,
   UnsubscribeService,
   ConfigService,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
@@ -118,7 +119,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   processingStatus$ = this.process.processing$.pipe(
     tap((status) => {
-      this.eventBusService.emit('UPLOADER_PROCESSING_STATUS', {
+      this.eventBusService.emit(BusEventType.UploaderProcessingStatus, {
         uploadId: this.data.uploadId,
         status,
       });
@@ -152,18 +153,21 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
       .on(`fileDeleteEvent_${this.uploader.data.uploadId}`)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileItem) => {
         this.addDelete(payload);
       });
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
       .on(`fileDownloadEvent_${this.uploader.data.uploadId}`)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileItem) => {
         this.addDownload(payload);
       });
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
       .on(`fileSuggestEvent_${this.uploader.data.uploadId}`)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -267,7 +271,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
 
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
-    this.eventBusService.emit('fileUploadItemValueChangedEvent', {
+    this.eventBusService.emit(BusEventType.FileUploadItemValueChangedEvent, {
       uploadId: this.uploader.data.uploadId,
       required: this.uploader.data?.required ?? true,
       value,

@@ -9,7 +9,7 @@ import {
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 
-import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -62,7 +62,7 @@ export class ConfirmWithCodeComponent implements OnInit {
   ngOnInit(): void {
     this.initCodeFormArray();
     this.eventBusService
-      .on('counterValueChanged')
+      .on(BusEventType.CounterValueChanged)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: number) => {
         this.timerChange(payload);

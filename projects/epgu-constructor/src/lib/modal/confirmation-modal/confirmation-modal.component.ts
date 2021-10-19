@@ -23,6 +23,7 @@ import {
   ConfirmationModalBaseButton,
   ConfigService,
   ConfirmationModalAnswerButton,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierService } from '@epgu/ui/services/notifier';
 
@@ -69,7 +70,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     if (this.showCrossButton === undefined) {
       this.showCrossButton = Boolean(this.title);
     }
-
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
       .on(`closeModalEvent_${this.text}`)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -78,7 +79,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
       });
 
     this.eventBusService
-      .on('screenButtonClicked')
+      .on(BusEventType.ScreenButtonClicked)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((button: ScreenButton) => {
         if (button.type === ActionType.deliriumNextStep) {

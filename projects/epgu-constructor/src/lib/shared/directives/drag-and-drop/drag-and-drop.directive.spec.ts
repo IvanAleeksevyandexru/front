@@ -3,7 +3,7 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { takeUntil } from 'rxjs/operators';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DragAndDropDirective } from './drag-and-drop.directive';
 
@@ -39,7 +39,7 @@ class DragAndDropTestComponent {
     private ngUnsubscribe$: UnsubscribeService,
   ) {
     this.eventBusService
-      .on('fileDropped')
+      .on(BusEventType.FileDropped)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileList) => this.onFileSelected(payload));
   }

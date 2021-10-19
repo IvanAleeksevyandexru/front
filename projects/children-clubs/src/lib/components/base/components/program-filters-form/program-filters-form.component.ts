@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import {
   EventBusService,
+  BusEventType,
   ModalBaseComponent,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -106,6 +107,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
   ngOnInit(): void {
     this.initForm(this.stateService.programFilters);
     this.focusData$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
       .on(`closeModalEvent_${this.modalId}`)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -156,7 +158,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
   }
 
   resetForm(): void {
-    this.eventBusService.emit('RESET_FILTER');
+    this.eventBusService.emit(BusEventType.ResetFilter);
     this.form.reset({
       [this.formFields.focus]: null,
       [this.formFields.direction]: null,

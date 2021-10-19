@@ -1,7 +1,7 @@
 import { Directive, Input, OnChanges } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 @Directive({
@@ -23,7 +23,7 @@ export class CounterDirective implements OnChanges {
         switchMap((options) => {
           return timer(0, options.interval).pipe(
             take(options.count),
-            tap(() => this.eventBusService.emit('counterValueChanged', --options.count)),
+            tap(() => this.eventBusService.emit(BusEventType.CounterValueChanged, --options.count)),
           );
         }),
         takeUntil(this.ngUnsubscribe$),

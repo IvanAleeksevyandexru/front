@@ -11,6 +11,7 @@ import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockPipe, MockProvider } from 'ng-mocks';
 import { CertificateEaisdoComponent } from './certificate-eaisdo.component';
 import {
+  BusEventType,
   EventBusService,
   ImgPrefixerPipe,
   LoggerService,
@@ -301,7 +302,7 @@ describe('CertificateEaisdoComponent', () => {
         .mockReturnValue(
           (of(okResponse) as unknown) as Observable<ActionApiResponse<EaisdoResponse>>,
         );
-      eventBusService.emit('screenButtonClicked', buttonMock);
+      eventBusService.emit(BusEventType.ScreenButtonClicked, buttonMock);
 
       return { externalIntegrationSpy };
     };

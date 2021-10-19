@@ -1,6 +1,6 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, BusEventType } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CounterDirective } from './counter.directive';
 
@@ -14,7 +14,7 @@ class TestCounterComponent {
   timer: number;
   constructor(private eventBusService: EventBusService) {
     this.eventBusService
-      .on('counterValueChanged')
+      .on(BusEventType.CounterValueChanged)
       .subscribe((payload: number) => this.change(payload));
   }
   change(event: number) {

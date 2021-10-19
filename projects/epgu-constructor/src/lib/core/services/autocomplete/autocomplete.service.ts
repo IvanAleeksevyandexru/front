@@ -8,7 +8,7 @@ import {
   takeUntil,
 } from 'rxjs/operators';
 import { ComponentDto, DisplayDto, ComponentFieldDto } from '@epgu/epgu-constructor-types';
-import { ModalService, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, EventBusService, UnsubscribeService, BusEventType } from '@epgu/epgu-constructor-ui-kit';
 
 import { ScreenService } from '../../../screen/screen.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
@@ -127,7 +127,7 @@ export class AutocompleteService {
       });
 
     this.eventBusService
-      .on('suggestionSelectedEvent')
+      .on(BusEventType.SuggestionSelectedEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItemList): void => {
         let { mnemonic, value, id, componentsGroupIndex } = payload;
@@ -174,7 +174,7 @@ export class AutocompleteService {
       });
 
     this.eventBusService
-      .on('suggestionsEditEvent')
+      .on(BusEventType.SuggestionsEditEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItem) => {
         const text = payload.list.reduce((acc, item: ISuggestionItemList): string => {
@@ -202,7 +202,7 @@ export class AutocompleteService {
       });
 
     this.eventBusService
-      .on('suggestionDeleteEvent')
+      .on(BusEventType.SuggestionDeleteEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: ISuggestionItemList): void => {
         const { mnemonic } = payload;
@@ -215,7 +215,7 @@ export class AutocompleteService {
       });
 
     this.eventBusService
-      .on('deleteCachedValueItem')
+      .on(BusEventType.DeleteCachedValueItem)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: { index: number }): void => {
         const { index } = payload;

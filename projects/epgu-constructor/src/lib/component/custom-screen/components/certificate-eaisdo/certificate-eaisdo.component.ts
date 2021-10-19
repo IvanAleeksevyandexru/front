@@ -1,5 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { EventBusService, LoggerService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  BusEventType,
+  EventBusService,
+  LoggerService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { filter, takeUntil } from 'rxjs/operators';
 import {
   ActionApiResponse,
@@ -43,7 +48,7 @@ export class CertificateEaisdoComponent
 
     this.component = this.control.value;
     this.eventBusService
-      .on('screenButtonClicked')
+      .on(BusEventType.ScreenButtonClicked)
       .pipe(
         takeUntil(this.ngUnsubscribe$),
         filter(

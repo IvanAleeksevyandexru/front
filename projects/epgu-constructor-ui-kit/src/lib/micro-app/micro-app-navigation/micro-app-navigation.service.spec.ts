@@ -6,6 +6,7 @@ import { MicroAppStateServiceStub } from '../micro-app-state/micro-app-state.ser
 import { MicroAppNavigationRuleService } from '../micro-app-navigation-rule/micro-app-navigation-rule.service';
 import { MicroAppNavigationRuleServiceStub } from '../micro-app-navigation-rule/micro-app-navigation-rule.service.stub';
 import { EventBusService } from '../../core/services/event-bus/event-bus.service';
+import { BusEventType } from '../../core/services/event-bus/event-bus.service.interface';
 
 describe('MicroAppNavigationService', () => {
   let service: MicroAppNavigationService;
@@ -43,7 +44,7 @@ describe('MicroAppNavigationService', () => {
     it('should emmit closeApp event with false payload', (done) => {
       jest.spyOn(appNavigationRuleService, 'getNext').mockReturnValue(undefined);
       const spy = jest.spyOn(appStateService, 'updateCurrentComponent');
-      eventBusService.on('closeApp').subscribe((payload) => {
+      eventBusService.on(BusEventType.CloseApp).subscribe((payload) => {
         expect(payload).toBe(false);
         done();
       });
@@ -63,7 +64,7 @@ describe('MicroAppNavigationService', () => {
     it('should emmit closeApp event with false true', (done) => {
       jest.spyOn(appNavigationRuleService, 'getPrev').mockReturnValue(undefined);
       const spy = jest.spyOn(appStateService, 'updateCurrentComponent');
-      eventBusService.on('closeApp').subscribe((payload) => {
+      eventBusService.on(BusEventType.CloseApp).subscribe((payload) => {
         expect(payload).toBe(true);
         done();
       });

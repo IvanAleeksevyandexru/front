@@ -130,6 +130,7 @@ describe('DropdownListModalComponent', () => {
 
   it('should call close modal', () => {
     jest.spyOn(component, 'closeModal');
+    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     eventBusService.on('closeModalEvent_dr_modal').subscribe(() => {
       expect(component.closeModal).toBeCalledTimes(0);
     });

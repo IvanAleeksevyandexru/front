@@ -3,7 +3,7 @@ import {
   ISuggestionItem,
   ISuggestionItemList,
 } from '../../../core/services/autocomplete/autocomplete.inteface';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { SuggestMonitorService } from '../suggest-monitor/suggest-monitor.service';
 import { FieldTypes, SuggestActions } from '../../constants/suggest';
 
@@ -20,9 +20,9 @@ export class SuggestHandlerService {
     // и обычный выбор опции из списка саджестов, соответственно, вызывать модалку для удаления неактуальных саджестов или
     // запускать механизм подстановки выбранного значения в инпут.
     if (Object.prototype.hasOwnProperty.call(event, 'isEdit')) {
-      this.eventBusService.emit('suggestionsEditEvent', event as ISuggestionItem);
+      this.eventBusService.emit(BusEventType.SuggestionsEditEvent, event as ISuggestionItem);
     } else {
-      this.eventBusService.emit('suggestionSelectedEvent', {
+      this.eventBusService.emit(BusEventType.SuggestionSelectedEvent, {
         ...event,
         componentsGroupIndex,
       } as ISuggestionItemList);

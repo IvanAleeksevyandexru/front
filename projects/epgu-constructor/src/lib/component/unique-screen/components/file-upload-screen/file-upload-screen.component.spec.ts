@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
@@ -119,18 +119,18 @@ describe('FileUploadScreenComponent', () => {
     it('should be processing event status = true', () => {
       jest.spyOn(component.uploaderProcessing, 'next');
       jest.spyOn(screenService, 'updateLoading');
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: true, uploadId: '1' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: true, uploadId: '1' });
       expect(component.uploaderProcessing.next).toHaveBeenCalledWith(['1']);
       expect(screenService.updateLoading).toHaveBeenCalledWith(true);
     });
 
     it('should be processing event status = false', () => {
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: true, uploadId: '1' });
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: true, uploadId: '2' });
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: false, uploadId: '2' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: true, uploadId: '1' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: true, uploadId: '2' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: false, uploadId: '2' });
       jest.spyOn(component.uploaderProcessing, 'next');
       jest.spyOn(screenService, 'updateLoading');
-      eventBusService.emit('UPLOADER_PROCESSING_STATUS', { status: false, uploadId: '1' });
+      eventBusService.emit(BusEventType.UploaderProcessingStatus, { status: false, uploadId: '1' });
       expect(component.uploaderProcessing.next).toHaveBeenCalledWith([]);
       expect(screenService.updateLoading).toHaveBeenCalledWith(false);
     });
@@ -153,7 +153,7 @@ describe('FileUploadScreenComponent', () => {
         errors: [],
       };
 
-      eventBusService.emit('fileUploadValueChangedEvent', eventData);
+      eventBusService.emit(BusEventType.FileUploadValueChangedEvent, eventData);
       expect(currentAnswersService.state).toEqual({
         id: '',
         type: 'FileUploadComponent',
@@ -194,7 +194,7 @@ describe('FileUploadScreenComponent', () => {
         },
       } as any;
 
-      eventBusService.emit('fileUploadValueChangedEvent', eventData);
+      eventBusService.emit(BusEventType.FileUploadValueChangedEvent, eventData);
 
       expect(currentAnswersService.state).toEqual({
         id: '',
@@ -343,7 +343,7 @@ describe('FileUploadScreenComponent', () => {
         const debugEl = fixture.debugElement.query(By.css(selector));
 
         // not each uploader has a file
-        eventBusService.emit('fileUploadValueChangedEvent', {
+        eventBusService.emit(BusEventType.FileUploadValueChangedEvent, {
           files: [
             {
               value: [],
@@ -362,7 +362,7 @@ describe('FileUploadScreenComponent', () => {
         expect(debugEl.componentInstance.disabled).toBeTruthy();
 
         // not all files are uploaded
-        eventBusService.emit('fileUploadValueChangedEvent', {
+        eventBusService.emit(BusEventType.FileUploadValueChangedEvent, {
           files: [
             {
               value: [
@@ -381,7 +381,7 @@ describe('FileUploadScreenComponent', () => {
       it('should be FALSE if each uploader has a file AND all files are uploaded', () => {
         const debugEl = fixture.debugElement.query(By.css(selector));
 
-        eventBusService.emit('fileUploadValueChangedEvent', {
+        eventBusService.emit(BusEventType.FileUploadValueChangedEvent, {
           files: [
             {
               required: true,
