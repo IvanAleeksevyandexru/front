@@ -51,6 +51,7 @@ export * from './lib/base/components/yandex-map/yandex-map.module';
 export * from './lib/base/components/yandex-map/yandex-map.component';
 export * from './lib/base/components/yandex-map/yandex-map.service';
 export * from './lib/base/components/yandex-map/constants';
+export * from './lib/base/components/yandex-map/mapLayouts';
 
 export * from './lib/base/components/time-calendar/time-calendar.module';
 export * from './lib/base/components/time-calendar/time-calendar.component';

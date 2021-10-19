@@ -18,11 +18,11 @@
     <ng-container *ngIf="!mapObject.isSelected; else isSelected">
       <lib-button
         [showLoader]="showLoader | async"
-        [disabled]="!mapObject.agreement"
+        [disabled]="mapObject.agreement === false"
         (click)="selectObject(mapObject, $event)"
         class="submit-button"
         width="wide"
-        >Выбрать
+        >{{ attrs.selectBtnName || 'Выбрать' }}
       </lib-button>
     </ng-container>
     <ng-template #isSelected>

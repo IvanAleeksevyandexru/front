@@ -95,6 +95,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public screenActionButtons: ScreenButton[] = [];
   public searchPanelType: string;
   public balloonContentType: string;
+  public initZoom: number;
 
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
@@ -104,6 +105,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private DEFAULT_ZOOM = 9;
   private nextStepAction = NEXT_STEP_ACTION;
   private isMultiSelect = false;
+  private isCommonDictionary; // Флаг отвечающий за общую логику карты. Например для правосудия она отключается и реализована на searchPanel
 
   private initData$ = combineLatest([
     this.screenService.component$,
@@ -137,6 +139,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnInit(): void {
+    this.selectMapObjectService.isNoDepartmentErrorVisible
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        setTimeout(() => {
+          this.cdr.detectChanges();
+        }, 0);
+      });
     this.screenService.isLoaderVisible.next(true);
     this.initData$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -234,7 +243,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initVariable(): void {
     this.initComponentAttrs();
-    this.controlsLogicInit();
+    if (this.isCommonDictionary) {
+      this.controlsLogicInit();
+    }
+    this.initMapCenter();
   }
 
   private initComponentAttrs(): void {
@@ -242,7 +254,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.mapType =
       (this.data.attrs.mapType as MapTypes) || MapTypes.commonMap;
     this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
+    this.initZoom = this.data.attrs.mapOptions?.initZoom as number;
     this.isMultiSelect = this.data.attrs.isMultiSelect;
+    this.isCommonDictionary = this.data.attrs.isCommonDictionary ?? true;
     this.valueFromCache = this.screenService.getCompValueFromCachedAnswers();
     this.searchPanelType = PanelTypes[this.selectMapObjectService.mapType];
     this.balloonContentType = ContentTypes[this.selectMapObjectService.mapType];
@@ -321,7 +335,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .subscribe(() => {
         this.initMap();
       });
-    this.initMapCenter();
   }
 
   private getUrlTemplate(): string {
@@ -475,7 +488,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         if (dictionary.error !== null && dictionary.error?.code !== 0) {
           return throwError(dictionary.error);
         }
-        this.isNoDepartmentErrorVisible = !dictionary.total;
+        this.selectMapObjectService.isNoDepartmentErrorVisible.next(!dictionary.total);
         this.selectMapObjectService.dictionary = dictionary;
         if (this.isMultiSelect && this.valueFromCache) {
           this.applySelectedObjects(dictionary);

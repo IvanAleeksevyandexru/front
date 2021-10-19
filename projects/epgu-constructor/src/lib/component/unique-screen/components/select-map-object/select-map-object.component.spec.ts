@@ -318,6 +318,16 @@ describe('SelectMapObjectComponent', () => {
     expect(btn).toBeTruthy();
   });
 
+  it('should rename button', () => {
+    component.selectedValue = mockMvdPoint;
+    component.data.attrs.balloonAttrs = {
+      selectBtnName: 'тест',
+    };
+    fixture.detectChanges();
+    const btn = fixture.debugElement.query(By.css('.submit-button .button-container span'));
+    expect(btn.nativeElement.innerHTML.trim()).toEqual('тест');
+  });
+
   it('initSelectedValue should call centerAllPoints when needToAutoCenterAllPoints is true', () => {
     component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(component, 'centerAllPoints');

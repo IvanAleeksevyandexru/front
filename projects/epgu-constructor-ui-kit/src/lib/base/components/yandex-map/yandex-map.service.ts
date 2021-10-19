@@ -24,7 +24,7 @@ export class YandexMapService implements OnDestroy {
   public ymaps;
   public mapOptions;
 
-  private objectManager;
+  public objectManager;
   private activePlacemarkId: number | string;
   private activeClusterHash: string;
   private MIN_ZOOM = 4;
@@ -61,7 +61,7 @@ export class YandexMapService implements OnDestroy {
       if (item.center[0] && item.center[1]) {
         const obj = {
           type: 'Feature',
-          id: index,
+          id: item.id || index,
           geometry: { type: 'Point', coordinates: item.center },
           properties: {
             res: { ...item.obj },
@@ -113,6 +113,7 @@ export class YandexMapService implements OnDestroy {
   public centeredPlaceMark<T>(
     feature: IFeatureItem<T> | IClusterItem<T>,
     zoomToObject = false,
+    needSetCenter = true,
   ): void {
     this.closeBalloon();
     if (
@@ -129,10 +130,12 @@ export class YandexMapService implements OnDestroy {
     }
     if (coords && coords[0] && coords[1] && feature.type === IFeatureTypes.Feature) {
       this.objectManager.objects.setObjectOptions(feature.id as number, this.icons.red);
-      this.yaMapService.map.setCenter(
-        [coords[0], coords[1] + POINT_ON_MAP_OFFSET],
-        zoomToObject ? this.MAX_ZOOM : undefined,
-      );
+      if (needSetCenter) {
+        this.yaMapService.map.setCenter(
+          [coords[0], coords[1] + POINT_ON_MAP_OFFSET],
+          zoomToObject ? this.MAX_ZOOM : undefined,
+        );
+      }
     }
 
     const object =
@@ -207,6 +210,8 @@ export class YandexMapService implements OnDestroy {
       maxZoom: this.MAX_ZOOM,
       ...options,
     });
+    // Нужно для того чтобы пины были поверх поповеров
+    this.yaMapService.map.panes.get('places').setZIndex(750);
     this.yaMapService.map.copyrights.togglePromo();
   }
 
@@ -284,7 +289,7 @@ export class YandexMapService implements OnDestroy {
    * Перекрашивает точки на карте
    */
   public mapPaint(): void {
-    this.objectManager.clusters.getAll().forEach((cluster) => {
+    this.objectManager?.clusters.getAll().forEach((cluster) => {
       let isClusterWithActiveObject;
       let selectedFeatureCnt = 0;
       let clusterColor;
@@ -323,7 +328,7 @@ export class YandexMapService implements OnDestroy {
   }
 
   private getClusterByHash(clusterHash: string): IClusterItem<unknown> {
-    return this.objectManager.clusters.getAll().find((cluster) => {
+    return this.objectManager?.clusters.getAll().find((cluster) => {
       return this.getClusterHash(cluster) === clusterHash;
     });
   }
@@ -377,6 +382,7 @@ export class YandexMapService implements OnDestroy {
       zoomMargin: 64,
       clusterBalloonItemContentLayout: this.getCustomBalloonContentLayout(),
       clusterHasBalloon: false,
+      hasBalloon: false,
       ...settings,
     };
 
