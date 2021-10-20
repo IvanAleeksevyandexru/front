@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 
 import { LogicComponents } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { BehaviorSubject } from 'rxjs';
 import {
   ScreenComponentTypes,
@@ -37,6 +37,7 @@ export class LogicComponentResolverComponent implements AfterViewInit {
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef,
+    private logger: LoggerService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -48,7 +49,8 @@ export class LogicComponentResolverComponent implements AfterViewInit {
     const component = this.getComponentByType(cmpType);
 
     if (!component) {
-      this.handleComponentError(cmpType);
+      this.handleComponentNotSupported(cmpType);
+      return;
     }
 
     const componentFactory: ComponentFactory<ScreenComponentTypes> = this.componentFactoryResolver.resolveComponentFactory(
@@ -64,9 +66,10 @@ export class LogicComponentResolverComponent implements AfterViewInit {
     return LOGIC_SCREEN_COMPONENTS[cmpType];
   }
 
-  private handleComponentError(cmpType: ComponentTypes): never {
-    throw new Error(
-      `We cant find component for this component type: ${cmpType} for screen type: LogicScreen`,
-    );
+  private handleComponentNotSupported(cmpType: ComponentTypes): void {
+    this.logger.log([
+      `We cant find component for this component type: ${cmpType} for screen type: LogicScreen.
+      It's not supported yet or it's backend logic component`,
+    ]);
   }
 }
