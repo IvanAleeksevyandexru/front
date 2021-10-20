@@ -48,7 +48,7 @@ export interface ScenarioDto {
   logicComponents?: LogicComponents[];
   currentLogicValue: CurrentValueDto;
   isPrevStepCase?: boolean;
-  cycledApplicantAnswerContext: CycledApplicantAnswerContextDto;
+  cycledApplicantAnswerContext?: CycledApplicantAnswerContextDto;
 }
 
 export interface ScenarioErrorsDto {
