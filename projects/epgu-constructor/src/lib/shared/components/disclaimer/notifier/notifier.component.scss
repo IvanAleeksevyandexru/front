@@ -13,7 +13,7 @@
   .notifier {
     position: relative;
     background: $color-white;
-    @include shadow-main();
+    @include shadow-second();
     border-radius: 8px;
     font-size: 14px;
     line-height: 20px;
