@@ -1,0 +1,10 @@
+<div class="wrapper" *ngIf="isLoading$ | async">
+  <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+</div>
+<ng-container *ngFor="let componentDto of logicComponents$ | async">
+    <epgu-constructor-logic-component-resolver
+    [componentDto]="componentDto"
+    #viewComponents>
+    </epgu-constructor-logic-component-resolver>
+</ng-container>
+
