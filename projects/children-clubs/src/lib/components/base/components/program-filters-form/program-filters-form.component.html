@@ -56,7 +56,7 @@
         <div class="label">{{ formFieldsLabel[formFields.focus] }}</div>
         <lib-dropdown
           placeholder="Все"
-          [disabled]="(focusList | async).length === 0"
+          [disabled]="(focusList | async).length === 1"
           [formControlName]="formFields[formFields.focus]"
           [items]="focusList | async"
           (changed)="changeFocus($event)"
@@ -67,7 +67,7 @@
         <div class="label">{{ formFieldsLabel[formFields.direction] }}</div>
         <lib-dropdown
           placeholder="Все"
-          [disabled]="(directionList | async).length === 0"
+          [disabled]="(directionList | async).length === 1"
           [formControlName]="formFields[formFields.direction]"
           [items]="directionList | async"
         ></lib-dropdown>

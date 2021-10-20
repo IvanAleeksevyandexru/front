@@ -16,7 +16,7 @@ import {
 
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ListElement, LookupProvider } from '@epgu/ui/models/dropdown';
+import { ListElement, ListItem, LookupProvider } from '@epgu/ui/models/dropdown';
 import {
   defaultInlearnoFilters,
   defaultPdfoFilters,
@@ -60,8 +60,12 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
 
   focusData$ = this.dictionary.focusData$.pipe(tap((focus) => this.setFocus(focus)));
   focusMap: Record<string, ListElement[]> = {};
-  focusList = new BehaviorSubject<ListElement[]>([]);
-  directionList = new BehaviorSubject<ListElement[]>([]);
+  focusList = new BehaviorSubject<ListElement[]>([
+    new ListItem({ id: 'empty-item', text: 'Все', unselectable: true }),
+  ]);
+  directionList = new BehaviorSubject<ListElement[]>([
+    new ListItem({ id: 'empty-item', text: 'Все', unselectable: true }),
+  ]);
 
   constructor(
     private fb: FormBuilder,
