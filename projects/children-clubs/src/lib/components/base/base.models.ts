@@ -53,7 +53,7 @@ export const FormFieldsLabel = {
 
 export const LevelListElements: ListElement[] = [
   {
-    id: null,
+    id: 'empty-item',
     text: 'Все',
   },
   {
@@ -79,7 +79,7 @@ export const aboutPayment = {
 
 export const HealthListElements: ListElement[] = [
   {
-    id: null,
+    id: 'empty-item',
     text: 'Без ограничений',
   },
   {
