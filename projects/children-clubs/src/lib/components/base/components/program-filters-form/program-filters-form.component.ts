@@ -82,7 +82,9 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
   changeFocus(element: ListElement): void {
     const focus = this.focusMap[element.id];
     this.form.get(this.formFields.direction).setValue(null);
-    this.directionList.next(focus || []);
+    this.directionList.next(
+      focus || [new ListItem({ id: 'empty-item', text: 'Все', unselectable: true })],
+    );
   }
 
   setFocusList(data: NormalizedFocusData): void {
@@ -170,7 +172,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
       [this.formFields.ovzType]: this.healthListElements[0],
       [this.formFields.municipality]: null,
     });
-    this.directionList.next([]);
+    this.directionList.next([new ListItem({ id: 'empty-item', text: 'Все', unselectable: true })]);
   }
 
   submit(): void {
