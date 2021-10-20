@@ -21,7 +21,6 @@ export class TracingHttpInterceptor implements HttpInterceptor {
   constructor(private tracingService: TracingService, private configService: ConfigService) {}
 
   public intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const remoteService = 'form-backend';
     const { tracer }: { tracer: Tracer } = this.tracingService;
     if (!tracer) {
       return next.handle(req);
@@ -33,7 +32,7 @@ export class TracingHttpInterceptor implements HttpInterceptor {
     }
 
     if (this.configService.zipkinSpanSendEnabled) {
-      return this.doIntercept(tracer, url, remoteService, req, next);
+      return this.doIntercept(tracer, url, req, next);
     } else {
       return next.handle(req);
     }
@@ -42,12 +41,10 @@ export class TracingHttpInterceptor implements HttpInterceptor {
   private doIntercept(
     tracer: Tracer,
     url: string,
-    remoteServiceName: string,
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const httpClient = new ZipkinHttpClient({
-      remoteServiceName,
       tracer,
     });
     const request = {
