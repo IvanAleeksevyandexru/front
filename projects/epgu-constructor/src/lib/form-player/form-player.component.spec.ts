@@ -53,7 +53,7 @@ import { CurrentAnswersService } from '../screen/current-answers.service';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub, TracingService } from '@epgu/epgu-constructor-ui-kit';
 import { SessionService } from '@epgu/epgu-constructor-ui-kit';
-import { LogicComponent } from '../component/logic-screen/component/logic.component';
+import { LogicComponentsContainerComponent } from '../component/logic-screen/component/logic-components-container.component';
 import { AutocompleteAutofillService } from '../core/services/autocomplete/autocomplete-autofill.service';
 import { AutocompletePrepareService } from '../core/services/autocomplete/autocomplete-prepare.service';
 import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-api.service';
@@ -81,7 +81,7 @@ describe('FormPlayerComponent', () => {
   let ScreenResolverComponentMock = MockComponent(ScreenResolverComponent);
   let ScreenModalComponentMock = MockComponent(ScreenModalComponent);
   let ModalContainerComponentMock = MockComponent(ModalContainerComponent);
-  let logicComponentMock = MockComponent(LogicComponent);
+  let logicComponentMock = MockComponent(LogicComponentsContainerComponent);
   let serviceDataMock: ServiceEntity = {
     serviceId: '10000100',
     targetId: '-10000100',
@@ -459,7 +459,7 @@ describe('FormPlayerComponent', () => {
       formPlayerService['_playerLoaded$'] = of(true);
       configService['_isLoaded$'] = of(true);
       fixture.detectChanges();
-      const logicComponent = fixture.debugElement.query(By.css('epgu-constructor-logic'));
+      const logicComponent = fixture.debugElement.query(By.css('epgu-constructor-logic-container'));
       expect(logicComponent).toBeTruthy();
     });
   });

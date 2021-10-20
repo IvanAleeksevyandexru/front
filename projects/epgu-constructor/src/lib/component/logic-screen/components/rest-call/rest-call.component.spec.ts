@@ -1,49 +1,52 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ObservableInput, of } from 'rxjs';
 
-import { LogicComponent } from './logic.component';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { LogicService } from '../service/logic.service';
 import {
   DatesToolsService,
   ObjectHelperService,
   UnsubscribeService,
   DownloadService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { BaseModule } from '../../../shared/base.module';
+
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
-import { HookService } from '../../../core/services/hook/hook.service';
-import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
-import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../shared/services/dictionary/dictionary-api.service.stub';
-import { ComponentsListFormService } from '../../custom-screen/services/components-list-form/components-list-form.service';
-import { ComponentsListFormServiceStub } from '../../custom-screen/services/components-list-form/components-list-form.service.stub';
-import { MockProvider, MockProviders } from 'ng-mocks';
-import { ComponentsListRelationsService } from '../../custom-screen/services/components-list-relations/components-list-relations.service';
-import { SuggestHandlerService } from '../../../shared/services/suggest-handler/suggest-handler.service';
-import { HookTypes } from '../../../core/services/hook/hook.constants';
-import { NavigationPayload } from '../../../form-player/form-player.types';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
-import { RestToolsService } from '../../../shared/services/rest-tools/rest-tools.service';
-import { RestService } from '../../../shared/services/rest/rest.service';
 import { HttpClientModule } from '@angular/common/http';
+import RestCallComponent from './rest-call.component';
+import { LogicComponentsContainerComponent } from '../../component/logic-components-container.component';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
+import { HookServiceStub } from '../../../../core/services/hook/hook.service.stub';
+import { MockProvider, MockProviders } from 'ng-mocks';
+import { ComponentsListFormServiceStub } from '../../../custom-screen/services/components-list-form/components-list-form.service.stub';
+import { ScreenService } from '../../../../screen/screen.service';
+import { LogicService } from '../../service/logic.service';
+import { HookService } from '../../../../core/services/hook/hook.service';
+import { BaseModule } from '../../../../shared/base.module';
+import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
+import { ComponentsListFormService } from '../../../custom-screen/services/components-list-form/components-list-form.service';
+import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
+import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
+import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
+import { RestService } from '../../../../shared/services/rest/rest.service';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { HookTypes } from '../../../../core/services/hook/hook.constants';
+import { NavigationPayload } from '../../../../form-player/form-player.types';
+import { LogicComponentResolverComponent } from '../../component-list-resolver/logic-component-resolver.component';
 
-describe('LogicComponent', () => {
-  let component: LogicComponent;
-  let fixture: ComponentFixture<LogicComponent>;
+describe('RestCallComponent', () => {
+  let component: RestCallComponent;
+  let fixture: ComponentFixture<RestCallComponent>;
   let screenService: ScreenService;
   let logicService: LogicService;
   let hookService: HookService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      declarations: [LogicComponent],
+      declarations: [LogicComponentsContainerComponent, LogicComponentResolverComponent, RestCallComponent],
       imports: [BaseModule, HttpClientModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -63,7 +66,7 @@ describe('LogicComponent', () => {
         JsonHelperService,
       ],
     })
-      .overrideComponent(LogicComponent, {
+      .overrideComponent(LogicComponentsContainerComponent, {
         set: {
           changeDetection: ChangeDetectionStrategy.Default,
         },
@@ -72,7 +75,7 @@ describe('LogicComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LogicComponent);
+    fixture = TestBed.createComponent(RestCallComponent);
     component = fixture.componentInstance;
     logicService = TestBed.inject(LogicService);
     screenService = TestBed.inject(ScreenService);
@@ -142,7 +145,7 @@ describe('LogicComponent', () => {
       .map(prepareDataAfterFetch);
 
     const fetchSpy = jest.spyOn(logicService, 'fetch').mockReturnValue([of(applicantAnswersDto)]);
-
+    component.componentDto = screenService.logicComponents[0];
     component.ngOnInit();
 
     expect(fetchSpy).toHaveBeenCalledWith(expectedValue);
@@ -150,6 +153,7 @@ describe('LogicComponent', () => {
   });
 
   it('should add hook for non init events', () => {
+    component.componentDto = screenService.logicComponents[1];
     jest.spyOn(logicService, 'fetch').mockReturnValue([of({})]);
     const addHookSpy = jest.spyOn(hookService, 'addHook');
 
@@ -159,6 +163,7 @@ describe('LogicComponent', () => {
   });
 
   it('should run hooks for non init events', () => {
+    component.componentDto = screenService.logicComponents[1];
     const applicantAnswersDto: ApplicantAnswersDto = {
       rest: {
         visited: true,
@@ -176,14 +181,6 @@ describe('LogicComponent', () => {
           hooks[type].push(observable);
         }
       });
-
-    const expectedValue1 = screenService.logicComponents
-      .filter(
-        (logicComponent) =>
-          !Array.isArray(logicComponent.attrs.events) ||
-          logicComponent.attrs.events.indexOf('INIT') !== -1,
-      )
-      .map(prepareDataAfterFetch);
     const expectedValue2 = screenService.logicComponents
       .filter(
         (logicComponent) =>
@@ -195,8 +192,7 @@ describe('LogicComponent', () => {
     component.ngOnInit();
     hooks['ON_BEFORE_SUBMIT'][0].subscribe();
 
-    expect(fetchSpy).toHaveBeenCalledTimes(2);
-    expect(fetchSpy).toHaveBeenNthCalledWith(1, expectedValue1);
-    expect(fetchSpy).toHaveBeenNthCalledWith(2, expectedValue2);
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenNthCalledWith(1, expectedValue2);
   });
 });
