@@ -133,11 +133,11 @@ export class ActionToolsService {
   }
 
   public downloadRawPdfAction(action: ComponentActionDto): void {
-    const pdfType = 'application/octet-stream';
     const options = { responseType: 'blob' };
-    this.sendAction<unknown>(action, options).subscribe((payload: unknown) => {
-      const file = payload as string;
-      this.downloadService.downloadFile(file, pdfType, 'document.pdf');
+    this.sendAction<Blob>(action, options).subscribe((payload: ActionApiResponse<Blob>) => {
+      const type = ((payload as unknown) as Blob).type;
+      const file = (payload as unknown) as string;
+      this.downloadService.downloadFile(file, type, 'document.pdf');
     });
   }
 
