@@ -762,9 +762,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     const dateType = this.screenService.component?.attrs?.dateType || DateTypeTypes.TODAY;
     const refDateAttr = this.screenService.component?.attrs?.refDate;
 
-    // TODO избавиться от Date.now, переделать на DatesToolsService.getToday()
     if (dateType === DateTypeTypes.TODAY) {
-      return new Date(this.today || Date.now());
+      return new Date(this.today);
     }
 
     if (dateType === DateTypeTypes.REF_DATE && refDateAttr) {

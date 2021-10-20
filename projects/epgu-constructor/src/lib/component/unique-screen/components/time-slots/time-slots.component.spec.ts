@@ -249,6 +249,8 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('checkDateRestrictions with mock\'s restrictions', () => {
+    component.today = new Date('2020-12-31T21:00:00.000Z');
+
     const checkDateRestrictions = component['checkDateRestrictions'].bind(component);
     let date = new Date('2020-01-01T10:00:00.000Z');
     let check = checkDateRestrictions(date);
