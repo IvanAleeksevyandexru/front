@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
+import { MockProvider } from 'ng-mocks';
+import { cloneDeep as _cloneDeep } from 'lodash';
+
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import {
@@ -14,7 +17,6 @@ import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
-import { cloneDeep as _cloneDeep } from 'lodash';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteService } from './autocomplete.service';
 import { Gender, ComponentDto, ScreenTypes, ScenarioDto } from '@epgu/epgu-constructor-types';
@@ -25,7 +27,6 @@ import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constru
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { Answer } from '@epgu/epgu-constructor-types';
 import { JsonHelperService } from '../json-helper/json-helper.service';
-import { MockProvider } from 'ng-mocks';
 import { CurrentAnswersServiceStub } from '../../../screen/current-answers-service.stub';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
@@ -40,6 +41,7 @@ describe('AutocompletePrepareService', () => {
   let currentAnswersService: CurrentAnswersService;
 
   let mockData: ScenarioDto = {
+    additionalParameters: {},
     applicantAnswers: {},
     currentScenarioId: null,
     cachedAnswers: {
@@ -49,6 +51,8 @@ describe('AutocompletePrepareService', () => {
       },
     },
     currentValue: {},
+    currentLogicValue: {},
+    disclaimers: [],
     display: {
       components: [
         {
@@ -87,7 +91,31 @@ describe('AutocompletePrepareService', () => {
           },
           value: '[{}]',
           required: true,
-        },
+        }, {
+          id: 'pd5_6',
+          type: 'RadioInput',
+          label: 'Пол',
+          suggestionId: 'gender',
+          attrs: {
+            fields: [
+              {
+                fieldName: 'gender'
+              }
+            ],
+            supportedValues: [
+              {
+                label: 'Мужской',
+                value: 'M'
+              },
+              {
+                label: 'Женский',
+                value: 'F'
+              }
+            ],
+          },
+          value: '',
+          visited: false
+        }
       ],
       subHeader: { text: '', clarifications: {}},
       header: '',
@@ -100,6 +128,7 @@ describe('AutocompletePrepareService', () => {
       terminal: false,
     },
     errors: {},
+    uniquenessErrors: [],
     gender: Gender.male,
     finishedAndCurrentScreens: [],
     orderId: 10462,
@@ -370,6 +399,20 @@ describe('AutocompletePrepareService', () => {
         );
       });
     });
+
+    describe('should return radioInput values', () => {
+      const component = _cloneDeep(mockData.display.components[1]);
+      component.type = 'RadioInput';
+      const value = 'F';
+
+      it('formatted', () => {
+        expect(service['getFormattedValue'](component, value, true)).toEqual('Женский');
+      });
+      it('not formatted', () => {
+        expect(service['getFormattedValue'](component, value, false)).toEqual(value);
+      });
+    });
+
     describe('should return', () => {
       const component = _cloneDeep(mockData.display.components[0]);
       component.type = 'StringInput';
@@ -392,16 +435,6 @@ describe('AutocompletePrepareService', () => {
         component.attrs.suggestionPath = null;
         value = '{"snils": "123"}';
         expect(service['getFormattedValue'](component, value)).toEqual('123');
-      });
-    });
-    describe('should return mapped value', () => {
-      const component = _cloneDeep(mockData.display.components[0]);
-      component.type = 'RadioInput';
-      const value = 'F';
-      const label = 'Женский';
-      component.attrs.supportedValues = [{ value, label }];
-      it('radio button label string as value', () => {
-        expect(service['getFormattedValue'](component, value, true)).toEqual(label);
       });
     });
   });

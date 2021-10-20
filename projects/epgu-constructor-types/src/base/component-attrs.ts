@@ -159,6 +159,7 @@ export interface ComponentAttrsDto {
   style?: ConfirmUserDataStyle;
   success?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
   suggestionPath?: string;
+  supportedValues?: SupportedValue[];
   templateId?: string; // @see LkInvitationInputAttrs
   emptyFieldsErrorMsg?: string;
   timerRules?: TimerRulesDto;
@@ -441,4 +442,10 @@ export interface IBookingErrorHandling {
   errorCode: string;
   errorMessageRegExp?: string;
   modalAttributes: ConfirmationModal;
+}
+
+export interface SupportedValue {
+  label: string;
+  value: string;
+  isDefault?: boolean;
 }
