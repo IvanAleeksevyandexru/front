@@ -97,6 +97,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   let screenService: ScreenService;
   let actionService: ActionService;
   let httpCancelService: HttpCancelService;
+  let datesHelperService: DatesToolsService;
 
   const mockComponent = {
     id: 'ts_doctor_ref',
@@ -393,6 +394,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     screenService = TestBed.inject(ScreenService);
     actionService = TestBed.inject(ActionService);
+    datesHelperService = TestBed.inject(DatesToolsService);
     fixture = TestBed.createComponent(TimeSlotDoctorsContainerComponent);
     component = fixture.componentInstance;
 
@@ -629,6 +631,14 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
     expect(component.doctorWasChosen$$.value).toEqual(true);
     expect(component['loadTimeSlots']).toHaveBeenCalled();
+  });
+
+  it('ngOnInit()', () => {
+    jest.spyOn(datesHelperService, 'getToday').mockReturnValue(Promise.resolve(new Date('2020-01-01T00:00:00.000Z')));
+
+    component.ngOnInit();
+
+    expect(component.today).toEqual(new Date('2020-01-01T00:00:00.000Z'));
   });
 
   it('ngOnDestroy()', () => {

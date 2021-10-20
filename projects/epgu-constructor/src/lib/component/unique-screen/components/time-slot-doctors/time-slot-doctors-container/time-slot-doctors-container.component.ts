@@ -198,7 +198,9 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     private formPlayer: FormPlayerService,
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.today = await this.datesHelperService.getToday(true);
+
     const cachedAnswer = this.screenService.getComponentData(
       this.screenService.getCompValueFromCachedAnswers(),
     );
@@ -829,9 +831,8 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
     const dateType = this.screenService.component?.attrs?.dateType || DateTypeTypes.TODAY;
     const refDateAttr = this.screenService.component?.attrs?.refDate;
 
-    // TODO избавиться от Date.now, переделать на DatesToolsService.getToday()
     if (dateType === DateTypeTypes.TODAY) {
-      return new Date(this.today || Date.now());
+      return new Date(this.today);
     }
 
     if (dateType === DateTypeTypes.REF_DATE && refDateAttr) {
