@@ -43,7 +43,7 @@ describe('DictionaryService', () => {
 
       const { focus } = service.normalizeFocusData(focusData);
       expect(focus.length).toBe(2);
-      expect(focus[0]).toEqual({ id: null, text: 'Все' });
+      expect(focus[0]).toEqual({ id: 'empty-item', text: 'Все' });
     });
 
     it('should not unshift specific item to focus array if array is empty', () => {
@@ -62,7 +62,7 @@ describe('DictionaryService', () => {
       const { directions } = service.normalizeFocusData(focusData);
 
       expect(directions['2'].length).toBe(2);
-      expect(directions['2'][0]).toEqual({ id: null, text: 'Все' });
+      expect(directions['2'][0]).toEqual({ id: 'empty-item', text: 'Все' });
     });
 
     it('should unshift specific item to directions array if array is not empty', () => {

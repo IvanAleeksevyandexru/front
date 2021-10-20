@@ -46,12 +46,12 @@ export class DictionaryService {
         (direction) => ({ id: direction, text: direction } as ListElement),
       );
       if (directions[item.focusCode].length > 0) {
-        directions[item.focusCode].unshift({ id: null, text: 'Все' });
+        directions[item.focusCode].unshift({ id: 'empty-item', text: 'Все' });
       }
       return { id: item.focusCode, text: item.focusName } as ListElement;
     });
     if (focus.length > 0) {
-      focus.unshift({ id: null, text: 'Все' });
+      focus.unshift({ id: 'empty-item', text: 'Все' });
     }
     return { directions, focus };
   }
