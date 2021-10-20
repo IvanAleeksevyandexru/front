@@ -44,7 +44,7 @@ export const FormFieldsLabel = {
   [FormFieldsName.focus]: 'Направленность',
   [FormFieldsName.direction]: 'Специализация',
   [FormFieldsName.level]: 'Уровень подготовки',
-  [FormFieldsName.age]: 'Возраст ребенка, лет',
+  [FormFieldsName.age]: 'Возраст ребёнка, лет',
   [FormFieldsName.ovzType]: 'Ограничения здоровья',
   [FormFieldsName.preprof]: 'Бесплатно (предпрофессиональные)',
   [FormFieldsName.valued]: 'Бесплатно (значимые)',
