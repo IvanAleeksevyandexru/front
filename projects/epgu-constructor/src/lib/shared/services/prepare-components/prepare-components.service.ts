@@ -125,9 +125,12 @@ export class PrepareComponentsService {
 
     if (component.type === CustomScreenComponentTypes.SnilsInput) {
       let parsedJson = JSON.parse(cachedValue);
-      return (parentIndex || parentIndex === 0) && parentId
-        ? parsedJson[parentIndex][parentId].snils
-        : parsedJson.snils;
+
+      if ((parentIndex || parentIndex === 0) && parentId) {
+        return parsedJson[parentIndex][parentId].snils || parsedJson[parentIndex][parentId];
+      }
+
+      return parsedJson.snils;
     }
 
     const isPresetParsable = this.jsonHelperService.hasJsonStructure(preset);
