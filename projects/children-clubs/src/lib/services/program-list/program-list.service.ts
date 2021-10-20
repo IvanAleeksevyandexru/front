@@ -157,17 +157,17 @@ export class ProgramListService {
   processFilters(state: ChildrenClubsState): { filters: Filters } {
     const filters = { ...(state?.programFilters ?? {}) };
     const focus = filters?.focus as ListElement;
-    if (focus && focus.id) {
+    if (focus && focus.id && focus.id !== 'empty-item') {
       filters.focus = focus.id as FocusFilter;
     } else {
       delete filters.focus;
     }
     const place = filters?.municipality as ListElement;
-    if (place && place?.id) {
+    if (place && place?.id && place.id !== 'empty-item') {
       filters.municipality = place?.id as string;
     }
     const direction = filters?.direction as ListElement;
-    if (direction && direction?.id) {
+    if (direction && direction?.id  && direction.id !== 'empty-item') {
       filters.direction = direction?.id as string;
     } else {
       delete filters.direction;
@@ -175,6 +175,11 @@ export class ProgramListService {
     if (filters?.query?.length === 0) {
       delete filters.query;
     }
+    Object.keys(filters).forEach((key) => {
+      if (filters[key] === 'empty-item') {
+        filters[key] = null;
+      }
+    });
     this.programFilters$.next(filters);
     return { filters };
   }
