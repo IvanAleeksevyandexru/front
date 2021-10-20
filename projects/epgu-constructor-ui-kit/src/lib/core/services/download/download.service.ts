@@ -12,7 +12,7 @@ export class DownloadService {
     const data = isBase64 ? this.convertBase64(value) : value;
     // на мобилке не работает, если не обрезать тип
     const fileType = isBase64 ? type.replace(';base64', '') : type;
-    const blob = new Blob([data], { type: fileType });
+    const blob = new File([data], fileName || 'file', { type: fileType });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
 
