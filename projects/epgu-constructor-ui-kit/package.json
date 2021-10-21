@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-constructor-ui-kit",
-  "version": "30.6.1",
+  "version": "37.8.1",
   "scripts": {
     "build": "cd ../../ && ng build epgu-constructor-ui-kit --prod",
     "watch": "cd ../../ && ng build epgu-constructor-ui-kit --watch",

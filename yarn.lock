@@ -1776,21 +1776,6 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.3.tgz#90420f9f9c6d3987f176a19a7d8e764271a2f55d"
   integrity sha512-Fxt+AfXgjMoin2maPIYzFZnQjAXjAL0PHscM5pRTtatFqB+vZxAM9tLp2Optnuw3QOQC40jTNeGYFOMvyf7v9g==
 
-"@epgu/epgu-constructor-types@33.0.67880-rc.1":
-  version "33.0.67880-rc.1"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-33.0.67880-rc.1.tgz#1e291108da53377de955ebc1490757e229723cd5"
-  integrity sha512-CyTgG2JjfmcAdvqRBx1E/OkpURzVYyjjVTx2sLs95pv1/Tv7CcTAW8GQqnAhnvutrSfUhH/sVd1+m4hhYBLPHA==
-
-"@epgu/epgu-constructor-ui-kit@33.0.67880-rc.1":
-  version "33.0.67880-rc.1"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-33.0.67880-rc.1.tgz#73b13f851805149e746ae0f8de1318d0f13563a7"
-  integrity sha512-pl2soLp6oQXZ7y6BaiTLvDvAFi0pkIokLOyd2xD8zOsrptuw7VFfyILj3nChqPCi/Deg/Z/ru7OgaD/csMs/Pg==
-  dependencies:
-    "@epgu/epgu-constructor-types" "33.0.67880-rc.1"
-    "@epgu/zipkin" "0.0.3"
-    tslib "^2.0.0"
-    zipkin-transport-http "0.22.0"
-
 "@epgu/ui@3.0.385-3-core-frontv3":
   version "3.0.385-3-core-frontv3"
   resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.385-3-core-frontv3.tgz#336487d747580527e6b6d2b59af5834a191166de"
