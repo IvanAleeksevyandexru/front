@@ -7,8 +7,6 @@
 }
 
 :host::ng-deep {
-  $crossBtnRightPadding: 42px;
-
   hr {
     width: 100%;
   }
@@ -53,12 +51,6 @@
     background: $color-white;
     overflow-y: hidden;
     z-index: 10;
-
-    .cross-btn {
-      top: 12px;
-      position: sticky;
-      left: calc(100% - #{$crossBtnRightPadding});
-    }
   }
 
   ::ng-deep {
@@ -247,11 +239,6 @@
 
     .widget-form__input {
       padding: 0 12px;
-    }
-
-    .cross-btn {
-      position: relative;
-      left: calc(100% - 44px); // TODO что это за цифро 44px?
     }
 
     .map-objects-list {
