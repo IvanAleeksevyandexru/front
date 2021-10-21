@@ -30,8 +30,8 @@
   },
   "dependencies": {
     "@alyle/ui": "10.5.1",
-    "@epgu/epgu-constructor-types": "30.6.1",
-    "@epgu/epgu-constructor-ui-kit": "30.6.1",
+    "@epgu/epgu-constructor-types": "37.8.1",
+    "@epgu/epgu-constructor-ui-kit": "37.8.1",
     "@tanker/file-ponyfill": "2.6.3",
     "angular-resize-event": "2.0.0",
     "ics": "2.24.0",
