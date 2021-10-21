@@ -8,7 +8,11 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
-import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/common-enums';
+import {
+  BrokenDateFixStrategy,
+  RemoveMaskSymbols,
+  ValidationShowOn,
+} from '@epgu/ui/models/common-enums';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import {
@@ -33,6 +37,7 @@ import DocInputModelAttrs from './DocInputModelAttrs';
 })
 export class DocInputComponent extends AbstractComponentListItemComponent<DocInputModelAttrs>
   implements OnInit, AfterViewInit {
+  public RemoveMaskSymbols = RemoveMaskSymbols;
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   docInputFieldsTypes = DocInputFieldsTypes;
   fields: { [fieldName: string]: DocInputField };
