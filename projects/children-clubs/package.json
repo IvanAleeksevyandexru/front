@@ -1,6 +1,6 @@
 {
   "name": "@epgu/children-clubs",
-  "version": "30.6.1",
+  "version": "37.8.1",
   "scripts": {
     "build": "cd ../../ && ng build children-clubs --prod",
     "lint": "cd ../../ && ng lint children-clubs",
