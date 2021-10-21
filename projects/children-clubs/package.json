@@ -16,8 +16,8 @@
     "lodash": ""
   },
   "dependencies": {
-    "@epgu/epgu-constructor-types": "30.6.1",
-    "@epgu/epgu-constructor-ui-kit": "30.6.1",
+    "@epgu/epgu-constructor-types": "37.8.1",
+    "@epgu/epgu-constructor-ui-kit": "37.8.1",
     "tslib": "^2.0.0"
   }
 }
