@@ -23,13 +23,13 @@ import { RegistrationAddrComponent } from './registration-addr.component';
 import { ConstructorDadataWidgetModule } from '../../../../../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DateValidator } from './date-validator';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { UserInfoLoaderModule } from '../../../../../../shared/components/user-info-loader/user-info-loader.module';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
 
 describe('RegistrationAddrComponent', () => {
   let component: RegistrationAddrComponent;
@@ -99,10 +99,10 @@ describe('RegistrationAddrComponent', () => {
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         MockProvider(CurrentAnswersService),
-        MockProvider(DateValidator),
         MockProvider(SuggestHandlerService),
         MockProvider(EventBusService),
         MockProvider(SuggestMonitorService),
+        MockProvider(ValidationService),
       ],
     }).compileComponents();
   });

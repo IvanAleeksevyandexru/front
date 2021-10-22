@@ -30,6 +30,7 @@ import { get } from 'lodash';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { MonthYear } from '@epgu/ui/models/date-time';
+import { ValidatorDate } from './validation.service.interface';
 
 export const CARD_VALIDATION_EVENT = 'CardValidation';
 
@@ -244,6 +245,15 @@ export class ValidationService {
           );
         }
       }
+    };
+  }
+
+  public isDateValidValidator(): ValidatorFn {
+    return (aControl: AbstractControl): ValidatorDate | null => {
+      const dateValidator =
+        (aControl && aControl.value && !this.datesToolsService.isValid(aControl.value)) ||
+        (aControl && typeof aControl.value !== 'object');
+      return dateValidator ? { dateValidator } : null;
     };
   }
 
