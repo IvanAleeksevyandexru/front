@@ -4,7 +4,7 @@ import { HttpParams } from '@angular/common/http';
 import { isDevMode } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
 import { HelperService } from '@epgu/ui/services/helper';
-
+import { v4 as uuidv4 } from 'uuid';
 interface EventInfo {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
@@ -17,12 +17,15 @@ export class HealthService {
   constructor(private route: ActivatedRoute, private loadService: LoadService) {}
 
   private static request(url: string): void {
+    const scriptId = uuidv4();
     const s = document.createElement('script');
     const x = document.getElementsByTagName('script')[0];
     s.type = 'text/javascript';
     s.async = true;
     s.src = url;
+    s.setAttribute('id', scriptId);
     x.parentNode.insertBefore(s, x);
+    s.remove();
   }
 
   public measureStart(id: string): void {
