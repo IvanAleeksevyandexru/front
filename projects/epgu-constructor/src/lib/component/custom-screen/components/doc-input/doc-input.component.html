@@ -34,6 +34,7 @@
       ></epgu-constructor-label>
       <epgu-constructor-masked-input
         *ngIf="fields[docInputFieldsTypes.series]?.attrs.mask; else plainInputSeries"
+        [removeMaskSymbols]="RemoveMaskSymbols.PLACEHOLDERS"
         [textTransformType]="fields[docInputFieldsTypes.series]?.attrs?.fstuc"
         [id]="docInputFieldsTypes.series"
         [control]="$any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))"
@@ -189,6 +190,7 @@
         ></epgu-constructor-label>
         <epgu-constructor-masked-input
           *ngIf="fields[docInputFieldsTypes.series]?.attrs.mask; else plainInputSeries"
+          [removeMaskSymbols]="RemoveMaskSymbols.PLACEHOLDERS"
           [textTransformType]="fields[docInputFieldsTypes.series]?.attrs?.fstuc"
           [id]="docInputFieldsTypes.series"
           [control]="

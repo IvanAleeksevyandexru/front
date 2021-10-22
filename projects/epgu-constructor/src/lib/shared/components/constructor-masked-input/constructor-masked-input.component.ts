@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { RemoveMaskSymbols, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
@@ -34,6 +34,8 @@ export class ConstructorMaskedInputComponent {
   @Input() component?: CustomComponent;
   @Input() suggestions?: ISuggestionItem;
   @Input() showPlaceholderOnFocus?: boolean;
+  @Input() public placeholderSymbol = '_';
+  @Input() public removeMaskSymbols: RemoveMaskSymbols = RemoveMaskSymbols.SKIP;
 
   @Output() blurEvent = new EventEmitter<void>();
   @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
@@ -45,12 +47,19 @@ export class ConstructorMaskedInputComponent {
   public onChange($event: Event): void {
     if (this.control.updateOn === 'blur') {
       const input = $event.target as HTMLInputElement;
-      this.control.setValue(input.value);
+      this.control.setValue(this.removeMaskSymbolsIfNeeded(input.value));
       this.control.updateValueAndValidity();
     }
   }
 
   public onBlur(): void {
     this.blurEvent.emit();
+  }
+
+  private removeMaskSymbolsIfNeeded(value: string): string {
+    if (value && this.removeMaskSymbols === RemoveMaskSymbols.PLACEHOLDERS) {
+      return value.replace(new RegExp(this.placeholderSymbol, 'g'), '');
+    }
+    return value;
   }
 }

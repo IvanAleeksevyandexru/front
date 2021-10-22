@@ -6,7 +6,7 @@ import {
   Input,
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { delay, tap } from 'rxjs/operators';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { IBalloonContent } from '../../balloon-content-resolver.interface';
 import { IuikFullDataResponse } from './elections-balloon-content.interface';
@@ -40,9 +40,8 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
         this.selectMapObjectService.componentAttrs.electionLevel,
       )
       .pipe(
-        tap(() => {
-          setTimeout(() => this.cdr.detectChanges(), 0);
-        }),
+        delay(0), // TODO: проверить необходимость делея, убрать если не нужен
+        tap(() => this.cdr.detectChanges()),
       );
     this.cdr.detectChanges();
   }
