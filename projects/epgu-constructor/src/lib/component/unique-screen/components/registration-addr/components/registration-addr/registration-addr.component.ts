@@ -12,7 +12,6 @@ import {
 
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { DateValidator } from './date-validator';
 import {
   FieldNames,
   IRegistrationAddrComponent,
@@ -25,6 +24,7 @@ import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
 import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
 import { prepareClassifiedSuggestionItems } from '../../../../../../core/services/autocomplete/autocomplete.const';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
+import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
 
 @Component({
   selector: 'epgu-constructor-registration-addr',
@@ -54,7 +54,7 @@ export class RegistrationAddrComponent implements OnInit {
     private ngUnsubscribe$: UnsubscribeService,
     private fb: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,
-    private dateValidator: DateValidator,
+    private validationService: ValidationService,
     private datesToolsService: DatesToolsService,
   ) {}
 
@@ -110,7 +110,7 @@ export class RegistrationAddrComponent implements OnInit {
     }
 
     if (isDateType) {
-      validators.push(this.dateValidator.date);
+      validators.push(this.validationService.isDateValidValidator());
     }
 
     if (isRequired) {
