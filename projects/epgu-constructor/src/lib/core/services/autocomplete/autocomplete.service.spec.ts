@@ -205,13 +205,13 @@ describe('AutocompleteService', () => {
       eventBusService.emit(BusEventType.SuggestionSelectedEvent);
     });
 
-    it('should call findAndUpdateComponentWithValue() on "suggestionSelectedEvent"', () => {
-      const serviceFindAndUpdateComponentWithValueSpy = spyOn(
+    it('should call findAndUpdateComponentsWithValue() on "suggestionSelectedEvent"', () => {
+      const serviceFindAndUpdateComponentsWithValueSpy = spyOn(
         prepareService,
-        'findAndUpdateComponentWithValue',
+        'findAndUpdateComponentsWithValue',
       );
       eventBusService.on(BusEventType.SuggestionSelectedEvent).subscribe(() => {
-        expect(serviceFindAndUpdateComponentWithValueSpy).toBeCalled();
+        expect(serviceFindAndUpdateComponentsWithValueSpy).toBeCalled();
       });
       eventBusService.emit(BusEventType.SuggestionSelectedEvent, mockSuggestionItemList);
     });

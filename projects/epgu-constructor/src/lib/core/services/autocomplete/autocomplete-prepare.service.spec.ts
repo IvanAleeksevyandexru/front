@@ -255,10 +255,10 @@ describe('AutocompletePrepareService', () => {
     });
   });
 
-  describe('findAndUpdateComponentWithValue()', () => {
+  describe('findAndUpdateComponentsWithValue()', () => {
     it('should setComponentValue() be called', () => {
-      const serviceSetComponentValue = spyOn(service, 'setComponentValue');
-      service.findAndUpdateComponentWithValue(
+      const serviceSetComponentValue = spyOn<any>(service, 'setComponentValue');
+      service.findAndUpdateComponentsWithValue(
         repeatableComponents,
         componentsSuggestionsList,
         parentComponent,
@@ -268,11 +268,11 @@ describe('AutocompletePrepareService', () => {
       expect(serviceSetComponentValue).toBeCalled();
     });
     it('should prepareCachedAnswers() and screenService.setCompValueToCachedAnswer() be called, if isChildrenListType passed', () => {
-      const spy1 = spyOn(service, 'prepareCachedAnswers');
+      const spy1 = spyOn<any>(service, 'prepareCachedAnswers');
       const spy2 = spyOn(screenService, 'setCompValueToCachedAnswer');
       const newParentComponent = { ...parentComponent };
       newParentComponent.type = UniqueScreenComponentTypes.childrenList;
-      service.findAndUpdateComponentWithValue(
+      service.findAndUpdateComponentsWithValue(
         repeatableComponents,
         componentsSuggestionsList,
         newParentComponent,
@@ -282,12 +282,12 @@ describe('AutocompletePrepareService', () => {
       expect(spy1).toBeCalled();
       expect(spy2).toBeCalled();
     });
-    it('should call setComponentValue with findAndUpdateComponentWithValue(... value) if component.type === .AddressInput',() => {
-      const spy = spyOn(service, 'setComponentValue');
+    it('should call setComponentValue with findAndUpdateComponentsWithValue(... value) if component.type === .AddressInput',() => {
+      const spy = spyOn<any>(service, 'setComponentValue');
       jest
-        .spyOn(AutocompletePrepareService.prototype as any, 'findComponent')
-        .mockReturnValueOnce(mockAddressInput);
-      service.findAndUpdateComponentWithValue(
+        .spyOn(AutocompletePrepareService.prototype as any, 'findComponents')
+        .mockReturnValueOnce([mockAddressInput]);
+      service.findAndUpdateComponentsWithValue(
         repeatableComponents,
         componentsSuggestionsList,
         { attrs: undefined, id: '', type: '' },
@@ -317,7 +317,7 @@ describe('AutocompletePrepareService', () => {
     });
   });
 
-  describe('findComponent()', () => {
+  describe('findComponents()', () => {
     it('should return finded component', () => {
       const component = mockData.display.components[0].attrs.components[0];
       const mockRepeatableComponents = [mockData.display.components[0].attrs.components];
@@ -325,13 +325,13 @@ describe('AutocompletePrepareService', () => {
       const componentMnemonic = 'prev_region1';
       autocompleteService.init();
       expect(
-        service['findComponent'](
+        service['findComponents'](
           mockRepeatableComponents,
           componentsSuggestionsList,
           componentMnemonic,
           0,
         ),
-      ).toEqual(component);
+      ).toEqual([component]);
     });
   });
 

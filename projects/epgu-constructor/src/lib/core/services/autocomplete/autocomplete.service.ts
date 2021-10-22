@@ -144,7 +144,8 @@ export class AutocompleteService {
         if (this.suggestionGroupId) {
           Object.keys(this.screenService.suggestions).forEach((componentId: string) => {
             mnemonic = this.screenService.suggestions[componentId].mnemonic;
-            this.autocompletePrepareService.findAndUpdateComponentWithValue(
+
+            this.autocompletePrepareService.findAndUpdateComponentsWithValue(
               this.repeatableComponents,
               componentsSuggestionsList,
               this.parentComponent,
@@ -159,7 +160,7 @@ export class AutocompleteService {
             this.screenService.cachedAnswers[this.parentComponent.id]?.value
           );
         } else {
-          this.autocompletePrepareService.findAndUpdateComponentWithValue(
+          this.autocompletePrepareService.findAndUpdateComponentsWithValue(
             this.repeatableComponents,
             componentsSuggestionsList,
             this.parentComponent,
