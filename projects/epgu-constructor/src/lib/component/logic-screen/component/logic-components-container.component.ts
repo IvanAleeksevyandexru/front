@@ -67,7 +67,7 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
   private subscribeToInitHooks(): void {
     const hasLoadedSubjects = this.viewComponents
       .filter((component) => isOnInitComponent(component.componentDto))
-      .map((component) => component.componentRef.instance.hasLoaded);
+      .map((component) => component.componentRef?.instance.hasLoaded);
     this.loadSubscription = combineLatest(hasLoadedSubjects).subscribe((hasLoadedResult) => {
       if (hasLoadedResult.every((element) => !!element)) {
         this.screenService.isLogicComponentLoading = false;
