@@ -1,6 +1,6 @@
 import { ConfirmPersonalUserDataPipe } from './confirm-personal-user-data.pipe';
 import { ComponentDto, FieldGroup } from '@epgu/epgu-constructor-types';
-import { InterpolationService } from '../../../../../../shared/services/interpolation/interpolation.service';
+import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
 
 const componentValue = {
   states: [
@@ -92,6 +92,43 @@ const fieldGroups: FieldGroup[] = [
   },
 ] as FieldGroup[];
 
+const resultOfInterpolation: FieldGroup[] = [
+  {
+    groupName: 'Иванов Иван Иванович',
+    fields: [
+      {
+        label: 'Дата рождения',
+        value: '9.9.1999',
+      },
+    ],
+  },
+  {
+    groupName: 'Паспорт гражданина РФ',
+    fields: [
+      {
+        label: 'Серия и номер',
+        value: '9999 999999',
+      },
+      {
+        label: 'Код подразделения',
+        value: '99-99',
+      },
+      {
+        label: 'Дата выдачи',
+        value: '9.9.2019',
+      },
+      {
+        label: 'Кем выдан',
+        value: 'тем кто выдаёт',
+      },
+      {
+        label: 'Дополнительное рандомное поле',
+        value: '99 RUS',
+      },
+    ],
+  },
+] as FieldGroup[];
+
 const componentData = {
   id: 'comp1',
   type: 'ConfirmPersonalUser',
@@ -103,7 +140,7 @@ describe('ConfirmPersonalUserDataPipe', () => {
   let service: InterpolationService;
   beforeEach(() => {
     service = ({
-      interpolateRecursive: jest.fn().mockReturnValue([{ result: 'resultOfInterpolation' }]),
+      interpolateRecursive: jest.fn().mockReturnValue(resultOfInterpolation),
     } as unknown) as InterpolationService;
     pipe = new ConfirmPersonalUserDataPipe(service);
   });
@@ -124,7 +161,7 @@ describe('ConfirmPersonalUserDataPipe', () => {
         ...data,
         presetValue: JSON.stringify({
           ...JSON.parse(data.value),
-          states: [{ result: 'resultOfInterpolation' }],
+          states: resultOfInterpolation,
         }),
       };
 
@@ -133,7 +170,52 @@ describe('ConfirmPersonalUserDataPipe', () => {
       expect(service.interpolateRecursive).toHaveBeenCalledWith(
         fieldGroups,
         componentValue.storedValues,
+        '-'
       );
+    });
+
+    describe('when some group has no fields', () => {
+      it('should remove group with empty fields', () => {
+        const resultOfInterpolationWithEmptyGroup = [ ...resultOfInterpolation, {
+          groupName: 'Паспорт иностранного гражданина',
+          fields: [
+            {
+              label: 'Поле, которое не представленно массивом полей',
+              value: '-',
+            },
+          ],
+        }];
+
+        const fieldGroupsWithEmptyGroup = [
+          ...fieldGroups, {
+            groupName: 'Паспорт иностранного гражданина',
+            fields: [
+              {
+                label: 'Поле, которое не представленно массивом полей',
+                value: '${undefined}',
+              },
+            ],
+          }] as FieldGroup[];
+
+        const interpolationSpy = jest.spyOn(service, 'interpolateRecursive').mockReturnValue(resultOfInterpolationWithEmptyGroup);
+
+        const data = setup(fieldGroupsWithEmptyGroup);
+        const expected = {
+          ...data,
+          presetValue: JSON.stringify({
+            ...JSON.parse(data.value),
+            states: resultOfInterpolation,
+          }),
+        };
+
+        expect(pipe.transform(data)).toStrictEqual(expected);
+        expect(interpolationSpy).toHaveBeenCalledTimes(1);
+        expect(interpolationSpy).toHaveBeenCalledWith(
+          fieldGroupsWithEmptyGroup,
+          componentValue.storedValues,
+          '-'
+        );
+      });
     });
   });
 });
