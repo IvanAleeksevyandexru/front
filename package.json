@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-form-frontend",
-  "version": "30.6.1",
+  "version": "37.8.1",
   "scripts": {
     "postinstall": "ngcc --properties es6 browser module main --first-only --create-ivy-entry-points",
     "ng": "ng",
