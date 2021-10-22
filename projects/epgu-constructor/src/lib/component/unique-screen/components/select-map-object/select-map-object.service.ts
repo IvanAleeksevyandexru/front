@@ -170,17 +170,11 @@ export class SelectMapObjectService implements OnDestroy {
       if (!equal || (equal && serviceContext.mapOpenedBalloonId !== mapItem.idForMap)) {
         this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then((range) => {
           serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset], range[1] - 2);
-          // Таймаут нужен что бы балун всегда нормально открывался
-          // по непонятным причинам без таймаута балун иногда не открывается
-          setTimeout(() => {
-            serviceContext.objectManager &&
-              serviceContext.objectManager.objects.setObjectOptions(mapItem.idForMap, {
-                iconImageHref: serviceContext.icons.red.iconImageHref,
-              });
-            serviceContext.objectManager.objects.balloon.open(mapItem.idForMap);
-            serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset]);
-            serviceContext.__mapStateCenter = serviceContext.yaMapService.map.getCenter();
-          }, 200);
+          serviceContext.objectManager?.objects.setObjectOptions(mapItem.idForMap, {
+            iconImageHref: serviceContext.icons.red.iconImageHref,
+          });
+          serviceContext.objectManager?.objects.balloon.open(mapItem.idForMap);
+          serviceContext.__mapStateCenter = serviceContext.yaMapService.map.getCenter();
         });
       }
     }
@@ -349,22 +343,22 @@ export class SelectMapObjectService implements OnDestroy {
    * @param attrs массив с атрибутами для отображения в балуне
    * @param item
    */
-     public getMappedAttrsForBaloon(
-      attrs: { name: string; label: string }[],
-      item: DictionaryYMapItem,
-    ): { value: string; label: string }[] {
-      const res = [];
-      attrs.forEach((attr) => {
-        let itemValue = item.attributeValues[attr.name];
-        if (itemValue) {
-          res.push({
-            value: itemValue,
-            label: attr.label,
-          });
-        }
-      });
-      return res;
-    }
+  public getMappedAttrsForBaloon(
+    attrs: { name: string; label: string }[],
+    item: DictionaryYMapItem,
+  ): { value: string; label: string }[] {
+    const res = [];
+    attrs.forEach((attr) => {
+      let itemValue = item.attributeValues[attr.name];
+      if (itemValue) {
+        res.push({
+          value: itemValue,
+          label: attr.label,
+        });
+      }
+    });
+    return res;
+  }
 
   private convertDictionaryItemsToMapPoints(
     dictionaryItems: DictionaryYMapItem[],

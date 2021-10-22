@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   Icons,
   IFeatureCollection,
@@ -15,7 +15,7 @@ import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { YaMapService } from '@epgu/ui/services/ya-map';
 
 @Injectable()
-export class JusticeSearchPanelService {
+export class JusticeSearchPanelService implements OnDestroy {
   public fullAddress = new Subject();
   private courtZones;
   private myPlacemark;
@@ -29,6 +29,10 @@ export class JusticeSearchPanelService {
     private jsonHelperService: JsonHelperService,
     private selectMapObjectService: SelectMapObjectService,
   ) {}
+
+  ngOnDestroy(): void {
+    this.fullAddress.complete();
+  }
 
   public initPolygons(): void {
     this.placeMarkLogic();
@@ -80,8 +84,7 @@ export class JusticeSearchPanelService {
 
     if (this.myPlacemark) {
       this.myPlacemark.geometry.setCoordinates(coords);
-    }
-    else {
+    } else {
       this.myPlacemark = createPlacemark.apply(this, [coords]);
       this.yaMapService.map.geoObjects.add(this.myPlacemark);
       // Слушаем событие окончания перетаскивания на метке.
@@ -211,7 +214,9 @@ export class JusticeSearchPanelService {
         features: [],
       };
       response.items.forEach((item, index) => {
-        const collection: IFeatureCollection<IFeatureItem<unknown>> = this.jsonHelperService.tryToParse(
+        const collection: IFeatureCollection<IFeatureItem<
+          unknown
+        >> = this.jsonHelperService.tryToParse(
           item.attributeValues.CourtJurisd_Nav,
         ) as IFeatureCollection<IFeatureItem<unknown>>;
         const [feature] = collection.features;

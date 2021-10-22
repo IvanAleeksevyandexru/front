@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewChecked,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -80,13 +80,13 @@ const INTERNAL_ERROR_MESSAGE = 'Internal Error';
   providers: [UnsubscribeService, SelectMapObjectService, YandexMapService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDestroy {
   data: ComponentBase;
   applicantAnswers: ApplicantAnswersDto;
   public mappedDictionaryForLookup;
   public mapCenter: number[];
   public mapControls = [];
-  public selectedValue;
+  public selectedValue; // TODO добавить типы и поддержать (аля YMapItem<DictionaryItem> | YMapItem<DictionaryItem>[]);
   public showMap = false;
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
@@ -142,9 +142,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     this.selectMapObjectService.isNoDepartmentErrorVisible
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
-        setTimeout(() => {
-          this.cdr.detectChanges();
-        }, 0);
+        this.cdr.detectChanges();
       });
     this.screenService.isLoaderVisible.next(true);
     this.initData$
@@ -164,11 +162,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       });
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.showMap = true;
-      this.cdr.markForCheck();
-    });
+  ngAfterViewChecked(): void {
+    this.showMap = true;
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -306,21 +302,23 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private subscribeToEmmitNextStepData(): void {
     this.yandexMapService.selectedValue$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((value: DictionaryItem) => {
+      .subscribe((items: DictionaryItem[]) => {
         if (!this.selectMapObjectService.isSelectedView.getValue()) {
-          this.isSearchTitleVisible = !value || !this.isMobile;
-          this.selectedValue = value;
+          this.isSearchTitleVisible = !items || !this.isMobile;
+          this.selectedValue = items;
+          this.tryInitSelectedObject();
           this.cdr.detectChanges();
-        } else if (value) {
-          this.expandObject(value[0]);
+        } else if (items) {
+          this.expandObject(items[0]);
         }
       });
 
     this.selectMapObjectService.selectedViewItems$
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((value: DictionaryItem[]) => {
+      .subscribe((items: DictionaryItem[]) => {
         if (this.selectMapObjectService.isSelectedView.getValue()) {
-          this.selectedValue = value;
+          this.selectedValue = items;
+          this.tryInitSelectedObject();
           this.cdr.detectChanges();
         }
       });
@@ -454,7 +452,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private getSelectedObject(): YMapItem<DictionaryItem> {
-    return this.selectMapObjectService.findObjectByValue(this.selectedValue.value);
+    return this.selectMapObjectService.findObjectByValue(
+      (this.selectedValue as YMapItem<DictionaryItem>).value || this.selectedValue[0].value,
+    );
   }
 
   /**
