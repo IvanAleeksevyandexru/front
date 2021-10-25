@@ -1,0 +1,9 @@
+<ng-container *ngTemplateOutlet="templateContent; context: { isSmev2: isSmev2$ | async }">
+</ng-container>
+
+<ng-template #templateContent let-isSmev2="isSmev2">
+  <epgu-constructor-time-slot-smev2 *ngIf="isSmev2"></epgu-constructor-time-slot-smev2>
+  <epgu-constructor-time-slot-smev3-resolver
+    *ngIf="!isSmev2"
+  ></epgu-constructor-time-slot-smev3-resolver>
+</ng-template>

@@ -1,0 +1,7 @@
+<epgu-constructor-month-selector
+  [availableMonths]="months$$ | async"
+  [hideProvider]="monthHideProvider$ | async"
+  [monthsRange]="(isMonthsRangeVisible$ | async) ? (range$ | async) : null"
+  [init]="current$$ | async"
+  (choose)="chooseAction($event)"
+></epgu-constructor-month-selector>

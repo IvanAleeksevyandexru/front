@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+  isEqual as _isEqual,
   isToday as _isToday,
   toDate as _toDate,
   isValid as _isValid,
@@ -78,6 +79,15 @@ export class DatesToolsService {
    * */
   public addDays(date: Date, days: number): Date {
     return _addDays(date, days);
+  }
+
+  /**
+   * Полное сравнение дат
+   * @param {Date} dateRight первый элемент сравнения
+   * @param {Date} dateLeft второй элемент сравнения
+   * */
+  public isEqual(dateRight: Date, dateLeft: Date): boolean {
+    return _isEqual(dateRight, dateLeft);
   }
 
   /**

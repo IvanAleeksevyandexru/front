@@ -1,0 +1,12 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+
+.time {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4px;
+  &--bold {
+    font-weight: $fw-bold;
+  }
+}

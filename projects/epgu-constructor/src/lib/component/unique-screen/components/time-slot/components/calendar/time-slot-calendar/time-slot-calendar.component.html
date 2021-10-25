@@ -1,0 +1,12 @@
+<epgu-constructor-day-selector
+  [today]="today$ | async"
+  [selected]="day$$ | async"
+  [month]="month$$ | async"
+  [lockProvider]="lockProvider$$ | async"
+  [startSection]="startSection$ | async"
+  [daysToShow]="daysToShow$ | async"
+  (monthChanged)="addMonthRangeAction($event)"
+  (notExistsAvailable)="haveNotUnlockedDaysAction($event)"
+  (choose)="chooseAction($event)"
+>
+</epgu-constructor-day-selector>

@@ -1,0 +1,18 @@
+<div *ngIf="monthsRange" class="months-range">
+  {{ monthsRange }}
+</div>
+<ng-container *ngIf="!monthsRange">
+  <ng-container *ngIf="monthList$ | async as monthList">
+    <div *ngIf="monthList.length > 0" class="dropdown-list mt-12">
+      <lib-dropdown
+        *ngIf="monthList$ | async as monthList"
+        [disabled]="monthList.length < 2"
+        [items]="monthList"
+        [(ngModel)]="current"
+        (changed)="chooseAction($event)"
+        class="compact-selector"
+        contextClass="compact"
+      ></lib-dropdown>
+    </div>
+  </ng-container>
+</ng-container>

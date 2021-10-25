@@ -1,0 +1,10 @@
+<ng-container *ngIf="list$ | async as list">
+  <ng-container *ngIf="list?.length > 0">
+    <div class="divider"></div>
+    <epgu-constructor-time-selector
+      [list]="list"
+      [current]="current$ | async"
+      (choose)="chooseAction($event)"
+    ></epgu-constructor-time-selector>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,10 @@
+<epgu-constructor-time-slot-base-screen [header]="header$ | async" [showNav]="showNav$ | async">
+  <ng-container time-slot-content>
+    <epgu-constructor-time-slot-resolver></epgu-constructor-time-slot-resolver>
+    <epgu-constructor-time-slot-error></epgu-constructor-time-slot-error>
+  </ng-container>
+  <ng-container time-slot-footer>
+    <epgu-constructor-time-slot-booked-info></epgu-constructor-time-slot-booked-info>
+    <epgu-constructor-time-slot-button></epgu-constructor-time-slot-button>
+  </ng-container>
+</epgu-constructor-time-slot-base-screen>

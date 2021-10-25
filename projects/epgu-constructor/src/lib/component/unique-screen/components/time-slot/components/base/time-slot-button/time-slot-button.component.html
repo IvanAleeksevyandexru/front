@@ -1,0 +1,10 @@
+<lib-button
+  [showLoader]="isLoading$ | async"
+  (click)="bookAction()"
+  class="submit-button"
+  [disabled]="disabled$ | async"
+>
+  <div *ngIf="button$ | async as button" class="secondary-font">
+    {{ button?.label || 'Продолжить' }}
+  </div>
+</lib-button>
