@@ -21,6 +21,7 @@
           *ngFor="let item of filteredItems$ | async"
           [labelText]="item.text"
           [formControlName]="item.id"
+          customClass="mb-16"
         ></lib-checkbox>
       </ng-container>
     </div>
