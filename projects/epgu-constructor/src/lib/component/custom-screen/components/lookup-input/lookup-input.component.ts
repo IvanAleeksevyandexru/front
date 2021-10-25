@@ -108,6 +108,8 @@ export class LookupInputComponent extends AbstractDictionaryLikeComponent<Lookup
   private reRenderChildLookup(): void {
     setTimeout(() => {
       this.forReRenderChildLookup = false;
+      this.control.markAsUntouched();
+      this.control.updateValueAndValidity();
       this.cdr.detectChanges();
     }, 0);
     setTimeout(() => {
