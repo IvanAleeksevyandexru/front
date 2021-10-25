@@ -159,28 +159,6 @@ input[type='file'] {
   margin-right: 8.6px;
 }
 
-.fileupload__buttons {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.fileupload__button {
-  padding: 5px;
-  margin: -5px;
-
-  @include phones-down {
-    padding: 0 18px;
-  }
-
-  &:first-child {
-    margin-right: 19px;
-
-    @include phones-down {
-      margin-right: 10px;
-    }
-  }
-}
-
 .fileupload__link-button {
   display: inline-block;
   margin: 0 11px;

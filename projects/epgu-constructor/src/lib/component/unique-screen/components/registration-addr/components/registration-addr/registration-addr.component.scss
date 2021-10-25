@@ -1,7 +1,6 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
-$item-hint-mx: 13px;
 :host {
   display: block;
 }
@@ -23,7 +22,6 @@ $item-hint-mx: 13px;
     background: $color-light-gray;
     border-radius: 4px;
     padding: 12px;
-    margin: $item-hint-mx $item-hint-mx 0;
     cursor: pointer;
 
     &:hover {
@@ -42,12 +40,10 @@ $item-hint-mx: 13px;
 }
 
 .hint-wrapper {
-  margin-left: -$item-hint-mx;
-  margin-right: -$item-hint-mx;
-  margin-top: -$item-hint-mx;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  gap: 16px;
 }
 
 .content {
