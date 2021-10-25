@@ -3,7 +3,7 @@ import { CustomComponentAttr, CustomScreenComponentTypes } from '../../component
 import MaskedAndPlainInputModelAttrs from './MaskedAndPlainInputModelAttrs';
 
 export default class OgrnIpInputModel extends BaseModel<MaskedAndPlainInputModelAttrs> {
-  type = CustomScreenComponentTypes.OgrnInput;
+  type = CustomScreenComponentTypes.OgrnipInput;
 
   getAttrs(attrs: CustomComponentAttr): MaskedAndPlainInputModelAttrs {
     return new MaskedAndPlainInputModelAttrs(attrs);
