@@ -8,7 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ScreenService } from '../../../screen/screen.service';
 import { HookService } from '../../../core/services/hook/hook.service';
@@ -67,7 +67,7 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
   private subscribeToInitHooks(): void {
     const hasLoadedSubjects = this.viewComponents
       .filter((component) => isOnInitComponent(component.componentDto))
-      .map((component) => component.componentRef?.instance.hasLoaded);
+      .map((component) => component.componentRef?.instance.hasLoaded || of(false));
     this.loadSubscription = combineLatest(hasLoadedSubjects).subscribe((hasLoadedResult) => {
       if (hasLoadedResult.every((element) => !!element)) {
         this.screenService.isLogicComponentLoading = false;
