@@ -94,15 +94,34 @@ export class CarDetailInfoService {
   }
 
   private parallelRequest(): Observable<unknown> {
-    return merge(this.fetchNotaryInfo(), this.fetchVehicleInfo());
+    this.screenService.updateLoading(true);
+    return merge(this.fetchNotaryInfo(), this.fetchVehicleInfo()).pipe(
+      tap(() => this.screenService.updateLoading(false)),
+      catchError(() => {
+        const data = {
+          externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
+        };
+        this.screenService.updateLoading(false);
+        return of(data);
+      })
+    );
   }
 
   private sequentialRequest(): Observable<unknown> {
+    this.screenService.updateLoading(true);
     return this.fetchVehicleInfo().pipe(
       switchMap((response) => {
         this.screenService.component.arguments.vin = response.data.vin;
         return this.fetchNotaryInfo();
       }),
+      tap(() => this.screenService.updateLoading(false)),
+      catchError(() => {
+        const data = {
+          externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
+        };
+        this.screenService.updateLoading(false);
+        return of(data);
+      })
     );
   }
 
