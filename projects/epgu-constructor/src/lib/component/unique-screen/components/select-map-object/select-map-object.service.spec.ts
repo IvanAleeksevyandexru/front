@@ -22,8 +22,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { ymaps } from '@epgu/epgu-constructor-ui-kit/src/lib/base/components/yandex-map/yandex-map.types';
-import IDirectProblemSolution = ymaps.IDirectProblemSolution;
+import { IDirectProblemSolution } from '@epgu/epgu-constructor-ui-kit/src/lib/base/components/yandex-map/yandex-map.interface';
 import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 
 describe('SelectMapObjectComponent', () => {
