@@ -1,0 +1,19 @@
+<ng-container
+  *ngTemplateOutlet="
+    templateContent;
+    context: { templates: templates$ | async, haveLockedDays: haveLockedDays$ | async }
+  "
+>
+</ng-container>
+
+<ng-template #templateContent let-templates="templates" let-haveLockedDays="haveLockedDays">
+  <epgu-constructor-time-slot-empty-error
+    *ngIf="haveLockedDays && templates[types.DAYS_NOT_FOUND]"
+    [error]="templates[types.DAYS_NOT_FOUND]"
+  ></epgu-constructor-time-slot-empty-error>
+
+  <epgu-constructor-time-slot-checkbox-error
+    *ngIf="haveLockedDays && templates[types.SLOTS_NOT_FOUND] && !templates[types.DAYS_NOT_FOUND]"
+    [error]="templates[types.SLOTS_NOT_FOUND]"
+  ></epgu-constructor-time-slot-checkbox-error>
+</ng-template>

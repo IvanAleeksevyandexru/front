@@ -1,0 +1,8 @@
+<ng-container *ngIf="bookedInfo$ | async as bookedInfo">
+  <span *ngIf="bookedInfo?.length > 0" class="time">
+    Вы забронировали:
+    <span class="time--bold">
+      {{ bookedInfo }}
+    </span>
+  </span>
+</ng-container>
