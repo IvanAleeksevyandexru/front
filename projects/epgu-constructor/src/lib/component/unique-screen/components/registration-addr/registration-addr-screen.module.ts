@@ -8,11 +8,11 @@ import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseModule } from '../../../../shared/base.module';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DateValidator } from './components/registration-addr/date-validator';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
 import { RegistrationAddrReadonlyComponent } from './components/registration-addr-readonly/registration-addr-readonly.component';
 import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
+import { ValidationService } from '../../../../shared/services/validation/validation.service';
 
 @NgModule({
   declarations: [RegistrationAddrComponent, RegistrationAddrReadonlyComponent],
@@ -28,7 +28,7 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
     ClickableLabelModule,
     DisclaimerModule,
   ],
-  providers: [DateValidator, DatesToolsService],
+  providers: [DatesToolsService, ValidationService],
   entryComponents: [RegistrationAddrComponent, RegistrationAddrReadonlyComponent],
 })
 export class RegistrationAddrScreenModule {}
