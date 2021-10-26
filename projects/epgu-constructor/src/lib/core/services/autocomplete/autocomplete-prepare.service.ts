@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { get as _get, cloneDeep as _cloneDeep } from 'lodash';
+
 import { Answer, ComponentDto } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
 import { getFieldNameFromCompositeMnemonic, isChildrenListType } from './autocomplete.const';
-import { get as _get, cloneDeep as _cloneDeep } from 'lodash';
 import {
   ISuggestionApi,
   ISuggestionApiValueField,
@@ -28,53 +29,7 @@ export class AutocompletePrepareService {
     private jsonHelperService: JsonHelperService,
   ) {}
 
-  public getFormattedList(
-    repeatableComponents: ComponentDto[][],
-    componentsSuggestionsList: [string, string][],
-    fields: ISuggestionApiValueField[],
-    id: number,
-    componentMnemonic: string,
-  ): ISuggestionItemList {
-    const hints: { value: string; mnemonic: string }[] = this.getFormattedHints(
-      repeatableComponents,
-      componentsSuggestionsList,
-      fields,
-      componentMnemonic,
-    );
-    const field = fields.find(
-      (field: ISuggestionApiValueField) => field.mnemonic === componentMnemonic,
-    );
-    if (field) {
-      let { value, mnemonic } = field;
-      let originalItem = value;
-      value = this.prepareValue(repeatableComponents, componentsSuggestionsList, value, mnemonic);
-      return {
-        value,
-        mnemonic,
-        originalItem,
-        id,
-        hints,
-      };
-    } else {
-      return null;
-    }
-  }
-
-  public getParsedSuggestionsUploadedFiles(
-    componentList: ISuggestionItemList[] = [],
-  ): UploadedFile[] {
-    return componentList.reduce((result, item) => {
-      const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
-      const componentValues = [
-        ...parsedValue?.uploads.reduce((acc, upload) => {
-          acc.push(...upload.value);
-          return acc;
-        }, []),
-      ];
-      return [...result, ...componentValues];
-    }, []);
-  }
-
+  // Форматируем данные для вывода в подсказках
   public formatAndPassDataToSuggestions(
     repeatableComponents: ComponentDto[][],
     componentsSuggestionsList: [string, string][] = [],
@@ -96,6 +51,7 @@ export class AutocompletePrepareService {
             id,
             componentMnemonic,
           );
+
           if (componentList) {
             if (result[componentId]) {
               result[componentId].list.push(componentList);
@@ -113,7 +69,23 @@ export class AutocompletePrepareService {
     this.screenService.suggestions = result;
   }
 
-  public findAndUpdateComponentWithValue(
+  public getParsedSuggestionsUploadedFiles(
+    componentList: ISuggestionItemList[] = [],
+  ): UploadedFile[] {
+    return componentList.reduce((result, item) => {
+      const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
+      const componentValues = [
+        ...parsedValue?.uploads.reduce((acc, upload) => {
+          acc.push(...upload.value);
+          return acc;
+        }, []),
+      ];
+      return [...result, ...componentValues];
+    }, []);
+  }
+
+  // Подставляем данные из suggestions в нужные поля
+  public findAndUpdateComponentsWithValue(
     repeatableComponents: ComponentDto[][],
     componentsSuggestionsList: [string, string][],
     parentComponent: ComponentDto,
@@ -122,34 +94,39 @@ export class AutocompletePrepareService {
     id?: number,
     componentsGroupIndex?: number,
   ): void {
-    const component = this.findComponent(
+    const components = this.findComponents(
       repeatableComponents,
       componentsSuggestionsList,
       mnemonic,
       componentsGroupIndex,
     );
 
-    if (component.type === CustomScreenComponentTypes.AddressInput) {
-      this.setComponentValue(component, value);
-    } else {
-      const componentValue = this.findComponentValue(
-        component,
-        id,
-        value,
-        mnemonic,
-        componentsSuggestionsList,
-      );
-      this.setComponentValue(component, componentValue);
+    if (components.length > 0) {
+      components.forEach((component: ComponentDto) => {
 
-      if (isChildrenListType(parentComponent)) {
-        const cachedAnswer: Answer = this.prepareCachedAnswers(
-          parentComponent,
-          component,
-          componentsGroupIndex,
-          componentValue,
-        );
-        this.setCachedAnswer(parentComponent.id, cachedAnswer);
-      }
+        if (component.type === CustomScreenComponentTypes.AddressInput) {
+          this.setComponentValue(component, value);
+        } else {
+          const componentValue = this.findComponentValue(
+            component,
+            id,
+            value,
+            mnemonic,
+            componentsSuggestionsList,
+          );
+          this.setComponentValue(component, componentValue);
+
+          if (isChildrenListType(parentComponent)) {
+            const cachedAnswer: Answer = this.prepareCachedAnswers(
+              parentComponent,
+              component,
+              componentsGroupIndex,
+              componentValue,
+            );
+            this.setCachedAnswer(parentComponent.id, cachedAnswer);
+          }
+        }
+      });
     }
   }
 
@@ -209,6 +186,41 @@ export class AutocompletePrepareService {
 
       cachedAnswer.value = JSON.stringify(parsedValue);
       this.setCachedAnswer(componentId, cachedAnswer);
+    }
+  }
+
+  private getFormattedList(
+    repeatableComponents: ComponentDto[][],
+    componentsSuggestionsList: [string, string][],
+    fields: ISuggestionApiValueField[],
+    id: number,
+    componentMnemonic: string,
+  ): ISuggestionItemList {
+    const hints: { value: string; mnemonic: string }[] = this.getFormattedHints(
+      repeatableComponents,
+      componentsSuggestionsList,
+      fields,
+      componentMnemonic,
+    );
+    const field = fields.find(
+      (field: ISuggestionApiValueField) => field.mnemonic === componentMnemonic,
+    );
+
+    if (field) {
+      let { value, mnemonic } = field;
+      let originalItem = value;
+
+      value = this.prepareValue(repeatableComponents, componentsSuggestionsList, value, mnemonic);
+
+      return {
+        value,
+        mnemonic,
+        originalItem,
+        id,
+        hints,
+      };
+    } else {
+      return null;
     }
   }
 
@@ -273,12 +285,16 @@ export class AutocompletePrepareService {
     }
 
     const componentsGroupIndex = 0;
-    const component = this.findComponent(
+    /**
+     * В данном случае нам достаточно получить только один компонент
+     * т.к. при одинаковых suggestion и значение компонентов будет одинаковым
+     */
+    const component = this.findComponents(
       repeatableComponents,
       componentsSuggestionsList,
       componentMnemonic,
       componentsGroupIndex,
-    );
+    )[0];
     if (component) {
       value = this.getFormattedValue(component, value, true);
     }
@@ -286,43 +302,50 @@ export class AutocompletePrepareService {
     return value;
   }
 
-  private findComponent(
+  // Получаем массив компонентов, в которые нужно подставить значения из suggestions
+  private findComponents(
     repeatableComponents: ComponentDto[][],
     componentsSuggestionsList: [string, string][],
     mnemonic: string,
     componentsGroupIndex?: number,
-  ): ComponentDto {
-    /* Иногда сюда приходит композитный мнемоник вида `zagran_passport.number`, из которого нужно предварительно
-    вытащить "родительский" мнемоник, основного компонента, обслуживающий свои филды, например DocInput */
-    const [parentMnemonic] = mnemonic.split('.');
-    const getComponentDto = (
-      componentsList: ComponentDto[],
-      parentMnemonic: string,
-    ): ComponentDto => {
-      return (
-        componentsList.find((component: ComponentDto) => {
-          return componentsSuggestionsList.some(
-            ([componentMnemonic, componentId]) =>
-              componentId === component.id && componentMnemonic === parentMnemonic,
-          );
-        }) ||
-        // TODO: небольшой костыль, от которого следует избавиться в ходе глобального рефактора саджестов
-        componentsList.find((component: ComponentDto) => {
-          return componentsSuggestionsList.some(
-            ([componentMnemonic, componentId]) =>
-              componentId.includes(component.id) && componentMnemonic === parentMnemonic,
-          );
-        })
-      );
-    };
+  ): ComponentDto[] {
+    const [parentMnemonic] = this.splitParentMnemonic(mnemonic);
 
     if (repeatableComponents.length && componentsGroupIndex > -1) {
-      return getComponentDto(repeatableComponents[componentsGroupIndex], parentMnemonic);
+      return this.getComponentsDto(repeatableComponents[componentsGroupIndex], componentsSuggestionsList, parentMnemonic);
     } else {
-      return getComponentDto(this.screenService.display?.components, parentMnemonic);
+      return this.getComponentsDto(this.screenService.display?.components, componentsSuggestionsList, parentMnemonic);
     }
   }
 
+  private getComponentsDto(
+    componentsList: ComponentDto[],
+    componentsSuggestionsList: [string, string][],
+    parentMnemonic: string,
+  ): ComponentDto[] {
+    let result = componentsList.filter((component: ComponentDto) => {
+      if (componentsSuggestionsList.some(
+        ([componentMnemonic, componentId]) =>
+          (componentId === component.id && componentMnemonic === parentMnemonic)
+      )) return component;
+    });
+    /**
+     * сначала ищем компоненты по строгому совпадению id и мнемоники, и только если такие не найдены,
+     * ищем компоненты по совпадению подстроки с id и мнемоникой (для кейсов, когда композитный мнемоник)
+     */
+    if (result.length === 0) {
+      result = componentsList.filter((component: ComponentDto) => {
+        if (componentsSuggestionsList.some(
+          ([componentMnemonic, componentId]) =>
+            (componentId.includes(component.id) && componentMnemonic === parentMnemonic)
+        )) return component;
+      });
+    }
+
+    return result;
+  }
+
+  // Поиск значения в suggestions
   private findComponentValue(
     component: Partial<ComponentDto>,
     id: number,
@@ -367,6 +390,67 @@ export class AutocompletePrepareService {
     }
   }
 
+  /**
+   * Проверяем и форматируем значение для компонента
+   * @param component компонент
+   * @param value исходное значение
+   * @param isFormattedReturn возвращать исходное или форматированное значение
+   */
+  private getFormattedValue(
+    component: ComponentDto,
+    value: string,
+    isFormattedReturn?: boolean,
+  ): string {
+    if (component.type === CustomScreenComponentTypes.DateInput) {
+      let dateValue = (this.datesToolsService.parse(
+        value,
+        DATE_STRING_DOT_FORMAT,
+      ) as unknown) as string;
+
+      if (this.datesToolsService.isValid(dateValue)) {
+        return isFormattedReturn
+          ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
+          : dateValue;
+      } else {
+        dateValue = (this.datesToolsService.parse(value) as unknown) as string;
+
+        return isFormattedReturn && this.datesToolsService.isValid(dateValue)
+          ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
+          : dateValue;
+      }
+    } else if (component.type === CustomScreenComponentTypes.DocInput) {
+      const dateValue = this.datesToolsService.parse(value);
+
+      if (this.datesToolsService.isValid(dateValue)) {
+        return this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT);
+      } else {
+        return value;
+      }
+    } else if (component.type === CustomScreenComponentTypes.RadioInput) {
+      const componentAttrs = component.attrs as CustomComponentAttr;
+
+      return isFormattedReturn ?
+        componentAttrs.supportedValues.find((item) => item.value === value)?.label || value
+        : value;
+    } else if (!!component.attrs.suggestionPath && this.jsonHelperService.hasJsonStructure(value)) {
+      const parsedValue = this.jsonHelperService.tryToParse(value);
+
+      return _get(parsedValue, component.attrs.suggestionPath);
+    } else if (this.jsonHelperService.hasJsonStructure(value)) {
+      const parsedValue = JSON.parse(value);
+
+      if (Array.isArray(parsedValue)) {
+        const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
+        value = parsedItem[component.id];
+
+        return typeof value === 'string' ? value : JSON.stringify(value);
+      } else if ('snils' in parsedValue) {
+        return parsedValue['snils'];
+      }
+    }
+    return value;
+  }
+
   // Здесь собирается единый контекст для передачи в SelectChildren через механизм cachedAnswers.
   private prepareCachedAnswers(
     parentComponent: ComponentDto,
@@ -386,7 +470,7 @@ export class AutocompletePrepareService {
       /**
        * если в кеше есть элемент с таким индексом (вне зависимоти от значений) -> возвращаем его из кэша
        * если нет -> берём текущее значение формы
-      */
+       */
       parsedValue = currentAnswerState.map((stateItem, idx) => {
         if (idx !== componentsGroupIndex) {
           return stateItem;
@@ -421,58 +505,6 @@ export class AutocompletePrepareService {
     }
   }
 
-  private getFormattedValue(
-    component: ComponentDto,
-    value: string,
-    isFormattedReturn?: boolean,
-  ): string {
-    if (component.type === CustomScreenComponentTypes.DateInput) {
-      let dateValue = (this.datesToolsService.parse(
-        value,
-        DATE_STRING_DOT_FORMAT,
-      ) as unknown) as string;
-      if (this.datesToolsService.isValid(dateValue)) {
-        return isFormattedReturn
-          ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
-          : dateValue;
-      } else {
-        dateValue = (this.datesToolsService.parse(value) as unknown) as string;
-
-        return isFormattedReturn && this.datesToolsService.isValid(dateValue)
-          ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
-          : dateValue;
-      }
-    } else if (component.type === CustomScreenComponentTypes.DocInput) {
-      const dateValue = this.datesToolsService.parse(value);
-      if (this.datesToolsService.isValid(dateValue)) {
-        return this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT);
-      } else {
-        return value;
-      }
-    } else if (component.type === CustomScreenComponentTypes.RadioInput) {
-      const componentAttrs = component.attrs as CustomComponentAttr;
-
-      return isFormattedReturn ?
-        componentAttrs.supportedValues.find((item) => item.value === value)?.label || value
-        : value;
-    } else if (!!component.attrs.suggestionPath && this.jsonHelperService.hasJsonStructure(value)) {
-      const parsedValue = this.jsonHelperService.tryToParse(value);
-
-      return _get(parsedValue, component.attrs.suggestionPath);
-    } else if (this.jsonHelperService.hasJsonStructure(value)) {
-      const parsedValue = JSON.parse(value);
-      if (Array.isArray(parsedValue)) {
-        const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
-        value = parsedItem[component.id];
-
-        return typeof value === 'string' ? value : JSON.stringify(value);
-      } else if ('snils' in parsedValue) {
-        return parsedValue['snils'];
-      }
-    }
-    return value;
-  }
-
   private getCachedAnswer(componentId: string): Answer {
     return this.screenService.cachedAnswers[componentId];
   }
@@ -480,5 +512,13 @@ export class AutocompletePrepareService {
   private setCachedAnswer(componentId: string, newAnswer: Answer): void {
     this.screenService.cachedAnswers[componentId] = newAnswer;
     this.screenService.setCompValueToCachedAnswer(componentId, newAnswer?.value);
+  }
+
+  private splitParentMnemonic(mnemonic: string): string[] {
+    /**
+     * Иногда приходит композитный мнемоник вида `zagran_passport.number`, из которого нужно предварительно
+     * вытащить "родительский" мнемоник, основного компонента, обслуживающий свои филды, например DocInput
+     */
+    return mnemonic.split('.');
   }
 }

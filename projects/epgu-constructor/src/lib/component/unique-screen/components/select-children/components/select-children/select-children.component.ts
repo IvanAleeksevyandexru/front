@@ -214,9 +214,7 @@ export class SelectChildrenComponent implements OnInit {
     }
 
     this.passDataToSend(this.items, index);
-    this.eventBusService.emit(BusEventType.DeleteCachedValueItem, {
-      index,
-    });
+    this.deleteItemFormCache(index);
   }
 
   /**
@@ -293,12 +291,11 @@ export class SelectChildrenComponent implements OnInit {
     };
 
     if (!event && index !== undefined) {
-      this.eventBusService.emit(BusEventType.DeleteCachedValueItem, {
-        index,
-      });
+      this.deleteItemFormCache(index);
     }
 
     if (event && event[this.idRef] === this.NEW_ID) {
+      this.deleteItemFormCache(index);
       const newChild = this.createNewChild();
       this.handleSelect(newChild, index);
     } else {
@@ -413,5 +410,11 @@ export class SelectChildrenComponent implements OnInit {
       (this.itemsToSelect.filter((child) => child.id !== 'new').length === 1 ||
         (this.itemsToSelect.length === 1 && this.itemsToSelect[0].id === this.NEW_ID))
     );
+  }
+
+  private deleteItemFormCache(index: number): void {
+    this.eventBusService.emit(BusEventType.DeleteCachedValueItem, {
+      index,
+    });
   }
 }
