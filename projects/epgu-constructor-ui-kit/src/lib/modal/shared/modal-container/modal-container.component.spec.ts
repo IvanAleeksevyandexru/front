@@ -1,19 +1,27 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalContainerComponent } from './modal-container.component';
 import { ModalService } from '../../modal.service';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { By } from '@angular/platform-browser';
-import { ConfirmationModalComponent } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.component';
-import { MockComponents, MockDirectives, MockModule } from 'ng-mocks';
+import { ConfirmationModalModule } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.module';
+import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { CtaModalComponent } from '../cta-modal/cta-modal.component';
-import { OutputHtmlComponent } from '@epgu/epgu-constructor/src/lib/shared/components/output-html/output-html.component';
 import { ScreenButtonsComponent } from '@epgu/epgu-constructor/src/lib/shared/components/screen-buttons/screen-buttons.component';
-import { ActionDirective } from '@epgu/epgu-constructor/src/lib/shared/directives/action/action.directive';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { AnswerButtonModule } from '@epgu/epgu-constructor/src/lib/shared/components/answer-button/answer-button.module';
 import { BaseUiModule } from '../../../base/base-ui.module';
+import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
+import { LocationService } from '../../../core/services/location/location.service';
+import { LocationServiceStub } from '../../../core/services/location/location.service.stub';
+import { ConfirmationModalComponent } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.component';
+import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
+import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
+import { CurrentAnswersService } from '@epgu/epgu-constructor/src/lib/screen/current-answers.service';
+import { HtmlSelectService } from '@epgu/epgu-constructor/src/lib/core/services/html-select/html-select.service';
+import { JsonHelperService } from '@epgu/epgu-constructor/src/lib/core/services/json-helper/json-helper.service';
+import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
 
 const blankModalParameters = {
   clarifications: {},
@@ -23,8 +31,7 @@ const blankModalParameters = {
   title: '',
 };
 
-// TODO: тут вылезла зависимость от ActionService -> FormPlayerApiService, подумать как зарезолвить
-xdescribe('ModalContainerComponent', () => {
+describe('ModalContainerComponent', () => {
   let component: ModalContainerComponent;
   let fixture: ComponentFixture<ModalContainerComponent>;
   let service: ModalService;
@@ -38,25 +45,25 @@ xdescribe('ModalContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          ConfirmationModalComponent,
-          ModalContainerComponent,
-          MockComponents(CtaModalComponent, OutputHtmlComponent, ScreenButtonsComponent),
-          MockDirectives(ActionDirective),
+        declarations: [MockComponents(CtaModalComponent, ScreenButtonsComponent)],
+        imports: [
+          ConfirmationModalModule,
+          MockModule(BaseUiModule),
+          MockModule(AnswerButtonModule),
         ],
-        imports: [MockModule(BaseUiModule), AnswerButtonModule],
         providers: [
           EventBusService,
           ModalService,
+          { provide: LocationService, useClass: LocationServiceStub },
+          { provide: NavigationService, useClass: NavigationServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
+          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+          MockProvider(CurrentAnswersService),
+          MockProvider(HtmlSelectService),
+          MockProvider(JsonHelperService),
+          MockProvider(ScreenService),
         ],
-      })
-        .overrideModule(BrowserDynamicTestingModule, {
-          set: {
-            entryComponents: [ConfirmationModalComponent],
-          },
-        })
-        .compileComponents();
+      }).compileComponents();
     }),
   );
 

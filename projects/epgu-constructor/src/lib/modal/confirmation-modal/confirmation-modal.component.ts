@@ -13,8 +13,9 @@ import {
   ScreenButton,
   ConfirmationModal,
   ActionType,
-  LongButtonColor,
   Clarifications,
+  LongButtonColor,
+  CloseHandlerCases,
 } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
@@ -24,8 +25,10 @@ import {
   ConfigService,
   ConfirmationModalAnswerButton,
   BusEventType,
+  LocationService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierService } from '@epgu/ui/services/notifier';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',
@@ -49,6 +52,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   actionButtons: ScreenButton[] = [];
   showCrossButton: boolean;
   isShortModal?: ConfirmationModal['isShortModal'];
+  closeHandlerCase: ConfirmationModal['closeHandlerCase'];
   backdropDismiss = true;
   blueColor = LongButtonColor.BLUE;
 
@@ -56,7 +60,9 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     public injector: Injector,
     public configService: ConfigService,
     protected elemRef: ElementRef,
+    private locationService: LocationService,
     private ngUnsubscribe$: UnsubscribeService,
+    private navigationService: NavigationService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,
     private clipboard: Clipboard,
@@ -132,5 +138,24 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   copy(traceId: string): void {
     this.clipboard.copy(traceId);
     this.notifierService.success({ message: 'Код ошибки скопирован' });
+  }
+
+  closeModal(value?: unknown): void {
+    super.closeModal(value);
+
+    switch (this.closeHandlerCase) {
+      case CloseHandlerCases.PREV_STEP:
+        this.navigationService.prev();
+        break;
+      case CloseHandlerCases.REDIRECT_TO_LK:
+        this.navigationService.redirectToLK();
+        break;
+      case CloseHandlerCases.RELOAD:
+        this.locationService.reload();
+        break;
+      default:
+        this.navigationService.prev();
+        break;
+    }
   }
 }

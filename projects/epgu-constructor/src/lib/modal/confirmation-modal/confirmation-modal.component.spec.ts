@@ -9,10 +9,12 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   EventBusService,
+  BaseUiModule,
+  DownloadService,
+  LocationService,
+  LocationServiceStub,
   ModalService,
   ObjectHelperService,
-  DownloadService,
-  BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
@@ -27,18 +29,20 @@ import { OutputHtmlComponent } from '../../shared/components/output-html/output-
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { ScreenButtonsComponent } from '../../shared/components/screen-buttons/screen-buttons.component';
 import { By } from '@angular/platform-browser';
-import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { NotifierService } from '@epgu/ui/services/notifier';
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
+import { ActionType, CloseHandlerCases, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
   let clipboard: Clipboard;
   let notifierService: NotifierService;
+  let navigationService: NavigationService;
+  let locationService: LocationService;
   let fixture: ComponentFixture<ConfirmationModalComponent>;
 
   const initComponent = () => {
@@ -69,6 +73,7 @@ describe('ConfirmationModalComponent', () => {
         Clipboard,
         NotifierService,
         { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -88,7 +93,11 @@ describe('ConfirmationModalComponent', () => {
 
   beforeEach(() => {
     initComponent();
+    // eslint-disable-next-line no-empty-function
+    component['detachView'] = () => {};
     fixture.detectChanges();
+    navigationService = TestBed.inject(NavigationService);
+    locationService = TestBed.inject(LocationService);
   });
 
   it('should render epgu-cf-ui-cta-modal', () => {
@@ -187,6 +196,29 @@ describe('ConfirmationModalComponent', () => {
       const spy = jest.spyOn(notifierService, 'success');
       component.copy(traceId);
       expect(spy).toBeCalledWith({ message });
+    });
+  });
+
+  describe('close handle cases', () => {
+    it('should call navigationService.prev', () => {
+      const spy = jest.spyOn(navigationService, 'prev');
+      component.closeHandlerCase = CloseHandlerCases.PREV_STEP;
+      component.closeModal({});
+      expect(spy).toBeCalled();
+    });
+
+    it('should call navigationService.redirectToLK', () => {
+      const spy = jest.spyOn(navigationService, 'redirectToLK');
+      component.closeHandlerCase = CloseHandlerCases.REDIRECT_TO_LK;
+      component.closeModal({});
+      expect(spy).toBeCalled();
+    });
+
+    it('should call locationService.reload', () => {
+      const spy = jest.spyOn(locationService, 'reload');
+      component.closeHandlerCase = CloseHandlerCases.RELOAD;
+      component.closeModal({});
+      expect(spy).toBeCalled();
     });
   });
 });

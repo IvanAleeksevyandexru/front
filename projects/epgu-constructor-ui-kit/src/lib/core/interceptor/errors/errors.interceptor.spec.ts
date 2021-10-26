@@ -2,17 +2,11 @@ import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 import { ErrorsInterceptor } from './errors.interceptor';
 import {
   AUTH_ERROR_MODAL_PARAMS,
-  DRAFT_STATEMENT_NOT_FOUND,
-  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
   BOOKING_ONLINE_ERROR,
-  TIME_INVITATION_ERROR,
-  NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
 } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
 import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
 import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
@@ -132,26 +126,6 @@ describe('ErrorsInterceptor', () => {
     tick();
   }));
 
-  it('should open modal with NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR params', fakeAsync(() => {
-    spyOn(modalService, 'openModal').and.callThrough();
-    formPlayerApi.checkIfOrderExist().subscribe(
-      () => fail('should have failed with the 403 error'),
-      (error: HttpErrorResponse) => {
-        expect(error.status).toEqual(403);
-      },
-    );
-    const requestToError = httpMock.expectOne(
-      `${config.apiUrl}/service/${init.serviceId}/scenario/checkIfOrderIdExists`,
-    );
-    const body = new HttpErrorResponse({ status: 403 });
-    requestToError.flush({ status: 'NO_RIGHTS_FOR_SENDING_APPLICATION' }, body);
-    expect(modalService.openModal).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
-    );
-    tick();
-  }));
-
   it('should open modal with BOOKING_ONLINE_ERROR params', fakeAsync(() => {
     const data = {
       scenarioDto: {
@@ -174,59 +148,6 @@ describe('ErrorsInterceptor', () => {
     expect(modalService.openModal).toHaveBeenCalledWith(
       ConfirmationModalComponent,
       BOOKING_ONLINE_ERROR,
-    );
-    tick();
-  }));
-
-  it('should open modal with DRAFT_STATEMENT_NOT_FOUND params', fakeAsync(() => {
-    spyOn(modalService, 'openModal').and.callThrough();
-    formPlayerApi.checkIfOrderExist().subscribe(
-      () => fail('should have failed with the 406 error'),
-      (error: HttpErrorResponse) => {
-        expect(error.status).toEqual(406);
-      },
-    );
-    const requestToError = httpMock.expectOne(
-      `${config.apiUrl}/service/${init.serviceId}/scenario/checkIfOrderIdExists`,
-    );
-    const body = new HttpErrorResponse({
-      status: 406,
-      statusText: 'Not Acceptable',
-    });
-    requestToError.flush(
-      {
-        name: 'Not Acceptable',
-        description: 'Заявление не совместимо с услугой',
-      },
-      body,
-    );
-    expect(modalService.openModal).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      DRAFT_STATEMENT_NOT_FOUND,
-    );
-    tick();
-  }));
-
-  it('should open modal with ORDER_NOT_FOUND_ERROR_MODAL_PARAMS params', fakeAsync(() => {
-    spyOn(modalService, 'openModal').and.callThrough();
-    formPlayerApi.getOrderStatus(init.orderId).subscribe(
-      () => fail('should have failed with the 404 error'),
-      (error: HttpErrorResponse) => {
-        expect(error.status).toEqual(404);
-      },
-    );
-    const requestToError = httpMock.expectOne(
-      `${config.apiUrl}/service/${serviceId}/scenario/getOrderStatus`,
-    );
-    const body = new HttpErrorResponse({
-      status: 404,
-      statusText: 'Not Found',
-      url: `${config.apiUrl}/service/${serviceId}/scenario/getOrderStatus`,
-    });
-    requestToError.flush('Not Found', body);
-    expect(modalService.openModal).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
     );
     tick();
   }));
@@ -286,19 +207,6 @@ describe('ErrorsInterceptor', () => {
     expect(navigationService.patchOnCli).toHaveBeenCalledWith({
       display: EXPIRE_ORDER_ERROR_DISPLAY,
     });
-    tick();
-  }));
-
-  it('should open modal with TIME_INVITATION_ERROR', fakeAsync(() => {
-    const url = 'lk/v1/orders/1155289257/invitations/inviteToSign/send';
-    const spy = jest.spyOn(modalService, 'openModal');
-    httpClient
-      .get(url)
-      .pipe(catchError(() => of()))
-      .subscribe();
-    const req = httpMock.expectOne(url);
-    req.error(new ErrorEvent('error'), { status: 408 });
-    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, TIME_INVITATION_ERROR);
     tick();
   }));
 });
