@@ -12,19 +12,13 @@ import {
   ErrorHandlerAbstractService,
   ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
-
 import {
   AUTH_ERROR_MODAL_PARAMS,
   BOOKING_ONLINE_ERROR,
   NEW_BOOKING_ERROR,
   COMMON_ERROR_MODAL_PARAMS,
-  DRAFT_STATEMENT_NOT_FOUND,
-  NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR,
-  ORDER_NOT_FOUND_ERROR_MODAL_PARAMS,
   STATUS_ICON_MAP,
-  TIME_INVITATION_ERROR,
   ITEMS_FAILURE,
   SESSION_TIMEOUT,
   SERVICE_OR_SPEC_NO_SPECIALIST,
@@ -42,37 +36,17 @@ import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
-import {
-  DictionaryResponseError,
-} from '../../../shared/services/dictionary/dictionary-api.types';
-import { finalize } from 'rxjs/operators';
 import { ScreenService } from '../../../screen/screen.service';
-
-export enum ModalFailureType {
-  BOOKING,
-  FAILURE,
-  SESSION,
-}
-
-export const STATIC_ERROR_MESSAGE = 'Operation completed';
-/* eslint-disable max-len */
-
-export const SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST =
-  'В настоящее время отсутствуют медицинские должности, в которые доступна запись на прием к врачу через ЕПГУ. Пожалуйста, обратитесь в регистратуру медицинской организации';
-export const SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE = 'В выбранном Вами регионе услуга';
-export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
-  'Закончилось время, отведённое на заполнение формы';
-
-export const NO_AVAILABLE_DATA = 'должности в ближайшие 14 дней нет доступного времени';
-
-export enum RefName {
-  serviceOrSpecs = 'ServiceOrSpecs',
-  resource = 'Resource',
-  getSlotsResponse = 'getSlotsResponse',
-  bookResponse = 'bookResponse',
-}
-
-// @todo. написать тесты на обработку ошибок
+import {
+  SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2,
+  ModalFailureType,
+  STATIC_ERROR_MESSAGE,
+  RefName,
+  SMEV2_SERVICE_OR_SPEC_NO_SPECIALIST,
+  SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE,
+  NO_AVAILABLE_DATA,
+} from './error-handler.inteface';
+import { DictionaryResponseError } from '../../../shared/services/dictionary/dictionary-api.types';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -185,12 +159,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     if (statusText === 'logic component') {
       return throwError(httpErrorResponse);
     } else if (error?.errorModalWindow) {
-      const isPrevStep =
-        url.includes('confirmSmsCode') ||
-        url.includes('resendConfirmationCode') ||
-        url.includes('resendEmailConfirmation') ||
-        url.includes('confirmEmailCode');
-      this.showErrorModal(error?.errorModalWindow, isPrevStep);
+      this.showErrorModal({ ...error?.errorModalWindow, traceId });
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
@@ -199,30 +168,14 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY });
     } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
       this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY });
-    } else if (status === 408 && url.includes('invitations/inviteToSign/send')) {
-      this.showModal(TIME_INVITATION_ERROR, traceId); // TODO: переделать кейс на errorModalWindow
-    } else if (status === 403) {
-      if (error?.status === 'NO_RIGHTS_FOR_SENDING_APPLICATION') {
-        this.showModal(NO_RIGHTS_FOR_SENDING_APPLICATION_ERROR).then((value) =>
-          this.handleModalAction(value),
-        ); // TODO: переделать кейс на errorModalWindow
-      }
     } else if (status !== 404) {
-      if (error?.description?.includes('Заявление не совместимо с услугой')) {
-        this.showModal(DRAFT_STATEMENT_NOT_FOUND, traceId).then((value) =>
-          this.handleModalAction(value),
-        );
-      } else if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
+      if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
       } else {
         this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then((value) =>
           this.handleModalAction(value),
         );
       }
-    } else if (status === 404 && url.includes('scenario/getOrderStatus')) {
-      this.showModal(ORDER_NOT_FOUND_ERROR_MODAL_PARAMS, traceId).then((value) =>
-        this.handleModalAction(value),
-      );
     }
     return throwError(httpErrorResponse);
   }
@@ -385,17 +338,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       .toPromise();
   }
 
-  private showErrorModal(params: ErrorModal, isPrevStep = false): Promise<unknown> {
+  private showErrorModal(params: ErrorModal): Promise<unknown> {
     const confirmationModalParams = this.getConfirmationModalParamsFromErrorModalParams(params);
     return this.modalService
       .openModal(ConfirmationModalComponent, confirmationModalParams)
-      .pipe(
-        finalize(() => {
-          if (isPrevStep) {
-            this.navigationService.prev();
-          }
-        }),
-      )
       .toPromise();
   }
 
