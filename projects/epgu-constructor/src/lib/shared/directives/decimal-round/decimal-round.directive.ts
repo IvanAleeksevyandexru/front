@@ -14,7 +14,7 @@ export class DecimalRoundDirective {
 
   @HostListener('paste', ['$event'])
   onPaste($event): void {
-    if (!this.maskOptions.allowDecimalRounding || this.mask !== MASKS.NumberMaskInput) {
+    if (!this.maskOptions?.allowDecimalRounding || this.mask !== MASKS.NumberMaskInput) {
       return;
     }
 
@@ -34,7 +34,7 @@ export class DecimalRoundDirective {
   // Prevent adding extra symbol in decimal when rounding is enabled and limit has reached
   @HostListener('keydown', ['$event'])
   onKeyDown($event: KeyboardEvent): void {
-    if (!this.maskOptions.allowDecimalRounding || this.mask !== MASKS.NumberMaskInput) {
+    if (!this.maskOptions?.allowDecimalRounding || this.mask !== MASKS.NumberMaskInput) {
       return;
     }
 
