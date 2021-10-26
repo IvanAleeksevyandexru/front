@@ -3,20 +3,23 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
 
 ::ng-deep .conf-modal {
+  & .perfect-scrollbar .ps-content {
+    padding-right: 0;
+  }
   @include tablets-up {
     width: 690px !important;
   }
 }
 
 .wrapper {
-  margin: -8px;
   display: flex;
   flex-flow: row wrap;
+  gap: 12px;
 }
 
 .file-item {
-  margin: 8px;
   display: inline-block;
+  max-height: 195px;
 }
 
 .button {
