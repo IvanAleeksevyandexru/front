@@ -21,7 +21,6 @@ describe('PersonUserInnComponent', () => {
 
   const invalidInnValues = [
     '23432436463',
-    '023432436463',
     '23432436463435345',
     '234324s36463435345',
     '23^343434343',
@@ -98,6 +97,7 @@ describe('PersonUserInnComponent', () => {
     });
 
     it.each(invalidInnValues)('should be invalid inn value if not match regex', (invalidInn) => {
+      component.errors = [];
       screenService.component.value = invalidInn;
       component.ngOnInit();
       fixture.detectChanges();
