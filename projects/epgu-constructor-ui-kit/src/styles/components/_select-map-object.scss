@@ -7,6 +7,14 @@
 }
 
 :host::ng-deep {
+  ymaps, ymaps:before, ymaps:after {
+    box-sizing: content-box !important;
+  }
+
+  ymaps *[class*="zoom__runner"] {
+    box-sizing: border-box !important;
+  }
+
   hr {
     width: 100%;
   }
