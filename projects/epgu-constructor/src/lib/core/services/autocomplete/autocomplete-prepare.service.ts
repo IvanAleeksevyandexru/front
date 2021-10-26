@@ -384,8 +384,8 @@ export class AutocompletePrepareService {
       : suggestItem?.originalItem || '';
   }
 
-  private setComponentValue(component: ComponentDto, value: string): void {
-    if (component && value) {
+  private setComponentValue(component: ComponentDto, value = ''): void {
+    if (component) {
       component.value = this.getFormattedValue(component, value);
     }
   }
