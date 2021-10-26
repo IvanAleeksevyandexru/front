@@ -1,24 +1,16 @@
-import { MaskTransformDirective } from './mask-transform.directive';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { FormControl, NgControl } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { CoreModule } from '../../../core/core.module';
-import { BaseModule } from '../../base.module';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { configureTestSuite } from 'ng-bullet';
-import {
-  ConfigService,
-  ConfigServiceStub,
-  CoreUiModule,
-  LoggerService,
-  LoggerServiceStub,
-} from '@epgu/epgu-constructor-ui-kit';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
-import { MaskTransformService } from './mask-transform.service';
+import { configureTestSuite } from 'ng-bullet';
+
+import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
+import { BaseModule } from '../../base.module';
+import { CoreModule } from '../../../core/core.module';
+import { MaskTransformDirective } from './mask-transform.directive';
+import { MaskTransformService } from '../../services/mask-transform/mask-transform.service';
 
 @Component({
   selector: 'epgu-constructor-mask-transform-test-component',
@@ -42,14 +34,11 @@ describe('MaskTransformDirective', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [MaskTransformDirective, MaskTransformTestComponent],
-      imports: [CoreModule, MockModule(CoreUiModule), RouterTestingModule, BaseModule],
+      imports: [CoreModule, MockModule(CoreUiModule), BaseModule],
       providers: [
         DecimalPipe,
         NgControl,
         MaskTransformService,
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: LoggerService, useClass: LoggerServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     }).compileComponents();
   });

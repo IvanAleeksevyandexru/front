@@ -57,7 +57,7 @@ import { DictionaryApiServiceStub } from '../../shared/services/dictionary/dicti
 import { DocInputComponent } from './components/doc-input/doc-input.component';
 import { FieldListComponent } from '../../shared/components/field-list/field-list.component';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
-import { MaskTransformService } from '../../shared/directives/mask/mask-transform.service';
+import { MaskTransformService } from '../../shared/services/mask-transform/mask-transform.service';
 import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
 import { PassportComponent } from '../../shared/components/add-passport/passport.component';
 import { PrepareComponentsService } from '../../shared/services/prepare-components/prepare-components.service';

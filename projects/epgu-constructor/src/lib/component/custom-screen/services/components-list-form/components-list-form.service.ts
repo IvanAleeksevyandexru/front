@@ -26,7 +26,7 @@ import { DateRangeService } from '../../../../shared/services/date-range/date-ra
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
-import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
+import { MaskTransformService } from '../../../../shared/services/mask-transform/mask-transform.service';
 import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
