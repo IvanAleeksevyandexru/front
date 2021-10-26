@@ -13,8 +13,8 @@ import {
   IYMapPoint,
   YMapItem,
 } from './yandex-map.interface';
-import { ymaps } from './yandex-map.types';
-import IDirectProblemSolution = ymaps.IDirectProblemSolution;
+import { IDirectProblemSolution } from './yandex-map.interface';
+import type * as ymaps from 'yandex-maps';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
 
@@ -363,7 +363,9 @@ export class YandexMapService implements OnDestroy {
 
     objectManager.clusters.events.add('click', (evt) => {
       let clustersId = evt.get('objectId');
-      let cluster = objectManager.clusters.getById(clustersId) as IClusterItem<unknown>;
+      let cluster = (objectManager.clusters.getById(clustersId) as unknown) as IClusterItem<
+        unknown
+      >;
       this.centeredPlaceMark(cluster);
     });
 

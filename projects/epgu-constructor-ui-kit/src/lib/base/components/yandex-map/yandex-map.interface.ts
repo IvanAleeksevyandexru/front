@@ -1,5 +1,5 @@
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { ymaps } from './yandex-map.types';
+import * as ymaps from 'yandex-maps';
 
 export interface IYMapPoint<T> {
   center: [number, number];
@@ -14,10 +14,33 @@ export enum IFeatureTypes {
   Cluster = 'Cluster',
 }
 
+export interface IGeometryWithCoords {
+  type?: string;
+  coordinates?: [number, number];
+}
+
+export type IDirectProblemSolution = {
+  distance: number;
+  endDirection: [number, number];
+  startDirection: [number, number];
+  startPoint: [number, number];
+  endPoint: [number, number];
+  pathFunction: () => {};
+};
+
+interface IGeometryJson {
+  type: string;
+  coordinates?: [number, number];
+  radius?: number;
+}
+
+export interface IGeoObjectOptionsWithIconShape extends ymaps.IGeoObjectOptions {
+  iconShape: IGeometryJson;
+}
 export interface IFeatureItem<T> {
   type: IFeatureTypes;
   id: number | string;
-  geometry: ymaps.IGeometry;
+  geometry: IGeometryWithCoords;
   properties?: {
     res?: T;
     attributeValues?: KeyValueMap;

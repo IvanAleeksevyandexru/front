@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConfigService } from '../../../core/services/config/config.service';
-import { ymaps } from './yandex-map.types';
+import { IGeoObjectOptionsWithIconShape } from './yandex-map.interface';
 
 interface iconType {
   href: string;
@@ -9,7 +9,7 @@ interface iconType {
 }
 @Injectable()
 export class Icons {
-  get red(): ymaps.IGeoObjectOptions {
+  get red(): IGeoObjectOptionsWithIconShape {
     return {
       iconLayout: 'default#image',
       iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/pinred.svg`,
@@ -24,7 +24,7 @@ export class Icons {
     };
   }
 
-  get redChecked(): ymaps.IGeoObjectOptions {
+  get redChecked(): IGeoObjectOptionsWithIconShape {
     return {
       iconLayout: 'default#image',
       iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/pincheck.svg`,
@@ -39,7 +39,7 @@ export class Icons {
     };
   }
 
-  get blue(): ymaps.IGeoObjectOptions {
+  get blue(): IGeoObjectOptionsWithIconShape {
     return {
       iconLayout: 'default#image',
       iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/pinblue.svg`,
@@ -56,7 +56,7 @@ export class Icons {
     };
   }
 
-  get userOrange(): ymaps.IGeoObjectOptions {
+  get userOrange(): IGeoObjectOptionsWithIconShape {
     return {
       iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/userOrange.svg`,
       iconShape: {
@@ -92,7 +92,7 @@ export class Icons {
     };
   }
 
-  get childsHome(): ymaps.IGeoObjectOptions {
+  get childsHome(): IGeoObjectOptionsWithIconShape {
     return {
       iconLayout: 'default#image',
       iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/child's-home.svg`,
