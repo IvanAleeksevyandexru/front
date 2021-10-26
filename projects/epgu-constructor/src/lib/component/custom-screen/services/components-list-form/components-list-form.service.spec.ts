@@ -28,7 +28,7 @@ import { Observable, of } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
-import { MaskTransformService } from '../../../../shared/directives/mask/mask-transform.service';
+import { MaskTransformService } from '../../../../shared/services/mask-transform/mask-transform.service';
 import { cloneDeep } from 'lodash';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';

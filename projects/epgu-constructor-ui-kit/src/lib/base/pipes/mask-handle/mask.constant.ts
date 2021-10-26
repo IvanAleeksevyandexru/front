@@ -7,6 +7,7 @@ export const numberMaskDefaultOptions: Partial<NumberMaskOptions> = {
   thousandsSeparatorSymbol: ' ',
   decimalSymbol: '.',
   decimalLimit: 2,
+  allowDecimalRounding: false,
 };
 
 export enum MASKS {
@@ -14,6 +15,11 @@ export enum MASKS {
   NumberMaskInput = 'NumberMaskInput',
   PhoneWithCodeMaskInput = 'PhoneWithCodeMaskInput',
 }
+
+export const DecimalSymbolReplacer = {
+  ',': '.',
+  '.': ',',
+};
 
 export const MASKS_HANDLERS = {
   [MASKS.KadastrNumberInput]: (value: string): (string | RegExp)[] => {
@@ -50,10 +56,11 @@ export const MASKS_HANDLERS = {
     let hadDecimals = false;
 
     return (value: string): (string | RegExp)[] => {
-      const cleanValue =
-        options.decimalSymbol === ','
-          ? value.replace('.', ',').replace(cleanupPattern, '')
-          : value.replace(cleanupPattern, '');
+      const decimalSymbol = options.decimalSymbol;
+      const cleanValue = DecimalSymbolReplacer[decimalSymbol] ?
+        value.replace(DecimalSymbolReplacer[decimalSymbol], decimalSymbol).replace(cleanupPattern, '') :
+        value.replace(cleanupPattern, '');
+
       const parts: string[] = cleanValue.split(options.decimalSymbol);
       const hasDecimals: boolean = parts.length > 1;
       const [integerPart, decimalPart] = parts;
@@ -63,7 +70,8 @@ export const MASKS_HANDLERS = {
 
       if (maskForDecimalsShown) {
         for (
-          let i = 0, length = Math.min(options.decimalLimit, decimalPart.length + 1);
+          let i = 0,
+            length = Math.min(options.allowDecimalRounding ? options.decimalLimit + 1 : options.decimalLimit, decimalPart.length + 1);
           i < length;
           i += 1
         ) {

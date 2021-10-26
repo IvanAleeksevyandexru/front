@@ -10,4 +10,5 @@ export interface NumberMaskOptions {
   allowNegative: boolean;
   allowLeadingZeroes: boolean;
   integerLimit: number | null;
+  allowDecimalRounding: boolean;
 }

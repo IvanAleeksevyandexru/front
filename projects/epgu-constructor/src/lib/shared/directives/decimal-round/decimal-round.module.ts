@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { MaskTransformDirective } from './mask-transform.directive';
+import { DecimalRoundDirective } from './decimal-round.directive';
 import { MaskTransformService } from '../../services/mask-transform/mask-transform.service';
 
 @NgModule({
-  declarations: [MaskTransformDirective],
+  declarations: [DecimalRoundDirective],
   imports: [CommonModule],
-  exports: [MaskTransformDirective],
+  exports: [DecimalRoundDirective],
   providers: [DecimalPipe, MaskTransformService],
 })
-export class MaskModule {}
+export class DecimalRoundModule {}
