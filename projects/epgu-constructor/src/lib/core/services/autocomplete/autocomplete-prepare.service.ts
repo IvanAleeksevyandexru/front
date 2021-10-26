@@ -103,7 +103,6 @@ export class AutocompletePrepareService {
 
     if (components.length > 0) {
       components.forEach((component: ComponentDto) => {
-
         if (component.type === CustomScreenComponentTypes.AddressInput) {
           this.setComponentValue(component, value);
         } else {
@@ -312,9 +311,17 @@ export class AutocompletePrepareService {
     const [parentMnemonic] = this.splitParentMnemonic(mnemonic);
 
     if (repeatableComponents.length && componentsGroupIndex > -1) {
-      return this.getComponentsDto(repeatableComponents[componentsGroupIndex], componentsSuggestionsList, parentMnemonic);
+      return this.getComponentsDto(
+        repeatableComponents[componentsGroupIndex],
+        componentsSuggestionsList,
+        parentMnemonic,
+      );
     } else {
-      return this.getComponentsDto(this.screenService.display?.components, componentsSuggestionsList, parentMnemonic);
+      return this.getComponentsDto(
+        this.screenService.display?.components,
+        componentsSuggestionsList,
+        parentMnemonic,
+      );
     }
   }
 
@@ -324,10 +331,13 @@ export class AutocompletePrepareService {
     parentMnemonic: string,
   ): ComponentDto[] {
     let result = componentsList.filter((component: ComponentDto) => {
-      if (componentsSuggestionsList.some(
-        ([componentMnemonic, componentId]) =>
-          (componentId === component.id && componentMnemonic === parentMnemonic)
-      )) return component;
+      if (
+        componentsSuggestionsList.some(
+          ([componentMnemonic, componentId]) =>
+            componentId === component.id && componentMnemonic === parentMnemonic,
+        )
+      )
+        return component;
     });
     /**
      * сначала ищем компоненты по строгому совпадению id и мнемоники, и только если такие не найдены,
@@ -335,10 +345,13 @@ export class AutocompletePrepareService {
      */
     if (result.length === 0) {
       result = componentsList.filter((component: ComponentDto) => {
-        if (componentsSuggestionsList.some(
-          ([componentMnemonic, componentId]) =>
-            (componentId.includes(component.id) && componentMnemonic === parentMnemonic)
-        )) return component;
+        if (
+          componentsSuggestionsList.some(
+            ([componentMnemonic, componentId]) =>
+              componentId.includes(component.id) && componentMnemonic === parentMnemonic,
+          )
+        )
+          return component;
       });
     }
 
@@ -429,10 +442,13 @@ export class AutocompletePrepareService {
     } else if (component.type === CustomScreenComponentTypes.RadioInput) {
       const componentAttrs = component.attrs as CustomComponentAttr;
 
-      return isFormattedReturn ?
-        componentAttrs.supportedValues.find((item) => item.value === value)?.label || value
+      return isFormattedReturn
+        ? componentAttrs.supportedValues.find((item) => item.value === value)?.label || value
         : value;
-    } else if (!!component.attrs.suggestionPath && this.jsonHelperService.hasJsonStructure(value)) {
+    } else if (
+      !!component.attrs?.suggestionPath &&
+      this.jsonHelperService.hasJsonStructure(value)
+    ) {
       const parsedValue = this.jsonHelperService.tryToParse(value);
 
       return _get(parsedValue, component.attrs.suggestionPath);
@@ -461,7 +477,7 @@ export class AutocompletePrepareService {
     const cachedAnswer = this.getCachedAnswer(parentComponent.id);
     const currentAnswerState = (this.currentAnswersService.state as Record<string, string>[]) || [];
     const cachedState = (currentAnswerState && currentAnswerState[componentsGroupIndex]) || {};
-    const currentValue = componentValue || component.value;
+    const currentValue = this.getFormattedValue(component, componentValue || component.value);
 
     if (cachedAnswer) {
       const { value } = cachedAnswer;

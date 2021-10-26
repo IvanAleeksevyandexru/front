@@ -36,7 +36,7 @@ export class SelectChildrenScreenContainerComponent implements OnInit, AfterView
       const cachedValue = cachedAnswers[this.component.id].value;
 
       return cachedValue
-        ? this.cachedAnswersService.parseCachedValue<CachedValue>(cachedValue, this.component)
+        ? this.cachedAnswersService.parseCachedValue<CachedValue>(cachedValue)
         : null;
     }),
   );
