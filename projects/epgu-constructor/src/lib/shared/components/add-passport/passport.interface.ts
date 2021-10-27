@@ -1,9 +1,6 @@
-import { TextTransform } from '@epgu/epgu-constructor-types';
-
 export interface PassportAttr {
   participant: { role: string; mode: string };
   fields: PassportField[];
-  fstuc?: TextTransform; // TODO проверить на наличие
   titleHide?: boolean;
 }
 
