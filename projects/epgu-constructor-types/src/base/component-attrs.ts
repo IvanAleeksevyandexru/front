@@ -136,7 +136,7 @@ export interface ComponentAttrsDto {
   redirectLabel?: string;
   ref?: ComponentRefDto[] | string | { fiasCode: string } | CustomComponentRef[];
   refDate?: string;
-  refs?: RefsTimeDto | { [key: string]: string };
+  refs?: RefsTimeDto | KeyValueMap;
   relationField?: ComponentRelationFieldDto;
   repeatableComponents?: ComponentDto[][];
   repeatAmount?: number;

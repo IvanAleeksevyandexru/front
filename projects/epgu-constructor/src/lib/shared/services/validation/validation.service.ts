@@ -27,7 +27,7 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { get } from 'lodash';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { ComponentDto, KeyValueMap } from '@epgu/epgu-constructor-types';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { MonthYear } from '@epgu/ui/models/date-time';
 import { ValidatorDate } from './validation.service.interface';
@@ -257,7 +257,7 @@ export class ValidationService {
     };
   }
 
-  public checkRS(rs: string, refs: { [key: string]: string }): boolean {
+  public checkRS(rs: string, refs: KeyValueMap): boolean {
     const check = (rs: string, bik: string | null, corr?: string | null): boolean => {
       const bikRs = `${bik?.slice(-3)}${rs}`;
       const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];

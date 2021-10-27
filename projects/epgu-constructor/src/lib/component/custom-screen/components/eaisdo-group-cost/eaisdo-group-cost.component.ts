@@ -4,6 +4,7 @@ import {
   ComponentActionDto,
   ActionApiResponse,
   EaisdoResponse,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -102,7 +103,7 @@ export class EaisdoGroupCostComponent
   }
 
   private setState(
-    error: { [key: string]: string } = null,
+    error: KeyValueMap = null,
     responseType: string = null,
     financialSource: string | unknown = null,
     typeOfBudget: string | unknown = null,

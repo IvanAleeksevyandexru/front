@@ -27,6 +27,7 @@ import {
   ApplicantAnswersDto,
   CustomComponentRefRelation,
   DictionaryFilters,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -61,7 +62,7 @@ export class ComponentsListRelationsService {
     return this._restUpdates$.asObservable();
   }
 
-  private prevValues: { [key: string]: string | number } = {};
+  private prevValues: KeyValueMap = {};
   private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});
   private readonly _restUpdates$: BehaviorSubject<ComponentRestUpdates> = new BehaviorSubject({});
 
@@ -96,7 +97,7 @@ export class ComponentsListRelationsService {
             shownElements = this.getDependentComponentUpdatedShownElements(
               dependentComponent,
               reference,
-              value as { [key: string]: string },
+              value as KeyValueMap,
               components,
               form,
               shownElements,
@@ -273,7 +274,7 @@ export class ComponentsListRelationsService {
     dictionaryAttributeName: string,
     componentId: string,
     components: CustomComponent[],
-    componentVal: { [key: string]: string } | '', // @todo. проверить, правильно ли указан тип
+    componentVal: KeyValueMap | '', // @todo. проверить, правильно ли указан тип
   ): unknown {
     const relatedComponent = components.find((item) => item.id === componentId) as DictionaryLikeModel;
     if (relatedComponent) {
@@ -480,7 +481,7 @@ export class ComponentsListRelationsService {
     // TODO название уже не отражает суть
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
-    componentVal: { [key: string]: string }, // @todo. иногда здесь пустая строка вместо объекта
+    componentVal: KeyValueMap, // @todo. иногда здесь пустая строка вместо объекта
     components: CustomComponent[],
     form: FormArray,
     shownElements: CustomListStatusElements,
@@ -599,7 +600,7 @@ export class ComponentsListRelationsService {
   private handleIsAutofillFromDictionaryRelation(
     reference: CustomComponentRef,
     components: CustomComponent[],
-    componentVal: { [key: string]: string },
+    componentVal: KeyValueMap,
     dependentControl: AbstractControl,
     initInitialValues: boolean,
   ): void {
@@ -642,7 +643,7 @@ export class ComponentsListRelationsService {
     shownElements: CustomListStatusElements,
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
-    componentVal: { [key: string]: string },
+    componentVal: KeyValueMap,
     dependentControl: AbstractControl,
   ): void {
     const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
@@ -664,7 +665,7 @@ export class ComponentsListRelationsService {
     shownElements: CustomListStatusElements,
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
-    componentVal: { [key: string]: string },
+    componentVal: KeyValueMap,
     dependentControl: AbstractControl,
     form: FormArray,
   ): void {
@@ -690,7 +691,7 @@ export class ComponentsListRelationsService {
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
     components: CustomComponent[],
-    componentVal: { [key: string]: string },
+    componentVal: KeyValueMap,
     form: FormArray,
     dependentControl: AbstractControl,
   ): void {
@@ -713,7 +714,7 @@ export class ComponentsListRelationsService {
 
   private handleIsFilterOnRelation(
     reference: CustomComponentRef,
-    componentVal: { [key: string]: string },
+    componentVal: KeyValueMap,
     dictionaryToolsService: DictionaryToolsService,
     screenService: ScreenService,
     dependentComponent: CustomComponent,
@@ -820,7 +821,7 @@ export class ComponentsListRelationsService {
 
   private handleIsDisabledRelation(
     reference: CustomComponentRef,
-    componentVal: { [key: string]: string },
+    componentVal: KeyValueMap,
     dependentControl: AbstractControl,
     dependentComponent: CustomComponent,
     form: FormArray,
@@ -867,7 +868,7 @@ export class ComponentsListRelationsService {
   private getValueFromRelationComponent(
     itemRef: CustomComponentRef,
     components: CustomComponent[],
-    componentVal: { [key: string]: string } | '',
+    componentVal: KeyValueMap | '',
     form: FormArray,
   ): number | string | undefined {
     const conditionValue = itemRef.val;
@@ -911,7 +912,7 @@ export class ComponentsListRelationsService {
 
   private handleAutoFillTextFromRefs(
     reference: CustomComponentRef,
-    componentVal: { [key: string]: string },
+    componentVal: KeyValueMap,
     dependentControl: AbstractControl,
     dependentComponent: CustomComponent,
   ): void {
@@ -920,7 +921,7 @@ export class ComponentsListRelationsService {
         const relatedRelKey = match.replace(/[^\w]+/gi, '');
         const relatedRelValue = reference.relatedRelValues[relatedRelKey];
         if (relatedRelValue) {
-          return get(componentVal, relatedRelValue);
+          return get(componentVal, relatedRelValue) as string;
         }
         return match;
       });

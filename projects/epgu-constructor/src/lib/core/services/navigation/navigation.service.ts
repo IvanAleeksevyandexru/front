@@ -87,7 +87,7 @@ export class NavigationService {
 
   redirectToLK(isLegal?: boolean, action?: ComponentActionDto): void {
     const queryParams = action?.queryParams;
-    const preparedQueryParams = queryParams ? `?${new URLSearchParams(queryParams).toString()}` : '';
+    const preparedQueryParams = queryParams ? `?${new URLSearchParams(queryParams as Record<string, string>).toString()}` : '';
 
     if (this.isWebView || isLegal) {
       this.locationService.href(`${this.configService.lkUrl}/notifications`);

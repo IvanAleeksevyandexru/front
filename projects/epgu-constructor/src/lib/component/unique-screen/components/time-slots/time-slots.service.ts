@@ -37,6 +37,7 @@ import {
   DictionaryOptions,
   DictionarySubFilter,
   DictionaryUnionKind,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
@@ -262,7 +263,7 @@ export class TimeSlotsService {
       this.availableMonths = [];
       this.errorMessage = null;
 
-      return this.getAvailableAreaNames(this.department.attributeValues.AREA_NAME).pipe(
+      return this.getAvailableAreaNames(this.department.attributeValues.AREA_NAME as string).pipe(
         switchMap((areaNames) => {
           return this.smev3TimeSlotsRestService.getTimeSlots(this.getSlotsRequest()).pipe(
             map((response) => {
@@ -503,7 +504,7 @@ export class TimeSlotsService {
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
       address: this.getAddress(this.department.attributeValues),
-      orgName: this.department.attributeValues.FULLNAME || this.department.title,
+      orgName: (this.department.attributeValues.FULLNAME || this.department.title) as string,
       routeNumber,
       subject: (this.config.subject as string) || subject,
       userSelectedRegion: this.config.userSelectedRegion as string,
@@ -523,7 +524,7 @@ export class TimeSlotsService {
       organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
       calendarName: (this.config.calendarName as string) || calendarName,
       areaId: [selectedSlot.areaId || ''],
-      selectedHallTitle: this.department.attributeValues.AREA_NAME || selectedSlot.slotId,
+      selectedHallTitle: (this.department.attributeValues.AREA_NAME || selectedSlot.slotId) as string,
       parentOrderId: this.config.orderId as string,
       preliminaryReservationPeriod,
       attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId) || [],
@@ -559,13 +560,13 @@ export class TimeSlotsService {
     return (this.config.bookAttributes as attributesMapType) || settings[slotsType];
   }
 
-  private getAddress(attributeValues: { [key: string]: string }): string {
+  private getAddress(attributeValues: KeyValueMap): string {
     return (
       attributeValues[this.config.attributeNameWithAddress as string] ||
       attributeValues.ADDRESS ||
       attributeValues.ADDRESS_OUT ||
       attributeValues.address
-    );
+    ) as string;
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
@@ -614,7 +615,7 @@ export class TimeSlotsService {
           .getSelectMapDictionary('FNS_ZAGS_ORGANIZATION_AREA', this.getOptionsMapDictionary())
           .pipe(
             map((response: DictionaryResponse) => {
-              return response.items.map((zags) => zags.attributeValues.AREA_NAME);
+              return response.items.map((zags) => zags.attributeValues.AREA_NAME as string);
             }),
           );
       }

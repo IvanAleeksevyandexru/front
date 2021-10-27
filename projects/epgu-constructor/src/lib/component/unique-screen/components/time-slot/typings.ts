@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { ConfirmationModal, ScreenButton } from '@epgu/epgu-constructor-types';
+import { ConfirmationModal, KeyValueMap, ScreenButton } from '@epgu/epgu-constructor-types';
 import { Injector } from '@angular/core';
 
 export const EVENT_TIMESLOT_BOOK = 'TIMESLOT::BOOK';
@@ -60,7 +60,7 @@ export interface TimeSlotValueInterface {
 export interface DepartmentInterface {
   value: string;
   title: string;
-  attributeValues: { [key: string]: string };
+  attributeValues: KeyValueMap;
 }
 export interface MvdDepartmentInterface extends DepartmentInterface {
   attributeValues: {

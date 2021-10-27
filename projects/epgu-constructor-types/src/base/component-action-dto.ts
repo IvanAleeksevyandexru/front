@@ -2,6 +2,7 @@ import { ButtonColor } from './color';
 import { TargetType } from './target-type';
 import { ActionAnswerDto } from './action-answer-dto';
 import { Clarifications } from './clarifications';
+import { KeyValueMap } from './core.types';
 
 export interface ComponentActionDto {
   action: DTOActionAction;
@@ -9,7 +10,7 @@ export interface ComponentActionDto {
   attrs?: {
     stepsBack?: number;
     clarifications?: Clarifications;
-    additionalParams?: { [key: string]: string };
+    additionalParams?: KeyValueMap;
   };
   color?: ButtonColor;
   deliriumAction?: string;
@@ -21,9 +22,7 @@ export interface ComponentActionDto {
   link?: string;
   modalHtml?: string;
   multipleAnswers?: ActionAnswerDto[]; // для умного поиска
-  queryParams?: {
-    [key: string]: string;
-  }; // для фильтрации показа списка заявлений
+  queryParams?: KeyValueMap; // для фильтрации показа списка заявлений
   serviceCode?: string; // для умного поиска
   target?: TargetType; // для умного поиска
   targetCode?: string; // для умного поиска

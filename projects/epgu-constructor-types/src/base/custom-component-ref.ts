@@ -1,3 +1,4 @@
+import { KeyValueMap } from './core.types';
 import { ComponentDictionaryFilterDto } from './dictionary';
 
 /**
@@ -13,7 +14,7 @@ export interface CustomComponentRef {
   defaultValue?: string | boolean;
   valueFromCache?: string;
   dictionaryFilter?: ComponentDictionaryFilterDto[];
-  relatedRelValues?: { [key: string]: string };
+  relatedRelValues?: KeyValueMap;
 }
 
 /**

@@ -1,5 +1,5 @@
 import { FormPlayerApiErrorStatuses } from './error';
-import { ScenarioDto } from '../../base';
+import { KeyValueMap, ScenarioDto } from '../../base';
 import { OrderDto } from '../../base/order-dto';
 
 /**
@@ -51,7 +51,7 @@ export interface CheckOrderApiResponse {
 }
 
 export interface ActionApiResponse<T> {
-  errorList: { [key: string]: string }[];
+  errorList: KeyValueMap[];
   responseData: { value: T; type: string };
   status: string;
   message: string;

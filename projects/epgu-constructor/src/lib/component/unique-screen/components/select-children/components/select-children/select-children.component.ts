@@ -22,6 +22,7 @@ import {
   ComponentDto,
   ChildrenListAgeView,
   DisclaimerDto,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import {
   BusEventType,
@@ -121,7 +122,7 @@ export class SelectChildrenComponent implements OnInit {
   initStartValues(): void {
     if (this.cachedValue) {
       this.cachedValue.forEach((child, index) => {
-        const isNew = child[this.isNewRef] && JSON.parse(child[this.isNewRef]);
+        const isNew = child[this.isNewRef] && JSON.parse(child[this.isNewRef] as string);
         const childId = isNew ? this.NEW_ID : child[this.idRef];
         // По ID получаем ребенка для подстановки в formControl
         const childFromList = this.itemsToSelect.find((item) => item[this.idRef] === childId);
@@ -365,7 +366,7 @@ export class SelectChildrenComponent implements OnInit {
     return result;
   }
 
-  private getItemsToSelect(itemsList: { [key: string]: string }[]): ChildI[] {
+  private getItemsToSelect(itemsList: KeyValueMap[]): ChildI[] {
     const itemsToSelect = itemsList.map<ChildI>((child) => {
       return {
         ...child,

@@ -4,6 +4,7 @@ import { HttpLogger } from 'zipkin-transport-http';
 import { AllowedRemoteServices, TRACE_ALLOWED_REMOTE_SERVICES } from './tracing.token';
 import { ConfigService } from '../config/config.service';
 import { SessionService } from '../session/session.service';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class TracingService {
@@ -11,7 +12,7 @@ export class TracingService {
   private _tracer: Tracer;
   private ctxImpl: ExplicitContext = new ExplicitContext();
   private recorder: BatchRecorder;
-  private defaultTags: { [key: string]: string } = {
+  private defaultTags: KeyValueMap = {
     serviceCode: '',
   };
 

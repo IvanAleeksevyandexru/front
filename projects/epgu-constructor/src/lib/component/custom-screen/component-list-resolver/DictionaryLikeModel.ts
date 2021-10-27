@@ -100,7 +100,7 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
     };
   }
 
-  public getAttributeValue(componentVal: { [key: string]: string } | '', dictionaryAttributeName: string): unknown {
+  public getAttributeValue(componentVal: KeyValueMap | '', dictionaryAttributeName: string): unknown {
     const dictionary = this._dictionary$.getValue();
       if (componentVal) {
         const dictionaryItem = dictionary.list.find((item) => item.id === componentVal.id);

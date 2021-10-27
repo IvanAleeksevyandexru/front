@@ -11,6 +11,7 @@ import {
   DictionaryUrlTypes,
   CustomComponentRefRelation,
   RestAttrsDto,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { ListItem } from '@epgu/ui/models/dropdown';
@@ -176,7 +177,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   emptyWhenNoFilter?: boolean;
   onlyFirstScreen?: boolean;
   ref?: (CustomComponentRef | DateRangeRef)[]; //TODO разобраться с типами
-  refs?: { [key: string]: string };
+  refs?: KeyValueMap;
   relation?: { ref: string; conditions: RelationCondition[] };
   relationField?: ComponentRelationFieldDto;
   repeatWithNoFilters?: boolean;
@@ -281,7 +282,7 @@ export interface CustomComponentRef {
   val: string | string[] | boolean;
   relation: CustomComponentRefRelation;
   sourceId?: string;
-  relatedRelValues?: { [key: string]: string };
+  relatedRelValues?: KeyValueMap;
   defaultValue?: string | boolean;
   valueFromCache?: string;
   dictionaryFilter?: ComponentDictionaryFilterDto[];
@@ -322,7 +323,7 @@ export interface CustomComponentWithAttrs<T> extends ComponentBase {
 }
 
 export interface CustomComponent extends ComponentBase {
-  arguments?: { [key: string]: string };
+  arguments?: KeyValueMap;
   attrs: CustomComponentAttr;
   type: CustomScreenComponentTypes;
   id: string;

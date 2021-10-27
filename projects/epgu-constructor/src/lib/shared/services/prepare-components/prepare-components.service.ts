@@ -11,7 +11,7 @@ import { UniqueScreenComponentTypes } from '../../../component/unique-screen/uni
 import { DocInputField } from '../../../component/custom-screen/components/doc-input/doc-input.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
-import { ComponentDto, ComponentAttrsDto, DictionaryFilters } from '@epgu/epgu-constructor-types';
+import { ComponentDto, ComponentAttrsDto, DictionaryFilters, KeyValueMap } from '@epgu/epgu-constructor-types';
 import { get } from 'lodash';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
@@ -86,7 +86,7 @@ export class PrepareComponentsService {
   ): ComponentDto[][] {
     const cachedValue =
       this.getCache(parentComponent, cachedAnswers) || parentComponent.value || null;
-    const cachedValueArray: { [key: string]: string }[] = JSON.parse(cachedValue) || [];
+    const cachedValueArray: KeyValueMap[] = JSON.parse(cachedValue) || [];
     if (cachedValueArray.length) {
       let repeatableFieldComponents: ComponentDto[][] = [];
       repeatableFieldComponents = cachedValueArray.map((_component, index) => {

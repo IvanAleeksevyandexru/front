@@ -48,6 +48,7 @@ import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.
 
 import { v4 as uuidv4 } from 'uuid';
 import { TimeSlotErrorService } from '../error/time-slot-error.service';
+import { KeyValueMap } from 'projects/epgu-constructor-types/src/base';
 
 @Injectable()
 export class TimeSlotSmev3Service {
@@ -296,7 +297,7 @@ export class TimeSlotSmev3Service {
     const result: TimeSlotBookRequest = {
       preliminaryReservation,
       address: this.getAddress(attributeNameWithAddress, department.attributeValues),
-      orgName: department.attributeValues.FULLNAME || department.title,
+      orgName: (department.attributeValues.FULLNAME || department.title) as string,
       routeNumber,
       subject: (data.subject as string) || subject,
       userSelectedRegion: data.userSelectedRegion as string,
@@ -316,7 +317,7 @@ export class TimeSlotSmev3Service {
       organizationId: data.organizationId as string,
       calendarName: (data.calendarName as string) || calendarName,
       areaId: [slot.areaId || ''],
-      selectedHallTitle: department.attributeValues.AREA_NAME || slot.slotId,
+      selectedHallTitle: (department.attributeValues.AREA_NAME || slot.slotId) as string,
       parentOrderId: data.orderId as string,
       preliminaryReservationPeriod,
       attributes: attributes || [],
@@ -332,13 +333,13 @@ export class TimeSlotSmev3Service {
     );
   }
 
-  getAddress(attributeNameWithAddress: string, attributeValues: { [key: string]: string }): string {
+  getAddress(attributeNameWithAddress: string, attributeValues: KeyValueMap): string {
     return (
       attributeValues[attributeNameWithAddress as string] ||
       attributeValues.ADDRESS ||
       attributeValues.ADDRESS_OUT ||
       attributeValues.address
-    );
+    ) as string;
   }
 
   book(book: Slot): Observable<SmevBookResponseInterface> {
