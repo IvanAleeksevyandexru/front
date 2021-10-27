@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
@@ -79,26 +77,11 @@ export class CachedAnswersService {
    * @param cachedValue - кэш ответов
    * @param component - компонент из display.components
    */
-  parseCachedValue<T = unknown>(cachedValue: string, component: ComponentDto): T {
+  parseCachedValue<T = unknown>(cachedValue: string): T {
     if (!this.jsonHelperService.hasJsonStructure(cachedValue)) {
       throw Error('Cached value should be JSON string');
     }
 
-    const parsedValue = JSON.parse(cachedValue);
-
-    if (component.type === UniqueScreenComponentTypes.childrenList) {
-      const childComponents = component.attrs.components;
-
-      for (const childCache of parsedValue) {
-        for (const childComponentId in childCache) {
-          const childComponent = childComponents.find((item) => item.id === childComponentId);
-          if (childComponent?.type === CustomScreenComponentTypes.SnilsInput) {
-            childCache[childComponentId] = childCache[childComponentId].snils;
-          }
-        }
-      }
-    }
-
-    return parsedValue;
+    return JSON.parse(cachedValue);
   }
 }

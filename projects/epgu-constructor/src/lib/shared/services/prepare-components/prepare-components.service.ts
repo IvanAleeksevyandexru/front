@@ -138,7 +138,7 @@ export class PrepareComponentsService {
 
     if (isPresetParsable && isCachedValueParsable) {
       const parsedPreset = JSON.parse(preset);
-      let parsedCachedValue = this.cachedAnswersService.parseCachedValue(cachedValue, component);
+      let parsedCachedValue = this.cachedAnswersService.parseCachedValue(cachedValue);
       if (parentId) {
         parsedCachedValue = parsedCachedValue[parentIndex][parentId];
       }
@@ -154,7 +154,7 @@ export class PrepareComponentsService {
     }
 
     if (parentId && isCachedValueParsable) {
-      const value = this.cachedAnswersService.parseCachedValue(cachedValue, component);
+      const value = this.cachedAnswersService.parseCachedValue(cachedValue);
 
       return value[parentIndex] && value[parentIndex][parentId];
     }
