@@ -215,11 +215,13 @@ export class ActionToolsService {
         .pipe(filter((response) => !response.errorList.length))
         .subscribe(
           ({ responseData }) => {
-            const { value: responseValue } = responseData || {};
-            const url = this.locationService.getHref();
-            this.copyAndNotify(
-              `${value ? value : ''} ${url ? url : ''}${responseValue ? responseValue : ''}`,
-            );
+            const { value: queryParams } = responseData || {};
+            const [currentUrl] = this.locationService.getHref().split('?'); // принудительно избавляемся от queryParams в текущем URL
+            const str = `${value ? value : ''} ${currentUrl ? currentUrl : ''}${
+              queryParams ? queryParams : ''
+            }`;
+
+            this.copyAndNotify(str);
           },
           (error) => console.log(error),
         );
