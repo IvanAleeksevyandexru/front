@@ -63,6 +63,7 @@ describe('ActionToolsService', () => {
   let formPlayerApiService: FormPlayerApiService;
   let currentAnswersService: CurrentAnswersService;
   let formPlayerService: FormPlayerService;
+  let locationService: LocationService;
   let notifierService: NotifierService;
   let htmlRemoverService: HtmlRemoverService;
   let modalService: ModalService;
@@ -111,6 +112,7 @@ describe('ActionToolsService', () => {
     htmlRemoverService = TestBed.inject(HtmlRemoverService);
     modalService = TestBed.inject(ModalService);
     clipboard = TestBed.inject(Clipboard);
+    locationService = TestBed.inject(LocationService);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
@@ -215,6 +217,14 @@ describe('ActionToolsService', () => {
     it('should call copyAndNotify() within service.sendAction(), with value + host + response.value string', () => {
       const spy = jest.spyOn(service, 'copyAndNotify');
       const newAction = cloneDeep(copyToClipboardAction);
+      newAction.attrs.additionalParams = { screenId: 's1' };
+      service.copyToClipboard(newAction);
+      expect(spy).toHaveBeenCalledWith('Скопирована ссылка: https://host.com/600101/1/formvalue');
+    });
+    it('should call copyAndNotify() within service.sendAction(), with value + host + response.value string without current url queryParams, if any', () => {
+      const spy = jest.spyOn(service, 'copyAndNotify');
+      const newAction = cloneDeep(copyToClipboardAction);
+      locationService['setHref']('https://host.com/600101/1/form?key=value');
       newAction.attrs.additionalParams = { screenId: 's1' };
       service.copyToClipboard(newAction);
       expect(spy).toHaveBeenCalledWith('Скопирована ссылка: https://host.com/600101/1/formvalue');
