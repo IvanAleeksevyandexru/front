@@ -32,6 +32,7 @@ interface ConfirmAddressInterfaceAttr {
   maxDate?: Date | RelativeDate | string;
   brokenDateFixStrategy?: BrokenDateFixStrategy;
   disclaimer?: DisclaimerDto;
+  emptyFieldsErrorMsg?: string;
 }
 
 /**
