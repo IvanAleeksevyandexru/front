@@ -161,7 +161,7 @@ export class ComponentsListRelationsService {
             hasDisplayOff && !hasDisplayOn
               ? CustomComponentRefRelation.displayOff
               : CustomComponentRefRelation.displayOn,
-          isShown: this.isComponentShown(component, cachedAnswers, acc),
+          isShown: this.isComponentShown(component, cachedAnswers, components, acc),
         },
       };
     }, {});
@@ -218,17 +218,23 @@ export class ComponentsListRelationsService {
   public isComponentShown(
     component: CustomComponent,
     cachedAnswers: CachedAnswers,
+    components: CustomComponent[],
     componentListStatus: CustomListStatusElements,
   ): boolean {
     const refs = component.attrs?.ref;
     const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
     const displayOn = refs?.find((o) => this.refRelationService.isDisplayOnRelation(o.relation));
 
+    // notice: такое условие потому, что нужно скрывать элемент если:
+    // * зависим от элемента текущего экрана и он не скрыт
+    // * зависим от элемента предыдущего экрана (нельзя найти среди компонент этого экрана)
     if (
       displayOff &&
       cachedAnswers &&
-      cachedAnswers[displayOff?.relatedRel] &&
-      componentListStatus[displayOff?.relatedRel]?.isShown
+      cachedAnswers[displayOff?.relatedRel] && (
+        componentListStatus[displayOff?.relatedRel]?.isShown ||
+        !components.find(({ id }) => id === displayOff?.relatedRel)
+      )
     ) {
       return !this.refRelationService.isValueEquals(
         displayOff.val,

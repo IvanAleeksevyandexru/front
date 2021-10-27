@@ -35,7 +35,6 @@ import { MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import DictionaryModel from '../../components/dictionary/DictionaryModel';
-import { DictionaryComponent } from '../../components/dictionary/dictionary.component';
 import LookupInputModel from '../../components/lookup-input/LookupInputModel';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
@@ -186,7 +185,6 @@ describe('ComponentsListRelationsService', () => {
       },
     };
     const form: FormArray = new FormArray([]);
-    const dictionaries: CustomListDictionaries = [];
 
     it('should do nothing if there is no dependent components', () => {
       jest.spyOn(dateRangeService, 'updateLimitDate');
@@ -1396,19 +1394,55 @@ describe('ComponentsListRelationsService', () => {
     });
   });
 
-  describe('hasRelation()', () => {
+  describe('isComponentShown()', () => {
     const cachedAnswers = {
       rf1: {
         visited: true,
         value: 'fake data',
       },
     };
+
+    const component = {
+      ...componentMock,
+      id: 'rf0',
+      attrs: {
+        ref: [
+          {
+            relatedRel: 'rf1',
+            val: 'fake data',
+            relation: 'displayOff'
+          }
+        ],
+      },
+    } as CustomComponent;
+
     it('should return false, if component has identical relation', () => {
-      expect(service.isComponentShown(componentMock, cachedAnswers, {})).toBe(false);
+      expect(service.isComponentShown(componentMock, cachedAnswers, [], {})).toBe(false);
     });
-    it('should return true, if component has no identical relation', () => {
+
+    it('should return true by default, if component has no identical relation', () => {
       const component = { ...componentMock, attrs: { ref: [] }};
-      expect(service.isComponentShown(component, cachedAnswers, {})).toBe(true);
+      expect(service.isComponentShown(component, cachedAnswers, [],{})).toBe(true);
+    });
+
+    it('should be shown if related component is hidden', () => {
+      const components = [{ id: 'rf1' } as CustomComponent, component];
+      const componentListStatus = { rf1: { isShown: false }} as unknown as CustomListStatusElements;
+
+      expect(service.isComponentShown(component, cachedAnswers, components, componentListStatus)).toBe(true);
+    });
+
+    it('should be hidden if related component is shown', () => {
+      const components = [{ id: 'rf1' } as CustomComponent, component];
+      const componentListStatus = { rf1: { isShown: true }} as unknown as CustomListStatusElements;
+
+      expect(service.isComponentShown(component, cachedAnswers, components, componentListStatus)).toBe(false);
+    });
+
+    it('should be hidden if related component was on prev screen', () => {
+      const components = [component];
+
+      expect(service.isComponentShown(component, cachedAnswers, components, {})).toBe(false);
     });
   });
 
