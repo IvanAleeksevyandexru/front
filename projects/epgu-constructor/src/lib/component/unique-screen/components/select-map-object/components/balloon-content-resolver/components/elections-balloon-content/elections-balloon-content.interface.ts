@@ -3,7 +3,7 @@ export interface IuikFullDataResponse {
   commissionId: string;
   commissionName: string;
   description: string;
-  elections: election[];
+  elections: Ielection[];
   inUserDistrict: boolean;
   phone: string;
   pollStationNumber: string;
@@ -11,9 +11,10 @@ export interface IuikFullDataResponse {
   pollStationType: string;
 }
 
-export interface election {
+export interface Ielection {
   district: string;
   districtNo: string;
   electionId: string;
   electionName: string;
+  userDistrictEqalUikDistrict: boolean;
 }
