@@ -62,6 +62,7 @@ export class FileUploadFormComponent
     this.handleNewValueSet(uploads);
     this.control.get('value').setValue({
       uploads: this.files,
+      totalCount: this.uploaderScreenService.getCurrentFilesCount(),
       totalSize: this.uploaderScreenService.getCurrentFilesSize(),
     });
 

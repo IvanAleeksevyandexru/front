@@ -165,6 +165,7 @@ export class FileUploadScreenComponent implements OnInit {
   private handleNewValueSet($eventData: FileResponseToBackendUploadsItem): void {
     this.value.uploads = $eventData.files as FileUploadEmitValue[];
     this.uploaderScreenService.calculateСurrentFiles(this.value.uploads);
+    this.value.totalCount = this.uploaderScreenService.getCurrentFilesCount();
     this.value.totalSize = this.uploaderScreenService.getCurrentFilesSize();
 
     /**

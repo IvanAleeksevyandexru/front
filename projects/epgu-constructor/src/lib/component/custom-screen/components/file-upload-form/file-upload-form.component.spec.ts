@@ -158,6 +158,7 @@ describe('FileUploadComponent', () => {
     const check = {
       uploads: payload.files,
       totalSize: 0,
+      totalCount: 0,
     };
     expect(controlValue.setValue).toHaveBeenCalledWith(check);
   });
