@@ -30,6 +30,7 @@ import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 import { DisclaimerComponent } from '../../../../../../shared/components/disclaimer/disclaimer.component';
 import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 import { DadataWidgetComponent, PlainInputComponent } from '@epgu/ui/controls';
+import { By } from '@angular/platform-browser';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   const mockData: ConfirmAddressInterface = {
@@ -52,6 +53,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         description:
           'Адрес постоянной регистрации нужен для отправки заявления. Этот адрес сохранится в профиле, и в будущих заявлениях не придется вводить его заново',
       },
+      emptyFieldsErrorMsg: 'Проверьте форму — не все поля заполнены',
     },
     id: '',
     value: '{}',
@@ -232,6 +234,20 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         regAddr: 'Some addr1',
         regDate: dateService.parse('12.05.2021', DATE_STRING_DOT_FORMAT),
       });
+    });
+  });
+
+  describe('render', () => {
+    it('should render "empty-fields" block when state is invalid', () => {
+      const { currentAnswersService, fixture } = setup();
+      jest.spyOn(currentAnswersService, 'isValid$', 'get').mockReturnValue(of(false));
+
+      fixture.detectChanges();
+
+      const selector = '.empty-fields';
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl).toBeTruthy();
     });
   });
 });

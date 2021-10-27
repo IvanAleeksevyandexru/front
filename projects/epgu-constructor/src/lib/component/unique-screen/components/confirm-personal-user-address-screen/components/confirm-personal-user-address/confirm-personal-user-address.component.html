@@ -16,7 +16,6 @@
   <div
     *ngIf="
       !(currentAnswersService.isValid$ | async) &&
-      (screenService.buttons$ | async) &&
       (data$ | async)?.attrs?.emptyFieldsErrorMsg
     "
     class="empty-fields"
