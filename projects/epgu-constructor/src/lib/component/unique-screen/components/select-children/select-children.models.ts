@@ -1,3 +1,4 @@
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
 import { ListElement } from '@epgu/ui/models/dropdown';
 
 export enum ItemStatus {
@@ -15,4 +16,4 @@ export interface ClearEvent {
   id?: string;
 }
 
-export type CachedValue = { [key: string]: string }[] | null;
+export type CachedValue = KeyValueMap[] | null;

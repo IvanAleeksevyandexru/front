@@ -1,3 +1,4 @@
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
 import { SlotInterface } from '@epgu/epgu-constructor-ui-kit';
 
 export interface SmevSlotsMapInterface {
@@ -28,7 +29,7 @@ export interface TimeSlotValueInterface {
 export interface DepartmentInterface {
   value: string;
   title: string;
-  attributeValues: { [key: string]: string };
+  attributeValues: KeyValueMap;
 }
 export interface MvdDepartmentInterface extends DepartmentInterface {
   attributeValues: {

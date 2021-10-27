@@ -1,3 +1,4 @@
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
 import { MultipleSelectedItems } from '../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.models';
 
 export interface EquipmentChoiceComponentAttrsResult {
@@ -7,8 +8,8 @@ export interface EquipmentChoiceComponentAttrsResult {
 export interface EquipmentChoiceItem {
   value: string;
   title: string;
-  attributeValues: { [key: string]: string | number };
-  props?: { [key: string]: string | number };
+  attributeValues: KeyValueMap;
+  props?: KeyValueMap;
 }
 export interface EquipmentChoiceCategory {
   id: number;

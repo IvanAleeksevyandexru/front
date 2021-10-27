@@ -29,6 +29,7 @@ import {
   ActionType,
   DTOActionAction,
   EaisdoResponse,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import { EaisdoStateTypes } from './eaisdo.interface';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
@@ -134,7 +135,7 @@ describe('EaisdoGroupCostComponent', () => {
   });
 
   describe('setState', () => {
-    const error: { [key: string]: string } = null;
+    const error: KeyValueMap = null;
     const responseType: string = null;
     const financialSource: string | unknown = null;
     const typeOfBudget: string | unknown = null;
@@ -150,7 +151,7 @@ describe('EaisdoGroupCostComponent', () => {
       expect(spy).toHaveBeenCalled();
     });
     it('should set currentAnswersService.state()', () => {
-      const error: { [key: string]: string } = null;
+      const error: KeyValueMap = null;
       const responseType: string = null;
       const financialSource: string | unknown = null;
       const typeOfBudget: string | unknown = null;

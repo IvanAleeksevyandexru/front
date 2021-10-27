@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
 import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import { from, Observable, of } from 'rxjs';
 import { concatMap, filter, pluck, reduce } from 'rxjs/operators';
@@ -44,12 +45,12 @@ export class AddressHelperService {
   /**
    * Получение городов из suggestions дадаты для lib-lookup. Добавляет к suggestions атрибуты id и text
    * @param qString - строка для поиска
-   * @param {{ [key: string]: string }} [params={ isCity: 'true' }] - параметры запроса.
+   * @param {KeyValueMap} [params={ isCity: 'true' }] - параметры запроса.
    * @param cityFilter - массив для фильтрации
    */
   public getSuggestions(
     qString: string,
-    params: { [key: string]: string },
+    params: KeyValueMap,
     cityFilter?: string[],
   ): Observable<DadataSuggestionsAddressForLookup[]> {
     return this.dictionaryApiService.getDadataSuggestions(qString, params).pipe(

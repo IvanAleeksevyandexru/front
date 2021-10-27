@@ -1,10 +1,11 @@
+import { KeyValueMap } from './core.types';
 import { ComponentDictionaryFilterDto, DictionaryUrlTypes } from './dictionary';
 
 export interface ComponentValue {
   url: string;
   path: string;
   body?: string;
-  headers: { [key: string]: string };
+  headers: KeyValueMap;
   method: string;
   timeout?: string;
 }

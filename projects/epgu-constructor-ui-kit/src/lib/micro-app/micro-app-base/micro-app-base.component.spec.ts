@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
-import { AppTypes, DataDirectionType, InputAppDto } from '@epgu/epgu-constructor-types';
+import { AppTypes, DataDirectionType, InputAppDto, KeyValueMap } from '@epgu/epgu-constructor-types';
 
 import { MicroAppBaseComponent, getAppStorageKey } from './micro-app-base.component';
 import { MicroAppStateService } from '../micro-app-state/micro-app-state.service';
@@ -34,9 +34,7 @@ export interface TestValueType {
 }
 
 export interface TestStateType {
-  someFilters: {
-    [key: string]: string;
-  };
+  someFilters: KeyValueMap;
 }
 
 @Component({

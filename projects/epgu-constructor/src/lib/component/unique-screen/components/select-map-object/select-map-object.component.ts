@@ -26,6 +26,7 @@ import {
   DictionaryOptions,
   ScreenButton,
   DictionaryFilterPriority,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import {
   ModalService,
@@ -228,7 +229,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
 
   private prepareNextStep(item: YMapItem<DictionaryItem>): void {
     if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-      this.availablePaymentInGIBDD(item.attributeValues?.code || item.value)
+      this.availablePaymentInGIBDD((item.attributeValues?.code as string) || item.value)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => this.nextStep(item));
       return;
@@ -275,7 +276,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         this.yandexMapService.selectMapObject(mapObject);
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
-        this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id);
+        this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id as string);
       } else if (this.needToAutoFocus && this.areMapObjectsFound()) {
         this.selectClosestMapObject();
       } else if (this.needToAutoCenterAllPoints) {
@@ -291,7 +292,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   /**
    * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
    */
-  private getSelectedValue(): { [key: string]: string } {
+  private getSelectedValue(): KeyValueMap {
     const selectedValue = (get(
       this.applicantAnswers,
       this.data?.attrs.selectedValue,
@@ -497,7 +498,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         const items = [...dictionary.items];
         const addresses = items.map(
           (item: DictionaryItem) =>
-            item.attributeValues[this.screenService.component.attrs.attributeNameWithAddress],
+            item.attributeValues[
+              this.screenService.component.attrs.attributeNameWithAddress
+            ] as string,
         );
 
         const chunkSize = items.length / 4;

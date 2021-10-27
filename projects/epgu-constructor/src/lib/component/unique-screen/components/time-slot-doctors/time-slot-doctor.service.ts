@@ -334,12 +334,12 @@ export class TimeSlotDoctorService {
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
       address:
-        this.department?.attributeValues?.[this.config.attributeNameWithAddress as string] ||
-        this.state$$.getValue().bookingRequestAttrs.Address_MO,
+        (this.department?.attributeValues?.[this.config.attributeNameWithAddress as string] ||
+        this.state$$.getValue().bookingRequestAttrs.Address_MO) as string,
       orgName:
-        this.department.attributeValues?.FULLNAME ||
+        (this.department.attributeValues?.FULLNAME ||
         this.department?.title ||
-        this.state$$.getValue().bookingRequestAttrs.Organization_Name,
+        this.state$$.getValue().bookingRequestAttrs.Organization_Name) as string,
       routeNumber,
       subject: (this.config.subject as string) || subject,
       userSelectedRegion: this.config.userSelectedRegion as string,
@@ -366,7 +366,7 @@ export class TimeSlotDoctorService {
       organizationId: this.config.organizationId as string,
       calendarName: (this.config.calendarName as string) || calendarName,
       areaId: [selectedSlot.areaId || ''],
-      selectedHallTitle: this.department.attributeValues?.AREA_NAME || selectedSlot.slotId,
+      selectedHallTitle: (this.department.attributeValues?.AREA_NAME || selectedSlot.slotId) as string,
       parentOrderId: this.config.parentOrderId ? (this.config.parentOrderId as string) : '',
       caseNumber: this.config.orderId ? (this.config.orderId as string) : '',
       preliminaryReservationPeriod,

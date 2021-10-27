@@ -12,6 +12,7 @@ import {
   DictionaryOptions,
   AdditionalRequestParam,
   DictionaryUrlTypes,
+  KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 
 @Injectable()
@@ -95,7 +96,7 @@ export class DictionaryApiService {
 
   public getDadataSuggestions(
     qString: string,
-    params?: { [key: string]: string },
+    params?: KeyValueMap,
   ): Observable<DadataSuggestionsResponse> {
     const path = `${this.config.externalApiUrl}/dadata/suggestions`;
     return this.http.get<DadataSuggestionsResponse>(path, {
