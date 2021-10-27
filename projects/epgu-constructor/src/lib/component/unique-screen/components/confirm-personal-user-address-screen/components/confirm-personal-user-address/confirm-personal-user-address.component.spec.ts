@@ -30,6 +30,8 @@ import { SuggestMonitorService } from '../../../../../../shared/services/suggest
 import { HealthServiceStub, HealthService } from '@epgu/epgu-constructor-ui-kit';
 import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 import { DadataWidgetComponent, PlainInputComponent } from '@epgu/ui/controls';
+import { of } from 'rxjs';
+import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 
 const mockData = {
   attrs: {
@@ -43,11 +45,18 @@ const mockData = {
         label: 'Дата регистрации',
       },
     ],
+    emptyFieldsErrorMsg: 'Проверьте форму — не все поля заполнены',
   },
   id: '',
   value: '{}',
   type: UniqueScreenComponentTypes.confirmPersonalUserRegAddr,
   required: true,
+};
+const actionMock: ComponentActionDto = {
+  label: '',
+  value: '',
+  action: null,
+  type: ActionType.nextStepModal,
 };
 
 describe('ConfirmPersonalUserAddressComponent', () => {
@@ -163,6 +172,19 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       expect(component.currentAnswersService.state).toBe(
         JSON.stringify({ regAddr: null, regDate: '01.04.2021' }),
       );
+    });
+  });
+
+  describe('render', () => {
+    it('should render "empty-fields" block when state is invalid', () => {
+      jest.spyOn(component.currentAnswersService, 'isValid$', 'get').mockReturnValue(of(false));
+
+      fixture.detectChanges();
+
+      const selector = '.empty-fields';
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl).toBeTruthy();
     });
   });
 });

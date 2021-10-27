@@ -65,3 +65,15 @@
     color: $color-gosblue;
   }
 }
+
+.empty-fields {
+  display: flex;
+  margin-top: 24px;
+  justify-content: center;
+  color: $color-text-helper;
+  line-height: 24px;
+
+  @include tablets-up {
+    margin-top: 40px;
+  }
+}
