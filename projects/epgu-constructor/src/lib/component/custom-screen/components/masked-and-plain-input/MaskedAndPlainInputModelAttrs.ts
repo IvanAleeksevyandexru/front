@@ -5,6 +5,7 @@ import { CustomComponentAttr } from '../../components-list.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
+  readonly customUnrecLabel: string;
   readonly hidden: boolean;
   readonly mask: string[];
   readonly price: number;
@@ -16,6 +17,7 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
 
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
+    this.customUnrecLabel = attrs.customUnrecLabel;
     this.hidden = attrs.hidden;
     this.mask = attrs.mask;
     this.price = attrs.price;
