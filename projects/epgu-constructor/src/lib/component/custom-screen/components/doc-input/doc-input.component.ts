@@ -6,7 +6,7 @@ import {
   DatesToolsService,
   DATE_STRING_DOT_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
-import { map, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import {
   BrokenDateFixStrategy,
@@ -142,6 +142,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
     this.form.valueChanges
       .pipe(
         takeUntil(this.ngUnsubscribe$),
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
         map((formFields: DocInputFormFields) => this.formatFormFields(formFields)),
       )
       .subscribe((formFields) => {
@@ -166,6 +167,8 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
           {} as DocInputFields,
         );
         this.emitToParentForm(patchedFormFields);
+        this.form.markAsDirty();
+        this.form.updateValueAndValidity();
         this.cdr.markForCheck();
       });
   }
