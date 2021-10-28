@@ -163,6 +163,7 @@ describe('FileUploadScreenComponent', () => {
           },
         ],
         totalSize: 100,
+        totalCount: 1
       });
     });
 
