@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { ActionService } from './action.service';
 import {
   ConfigService,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
   LocationService,
   LocationServiceStub,
   ModalService,
@@ -89,6 +91,7 @@ describe('ActionService', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DownloadService, useClass: DownloadServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: HookService, useClass: HookServiceStub },

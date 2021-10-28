@@ -15,6 +15,8 @@ import {
   SessionStorageService,
   SessionStorageServiceStub,
   LocationService,
+  DeviceDetectorServiceStub,
+  DeviceDetectorService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HookService } from '../../../core/services/hook/hook.service';
@@ -77,6 +79,7 @@ describe('ActionToolsService', () => {
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
