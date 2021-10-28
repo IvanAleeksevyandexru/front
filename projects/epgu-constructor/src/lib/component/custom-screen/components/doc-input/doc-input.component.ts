@@ -289,12 +289,19 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
 
     return {
       ...componentValues,
-      date: componentValues.date
-        ? this.datesToolsService.parse(componentValues.date, DATE_STRING_DOT_FORMAT)
-        : null,
+      // В componentValues может быть строка в ISO формате и в dd.MM.yyyy формате
+      date: componentValues.date ? this.prepareDate(componentValues.date) : null,
       expirationDate: componentValues.expirationDate
-        ? this.datesToolsService.parse(componentValues.expirationDate, DATE_STRING_DOT_FORMAT)
+        ? this.prepareDate(componentValues.expirationDate)
         : null,
     };
+  }
+
+  private prepareDate(date: string): Date {
+    let newDate = this.datesToolsService.parse(date);
+    if (!this.datesToolsService.isValid(newDate)) {
+      newDate = this.datesToolsService.parse(date, DATE_STRING_DOT_FORMAT);
+    }
+    return newDate;
   }
 }
