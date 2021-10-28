@@ -7,7 +7,7 @@ import {
   Searchable,
 } from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { DictionaryApiService } from './dictionary-api.service';
 import { map } from 'rxjs/operators';
 import { get } from 'lodash';
@@ -31,6 +31,8 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { ListElement } from '@epgu/ui/models/dropdown';
+// eslint-disable-next-line max-len
+import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
 
 export type ComponentValue = {
   [key: string]: string | number | object;
@@ -41,8 +43,30 @@ export interface ValueForFilter {
   value: DictionaryValue;
 }
 
+interface CalcFilterFuncArgs {
+  componentValue: ComponentValue | FormArray;
+  screenStore: ScreenStore;
+  dFilter: ComponentDictionaryFilterDto;
+  index: number;
+  attributeType: AttributeTypes;
+}
+
 @Injectable()
 export class DictionaryToolsService {
+  public get filters(): ComponentDictionaryFilters {
+    return this._filters$.getValue();
+  }
+
+  public set filters(val: ComponentDictionaryFilters) {
+    this._filters$.next(val);
+  }
+
+  public get filters$(): Observable<ComponentDictionaryFilters> {
+    return this._filters$.asObservable();
+  }
+
+  private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});
+
   constructor(
     private dictionaryApiService: DictionaryApiService,
     private datesToolsService: DatesToolsService,
@@ -187,7 +211,6 @@ export class DictionaryToolsService {
 
   /**
    * Мапим словарь в ListItem для компонента EPGU отвечающий за список
-   * @param items массив элементов словаря
    */
   public adaptDictionaryToListItem(
     items: (DictionaryItem | KeyValueMap)[],
@@ -286,84 +309,94 @@ export class DictionaryToolsService {
     ].includes(type);
   }
 
+  public applyFilter(
+    dependentComponentId: CustomComponent['id'],
+    filter: DictionaryFilters['filter'],
+  ): void {
+    this.filters = { [dependentComponentId]: filter };
+  }
+
+  public clearFilter(dependentComponentId: CustomComponent['id']): void {
+    if (this.filters[dependentComponentId]) {
+      this.filters = { [dependentComponentId]: null };
+    }
+  }
+
   private getValueForFilter(
     componentValue: ComponentValue | FormArray,
     screenStore: ScreenStore,
-    dFilter: ComponentDictionaryFilterDto | string,
+    dFilter: ComponentDictionaryFilterDto,
     index: number = 0,
   ): ValueForFilter {
-    const attributeType: AttributeTypes =
-      (dFilter as ComponentDictionaryFilterDto)?.attributeType || AttributeTypes.asString;
-
-    const valueTypeFilterHandler = (dFilter): ValueForFilter => {
-      const rawValue = JSON.parse(dFilter.value);
-      return { rawValue, value: rawValue };
-    };
-
-    const presetTypeFilterHandler = (dFilter): ValueForFilter => {
-        const rawValue = get(componentValue, dFilter.value, undefined);
-        const filters = this.formatValue(rawValue, dFilter.formatValue);
-        const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
-        return { rawValue, value };
-      };
-
-    //TODO разобраться с типами
-    // @ts-ignore
+    const attributeType: AttributeTypes = dFilter.attributeType || AttributeTypes.asString;
     const filterTypes: {
-      [key in DictionaryValueTypes]: (string) => ValueForFilter;
+      [key in DictionaryValueTypes]: (CalcFilterFuncArgs) => ValueForFilter;
     } = {
-      [DictionaryValueTypes.value]: valueTypeFilterHandler,
-      [DictionaryValueTypes.serviceInfo]: presetTypeFilterHandler,
-      [DictionaryValueTypes.queryparams]: valueTypeFilterHandler,
-      [DictionaryValueTypes.preset]: presetTypeFilterHandler,
-      [DictionaryValueTypes.root]: (dFilter): ValueForFilter => {
-        const rawValue = get(screenStore, dFilter.value, undefined);
-        const value = {
-          [attributeType]: this.formatValue(rawValue, dFilter.formatValue),
-        };
-        return { rawValue, value };
-      },
-      [DictionaryValueTypes.ref]: (dFilter): ValueForFilter => {
-        const rawValue = this.getValueViaRef(screenStore.applicantAnswers, dFilter.value);
-        const filters = this.formatValue(rawValue, dFilter.formatValue);
-        const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
-        return { rawValue, value };
-      },
-      [DictionaryValueTypes.rawFilter]: (): ValueForFilter => {
-        const rawValue = (dFilter as ComponentDictionaryFilterDto).value;
-        const value = {
-          [attributeType]: rawValue,
-        };
-        return { rawValue, value };
-      },
-      [DictionaryValueTypes.formValue]: (): ValueForFilter => {
-        const rawValue = this.getValueFromForm(
-          componentValue as FormArray,
-          dFilter as ComponentDictionaryFilterDto,
-        );
-        const value = {
-          [attributeType]: rawValue,
-        };
-        return { rawValue, value };
-      },
-      [DictionaryValueTypes.calc]: (): ValueForFilter => {
-        const rawValue = (componentValue as ComponentValue)?.dictionaryFilters[index][
-          (dFilter as ComponentDictionaryFilterDto).attributeName
-        ];
-        const value = {
-          [attributeType]: rawValue,
-        };
-        return { rawValue, value };
-      },
+      [DictionaryValueTypes.value]: this.processTypeValue.bind(this),
+      [DictionaryValueTypes.queryparams]: this.processTypeValue.bind(this),
+      [DictionaryValueTypes.preset]: this.processTypePreset.bind(this),
+      [DictionaryValueTypes.serviceInfo]: this.processTypePreset.bind(this),
+      [DictionaryValueTypes.root]: this.processTypeRoot.bind(this),
+      [DictionaryValueTypes.ref]: this.processTypeRef.bind(this),
+      [DictionaryValueTypes.rawFilter]: this.processTypeRawFilter.bind(this),
+      [DictionaryValueTypes.formValue]: this.processTypeFormValue.bind(this),
+      [DictionaryValueTypes.calc]: this.processTypeCalc.bind(this),
     };
-
-    const calcFunc = filterTypes[(dFilter as ComponentDictionaryFilterDto).valueType];
+    const calcFunc = filterTypes[dFilter.valueType];
     if (!calcFunc) {
-      throw `Неверный valueType для фильтров - ${
-        (dFilter as ComponentDictionaryFilterDto).valueType
-      }`;
+      throw `Неверный valueType для фильтров - ${dFilter.valueType}`;
     }
-    return calcFunc(dFilter);
+    return calcFunc({ dFilter, attributeType, componentValue, screenStore, index });
+  }
+
+  private processTypeValue({ dFilter }: CalcFilterFuncArgs): ValueForFilter  {
+    const rawValue = JSON.parse(dFilter.value);
+
+    return { rawValue, value: rawValue };
+  }
+
+  private processTypePreset({ dFilter, attributeType, componentValue }: CalcFilterFuncArgs): ValueForFilter {
+    const rawValue = get(componentValue, dFilter.value, undefined);
+    const filters = this.formatValue(rawValue, dFilter.formatValue);
+    const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
+
+    return { rawValue, value };
+  }
+
+  private processTypeRoot({ dFilter, attributeType, screenStore }: CalcFilterFuncArgs): ValueForFilter {
+    const rawValue = get(screenStore, dFilter.value, undefined);
+    const value = { [attributeType]: this.formatValue(rawValue, dFilter.formatValue) };
+
+    return { rawValue, value };
+  }
+
+  private processTypeRef({ dFilter, attributeType, screenStore }: CalcFilterFuncArgs): ValueForFilter  {
+    const rawValue = this.getValueViaRef(screenStore.applicantAnswers, dFilter.value);
+    const filters = this.formatValue(rawValue, dFilter.formatValue);
+    const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
+
+    return { rawValue, value };
+  }
+
+  private processTypeRawFilter({ dFilter, attributeType }: CalcFilterFuncArgs): ValueForFilter {
+    const rawValue = dFilter.value;
+    const value = { [attributeType]: rawValue };
+
+    return { rawValue, value };
+  }
+
+  private processTypeFormValue({ dFilter, attributeType, componentValue }: CalcFilterFuncArgs): ValueForFilter  {
+    const rawValue = this.getValueFromForm( componentValue as FormArray, dFilter );
+    const value = { [attributeType]: rawValue };
+
+    return { rawValue, value };
+  }
+
+  private processTypeCalc({ dFilter, attributeType, componentValue, index }: CalcFilterFuncArgs): ValueForFilter  {
+    const rawValue = (componentValue as ComponentValue)?.dictionaryFilters[index][dFilter.attributeName];
+    const value = { [attributeType]: rawValue };
+
+    return { rawValue, value };
   }
 
   private formatValue(value: unknown, params: FilterDtoConfig): unknown {
