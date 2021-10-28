@@ -11,10 +11,12 @@ import {
 import {
   BusEventType,
   ConfigService,
+  DeviceDetectorService,
   DownloadService,
   EventBusService,
   LocationService,
   ModalService,
+  System,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   FormPlayerNavigation,
@@ -65,6 +67,7 @@ export class ActionToolsService {
     private navModalService: NavigationModalService,
     private notifierService: NotifierService,
     private screenService: ScreenService,
+    private deviceDetector: DeviceDetectorService,
   ) {}
 
   public openConfirmationModal(
@@ -215,11 +218,13 @@ export class ActionToolsService {
         .pipe(filter((response) => !response.errorList.length))
         .subscribe(
           ({ responseData }) => {
-            const { value: responseValue } = responseData || {};
-            const url = this.locationService.getHref();
-            this.copyAndNotify(
-              `${value ? value : ''} ${url ? url : ''}${responseValue ? responseValue : ''}`,
-            );
+            const { value: queryParams } = responseData || {};
+            const [currentUrl] = this.locationService.getHref().split('?'); // принудительно избавляемся от queryParams в текущем URL
+            const str = `${value ? value : ''} ${currentUrl ? currentUrl : ''}${
+              queryParams ? queryParams : ''
+            }`;
+
+            this.copyAndNotify(str);
           },
           (error) => console.log(error),
         );
@@ -229,7 +234,54 @@ export class ActionToolsService {
   }
 
   private copyAndNotify(value: string): void {
-    this.clipboard.copy(value);
+    /* TODO: ниже уродливый костыль, обеспечивающий работу копирования текста в буфер обмена на iOS
+    Вот бы Apple не выделывались и реализовывали веб-стандарты как все, а не как они видят.
+    В перспективе избавиться от этого костыля в пользу Clipboard API, если этот код доживет до таких времен,
+    когда будет адекватная поддержка стандарта, а не вот это все.  */
+    const iosCopyToClipboard = (value): void => {
+      const el = document.createElement('textarea');
+      el.value = value;
+      el.setAttribute('readonly', '');
+      // @ts-ignore
+      el.style = { position: 'absolute', left: '-9999px' };
+      document.body.appendChild(el);
+
+      if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+        // save current contentEditable/readOnly status
+        const editable = el.contentEditable;
+        const readOnly = el.readOnly;
+
+        // convert to editable with readonly to stop iOS keyboard opening
+        el.contentEditable = 'true';
+        el.readOnly = true;
+
+        // create a selectable range
+        const range = document.createRange();
+        range.selectNodeContents(el);
+
+        // select the range
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        el.setSelectionRange(0, 999999);
+
+        // restore contentEditable/readOnly to original state
+        el.contentEditable = editable;
+        el.readOnly = readOnly;
+      } else {
+        el.select();
+      }
+
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    };
+
+    if (this.deviceDetector.system !== System.iOS) {
+      this.clipboard.copy(value);
+    } else {
+      iosCopyToClipboard(value);
+    }
+
     this.notifierService.success({ message: `${value}` });
   }
 

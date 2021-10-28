@@ -154,7 +154,6 @@ export class ConfirmationModalComponent extends ModalBaseComponent
         this.locationService.reload();
         break;
       default:
-        this.navigationService.prev();
         break;
     }
   }

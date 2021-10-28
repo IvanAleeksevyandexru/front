@@ -15,6 +15,8 @@ import {
   SessionStorageService,
   SessionStorageServiceStub,
   LocationService,
+  DeviceDetectorServiceStub,
+  DeviceDetectorService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HookService } from '../../../core/services/hook/hook.service';
@@ -63,6 +65,7 @@ describe('ActionToolsService', () => {
   let formPlayerApiService: FormPlayerApiService;
   let currentAnswersService: CurrentAnswersService;
   let formPlayerService: FormPlayerService;
+  let locationService: LocationService;
   let notifierService: NotifierService;
   let htmlRemoverService: HtmlRemoverService;
   let modalService: ModalService;
@@ -76,6 +79,7 @@ describe('ActionToolsService', () => {
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
@@ -111,6 +115,7 @@ describe('ActionToolsService', () => {
     htmlRemoverService = TestBed.inject(HtmlRemoverService);
     modalService = TestBed.inject(ModalService);
     clipboard = TestBed.inject(Clipboard);
+    locationService = TestBed.inject(LocationService);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
@@ -215,6 +220,14 @@ describe('ActionToolsService', () => {
     it('should call copyAndNotify() within service.sendAction(), with value + host + response.value string', () => {
       const spy = jest.spyOn(service, 'copyAndNotify');
       const newAction = cloneDeep(copyToClipboardAction);
+      newAction.attrs.additionalParams = { screenId: 's1' };
+      service.copyToClipboard(newAction);
+      expect(spy).toHaveBeenCalledWith('Скопирована ссылка: https://host.com/600101/1/formvalue');
+    });
+    it('should call copyAndNotify() within service.sendAction(), with value + host + response.value string without current url queryParams, if any', () => {
+      const spy = jest.spyOn(service, 'copyAndNotify');
+      const newAction = cloneDeep(copyToClipboardAction);
+      locationService['setHref']('https://host.com/600101/1/form?key=value');
       newAction.attrs.additionalParams = { screenId: 's1' };
       service.copyToClipboard(newAction);
       expect(spy).toHaveBeenCalledWith('Скопирована ссылка: https://host.com/600101/1/formvalue');

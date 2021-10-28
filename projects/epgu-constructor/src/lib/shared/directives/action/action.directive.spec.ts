@@ -6,6 +6,8 @@ import { Observable, of } from 'rxjs';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import {
   ConfigService,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
   LocationService,
   LocationServiceStub,
   SessionStorageService,
@@ -160,6 +162,7 @@ describe('ActionDirective', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: DownloadService, useClass: DownloadServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
