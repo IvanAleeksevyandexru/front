@@ -7,16 +7,24 @@
   <span class="map-object__label">Телефон</span>
   <span class="map-object__value">{{ extInfo.phone }}</span>
   <span class="map-object__label">Выборы и референдумы, доступные на данном участке:</span>
-  <span class="map-object__value election"
-    ><ul>
+  <span class="map-object__value election">
+    <ul>
       <li *ngFor="let election of extInfo.elections">
         {{ election.electionName }}.
         <ng-container *ngIf="attrs?.isDistrictNoVisible && election.districtNo">
           <br />Избирательный округ № {{ election.districtNo }}
         </ng-container>
       </li>
-    </ul></span
-  >
+    </ul>
+  </span>
+  <span *ngIf="electionForDisclaimer" class="disclaimer">
+    <span class="map-object__label">Доступное голосование</span>
+    <span class="map-object__value">
+      При выборе данного участка вам будет недоступно голосование по
+      {{ electionForDisclaimer.districtNo }} избирательному округу на
+      {{ electionForDisclaimer.electionName }}
+    </span>
+  </span>
   <lib-button
     [showLoader]="showLoader | async"
     (click)="selectObject(extInfo, $event)"

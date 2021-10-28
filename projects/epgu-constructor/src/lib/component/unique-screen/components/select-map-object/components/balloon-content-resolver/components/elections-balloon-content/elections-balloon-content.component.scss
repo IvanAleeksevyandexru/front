@@ -1,3 +1,21 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+
 .election {
   padding-top: 8px;
+}
+
+.disclaimer {
+  margin-top: 24px;
+  padding: 0 16px 16px 16px;
+  border: 2px solid $color-mandorle-pelate;
+  border-radius: 8px;
+
+  .map-object__label {
+    padding-bottom: 8px;
+  }
+
+
+  & > * {
+    display: block;
+  }
 }
