@@ -5,6 +5,7 @@ import {
   ConstructorLookupModule,
   ConstructorCheckboxModule,
   Icons,
+  YandexMapModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { PrevButtonModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
@@ -78,6 +79,7 @@ import { ClickableLabelModule } from '../../../../shared/directives/clickable-la
     NotifierModule,
     FormsModule,
     ClickableLabelModule,
+    YandexMapModule,
   ],
   entryComponents: [
     SelectMapObjectComponent,

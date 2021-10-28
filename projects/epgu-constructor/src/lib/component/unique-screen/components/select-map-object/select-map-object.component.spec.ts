@@ -21,6 +21,9 @@ import {
   UnsubscribeService,
   YMapItem,
   IFeatureItem,
+  YandexMapModule,
+  WINDOW_PROVIDERS,
+  WINDOW,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -111,8 +114,10 @@ describe('SelectMapObjectComponent', () => {
         HttpClientTestingModule,
         DisclaimerModule,
         FormsModule,
+        YandexMapModule,
       ],
       providers: [
+        WINDOW_PROVIDERS,
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
@@ -190,8 +195,12 @@ describe('SelectMapObjectComponent', () => {
     component['selectMapObjectService'].filteredDictionaryItems = [item];
     yandexMapService['objectManager'] = {
       objects: {
+        balloon: {
+          close: () => ({}),
+        },
         getById: () => mockDivorceMapFeature,
         setObjectOptions: () => ({}),
+        setObjectProperties: () => ({}),
         options: {
           set: () => ({}),
         },
@@ -258,6 +267,12 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('initMap should show modal with error with mockDictionaryWithObjectError', () => {
+    const window = TestBed.inject(WINDOW) as Window;
+    window['ymaps'] = {
+      templateLayoutFactory: {
+        createClass: () => '',
+      },
+    };
     jest
       .spyOn(dictionaryApiService, 'getSelectMapDictionary')
       .mockReturnValue(of((mockDictionaryWithObjectError as unknown) as DictionaryResponse));

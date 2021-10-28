@@ -42,8 +42,11 @@ export interface IFeatureItem<T> {
   id: number | string;
   geometry: IGeometryWithCoords;
   properties?: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
     res?: T;
     attributeValues?: KeyValueMap;
+    pinNode?: HTMLDivElement;
   };
 }
 
