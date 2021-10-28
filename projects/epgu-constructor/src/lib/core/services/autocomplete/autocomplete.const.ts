@@ -76,8 +76,6 @@ export const getSuggestionGroupId = (display: DisplayDto): string => display.sug
 export const isChildrenListType = (component): boolean => {
   return [
     UniqueScreenComponentTypes.childrenList,
-    UniqueScreenComponentTypes.childrenListAbove14,
-    UniqueScreenComponentTypes.childrenListUnder14,
   ].includes(component.type as UniqueScreenComponentTypes);
 };
 

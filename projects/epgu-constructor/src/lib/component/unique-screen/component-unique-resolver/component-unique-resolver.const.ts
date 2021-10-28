@@ -135,8 +135,6 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   RegistrationLegalAddrReadOnly: RegistrationAddrReadonlyComponent,
   PassportLookup: AddPassportContainerComponent,
   ChildrenList: SelectChildrenScreenContainerComponent,
-  ChildrenListUnder14: SelectChildrenScreenContainerComponent, // TODO: удалить потом как depricated
-  ChildrenListAbove14: SelectChildrenScreenContainerComponent, //TODO: удалить потом как depricated
   FieldList: FieldListScreenComponent,
   Timer: TimerScreenComponent,
   MatPeriod: MatPeriodContainerComponent,
