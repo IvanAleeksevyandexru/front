@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs/internal/Observable';
-import { catchError, delay, map, takeUntil, tap } from 'rxjs/operators';
+import { catchError, concatMap, delay, map, takeUntil, tap } from 'rxjs/operators';
 import { LogicComponents } from '@epgu/epgu-constructor-types';
-import { forkJoin } from 'rxjs';
+import { forkJoin, ObservableInput, of } from 'rxjs';
 import AbstractLogicComponent from '../abstract-logic/abstract-logic.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { LogicService } from '../../service/logic.service';
 import { HookService } from '../../../../core/services/hook/hook.service';
 import { HookTypes } from '../../../../core/services/hook/hook.constants';
+import { NavigationPayload } from '../../../../form-player/form-player.types';
 
 @Component({
   selector: 'epgu-constructor-rest-call',
@@ -27,7 +28,15 @@ export default class RestCallComponent extends AbstractLogicComponent {
   }
 
   protected handleOnBeforeSubmitEvent(): void {
-    this.hookService.addHook(HookTypes.ON_BEFORE_SUBMIT, this.handleOnInitEvent());
+    this.hookService.addHook(HookTypes.ON_BEFORE_SUBMIT, this.handleBeforeSubmitDataFetching());
+  }
+
+  protected handleBeforeSubmitDataFetching(): ObservableInput<NavigationPayload> {
+    return of(null).pipe(
+      concatMap(() => {
+        return this.handleOnInitEvent();
+      }),
+    );
   }
 
   protected handleOnInitEvent(): Observable<{}> {
