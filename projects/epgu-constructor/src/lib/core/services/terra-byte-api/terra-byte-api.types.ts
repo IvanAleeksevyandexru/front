@@ -127,7 +127,8 @@ export interface FileUploadEmitValue {
  */
 export interface FileUploadEmitValueForComponent {
   id: string;
-  totalSize?: number;
   type: string;
   uploads?: FileUploadEmitValue[];
+  totalSize?: number;
+  totalCount?: number;
 }
