@@ -18,6 +18,7 @@ import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
+import { get } from 'lodash';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -209,33 +210,12 @@ export class PaymentService {
   /**
    * Возвращает опции для запроса на оплату
    * @param attrs - аттрибуты компонента
-   * TODO: В будущем этот метод надо будет удалть, т.к. для совместимости с получением сведения для услуги брака/разбрака
    */
   createPaymentRequestOptions(attrs: PaymentsAttrs): PaymentDictionaryOptionsInterface {
     const { applicantAnswers } = this.screenService;
-    const filterReg = JSON.parse(
-      this.getValueFromObjectAsArray(applicantAnswers, attrs?.ref?.fiasCode?.split('.')),
-    );
+
+    const filterReg = JSON.parse(get(applicantAnswers, attrs?.ref?.fiasCode, null));
 
     return getPaymentRequestOptions(filterReg, attrs);
-  }
-
-  /**
-   * Возращает значение из объекта по массиву переданных ключей
-   * @param obj_or_result - объект или значение объекта
-   * @param path - массив с путём ключей
-   * @private
-   */
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private getValueFromObjectAsArray(obj_or_result: any, path: string[]): string | null {
-    if (path?.length) {
-      const key = path.shift();
-      if (obj_or_result.hasOwnProperty(key)) {
-        return this.getValueFromObjectAsArray(obj_or_result[key], path);
-      }
-      return null;
-    }
-    return obj_or_result;
   }
 }
