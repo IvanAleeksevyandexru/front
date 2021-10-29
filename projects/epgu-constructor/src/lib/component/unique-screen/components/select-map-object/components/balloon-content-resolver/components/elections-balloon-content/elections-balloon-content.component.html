@@ -17,7 +17,7 @@
       </li>
     </ul>
   </span>
-  <span *ngIf="electionForDisclaimer" class="disclaimer">
+  <span *ngIf="electionForDisclaimer && attrs?.isDisclaimerVisible" class="disclaimer">
     <span class="map-object__label">Доступное голосование</span>
     <span class="map-object__value">
       При выборе данного участка вам будет недоступно голосование по
