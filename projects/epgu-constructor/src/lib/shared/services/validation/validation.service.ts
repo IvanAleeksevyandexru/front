@@ -313,7 +313,7 @@ export class ValidationService {
       case CustomScreenComponentTypes.LegalInnInput:
         return value.length === this.legalInnLength && checkINN(value);
       case CustomScreenComponentTypes.CalendarInput:
-        return Object.values(value).every((val) => !!val);
+        return this.isCompoundComponentValid(component, value as unknown as KeyValueMap);
       case CustomScreenComponentTypes.CardNumberInput:
         return this.checkCardNumber(value);
       case CustomScreenComponentTypes.StringInput:
@@ -321,6 +321,13 @@ export class ValidationService {
       default:
         return true;
     }
+  }
+
+  private isCompoundComponentValid(component: CustomComponent, controlValue: KeyValueMap): boolean {
+    const requiredIds = component.attrs.components
+      .filter((component) => component.required)
+      .map((component) => component.id);
+    return Object.entries(controlValue).every(([key, value]) => !requiredIds.includes(key) || !!value);
   }
 
   private calculateStringPredicate(component: CustomComponent, value: string): boolean {

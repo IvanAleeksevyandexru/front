@@ -343,6 +343,26 @@ describe('ValidationService', () => {
     });
   });
 
+  describe('isCompoundComponentValid', () => {
+
+    const mockData = { attrs: { components: [{ id: 'q1', required: true }, { id: 'q2', required:false }] }};
+    const mockValue = { q1: 'true', q2: '' };
+
+    it('should be valid', () => {
+      expect(service['isCompoundComponentValid'](mockData as unknown as CustomComponent, mockValue)).toBeTruthy();
+    });
+
+    it('should be invalid', () => {
+      mockData.attrs.components[1].required = true;
+      expect(service['isCompoundComponentValid'](mockData as unknown as CustomComponent, mockValue)).toBeFalsy();
+    });
+
+    it('should be valid', () => {
+      mockValue.q2 = '1';
+      expect(service['isCompoundComponentValid'](mockData as unknown as CustomComponent, mockValue)).toBeTruthy();
+    });
+
+  });
   describe('checkRS', () => {
     it('should return true', () => {
       service.form = new FormArray([new FormControl({ id: 'bik', value: '044030827' })]);

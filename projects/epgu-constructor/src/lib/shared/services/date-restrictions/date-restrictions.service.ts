@@ -85,14 +85,11 @@ export class DateRestrictionsService {
     form: FormArray,
     applicantAnswers: ApplicantAnswersDto,
   ): void {
-    restrictions
-      .filter((restriction) => this.haveDateRef(restriction))
-      .forEach((restriction, index) => {
-        restrictions[index] = {
-          ...restriction,
-          value: this.getDateByRef(restriction, form, applicantAnswers),
-        };
-      });
+    restrictions.forEach((restriction) => {
+      if (this.haveDateRef(restriction)) {
+        restriction.value = this.getDateByRef(restriction, form, applicantAnswers);
+      }
+    });
   }
 
   public setDateRangeToStore(
