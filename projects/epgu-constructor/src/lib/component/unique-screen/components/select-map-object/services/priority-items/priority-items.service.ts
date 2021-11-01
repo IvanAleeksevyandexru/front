@@ -77,14 +77,12 @@ export class PriorityItemsService {
   }
 
   getStep(): number {
-    const items = this.getScreenItems();
-
     const selectedSize = this.getItems().length;
     let add = 0;
     if (selectedSize > this.maxKindergarten) {
       add = selectedSize - this.maxKindergarten;
     }
-    const diff = this.maxKindergarten - items.length + add;
+    const diff = this.maxKindergarten - this.getScreenItems().length + add;
     return diff > this.nextStepLength ? this.nextStepLength : diff;
   }
 
