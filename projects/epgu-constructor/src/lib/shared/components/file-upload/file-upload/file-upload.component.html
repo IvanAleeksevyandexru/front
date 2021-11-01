@@ -2,6 +2,6 @@
   <epgu-constructor-file-upload-container
     class="file-upload-container"
     *ngFor="let upload of uploads[0].uploads"
-    [upload]="[upload, uploads[1], uploads[2]] | memo:getUploadContext:this"
+    [upload]="[upload, uploads[1]] | memo:getUploadContext:this"
   ></epgu-constructor-file-upload-container>
 </ng-container>
