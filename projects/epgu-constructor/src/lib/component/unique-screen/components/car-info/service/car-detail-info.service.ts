@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, merge, of } from 'rxjs';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
@@ -96,7 +96,7 @@ export class CarDetailInfoService {
   private parallelRequest(): Observable<unknown> {
     this.screenService.updateLoading(true);
     return merge(this.fetchNotaryInfo(), this.fetchVehicleInfo()).pipe(
-      tap(() => this.screenService.updateLoading(false)),
+      finalize(() => this.screenService.updateLoading(false)),
       catchError(() => {
         const data = {
           externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
@@ -114,7 +114,7 @@ export class CarDetailInfoService {
         this.screenService.component.arguments.vin = response.data.vin;
         return this.fetchNotaryInfo();
       }),
-      tap(() => this.screenService.updateLoading(false)),
+      finalize(() => this.screenService.updateLoading(false)),
       catchError(() => {
         const data = {
           externalServiceCallResult: ServiceResult.EXTERNAL_SERVER_ERROR,
