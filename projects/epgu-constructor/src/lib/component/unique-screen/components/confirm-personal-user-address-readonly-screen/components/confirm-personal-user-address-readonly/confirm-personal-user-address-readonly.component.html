@@ -10,12 +10,14 @@
       *ngFor="let field of (data$ | async)?.attrs?.fields"
       [ngSwitch]="field?.fieldName"
     >
-      <div *ngSwitchCase="isAddr(field.fieldName)" class="item">
-        <div class="label-helper" [innerHTML]="field.label | imgPrefixer | safe: 'html'"></div>
-        <div class="value-text">
-          {{ getAddress(valueParsed[field.fieldName]) }}
+      <ng-container *ngSwitchCase="isAddr(field.fieldName)"  >
+        <div *ngIf="getAddress(valueParsed[field.fieldName])" class="item">
+          <div class="label-helper" [innerHTML]="field.label | imgPrefixer | safe: 'html'"></div>
+          <div class="value-text">
+            {{ getAddress(valueParsed[field.fieldName]) }}
+          </div>  
         </div>
-      </div>
+      </ng-container>
 
       <div *ngSwitchCase="isDate(field.fieldName)" class="item">
         <div *ngIf="form.get(field.fieldName)">
