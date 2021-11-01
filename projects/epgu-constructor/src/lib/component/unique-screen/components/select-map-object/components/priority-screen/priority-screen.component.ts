@@ -44,7 +44,7 @@ export class PriorityScreenComponent {
 
   arguments$: Observable<ArgumentsDto> = this.screenService.component$.pipe(pluck('arguments'));
 
-  controlCheckbox = new FormControl({ value: true, disabled: false }, Validators.required);
+  controlCheckbox = new FormControl({ value: false, disabled: false }, Validators.required);
   notifierId = 'NOTIFIERS_CHILDREN_GARDEN';
   plural = ['сад', 'сада', 'садов'];
   hasUnavailable: boolean;

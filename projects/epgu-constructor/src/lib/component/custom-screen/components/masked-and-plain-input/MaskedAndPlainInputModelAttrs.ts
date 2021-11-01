@@ -14,6 +14,7 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
   readonly maskOptions: unknown;
   readonly showMaskSymbols: boolean;
   readonly showPlaceholderOnFocus: boolean;
+  readonly hint: string;
 
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
@@ -26,6 +27,7 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
     this.maskOptions = attrs.maskOptions;
     this.showMaskSymbols = attrs.showMaskSymbols;
     this.showPlaceholderOnFocus = attrs.showPlaceholderOnFocus;
+    this.hint = attrs.hint;
   }
 
 }
