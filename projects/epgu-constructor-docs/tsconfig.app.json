@@ -14,7 +14,8 @@
       "@angular/*": ["node_modules/@angular/*"],
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
-      "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"]
+      "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"],
+      "@tinkoff/ng-polymorpheus": ["node_modules/@taiga-ui/cdk/node_modules/@tinkoff/ng-polymorpheus"],
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],

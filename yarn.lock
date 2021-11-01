@@ -2671,13 +2671,6 @@
   dependencies:
     tslib "^1.10.0"
 
-"@tinkoff/ng-polymorpheus@^3.1.8":
-  version "3.1.10"
-  resolved "https://registry.yarnpkg.com/@tinkoff/ng-polymorpheus/-/ng-polymorpheus-3.1.10.tgz#34a2a583f87d9d2527e357de904c88629b1a4b38"
-  integrity sha512-Afxub822nD3hzOzyz6ot0ZJYb0IkdDcsai7OI5UMXCg5XvQcBWoD2Q4Eajxq5tcDo76tSsVbCFIzAOJ9wvAzBA==
-  dependencies:
-    tslib "^1.10.0"
-
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
