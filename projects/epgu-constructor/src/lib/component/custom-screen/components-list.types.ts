@@ -68,6 +68,7 @@ export enum CustomScreenComponentTypes {
   StringInput = 'StringInput',
   TextArea = 'TextArea',
   Timer = 'Timer',
+  KinderGartenDraftHandlerComponent = 'KinderGartenDraftHandler',
 }
 
 export type CustomScreenComponentValueTypes = Partial<ListItem> | Date | string | boolean;
@@ -229,6 +230,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   from?: string;
   limit?: string;
   appLinks?: AppLink[];
+  required?: boolean;
 }
 
 export interface DateRestriction {

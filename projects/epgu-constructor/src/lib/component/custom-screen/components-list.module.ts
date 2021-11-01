@@ -74,6 +74,7 @@ import { ConfirmPersonalPolicyChangeModule } from './components/confirm-personal
 import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-personal-policy-change/confirm-personal-policy-change.component';
 import { MaritalStatusInputModule } from './components/marital-status-input/marital-status-input.module';
 import { PluralizeModule } from '@epgu/ui/pipes';
+import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-draft-handler/kinder-garten-draft-handler.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +107,7 @@ import { PluralizeModule } from '@epgu/ui/pipes';
     ShowComponentPipe,
     TextAreaComponent,
     TimerItemComponent,
+    KinderGartenDraftHandlerComponent,
   ],
   exports: [ComponentsListComponent],
   imports: [
@@ -183,6 +185,7 @@ import { PluralizeModule } from '@epgu/ui/pipes';
     SignAppLinkComponent,
     TextAreaComponent,
     TimerItemComponent,
+    KinderGartenDraftHandlerComponent,
   ],
 })
 export class ComponentsListModule {}
