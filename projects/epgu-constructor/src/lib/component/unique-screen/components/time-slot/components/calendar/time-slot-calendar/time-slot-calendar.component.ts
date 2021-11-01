@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { pluck } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SectionType } from '@epgu/epgu-constructor-types';
@@ -41,11 +40,7 @@ export class TimeSlotCalendarComponent {
   day$$ = new BehaviorSubject<Date>(null);
   month$$ = new BehaviorSubject<string>(null);
 
-  constructor(
-    private screenService: ScreenService,
-    private datesTools: DatesToolsService,
-    private calendar: TimeSlotCalendarService,
-  ) {}
+  constructor(private screenService: ScreenService, private calendar: TimeSlotCalendarService) {}
 
   addMonthRangeAction(month: string): void {
     this.calendar.addMonth(month);

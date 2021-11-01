@@ -36,7 +36,6 @@ export class Smev2RestApiInterceptor implements HttpInterceptor {
   }
 
   public handleResponse(
-    request: HttpRequest<unknown>,
     response: HttpResponse<DictionaryResponse>,
   ): Observable<HttpResponse<DictionaryResponse>> {
     return of(response).pipe(
@@ -63,7 +62,7 @@ export class Smev2RestApiInterceptor implements HttpInterceptor {
         catchError((err) => this.handleResponseError(err)),
         switchMap((response: HttpResponse<DictionaryResponse>) =>
           response instanceof HttpResponse && response?.body && typeof response.body === 'object'
-            ? this.handleResponse(request, response)
+            ? this.handleResponse(response)
             : of(response),
         ),
       );

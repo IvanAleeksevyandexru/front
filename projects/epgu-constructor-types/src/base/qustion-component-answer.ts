@@ -11,7 +11,6 @@ export interface ComponentAnswerDto {
   hidden?: boolean;
   disabled?: boolean;
   link?: string;
-  hint?: string;
   underConstruction?: boolean;
   description?: string; // описание для вопроса
   modalHtml?: string;

@@ -66,7 +66,7 @@ export class TimeSlotAreaComponent {
       ? of([
           new ListItem({
             id: area,
-            text: area,
+            text: area as string,
           }),
         ])
       : this.dictionaryApi

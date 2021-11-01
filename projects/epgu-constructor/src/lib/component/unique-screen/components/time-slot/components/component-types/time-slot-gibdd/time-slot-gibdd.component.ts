@@ -31,13 +31,8 @@ export class TimeSlotGibddComponent {
 
   requestBookParams$: Observable<Partial<TimeSlotBookRequest>> = combineLatest([
     this.smev3.value$,
-    this.smev3.department$,
     this.smev3.config$,
-  ]).pipe(
-    map(([value, department, config]) =>
-      this.getPartialBookRequestParams(value, department, config),
-    ),
-  );
+  ]).pipe(map(([value, config]) => this.getPartialBookRequestParams(value, config)));
 
   constructor(private smev3: TimeSlotSmev3StateService) {}
 
@@ -47,7 +42,7 @@ export class TimeSlotGibddComponent {
     { serviceId }: TimeSlotsApiItem,
   ): Partial<TimeSlotRequest> {
     return {
-      organizationId: value.organizationId || department.attributeValues.code,
+      organizationId: value.organizationId || (department.attributeValues.code as string),
       attributes: [
         { name: 'organizationId', value: department.attributeValues.code },
         { name: 'serviceId', value: (value.serviceId as string) || serviceId },
@@ -57,7 +52,6 @@ export class TimeSlotGibddComponent {
 
   getPartialBookRequestParams(
     value: TimeSlotValueInterface,
-    department: DepartmentInterface,
     config: TimeSlotsApiItem,
   ): Partial<TimeSlotBookRequest> {
     return {
