@@ -7,10 +7,6 @@
 >
   <div class="answer-btn__container" [class.answer-btn__container--pr]="isCenteredArrow">
     <span class="answer-btn__title">{{ data?.label }}</span>
-    <!-- TODO hint запрещён к использованию, выпилить нужно, если больше в услугах не используется -->
-    <span class="answer-btn__hint" *ngIf="data?.hint">
-      <lib-question-help-tip [questionTip]="data?.hint"></lib-question-help-tip>
-    </span>
     <span class="answer-btn__icon" [class.answer-btn__icon--centered]="isCenteredArrow">
       <span *ngIf="isShown(data?.value)">
         <lib-round-loader></lib-round-loader>
