@@ -110,7 +110,7 @@
     </div>
     <button
       *ngIf="
-        isImage && !isError && status !== fileStatus.uploading && status !== fileStatus.downloading
+        !isError && status !== fileStatus.uploading && status !== fileStatus.downloading
       "
       (click)="viewAction()"
       class="uploader-manager-item__button view_button"

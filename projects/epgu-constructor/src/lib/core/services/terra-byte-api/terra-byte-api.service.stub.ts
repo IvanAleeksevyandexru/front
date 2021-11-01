@@ -22,5 +22,7 @@ export class TerraByteApiServiceStub {
 
   downloadFile() {}
 
+  openFileNewTabByMimeType() {}
+
   pushFileToBrowserForDownload() {}
 }

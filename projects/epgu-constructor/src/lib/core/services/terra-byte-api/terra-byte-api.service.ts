@@ -175,6 +175,20 @@ export class TerraByteApiService {
   }
 
   /**
+   * Открыть файл в новой вкладке
+   * @param options - данные о файле
+   * @param mimeType - тип файла
+   */
+  openFileNewTabByMimeType(options: TerraFileOptions, mimeType: string): void {
+    this.downloadFile(options).subscribe((res) => {
+      window.open(
+        URL.createObjectURL(new Blob([res], { type: mimeType })),
+        '_blank',
+      );
+    });
+  }
+
+  /**
    * Скачивание по ссылке файла в браузер
    * @param data - Blob данные для скачивания
    * @param file - файл для загрузки

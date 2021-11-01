@@ -106,7 +106,10 @@ export class UploaderManagerItemComponent {
         if (this.deviceDetector.isWebView) {
           this.smu.notify(createDownloadEvent(this.link));
         } else {
-          this.elementLink.nativeElement.click();
+          this.teraService.openFileNewTabByMimeType(
+            this.fileItem.createUploadedParams(),
+            this.type,
+          );
         }
       }
     }
