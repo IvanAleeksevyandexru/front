@@ -18,6 +18,7 @@ export class ConfigService implements Config {
   private _dictionaryUrl: string;
   private _externalApiUrl: string;
   private _fileUploadApiUrl: string;
+  private _galleryApiUrl: string;
   private _quizDataApiUrl: string;
   private _lkUrl: string;
   private _lkApi: string;
@@ -103,6 +104,10 @@ export class ConfigService implements Config {
 
   get fileUploadApiUrl(): string {
     return this._fileUploadApiUrl;
+  }
+
+  get galleryApiUrl(): string {
+    return this._galleryApiUrl;
   }
 
   get quizDataApiUrl(): string {
@@ -286,6 +291,7 @@ export class ConfigService implements Config {
     this._mocks = config.mocks || [];
     this._mockUrl = config.mockUrl || '';
     this._timeSlots = config.timeSlots || {};
+    this._galleryApiUrl = config.galleryApiUrl || '';
     this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
     this._isSocialShareDisabled = config.isSocialShareDisabled || false;
     this._isAutocompleteServiceDisabled = config.isAutocompleteServiceDisabled || false;

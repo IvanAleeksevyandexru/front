@@ -1,10 +1,7 @@
 <ng-container>
   <epgu-cf-ui-cta-modal [title]="title" [showCrossButton]="true" text="previewFiles">
     <ng-container modal-content>
-      <div
-        class="text_modal_error"
-        *ngIf="suggestionsUploadedFiles.length && !suggestionsFiles.length"
-      >
+      <div class="text_modal_error" *ngIf="!galleryFilesList.length">
         <img
           class="text_modal_error__img"
           src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/image-error.svg"
@@ -15,7 +12,7 @@
           Загрузите новые
         </span>
       </div>
-      <div class="text_modal_error" *ngIf="!suggestionsUploadedFiles.length">
+      <div class="text_modal_error" *ngIf="!galleryFiles.length">
         <img
           class="text_modal_error__img"
           src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/stop.svg"
@@ -24,8 +21,8 @@
         <span>Загрузите новые</span>
       </div>
 
-      <div *ngIf="suggestionsUploadedFiles.length && suggestionsFiles.length">
-        <div *ngFor="let group of suggestionsFilesGroupByDate">
+      <div *ngIf="galleryFiles.length">
+        <div *ngFor="let group of galleryFilesGroupByDate">
           <div *ngIf="group[1].length">
             <h4 class="mb-12 mt-8">{{ group[0] }}</h4>
             <div class="wrapper">
@@ -39,9 +36,7 @@
                   <img
                     *ngIf="file.isImage"
                     class="img"
-                    src="{{ fileUploadApiUrl }}/{{ file.item.objectId }}/{{
-                      file.item.objectTypeId
-                    }}/download?mnemonic={{ file.item.mnemonic }}"
+                    [src]="getImgSrc(file)"
                     (error)="handleImgError($event, file)"
                     [alt]="file.item.fileName"
                   />
