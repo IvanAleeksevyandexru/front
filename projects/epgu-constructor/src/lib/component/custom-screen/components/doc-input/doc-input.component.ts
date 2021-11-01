@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, AbstractControl } from '@angular/forms';
 import {
   TextTransformService,
   UnsubscribeService,
@@ -46,12 +46,14 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
     this.docInputFieldsTypes.number,
     this.docInputFieldsTypes.date,
     this.docInputFieldsTypes.emitter,
+    this.docInputFieldsTypes.issueId,
   ];
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   brokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
   hasExpirationDate = false;
   form: FormGroup;
+  formIssueId: AbstractControl;
 
   constructor(
     public injector: Injector,
@@ -191,6 +193,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
       ...expirationDate,
       date: seriesNumDate.date ? this.datesToolsService.format(seriesNumDate.date) : null,
       emitter: formFields.emitter,
+      issueId: formFields.issueId,
     };
   }
 
@@ -214,32 +217,45 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
     const emitter = {
       [this.fieldsNames[3]]: null,
     };
+    const issueId = {
+      [this.fieldsNames[4]]: null,
+    };
 
     this.fieldsNames.forEach((fieldName: string) => {
-      const validators = [this.validationService.customValidator(this.fields[fieldName])];
+      if (this.fields[fieldName]) {
+        const validators = [this.validationService.customValidator(this.fields[fieldName])];
 
-      const updateOnValidation = this.fields[fieldName].attrs.validation?.find(
-        (v) => v.updateOn === 'blur',
-      );
+        const updateOnValidation = this.fields[fieldName].attrs.validation?.find(
+          (v) => v.updateOn === 'blur',
+        );
 
-      if (Object.prototype.hasOwnProperty.call(seriesNumDate, fieldName)) {
-        seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], {
-          validators,
-          updateOn: updateOnValidation?.updateOn || 'change',
-        });
-      } else {
-        emitter[fieldName] = new FormControl(componentValues[fieldName], {
-          validators,
-          updateOn: updateOnValidation?.updateOn || 'change',
-        });
+        if (Object.prototype.hasOwnProperty.call(seriesNumDate, fieldName)) {
+          seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], {
+            validators,
+            updateOn: updateOnValidation?.updateOn || 'change',
+          });
+        } else if (Object.prototype.hasOwnProperty.call(emitter, fieldName)) {
+          emitter[fieldName] = new FormControl(componentValues[fieldName], {
+            validators,
+            updateOn: updateOnValidation?.updateOn || 'change',
+          });
+        } else if (Object.prototype.hasOwnProperty.call(issueId, fieldName)) {
+          issueId[fieldName] = new FormControl(componentValues[fieldName], {
+            validators,
+            updateOn: updateOnValidation?.updateOn || 'change',
+          });
+        }
       }
     });
 
     this.form = this.fb.group({
       [this.docInputFieldsTypes.seriesNumDate]: this.fb.group(seriesNumDate),
       ...emitter,
+      ...issueId,
     });
+    this.formIssueId = this.form.get(this.docInputFieldsTypes.issueId);
     const emitterControl = this.form.controls.emitter;
+    const issueIdControl = this.form.controls.issueId;
 
     if (emitterControl.value) {
       emitterControl.markAllAsTouched();
@@ -248,6 +264,12 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
       emitterControl.setErrors(null);
     }
 
+    if (issueIdControl.value) {
+      issueIdControl.markAllAsTouched();
+      issueIdControl.markAsDirty();
+      issueIdControl.updateValueAndValidity();
+      issueIdControl.setErrors(null);
+    }
     if (this.hasExpirationDate) {
       const expirationDate = componentValues[this.docInputFieldsTypes.expirationDate];
 

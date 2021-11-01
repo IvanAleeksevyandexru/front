@@ -3,7 +3,7 @@
     <span>{{ control.value.label }}</span>
   </div>
   <div class="form__error">
-    <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-1">
+    <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-2">
       <span *ngIf="isErrorShown([docInputFieldsTypes.seriesNumDate, fieldName])">
         <ng-container
           *ngIf="!form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.textFromJson"
@@ -400,4 +400,59 @@
   >
     {{ hint }}
   </epgu-cf-ui-constructor-helper-text>
+  <div
+    class="doc-input__emmiter"
+    *ngIf="fields[docInputFieldsTypes.issueId] && !fields[docInputFieldsTypes.issueId]?.attrs.hidden"
+  >
+    <epgu-constructor-label
+      [tips]="fields[docInputFieldsTypes.issueId]?.attrs?.labelHint"
+      [label]="fields[docInputFieldsTypes.issueId]?.label"
+      [for]="docInputFieldsTypes.issueId"
+    ></epgu-constructor-label>
+    <epgu-cf-ui-constructor-input-error
+      *ngIf="formIssueId.invalid && formIssueId.touched"
+    >
+      {{ formIssueId.errors.msg }}
+    </epgu-cf-ui-constructor-input-error>
+    <epgu-constructor-masked-input
+      *ngIf="fields[docInputFieldsTypes.issueId]?.attrs.mask; else plainInputIssueId"
+      [textTransformType]="fields[docInputFieldsTypes.issueId]?.attrs?.fstuc"
+      [id]="docInputFieldsTypes.issueId"
+      [control]="$any(formIssueId)"
+      [mask]="fields[docInputFieldsTypes.issueId]?.attrs?.mask"
+      [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.issueId]?.placeholder"
+      [placeholder]="fields[docInputFieldsTypes.issueId]?.placeholder"
+      [showConstantMaskSymbols]="true"
+      [invalid]="formIssueId.invalid && formIssueId.touched"
+      [validationShowOn]="validationShowOn"
+      [component]="fields[docInputFieldsTypes.issueId]"
+      [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.issueId]"
+      (selectSuggest)="
+        suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')
+      "
+      (blurEvent)="markControlAsDirty(docInputFieldsTypes.issueId)"
+    ></epgu-constructor-masked-input>
+    <ng-template #plainInputIssueId>
+      <epgu-constructor-constructor-plain-input
+        [textTransformType]="fields[docInputFieldsTypes.issueId]?.attrs?.fstuc"
+        [id]="docInputFieldsTypes.issueId"
+        [control]="$any(formIssueId)"
+        [placeholder]="fields[docInputFieldsTypes.issueId]?.placeholder"
+        [invalid]="isInvalidAndTouched(docInputFieldsTypes.issueId)"
+        [validationShowOn]="validationShowOn"
+        [component]="fields[docInputFieldsTypes.issueId]"
+        [suggestions]="classifiedSuggestionItems[docInputFieldsTypes.issueId]"
+        (selectSuggest)="
+          suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')
+        "
+        (blurEvent)="markControlAsDirty(docInputFieldsTypes.issueId)"
+      ></epgu-constructor-constructor-plain-input>
+    </ng-template>
+    <epgu-cf-ui-constructor-helper-text
+      *ngIf="fields[docInputFieldsTypes.issueId]?.hint as hint"
+      class="doc-input__hint"
+    >
+      {{ hint }}
+    </epgu-cf-ui-constructor-helper-text>
+  </div>
 </section>

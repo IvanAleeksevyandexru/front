@@ -50,6 +50,7 @@ interface DocInputFormFields {
   };
   expirationDate?: string | Date;
   emitter: string;
+  issueId: string;
 }
 
 interface DocInputFields {
@@ -57,6 +58,7 @@ interface DocInputFields {
   number: number;
   date: string | Date;
   emitter: string;
+  issueId: string;
 }
 
 enum DocInputFieldsTypes {
@@ -66,6 +68,7 @@ enum DocInputFieldsTypes {
   emitter = 'emitter',
   expirationDate = 'expirationDate',
   seriesNumDate = 'seriesNumDate',
+  issueId = 'issueId',
 }
 
 export {
