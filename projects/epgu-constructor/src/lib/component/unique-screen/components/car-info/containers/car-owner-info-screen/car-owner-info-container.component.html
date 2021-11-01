@@ -4,12 +4,16 @@
   [screenButtons]="(screenService.component$ | async).attrs.actions"
   [showNav]="screenService.showNav$ | async"
 >
-  <epgu-constructor-car-owner-info
-    [carOwnerInfo]="carOwnerInfo$ | async"
-  ></epgu-constructor-car-owner-info>
+  <epgu-cf-ui-constructor-screen-pad>
+    
+    <epgu-constructor-car-owner-info
+      [carOwnerInfo]="carOwnerInfo$ | async"
+    ></epgu-constructor-car-owner-info>
 
-  <epgu-constructor-car-owner-info-link
-    *ngIf="pdfLink$ | async as downloadLink"
-    [pdfLink]="downloadLink"
-  ></epgu-constructor-car-owner-info-link>
+    <epgu-constructor-car-owner-info-link
+      *ngIf="pdfLink$ | async as downloadLink"
+      [pdfLink]="downloadLink"
+    ></epgu-constructor-car-owner-info-link>
+
+  </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>

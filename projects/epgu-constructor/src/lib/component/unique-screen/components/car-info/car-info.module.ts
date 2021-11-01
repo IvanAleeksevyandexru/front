@@ -29,6 +29,7 @@ import { CarRegistrationComponent } from './components/car-registration/car-regi
 import { CarTechnicalDataComponent } from './components/car-technical-data/car-technical-data.component';
 import { CarErrorComponent } from './components/car-error/car-error.component';
 import { YesNoStrictPipe } from './pipes/yes-no-strict.pipe';
+import { PassportValuePipe } from './pipes/passport-value.pipe';
 
 const COMPONENTS = [
   CarInfoComponent,
@@ -54,6 +55,7 @@ const COMPONENTS = [
   CarTechnicalDataComponent,
   CarErrorComponent,
   YesNoStrictPipe,
+  PassportValuePipe,
 ];
 
 @NgModule({
