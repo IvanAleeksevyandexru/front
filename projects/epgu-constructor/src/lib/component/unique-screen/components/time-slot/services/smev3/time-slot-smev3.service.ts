@@ -41,14 +41,12 @@ import {
 
 import { get } from 'lodash';
 import { Smev3RestApiService } from '../api/smev3/smev3-rest-api.service';
-import { TimeSlotCalendarService } from '../calendar/time-slot-calendar.service';
-
 import { TimeSlotStateService } from '../state/time-slot-state.service';
 import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.service';
 
 import { v4 as uuidv4 } from 'uuid';
 import { TimeSlotErrorService } from '../error/time-slot-error.service';
-import { KeyValueMap } from 'projects/epgu-constructor-types/src/base';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class TimeSlotSmev3Service {
@@ -257,7 +255,6 @@ export class TimeSlotSmev3Service {
   constructor(
     private datesTools: DatesToolsService,
     private api: Smev3RestApiService,
-    private calendar: TimeSlotCalendarService,
     private state: TimeSlotStateService,
     private smev3: TimeSlotSmev3StateService,
     private error: TimeSlotErrorService,
@@ -334,12 +331,10 @@ export class TimeSlotSmev3Service {
   }
 
   getAddress(attributeNameWithAddress: string, attributeValues: KeyValueMap): string {
-    return (
-      attributeValues[attributeNameWithAddress as string] ||
+    return (attributeValues[attributeNameWithAddress as string] ||
       attributeValues.ADDRESS ||
       attributeValues.ADDRESS_OUT ||
-      attributeValues.address
-    ) as string;
+      attributeValues.address) as string;
   }
 
   book(book: Slot): Observable<SmevBookResponseInterface> {

@@ -11,7 +11,6 @@ import {
 import { BehaviorSubject, EMPTY, Subject } from 'rxjs';
 import { catchError, exhaustMap, filter, tap } from 'rxjs/operators';
 
-import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.service';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../../core/services/error-handler/error-handler';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
@@ -53,7 +52,6 @@ export class TimeSlotErrorService {
   templates$$ = new BehaviorSubject<Record<string, ErrorTemplate>>({});
 
   constructor(
-    private smev3: TimeSlotSmev3StateService,
     private modalService: ModalService,
     public constants: TimeSlotsConstants,
     private injector: Injector,
