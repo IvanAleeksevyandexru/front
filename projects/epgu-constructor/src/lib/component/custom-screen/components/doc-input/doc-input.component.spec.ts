@@ -217,6 +217,7 @@ describe('DocInputComponent', () => {
           series: 8000,
         },
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
 
       const expectedValue = {
@@ -224,6 +225,7 @@ describe('DocInputComponent', () => {
         number: 123321,
         series: 8000,
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
       jest.spyOn(component, 'emitToParentForm');
       jest.spyOn(component, 'subscribeOnFormChange');
@@ -265,6 +267,7 @@ describe('DocInputComponent', () => {
           series: 8000,
         },
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
 
       const expectedValue = {
@@ -272,6 +275,7 @@ describe('DocInputComponent', () => {
         number: 123321,
         series: 8000,
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
       jest.spyOn(component, 'formatFormFields');
 
@@ -291,6 +295,7 @@ describe('DocInputComponent', () => {
           series: 8000,
         },
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
 
       const expectedValue = {
@@ -298,6 +303,7 @@ describe('DocInputComponent', () => {
         number: 123321,
         series: 8000,
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
       jest.spyOn(formService, 'emitChanges');
 
