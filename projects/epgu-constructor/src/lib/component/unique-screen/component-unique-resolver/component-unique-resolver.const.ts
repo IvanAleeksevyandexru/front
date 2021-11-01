@@ -43,10 +43,12 @@ import { PersonUserInnComponent } from '../components/person-user-inn/person-use
 import { KindergartenComponent } from '../components/kindergarten/kindergarten.component';
 import { EquipmentChoiceContainerComponent } from '../components/equipment-choice/container/equipment-choice-container.component';
 import { ConfirmPersonalPolicyComponent } from '../components/confirm-personal-policy/confirm-personal-policy.component';
+import { TimeSlotResolverVersionComponent } from '../components/time-slot-resolver-version/time-slot-resolver-version.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
 type UniqueScreenComponent =
+  | TimeSlotResolverVersionComponent
   | IdentificationStreamComponent
   | IdentificationUploadScreenComponent
   | InformationCenterMvdContainerComponent
@@ -106,7 +108,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   FileUploadComponent: FileUploadScreenComponent,
   PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
   EmployeeHistory: EmployeeHistoryContainerComponent,
-  TimeSlot: TimeSlotsComponent,
+  TimeSlot: TimeSlotResolverVersionComponent,
   TimeSlotDoctor: TimeSlotDoctorsContainerComponent,
   TimeSlotWithComputableDepartment: TimeSlotsComponent,
   CarInfo: CarInfoContainerComponent,

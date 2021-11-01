@@ -36,13 +36,9 @@ export class TimeSlotDivorceComponent {
 
   requestBookParams$: Observable<Partial<TimeSlotBookRequest>> = combineLatest([
     this.smev3.value$,
-    this.smev3.department$,
+
     this.smev3.config$,
-  ]).pipe(
-    map(([value, department, config]) =>
-      this.getPartialBookRequestParams(value, department, config),
-    ),
-  );
+  ]).pipe(map(([value, config]) => this.getPartialBookRequestParams(value, config)));
 
   attributes = this.createAreaAttributes();
   department$: Observable<DepartmentInterface> = this.smev3.department$;
@@ -70,13 +66,12 @@ export class TimeSlotDivorceComponent {
     department: DepartmentInterface,
   ): Partial<TimeSlotRequest> {
     return {
-      organizationId: value.organizationId || department.attributeValues.CODE,
+      organizationId: value.organizationId || (department.attributeValues.CODE as string),
     };
   }
 
   getPartialBookRequestParams(
     value: TimeSlotValueInterface,
-    department: DepartmentInterface,
     config: TimeSlotsApiItem,
   ): Partial<TimeSlotBookRequest> {
     return {

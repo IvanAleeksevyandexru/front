@@ -1,0 +1,8 @@
+<ng-container
+  *ngTemplateOutlet="templateContent; context: { newTimeSlotVersion: newTimeSlotVersion$ | async }"
+>
+</ng-container>
+<ng-template #templateContent let-newTimeSlotVersion="newTimeSlotVersion">
+  <epgu-constructor-time-slots *ngIf="!newTimeSlotVersion"></epgu-constructor-time-slots>
+  <epgu-constructor-time-slot-screen *ngIf="newTimeSlotVersion"></epgu-constructor-time-slot-screen>
+</ng-template>

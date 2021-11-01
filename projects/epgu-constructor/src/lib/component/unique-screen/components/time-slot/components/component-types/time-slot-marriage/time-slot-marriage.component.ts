@@ -76,7 +76,7 @@ export class TimeSlotMarriageComponent {
     solemn: boolean,
   ): Partial<TimeSlotRequest> {
     return {
-      organizationId: value.organizationId || department.attributeValues.CODE,
+      organizationId: value.organizationId || (department.attributeValues.CODE as string),
       attributes: [
         { name: 'SolemnRegistration', value: solemn },
         { name: 'SlotsPeriod', value: slotsPeriod },
