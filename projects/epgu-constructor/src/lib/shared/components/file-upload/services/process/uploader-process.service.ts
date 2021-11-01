@@ -169,6 +169,52 @@ export class UploaderProcessService {
     );
   }
 
+  copy(file: FileItem): void {
+    this.createOperation(OperationType.prepare, file, this.copyOperation.bind(this));
+  }
+
+  copyOperation({ item, cancel }: Operation, oldStatus: FileItemStatus): Observable<void> {
+    const options = item.createUploadOptions(
+      this.uploader.objectId,
+      UPLOAD_OBJECT_TYPE,
+      this.uploader.getMnemonic(),
+    );
+
+    return of(item).pipe(
+      tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.uploading)),
+      tap((file: FileItem) => this.stat.incrementLimits(file)),
+      map((file: FileItem) =>
+        this.store.files.getValue().find((storeFile) => storeFile.item.fileName === file.item.fileName)),
+      concatMap((storedFile) => this.api.copyFile(options, storedFile)),
+      catchError((e) => {
+        this.store.update(item.setError(this.uploader.getError(ErrorActions.addUploadErr)));
+        this.stat.decrementLimits(item);
+        return throwError(e);
+      }),
+      concatMap(() => this.api.getFileInfo(options)),
+      tap((uploaded) => {
+        const newUploaded = uploaded as UploadedFile;
+        if (item.item?.isFromSuggests) {
+          newUploaded.isFromSuggests = true;
+        }
+        item
+          .setItem(newUploaded)
+          .setStatus(FileItemStatus.uploaded)
+          .setDescription(this.uploader.data?.labelHint);
+        this.store.update(item);
+      }),
+      mapTo(undefined),
+      takeUntil(
+        cancel.pipe(
+          filter((status) => status),
+          tap(() => this.store.changeStatus(item, oldStatus)),
+          tap(() => this.store.remove(item)),
+          tap(() => this.stat.decrementLimitByFileItem(item)),
+        ),
+      ),
+    );
+  }
+
   prepare(file: FileItem): void {
     this.createOperation(OperationType.prepare, file, this.prepareOperation.bind(this));
   }

@@ -32,7 +32,6 @@ export interface ComponentActionDto {
 }
 
 export enum ActionType {
-  attachUploadedFiles = 'attachUploadedFiles',
   confirmModalStep = 'confirmModalStep',
   copyToClipboard = 'copyToClipboard',
   deleteSuggest = 'deleteSuggest',
@@ -64,7 +63,6 @@ export enum ActionType {
 
 export enum DTOActionAction {
   addToCalendar = 'service/action/addToCalendar',
-  attachUploadedFiles = 'attachUploadedFiles',
   confirmSmsCode = 'service/actions/confirmSmsCode',
   confirmEmailCode = 'service/actions/confirmEmailCode',
   creatUrlAction = 'service/action/createUrl',
