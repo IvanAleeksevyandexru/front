@@ -270,7 +270,7 @@ describe('FileUploadItemComponent', () => {
   });
 
   it('should open attached viewer', () => {
-    component.isGalleryFilesButtonShown = true;
+    jest.spyOn(component, 'isPrevUploadedFilesButtonShown').mockImplementation(() => true);
     jest.spyOn(modalService, 'openModal');
     fixture.detectChanges();
     const button: HTMLDivElement = fixture.debugElement.queryAll(

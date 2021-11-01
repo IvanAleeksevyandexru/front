@@ -5,29 +5,33 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+
 import {
   catchError,
   concatMap,
   distinctUntilChanged,
   filter,
   map,
-  switchMap,
+  mapTo,
+  reduce,
+  take,
   takeUntil,
-  tap,
 } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-import { BehaviorSubject, combineLatest, of, throwError } from 'rxjs';
+import { BehaviorSubject, combineLatest, from, of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+
 import {
   FileResponseToBackendUploadsItem,
   FileUploadAttributes,
   FileUploadItem,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
 import { UploadContext } from '../data';
 
@@ -66,6 +70,7 @@ export class FileUploadComponent implements OnInit {
     distinctUntilChanged(),
   );
 
+  suggestions$ = this.screenService.suggestions$;
   componentId = this.screenService.component?.id || null;
 
   getFilesList$ = combineLatest([this._objectId$, this.screenService.display$]).pipe(
@@ -78,20 +83,34 @@ export class FileUploadComponent implements OnInit {
             catchError((e: HttpErrorResponse) => (e.status === 404 ? of([]) : throwError(e))),
           ) as Observable<UploadedFile[]>,
     ),
-  );
-  getGalleryList$ = this.screenService.display$.pipe(
-    switchMap((display) => display.components),
-    concatMap((component: ComponentDto) =>
-      this.api
-        .getGalleryByMnemonic(component.suggestionId)
-        .pipe(catchError((e: HttpErrorResponse) => (e.status === 404 ? of([]) : throwError(e)))),
-    ),
-    tap((files: UploadedFile[]) =>
-      files.forEach((file: UploadedFile) => this.markSuggestFile(file)),
+    concatMap((files: UploadedFile[]) =>
+      from(files).pipe(
+        filter((file) => !!file?.mnemonic),
+        filter((file) => file?.objectId.toString() === this.objectId.toString()),
+        concatMap((file) =>
+          this.suggestions$.pipe(
+            map((suggestions) => suggestions[this.componentId]?.list),
+            map((suggestionsFiles) =>
+              this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(suggestionsFiles),
+            ),
+            map((suggestionsUploadedFiles) => this.markSuggestFile(suggestionsUploadedFiles, file)),
+            mapTo(file),
+            take(1),
+          ),
+        ),
+        reduce<UploadedFile, Record<string, UploadedFile[]>>((acc, value) => {
+          const id = this.getMnemonicWithoutOrder(value.mnemonic);
+          if (!acc[id]) {
+            acc[id] = [];
+          }
+          if (this) acc[id].push(value);
+          return acc;
+        }, {}),
+      ),
     ),
   );
 
-  uploads$ = combineLatest([this.attrs$, this.getFilesList$, this.getGalleryList$]);
+  uploads$ = combineLatest([this.attrs$, this.getFilesList$]);
 
   private value: FileResponseToBackendUploadsItem = { files: [], errors: [] };
 
@@ -102,23 +121,23 @@ export class FileUploadComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private api: TerraByteApiService,
     private screenService: ScreenService,
+    private autocompletePrepareService: AutocompletePrepareService,
   ) {}
 
-  ngOnInit(): void {
-    this.setUploadersRestrictions();
-
-    this.eventBusService
-      .on('fileUploadItemValueChangedEvent')
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: FileResponseToBackendUploadsItem) => {
-        this.handleNewValueForItem(payload);
-        this.cdr.markForCheck();
-      });
+  markSuggestFile(suggestionsUploadedFiles: UploadedFile[], file: UploadedFile): UploadedFile {
+    if (
+      suggestionsUploadedFiles.some(
+        (uploadedFile: UploadedFile) => uploadedFile.fileName === file.fileName,
+      )
+    ) {
+      // eslint-disable-next-line no-param-reassign
+      file.isFromSuggests = true;
+    }
+    return file;
   }
 
-  public getUploadContext([upload, files, galleryFiles]: [
+  getUploadContext([upload, files]: [
     FileUploadItem,
-    Record<string, UploadedFile[]>,
     Record<string, UploadedFile[]>,
   ]): UploadContext {
     const id = `${this.prefixForMnemonic}.${upload.uploadId}`;
@@ -128,11 +147,31 @@ export class FileUploadComponent implements OnInit {
       objectId: this.objectId,
       clarifications: this.attributes?.clarifications,
       files: files[id] || [],
-      galleryFiles: galleryFiles || [],
     } as UploadContext;
   }
 
-  private setUploadersRestrictions(): void {
+  getMnemonicWithoutOrder(mnemonic: string): string {
+    const result = mnemonic.match(/\.[0-9]*$/);
+    return result ? mnemonic.replace(result[0], '') : mnemonic;
+  }
+
+  ngOnInit(): void {
+    this.setUploadersRestrictions();
+
+    this.eventBusService
+      .on(BusEventType.FileUploadItemValueChangedEvent)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((payload: FileResponseToBackendUploadsItem) => {
+        this.handleNewValueForItem(payload);
+        this.cdr.markForCheck();
+      });
+  }
+
+  getFiles(): FileResponseToBackendUploadsItem[] {
+    return this.value?.files;
+  }
+
+  setUploadersRestrictions(): void {
     this.setTotalMaxSizeAndAmount(this.attributes.maxSize, this.attributes.maxFileCount);
 
     this.attributes.uploads?.forEach(
@@ -145,7 +184,7 @@ export class FileUploadComponent implements OnInit {
     );
   }
 
-  private setTotalMaxSizeAndAmount(maxSize: number, maxAmount: number): void {
+  setTotalMaxSizeAndAmount(maxSize: number, maxAmount: number): void {
     if (maxSize) {
       this.limits.setTotalMaxSize(maxSize);
     }
@@ -158,7 +197,7 @@ export class FileUploadComponent implements OnInit {
    * Обрабатывает новое значение от формы загрузки
    * @param $eventData - новые значения от формы
    */
-  private handleNewValueForItem($eventData: FileResponseToBackendUploadsItem): void {
+  handleNewValueForItem($eventData: FileResponseToBackendUploadsItem): void {
     this.value.files = this.value.files.map((valueItem: FileResponseToBackendUploadsItem) => {
       const value = { ...valueItem };
       if (valueItem.uploadId === $eventData.uploadId) {
@@ -170,16 +209,6 @@ export class FileUploadComponent implements OnInit {
     this.value.errors = $eventData.errors;
 
     this.eventBusService.emit(BusEventType.FileUploadValueChangedEvent, this.value);
-  }
-
-  /**
-   * Помечает файл специальным флажком для саджест-сервиса
-   * @private
-   */
-  private markSuggestFile(file: UploadedFile): UploadedFile {
-    // eslint-disable-next-line no-param-reassign
-    file.isFromSuggests = true;
-    return file;
   }
 
   /**

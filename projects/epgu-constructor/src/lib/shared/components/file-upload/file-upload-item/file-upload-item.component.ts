@@ -33,8 +33,11 @@ import {
   OperationType,
   plurals,
 } from '../data';
+
 import { ScreenService } from '../../../../screen/screen.service';
 import { AttachUploadedFilesModalComponent } from '../../../../modal/attach-uploaded-files-modal/attach-uploaded-files-modal.component';
+import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
+import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { UploaderManagerService } from '../services/manager/uploader-manager.service';
 import { UploaderStoreService } from '../services/store/uploader-store.service';
 import { UploaderProcessService } from '../services/process/uploader-process.service';
@@ -57,7 +60,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.uploader.maxFileNumber = -1;
     this.initFilesList.next(files);
   }
-  @Input() galleryFiles: UploadedFile[] = [];
 
   @ViewChild('takePhoto', { static: false })
   takePhoto: UploaderButtonComponent;
@@ -75,7 +77,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   beforeFilesPlural = beforeFilesPlural;
   componentId = this.screenService.component?.id || null;
   isMobile: boolean = this.deviceDetectorService.isMobile;
-  isGalleryFilesButtonShown = false;
 
   overLimits = this.stat.stats;
 
@@ -112,6 +113,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     ),
     tap((result: FileResponseToBackendUploadsItem) => this.sendUpdateEvent(result)), // Отправка изменений
   );
+  suggestions$ = this.screenService.suggestions$;
 
   uploadersCounterChanges$ = this.limits.changes.pipe(tap(() => this.stat.maxLimitUpdate()));
 
@@ -142,6 +144,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private eventBusService: EventBusService,
     private screenService: ScreenService,
     private ngUnsubscribe$: UnsubscribeService,
+    private autocompletePrepareService: AutocompletePrepareService,
     private limits: UploaderLimitsService,
     private stat: UploaderStatService,
     private store: UploaderStoreService,
@@ -171,8 +174,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       .subscribe((payload: { isAdd: boolean; file: FileItem }) => {
         this.suggest(payload);
       });
-
-    this.isGalleryFilesButtonShown = !!this.galleryFiles.length;
   }
 
   ngOnDestroy(): void {
@@ -195,7 +196,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           { ...file.item, isFromSuggests: true, objectId: this.screenService.orderId.toString() },
         );
         newFile.setAttached(true);
-        this.addCopy(file);
+        this.addPrepare(newFile);
         this.store.add(newFile);
       });
     } else {
@@ -240,10 +241,6 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.process.prepare(file);
   }
 
-  addCopy(file: FileItem): void {
-    this.process.copy(file);
-  }
-
   addDownload(file: FileItem): void {
     this.process.download(file);
   }
@@ -253,6 +250,16 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
   }
   cancel(type: OperationType, file: FileItem): void {
     this.process.cancel(type, file);
+  }
+
+  isPrevUploadedFilesButtonShown(suggestions: ISuggestionItem): boolean {
+    if (!suggestions) return false;
+
+    const { list } = suggestions;
+    const filteredUploadedFiles = this.autocompletePrepareService
+      .getParsedSuggestionsUploadedFiles(list)
+      .filter((file: UploadedFile) => file.mnemonic.includes(this.uploader.data?.uploadId));
+    return !!filteredUploadedFiles.length;
   }
 
   addUpload(file: FileItem): void {
@@ -324,14 +331,13 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     });
   }
 
-  openGalleryFilesModal(): void {
+  attachUploadedFiles(): void {
     this.modal.openModal(AttachUploadedFilesModalComponent, {
       modalId: `${this.uploader.data.uploadId}`,
       acceptTypes: this.uploader.acceptTypes || '',
       showCloseButton: false,
       showCrossButton: true,
       filesList: this.files.getValue(),
-      galleryFilesList: this.galleryFiles,
     });
   }
 }

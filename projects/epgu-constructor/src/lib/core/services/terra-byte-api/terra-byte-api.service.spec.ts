@@ -114,17 +114,6 @@ describe('TerraByteApiService', () => {
     req.flush(teraByteListSample);
   });
 
-  it('getGalleryByMnemonic() method', (done) => {
-    service.getGalleryByMnemonic('mnemonic').subscribe((res) => {
-      expect(res).toBe(teraByteListSample);
-      done();
-    });
-
-    const req = http.expectOne('/mnemonic/files');
-    expect(req.request.method).toBe('GET');
-    req.flush(teraByteListSample);
-  });
-
   it('getFileInfo() method', (done) => {
     service
       .getFileInfo({
