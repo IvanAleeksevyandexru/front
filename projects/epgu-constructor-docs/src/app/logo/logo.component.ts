@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import logoSvg from '!!raw-loader!../../assets/svg/gos_logo_mobile.svg';

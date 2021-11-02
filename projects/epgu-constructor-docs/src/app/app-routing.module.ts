@@ -46,6 +46,16 @@ const routes: Routes = [
       title: 'LongText',
     },
   },
+  {
+    path: 'about/versions',
+    loadChildren: () =>
+      import('../about/versions/versions.module').then(
+        (m) => m.VersionsModule,
+      ),
+    data: {
+      title: 'Versions',
+    },
+  },
 ];
 
 @NgModule({
