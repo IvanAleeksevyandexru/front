@@ -98,3 +98,13 @@
     }
   }
 }
+.back-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:active,
+  &:focus,
+  &:hover {
+    color: $color-active-item;
+  }
+}
