@@ -4,6 +4,8 @@
   "compilerOptions": {
     "composite": false,
     "outDir": "../../out-tsc/app",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "types": [],
     "inlineSources": true,
     "module": "esnext",

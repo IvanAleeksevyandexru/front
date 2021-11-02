@@ -49,4 +49,10 @@ export const pages: TuiDocPages = [
     keywords: 'TODO',
     route: '/constants/TODO',
   },
+  {
+    section: 'About',
+    title: 'Versions',
+    keywords: 'versions, версии',
+    route: '/about/versions',
+  },
 ];
