@@ -110,6 +110,7 @@ export interface UploadedFile {
   realPath?: string;
   relativePath?: string;
   updated?: string;
+  uploadId?: string;
   uploaded: boolean;
   userId?: number;
 }
