@@ -1,25 +1,28 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { InvitationErrorComponent } from '../../component/invitation-error-screen/components/invitation-error/invitation-error.component';
-import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { configureTestSuite } from 'ng-bullet';
+
+import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
+import { CurrentAnswersService } from '../current-answers.service';
+import { CurrentAnswersServiceStub } from '../current-answers-service.stub';
+import { EventBusService, EventBusServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { InvitationComponent } from '../../component/invitation-error-screen/components/invitation/invitation.component';
+import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
+import { InvitationTypes } from '../../component/invitation-error-screen/invitation.types';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { CurrentAnswersService } from '../current-answers.service';
+import { ScreenBase } from '../screen-base';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
-import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
-import { ScreenBase } from '../screen-base';
-import { LkInvitationInputComponent } from '../../component/invitation-error-screen/components/lk-Invitation-input/lk-invitation-input.component';
-import { configureTestSuite } from 'ng-bullet';
-import { ComponentDto, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
   id: 'id1',
   type: 'type1',
 };
+
+const componentTypeSample: InvitationTypes = InvitationTypes.invitationError;
 
 const answerDtoSample: ApplicantAnswersDto = {
   test: {
@@ -29,7 +32,7 @@ const answerDtoSample: ApplicantAnswersDto = {
   },
 };
 
-const orderIdSample = 'desc';
+const orderIdSample = 123456789;
 
 const headerSample = 'Test header';
 
@@ -50,14 +53,13 @@ describe('InvitationErrorScreenComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         InvitationErrorScreenComponent,
-        MockComponent(InvitationErrorComponent),
-        MockComponent(LkInvitationInputComponent),
+        MockComponent(InvitationComponent),
       ],
       providers: [
+        { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
+        { provide: EventBusService, useClass: EventBusServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        EventBusService,
-        CurrentAnswersService,
       ],
     }).compileComponents();
   });
@@ -70,8 +72,8 @@ describe('InvitationErrorScreenComponent', () => {
   });
 
   describe('typeComponent property', () => {
-    it('should be equal to InvitationErrorScreenComponentTypes by default', () => {
-      expect(component.typeComponent).toBe(InvitationErrorScreenComponentTypes);
+    it('should be equal to InvitationTypes by default', () => {
+      expect(component.typeComponent).toBe(InvitationTypes);
     });
   });
 
@@ -81,76 +83,34 @@ describe('InvitationErrorScreenComponent', () => {
     });
   });
 
-  describe('epgu-constructor-invitation-error component', () => {
-    const selector = 'epgu-constructor-invitation-error';
+  describe('epgu-constructor-invitation component', () => {
+    const selector = 'epgu-constructor-invitation';
 
-    it('should be rendered if screenService.componentType is invitationError', () => {
-      let debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeNull();
-
-      screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
-      fixture.detectChanges();
-
-      debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl).toBeTruthy();
-    });
-
-    it('data property should be equal to screenService.component', () => {
-      screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
-      fixture.detectChanges();
-
+    it('properties should be equal to screenService data', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
 
-      expect(debugEl.componentInstance.data).toBeNull();
+      expect(debugEl.componentInstance.componentType).toBeNull();
 
-      screenService.component = componentDtoSample;
+      screenService.componentType = componentTypeSample;
       fixture.detectChanges();
 
-      expect(debugEl.componentInstance.data).toBe(componentDtoSample);
-    });
-
-    it('applicantAnswers property should be equal to screenService.applicantAnswers', () => {
-      screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
+      expect(debugEl.componentInstance.componentType).toBe(componentTypeSample);
 
       expect(debugEl.componentInstance.applicantAnswers).toBeNull();
-
-      screenService.applicantAnswers = answerDtoSample;
-      fixture.detectChanges();
-
-      expect(debugEl.componentInstance.applicantAnswers).toBe(answerDtoSample);
-    });
-
-    it('orderId property should be equal to screenService.orderId', () => {
-      screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
+      expect(debugEl.componentInstance.data).toBeNull();
+      expect(debugEl.componentInstance.header).toBeNull();
       expect(debugEl.componentInstance.orderId).toBeNull();
 
+      screenService.applicantAnswers = answerDtoSample;
+      screenService.component = componentDtoSample;
+      screenService.header = headerSample;
       screenService.orderId = orderIdSample;
       fixture.detectChanges();
 
-      expect(debugEl.componentInstance.orderId).toBe(orderIdSample);
-    });
-
-    it('header property should be equal to screenService.header', () => {
-      screenService.componentType = InvitationErrorScreenComponentTypes.invitationError;
-      fixture.detectChanges();
-
-      const debugEl = fixture.debugElement.query(By.css(selector));
-
-      expect(debugEl.componentInstance.header).toBeNull();
-
-      screenService.header = headerSample;
-      fixture.detectChanges();
-
+      expect(debugEl.componentInstance.applicantAnswers).toBe(answerDtoSample);
+      expect(debugEl.componentInstance.data).toBe(componentDtoSample);
       expect(debugEl.componentInstance.header).toBe(headerSample);
+      expect(debugEl.componentInstance.orderId).toBe(orderIdSample);
     });
   });
 });

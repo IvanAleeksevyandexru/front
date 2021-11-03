@@ -2,7 +2,7 @@
   <epgu-cf-ui-constructor-screen-pad class="screen-body">
     <div>
       <div class="invitation__img-wrapper">
-        <img [src]="data.attrs.imgSrc" alt="" />
+        <img [src]="data.attrs.imgSrc" alt=""/>
       </div>
 
       <epgu-constructor-page-name class="invitation__head">{{ header }}</epgu-constructor-page-name>
@@ -33,14 +33,14 @@
 
           <epgu-cf-ui-constructor-helper-text>{{
             data.attrs.helperText
-          }}</epgu-cf-ui-constructor-helper-text>
+            }}</epgu-cf-ui-constructor-helper-text>
         </div>
       </form>
 
       <div class="invitation__inner-footer">
         <lib-button (click)="sendEmail()" [disabled]="!email.valid || !email.value">{{
           data.attrs.sendEmailLabel || 'Отправить'
-        }}</lib-button>
+          }}</lib-button>
       </div>
     </div>
   </epgu-cf-ui-constructor-screen-pad>
