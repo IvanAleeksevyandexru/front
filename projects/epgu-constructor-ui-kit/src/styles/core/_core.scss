@@ -263,3 +263,81 @@ p.hint-text {
   margin-top: 4px;
   color: $color-text-helper;
 }
+
+.tree-switcher {
+  position: relative;
+  flex: none;
+  align-self: stretch;
+  width: 36px;
+  margin: 0;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tree-switcher-noop {
+  cursor: default;
+  pointer-events: none;
+}
+
+.tree .tree-treenode {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 0 4px 0;
+  outline: none;
+}
+
+.tree-indent {
+  align-self: stretch;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.tree-indent-unit {
+  display: inline-block;
+  width: 24px;
+}
+
+.tree-switcher-leaf-line {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.tree-switcher-leaf-line:before {
+  position: absolute;
+  top: 0;
+  bottom: -4px;
+  margin-left: -1px;
+  border-left: 1px solid $color-bg-disabled;
+  content: ' ';
+}
+
+.tree-switcher-leaf-line:after {
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  margin-left: -1px;
+  border-bottom: 1px solid $color-bg-disabled;
+  content: ' ';
+}
+
+.tree-show-line .tree-indent-unit {
+  position: relative;
+  height: 100%;
+}
+
+.tree-show-line .tree-indent-unit:before {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  bottom: -4px;
+  border-right: 1px solid $color-bg-disabled;
+  content: '';
+}
+
+.tree-show-line .tree-indent-unit-end:before {
+  display: none;
+}

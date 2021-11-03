@@ -1,0 +1,66 @@
+<epgu-cf-ui-cta-modal
+  [title]="title"
+  [showCrossButton]="true"
+  [showButtons]="!isLoading && buttons.length > 0"
+  [isButtonsOutsideContent]="true"
+  text="complex-choice-dictionary"
+>
+  <ng-container *ngIf="!isLoading; else loading" modal-content>
+    <div [formGroup]="form">
+      <lib-search-bar
+        [placeholder]="placeholder$ | async"
+        formControlName="search"
+        contextClass="mb-24"
+      ></lib-search-bar>
+
+      <ng-container [formGroupName]="formField.checkboxGroup">
+        <epgu-cf-ui-tree-view [treeControl]="treeControl" [dataSource]="dataSource">
+          <epgu-cf-ui-tree-node
+            *epgu-cf-ui-tree-node-def="let node"
+            epgu-cf-ui-tree-node-indent-line
+          >
+            
+            <epgu-cf-ui-tree-node-checkbox
+              [checkboxId]="node.id"
+              [labelText]="node?.text"
+              [control]="form.get(formField.checkboxGroup).get(node.id)"
+            ></epgu-cf-ui-tree-node-checkbox>
+          </epgu-cf-ui-tree-node>
+
+          <epgu-cf-ui-tree-node
+            *epgu-cf-ui-tree-node-def="let node; when: hasChild"
+            epgu-cf-ui-tree-node-indent-line
+          >
+            <epgu-cf-ui-tree-node-toggle *ngIf="!node.loading">
+              <i epgu-cf-ui-icon epgu-cf-ui-tree-node-toggle-rotate-icon class="toggle"></i>
+            </epgu-cf-ui-tree-node-toggle>
+            <epgu-cf-ui-tree-node-toggle *ngIf="node.loading" epgu-cf-ui-tree-node-toggle>
+              <i epgu-cf-ui-icon epgu-cf-ui-tree-node-toggle-active-icon class="loader">
+                <svg class="circular-loader" viewBox="25 25 50 50">
+                  <circle class="loader-path" cx="50" cy="50" r="20"></circle>
+                </svg>
+              </i>
+            </epgu-cf-ui-tree-node-toggle>
+            <epgu-cf-ui-tree-node-option [disabled]="node?.disabled">
+              {{ node?.text }}
+            </epgu-cf-ui-tree-node-option>
+          </epgu-cf-ui-tree-node>
+        </epgu-cf-ui-tree-view>
+      </ng-container>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!isLoading && buttons" modal-buttons>
+    <lib-button
+      *ngFor="let button of buttons"
+      class="conf-modal__button"
+      (click)="button.handler()"
+      >{{ button.label }}</lib-button
+    >
+  </ng-container>
+</epgu-cf-ui-cta-modal>
+
+<ng-template #loading>
+  <div class="loading">
+    <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+  </div>
+</ng-template>
