@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
-export class InvitationErrorServiceStub {
+export class InvitationServiceStub {
   requestOptions = { withCredentials: true };
 
   constructor(private http: HttpClient) {}

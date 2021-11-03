@@ -1,6 +1,6 @@
 import { InvitationType } from './invitation-type';
 
-export default interface LkInvitationInputAttrs {
+export default interface InvitationAttrs {
   label: string;
   sendEmailLabel?: string;
   fio?: string;

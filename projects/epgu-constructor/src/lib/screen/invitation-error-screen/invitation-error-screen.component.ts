@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { InvitationErrorScreenComponentTypes } from '../../component/invitation-error-screen/invitation-error-screen-components.types';
+import { InvitationTypes } from '../../component/invitation-error-screen/invitation.types';
 import { ScreenBase } from '../screen-base';
 
 @Component({
@@ -11,7 +11,7 @@ import { ScreenBase } from '../screen-base';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvitationErrorScreenComponent extends ScreenBase {
-  typeComponent = InvitationErrorScreenComponentTypes;
+  public typeComponent = InvitationTypes;
 
   constructor(public injector: Injector) {
     super(injector);

@@ -10,7 +10,7 @@ export const SUCCESS_MESSAGE = 'Приглашение отправлено';
 export const FAILURE_MESSAGE = 'Ваше приглашение не было отправлено. Попробуйте позже';
 
 @Injectable()
-export class InvitationErrorService {
+export class InvitationService {
   private requestOptions = { withCredentials: true };
   private successCode = 0;
   private muchTriesCode = 4;

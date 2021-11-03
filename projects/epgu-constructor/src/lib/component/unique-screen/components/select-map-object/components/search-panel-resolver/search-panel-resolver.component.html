@@ -1,12 +1,27 @@
-<div class="widget__form widget-form">
-  <epgu-cf-ui-prev-button
-    class="nav"
-    *ngIf="screenService.showNav$ | async"
-  ></epgu-cf-ui-prev-button>
+<div class="map-search-panel">
+  <div class="map-search-panel__nav">
+    <epgu-cf-ui-prev-button
+      class="map-search-panel__nav__prev-button"
+      *ngIf="screenService.showNav$ | async"
+    ></epgu-cf-ui-prev-button>
+    <div *ngIf="!deviceDetector.isDesktop" class="map-search-panel__nav__toolbar">
+      <button
+        class="icon map"
+        [ngClass]="{ active: selectMapObjectService.isMapViewType }"
+        (click)="selectMapObjectService.setViewType(viewTypes.Map)"
+      ></button>
+      <button
+        class="icon list"
+        [ngClass]="{ active: selectMapObjectService.isListViewType }"
+        (click)="selectMapObjectService.setViewType(viewTypes.List)"
+      ></button>
+    </div>
+  </div>
+
   <ng-container *ngTemplateOutlet="errorRegion"></ng-container>
   <span
     *ngIf="label && isSearchTitleVisible && !isNoDepartmentErrorVisible"
-    class="widget-form__title"
+    class="map-search-panel__title"
     [innerHTML]="label | safe: 'html'"
   ></span>
   <ng-template #panel></ng-template>
@@ -29,7 +44,7 @@
 <ng-template #disclaimerTemplate>
   <epgu-constructor-disclaimer
     *ngIf="disclaimer"
-    class="mt-8"
+    class="mt-8 map-search-panel__disclaimer"
     [type]="disclaimer.type"
     [title]="disclaimer.title"
     [description]="disclaimer.description"

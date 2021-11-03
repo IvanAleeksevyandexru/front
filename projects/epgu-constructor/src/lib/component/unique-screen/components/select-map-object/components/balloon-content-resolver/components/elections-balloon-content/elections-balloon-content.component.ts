@@ -23,7 +23,8 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
   @Input() mapObject;
   @Input() attrs;
   public selectObject: Function;
-  public expandObject: Function;
+  public objectClick: Function;
+  public collapseObject: Function;
   public extInfo$: Observable<IuikFullDataResponse>;
   public electionForDisclaimer: Ielection;
 

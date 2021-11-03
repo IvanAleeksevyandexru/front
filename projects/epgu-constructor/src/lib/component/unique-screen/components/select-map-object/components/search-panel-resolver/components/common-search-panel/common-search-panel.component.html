@@ -3,11 +3,15 @@
     *ngIf="!isNoDepartmentErrorVisible"
     [showNotFound]="true"
     [searchCaseSensitive]="false"
+    [clearable]="true"
+    [clearInconsistent]="'ignore'"
     [itemsProvider]="provider"
+    [hideSearchResult]="deviceDetector.isDesktop || selectMapObjectService.isListViewType"
     [showSuggestion]="true"
     [disabled]="!mapIsLoaded"
     (changed)="lookupChanged($event?.originalItem, libLookup)"
     [showExpandCollapse]="false"
+    [placeholder]="'Адрес или название'"
     [queryMinSymbolsCount]="0"
     #libLookup
   >

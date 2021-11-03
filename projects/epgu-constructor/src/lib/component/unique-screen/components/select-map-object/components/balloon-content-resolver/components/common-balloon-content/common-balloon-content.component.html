@@ -1,4 +1,12 @@
-<h5 (click)="expandObject(mapObject)" class="map-object__header">{{ mapObject.title }}</h5>
+<div class="balloon-content-wrapper">
+<div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded"></div>
+<h6
+  (click)="objectClick(mapObject)"
+  [ngClass]="{
+  'map-object__header': !mapObject.expanded,
+  'map-object__header__bold': mapObject.expanded }">
+  {{ mapObject.title }}
+</h6>
 <ng-container *ngIf="mapObject.expanded">
   <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
     <span class="map-object__label">{{ itemContent.label }}: </span>
@@ -91,3 +99,4 @@
     </div>
   </div>
 </ng-template>
+</div>

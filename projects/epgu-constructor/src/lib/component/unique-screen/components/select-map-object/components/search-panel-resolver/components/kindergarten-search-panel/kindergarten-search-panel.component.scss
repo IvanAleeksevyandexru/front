@@ -1,0 +1,7 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/index';
+.widget-form__title {
+  font-size: $font-sm;
+}
+::ng-deep.widget-form__title > p {
+  font-size: $font-sm;
+}

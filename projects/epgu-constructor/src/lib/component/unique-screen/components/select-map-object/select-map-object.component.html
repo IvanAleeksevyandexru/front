@@ -1,44 +1,21 @@
 <div class="widget">
-  <epgu-constructor-search-panel-resolver
-    [panelType]="searchPanelType"
-    [label]="data.label"
-    [disclaimer]="data.attrs.disclaimer"
-    [showNav]="screenService.showNav$ | async"
-    [noDepartmentsErrorMsg]="data.attrs.noDepartmentsErrorMsg"
-    [isNoDepartmentErrorVisible]="selectMapObjectService.isNoDepartmentErrorVisible | async"
-  ></epgu-constructor-search-panel-resolver>
+  <epgu-constructor-map-sidebar
+    (selectObjectEvent)="selectObject($event)"
+    [previouslyChoosenItem]="hasPreviouslyChoosen"
+    [sidebarData]="data"
+     class="map-sidebar">
+  </epgu-constructor-map-sidebar>
   <lib-map
+    class="widget__map-wrapper"
+    [ngClass]="{ hidden: selectMapObjectService.isListViewType }"
     *ngIf="showMap"
     [externalMode]="!config.staticDomainAssetsPath"
     [enterpriseYandexMapsEnabled]="true"
     [yandexMapsApiKey]="config.yandexMapsApiKey"
     [center]="mapCenter"
-    [redraw]="selectMapObjectService.isMapLoaded.getValue()"
+    [redraw]="selectMapObjectService.isMapLoaded.getValue() && mapRedraw"
     [controls]="mapControls"
     [zoom]="initZoom"
   >
   </lib-map>
-  <div
-    *ngIf="selectedValue"
-    class="map-objects-list"
-    [ngClass]="{ 'fixed-height': selectedValue && selectedValue.children?.length > 1 && !isMobile }"
-  >
-    <perfect-scrollbar [config]="scrollConfig" class="perfect-scrollbar">
-      <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
-    </perfect-scrollbar>
-    <ng-template #contentBlock>
-      <div class="cross-btn" (click)="closeBaloon()"></div>
-      <ng-container *ngFor="let mapObject of selectedValue">
-        <epgu-constructor-balloon-content-resolver
-          [contentType]="balloonContentType"
-          [mapObject]="mapObject"
-          [isSelectButtonHidden]="data.attrs.isSelectButtonHidden"
-          [attrs]="data.attrs.balloonAttrs"
-          (selectObject)="selectObject($event)"
-          (expandObjectEvent)="expandObject(mapObject)"
-        >
-        </epgu-constructor-balloon-content-resolver>
-      </ng-container>
-    </ng-template>
-  </div>
 </div>

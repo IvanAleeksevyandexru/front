@@ -142,9 +142,6 @@ export class YandexMapService implements OnDestroy {
       feature.type === IFeatureTypes.Feature
         ? [(feature as IFeatureItem<T>).properties.res]
         : (feature as IClusterItem<T>).properties.geoObjects.map((object) => object.properties.res);
-    if (object.length === 1) {
-      object[0]['expanded'] = true;
-    }
     this.selectedValue$.next(object);
   }
 
@@ -293,8 +290,13 @@ export class YandexMapService implements OnDestroy {
       let isClusterWithActiveObject;
       let selectedFeatureCnt = 0;
       let clusterColor;
+      const idsFromActiveCluster = this.activeClusterHash && this.activeClusterHash.split('$').map(id => +id);
       for (let feature of cluster.features) {
-        if (feature.properties.res.objectId === this.activePlacemarkId) {
+        if (this.activePlacemarkId &&
+          (this.activePlacemarkId === feature.properties.res.objectId || this.activePlacemarkId === feature.id)) {
+          isClusterWithActiveObject = true;
+        }
+        if (idsFromActiveCluster && idsFromActiveCluster.includes(feature.id)) {
           isClusterWithActiveObject = true;
         }
         if (feature.properties.res.isSelected) {

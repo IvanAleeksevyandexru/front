@@ -1,0 +1,44 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/index';
+
+.previously-choosen {
+  margin-top: 24px;
+  @include tablets-down() {
+    margin-top: 8px;
+  }
+  &__title {
+    margin-left: 24px;
+    font-size: $font-sm;
+    color: $color-text-helper
+  }
+}
+.perfect-scrollbar {
+  @include tablets-down() {
+    flex-grow: 1;
+  }
+}
+
+.not-found-text {
+  margin: 24px;
+  color: $color-text-helper;
+}
+::ng-deep.previously-choosen .balloon-content-wrapper {
+  padding-bottom: 16px !important;
+  padding-top: 16px !important;
+}
+
+::ng-deep.swipeable-mode {
+  .balloon-content-wrapper {
+    height: 100vh;
+    display: flex !important;
+    flex-direction: column;
+    padding-top: 0 !important;
+    overflow: scroll;
+  }
+  .submit-button {
+    margin-top: auto !important;
+    margin-bottom: 24px !important;
+  }
+}
+::ng-deep.swipeable-mode .map-object {
+  position: static !important;
+}

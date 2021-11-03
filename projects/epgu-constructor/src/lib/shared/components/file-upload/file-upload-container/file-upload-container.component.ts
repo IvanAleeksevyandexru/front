@@ -45,7 +45,7 @@ export class FileUploadContainerComponent {
     this.uploader.data = { ...data };
     this.files.next([...files]);
     this.galleryFiles.next(
-      galleryFiles.filter((file: UploadedFile) => file.mnemonic === data.uploadId),
+      galleryFiles.filter((file: UploadedFile) => file.uploadId === data.uploadId),
     );
     this.clarifications = clarifications;
   }

@@ -2,6 +2,7 @@
   [searchOnFocus]="searchOnFocus"
   [showNotFound]="showNotFound"
   [invalid]="invalid"
+  [clearInconsistent]="clearInconsistent"
   [validationShowOn]="validationShowOn"
   [formControl]="$any(control)"
   [queryMinSymbolsCount]="queryMinSymbolsCount"
@@ -12,8 +13,10 @@
   [itemsProvider]="itemsProvider"
   [disabled]="disabled"
   [formatter]="formatter"
+  [hideSearchResult]="hideSearchResult"
   [showMagnifyingGlass]="showMagnifyingGlass"
   [showExpandCollapse]="showExpandCollapse"
+  [placeholder]="placeholder"
   (changed)="onChanged($event)"
   #lookupComponent
 >
