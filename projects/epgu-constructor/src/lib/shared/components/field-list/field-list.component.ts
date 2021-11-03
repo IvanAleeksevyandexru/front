@@ -75,6 +75,10 @@ export class FieldListComponent implements OnInit, OnChanges {
         : JSON.parse(this.data.value)) as ConfirmUserDataState;
       this.preparedData = states;
       this.errors = errors;
+
+      if (this.data.attrs?.isNeedToGroupErrors && this.errors.length > 1) {
+        this.groupErrors();
+      }
     }
   }
 
@@ -120,5 +124,18 @@ export class FieldListComponent implements OnInit, OnChanges {
       );
       return newValue == null ? ignore : newValue;
     });
+  }
+
+  private groupErrors(): void {
+    for (let i = 0; i < this.errors.length; i += 1) {
+      for (let j = i + 1; j < this.errors.length; j += 1) {
+        if (this.errors[i].title === this.errors[j].title) {
+          if (this.errors[i].desc !== this.errors[j].desc) {
+            this.errors[i].desc += ` <br> ${this.errors[j].desc}`;
+          }
+          this.errors.splice(j, 1);
+        }
+      }
+    }
   }
 }

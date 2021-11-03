@@ -209,6 +209,7 @@ export interface ComponentAttrsDto {
   searchPanel?: ComponentDto;
   isCommonDictionary?: boolean;
   notFoundItemsMessage?: string;
+  isNeedToGroupErrors?: boolean;
 }
 
 export interface SlotsNotFoundTemplate {
