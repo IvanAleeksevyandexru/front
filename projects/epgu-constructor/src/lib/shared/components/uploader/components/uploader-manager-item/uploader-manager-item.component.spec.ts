@@ -188,11 +188,9 @@ describe('UploaderManagerItemComponent', () => {
   it('should be view action for pdf and webview  = false', () => {
     component.file = mockFileItem('test.pdf', FileItemStatus.uploaded);
     deviceDetectorService.isWebView = false;
-    const link: HTMLLinkElement = fixture.debugElement.query(By.css('.link'))?.nativeElement;
-    jest.spyOn(link, 'click');
+    const spy = jest.spyOn(terabyteService, 'openFileNewTabByMimeType');
     component.viewAction();
-    fixture.detectChanges();
-    expect(link.click).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should be view button', () => {

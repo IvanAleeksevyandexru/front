@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { InvitationErrorService } from './invitation-error.service';
+import { InvitationService } from './invitation.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   LoggerService,
@@ -11,8 +11,8 @@ import {
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 
-describe('InvationErrorService', () => {
-  let service: InvitationErrorService;
+describe('InvitationService', () => {
+  let service: InvitationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -21,10 +21,10 @@ describe('InvationErrorService', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
-        InvitationErrorService,
+        InvitationService,
       ],
     });
-    service = TestBed.inject(InvitationErrorService);
+    service = TestBed.inject(InvitationService);
   });
 
   it('should be created', () => {

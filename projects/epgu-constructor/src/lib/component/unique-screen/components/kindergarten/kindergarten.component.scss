@@ -1,3 +1,4 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/index';
 :host {
   height: 100%;
   & > *[hidden] {
@@ -12,5 +13,8 @@
     margin: auto;
     left: 0;
     right: 0;
+    @include tablets-down() {
+      bottom: 115px;
+    }
   }
 }

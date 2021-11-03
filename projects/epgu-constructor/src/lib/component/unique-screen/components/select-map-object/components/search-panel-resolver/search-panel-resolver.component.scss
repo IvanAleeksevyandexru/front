@@ -1,3 +1,80 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/index';
 .error-region {
   padding-bottom: 24px;
+}
+.map-search-panel {
+  padding: 0 24px;
+  &__nav {
+    padding: 14px 0;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include tablets-down() {
+      padding: 4px 0;
+    }
+
+    &__prev-button {
+      margin-bottom: 0;
+    }
+    &__toolbar {
+      .icon {
+        width: 24px;
+        height: 24px;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        box-sizing: content-box;
+        border: none;
+        padding: 0 12px;
+        background-position: 50% 50%;
+        border-right: 1px solid $color-blu-selvaggio;
+
+        &:first-child {
+          padding-left: 0;
+          background-position: calc(50% - 6px) 50%;
+        }
+        &:last-child {
+          border-right: none;
+          padding-right: 0;
+          background-position: calc(50% + 6px) 50%;
+        }
+      }
+
+      .map {
+        background-image: url('../../../../../../../assets/icons/svg/map.svg');
+
+        &.active {
+          background-image: url('../../../../../../../assets/icons/svg/map-active.svg');
+          cursor: default;
+        }
+      }
+
+      .list {
+        background-image: url('../../../../../../../assets/icons/svg/menu.svg');
+
+        &.active {
+          background-image: url('../../../../../../../assets/icons/svg/menu-active.svg');
+          cursor: default;
+        }
+      }
+    }
+  }
+  &__title {
+    font-size: $font-sm;
+  }
+  &__disclaimer {
+    @include tablets-down() {
+      margin-bottom: 16px;
+    }
+  }
+}
+::ng-deep.map-search-panel__nav__prev-button .head {
+  border: none !important;
+}
+
+::ng-deep.map-search-panel__nav__prev-button .head__inner {
+  padding: 0 !important;
+}
+::ng-deep.map-search-panel__title > p {
+  font-size: $font-sm;
 }

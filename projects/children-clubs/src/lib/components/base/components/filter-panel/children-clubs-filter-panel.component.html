@@ -1,6 +1,14 @@
 <div>
   <epgu-cf-ui-constructor-screen-pad>
-    <epgu-cf-ui-prev-button *ngIf="showNav" class="nav"> </epgu-cf-ui-prev-button>
+    <button
+      *ngIf="showNav"
+      class="back-button link-btn"
+      name="prev"
+      (click)="setGroupFiltersMode(GroupFiltersModes.list)"
+    >
+      <span class="icon-arrow icon-arrow--left icon-arrow--back"></span>
+      <span>Назад</span>
+    </button>
     <div class="subtitle">
       {{ title }}
     </div>

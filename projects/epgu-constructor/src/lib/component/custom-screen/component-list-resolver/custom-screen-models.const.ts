@@ -37,6 +37,7 @@ import SignAppLinkModel from '../components/sign-app-link/SignAppLinkModel';
 import MaritalStatusInputModel from '../components/marital-status-input/MaritalStatusInputModel';
 import ConfirmPersonalPolicyChangeModel
   from '../components/confirm-personal-policy-change/ConfirmPersonalPolicyChangeModel';
+import KinderGartenDraftHandlerModel from '../components/kinder-garten-draft-handler/KinderGartenDraftHandlerModel';
 
 export const CUSTOM_SCREEN_MODELS = {
   AddressInput: AddressInputModel,
@@ -78,4 +79,5 @@ export const CUSTOM_SCREEN_MODELS = {
   StringInput: StringInputModel,
   TextArea: TextAreaModel,
   Timer: TimerItemModel,
+  KinderGartenDraftHandler: KinderGartenDraftHandlerModel,
 };

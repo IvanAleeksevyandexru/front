@@ -49,6 +49,11 @@ export enum MapTypes {
   justiceMap = 'justiceMap',
 }
 
+export enum SidebarViewType {
+  Map = 'Map',
+  List = 'List',
+}
+
 @Injectable()
 export class SelectMapObjectService implements OnDestroy {
   public dictionary: DictionaryResponseForYMap;
@@ -63,6 +68,7 @@ export class SelectMapObjectService implements OnDestroy {
   public mapType = MapTypes.commonMap;
   public isMapLoaded = new BehaviorSubject<boolean>(false);
   public isSelectedView = new BehaviorSubject<boolean>(false);
+  private _viewType = new BehaviorSubject(SidebarViewType.Map);
   private objectManager;
   private __mapStateCenter: number[];
 
@@ -77,6 +83,14 @@ export class SelectMapObjectService implements OnDestroy {
     this.selectedValue.pipe(filter((value) => !value)).subscribe(() => {
       this.mapOpenedBalloonId = null;
     });
+  }
+
+  get isListViewType(): boolean {
+    return this._viewType.getValue() === SidebarViewType.List;
+  }
+
+  get isMapViewType(): boolean {
+    return this._viewType.getValue() === SidebarViewType.Map;
   }
 
   ngOnDestroy(): void {
@@ -161,9 +175,12 @@ export class SelectMapObjectService implements OnDestroy {
    * filter geo items by searchString and redraw map
    * @param searchString
    */
-  public searchMapObject(searchString: string): void {
+  public searchMapObject(searchString: string): DictionaryYMapItem[] {
     const searchStringLower = searchString.toLowerCase();
-    this.filteredDictionaryItems = this.dictionary.items.filter((item) => {
+    const searchSource = this.isSelectedView.getValue() ?
+      this.selectedViewItems$.getValue() :
+      this.dictionary.items;
+    const searchResult = searchSource.filter((item) => {
       const address = (item.attributeValues[
         this.componentAttrs.attributeNameWithAddress
       ] as string)?.toLowerCase();
@@ -171,9 +188,13 @@ export class SelectMapObjectService implements OnDestroy {
         item.title?.toLowerCase().includes(searchStringLower) ||
         address?.includes(searchStringLower)
       );
-    });
-    const items = this.convertDictionaryItemsToMapPoints(this.filteredDictionaryItems);
+    }) as DictionaryYMapItem[] ;
+    const items = this.convertDictionaryItemsToMapPoints(searchResult);
     this.yandexMapService.placeObjectsOnMap(items);
+    if (!this.isSelectedView.getValue()) {
+      this.filteredDictionaryItems = searchResult;
+    }
+    return searchResult;
   }
 
   public findObjectByValue(value: string): DictionaryYMapItem {
@@ -274,12 +295,12 @@ export class SelectMapObjectService implements OnDestroy {
   public handleKindergartenSelection(): void {
     const selected = this.filteredDictionaryItems.filter((item) => item.isSelected);
     if (selected.length) {
-      this.isSelectedView.next(true);
       this.selectedViewItems$.next(
         selected.map((item) => {
           return { ...item, expanded: false };
         }),
       );
+      this.isSelectedView.next(true);
       const processed = selected.map((item) => {
         return {
           center: item.center,
@@ -333,6 +354,10 @@ export class SelectMapObjectService implements OnDestroy {
       }
     });
     return res;
+  }
+
+  public setViewType(type: SidebarViewType): void {
+    this._viewType.next(type);
   }
 
   private convertDictionaryItemsToMapPoints(

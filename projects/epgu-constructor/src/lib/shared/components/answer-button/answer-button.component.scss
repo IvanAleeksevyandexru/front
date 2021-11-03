@@ -45,15 +45,6 @@
       }
     }
   }
-  &__hint {
-    // TODO запрещён к использованию, нужно выпилить
-    position: relative;
-    left: 8px;
-    margin-left: 16px;
-    lib-question-help-tip {
-      display: flex;
-    }
-  }
   &__description {
     margin-top: 8px;
     color: $color-text-helper;

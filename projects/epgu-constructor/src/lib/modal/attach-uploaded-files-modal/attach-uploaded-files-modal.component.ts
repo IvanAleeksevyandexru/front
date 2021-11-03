@@ -17,21 +17,12 @@ import {
   DatesToolsService,
   DATE_STRING_DASH_FORMAT,
   DATE_TIME_STRING_SHORT,
-  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { ErrorActions, FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { ScreenService } from '../../screen/screen.service';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
-import {
-  ISuggestionItem,
-  ISuggestionItemList,
-} from '../../core/services/autocomplete/autocomplete.inteface';
-
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';
-import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
-import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 
 @Component({
   selector: 'epgu-constructor-attach-uploaded-files-modal',
@@ -41,7 +32,8 @@ import { AutocompletePrepareService } from '../../core/services/autocomplete/aut
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttachUploadedFilesModalComponent extends ModalBaseComponent implements OnInit {
-  @Input() filesList: FileItem[];
+  @Input() filesList: FileItem[] = [];
+  @Input() galleryFilesList: UploadedFile[] = [];
   @Input() modalId: string;
   @Input() acceptTypes: string;
 
@@ -51,12 +43,8 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   title = 'Ранее загруженные файлы';
   componentId = this.screenService.component?.id || null;
-  suggestions: { [key: string]: ISuggestionItem } = {};
-  suggestions$ = this.screenService.suggestions$;
-  suggestionsFiles: FileItem[] = [];
-  suggestionsFilesList: ISuggestionItemList[] = [];
-  suggestionsUploadedFiles: UploadedFile[] = [];
-  suggestionsFilesGroupByDate: [string, FileItem[]][] = [];
+  galleryFiles: FileItem[] = [];
+  galleryFilesGroupByDate: [string, FileItem[]][] = [];
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
   basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
   iconsTypes = iconsTypes;
@@ -70,25 +58,14 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
     private viewerService: ViewerService,
-    private autocompleteApiService: AutocompleteApiService,
-    private autocompletePrepareService: AutocompletePrepareService,
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.suggestions$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((suggestions) => {
-      this.suggestions = suggestions;
-      this.suggestionsFilesList = (suggestions && suggestions[this.componentId]?.list) || [];
-      this.suggestionsUploadedFiles = this.autocompletePrepareService.getParsedSuggestionsUploadedFiles(
-        this.suggestionsFilesList,
-      );
-      this.suggestionsFiles = this.getSuggestionFiles(this.suggestionsUploadedFiles);
-      this.suggestionsFilesGroupByDate = this.getSuggestionsFilesGroupedByDate(
-        this.suggestionsFiles,
-      );
-    });
-    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
+    this.galleryFiles = this.getGalleryFiles(this.galleryFilesList);
+    this.galleryFilesGroupByDate = this.getGalleryFilesGroupedByDate(this.galleryFiles);
+
     this.eventBusService
       .on('closeModalEvent_previewFiles')
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -96,12 +73,6 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
         this.closeModal();
       });
 
-    this.eventBusService
-      .on(BusEventType.FileDeletedEvent)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((payload: FileItem) => this.handleFileDeleted(payload));
-
-    // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.delete.subscribe((payload) => {
       this.eventBusService.emit(`fileDeleteEvent_${this.modalId}`, payload);
     });
@@ -122,7 +93,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       .open(
         FilesCollection.suggest,
         file.id,
-        of(this.suggestionsFiles),
+        of(this.galleryFiles),
         this.suggest,
         this.delete,
         this.download,
@@ -131,13 +102,20 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       .subscribe();
   }
 
+  public getImgSrc(file: FileItem): string {
+    const urlTemplate = (type: number): string =>
+      `${this.fileUploadApiUrl}/${file.item.objectId}/${type}/download?mnemonic=${file.item.mnemonic}`;
+
+    return urlTemplate(file.item.previewType || file.item.objectTypeId);
+  }
+
   public handleImgError(event: Event, file: FileItem): void {
     const target = event.target as HTMLImageElement;
     target.src = `${this.basePath}${this.iconsTypes.error}.svg`;
     file.setError({ type: ErrorActions.addInvalidFile, text: 'Что-то пошло не так' });
     // TODO: убрать костыль ниже, когда придумают, что делать с битыми файлами
     // Контекст боли тут: https://jira.egovdev.ru/browse/EPGUCORE-54485
-    this.suggestionsFilesGroupByDate.some((group) => {
+    this.galleryFilesGroupByDate.some((group) => {
       const fileIndex = group[1].findIndex((gFile) => gFile.id === file.id);
       if (fileIndex > -1) {
         group[1].splice(fileIndex, 1);
@@ -147,40 +125,16 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     });
   }
 
-  private handleFileDeleted(file: FileItem): void {
-    const deletedFileId = file.item.fileUid;
-    let valueGroupId: number;
-    let mnemonic: string;
-    let newValue: string;
-
-    const updatedSuggestionsFilesList = this.suggestionsFilesList.map((item) => {
-      const parsedValue = item?.originalItem && JSON.parse(item.originalItem);
-      const fileToDeleteIdx = parsedValue.uploads[0].value.findIndex(
-        (uploadedFileValue: UploadedFile) => uploadedFileValue.fileUid === deletedFileId,
-      );
-      if (fileToDeleteIdx > -1) {
-        parsedValue.uploads[0].value.splice(fileToDeleteIdx, 1);
-        valueGroupId = item.id;
-        mnemonic = item.mnemonic;
-      }
-      newValue = JSON.stringify(parsedValue);
-      const newItem = { ...item, originalItem: newValue };
-      return newItem;
-    });
-    this.suggestions[this.componentId].list = updatedSuggestionsFilesList;
-    this.autocompleteApiService.updateSuggestionField(valueGroupId, mnemonic, newValue).subscribe();
-  }
-
-  private getSuggestionFiles(suggestionsUploadedFiles: UploadedFile[]): FileItem[] {
-    return suggestionsUploadedFiles.reduce((acc: FileItem[], file: UploadedFile): FileItem[] => {
+  private getGalleryFiles(galleryFiles: UploadedFile[]): FileItem[] {
+    return galleryFiles.reduce((acc: FileItem[], file: UploadedFile): FileItem[] => {
       if (this.isIncludedToList(file)) {
-        const resultFile = new FileItem(
+        const resultFile: FileItem = new FileItem(
           FileItemStatus.uploaded,
           `${this.fileUploadApiUrl}/`,
           null,
           file,
         );
-        if (this.filesList.some((fileItem) => fileItem.item.fileUid === resultFile.item.fileUid)) {
+        if (this.filesList.some((fileItem) => this.isSameFile(fileItem, resultFile))) {
           resultFile.setAttached(true);
         }
         return [...acc, resultFile];
@@ -191,15 +145,20 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   }
 
   private isIncludedToList(file: UploadedFile): boolean {
+    return this.acceptTypes.toLowerCase().includes(file.fileExt?.toLocaleLowerCase());
+  }
+
+  private isSameFile(fileItem: FileItem, resultFile: FileItem): boolean {
     return (
-      file.mnemonic.includes(this.modalId) &&
-      this.acceptTypes.toLowerCase().includes(file.fileExt.toLocaleLowerCase())
+      fileItem.item.objectId === resultFile.item.objectId &&
+      fileItem.item.objectType === resultFile.item.objectType &&
+      fileItem.item.mnemonic === resultFile.item.mnemonic
     );
   }
 
-  private getSuggestionsFilesGroupedByDate(suggestionsFiles: FileItem[]): [string, FileItem[]][] {
+  private getGalleryFilesGroupedByDate(galleryFiles: FileItem[]): [string, FileItem[]][] {
     return Object.entries(
-      suggestionsFiles.reduce((acc, file) => {
+      galleryFiles.reduce((acc, file) => {
         let date: Date | string = this.datesToolsService.parse(
           file.item.created,
           DATE_STRING_DASH_FORMAT,

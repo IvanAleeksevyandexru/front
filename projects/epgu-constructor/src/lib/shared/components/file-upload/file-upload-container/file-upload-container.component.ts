@@ -26,15 +26,27 @@ import { UploaderProcessService } from '../services/process/uploader-process.ser
 })
 export class FileUploadContainerComponent {
   files = new BehaviorSubject<UploadedFile[]>(null);
+  galleryFiles = new BehaviorSubject<UploadedFile[]>(null);
   files$ = this.files.pipe(filter((status) => status !== null));
+  galleryFiles$ = this.galleryFiles.pipe(filter((status) => status !== null));
   clarifications: Clarifications;
-  @Input() set upload({ objectId, prefixForMnemonic, data, files, clarifications }: UploadContext) {
+  @Input() set upload({
+    objectId,
+    prefixForMnemonic,
+    data,
+    files,
+    galleryFiles,
+    clarifications,
+  }: UploadContext) {
     this.stat.reset();
     this.store.reset();
     this.uploader.objectId = objectId;
     this.uploader.prefixForMnemonic = prefixForMnemonic;
     this.uploader.data = { ...data };
     this.files.next([...files]);
+    this.galleryFiles.next(
+      galleryFiles.filter((file: UploadedFile) => file.uploadId === data.uploadId),
+    );
     this.clarifications = clarifications;
   }
   constructor(

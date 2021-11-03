@@ -30,6 +30,7 @@ import { FormDisclaimerComponent } from '../components/form-disclaimer/form-disc
 import { SignAppLinkComponent } from '../components/sign-app-link/sign-app-link.component';
 import { ConfirmPersonalPolicyChangeComponent } from '../components/confirm-personal-policy-change/confirm-personal-policy-change.component';
 import { MaritalStatusInputComponent } from '../components/marital-status-input/marital-status-input.component';
+import { KinderGartenDraftHandlerComponent } from '../components/kinder-garten-draft-handler/kinder-garten-draft-handler.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -63,7 +64,8 @@ type CustomScreenComponent =
   | TextAreaComponent
   | TimerItemComponent
   | DictionaryComponent
-  | DropdownComponent;
+  | DropdownComponent
+  | KinderGartenDraftHandlerComponent;
 
 export type ScreenComponentTypes = CustomScreenComponent;
 
@@ -113,4 +115,5 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   StringInput: MaskedAndPlainInputComponent,
   TextArea: TextAreaComponent,
   Timer: TimerItemComponent,
+  KinderGartenDraftHandler: KinderGartenDraftHandlerComponent,
 };

@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import {
   ConstructorLookupComponent,
+  DeviceDetectorService,
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -26,13 +27,14 @@ export class CommonSearchPanelComponent implements AfterViewInit {
   @ViewChild('libLookup', { static: false }) libLookup: ConstructorLookupComponent;
   public isNoDepartmentErrorVisible = false;
   public mapIsLoaded = true;
-
+  public handleFiltering: Function;
   public provider: LookupProvider<Partial<ListElement>> = {
     search: this.providerSearch(),
   };
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
+    public deviceDetector: DeviceDetectorService,
     private cdr: ChangeDetectorRef,
     private dictionaryToolsService: DictionaryToolsService,
     private yandexMapService: YandexMapService,
@@ -56,7 +58,8 @@ export class CommonSearchPanelComponent implements AfterViewInit {
 
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
-      this.selectMapObjectService.searchMapObject(searchString);
+      const filteredItems = this.selectMapObjectService.searchMapObject(searchString);
+      this.handleFiltering(filteredItems);
       return of(
         this.dictionaryToolsService.adaptDictionaryToListItem(
           this.selectMapObjectService.filteredDictionaryItems,

@@ -41,6 +41,7 @@ import { NotaryInfoComponent } from '../../components/notary-info/notary-info.co
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CarOwnerInfoLinkComponent } from '../../components/car-owner-info-link/car-owner-info-link.component';
 import { YesNoStrictPipe } from '../../pipes/yes-no-strict.pipe';
+import { PassportValuePipe } from '../../pipes/passport-value.pipe';
 
 describe('CarInfoContainerComponent', () => {
   let component: CarInfoContainerComponent;
@@ -68,6 +69,7 @@ describe('CarInfoContainerComponent', () => {
         DefaultValuePipe,
         EcologyClassPipe,
         YesNoStrictPipe,
+        PassportValuePipe,
       ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },

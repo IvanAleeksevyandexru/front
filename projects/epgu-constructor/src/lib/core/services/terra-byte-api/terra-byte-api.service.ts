@@ -7,11 +7,12 @@ import { concatMap, map, mergeMap, reduce } from 'rxjs/operators';
 import {
   Chunk,
   ChunkPacket,
+  FileCopyEmitValue,
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
 } from './terra-byte-api.types';
-import { BYTES_IN_KB } from '../../../shared/components/file-upload/data';
+import { BYTES_IN_KB, FileItem } from '../../../shared/components/file-upload/data';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -46,6 +47,17 @@ export class TerraByteApiService {
   getListByObjectId(objectId: string): Observable<UploadedFile[]> {
     return this.http.get<UploadedFile[]>(
       this.getTerabyteApiUrl(`/${objectId}`),
+      this.getServerRequestOptions(),
+    );
+  }
+
+    /**
+   * Возвращает список файлов из галереи (ака саджетс-файлы), для определённой мнемоники
+   * @param mnemonic - строковый идентификатор мнемоники
+   */
+  getGalleryByMnemonic(mnemonic: string): Observable<UploadedFile[]> {
+    return this.http.get<UploadedFile[]>(
+      this.getGalleryApiUrl(`/${mnemonic}`),
       this.getServerRequestOptions(),
     );
   }
@@ -129,6 +141,32 @@ export class TerraByteApiService {
       : this.uploadByChunkFile(options, file);
   }
 
+  /**
+   * Копирование файла на сервер
+   * @param options - опции конечного файла
+   * @param storedFile - данные и опции начального файла
+   */
+  copyFile(options: TerraUploadFileOptions, storedFile: FileItem): Observable<void> {
+    const body: FileCopyEmitValue = {
+      data: [{
+          srcFile: {
+            objectId: +storedFile.item.objectId,
+            mnemonic: storedFile.item.mnemonic,
+            objectType: storedFile.item.objectType
+          },
+          trgFile: {
+            objectId: +options.objectId,
+            mnemonic: options.mnemonic,
+            objectType: options.objectType
+          },
+      }] };
+    return this.http.post<void>(
+      this.getTerabyteApiUrl('/copy'),
+      body,
+      this.getServerRequestOptions()
+      );
+  }
+
   createFormData(options: TerraUploadFileOptions, file: File | Blob): FormData {
     const formData = new FormData();
     if (file instanceof File) {
@@ -175,6 +213,20 @@ export class TerraByteApiService {
   }
 
   /**
+   * Открыть файл в новой вкладке
+   * @param options - данные о файле
+   * @param mimeType - тип файла
+   */
+  openFileNewTabByMimeType(options: TerraFileOptions, mimeType: string): void {
+    this.downloadFile(options).subscribe((res) => {
+      window.open(
+        URL.createObjectURL(new Blob([res], { type: mimeType })),
+        '_blank',
+      );
+    });
+  }
+
+  /**
    * Скачивание по ссылке файла в браузер
    * @param data - Blob данные для скачивания
    * @param file - файл для загрузки
@@ -196,6 +248,13 @@ export class TerraByteApiService {
    */
   private getTerabyteApiUrl = (relativePath): string => this.config.fileUploadApiUrl + relativePath;
 
+
+  /**
+   * Возвращает путь API адреса для обращений к сервису Gallery
+   *
+   * @param relativePath - относительный путь от API для запросов
+   */
+  private getGalleryApiUrl = (relativePath): string => this.config.galleryApiUrl + relativePath + '/files';
   /**
    * Возращает опции запроса
    * @private

@@ -55,9 +55,9 @@
         </div>
         <div class="uploader-buttons">
           <button
-            *ngIf="isPrevUploadedFilesButtonShown(($any(suggestions$) | async)[componentId])"
+            *ngIf="isGalleryFilesButtonShown"
             class="fileupload__link-button"
-            (click)="attachUploadedFiles()"
+            (click)="openGalleryFilesModal()"
           >
             <div class="fileupload__icon"></div>
             Ранее загруженные

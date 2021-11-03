@@ -15,7 +15,6 @@ import { BillinfoModule } from './components/payment/components/billinfo/billinf
 import { PaymentModule } from './components/payment/components/payment/payment.module';
 import { SelectMapObjectModule } from './components/select-map-object/select-map-object.module';
 import { SignatureApplicationModule } from './components/signature-application/signature-application.module';
-import { TimeSlotsModule } from './components/time-slots/time-slots.module';
 import { UnusedPaymentsModule } from './components/unused-payments/unused-payments.module';
 import { UploadAndEditPhotoModule } from './components/upload-and-edit-photo/upload-and-edit-photo.module';
 import { WebcamService } from '../../core/services/webcam/webcam.service';
@@ -50,9 +49,11 @@ import { PersonUserInnModule } from './components/person-user-inn/person-user-in
 import { KindergartenModule } from './components/kindergarten/kindergarten.module';
 import { EquipmentChoiceModule } from './components/equipment-choice/equipment-choice.module';
 import { ConfirmPersonalPolicyModule } from './components/confirm-personal-policy/confirm-personal-policy.module';
+import { TimeSlotResolverVersionModule } from './components/time-slot-resolver-version/time-slot-resolver-version.module';
 
 @NgModule({
   imports: [
+    TimeSlotResolverVersionModule,
     IdentificationStreamModule,
     IdentificationUploadScreenModule,
     BaseModule,
@@ -63,7 +64,6 @@ import { ConfirmPersonalPolicyModule } from './components/confirm-personal-polic
     KindergartenModule,
     CarInfoModule,
     EmployeeHistoryModule,
-    TimeSlotsModule,
     PaymentModule,
     BillinfoModule,
     UnusedPaymentsModule,
@@ -97,13 +97,13 @@ import { ConfirmPersonalPolicyModule } from './components/confirm-personal-polic
     EquipmentChoiceModule,
   ],
   exports: [
+    TimeSlotResolverVersionModule,
     UploadAndEditPhotoModule,
     FileUploadScreenModule,
     SelectMapObjectModule,
     KindergartenModule,
     CarInfoModule,
     EmployeeHistoryModule,
-    TimeSlotsModule,
     PaymentModule,
     BillinfoModule,
     UnusedPaymentsModule,

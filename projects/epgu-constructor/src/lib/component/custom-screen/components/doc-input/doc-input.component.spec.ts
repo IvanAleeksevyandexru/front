@@ -75,7 +75,7 @@ describe('DocInputComponent', () => {
         MockProvider(CurrentAnswersService),
         MockProvider(DateRangeService),
         MockProvider(DateRestrictionsService),
-        MockProvider(DatesToolsService),
+        DatesToolsService,
         MockProvider(EventBusService),
         MockProvider(LoggerService),
         MockProvider(SuggestHandlerService),
@@ -217,6 +217,7 @@ describe('DocInputComponent', () => {
           series: 8000,
         },
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
 
       const expectedValue = {
@@ -224,6 +225,7 @@ describe('DocInputComponent', () => {
         number: 123321,
         series: 8000,
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
       jest.spyOn(component, 'emitToParentForm');
       jest.spyOn(component, 'subscribeOnFormChange');
@@ -265,6 +267,7 @@ describe('DocInputComponent', () => {
           series: 8000,
         },
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
 
       const expectedValue = {
@@ -272,6 +275,7 @@ describe('DocInputComponent', () => {
         number: 123321,
         series: 8000,
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
       jest.spyOn(component, 'formatFormFields');
 
@@ -291,6 +295,7 @@ describe('DocInputComponent', () => {
           series: 8000,
         },
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
 
       const expectedValue = {
@@ -298,6 +303,7 @@ describe('DocInputComponent', () => {
         number: 123321,
         series: 8000,
         emitter: 'Отделением ОФМС',
+        issueId: '778899',
       };
       jest.spyOn(formService, 'emitChanges');
 
@@ -329,5 +335,16 @@ describe('DocInputComponent', () => {
       expect(component.control.get('value').errors).toEqual({ invalidForm: true });
       expect(formService.emitChanges).toHaveBeenCalled();
     });
+  });
+
+  it('prepareDate should work correct', () => {
+    let date1 = new Date('2025-09-06T00:00:00.000Z');
+    let date2 = component['prepareDate']('2025-09-06T00:00:00.000Z');
+    let res = datesToolsService.isEqual(date1, date2);
+    expect(res).toBeTruthy();
+    date1 = new Date('02.01.2020');
+    date2 = component['prepareDate']('01.02.2020');
+    res = datesToolsService.isEqual(date1, date2);
+    expect(res).toBeTruthy();
   });
 });

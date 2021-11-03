@@ -201,9 +201,9 @@ export class AutocompletePrepareService {
       fields,
       componentMnemonic,
     );
-    const field = fields.find(
-      (field: ISuggestionApiValueField) => field.mnemonic === componentMnemonic,
-    );
+    const field =
+             fields.find((field: ISuggestionApiValueField) => field.mnemonic === componentMnemonic)
+          || fields.find((field: ISuggestionApiValueField) => componentMnemonic?.includes(field.mnemonic));
 
     if (field) {
       let { value, mnemonic } = field;

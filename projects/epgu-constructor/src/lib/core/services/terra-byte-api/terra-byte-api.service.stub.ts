@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 export class TerraByteApiServiceStub {
   getListByObjectId() {}
 
+  getGalleryByMnemonic() {}
+
   getFileInfo() {}
 
   uploadForm() {}
@@ -20,7 +22,11 @@ export class TerraByteApiServiceStub {
 
   getDownloadApiPath() {}
 
+  getGalleryApiUrl() {}
+
   downloadFile() {}
+
+  openFileNewTabByMimeType() {}
 
   pushFileToBrowserForDownload() {}
 }
