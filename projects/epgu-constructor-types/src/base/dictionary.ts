@@ -54,6 +54,7 @@ export interface DictionaryUnionFilter {
 export enum AttributeTypes {
   asString = 'asString',
   asDecimal = 'asDecimal',
+  asLong = 'asLong',
 }
 
 export type DictionaryValue = { [key in AttributeTypes]?: string | number };

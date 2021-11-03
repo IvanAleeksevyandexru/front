@@ -10,6 +10,7 @@ module.exports = {
       { type: 'element', prefix: 'epgu-cf-ui', style: 'kebab-case' },
     ],
     semi: 'off',
+    "@angular-eslint/no-host-metadata-property": 'off',
     '@typescript-eslint/semi': ['error'],
     'no-empty-function': ['error', { allow: ['constructors'] }],
     'object-curly-spacing': ['error', 'always', { objectsInObjects: false }],

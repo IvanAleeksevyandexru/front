@@ -10,6 +10,24 @@ export * from './lib/base/base-ui.module';
 export * from './lib/micro-app/micro-app-base/micro-app-base.module';
 export * from './lib/micro-app/micro-app-base/micro-app-base.component';
 
+export * from './lib/base/components/tree-resolver/tree-resolver.module';
+export * from './lib/base/components/tree-resolver/transformers/tree-flattener';
+export * from './lib/base/components/tree-resolver/components/checkbox.component';
+export * from './lib/base/components/tree-resolver/components/indents.component';
+export * from './lib/base/components/tree-resolver/components/node.component';
+export * from './lib/base/components/tree-resolver/components/option.component';
+export * from './lib/base/components/tree-resolver/components/tree-view.component';
+export * from './lib/base/components/tree-resolver/components/tree.component';
+export * from './lib/base/components/tree-resolver/directives/node-def.directive';
+export * from './lib/base/components/tree-resolver/directives/node-indent-line.directive';
+export * from './lib/base/components/tree-resolver/directives/node-noop-toggle.directive';
+export * from './lib/base/components/tree-resolver/directives/node-rotate-icon.directive';
+export * from './lib/base/components/tree-resolver/directives/node-toggle.directive';
+export * from './lib/base/components/tree-resolver/directives/node-tree-virtual-scroll.directive';
+export * from './lib/base/components/tree-resolver/directives/outlet.directive';
+export * from './lib/base/components/tree-resolver/directives/padding.directive';
+export * from './lib/base/components/tree-resolver/directives/node-active-icon.directive';
+
 export * from './lib/base/components/base-components/base-components.module';
 export * from './lib/base/components/base-components/helper-text/helper-text.component';
 

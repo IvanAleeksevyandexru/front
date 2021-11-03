@@ -17,6 +17,7 @@ import { LookupInputComponent } from '../components/lookup-input/lookup-input.co
 import { MaskedAndPlainInputComponent } from '../components/masked-and-plain-input/masked-and-plain-input.component';
 import { MonthPickerComponent } from '../components/month-picker/month-picker.component';
 import { MultiChoiceDictionaryComponent } from '../components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
+import { ComplexityChoiceDictionaryComponent } from '../components/form-complex-choice-dictionary/complex-choice-dictionary.component';
 import { MvdGiacLookupComponent } from '../components/mvd-giac-lookup/mvd-giac-lookup.component';
 import { PassportLookupComponent } from '../components/passport-lookup/passport-lookup.component';
 import { RadioInputComponent } from '../components/radio-input/radio-input.component';
@@ -55,6 +56,7 @@ type CustomScreenComponent =
   | MaskedAndPlainInputComponent
   | MonthPickerComponent
   | MultiChoiceDictionaryComponent
+  | ComplexityChoiceDictionaryComponent
   | MvdGiacLookupComponent
   | PassportLookupComponent
   | RadioInputComponent
@@ -100,6 +102,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   MaritalStatusInput: MaritalStatusInputComponent,
   MonthPicker: MonthPickerComponent,
   MultipleChoiceDictionary: MultiChoiceDictionaryComponent,
+  ComplexChoiceDictionary: ComplexityChoiceDictionaryComponent,
   MvdGiac: MvdGiacLookupComponent,
   NewEmailInput: MaskedAndPlainInputComponent,
   NewLegalEmailInput: MaskedAndPlainInputComponent,

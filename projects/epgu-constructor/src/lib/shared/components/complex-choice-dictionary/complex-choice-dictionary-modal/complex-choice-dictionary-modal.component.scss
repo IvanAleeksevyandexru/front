@@ -1,0 +1,90 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+
+.loading {
+  height: 239px;
+  display: flex;
+  align-items: center;
+}
+
+.toggle {
+  background-color: $color-gosblue;
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 24px;
+  margin-right: 12px;
+  padding: 3px;
+  width: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: '';
+    height: 1px;
+    width: 15px;
+    background-color: $color-white;
+    top: 50%;
+    left: 50%;
+    display: block;
+    border-radius: 4px;
+  }
+
+  &:before {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  &::after {
+    transform: translate(-50%, -50%);
+  }
+}
+
+::ng-deep .tree-switcher_open .toggle::before {
+  display: none;
+}
+
+.loader {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 12px;
+
+  svg {
+    stroke: $color-gosblue;
+  }
+
+  .circular-loader {
+    animation: rotate 2s linear infinite;
+  }
+
+  .loader-path {
+    fill: none;
+    stroke-width: 3px;
+    animation: animate-stroke 1.5s ease-in-out infinite;
+    stroke-linecap: round;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes animate-stroke {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35;
+    }
+    100% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124;
+    }
+  }
+}
