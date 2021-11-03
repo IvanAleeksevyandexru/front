@@ -35,7 +35,7 @@ export class DeviceDetectorService {
     } = this.loadService.attributes;
     this.isMobile = deviceType === LoadServiceDeviceType.mob;
     this.isTablet = deviceType === LoadServiceDeviceType.tab;
-    this.isDesktop = false;
+    this.isDesktop = deviceType === LoadServiceDeviceType.desk;
     this.isWebView = this.smuEventsService.smuInit;
   }
 
