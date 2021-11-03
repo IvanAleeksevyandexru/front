@@ -13,17 +13,19 @@ import {
 import { configureTestSuite } from 'ng-bullet';
 import {
   DictionaryItem,
+  DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { electionSinglePoint } from '../../../../../../../epgu-constructor-ui-kit/src/lib/base/components/yandex-map/mocks/mock-select-map-elections';
 import { nullCoordsItems } from './mocks/mock-select-map-nullCoordsPoint';
-import { SelectMapObjectService } from './select-map-object.service';
+import { SelectMapComponentAttrs, SelectMapObjectService } from './select-map-object.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { IDirectProblemSolution } from '@epgu/epgu-constructor-ui-kit/src/lib/base/components/yandex-map/yandex-map.interface';
 import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
+import { mockMapDictionary } from './mocks/mock-select-map-dictionary';
 
 describe('SelectMapObjectComponent', () => {
   let selectMapObjectService: SelectMapObjectService;
@@ -211,6 +213,70 @@ describe('SelectMapObjectComponent', () => {
         [11, 11],
       ]);
     });
+  });
+
+  describe('searchMapObject()', () => {
+
+
+    beforeEach(() => {
+    selectMapObjectService.componentAttrs = {} as unknown as SelectMapComponentAttrs;
+    selectMapObjectService.componentAttrs.attributeNameWithAddress = 'zags_address';
+      jest
+        .spyOn(selectMapObjectService['yandexMapService'], 'placeObjectsOnMap')
+        .mockImplementation((...args) => null);
+    });
+
+
+    it('should search in dictionary Items when selected view is disabled', () => {
+      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = mockMapDictionary.items as unknown as DictionaryYMapItem[];
+
+      const res = selectMapObjectService.searchMapObject('');
+
+      expect(res.length).toBe(mockMapDictionary.items.length);
+    });
+
+    it('should search in selectedItems when selected view is enabled', () => {
+
+      selectMapObjectService.selectedViewItems$.next(mockMapDictionary.items as unknown as DictionaryYMapItem[]);
+      selectMapObjectService.isSelectedView.next(true);
+
+      const res = selectMapObjectService.searchMapObject('');
+
+      expect(res.length).toBe(mockMapDictionary.items.length);
+    });
+
+    it('should set filtered items to search res if selected view is disabled', () => {
+
+      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = mockMapDictionary.items as unknown as DictionaryYMapItem[];
+
+      const res = selectMapObjectService.searchMapObject('');
+
+      expect(selectMapObjectService.filteredDictionaryItems).toBe(res);
+    });
+
+    it('should search via title', () => {
+
+      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = mockMapDictionary.items as unknown as DictionaryYMapItem[];
+
+      const res = selectMapObjectService.searchMapObject('4 мая 2019 г. Выездные площадки, Чертановский отдел ЗАГС Управления ЗАГС Москвы');
+
+      expect(res.length).toBe(1);
+    });
+
+    it('should search via address attibute', () => {
+
+      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = mockMapDictionary.items as unknown as DictionaryYMapItem[];
+
+      const res = selectMapObjectService.searchMapObject('Российская Федерация, г. Москва, наб. Нагатинская, д. 34');
+
+      expect(res.length).toBe(2);
+    });
+
+
   });
 
   describe('handleKindergartenSelection()', () => {

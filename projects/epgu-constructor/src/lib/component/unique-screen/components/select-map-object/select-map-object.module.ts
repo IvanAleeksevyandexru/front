@@ -34,6 +34,8 @@ import { KindergartenSearchPanelService } from './components/search-panel-resolv
 import { KindergartenService } from '../kindergarten/kindergarten.service';
 import { JusticeSearchPanelComponent } from './components/search-panel-resolver/components/justice-search-panel/justice-search-panel.component';
 import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
+import { MapSidebarComponent } from './components/map-sidebar/map-sidebar.component';
+import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipeable-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import { ClickableLabelModule } from '../../../../shared/directives/clickable-la
     CommonBalloonContentComponent,
     ElectionsBalloonContentComponent,
     KindergartenContentComponent,
+    MapSidebarComponent,
+    SwipeableWrapperComponent
   ],
   providers: [
     Icons,

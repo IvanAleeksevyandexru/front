@@ -1,6 +1,5 @@
 // stylelint-disable selector-type-no-unknown
 @import '../core';
-
 :host {
   @include flex-container();
   height: 100%;
@@ -158,47 +157,32 @@
     }
   }
 
+  .error-region {
+    display: grid;
+    padding-top: 16px;
+  }
+
+  .widget-form__bottom-label {
+    margin-top: 12px;
+    display: block;
+  }
+
   .widget {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    @include flex-container();
+
     overflow: hidden;
     &__form {
-      position: absolute;
-      top: 20px;
-      left: calc(50% - 296px);
-      background: $color-white;
-      width: 592px;
-      z-index: 10;
-      padding: 32px;
-      border-radius: $border-round;
-      box-shadow: 0 24px 48px $color-shadow;
-
       &__toggle-button {
         color: $color-gosblue;
         cursor: pointer;
       }
 
-      .error-region {
-        display: grid;
-        padding-top: 16px;
-      }
-
-      .widget-form__bottom-label {
-        margin-top: 12px;
-        display: block;
-      }
     }
     ::ng-deep {
       lib-map {
         flex-grow: 1;
-        position: relative;
       }
       #map {
         width: 100%;
-        position: absolute;
-
         .popover {
           background: $color-white;
           display: block;
@@ -246,7 +230,9 @@
     }
 
     .widget-form__input {
-      padding: 0 12px;
+      @include tablets-down() {
+        margin-bottom: 12px
+      }
     }
 
     .map-objects-list {

@@ -1,0 +1,68 @@
+<epgu-constructor-search-panel-resolver
+  [panelType]="searchPanelType"
+  [label]="sidebarData.label"
+  [disclaimer]="sidebarData.attrs.disclaimer"
+  [showNav]="screenService.showNav$ | async"
+  [noDepartmentsErrorMsg]="sidebarData.attrs.noDepartmentsErrorMsg"
+  [isNoDepartmentErrorVisible]="selectMapObjectService.isNoDepartmentErrorVisible | async"
+  (handleFiltering)="handleFiltering($event)"
+></epgu-constructor-search-panel-resolver>
+
+  <div class="previously-choosen" *ngIf="previouslyChoosenItem && (selectMapObjectService.isListViewType || deviceDetector.isDesktop)">
+    <p class="previously-choosen__title">
+      Вы ранее выбрали
+    </p>
+    <epgu-constructor-balloon-content-resolver
+      [contentType]="balloonContentType"
+      [mapObject]="previouslyChoosenItem"
+      [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
+      [attrs]="sidebarData.attrs.balloonAttrs"
+      (selectObject)="selectObject($event)"
+      (handleObjectClickEvent)="handlePreviouslyChoosenClick($event)"
+      (collapseObjectEvent)="collapseObject($event)" >
+    </epgu-constructor-balloon-content-resolver>
+  </div>
+
+  <perfect-scrollbar [config]="scrollConfig" class="perfect-scrollbar" *ngIf="deviceDetector.isDesktop || selectMapObjectService.isListViewType">
+    <ng-container *ngIf="balloonDictionaryItems.length">
+      <ng-container *ngFor="let mapObject of balloonDictionaryItems">
+      <epgu-constructor-balloon-content-resolver
+        #balloonComponents
+        [contentType]="balloonContentType"
+        [mapObject]="mapObject"
+        [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
+        [attrs]="sidebarData.attrs.balloonAttrs"
+        (selectObject)="selectObject($event)"
+        (handleObjectClickEvent)="handleMapObjectClick(mapObject)"
+        (collapseObjectEvent)="collapseObject(mapObject)" >
+      </epgu-constructor-balloon-content-resolver>
+     </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!balloonDictionaryItems.length && (sidebarData.attrs.mapType === 'commonMap' || sidebarData.attrs.mapType === 'kindergartenMap')">
+      <p class="not-found-text">
+        {{ sidebarData.attrs.notFoundItemsMessage || 'По вашему запросу ничего не найдено' }}
+      </p>
+    </ng-container>
+    <ng-container *ngIf="activeItem && sidebarData.attrs.mapType === 'justiceMap' || sidebarData.attrs.mapType === 'electionsMap'">
+      <epgu-constructor-balloon-content-resolver
+        [contentType]="balloonContentType"
+        [mapObject]="activeItem"
+        [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
+        [attrs]="sidebarData.attrs.balloonAttrs"
+        (selectObject)="selectObject($event)"
+        (handleObjectClickEvent)="handleMapObjectClick(activeItem)"
+        (collapseObjectEvent)="collapseObject(activeItem)" >
+      </epgu-constructor-balloon-content-resolver>
+    </ng-container>
+  </perfect-scrollbar>
+
+<epgu-constructor-swipeable-wrapper *ngIf="activeItem && selectMapObjectService.isMapViewType && !deviceDetector.isDesktop" class="swipeable-mode">
+  <epgu-constructor-balloon-content-resolver
+    [contentType]="balloonContentType"
+    [mapObject]="activeItem"
+    [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
+    [attrs]="sidebarData.attrs.balloonAttrs"
+    (selectObject)="selectObject($event)"
+    (collapseObjectEvent)="activeItem = null" >
+  </epgu-constructor-balloon-content-resolver>
+</epgu-constructor-swipeable-wrapper>

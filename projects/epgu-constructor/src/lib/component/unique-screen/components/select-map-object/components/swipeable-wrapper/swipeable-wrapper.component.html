@@ -1,0 +1,13 @@
+<div
+  class="swipeable-content"
+  [ngClass]="{expanded: expanded}">
+  <div class="swipeable-area"
+       (click)="expanded = !expanded"
+       (panup)="expanded = true"
+       (pandown)="expanded = false">
+    <img src="assets/icons/svg/swipeable-marker.svg"
+         class="swipeable-marker"
+         [ngClass]="{rotated: !expanded}">
+  </div>
+  <ng-content></ng-content>
+</div>

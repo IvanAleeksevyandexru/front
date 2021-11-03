@@ -1,6 +1,11 @@
-<h5 (click)="expandObject(mapObject)" class="map-object__header">
+<div class="balloon-content-wrapper">
+  <div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded"></div><h6
+    (click)="objectClick(mapObject)"
+    [ngClass]="{
+  'map-object__header': !mapObject.expanded,
+  'map-object__header__bold': mapObject.expanded }">
   {{ mapObject.balloonContentHeader }}
-</h5>
+</h6>
 <div class="map-object__attr" *ngIf="mapObject.expanded && (extInfo$ | async) as extInfo">
   <span class="map-object__label">{{ extInfo.commissionName }}</span>
   <span class="map-object__value">{{ extInfo.address }}</span>
@@ -32,4 +37,5 @@
     width="wide"
     >Выбрать
   </lib-button>
+</div>
 </div>
