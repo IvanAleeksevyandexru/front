@@ -109,4 +109,86 @@ describe('SelectMapObjectComponent', () => {
     );
     expect(isClusterZoomable).toBeTruthy();
   });
+
+  describe('mapPaint()', () => {
+
+    let cluster;
+    let setClusterOptionsSpy;
+    beforeEach(() => {
+      const feature1 = { properties: { res: {}}};
+      const feature2 = { properties: { res: {}}};
+      cluster = { id: 1, features: [feature1, feature2] };
+      yandexMapService['objectManager'].clusters.getAll = () => [cluster];
+      yandexMapService['objectManager'].clusters.getById = () => { return { options: { clusterIcons: 'test' }}; };
+      yandexMapService['objectManager'].clusters.setClusterOptions = () => null;
+      setClusterOptionsSpy = jest.spyOn(yandexMapService['objectManager'].clusters, 'setClusterOptions').mockImplementation(() => null);
+    });
+
+    it('should paint cluster with blue', () => {
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1, { clusterIcons: [icons.clusterBlue] });
+      });
+
+    it('should paint to bluered', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].id = 24;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+    });
+
+    it('should paint to bluered', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].properties.res.objectId = 24;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+    });
+
+    it('should paint to bluered', () => {
+      yandexMapService['activeClusterHash'] = '112$24';
+      cluster.features[0].id = 24;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+    });
+
+    it('should paint to red', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].properties.res.isSelected = false;
+      cluster.features[1].properties.res.isSelected = true;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+    });
+
+    it('should paint to red', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].properties.res.isSelected = true;
+      cluster.features[1].properties.res.isSelected = true;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterRed] });
+    });
+
+    it('should not paint anything', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].properties.res.isSelected = true;
+      cluster.features[1].properties.res.isSelected = true;
+      yandexMapService['objectManager'].clusters.getById = () => { return { options: { clusterIcons: [icons.clusterRed] }}; };
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toBeCalledTimes(0);
+    });
+
+
+  });
 });
