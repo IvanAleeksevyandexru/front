@@ -17,4 +17,8 @@ export class SelectMapObjectServiceStub {
   public handleKindergartenSelection(): void {
     return;
   }
+
+  public searchMapObject(str: string): void {
+    return;
+  }
 }

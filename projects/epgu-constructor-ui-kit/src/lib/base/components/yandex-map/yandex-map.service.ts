@@ -142,9 +142,6 @@ export class YandexMapService implements OnDestroy {
       feature.type === IFeatureTypes.Feature
         ? [(feature as IFeatureItem<T>).properties.res]
         : (feature as IClusterItem<T>).properties.geoObjects.map((object) => object.properties.res);
-    if (object.length === 1) {
-      object[0]['expanded'] = true;
-    }
     this.selectedValue$.next(object);
   }
 

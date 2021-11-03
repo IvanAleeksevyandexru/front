@@ -14,7 +14,7 @@ import { ConfigComponent } from './config/config.component';
 import { LayoutModule } from './layout/layout.module';
 import { CommonModule } from '@angular/common';
 import { LoadService } from '@epgu/ui/services/load';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonModule,
     LayoutModule,
     BrowserModule,
+    HammerModule,
     BrowserAnimationsModule,
     BaseUiModule,
     HttpClientModule,

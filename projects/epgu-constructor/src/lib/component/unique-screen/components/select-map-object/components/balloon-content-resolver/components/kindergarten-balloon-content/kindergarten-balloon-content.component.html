@@ -1,9 +1,14 @@
-<h5 (click)="expandAndCenterObject(mapObject)" class="map-object__header">
+<div class="balloon-content-wrapper">
+  <div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded"></div>
+  <h6 (click)="expandAndCenterObject(mapObject)"
+      [ngClass]="{
+  'map-object__header': !mapObject.expanded,
+  'map-object__header__bold': mapObject.expanded }">
   {{ mapObject.title }}
   <span *ngIf="!mapObject.expanded && mapObject.isSelected" class="map-object__header_selected"
     >Выбрано
   </span>
-</h5>
+</h6>
 <ng-container *ngIf="mapObject.expanded">
   <p class="map-object__address-attribute mt-16 mb-16">
     {{ address }}
@@ -77,3 +82,4 @@
     </ng-container>
   </ng-container>
 </ng-container>
+</div>
