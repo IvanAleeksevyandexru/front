@@ -1,4 +1,4 @@
-export enum InvitationErrorScreenComponentTypes {
+export enum InvitationTypes {
   invitationError = 'InvitationError',
   lkInvitationInput = 'LkInvitationInput',
 }

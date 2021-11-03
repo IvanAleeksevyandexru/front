@@ -160,7 +160,7 @@ export interface ComponentAttrsDto {
   success?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
   suggestionPath?: string;
   supportedValues?: SupportedValue[];
-  templateId?: string; // @see LkInvitationInputAttrs
+  templateId?: string; // @see InvitationAttrs
   emptyFieldsErrorMsg?: string;
   timerRules?: TimerRulesDto;
   uploadedFile?: ComponentUploadedFileDto;
