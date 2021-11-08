@@ -181,33 +181,6 @@
       lib-map {
         flex-grow: 1;
       }
-      #map {
-        width: 100%;
-        .popover {
-          background: $color-white;
-          display: block;
-          padding: 12px 24px 12px 12px;
-          border-radius: 12px;
-          position: absolute;
-          @include shadow-main();
-          .popover-inner > ymaps {
-            overflow: hidden !important;
-            text-overflow: ellipsis;
-            display: -webkit-box !important;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            @include typ-plain-small;
-          }
-
-          .close {
-            position: absolute;
-            font-size: 28px;
-            right: 10px;
-            top: 0px;
-            color: $color-blu-selvaggio;
-          }
-        }
-      }
     }
   }
 }

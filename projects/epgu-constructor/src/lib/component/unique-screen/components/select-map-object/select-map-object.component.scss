@@ -1,5 +1,4 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components/_select-map-object';
-
 .widget {
   display: flex;
   min-height: 730px;
@@ -10,11 +9,11 @@
     height: calc(100vh - 145px);
     flex-direction: column;
   }
-  &__map-wrapper.hidden {
-    @include tablets-down {
-      visibility: hidden;
-      position: absolute;
-    }
+}
+::ng-deep.widget__map-wrapper.hidden {
+  @include tablets-down {
+    visibility: hidden;
+    position: absolute;
   }
 }
 .map-sidebar {

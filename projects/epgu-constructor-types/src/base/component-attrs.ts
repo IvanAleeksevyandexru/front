@@ -208,6 +208,7 @@ export interface ComponentAttrsDto {
   slotsNotFoundTemplate?: SlotsNotFoundTemplate;
   searchPanel?: ComponentDto;
   isCommonDictionary?: boolean;
+  miniBalloonTexts?: string[];
   notFoundItemsMessage?: string;
   isNeedToGroupErrors?: boolean;
 }
