@@ -57,12 +57,6 @@ describe('SelectMapObjectComponent', () => {
     kindergartenSearchPanelService = TestBed.inject(KindergartenSearchPanelService);
   });
 
-  it('prepareFeatureCollection should ignore null coords', () => {
-    selectMapObjectService.filteredDictionaryItems = (nullCoordsItems as unknown) as DictionaryYMapItem[];
-    const result = selectMapObjectService.prepareFeatureCollection();
-    expect(result.features.length).toEqual(nullCoordsItems.length - 1);
-  });
-
   it('centeredPlaceMark should call closeBalloon', () => {
     const spy = jest.spyOn(selectMapObjectService, 'closeBalloon');
     selectMapObjectService.centeredPlaceMark(null, {} as YMapItem<DictionaryItem>);

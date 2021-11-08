@@ -1,0 +1,23 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.header {
+  @include typ-h5;
+  margin-bottom: 16px;
+
+  &.with-tip {
+    margin-bottom: 4px;
+  }
+}
+
+.tip {
+  @include typ-plain-small;
+  color: $color-text-helper;
+  margin-bottom: 16px;
+}

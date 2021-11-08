@@ -25,6 +25,7 @@ import { BaseModule } from '../../shared/base.module';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 import { ConstructorMultilineInputModule } from '../../shared/components/constructor-multiline-input/constructor-multiline-input.module';
 import { MultipleChoiceDictionaryModule } from '../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.module';
+import { ComplexChoiceDictionaryModule } from '../../shared/components/complex-choice-dictionary/complex-choice-dictionary.module';
 import { DocInputModule } from './components/doc-input/doc-input.module';
 import { ComponentItemModule } from './components/component-item/component-item.module';
 import { ComponentsListRelationsService } from './services/components-list-relations/components-list-relations.service';
@@ -37,6 +38,7 @@ import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DropDownDeptsModule } from '../../shared/components/drop-down-depts/drop-down-depts.module';
 import { DateInputComponent } from './components/date-input/date-input.component';
 import { MultiChoiceDictionaryComponent } from './components/form-multiple-choice-dictionary/multi-choice-dictionary.component';
+import { ComplexityChoiceDictionaryComponent } from './components/form-complex-choice-dictionary/complex-choice-dictionary.component';
 import { MvdGiacLookupComponent } from './components/mvd-giac-lookup/mvd-giac-lookup.component';
 import { PassportLookupComponent } from './components/passport-lookup/passport-lookup.component';
 import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
@@ -98,6 +100,7 @@ import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-dr
     MaskedAndPlainInputComponent,
     MonthPickerComponent,
     MultiChoiceDictionaryComponent,
+    ComplexityChoiceDictionaryComponent,
     MvdGiacLookupComponent,
     PassportLookupComponent,
     RadioInputComponent,
@@ -141,6 +144,7 @@ import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-dr
     ValidationTypeModule,
     FormsModule,
     PluralizeModule,
+    ComplexChoiceDictionaryModule,
   ],
   providers: [
     AddressHelperService,
@@ -177,6 +181,7 @@ import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-dr
     MaskedAndPlainInputComponent,
     MonthPickerComponent,
     MultiChoiceDictionaryComponent,
+    ComplexityChoiceDictionaryComponent,
     MvdGiacLookupComponent,
     PassportLookupComponent,
     RadioInputComponent,

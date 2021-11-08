@@ -103,6 +103,12 @@ const NO_DOCTORS_AVAILABLE_TEXT = `<div class="text_modal_error">
 <span>{textAsset}</span>
 </div>`;
 
+const NO_MAP_ITEMS_AVAILABLE_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Нет доступных подразделений</h4>
+<span>Для подачи документов выберите подразделение в другом регионе</span>
+</div>`;
+
 export const RESOURCE_NOT_AVAILABLE: ConfirmationModal = {
   text: RESOURCE_NOT_AVAILABLE_TEXT,
   title: '',
@@ -426,6 +432,21 @@ export const STATIC_ERROR_MODAL: ConfirmationModal = {
       label: 'Попробовать ещё раз',
       value: 'prevStep',
       closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
+export const NO_MAP_ITEMS_AVAILABLE: ConfirmationModal = {
+  text: NO_MAP_ITEMS_AVAILABLE_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Изменить регион',
+      closeModal: true,
+      value: 'prevStep',
     },
   ],
   isShortModal: true,

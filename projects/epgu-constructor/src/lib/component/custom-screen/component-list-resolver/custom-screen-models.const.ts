@@ -35,6 +35,7 @@ import TextAreaModel from '../components/text-area/TextAreaModel';
 import TimerItemModel from '../components/timer-item/TimerItem';
 import SignAppLinkModel from '../components/sign-app-link/SignAppLinkModel';
 import MaritalStatusInputModel from '../components/marital-status-input/MaritalStatusInputModel';
+import ComplexChoiceDictionary from '../components/form-complex-choice-dictionary/ComplexChoiceDictionaryModel';
 import ConfirmPersonalPolicyChangeModel
   from '../components/confirm-personal-policy-change/ConfirmPersonalPolicyChangeModel';
 import KinderGartenDraftHandlerModel from '../components/kinder-garten-draft-handler/KinderGartenDraftHandlerModel';
@@ -66,6 +67,7 @@ export const CUSTOM_SCREEN_MODELS = {
   MaritalStatusInput: MaritalStatusInputModel,
   MonthPicker: MonthPickerModel,
   MultipleChoiceDictionary: MultipleChoiceDictionaryModel,
+  ComplexChoiceDictionary: ComplexChoiceDictionary,
   MvdGiac: MvdGiacLookupModel,
   OgrnInput: OgrnInputModel,
   OgrnipInput: OgrnIpInputModel,

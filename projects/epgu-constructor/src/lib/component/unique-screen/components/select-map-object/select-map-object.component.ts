@@ -65,7 +65,10 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
+import {
+  COMMON_ERROR_MODAL_PARAMS,
+  NO_MAP_ITEMS_AVAILABLE,
+} from '../../../../core/services/error-handler/error-handler';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
@@ -135,11 +138,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
 
   ngOnInit(): void {
     this.handleMapRedraw();
-    this.selectMapObjectService.isNoDepartmentErrorVisible
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => {
-        this.cdr.detectChanges();
-      });
     this.screenService.isLoaderVisible.next(true);
     this.initData$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -238,6 +236,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
 
   private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
+    this.yandexMapService.componentAttrs = this.data.attrs;
+    this.yandexMapService.needMiniBalloonLogic = !!this.data.attrs.miniBalloonTexts;
+
     this.selectMapObjectService.mapType =
       (this.data.attrs.mapType as MapTypes) || MapTypes.commonMap;
     this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
@@ -357,7 +358,25 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   }
 
   private handleError(error): Observable<null> {
-    if ((error?.message || error) === INTERNAL_ERROR_MESSAGE && this.notSpecificDictionary()) {
+    if (error === NO_MAP_ITEMS_AVAILABLE) {
+      this.modalService.openModal(ConfirmationModalComponent, {
+        ...NO_MAP_ITEMS_AVAILABLE,
+        text: this.data.attrs.noDepartmentsErrorMsg
+          ? this.data.attrs.noDepartmentsErrorMsg
+          : error.text,
+        buttons: [
+          {
+            label: 'Изменить регион',
+            closeModal: true,
+            value: 'prevStep',
+            handler: (): void => this.navigationService.prev(),
+          },
+        ],
+      });
+    } else if (
+      (error?.message || error) === INTERNAL_ERROR_MESSAGE &&
+      this.notSpecificDictionary()
+    ) {
       this.modalService
         .openModal(ConfirmationModalComponent, {
           ...COMMON_ERROR_MODAL_PARAMS,
@@ -441,7 +460,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         if (dictionary.error !== null && dictionary.error?.code !== 0) {
           return throwError(dictionary.error);
         }
-        this.selectMapObjectService.isNoDepartmentErrorVisible.next(!dictionary.total);
+        if (!dictionary.total) {
+          return throwError(NO_MAP_ITEMS_AVAILABLE);
+        }
         this.selectMapObjectService.dictionary = dictionary;
         if (this.isMultiSelect && this.valueFromCache) {
           this.applySelectedObjects(dictionary);

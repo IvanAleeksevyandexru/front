@@ -1,0 +1,21 @@
+<ng-container *ngTemplateOutlet="complexChoiceDict; context: { $implicit: control.value }">
+</ng-container>
+
+<ng-template #complexChoiceDict let-component>
+  <epgu-constructor-component-item
+    [control]="control.get('value')"
+    [component]="component"
+    [invalid]="control.invalid"
+    [disableLabel]="true"
+  >
+    <epgu-constructor-complex-choice-dictionary
+      [formControl]="$any(control.get('value'))"
+      [dictionaryFilter]="dictionaryFilter"
+      [dictionaryList]="attrs?.dictionaryList"
+      [dictionaryType]="attrs?.dictionaryType"
+      [subLabel]="attrs?.subLabel"
+      [modalHeader]="attrs?.modalHeader"
+      [label]="component.label"
+    ></epgu-constructor-complex-choice-dictionary>
+  </epgu-constructor-component-item>
+</ng-template>

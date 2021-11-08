@@ -52,6 +52,7 @@ export enum CustomScreenComponentTypes {
   MaritalStatusInput = 'MaritalStatusInput',
   MonthPicker = 'MonthPicker',
   MultipleChoiceDictionary = 'MultipleChoiceDictionary',
+  ComplexChoiceDictionary = 'ComplexChoiceDictionary',
   MvdGiac = 'MvdGiac',
   NewEmailInput = 'NewEmailInput',
   NewLegalEmailInput = 'NewLegalEmailInput',

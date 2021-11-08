@@ -3,6 +3,7 @@ import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ListItem } from '@epgu/ui/models/dropdown';
+import { defer } from 'lodash';
 import DictionaryModelAttrs from './DictionaryModelAttrs';
 import AbstractDictionaryLikeComponent from '../abstract-component-list-item/abstract-dictionary-like.component';
 
@@ -25,7 +26,7 @@ export class DictionaryComponent extends AbstractDictionaryLikeComponent<Diction
     this.list$ = this.model.dictionary$.pipe(map((dictionary) => dictionary.list));
     this.list$.subscribe((data) => {
       if (data?.length === 1 && data[0].id && data[0].text) {
-        this.control.get('value').setValue(data[0]);
+        defer(() => this.control.get('value').setValue(data[0]));
       }
     });
   }
