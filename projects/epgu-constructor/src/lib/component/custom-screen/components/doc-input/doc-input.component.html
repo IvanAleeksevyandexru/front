@@ -416,6 +416,7 @@
     </epgu-cf-ui-constructor-input-error>
     <epgu-constructor-masked-input
       *ngIf="fields[docInputFieldsTypes.issueId]?.attrs.mask; else plainInputIssueId"
+      class="doc-input__issueId"
       [textTransformType]="fields[docInputFieldsTypes.issueId]?.attrs?.fstuc"
       [id]="docInputFieldsTypes.issueId"
       [control]="$any(formIssueId)"
@@ -434,6 +435,7 @@
     ></epgu-constructor-masked-input>
     <ng-template #plainInputIssueId>
       <epgu-constructor-constructor-plain-input
+        class="doc-input__issueId"
         [textTransformType]="fields[docInputFieldsTypes.issueId]?.attrs?.fstuc"
         [id]="docInputFieldsTypes.issueId"
         [control]="$any(formIssueId)"
