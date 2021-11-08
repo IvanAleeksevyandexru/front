@@ -21,6 +21,9 @@ import {
   UnsubscribeService,
   YMapItem,
   IFeatureItem,
+  YandexMapModule,
+  WINDOW_PROVIDERS,
+  WINDOW,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -82,6 +85,8 @@ import { PriorityItemsService } from './services/priority-items/priority-items.s
 import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { YaMapService } from '@epgu/ui/services/ya-map';
 import { FormsModule } from '@angular/forms';
+import { MapSidebarComponent } from './components/map-sidebar/map-sidebar.component';
+import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipeable-wrapper.component';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -98,11 +103,13 @@ describe('SelectMapObjectComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [
+        MapSidebarComponent,
         SelectMapObjectComponent,
         SearchPanelResolverComponent,
         BalloonContentResolverComponent,
         CommonBalloonContentComponent,
         CommonSearchPanelComponent,
+        SwipeableWrapperComponent,
       ],
       imports: [
         BaseModule,
@@ -111,8 +118,10 @@ describe('SelectMapObjectComponent', () => {
         HttpClientTestingModule,
         DisclaimerModule,
         FormsModule,
+        YandexMapModule,
       ],
       providers: [
+        WINDOW_PROVIDERS,
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
@@ -190,8 +199,12 @@ describe('SelectMapObjectComponent', () => {
     component['selectMapObjectService'].filteredDictionaryItems = [item];
     yandexMapService['objectManager'] = {
       objects: {
+        balloon: {
+          close: () => ({}),
+        },
         getById: () => mockDivorceMapFeature,
         setObjectOptions: () => ({}),
+        setObjectProperties: () => ({}),
         options: {
           set: () => ({}),
         },
@@ -258,6 +271,12 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('initMap should show modal with error with mockDictionaryWithObjectError', () => {
+    const window = TestBed.inject(WINDOW) as Window;
+    window['ymaps'] = {
+      templateLayoutFactory: {
+        createClass: () => '',
+      },
+    };
     jest
       .spyOn(dictionaryApiService, 'getSelectMapDictionary')
       .mockReturnValue(of((mockDictionaryWithObjectError as unknown) as DictionaryResponse));
@@ -301,31 +320,6 @@ describe('SelectMapObjectComponent', () => {
       (mapObject as unknown) as YMapItem<DictionaryItem>,
     );
     expect(isMapObjectExisted).toBeFalsy();
-  });
-
-  it('should hide button', () => {
-    component.data.attrs.isSelectButtonHidden = true;
-    component.selectedValue = mockMvdPoint;
-    fixture.detectChanges();
-    const btn = fixture.debugElement.query(By.css('.submit-button'));
-    expect(btn).toBeFalsy();
-  });
-
-  it('should show button', () => {
-    component.selectedValue = mockMvdPoint;
-    fixture.detectChanges();
-    const btn = fixture.debugElement.query(By.css('.submit-button'));
-    expect(btn).toBeTruthy();
-  });
-
-  it('should rename button', () => {
-    component.selectedValue = mockMvdPoint;
-    component.data.attrs.balloonAttrs = {
-      selectBtnName: 'тест',
-    };
-    fixture.detectChanges();
-    const btn = fixture.debugElement.query(By.css('.submit-button .button-container span'));
-    expect(btn.nativeElement.innerHTML.trim()).toEqual('тест');
   });
 
   it('initSelectedValue should call centerAllPoints when needToAutoCenterAllPoints is true', () => {
@@ -450,20 +444,6 @@ describe('SelectMapObjectComponent', () => {
     component.selectObject(testObject);
 
     expect(spy).toHaveBeenCalledTimes(1);
-  });
-
-  it('expandObject should collapse all objects except passed ', () => {
-    component['selectMapObjectService'].isSelectedView.next(true);
-    const objects = new Array(12).fill({ expanded: true });
-    const testObject = { expanded: true };
-    objects[3] = testObject;
-    component.selectedValue = objects;
-
-    component.expandObject((testObject as unknown) as YMapItem<DictionaryItem>);
-
-    expect(testObject.expanded).toBeTruthy();
-    const collapsed = component.selectedValue.filter((object) => !object.expanded);
-    expect(collapsed.length).toBe(11);
   });
 });
 

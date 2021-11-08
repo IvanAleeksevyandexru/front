@@ -19,15 +19,12 @@ import { DictionaryApiService } from '../../../../shared/services/dictionary/dic
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentsListRelationsService } from './components-list-relations.service';
-import { Observable, of } from 'rxjs';
-import { ComponentDictionaryFilters } from './components-list-relations.interface';
 import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
 import {
   CustomComponentRefRelation,
   DictionaryConditions,
-  DictionaryFilters,
   DictionaryValueTypes,
 } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
@@ -38,6 +35,7 @@ import DictionaryModel from '../../components/dictionary/DictionaryModel';
 import LookupInputModel from '../../components/lookup-input/LookupInputModel';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
+import { of } from 'rxjs';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -146,35 +144,6 @@ describe('ComponentsListRelationsService', () => {
     refRelationService = TestBed.inject(RefRelationService);
     dateRangeService = TestBed.inject(DateRangeService);
     dateRestrictionsService = TestBed.inject(DateRestrictionsService);
-  });
-
-  describe('filters$ property', () => {
-    it('should be observable', (done) => {
-      service.filters$.subscribe((result) => {
-        expect(result).toEqual({});
-        done();
-      });
-      expect(service.filters$).toBeInstanceOf(Observable);
-    });
-
-    it('should be emitted if set filters property', (done) => {
-      const filters: ComponentDictionaryFilters = {
-        a: null,
-      };
-
-      service.filters = filters;
-
-      service.filters$.subscribe((result) => {
-        expect(result).toBe(filters);
-        done();
-      });
-    });
-  });
-
-  describe('filters property', () => {
-    it('should be {} by default', () => {
-      expect(service.filters).toEqual({});
-    });
   });
 
   describe('getUpdatedShownElements()', () => {
@@ -1234,8 +1203,8 @@ describe('ComponentsListRelationsService', () => {
           },
         };
 
-        jest.spyOn(service, 'applyFilter').mockImplementation(() => undefined);
-        jest.spyOn(service, 'clearFilter').mockImplementation(() => undefined);
+        const applyFilterSpy = jest.spyOn(dictionaryToolsService, 'applyFilter').mockImplementation(() => undefined);
+        const clearFilterSpy = jest.spyOn(dictionaryToolsService, 'clearFilter').mockImplementation(() => undefined);
 
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
         jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(true);
@@ -1253,9 +1222,9 @@ describe('ComponentsListRelationsService', () => {
         );
 
         // вызывается applyFilter(), потому что isValueEquals() === TRUE AND isDictionaryLike() === TRUE
-        expect(service.clearFilter).not.toBeCalled();
-        expect(service.applyFilter).toBeCalledTimes(1);
-        expect(service.applyFilter).toBeCalledWith(dependentComponent.id, resultFilter);
+        expect(clearFilterSpy).not.toBeCalled();
+        expect(applyFilterSpy).toBeCalledTimes(1);
+        expect(applyFilterSpy).toBeCalledWith(dependentComponent.id, resultFilter);
       });
 
       it('should apply filter if isValueEquals() AND isDictionaryLike()', () => {
@@ -1265,8 +1234,8 @@ describe('ComponentsListRelationsService', () => {
           relation: CustomComponentRefRelation.filterOn,
         };
 
-        jest.spyOn(service, 'applyFilter').mockImplementation(() => undefined);
-        jest.spyOn(service, 'clearFilter').mockImplementation(() => undefined);
+        const applyFilterSpy = jest.spyOn(dictionaryToolsService, 'applyFilter').mockImplementation(() => undefined);
+        const clearFilterSpy = jest.spyOn(dictionaryToolsService, 'clearFilter').mockImplementation(() => undefined);
 
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
         jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(false);
@@ -1284,11 +1253,11 @@ describe('ComponentsListRelationsService', () => {
         );
 
         // вызывается clearFilter(), потому что isDictionaryLike() === FALSE
-        expect(service.applyFilter).not.toBeCalled();
-        expect(service.clearFilter).toBeCalledTimes(1);
-        expect(service.clearFilter).toBeCalledWith(dependentComponent.id);
+        expect(applyFilterSpy).not.toBeCalled();
+        expect(clearFilterSpy).toBeCalledTimes(1);
+        expect(clearFilterSpy).toBeCalledWith(dependentComponent.id);
 
-        (service.clearFilter as jest.Mock).mockClear();
+        clearFilterSpy.mockClear();
         jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
         jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(true);
 
@@ -1305,9 +1274,9 @@ describe('ComponentsListRelationsService', () => {
         );
 
         // вызывается clearFilter(), потому что isValueEquals() === FALSE
-        expect(service.applyFilter).not.toBeCalled();
-        expect(service.clearFilter).toBeCalledTimes(1);
-        expect(service.clearFilter).toBeCalledWith(dependentComponent.id);
+        expect(applyFilterSpy).not.toBeCalled();
+        expect(clearFilterSpy).toBeCalledTimes(1);
+        expect(clearFilterSpy).toBeCalledWith(dependentComponent.id);
       });
     });
 
@@ -1561,32 +1530,6 @@ describe('ComponentsListRelationsService', () => {
       const form = new FormBuilder().group({ ...component });
       formMock = new FormArray([form]);
       expect(service.getCalcValueFromRelation(calcRefMock, components, formMock)).toBe('2');
-    });
-  });
-
-  describe('applyFilter()', () => {
-    it('should apply passed filter for dependent component', () => {
-      const dependentComponentId = componentMock.id;
-      // eslint-disable-next-line max-len
-      const filter: DictionaryFilters['filter'] = {
-        pageNum: 0,
-        simple: {
-          value: { asString: 'value' },
-          condition: DictionaryConditions.CONTAINS,
-          attributeName: 'value',
-        },
-      };
-      service.applyFilter(dependentComponentId, filter);
-      expect(service.filters[dependentComponentId]).toEqual(filter);
-    });
-  });
-
-  describe('clearFilter()', () => {
-    it('should clear filter for passped dependent component', () => {
-      const dependentComponentId = componentMock.id;
-      service.filters[dependentComponentId] = { pageNum: 0 };
-      service.clearFilter(dependentComponentId);
-      expect(service.filters[dependentComponentId]).toBeNull();
     });
   });
 

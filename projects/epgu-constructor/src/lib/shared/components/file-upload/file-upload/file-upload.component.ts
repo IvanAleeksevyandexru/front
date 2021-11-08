@@ -35,7 +35,7 @@ import { UploadContext } from '../data';
   selector: 'epgu-constructor-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss'],
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, UploaderLimitsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadComponent implements OnInit {
@@ -96,7 +96,7 @@ export class FileUploadComponent implements OnInit {
   private value: FileResponseToBackendUploadsItem = { files: [], errors: [] };
 
   constructor(
-    private limits: UploaderLimitsService,
+    public limits: UploaderLimitsService,
     private ngUnsubscribe$: UnsubscribeService,
     private eventBusService: EventBusService,
     private cdr: ChangeDetectorRef,
@@ -136,12 +136,13 @@ export class FileUploadComponent implements OnInit {
     this.setTotalMaxSizeAndAmount(this.attributes.maxSize, this.attributes.maxFileCount);
 
     this.attributes.uploads?.forEach(
-      ({ uploadId, maxSize, maxCountByTypes, maxFileCount }: FileUploadItem) =>
+      ({ uploadId, maxSize, maxCountByTypes, maxFileCount }: FileUploadItem) => {
         this.limits.registerUploader(
           uploadId,
           maxCountByTypes?.length > 0 || !maxFileCount ? 0 : maxFileCount,
           maxSize,
-        ),
+        );
+      },
     );
   }
 

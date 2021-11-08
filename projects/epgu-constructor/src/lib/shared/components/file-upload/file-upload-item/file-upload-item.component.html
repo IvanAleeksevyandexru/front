@@ -176,7 +176,7 @@
         <div class="message__description">
           Всего в заявлении можно загрузить
           {{ plurals.before | pluralize: uploader.maxTotalAmount }}
-          {{ uploader.maxTotalAmount }}&nbsp;
+          {{ uploader.maxTotalAmount }}
           {{ beforeFilesPlural | pluralize: uploader.maxTotalAmount }}.
           <ng-container *ngIf="uploader.maxTotalAmount > 1">
             Если хотите выбрать еще файлы, удалите часть прикрепленных

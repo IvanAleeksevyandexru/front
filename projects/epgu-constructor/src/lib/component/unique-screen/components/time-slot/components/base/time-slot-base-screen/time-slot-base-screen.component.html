@@ -1,10 +1,7 @@
 <epgu-cf-ui-screen-container [show-nav]="showNav" [class.screen-container-mt]="!showNav">
   <div class="screen-body">
     <epgu-constructor-page-name *ngIf="header">{{ header }}</epgu-constructor-page-name>
-
-    <epgu-cf-ui-constructor-screen-pad>
-      <ng-content select="[time-slot-content]"></ng-content>
-    </epgu-cf-ui-constructor-screen-pad>
+    <ng-content select="[time-slot-content]"></ng-content>
   </div>
   <div class="screen-footer">
     <div class="screen-footer--time-slots">

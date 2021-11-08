@@ -7,7 +7,6 @@ import DictionarySharedAttrs from '../../component-list-resolver/DictionaryShare
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { CustomListDictionary } from '../../components-list.types';
 
 @Component({
@@ -18,13 +17,11 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
   implements OnInit {
   protected screenService: ScreenService;
   protected dictionaryToolsService: DictionaryToolsService;
-  protected componentsListRelationsService: ComponentsListRelationsService;
 
   constructor(public injector: Injector) {
     super(injector);
     this.screenService = this.injector.get(ScreenService);
     this.dictionaryToolsService = this.injector.get(DictionaryToolsService);
-    this.componentsListRelationsService = this.injector.get(ComponentsListRelationsService);
   }
 
   get model(): DictionaryLikeModel {
@@ -75,7 +72,7 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
   }
 
   protected watchForFilters(): void {
-    this.componentsListRelationsService.filters$.subscribe((filters) => {
+    this.dictionaryToolsService.filters$.subscribe((filters) => {
       const isFilterInited = !isUndefined(filters[this.model.id]);
       const hasFilter = filters[this.model.id] !== null;
 

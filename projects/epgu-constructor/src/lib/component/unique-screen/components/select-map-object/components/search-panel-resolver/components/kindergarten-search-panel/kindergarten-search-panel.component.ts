@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {
   ConstructorLookupComponent,
+  DeviceDetectorService,
   KINDERGATEN_MAX_VALUE,
   UnsubscribeService,
   YandexMapService,
@@ -37,6 +38,7 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
   public mapIsLoaded = true;
   public topLabel: string;
   public bottomLabel: string;
+  public handleFiltering: Function;
 
   public provider: LookupProvider<Partial<ListElement>> = {
     search: this.providerSearch(),
@@ -45,6 +47,7 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
   constructor(
     public selectMapObjectService: SelectMapObjectService,
     public kindergartenSearchPanelService: KindergartenSearchPanelService,
+    public deviceDetector: DeviceDetectorService,
     private cdr: ChangeDetectorRef,
     private dictionaryToolsService: DictionaryToolsService,
     private yandexMapService: YandexMapService,
@@ -88,6 +91,8 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
   }
 
   public toggleSelectedKindergartensView(): void {
+    this.libLookup.clearInput();
+    this.handleFiltering(this.selectMapObjectService.searchMapObject(''));
     if (this.selectMapObjectService.isSelectedView.getValue()) {
       this.selectMapObjectService.resetSelectedView();
       this.selectMapObjectService.placeChildsHomeOnMap();
@@ -111,7 +116,8 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
 
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
-      this.selectMapObjectService.searchMapObject(searchString);
+      const filteredItems = this.selectMapObjectService.searchMapObject(searchString);
+      this.handleFiltering(filteredItems);
       this.placeChildsHomeOnMap();
       return of(
         this.dictionaryToolsService.adaptDictionaryToListItem(

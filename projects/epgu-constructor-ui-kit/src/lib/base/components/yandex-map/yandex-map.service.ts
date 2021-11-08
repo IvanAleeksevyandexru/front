@@ -5,6 +5,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { Icons } from './constants';
+import { MapLayouts } from './mapLayouts';
 import {
   IFeatureTypes,
   IClusterItem,
@@ -15,6 +16,8 @@ import {
 } from './yandex-map.interface';
 import { IDirectProblemSolution } from './yandex-map.interface';
 import type * as ymaps from 'yandex-maps';
+import { get } from 'lodash';
+import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
 
@@ -25,11 +28,14 @@ export class YandexMapService implements OnDestroy {
   public mapOptions;
 
   public objectManager;
+  public componentAttrs: ComponentAttrsDto;
+  public needMiniBalloonLogic = false;
   private activePlacemarkId: number | string;
   private activeClusterHash: string;
   private MIN_ZOOM = 4;
   private MAX_ZOOM = 17;
   private DEFAULT_ZOOM = 9;
+  private hoverPinId: number;
 
   constructor(
     private yaMapService: YaMapService,
@@ -65,8 +71,10 @@ export class YandexMapService implements OnDestroy {
           geometry: { type: 'Point', coordinates: item.center },
           properties: {
             res: { ...item.obj },
+            pinStyle: item.obj.isSelected ? 'pin-red-checked' : 'pin-blue',
+            miniBalloonText: this.getMiniBalloonText(item),
           },
-          options: item.obj.isSelected ? this.icons.redChecked : this.icons.blue,
+          options: this.icons.blue,
         };
         res.features.push(obj);
       }
@@ -85,13 +93,16 @@ export class YandexMapService implements OnDestroy {
     LOMSettings?,
   ): void {
     this.objectManager = this.createMapsObjectManager(OMSettings, urlTemplate, LOMSettings);
+    if (this.needMiniBalloonLogic) {
+      this.initMiniBalloonEvents();
+      this.objectManager.objects.options.set('balloonLayout', MapLayouts.getCommonBalloonLayout());
+      this.objectManager.objects.options.set(
+        'balloonContentLayout',
+        this.getCustomBalloonContentLayout(),
+      );
+    }
     this.objectManager.objects.options.set(this.icons.blue);
     this.objectManager.clusters.options.set('clusterIcons', [this.icons.clusterBlue]);
-    this.objectManager.objects.options.set(
-      'balloonContentLayout',
-      this.getCustomBalloonContentLayout(),
-    );
-    this.objectManager.objects.options.set('balloonLayout', this.getCustomBalloonContentLayout());
 
     if (!urlTemplate) {
       const objects = this.prepareFeatureCollection(items);
@@ -115,6 +126,7 @@ export class YandexMapService implements OnDestroy {
     zoomToObject = false,
     needSetCenter = true,
   ): void {
+    this.objectManager.objects.balloon.close();
     this.closeBalloon();
     if (
       feature.type === IFeatureTypes.Cluster &&
@@ -129,7 +141,7 @@ export class YandexMapService implements OnDestroy {
       this.paintActiveCluster(this.icons.clusterRed);
     }
     if (coords && coords[0] && coords[1] && feature.type === IFeatureTypes.Feature) {
-      this.objectManager.objects.setObjectOptions(feature.id as number, this.icons.red);
+      this.objectManager.objects.setObjectProperties(feature.id, { pinStyle: 'pin-red' });
       if (needSetCenter) {
         this.yaMapService.map.setCenter(
           [coords[0], coords[1] + POINT_ON_MAP_OFFSET],
@@ -142,9 +154,7 @@ export class YandexMapService implements OnDestroy {
       feature.type === IFeatureTypes.Feature
         ? [(feature as IFeatureItem<T>).properties.res]
         : (feature as IClusterItem<T>).properties.geoObjects.map((object) => object.properties.res);
-    if (object.length === 1) {
-      object[0]['expanded'] = true;
-    }
+    this.objectManager.objects.setObjectProperties(feature.id, { isActive: true });
     this.selectedValue$.next(object);
   }
 
@@ -155,7 +165,7 @@ export class YandexMapService implements OnDestroy {
   }
 
   public handleFeatureSelection<T>(feature: IFeatureItem<T>): void {
-    this.objectManager.objects.setObjectOptions(feature.id as number, this.icons.red);
+    this.objectManager.objects.setObjectProperties(feature.id, { pinStyle: 'pin-red' });
     const object = [(feature as IFeatureItem<T>).properties.res];
     object[0]['expanded'] = true;
     this.selectedValue$.next(object);
@@ -179,10 +189,11 @@ export class YandexMapService implements OnDestroy {
 
     const activePlacemark = this.objectManager.objects.getById(this.activePlacemarkId);
     const isSelected = activePlacemark?.properties.res.isSelected;
-    this.objectManager.objects.setObjectOptions(
-      this.activePlacemarkId as number,
-      isSelected ? this.icons.redChecked : this.icons.blue,
-    );
+    this.objectManager.objects.setObjectProperties(this.activePlacemarkId, {
+      isActive: false,
+      pinStyle: isSelected ? 'pin-red-checked' : 'pin-blue',
+    });
+
     this.selectedValue$.next(null);
     this.paintActiveCluster(this.icons.clusterBlue);
     this.activePlacemarkId = null;
@@ -210,8 +221,9 @@ export class YandexMapService implements OnDestroy {
       maxZoom: this.MAX_ZOOM,
       ...options,
     });
-    // Нужно для того чтобы пины были поверх поповеров
-    this.yaMapService.map.panes.get('places').setZIndex(750);
+    // Создаем новый pane для пинов, которые должны быть выше минибалунов
+    const hoverPinPane = new this.ymaps.pane.MovablePane(this.yaMapService.map, { zIndex: 800 });
+    this.yaMapService.map.panes.append('hoverPinPane', hoverPinPane);
     this.yaMapService.map.copyrights.togglePromo();
   }
 
@@ -293,8 +305,13 @@ export class YandexMapService implements OnDestroy {
       let isClusterWithActiveObject;
       let selectedFeatureCnt = 0;
       let clusterColor;
+      const idsFromActiveCluster = this.activeClusterHash && this.activeClusterHash.split('$').map(id => +id);
       for (let feature of cluster.features) {
-        if (feature.properties.res.objectId === this.activePlacemarkId) {
+        if (this.activePlacemarkId &&
+          (this.activePlacemarkId === feature.properties.res.objectId || this.activePlacemarkId === feature.id)) {
+          isClusterWithActiveObject = true;
+        }
+        if (idsFromActiveCluster && idsFromActiveCluster.includes(feature.id)) {
           isClusterWithActiveObject = true;
         }
         if (feature.properties.res.isSelected) {
@@ -372,19 +389,62 @@ export class YandexMapService implements OnDestroy {
     return objectManager;
   }
 
+  private initMiniBalloonEvents(): void {
+    const closeMiniBalloon = (objectId: number): void => {
+      this.objectManager.objects.setObjectProperties(objectId, { pinStyle: 'pin-blue' });
+      this.objectManager.objects.setObjectOptions(objectId, { pane: 'places' });
+      if (objectId === this.hoverPinId) {
+        this.objectManager.objects.balloon.close();
+      }
+    };
+    this.objectManager.objects.events.add('mouseenter', (evt) => {
+      let objectId = evt.get('objectId');
+      if (objectId !== this.hoverPinId) {
+        closeMiniBalloon(this.hoverPinId);
+      }
+      this.hoverPinId = objectId;
+      let object = this.objectManager.objects.getById(objectId) as IFeatureItem<unknown>;
+      this.objectManager.objects.setObjectProperties(objectId, { pinStyle: 'pin-hover' });
+      // TODO смена pane вызывает повторный mouseenter. Стоит попробовать смену pane у всех остальных geoobject кроме этого
+      // Кидаем пин на наш pane чтобы он был выше балуна
+      this.objectManager.objects.setObjectOptions(objectId, { pane: 'hoverPinPane' });
+      clearTimeout(object.properties.activeTimeout);
+      if (!object.properties.isActive && !this.objectManager.objects.balloon.isOpen(objectId)) {
+        this.objectManager.objects.balloon.open(objectId);
+      }
+    });
+
+    this.objectManager.objects.events.add('mouseleave', (evt) => {
+      let objectId = evt.get('objectId');
+      const activeTimeout = setTimeout(() => {
+        closeMiniBalloon(objectId);
+      }, 500);
+      this.objectManager.objects.setObjectProperties(objectId, { activeTimeout });
+    });
+
+    this.objectManager.objects.balloon.events.add('mouseenter', (evt) => {
+      let object = evt.get('target').balloon.getData();
+      clearTimeout(object.properties.activeTimeout);
+    });
+
+    this.objectManager.objects.balloon.events.add('mouseleave', (evt) => {
+      let object = evt.get('target').balloon.getData();
+      const activeTimeout = setTimeout(() => {
+        closeMiniBalloon(object.id);
+      }, 500);
+      this.objectManager.objects.setObjectProperties(object.id, { activeTimeout });
+    });
+  }
+
   private createObjectManager(settings?): ymaps.ObjectManager {
     const OMSettings = {
       clusterize: !0,
       minClusterSize: 2,
       gridSize: 128,
-      geoObjectBalloonMaxWidth: 265,
-      geoObjectBalloonOffset: [0, 0],
-      geoObjectHideIconOnBalloonOpen: !1,
       viewportMargin: 300,
       zoomMargin: 64,
-      clusterBalloonItemContentLayout: this.getCustomBalloonContentLayout(),
       clusterHasBalloon: false,
-      hasBalloon: false,
+      openBalloonOnClick: false,
       ...settings,
     };
 
@@ -438,14 +498,34 @@ export class YandexMapService implements OnDestroy {
     if (typeof this.ymaps.templateLayoutFactory == 'undefined') {
       return;
     }
-    const customBalloonContentLayout = this.ymaps.templateLayoutFactory.createClass('', {
-      // Переопределяем функцию build, чтобы при создании макета начинать
-      // слушать событие click на кнопке
+    const headerClick = (): void => {
+      let obj = this.objectManager.objects.getById(this.hoverPinId) as IFeatureItem<unknown>;
+      this.objectManager.objects.balloon.close();
+      this.centeredPlaceMark(obj);
+    };
+    const finalText =
+      '{% for text in properties.miniBalloonText %}' +
+      '<span class="balloon-text">{{text}}</span>' +
+      '{% endfor %}';
+
+    const customBalloonContentLayout = this.ymaps.templateLayoutFactory.createClass(finalText, {
       build: function () {
-        // Сначала вызываем метод build родительского класса.
         customBalloonContentLayout.superclass.build.call(this);
+        this._$element = this.getParentElement();
+        const header = this.getParentElement().querySelector('.balloon-text');
+        header.addEventListener('click', () => {
+          headerClick();
+        });
       },
     });
     return customBalloonContentLayout;
+  }
+
+  private getMiniBalloonText(item: IYMapPoint<unknown>): string[] {
+    const componentAttrs = this.componentAttrs;
+    return componentAttrs.miniBalloonTexts?.map((textRef: string) => {
+      const text = get(item.obj, textRef);
+      return text;
+    });
   }
 }

@@ -27,6 +27,8 @@ export class ConstructorLookupComponent {
 
   @Input() searchOnFocus = false;
   @Input() showNotFound = false;
+  @Input() clearInconsistent: string;
+  @Input() placeholder: string;
   @Input() id: string | number;
   @Input() control: AbstractControl = new FormControl();
   @Input() invalid: boolean;
@@ -34,6 +36,7 @@ export class ConstructorLookupComponent {
   @Input() clearable: boolean;
   @Input() virtualScroll: boolean;
   @Input() searchCaseSensitive: boolean;
+  @Input() hideSearchResult = false;
   @Input() queryMinSymbolsCount = 0;
   @Input() fixedItems: ListElement[];
   @Input() itemsProvider:

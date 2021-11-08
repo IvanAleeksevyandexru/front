@@ -22,10 +22,10 @@
 
 .cross-btn {
   position: absolute;
-  right: 16px;
-  top: 16px;
-  width: 20px;
-  height: 20px;
+  right: 24px;
+  top: 24px;
+  width: 24px;
+  height: 24px;
 
   &:hover {
     cursor: pointer;
@@ -34,9 +34,9 @@
   &:before,
   &:after {
     position: absolute;
-    left: 10px;
+    left: 12px;
     content: ' ';
-    height: 20px;
+    height: 22px;
     width: 2px;
     background-color: $color-gosblue;
   }

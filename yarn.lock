@@ -1792,6 +1792,15 @@
     tslib "^2.0.0"
     zipkin-transport-http "0.22.0"
 
+"@epgu/ui@^3.0.389-core-frontv2":
+  version "3.0.389-core-frontv2"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.389-core-frontv2.tgz#6e0661dcb794a894015679674d0c03a8a74509c5"
+  integrity sha512-T5w+bdOAIgpHxP3y5DSb3xg2k5ow8GYTmYyJRfnMEImzgMZPkyK8+/bzzN1iR1sDAtH6ecCBktbjSw18X3noXw==
+  dependencies:
+    "@epgu/zipkin" "0.0.3"
+    tslib "^2.0.0"
+    zipkin-transport-http "0.22.0"
+
 "@epgu/zipkin@0.0.3":
   version "0.0.3"
   resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/zipkin/-/zipkin-0.0.3.tgz#a233bc7ed44c18955d1e1953bed69e9a818aae2c"

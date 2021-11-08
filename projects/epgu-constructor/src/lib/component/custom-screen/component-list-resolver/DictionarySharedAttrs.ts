@@ -49,11 +49,6 @@ export default class DictionarySharedAttrs extends GenericAttrs {
     this.lookupFilterPath = attrs.lookupFilterPath;
   }
 
-  /**
-   * Проверяет необходимость начальной загрузки справочника
-   * @param compAttrs атрибуты компонента
-   * @returns
-   */
   public isLoadingNeeded(): boolean {
     if (this.searchProvider && !this.lookupDefaultValue) {
       return false;

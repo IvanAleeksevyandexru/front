@@ -11,6 +11,8 @@ import {
   Output,
   EventEmitter,
   ComponentRef,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { YMapItem } from '@epgu/epgu-constructor-ui-kit';
 import { CommonBalloonContentComponent } from './components/common-balloon-content/common-balloon-content.component';
@@ -38,7 +40,7 @@ export const ContentTypes = {
   styleUrls: ['./balloon-content-resolver.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BalloonContentResolverComponent implements AfterViewInit {
+export class BalloonContentResolverComponent implements AfterViewInit, OnChanges {
   @ViewChild('content', { read: ViewContainerRef }) content: ViewContainerRef;
 
   @Input() mapObject;
@@ -46,8 +48,9 @@ export class BalloonContentResolverComponent implements AfterViewInit {
   @Input() contentType = ContentTypes[MapTypes.commonMap];
   @Input() attrs = {};
   @Output() selectObject = new EventEmitter<YMapItem<DictionaryItem>>();
-  @Output() expandObjectEvent = new EventEmitter<YMapItem<DictionaryItem>>();
-  private balloonContentComponentRef: ComponentRef<ContentTypesComponents>;
+  @Output() handleObjectClickEvent = new EventEmitter<YMapItem<DictionaryItem>>();
+  @Output() collapseObjectEvent = new EventEmitter<YMapItem<DictionaryItem>>();
+  public balloonContentComponentRef: ComponentRef<ContentTypesComponents>;
 
   private contentMap = {
     [ContentTypes[MapTypes.commonMap]]: CommonBalloonContentComponent,
@@ -61,6 +64,15 @@ export class BalloonContentResolverComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef,
     private screenService: ScreenService,
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.mapObject !== this.mapObject && this.content) {
+      this.balloonContentComponentRef.destroy();
+      this.balloonContentComponentRef = null;
+      this.addContent();
+      this.cdr.detectChanges();
+    }
+  }
 
   ngAfterViewInit(): void {
     this.addContent();
@@ -81,8 +93,12 @@ export class BalloonContentResolverComponent implements AfterViewInit {
    * Метод раскрывает выбранный зал на панели слева
    * @param mapObject объект на карте
    */
-  private expandObject(mapObject: YMapItem<DictionaryItem>): void {
-    this.expandObjectEvent.emit(mapObject);
+  private handleObjectClick(mapObject: YMapItem<DictionaryItem>): void {
+    this.handleObjectClickEvent.emit(mapObject);
+  }
+
+  private collapseObject(mapObject: YMapItem<DictionaryItem>): void {
+    this.collapseObjectEvent.emit(mapObject);
   }
 
   private getComponent(type: string): Type<ContentTypesComponents> {
@@ -99,6 +115,7 @@ export class BalloonContentResolverComponent implements AfterViewInit {
       evt.stopPropagation();
       this.selectObject.emit(obj);
     };
-    instance.expandObject = (mapObject): void => this.expandObject(mapObject);
+    instance.objectClick = (mapObject): void => this.handleObjectClick(mapObject);
+    instance.collapseObject = (mapObject): void => this.collapseObject(mapObject);
   }
 }

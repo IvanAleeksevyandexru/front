@@ -36,7 +36,8 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
   @Input() showLoader: Observable<false>;
   @Input() mapObject;
   public selectObject: Function;
-  public expandObject: Function;
+  public objectClick: Function;
+  public collapseObject: Function;
   public readonly states = KindergartenStates;
   public showAdditionalInfo = false;
 
@@ -78,7 +79,7 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
   }
 
   public expandAndCenterObject(mapObject: YMapItem<unknown>): void {
-    this.expandObject(mapObject);
+    this.objectClick(mapObject);
     if (this.selectMapObjectService.isSelectedView.getValue()) {
       const { center } = mapObject as IYMapPoint<unknown>;
       this.yandexMapService.setCenter(center);

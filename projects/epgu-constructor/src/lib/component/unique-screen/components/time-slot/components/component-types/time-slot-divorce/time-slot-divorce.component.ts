@@ -3,9 +3,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { DictionaryConditions, DictionarySubFilter } from '@epgu/epgu-constructor-types';
 import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
-
 import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
-
 import {
   DepartmentInterface,
   Slot,
@@ -14,7 +12,6 @@ import {
   TimeSlotRequest,
   TimeSlotValueInterface,
 } from '../../../typings';
-
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
 
@@ -36,7 +33,6 @@ export class TimeSlotDivorceComponent {
 
   requestBookParams$: Observable<Partial<TimeSlotBookRequest>> = combineLatest([
     this.smev3.value$,
-
     this.smev3.config$,
   ]).pipe(map(([value, config]) => this.getPartialBookRequestParams(value, config)));
 

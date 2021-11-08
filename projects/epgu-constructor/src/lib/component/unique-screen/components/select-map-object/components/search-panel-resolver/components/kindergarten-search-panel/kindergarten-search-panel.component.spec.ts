@@ -3,6 +3,8 @@ import {
   ConfigService,
   ConfigServiceStub,
   ConstructorLookupComponent,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
   UnsubscribeService,
   YandexMapService,
   YMapItem,
@@ -46,6 +48,7 @@ describe('KindergartenSearchPanelComponent', () => {
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         UnsubscribeService,
         MockProvider(CurrentAnswersService),
         MockProvider(ModalErrorService),
@@ -67,6 +70,8 @@ describe('KindergartenSearchPanelComponent', () => {
     searchPanelService = TestBed.inject(KindergartenSearchPanelService);
     fixture = TestBed.createComponent(KindergartenSearchPanelComponent);
     component = fixture.componentInstance;
+    component.libLookup = { clearInput: () => {return null;} } as any;
+    component.handleFiltering = () => null;
     component.isNoDepartmentErrorVisible = true;
   });
 

@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { filter } from 'rxjs/operators';
+import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
@@ -20,6 +21,7 @@ describe('SelectMapObjectComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
+        WINDOW_PROVIDERS,
         YandexMapService,
         Icons,
         UnsubscribeService,
@@ -34,7 +36,11 @@ describe('SelectMapObjectComponent', () => {
     icons = TestBed.inject(Icons);
     yandexMapService['objectManager'] = {
       objects: {
+        balloon: {
+          close: () => ({}),
+        },
         setObjectOptions: () => ({}),
+        setObjectProperties: () => ({}),
         getById: () => ({
           properties: {
             res: true,
@@ -75,6 +81,13 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('prepareFeatureCollection should ignore null coords', () => {
+    const window = TestBed.inject(WINDOW) as Window;
+    window['ymaps'] = {
+      templateLayoutFactory: {
+        createClass: () => '',
+      },
+    };
+    yandexMapService.componentAttrs = {};
     const result = yandexMapService.prepareFeatureCollection(mockItemsWithEmptyCoords);
     const cnt = result.features.filter(
       (feature) => feature.geometry.coordinates[0] && feature.geometry.coordinates[1],
@@ -108,5 +121,87 @@ describe('SelectMapObjectComponent', () => {
       (mockBrakCluster as unknown) as IClusterItem<unknown>,
     );
     expect(isClusterZoomable).toBeTruthy();
+  });
+
+  describe('mapPaint()', () => {
+
+    let cluster;
+    let setClusterOptionsSpy;
+    beforeEach(() => {
+      const feature1 = { properties: { res: {}}};
+      const feature2 = { properties: { res: {}}};
+      cluster = { id: 1, features: [feature1, feature2] };
+      yandexMapService['objectManager'].clusters.getAll = () => [cluster];
+      yandexMapService['objectManager'].clusters.getById = () => { return { options: { clusterIcons: 'test' }}; };
+      yandexMapService['objectManager'].clusters.setClusterOptions = () => null;
+      setClusterOptionsSpy = jest.spyOn(yandexMapService['objectManager'].clusters, 'setClusterOptions').mockImplementation(() => null);
+    });
+
+    it('should paint cluster with blue', () => {
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1, { clusterIcons: [icons.clusterBlue] });
+      });
+
+    it('should paint to bluered', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].id = 24;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+    });
+
+    it('should paint to bluered', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].properties.res.objectId = 24;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+    });
+
+    it('should paint to bluered', () => {
+      yandexMapService['activeClusterHash'] = '112$24';
+      cluster.features[0].id = 24;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+    });
+
+    it('should paint to red', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].properties.res.isSelected = false;
+      cluster.features[1].properties.res.isSelected = true;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+    });
+
+    it('should paint to red', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].properties.res.isSelected = true;
+      cluster.features[1].properties.res.isSelected = true;
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterRed] });
+    });
+
+    it('should not paint anything', () => {
+      yandexMapService['activePlacemarkId'] = 24;
+      cluster.features[0].properties.res.isSelected = true;
+      cluster.features[1].properties.res.isSelected = true;
+      yandexMapService['objectManager'].clusters.getById = () => { return { options: { clusterIcons: [icons.clusterRed] }}; };
+
+      yandexMapService.mapPaint();
+
+      expect(setClusterOptionsSpy).toBeCalledTimes(0);
+    });
+
+
   });
 });

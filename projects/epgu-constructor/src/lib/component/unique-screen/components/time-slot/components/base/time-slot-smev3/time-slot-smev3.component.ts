@@ -85,9 +85,6 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
     this.months$$.next(months);
   }
 
-  cancelSub = this.data.cancel$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
-  bookSub = this.data.book$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
-
   slotListFilter$$ = new BehaviorSubject<SlotListFilterProvider>(
     (() => true) as SlotListFilterProvider,
   );
@@ -104,7 +101,11 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
     distinctUntilChanged(),
   );
 
-  list$ = combineLatest([
+  loaded$ = this.state.loaded$;
+
+  cancelSub = this.data.cancel$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+  bookSub = this.data.book$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+  listSub = combineLatest([
     this.day$,
     this.data.store$.pipe(
       catchError(() => {
@@ -113,20 +114,22 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
     ),
     this.data.bookedSlot$,
     this.slotListFilter$$,
-  ]).pipe(
-    tap(() => this.state.setSlot(null)),
-    map(
-      ([date, slotMap, bookedSlot, filterProvider]: [
-        Date,
-        SlotMap,
-        Slot,
-        SlotListFilterProvider,
-      ]) => this.getSlotList(date, bookedSlot, slotMap, filterProvider),
-    ),
-    shareReplay(),
-    tap((list) => this.state.setList(list)),
-    takeUntil(this.ngUnsubscribe$),
-  );
+  ])
+    .pipe(
+      tap(() => this.state.setSlot(null)),
+      map(
+        ([date, slotMap, bookedSlot, filterProvider]: [
+          Date,
+          SlotMap,
+          Slot,
+          SlotListFilterProvider,
+        ]) => this.getSlotList(date, bookedSlot, slotMap, filterProvider),
+      ),
+      shareReplay(),
+      tap((list) => this.state.setList(list)),
+      takeUntil(this.ngUnsubscribe$),
+    )
+    .subscribe();
 
   lockProvider$: Observable<LockProvider> = combineLatest([
     this.calendar.refDate$.pipe(map((refDate) => this.datesTools.startOf(refDate, 'day'))),
@@ -338,6 +341,7 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
     this.error.resetHandlers();
     this.error.addHandlers(baseHandlers);
     super.ngOnInit();
+
     this.error.errorHandling$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
     this.error.error$
       .pipe(
@@ -352,6 +356,7 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
 
     this.smev3.slotsNotFoundTemplate$
       .pipe(
+        tap((value) => this.state.setAdditionalDisplayingButton(!!value)),
         tap((template) =>
           this.error.setAllTemplates(
             template

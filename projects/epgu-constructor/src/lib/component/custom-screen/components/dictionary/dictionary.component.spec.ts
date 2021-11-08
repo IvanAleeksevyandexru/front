@@ -30,6 +30,7 @@ import DictionaryModel from './DictionaryModel';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 import { of } from 'rxjs';
+import { defer } from 'lodash';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -148,7 +149,7 @@ describe('DictionaryComponent', () => {
 
       component.model['_dictionary$'].next(mockItem as unknown as CustomListDictionary);
       fixture.detectChanges();
-      expect(formService['_form'].value[0].value).toEqual(mockItem);
+      defer(() => expect(formService['_form'].value[0].value).toEqual(mockItem));
     });
   });
 

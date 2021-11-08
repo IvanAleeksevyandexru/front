@@ -52,7 +52,7 @@ import {
   ComponentValue,
   DictionaryToolsService,
 } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
+import { arePointsEqual, getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import {
   IFillCoordsResponse,
   MapTypes,
@@ -64,10 +64,11 @@ import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
-import { PanelTypes } from './components/search-panel-resolver/search-panel-resolver.component';
-import { ContentTypes } from './components/balloon-content-resolver/balloon-content-resolver.component';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
-import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
+import {
+  COMMON_ERROR_MODAL_PARAMS,
+  NO_MAP_ITEMS_AVAILABLE,
+} from '../../../../core/services/error-handler/error-handler';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
@@ -84,19 +85,15 @@ const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDestroy {
   data: ComponentBase;
   applicantAnswers: ApplicantAnswersDto;
-  public mappedDictionaryForLookup;
   public mapCenter: number[];
   public mapControls = [];
-  public selectedValue; // TODO добавить типы и поддержать (аля YMapItem<DictionaryItem> | YMapItem<DictionaryItem>[]);
   public showMap = false;
-  public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
-  public isSearchTitleVisible = true;
   public isNoDepartmentErrorVisible = false;
   public screenActionButtons: ScreenButton[] = [];
-  public searchPanelType: string;
-  public balloonContentType: string;
   public initZoom: number;
+  public hasPreviouslyChoosen: DictionaryItem;
+  public mapRedraw = true;
 
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
@@ -140,11 +137,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   }
 
   ngOnInit(): void {
-    this.selectMapObjectService.isNoDepartmentErrorVisible
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => {
-        this.cdr.detectChanges();
-      });
+    this.handleMapRedraw();
     this.screenService.isLoaderVisible.next(true);
     this.initData$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -152,7 +145,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         this.data = data;
         this.applicantAnswers = applicantAnswers;
         this.initVariable();
-        this.subscribeToEmmitNextStepData();
       });
 
     this.screenService.buttons$
@@ -178,7 +170,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       yaMapItem.isSelected = !yaMapItem.isSelected;
       const matchDictionaryItem = this.selectMapObjectService.filteredDictionaryItems.find(
         (dictionaryItem) => {
-          return this.isObjectsHaveSameCoords(dictionaryItem, yaMapItem);
+          return arePointsEqual(dictionaryItem, yaMapItem);
         },
       );
       matchDictionaryItem.isSelected = yaMapItem.isSelected;
@@ -200,24 +192,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     }
   }
 
-  public expandObject(mapObject: YMapItem<DictionaryItem>): void {
-    if (this.selectMapObjectService.isSelectedView.getValue()) {
-      this.selectedValue = this.selectedValue.map((object: YMapItem<DictionaryItem>) => {
-        const expanded =
-          object === mapObject ||
-          (object.center &&
-            mapObject.center &&
-            object.center[0] === mapObject.center[0] &&
-            object.center[1] === mapObject.center[1]);
-        return { ...object, expanded };
-      });
-    } else {
-      // eslint-disable-next-line no-param-reassign
-      mapObject.expanded = !mapObject.expanded;
-    }
-    this.cdr.markForCheck();
-  }
-
   public closeBaloon(): void {
     if (this.selectMapObjectService.isSelectedView.getValue()) {
       this.selectMapObjectService.resetSelectedView();
@@ -228,7 +202,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   }
 
   private prepareNextStep(item: YMapItem<DictionaryItem>): void {
-    if (this.selectedValue && this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
+    if (this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
       this.availablePaymentInGIBDD((item.attributeValues?.code as string) || item.value)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => this.nextStep(item));
@@ -246,8 +220,25 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     this.initMapCenter();
   }
 
+  // это workaround, чтобы заставить карту перерисоваться,
+  // после того, как ее контейнер получил необходимую высоту
+  private handleMapRedraw(): void {
+    this.selectMapObjectService.isMapLoaded
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((value) => {
+        if (value) {
+          requestAnimationFrame(() => {
+            this.mapRedraw = false;
+          });
+        }
+      });
+  }
+
   private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
+    this.yandexMapService.componentAttrs = this.data.attrs;
+    this.yandexMapService.needMiniBalloonLogic = !!this.data.attrs.miniBalloonTexts;
+
     this.selectMapObjectService.mapType =
       (this.data.attrs.mapType as MapTypes) || MapTypes.commonMap;
     this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
@@ -255,8 +246,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     this.isMultiSelect = this.data.attrs.isMultiSelect;
     this.isCommonDictionary = this.data.attrs.isCommonDictionary ?? true;
     this.valueFromCache = this.screenService.getCompValueFromCachedAnswers();
-    this.searchPanelType = PanelTypes[this.selectMapObjectService.mapType];
-    this.balloonContentType = ContentTypes[this.selectMapObjectService.mapType];
     this.needToAutoFocus = this.data.attrs.autoMapFocus;
     this.needToAutoCenterAllPoints = this.data.attrs.autoCenterAllPoints;
     this.componentValue = JSON.parse(this.data.value || '{}');
@@ -273,6 +262,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       >;
       // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
       if (mapObject.idForMap !== undefined && this.isMapObjectExisted(mapObject)) {
+        mapObject.expanded = false;
+        this.hasPreviouslyChoosen = mapObject;
         this.yandexMapService.selectMapObject(mapObject);
       } else if (this.data?.attrs.selectedValue) {
         const selectedValue = this.getSelectedValue();
@@ -298,31 +289,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       this.data?.attrs.selectedValue,
     ) as unknown) as string;
     return JSON.parse(selectedValue);
-  }
-
-  private subscribeToEmmitNextStepData(): void {
-    this.yandexMapService.selectedValue$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((items: DictionaryItem[]) => {
-        if (!this.selectMapObjectService.isSelectedView.getValue()) {
-          this.isSearchTitleVisible = !items || !this.isMobile;
-          this.selectedValue = items;
-          this.tryInitSelectedObject();
-          this.cdr.detectChanges();
-        } else if (items) {
-          this.expandObject(items[0]);
-        }
-      });
-
-    this.selectMapObjectService.selectedViewItems$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((items: DictionaryItem[]) => {
-        if (this.selectMapObjectService.isSelectedView.getValue()) {
-          this.selectedValue = items;
-          this.tryInitSelectedObject();
-          this.cdr.detectChanges();
-        }
-      });
   }
 
   private controlsLogicInit(): void {
@@ -392,7 +358,25 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   }
 
   private handleError(error): Observable<null> {
-    if ((error?.message || error) === INTERNAL_ERROR_MESSAGE && this.notSpecificDictionary()) {
+    if (error === NO_MAP_ITEMS_AVAILABLE) {
+      this.modalService.openModal(ConfirmationModalComponent, {
+        ...NO_MAP_ITEMS_AVAILABLE,
+        text: this.data.attrs.noDepartmentsErrorMsg
+          ? this.data.attrs.noDepartmentsErrorMsg
+          : error.text,
+        buttons: [
+          {
+            label: 'Изменить регион',
+            closeModal: true,
+            value: 'prevStep',
+            handler: (): void => this.navigationService.prev(),
+          },
+        ],
+      });
+    } else if (
+      (error?.message || error) === INTERNAL_ERROR_MESSAGE &&
+      this.notSpecificDictionary()
+    ) {
       this.modalService
         .openModal(ConfirmationModalComponent, {
           ...COMMON_ERROR_MODAL_PARAMS,
@@ -443,19 +427,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       };
     });
     this.yandexMapService.placeObjectsOnMap(items);
-    this.tryInitSelectedObject();
-  }
-
-  private tryInitSelectedObject(): void {
-    if (this.selectedValue) {
-      this.selectMapObject(this.getSelectedObject());
-    }
-  }
-
-  private getSelectedObject(): YMapItem<DictionaryItem> {
-    return this.selectMapObjectService.findObjectByValue(
-      (this.selectedValue as YMapItem<DictionaryItem>).value || this.selectedValue[0].value,
-    );
   }
 
   /**
@@ -489,7 +460,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         if (dictionary.error !== null && dictionary.error?.code !== 0) {
           return throwError(dictionary.error);
         }
-        this.selectMapObjectService.isNoDepartmentErrorVisible.next(!dictionary.total);
+        if (!dictionary.total) {
+          return throwError(NO_MAP_ITEMS_AVAILABLE);
+        }
         this.selectMapObjectService.dictionary = dictionary;
         if (this.isMultiSelect && this.valueFromCache) {
           this.applySelectedObjects(dictionary);
@@ -558,11 +531,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
 
   private getDictionaryType(): string {
     return this.selectMapObjectService.componentAttrs.dictionaryType;
-  }
-
-  private selectMapObject(mapObject: YMapItem<DictionaryItem>): void {
-    if (!mapObject) return;
-    this.selectMapObjectService.centeredPlaceMark(mapObject.center, mapObject);
   }
 
   private nextStep(value: YMapItem<DictionaryItem>): void {
@@ -679,18 +647,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       coords.coords.length === 0 &&
       (coords.dictionaryError === null || coords.dictionaryError.code === 0) &&
       !!this.data.attrs.secondaryDictionaryFilter
-    );
-  }
-
-  private isObjectsHaveSameCoords(
-    firstObject: { center: number[] },
-    secondObject: { center: number[] },
-  ): boolean {
-    return (
-      firstObject.center &&
-      secondObject.center &&
-      firstObject.center[0] === secondObject.center[0] &&
-      firstObject.center[1] === secondObject.center[1]
     );
   }
 }

@@ -160,7 +160,7 @@ export interface ComponentAttrsDto {
   success?: { imgSrc: string; label: string; buttons: ConfirmationModal['buttons'] };
   suggestionPath?: string;
   supportedValues?: SupportedValue[];
-  templateId?: string; // @see LkInvitationInputAttrs
+  templateId?: string; // @see InvitationAttrs
   emptyFieldsErrorMsg?: string;
   timerRules?: TimerRulesDto;
   uploadedFile?: ComponentUploadedFileDto;
@@ -208,6 +208,9 @@ export interface ComponentAttrsDto {
   slotsNotFoundTemplate?: SlotsNotFoundTemplate;
   searchPanel?: ComponentDto;
   isCommonDictionary?: boolean;
+  miniBalloonTexts?: string[];
+  notFoundItemsMessage?: string;
+  isNeedToGroupErrors?: boolean;
 }
 
 export interface SlotsNotFoundTemplate {

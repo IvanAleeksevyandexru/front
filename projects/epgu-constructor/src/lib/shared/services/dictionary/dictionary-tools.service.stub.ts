@@ -1,31 +1,28 @@
 import { Injectable } from '@angular/core';
-import { ListItem } from '@epgu/ui/models/dropdown';
-import { BehaviorSubject, Observable } from 'rxjs';
-import {
-  CustomComponentDropDownItem,
-  CustomComponentDropDownItemList,
-  CustomListDictionaries,
-  CustomListDropDowns,
-} from '../../../component/custom-screen/components-list.types';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
 
 @Injectable()
 export class DictionaryToolsServiceStub {
-  private _dropDowns$ = new BehaviorSubject<CustomListDropDowns>([]);
-  private _dictionaries$ = new BehaviorSubject<CustomListDictionaries>([]);
+  private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});
 
-  get dropDowns$(): Observable<{}> {
-    return this._dropDowns$;
+  public get filters(): ComponentDictionaryFilters {
+    return this._filters$.getValue();
   }
 
-  get dictionaries$(): BehaviorSubject<CustomListDictionaries> {
-    return this._dictionaries$;
+  public set filters(val: ComponentDictionaryFilters) {
+    this._filters$.next(val);
   }
 
-  getDictionaries$() {
-    return new Observable().pipe();
+  public get filters$(): Observable<ComponentDictionaryFilters> {
+    return this._filters$.asObservable();
   }
 
-  getFilterOptions() {
+  public getDictionaries$() {
+    return of({});
+  }
+
+  public getFilterOptions() {
     return {
       filter: {
         parentRefItemValue: '',
@@ -37,27 +34,27 @@ export class DictionaryToolsServiceStub {
     };
   }
 
-  getValueViaRef() {
+  public getValueViaRef() {
     return null;
   }
 
-  getDictionaryFirstState() {
+  public getDictionaryFirstState() {
     return {};
   }
 
-  adaptDictionaryToListItem() {
+  public adaptDictionaryToListItem() {
     return {};
   }
 
-  dictionaryFiltersLoader() {
+  public dictionaryFiltersLoader() {
     return new Observable();
   }
 
-  loadReferenceData$() {
+  public loadReferenceData$() {
     return new Observable();
   }
 
-  watchForFilters() {
+  public watchForFilters() {
     return new Observable();
   }
 }
