@@ -17,7 +17,6 @@ import { DictionaryToolsService } from '../../../../shared/services/dictionary/d
 import { ScreenService } from '../../../../screen/screen.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import {
-  ComponentDictionaryFilters,
   ComponentRestUpdates,
   ComponentValueChangeDto,
 } from './components-list-relations.interface';
@@ -26,7 +25,6 @@ import { CachedAnswers } from '../../../../screen/screen.types';
 import {
   ApplicantAnswersDto,
   CustomComponentRefRelation,
-  DictionaryFilters,
   KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
@@ -38,18 +36,6 @@ import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeMod
 
 @Injectable()
 export class ComponentsListRelationsService {
-  public get filters(): ComponentDictionaryFilters {
-    return this._filters$.getValue();
-  }
-
-  public set filters(val: ComponentDictionaryFilters) {
-    this._filters$.next(val);
-  }
-
-  public get filters$(): Observable<ComponentDictionaryFilters> {
-    return this._filters$.asObservable();
-  }
-
   public get restUpdates(): ComponentRestUpdates {
     return this._restUpdates$.getValue();
   }
@@ -63,7 +49,6 @@ export class ComponentsListRelationsService {
   }
 
   private prevValues: KeyValueMap = {};
-  private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});
   private readonly _restUpdates$: BehaviorSubject<ComponentRestUpdates> = new BehaviorSubject({});
 
   constructor(
@@ -203,19 +188,6 @@ export class ComponentsListRelationsService {
     return haveAllValues ? this.getCalcFieldValue(str).toString() : '';
   }
 
-  public applyFilter(
-    dependentComponentId: CustomComponent['id'],
-    filter: DictionaryFilters['filter'],
-  ): void {
-    this.filters = { [dependentComponentId]: filter };
-  }
-
-  public clearFilter(dependentComponentId: CustomComponent['id']): void {
-    if (this.filters[dependentComponentId]) {
-      this.filters = { [dependentComponentId]: null };
-    }
-  }
-
   public isComponentShown(
     component: CustomComponent,
     cachedAnswers: CachedAnswers,
@@ -271,10 +243,6 @@ export class ComponentsListRelationsService {
   /**
    * Возвращает значение атрибута attributeName из словаря компонента componentId.
    * Если атрибут не найден, то возвращается undefined.
-   *
-   * @param dictionaryAttributeName - название атрибута из словаря
-   * @param componentId - ID компонента
-   * @param components - компоненты с информацией
    */
   public getDictionaryAttributeValue(
     dictionaryAttributeName: string,
@@ -734,9 +702,9 @@ export class ComponentsListRelationsService {
         screenService.getStore(),
         reference.dictionaryFilter,
       );
-      this.applyFilter(dependentComponent.id, filter.filter);
+      dictionaryToolsService.applyFilter(dependentComponent.id, filter.filter);
     } else {
-      this.clearFilter(dependentComponent.id);
+      dictionaryToolsService.clearFilter(dependentComponent.id);
     }
   }
 

@@ -5,7 +5,6 @@ import DictionarySharedAttrs from '../../component-list-resolver/DictionaryShare
 import { AbstractComponentListItemComponent } from './abstract-component-list-item.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import DropDownLikeModel from '../../component-list-resolver/DropDownLikeModel';
 
 @Component({
@@ -16,13 +15,11 @@ export default abstract class AbstractDropdownLikeComponent<T extends Dictionary
   implements OnInit {
   protected screenService: ScreenService;
   protected dictionaryToolsService: DictionaryToolsService;
-  protected componentsListRelationsService: ComponentsListRelationsService;
 
   constructor(public injector: Injector) {
     super(injector);
     this.screenService = this.injector.get(ScreenService);
     this.dictionaryToolsService = this.injector.get(DictionaryToolsService);
-    this.componentsListRelationsService = this.injector.get(ComponentsListRelationsService);
   }
 
   get model(): DropDownLikeModel {
