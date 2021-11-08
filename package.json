@@ -90,7 +90,7 @@
     "@epgu/children-clubs": "37.8.1",
     "@epgu/epgu-constructor-types": "37.8.1",
     "@epgu/epgu-constructor-ui-kit": "37.8.1",
-    "@epgu/ui": "^3.0.389-core-frontv2",
+    "@epgu/ui": "3.0.385-3-core-frontv3",
     "@epgu/zipkin": "0.0.3",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
