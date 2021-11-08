@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormArray } from '@angular/forms';
-import { of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import { configureTestSuite } from 'ng-bullet';
 import {
@@ -9,7 +9,7 @@ import {
   DictionaryConditions,
   DictionaryValueTypes,
   AttributeTypes,
-  DictionaryOptions,
+  DictionaryFilters,
 } from '@epgu/epgu-constructor-types';
 import {
   ConfigService,
@@ -23,18 +23,12 @@ import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryApiService } from './dictionary-api.service';
 import { DictionaryToolsService } from './dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
-import { ScreenStore } from '../../../screen/screen.types';
-import {
-  CustomComponent,
-  CustomComponentAttr,
-  CustomListDictionaries,
-  CustomScreenComponentTypes,
-} from '../../../component/custom-screen/components-list.types';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { getDictKeyByComp } from './dictionary-helper';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
+import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -84,90 +78,6 @@ describe('DictionaryToolsService', () => {
   let service: DictionaryToolsService;
   let MapStore: ScenarioDto;
   let compValue;
-  const component: CustomComponent = {
-    id: 'dict2',
-    type: CustomScreenComponentTypes.DropDownDepts,
-    label: 'Информационный центр',
-    attrs: {
-      dictionaryType: 'FNS_ZAGS_ORGANIZATION_AREA',
-      lockedValue: true,
-      repeatWithNoFilters: true,
-
-      dictionaryFilter: [
-        {
-          attributeName: 'SHOW_ON_MAP',
-          condition: DictionaryConditions.EQUALS,
-          value: '{"asString":"true"}',
-          valueType: 'value',
-        },
-        {
-          attributeName: 'SOLEMN',
-          condition: DictionaryConditions.EQUALS,
-          value: '{"asString":"true"}',
-          valueType: 'value',
-        },
-        {
-          attributeName: 'CODE',
-          condition: DictionaryConditions.CONTAINS,
-          value: 'regCode',
-          valueType: 'preset',
-        },
-        {
-          attributeName: 'PR2',
-          condition: DictionaryConditions.EQUALS,
-          value: '{"asString":"true"}',
-          valueType: 'value',
-        },
-      ],
-      secondaryDictionaryFilter: [
-        {
-          attributeName: 'CODE',
-          condition: DictionaryConditions.CONTAINS,
-          value: 'regCode',
-          valueType: 'preset',
-        },
-      ],
-      ref: [],
-      defaultIndex: 0,
-    },
-    value: '',
-    required: true,
-  };
-  const screenStore: ScreenStore = {};
-
-  const setup = (
-    componentType: string,
-    dictionaryItems: object[] = [],
-    attrs: Partial<CustomComponentAttr> = {},
-  ) => {
-    const component = ({
-      id: 'test',
-      type: componentType,
-      attrs: {
-        dictionaryType: 'TEST',
-        ...attrs,
-      },
-    } as any) as CustomComponent;
-    const dictionaryId = getDictKeyByComp(component);
-    const dictionaryData = {
-      loading: false,
-      paginationLoading: false,
-      data: [],
-      origin: component,
-      list: dictionaryItems,
-    };
-
-    const dictionaries = ({
-      [dictionaryId]: dictionaryData,
-    } as any) as CustomListDictionaries;
-
-    return {
-      component,
-      dictionaryId,
-      dictionaryData,
-      dictionaries,
-    };
-  };
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -391,6 +301,60 @@ describe('DictionaryToolsService', () => {
     });
   });
 
+  describe('filters$ property', () => {
+    it('should be observable', (done) => {
+      service.filters$.subscribe((result) => {
+        expect(result).toEqual({});
+        done();
+      });
+      expect(service.filters$).toBeInstanceOf(Observable);
+    });
+
+    it('should be emitted if set filters property', (done) => {
+      const filters: ComponentDictionaryFilters = {
+        a: null,
+      };
+
+      service.filters = filters;
+
+      service.filters$.subscribe((result) => {
+        expect(result).toBe(filters);
+        done();
+      });
+    });
+  });
+
+  describe('filters property', () => {
+    it('should be {} by default', () => {
+      expect(service.filters).toEqual({});
+    });
+  });
+
+  describe('applyFilter()', () => {
+    it('should apply passed filter for dependent component', () => {
+      const dependentComponentId = 'rf1';
+      // eslint-disable-next-line max-len
+      const filter: DictionaryFilters['filter'] = {
+        pageNum: 0,
+        simple: {
+          value: { asString: 'value' },
+          condition: DictionaryConditions.CONTAINS,
+          attributeName: 'value',
+        },
+      };
+      service.applyFilter(dependentComponentId, filter);
+      expect(service.filters[dependentComponentId]).toEqual(filter);
+    });
+  });
+
+  describe('clearFilter()', () => {
+    it('should clear filter for passped dependent component', () => {
+      const dependentComponentId = 'rf1';
+      service.filters[dependentComponentId] = { pageNum: 0 };
+      service.clearFilter(dependentComponentId);
+      expect(service.filters[dependentComponentId]).toBeNull();
+    });
+  });
 
   describe('adaptDictionaryToListItem()', () => {
     it('should return ListElement with default mapping', () => {
