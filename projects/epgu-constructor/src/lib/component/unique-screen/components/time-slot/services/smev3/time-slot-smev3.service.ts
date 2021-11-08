@@ -325,7 +325,11 @@ export class TimeSlotSmev3Service {
     return this.paramsFilter(
       ignoreRootParams,
       params
-        ? { ...result, ...params, attributes: attributes ?? params?.attributes ?? [] }
+        ? {
+            ...result,
+            ...params,
+            attributes: params?.attributes ?? attributes ?? [],
+          }
         : result,
     );
   }
@@ -367,7 +371,7 @@ export class TimeSlotSmev3Service {
   }
 
   createMap(slots: TimeSlot[]): SlotMap {
-    const result: SlotMap = [];
+    const result: SlotMap = {};
     let availableMonths: string[] = [];
 
     slots.forEach((slot) => {
@@ -420,7 +424,7 @@ export class TimeSlotSmev3Service {
       this.paramsFilter(
         ignoreRootParams,
         params
-          ? { ...result, ...params, attributes: attributes ?? params?.attributes ?? [] }
+          ? { ...result, ...params, attributes: params?.attributes ?? attributes ?? [] }
           : result,
       )
     );

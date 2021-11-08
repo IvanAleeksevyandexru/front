@@ -40,14 +40,14 @@ export abstract class BaseTimeSlotComponent implements OnDestroy, OnInit {
   ) {}
 
   changeMonthAction(month: string): void {
-    this.state.month = month;
+    this.state.setMonth(month);
   }
 
   changeDayAction(day: Date): void {
     if (this.state.day?.toISOString() === day.toISOString()) {
       this.state.clearDay();
     } else {
-      this.state.day = day;
+      this.state.setDay(day);
     }
   }
 
@@ -55,7 +55,7 @@ export abstract class BaseTimeSlotComponent implements OnDestroy, OnInit {
     if (this.state.slot?.slotId === slot?.slotId) {
       this.state.clearSlot();
     } else {
-      this.state.slot = slot;
+      this.state.setSlot(slot);
       this.changeSlot(slot);
     }
   }

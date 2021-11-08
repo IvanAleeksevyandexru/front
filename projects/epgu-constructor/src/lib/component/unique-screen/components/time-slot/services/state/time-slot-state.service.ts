@@ -16,6 +16,10 @@ export class TimeSlotStateService {
     return this.progressCounter$$.pipe(map((counter) => counter > 0));
   }
 
+  get loaded$(): Observable<boolean> {
+    return this.progress$.pipe(map((value) => !value));
+  }
+
   private month$$ = new BehaviorSubject<string>(null);
   get month$(): Observable<string> {
     return this.month$$.asObservable();
@@ -73,15 +77,31 @@ export class TimeSlotStateService {
     this.months$$.next(months);
   }
 
+  private additionalDisplayingButton$$ = new BehaviorSubject<boolean>(true);
+  get additionalDisplayingButton$(): Observable<boolean> {
+    return this.additionalDisplayingButton$$.asObservable();
+  }
+  get additionalDisplayingButton(): boolean {
+    return this.additionalDisplayingButton$$.getValue();
+  }
+  set additionalDisplayingButton(additionalDisplayingButton: boolean) {
+    this.additionalDisplayingButton$$.next(additionalDisplayingButton);
+  }
+
   constructor(
     private currentAnswers: CurrentAnswersService,
     private datesTools: DatesToolsService,
     private modal: ModalService,
   ) {}
+
   showModal(params: ConfirmationModal): Observable<string> {
     return this.modal.openModal(ConfirmationModalComponent, {
       ...params,
     });
+  }
+
+  setAdditionalDisplayingButton(additionalDisplayingButton: boolean): void {
+    this.additionalDisplayingButton = additionalDisplayingButton;
   }
 
   setMonth(month: string): void {

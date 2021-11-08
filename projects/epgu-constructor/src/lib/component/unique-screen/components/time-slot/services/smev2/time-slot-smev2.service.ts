@@ -77,13 +77,13 @@ export class TimeSlotSmev2Service {
     const filter = this.dictionaryTools.getFilterOptions(
       this.jsonHelper.tryToParse(this.screenService.componentValue as string, {}) as ComponentValue,
       this.screenService.getStore(),
-      this.screenService.component.attrs?.dictionaryFilter,
+      this.screenService.component?.attrs?.dictionaryFilter,
     );
 
     const additionalFilters =
       (filter?.filter?.simple
         ? [filter?.filter as DictionarySubFilter]
-        : filter?.filter?.union.subs) || [];
+        : filter?.filter?.union?.subs) || [];
 
     return {
       treeFiltering: 'ONELEVEL',
