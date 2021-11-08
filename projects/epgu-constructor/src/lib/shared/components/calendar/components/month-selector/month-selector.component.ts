@@ -99,6 +99,7 @@ export class MonthSelectorComponent {
     }
 
     this.current = this.current ? result.find(({ id }) => id === this.current.id) : result[0];
+
     return result;
   }
 }

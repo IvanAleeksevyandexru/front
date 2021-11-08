@@ -76,5 +76,10 @@ export class DatesToolsServiceStub {
     return {};
   }
 
+  differenceInCalendarDays() {}
+  isDateOutOfSection() {}
+  startOfISOWeek() {}
+  endOfISOWeek() {}
   utcOffset() {}
+  addDays() {}
 }
