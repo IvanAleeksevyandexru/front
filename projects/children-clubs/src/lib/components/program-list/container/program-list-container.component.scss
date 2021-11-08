@@ -38,7 +38,7 @@
   .filter-panel {
     position: static;
     width: auto;
-    z-index: 100;
+    z-index: 10;
     ::ng-deep.container {
       margin-top: 0px;
     }
