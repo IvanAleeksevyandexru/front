@@ -41,7 +41,7 @@ describe('InvitationService', () => {
   it('should send post request wtih success', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const openModalSpy = jest.spyOn(InvitationService.prototype as any, 'openModal');
-    const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(of( { errorCode: 0 }));
+    const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(of({ errorCode: 0 }));
     service.post(
       `/orders/${orderId}/invitations/inviteToSign/send`,
       [{ email: email, id: snils, type: 'SNILS' }],
