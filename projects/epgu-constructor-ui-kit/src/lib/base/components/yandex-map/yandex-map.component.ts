@@ -12,7 +12,6 @@ export class YandexMapComponent implements OnInit {
   @Input() mapCenter: number[];
   @Input() mapIsLoaded = false;
   @Input() showMap = false;
-  @Input() isListViewType: boolean;
 
   constructor(public config: ConfigService) {}
 

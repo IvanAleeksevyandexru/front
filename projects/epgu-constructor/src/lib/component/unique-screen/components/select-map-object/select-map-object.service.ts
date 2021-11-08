@@ -5,6 +5,7 @@ import {
   CHILDS_HOME_PROPERTIES,
   ConfigService,
   Icons,
+  IFeatureCollection,
   IGeoCoords,
   IGeoCoordsResponse,
   KINDERGARTEN_SEARCH_RADIUS_IN_METERS,
@@ -139,6 +140,28 @@ export class SelectMapObjectService implements OnDestroy {
   }
 
   /**
+   * prepares and returns collection of objects for yandex map
+   * @param items geo objects
+   */
+  public prepareFeatureCollection(): IFeatureCollection<DictionaryItem> {
+    const res = { type: 'FeatureCollection', features: [] };
+    this.filteredDictionaryItems.forEach((item) => {
+      if (item.center[0] && item.center[1]) {
+        const obj = {
+          type: 'Feature',
+          id: item.idForMap,
+          geometry: { type: 'Point', coordinates: item.center },
+          properties: {
+            res: { ...item, btnName: 'Выбрать', agreement: item.agreement },
+          },
+        };
+        res.features.push(obj);
+      }
+    });
+    return res;
+  }
+
+  /**
    * centers the map by coordinates
    * @param coords
    * @param object
@@ -161,7 +184,9 @@ export class SelectMapObjectService implements OnDestroy {
       if (!equal || (equal && serviceContext.mapOpenedBalloonId !== mapItem.idForMap)) {
         this.yaMapService.map.zoomRange.get([coords[0], coords[1]]).then((range) => {
           serviceContext.yaMapService.map.setCenter([coords[0], coords[1] + offset], range[1] - 2);
-          this.objectManager.objects.setObjectProperties(mapItem.idForMap, { pinStyle: 'pin-red' });
+          serviceContext.objectManager?.objects.setObjectOptions(mapItem.idForMap, {
+            iconImageHref: serviceContext.icons.red.iconImageHref,
+          });
           serviceContext.objectManager?.objects.balloon.open(mapItem.idForMap);
           serviceContext.__mapStateCenter = serviceContext.yaMapService.map.getCenter();
         });

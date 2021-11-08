@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from 'ng-bullet';
 import { filter } from 'rxjs/operators';
-import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { ConfigServiceStub } from '../../../core/services/config/config.service.stub';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
@@ -21,7 +20,6 @@ describe('SelectMapObjectComponent', () => {
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       providers: [
-        WINDOW_PROVIDERS,
         YandexMapService,
         Icons,
         UnsubscribeService,
@@ -36,11 +34,7 @@ describe('SelectMapObjectComponent', () => {
     icons = TestBed.inject(Icons);
     yandexMapService['objectManager'] = {
       objects: {
-        balloon: {
-          close: () => ({}),
-        },
         setObjectOptions: () => ({}),
-        setObjectProperties: () => ({}),
         getById: () => ({
           properties: {
             res: true,
@@ -81,13 +75,6 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('prepareFeatureCollection should ignore null coords', () => {
-    const window = TestBed.inject(WINDOW) as Window;
-    window['ymaps'] = {
-      templateLayoutFactory: {
-        createClass: () => '',
-      },
-    };
-    yandexMapService.componentAttrs = {};
     const result = yandexMapService.prepareFeatureCollection(mockItemsWithEmptyCoords);
     const cnt = result.features.filter(
       (feature) => feature.geometry.coordinates[0] && feature.geometry.coordinates[1],
