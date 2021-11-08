@@ -1,7 +1,4 @@
-<ng-content></ng-content>
 <lib-map
-  class="widget__map-wrapper"
-  [ngClass]="{ hidden: isListViewType }"
   *ngIf="showMap"
   [externalMode]="!config.staticDomainAssetsPath"
   [enterpriseYandexMapsEnabled]="true"
@@ -11,3 +8,5 @@
   [controls]="mapControls"
 >
 </lib-map>
+<ng-content select=".search-panel"></ng-content>
+<ng-content select=".map-objects-list"></ng-content>
