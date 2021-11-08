@@ -36,12 +36,25 @@ import { NavigationService } from '../../../../core/services/navigation/navigati
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { Answer, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 
 describe('InvitationErrorComponent', () => {
   let component: InvitationErrorComponent;
   let validationService: ValidationService;
+  let invitationErrorService: InvitationErrorService;
   let fixture: ComponentFixture<InvitationErrorComponent>;
-  const mockData = { label: '', attrs: { url: '' }, id: '', type: '' } as ComponentBase;
+  const mockData = {
+    label: '',
+    attrs: {
+      url: '',
+      ref: 'testAnswerData',
+    },
+    id: '',
+    type: '',
+  } as ComponentBase;
+  const snils = '000-000-000 01';
+  const email = 'test@site.net';
+  const orderId = 1;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -80,6 +93,7 @@ describe('InvitationErrorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InvitationErrorComponent);
     validationService = TestBed.inject(ValidationService);
+    invitationErrorService = TestBed.inject(InvitationErrorService);
     component = fixture.componentInstance;
     component.data = mockData;
     component.config = TestBed.inject(ConfigService);
@@ -93,5 +107,28 @@ describe('InvitationErrorComponent', () => {
       form.setValidators(validationService.customValidator(mockData as CustomComponent));
       expect(validationService.customValidator).toBeCalledWith(mockData as CustomComponent);
     });
+  });
+
+  it('should send email', () => {
+    component.applicantAnswers = {
+      testAnswerData: {
+        visited: true,
+        value: JSON.stringify({
+          snils: snils,
+        }),
+      } as Answer,
+    } as ApplicantAnswersDto;
+    component.orderId = orderId;
+    component.email.setValue(email);
+    fixture.detectChanges();
+
+    jest.spyOn(invitationErrorService, 'post');
+    component.sendEmail();
+
+    expect(invitationErrorService.post).toBeCalledWith(
+      `/orders/${orderId}/invitations/inviteToSign/send`,
+      [{ email: email, id: snils, type: 'SNILS' }],
+      { ref: 'testAnswerData', url: '' },
+    );
   });
 });

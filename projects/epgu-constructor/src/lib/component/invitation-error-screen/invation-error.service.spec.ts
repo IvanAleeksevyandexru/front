@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { InvitationErrorService } from './invitation-error.service';
+import { FAILURE_MESSAGE, InvitationErrorService, SUCCESS_MESSAGE } from './invitation-error.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   LoggerService,
@@ -10,9 +10,15 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { HttpClient } from '@angular/common/http';
+import { of, throwError } from 'rxjs';
 
 describe('InvationErrorService', () => {
   let service: InvitationErrorService;
+  let http: HttpClient;
+  const snils = '000-000-000 01';
+  const email = 'test@site.net';
+  const orderId = 1;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,9 +31,50 @@ describe('InvationErrorService', () => {
       ],
     });
     service = TestBed.inject(InvitationErrorService);
+    http = TestBed.inject(HttpClient);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should send post request wtih success', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const openModalSpy = jest.spyOn(InvitationErrorService.prototype as any, 'openModal');
+    const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(of( { errorCode: 0 }));
+    service.post(
+      `/orders/${orderId}/invitations/inviteToSign/send`,
+      [{ email: email, id: snils, type: 'SNILS' }],
+      { ref: 'testAnswerData', url: '' },
+    );
+
+    expect(httpPostSpy).toBeCalledWith(
+      `/orders/${orderId}/invitations/inviteToSign/send`,
+      [{ email: email, id: snils, type: 'SNILS' }],
+      { withCredentials: true },
+    );
+    expect(openModalSpy).toBeCalledWith(SUCCESS_MESSAGE, []);
+  });
+
+  it('should send post request with error', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const openModalSpy = jest.spyOn(InvitationErrorService.prototype as any, 'openModal');
+    const error = {
+      status: 401,
+      message: 'Вы не вошли в сиcтему',
+    };
+    const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(throwError(error));
+    service.post(
+      `/orders/${orderId}/invitations/inviteToSign/send`,
+      [{ email: email, id: snils, type: 'SNILS' }],
+      { ref: 'testAnswerData', url: '' },
+    );
+
+    expect(httpPostSpy).toBeCalledWith(
+      `/orders/${orderId}/invitations/inviteToSign/send`,
+      [{ email: email, id: snils, type: 'SNILS' }],
+      { withCredentials: true },
+    );
+    expect(openModalSpy).toBeCalledWith(FAILURE_MESSAGE, []);
   });
 });
