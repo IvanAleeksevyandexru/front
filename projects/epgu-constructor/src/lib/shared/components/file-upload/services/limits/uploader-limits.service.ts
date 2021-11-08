@@ -17,7 +17,7 @@ enum UploaderCheckType {
 
 type CheckResult = -1 | 0 | 1;
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class UploaderLimitsService {
   changes = new Subject<null>();
 
@@ -143,6 +143,9 @@ export class UploaderLimitsService {
         ? this.getMaxTotalFilesAmount()
         : this.getMaxTotalFilesSize();
 
+
+    if (maxTotal === 0 && type === UploaderCheckType.amount) return -1;
+
     if (maxTotal > 0) {
       const current =
         type === UploaderCheckType.amount
@@ -154,6 +157,7 @@ export class UploaderLimitsService {
         return -1;
       }
     }
+
     const uploader = this.getUploaders()[uploaderName];
     if (uploader) {
       const count = uploader[type] + value;

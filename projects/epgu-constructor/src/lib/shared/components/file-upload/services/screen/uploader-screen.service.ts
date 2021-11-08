@@ -11,12 +11,12 @@ import {
  */
 @Injectable()
 export class UploaderScreenService {
-  private maxFileSize: number;
-  private maxFileCount: number;
-  private fileSizeLeft: number;
-  private fileCountLeft: number;
   private hideTotalAvailableSize: boolean;
   private hideTotalAvailableCount: boolean;
+  private maxFileSize: number;
+  private maxFileCount: number;
+  private fileSizeLeft = 0;
+  private fileCountLeft = 0;
   private currentFilesSize = 0;
   private currentFilesCount = 0;
 
