@@ -20,7 +20,7 @@ export class Smev2RestApiInterceptor implements HttpInterceptor {
   public handleResponseError(err: HttpErrorResponse): Observable<HttpEvent<void | never>> {
     this.error.setError(
       this.api.getType(),
-      err.error?.messagee || err.message,
+      err.error?.message || err.message,
       err.error?.code || -1,
     );
     return throwError(err);

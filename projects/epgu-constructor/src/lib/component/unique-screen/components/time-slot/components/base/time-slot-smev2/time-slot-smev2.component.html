@@ -1,18 +1,26 @@
-<epgu-constructor-time-slot-month
-  [months]="months$ | async"
-  [current]="month$ | async"
-  (choose)="changeMonthAction($event)"
-></epgu-constructor-time-slot-month>
-<epgu-constructor-time-slot-calendar
-  (choose)="changeDayAction($event)"
-  (haveUnlockedDays)="changeHaveUnlockedDaysAction($event)"
-  [currentMonth]="month$ | async"
-  [currentDay]="day$ | async"
-  [lockProvider]="lockProvider$ | async"
-></epgu-constructor-time-slot-calendar>
-<epgu-constructor-time-slot-time
-  *ngIf="list$ | async as list"
-  [list]="list"
-  [current]="slot$ | async"
-  (choose)="changeSlotAction($event)"
-></epgu-constructor-time-slot-time>
+<epgu-cf-ui-constructor-screen-pad *ngIf="loaded$ | async; else loadingTemplate">
+  <ng-content select="[before-content]"></ng-content>
+  <epgu-constructor-time-slot-month
+    [months]="months$ | async"
+    [current]="month$ | async"
+    (choose)="changeMonthAction($event)"
+  ></epgu-constructor-time-slot-month>
+  <epgu-constructor-time-slot-calendar
+    (choose)="changeDayAction($event)"
+    (haveUnlockedDays)="changeHaveUnlockedDaysAction($event)"
+    [currentMonth]="month$ | async"
+    [currentDay]="day$ | async"
+    [lockProvider]="lockProvider$ | async"
+  ></epgu-constructor-time-slot-calendar>
+  <epgu-constructor-time-slot-time
+    *ngIf="list$ | async as list"
+    [list]="list"
+    [current]="slot$ | async"
+    (choose)="changeSlotAction($event)"
+  ></epgu-constructor-time-slot-time>
+  <ng-content select="[after-content]"></ng-content>
+</epgu-cf-ui-constructor-screen-pad>
+
+<ng-template #loadingTemplate>
+  <lib-throbber-hexagon class="lib-loader" size="big"></lib-throbber-hexagon>
+</ng-template>

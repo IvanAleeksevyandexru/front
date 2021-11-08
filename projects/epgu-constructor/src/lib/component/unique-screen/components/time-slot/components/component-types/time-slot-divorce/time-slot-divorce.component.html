@@ -1,7 +1,10 @@
-<epgu-constructor-time-slot-area [department]="department$ | async" [attributes]="attributes">
-</epgu-constructor-time-slot-area>
 <epgu-constructor-time-slot-smev3
   [slotListFilter]="slotListFilterProvider$ | async"
   [requestListParams]="requestListParams$ | async"
   [requestBookParams]="requestBookParams$ | async"
-></epgu-constructor-time-slot-smev3>
+>
+  <ng-container before-content>
+    <epgu-constructor-time-slot-area [department]="department$ | async" [attributes]="attributes">
+    </epgu-constructor-time-slot-area>
+  </ng-container>
+</epgu-constructor-time-slot-smev3>

@@ -30,6 +30,8 @@ export class TimeSlotButtonComponent implements OnInit {
   nextStepAction = NEXT_STEP_ACTION;
   componentId = this.screenService.component.id;
 
+  additionalDisplayingButton$ = this.state.additionalDisplayingButton$;
+
   constructor(
     private screenService: ScreenService,
     private currentAnswers: CurrentAnswersService,

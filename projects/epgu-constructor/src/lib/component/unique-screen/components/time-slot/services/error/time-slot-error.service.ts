@@ -66,6 +66,7 @@ export class TimeSlotErrorService {
     const handler = this.errorHandlers[index];
     if (!handler) {
       this.endHandler();
+      return;
     }
     const next: nextHandler = (error: TimeSlotError) => {
       this.handling(error, index + 1);
@@ -85,7 +86,7 @@ export class TimeSlotErrorService {
   }
 
   addHandlers(handlers: TimeSlotErrorHandler[]): void {
-    this.errorHandlers.concat(handlers);
+    this.errorHandlers = this.errorHandlers.concat(handlers);
   }
 
   getTemplates(): Record<string, ErrorTemplate> {

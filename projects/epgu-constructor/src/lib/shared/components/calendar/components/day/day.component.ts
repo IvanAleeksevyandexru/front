@@ -116,13 +116,6 @@ export class DayComponent {
     return date && this.dateTools.getMonth(date) !== activeMonthNumber;
   }
 
-  isDateLocked(day: Date, firstDayOfMainSection: Date, daysInMainSection: number): boolean {
-    return (
-      this.dateTools.isDateOutOfSection(day, firstDayOfMainSection, daysInMainSection) ||
-      this.lockProvider(day, firstDayOfMainSection, daysInMainSection)
-    );
-  }
-
   chooseAction(): void {
     if (this.isLocked) {
       return;

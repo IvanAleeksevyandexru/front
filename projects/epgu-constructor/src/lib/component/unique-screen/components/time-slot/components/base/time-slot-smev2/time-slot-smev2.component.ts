@@ -32,6 +32,7 @@ import { LockProvider } from '../../../../../../../shared/components/calendar/ty
   providers: [UnsubscribeService],
 })
 export class TimeSlotSmev2Component extends BaseTimeSlotComponent implements OnInit {
+  loaded$ = this.state.loaded$;
   lockProvider$: Observable<LockProvider> = this.calendar.today$.pipe(
     map(
       (today) =>
@@ -42,7 +43,7 @@ export class TimeSlotSmev2Component extends BaseTimeSlotComponent implements OnI
 
   listLoader: Subscription = this.day$
     .pipe(
-      switchMap((date: Date) => (!date ? [] : this.data.getList(date).pipe())),
+      switchMap((date: Date) => (!date ? [] : this.data.getList(date))),
       tap((list: Slot[]) => {
         this.calendar.haveUnlockedDays = list.length > 0;
       }),
@@ -55,7 +56,7 @@ export class TimeSlotSmev2Component extends BaseTimeSlotComponent implements OnI
     .pipe(
       map((today) => this.datesTools.getMonthListByYear(today)),
       tap((months) => {
-        this.state.months = months;
+        this.state.setMonths(months);
       }),
       takeUntil(this.ngUnsubscribe$),
     )

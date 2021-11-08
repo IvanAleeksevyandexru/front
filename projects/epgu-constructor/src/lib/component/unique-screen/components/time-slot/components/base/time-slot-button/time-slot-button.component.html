@@ -1,10 +1,13 @@
-<lib-button
-  [showLoader]="isLoading$ | async"
-  (click)="bookAction()"
-  class="submit-button"
-  [disabled]="disabled$ | async"
->
-  <div *ngIf="button$ | async as button" class="secondary-font">
-    {{ button?.label || 'Продолжить' }}
-  </div>
-</lib-button>
+<ng-container *ngIf="button$ | async as button">
+  <lib-button
+    [showLoader]="isLoading$ | async"
+    (click)="bookAction()"
+    class="submit-button"
+    [disabled]="disabled$ | async"
+    *ngIf="additionalDisplayingButton$ | async"
+  >
+    <div class="secondary-font">
+      {{ button?.label || 'Продолжить' }}
+    </div>
+  </lib-button>
+</ng-container>
