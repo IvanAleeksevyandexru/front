@@ -38,7 +38,7 @@ describe('InvitationService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should send post request wtih success', () => {
+  it('should send post request with success', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const openModalSpy = jest.spyOn(InvitationService.prototype as any, 'openModal');
     const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(of({ errorCode: 0 }));
