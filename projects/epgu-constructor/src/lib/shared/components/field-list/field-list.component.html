@@ -18,13 +18,14 @@
           <epgu-constructor-output-html
             *ngIf="field?.label"
             class="data-item__label"
-            [html]="field?.label"
+            [html]="field.label"
             [clarifications]="data.attrs?.clarifications"
             [ngClass]="style.label"
           ></epgu-constructor-output-html>
           <epgu-constructor-output-html
+            *ngIf="field?.value || (field?.label && !field?.value)"
             class="data-item__value"
-            [html]="field?.label ? (field?.value || '-') : '' | rank: field?.rank"
+            [html]="(field.value ? field.value : '-') | rank: field?.rank"
             [clarifications]="data.attrs?.clarifications"
             [ngClass]="style.value"
           ></epgu-constructor-output-html>
