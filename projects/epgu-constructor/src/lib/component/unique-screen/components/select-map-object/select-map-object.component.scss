@@ -1,14 +1,19 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components/_select-map-object';
+$sidebar-width: 360px;
+$header-height: 145px;
 
 .widget {
+  position: relative;
   display: flex;
-  min-height: 730px;
-  max-height: 100vh;
+  height: 100%;
   flex-grow: 1;
   @include tablets-down {
-    min-height: 0;
-    height: calc(100vh - 145px);
     flex-direction: column;
+  }
+  @include tablets-up {
+    &__map-wrapper {
+      margin-left: $sidebar-width;
+    }
   }
   &__map-wrapper.hidden {
     @include tablets-down {
@@ -20,11 +25,17 @@
 .map-sidebar {
   @include tablets-down {
     width: 100%;
-    max-height: calc(100vh - 145px);
+    max-height: calc(100vh - #{$header-height});
   }
-  width: 360px;
+  width: $sidebar-width;
   background: $color-white;
   padding: 0;
   display: flex;
   flex-direction: column;
+  @include tablets-up {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }
 }
