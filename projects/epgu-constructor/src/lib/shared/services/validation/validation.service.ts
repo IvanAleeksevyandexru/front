@@ -203,7 +203,7 @@ export class ValidationService {
         if (controlValueAsDate) {
           const startOfDayControlValue = this.datesToolsService.startOfDay(controlValueAsDate);
           const startOfDayMinDate = minDate && this.datesToolsService.startOfDay(minDate);
-          const startOfDayMaxDate = minDate && this.datesToolsService.startOfDay(maxDate);
+          const startOfDayMaxDate = maxDate && this.datesToolsService.startOfDay(maxDate);
           switch ((validation.condition as unknown) as DateValidationCondition) {
             case '<':
               hasErrors = this.datesToolsService.isBefore(
