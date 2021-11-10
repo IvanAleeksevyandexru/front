@@ -1,21 +1,17 @@
 <div class="widget">
-  <epgu-constructor-map-sidebar
-    (selectObjectEvent)="selectObject($event)"
-    [previouslyChoosenItem]="hasPreviouslyChoosen"
-    [sidebarData]="data"
-     class="map-sidebar">
-  </epgu-constructor-map-sidebar>
-  <lib-map
-    class="widget__map-wrapper"
-    [ngClass]="{ hidden: selectMapObjectService.isListViewType }"
-    *ngIf="showMap"
-    [externalMode]="!config.staticDomainAssetsPath"
-    [enterpriseYandexMapsEnabled]="true"
-    [yandexMapsApiKey]="config.yandexMapsApiKey"
-    [center]="mapCenter"
-    [redraw]="selectMapObjectService.isMapLoaded.getValue() && mapRedraw"
-    [controls]="mapControls"
+  <epgu-cf-ui-constructor-yandex-map
+    [showMap]="showMap"
+    [mapCenter]="mapCenter"
+    [mapIsLoaded]="selectMapObjectService.isMapLoaded.getValue() && mapRedraw"
+    [mapControls]="mapControls"
     [zoom]="initZoom"
   >
-  </lib-map>
+    <epgu-constructor-map-sidebar
+      (selectObjectEvent)="selectObject($event)"
+      [previouslyChoosenItem]="hasPreviouslyChoosen"
+      [sidebarData]="data"
+      class="map-sidebar map-objects-list"
+    >
+    </epgu-constructor-map-sidebar>
+  </epgu-cf-ui-constructor-yandex-map>
 </div>
