@@ -6,10 +6,11 @@ import { System } from './device-detector.types';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { CookieService } from '@epgu/ui/services/cookie';
 import { LoadService } from '@epgu/ui/services/load';
+import { WINDOW } from '../../providers/window.provider';
 
 describe('DeviceDetectorService', () => {
   let deviceDetectorService: DeviceDetectorService;
-  let loadService: LoadServiceStub;
+  let injectableWindow: Window;
   let smuEventsService: SmuEventsService;
   let userAgent: jest.SpyInstance;
   let cookieService: CookieService;
@@ -19,6 +20,8 @@ describe('DeviceDetectorService', () => {
       providers: [
         DeviceDetectorService,
         { provide: LoadService, useClass: LoadServiceStub },
+        { provide: WINDOW, useValue: { navigator: {}}},
+        CookieService,
         CookieService,
         SmuEventsService,
       ],
@@ -27,26 +30,32 @@ describe('DeviceDetectorService', () => {
 
   beforeEach(() => {
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
-    loadService = TestBed.inject(LoadService);
+    injectableWindow = TestBed.inject(WINDOW) as Window;
     smuEventsService = TestBed.inject(SmuEventsService);
     cookieService = TestBed.inject(CookieService);
     userAgent = jest.spyOn(window.navigator, 'userAgent', 'get');
   });
 
   it('is Mob', () => {
-    loadService.attributes = { deviceType: 'mob' };
+    // @ts-ignore
+    injectableWindow.navigator.userAgent =
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1';
     deviceDetectorService.initState();
     expect(deviceDetectorService.isMobile).toBe(true);
   });
 
   it('is Tablet', () => {
-    loadService.attributes = { deviceType: 'tab' };
+    // @ts-ignore
+    injectableWindow.navigator.userAgent =
+      'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
     deviceDetectorService.initState();
     expect(deviceDetectorService.isTablet).toBe(true);
   });
 
   it('is Desktop', () => {
-    loadService.attributes = { deviceType: 'desk' };
+    // @ts-ignore
+    injectableWindow.navigator.userAgent =
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36';
     deviceDetectorService.initState();
     expect(deviceDetectorService.isDesktop).toBe(true);
   });
