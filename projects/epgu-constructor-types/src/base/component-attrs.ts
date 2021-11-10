@@ -210,6 +210,7 @@ export interface ComponentAttrsDto {
   isCommonDictionary?: boolean;
   notFoundItemsMessage?: string;
   isNeedToGroupErrors?: boolean;
+  miniBalloonTexts?: string[];
 }
 
 export interface SlotsNotFoundTemplate {

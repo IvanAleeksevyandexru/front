@@ -50,13 +50,13 @@ export class JusticeSearchPanelService implements OnDestroy {
           iconLayout: this.yandexMapService.ymaps.templateLayoutFactory.createClass(
             '<ymaps class="selected-placemark"></ymaps>',
           ),
-          iconCaption: 'поиск...',
           hideIconOnBalloonOpen: false,
           balloonContentLayout: this.yandexMapService.ymaps.templateLayoutFactory.createClass(
             '{{ properties.balloonContent }}',
           ),
           balloonLayout: MapLayouts.getJusticeBalloonLayout(),
           balloonPanelMaxMapArea: 0,
+          pane: 'hoverPinPane', // Чтобы пин был выше балуна
           ...this.icons.userOrange,
         },
       );

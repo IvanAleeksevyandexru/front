@@ -5,7 +5,8 @@
   "allowedNonPeerDependencies": [
     "@epgu/epgu-constructor-types",
     "@epgu/zipkin",
-    "zipkin-transport-http"
+    "zipkin-transport-http",
+    "ismobilejs"
   ],
   "lib": {
     "entryFile": "src/public-api.ts",
@@ -14,7 +15,8 @@
     "umdModuleIds": {
       "@epgu/epgu-constructor-types": "@epgu/epgu-constructor-types",
       "@epgu/zipkin": "@epgu/zipkin",
-      "zipkin-transport-http": "zipkin-transport-http"
+      "zipkin-transport-http": "zipkin-transport-http",
+      "ismobilejs": "ismobilejs"
     }
   }
 }

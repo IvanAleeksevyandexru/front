@@ -44,6 +44,9 @@ export interface IFeatureItem<T> {
   properties?: {
     res?: T;
     attributeValues?: KeyValueMap;
+    pinNode?: HTMLDivElement;
+    activeTimeout?: number;
+    isActive?: boolean;
   };
 }
 

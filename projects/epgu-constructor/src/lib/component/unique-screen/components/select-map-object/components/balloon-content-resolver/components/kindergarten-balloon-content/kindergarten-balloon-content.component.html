@@ -1,85 +1,88 @@
-<div class="balloon-content-wrapper">
-  <div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded"></div>
-  <h6 (click)="expandAndCenterObject(mapObject)"
-      [ngClass]="{
+<div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded"></div>
+<div
+  class="balloon-content-wrapper"
+  (click)="expandAndCenterObject(mapObject)"
+>
+  <h6 [ngClass]="{
   'map-object__header': !mapObject.expanded,
-  'map-object__header__bold': mapObject.expanded }">
-  {{ mapObject.title }}
-  <span *ngIf="!mapObject.expanded && mapObject.isSelected" class="map-object__header_selected"
+  'map-object__header__bold': mapObject.expanded }"
+  >
+    {{ mapObject.title }}
+    <span *ngIf="!mapObject.expanded && mapObject.isSelected" class="map-object__header_selected"
     >Выбрано
   </span>
-</h6>
-<ng-container *ngIf="mapObject.expanded">
-  <p class="map-object__address-attribute mt-16 mb-16">
-    {{ address }}
-  </p>
-  <a (click)="toggleShowAdditionalInfo()">
-    {{ showAdditionalInfo ? 'Свернуть' : 'Подробнее' }}
-  </a>
-  <ng-container *ngIf="showAdditionalInfo">
-    <div class="map-object__attr" *ngFor="let itemContent of additionalInfo">
-      <span class="map-object__label">{{ itemContent.label }}: </span>
-      <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
-    </div>
-  </ng-container>
-  <ng-container
-    *ngIf="
+  </h6>
+  <ng-container *ngIf="mapObject.expanded">
+    <p class="map-object__address-attribute mt-16 mb-16">
+      {{ address }}
+    </p>
+    <a (click)="toggleShowAdditionalInfo()">
+      {{ showAdditionalInfo ? 'Свернуть' : 'Подробнее' }}
+    </a>
+    <ng-container *ngIf="showAdditionalInfo">
+      <div class="map-object__attr" *ngFor="let itemContent of additionalInfo">
+        <span class="map-object__label">{{ itemContent.label }}: </span>
+        <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
+      </div>
+    </ng-container>
+    <ng-container
+      *ngIf="
       !isSelectButtonHidden && {
         deptsLeftToChoose: kindergartenSearchPanelService.deptsLeftToChoose$ | async
       } as data
     "
-  >
-    <lib-button
-      *ngIf="!mapObject.isSelected && data.deptsLeftToChoose"
-      [showLoader]="showLoader | async"
-      [disabled]="!mapObject.agreement"
-      (click)="calcGartens(mapObject, $event)"
-      class="submit-button"
-      width="wide"
+    >
+      <lib-button
+        *ngIf="!mapObject.isSelected && data.deptsLeftToChoose"
+        [showLoader]="showLoader | async"
+        [disabled]="!mapObject.agreement"
+        (click)="calcGartens(mapObject, $event)"
+        class="submit-button"
+        width="wide"
       >Выбрать
-    </lib-button>
-    <div *ngIf="!mapObject.isSelected && data.deptsLeftToChoose" class="depts-left">
-      Можно выбрать ещё {{ data.deptsLeftToChoose }}
-    </div>
-    <ng-container *ngIf="mapObject.isSelected || data.deptsLeftToChoose === 0">
-      <div class="department-selected">
-        <ng-container *ngIf="mapObject.isSelected">
-          <h3>
-            Выбрано
+      </lib-button>
+      <div *ngIf="!mapObject.isSelected && data.deptsLeftToChoose" class="depts-left">
+        Можно выбрать ещё {{ data.deptsLeftToChoose }}
+      </div>
+      <ng-container *ngIf="mapObject.isSelected || data.deptsLeftToChoose === 0">
+        <div class="department-selected">
+          <ng-container *ngIf="mapObject.isSelected">
+            <h3>
+              Выбрано
+            </h3>
+            <a
+              href="javascript:void(0)"
+              (click)="calcGartens(mapObject, $event)"
+              class="information-link"
+            >Отменить</a
+            >
+          </ng-container>
+          <h3 *ngIf="data.deptsLeftToChoose === 0 && !mapObject.isSelected">
+            Вы выбрали максимум садов
           </h3>
+        </div>
+        <div *ngIf="data.deptsLeftToChoose">
+          Можно выбрать ещё {{ data.deptsLeftToChoose }} или
           <a
             href="javascript:void(0)"
-            (click)="calcGartens(mapObject, $event)"
+            (click)="kindergartenService.setState(states.priority)"
             class="information-link"
-            >Отменить</a
-          >
-        </ng-container>
-        <h3 *ngIf="data.deptsLeftToChoose === 0 && !mapObject.isSelected">
-          Вы выбрали максимум садов
-        </h3>
-      </div>
-      <div *ngIf="data.deptsLeftToChoose">
-        Можно выбрать ещё {{ data.deptsLeftToChoose }} или
-        <a
-          href="javascript:void(0)"
-          (click)="kindergartenService.setState(states.priority)"
-          class="information-link"
           >расставить сады по приоритету</a
-        >
-      </div>
-      <div *ngIf="mapObject.isSelected && data.deptsLeftToChoose === 0">
-        Выбрано максимум садов
-        <a
-          href="javascript:void(0)"
-          (click)="kindergartenService.setState(states.priority)"
-          class="information-link"
+          >
+        </div>
+        <div *ngIf="mapObject.isSelected && data.deptsLeftToChoose === 0">
+          Выбрано максимум садов
+          <a
+            href="javascript:void(0)"
+            (click)="kindergartenService.setState(states.priority)"
+            class="information-link"
           >Расставить сады по приоритету</a
-        >
-      </div>
-      <div *ngIf="!mapObject.isSelected && data.deptsLeftToChoose === 0">
-        Чтобы выбрать этот детский сад, удалите один из выбранных
-      </div>
+          >
+        </div>
+        <div *ngIf="!mapObject.isSelected && data.deptsLeftToChoose === 0">
+          Чтобы выбрать этот детский сад, удалите один из выбранных
+        </div>
+      </ng-container>
     </ng-container>
   </ng-container>
-</ng-container>
 </div>

@@ -5,6 +5,7 @@ import {
   ConstructorLookupModule,
   ConstructorCheckboxModule,
   Icons,
+  YandexMapModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { PrevButtonModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
@@ -82,6 +83,7 @@ import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipea
     NotifierModule,
     FormsModule,
     ClickableLabelModule,
+    YandexMapModule,
   ],
   entryComponents: [
     SelectMapObjectComponent,
