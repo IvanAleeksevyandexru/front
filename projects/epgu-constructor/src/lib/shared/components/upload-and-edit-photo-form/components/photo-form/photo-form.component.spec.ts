@@ -10,6 +10,7 @@ import { PhotoFormComponent } from './photo-form.component';
 import {
   ObjectHelperService,
   UnsubscribeService,
+  WINDOW,
   WordTransformService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -45,6 +46,7 @@ describe('PhotoFormComponent', () => {
         ObjectHelperService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: WINDOW, useValue: { navigator: {}}},
         TerraByteApiService,
         WebcamService,
         DownloadService,

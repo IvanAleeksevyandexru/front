@@ -3,7 +3,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MockProvider } from 'ng-mocks';
 
-import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
+import { LocalStorageService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
@@ -49,6 +49,7 @@ describe('UniquenessErrorsService', () => {
         CachedAnswersService,
         LocalStorageService,
         JsonHelperService,
+        { provide: WINDOW, useValue: { navigator: {}}},
       ],
     });
     service = TestBed.inject(UniquenessErrorsService);

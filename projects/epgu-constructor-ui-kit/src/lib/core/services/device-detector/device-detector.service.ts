@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { LoadService } from '@epgu/ui/services/load';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { CookieService } from 'ngx-cookie-service';
-import { LOCAL_STORAGE_PLATFORM_TYPE } from '../config/config.types';
-import { LoadServiceDeviceType, System } from './device-detector.types';
+import { Inject, Injectable } from '@angular/core';
+import { System } from './device-detector.types';
+import { WINDOW } from '../../providers/window.provider';
+import isMobile from 'ismobilejs';
 
 export const MOBILE_VIEW_COOKIE_NAME = 'mobVersion';
 
@@ -18,9 +18,9 @@ export class DeviceDetectorService {
   isWebView: boolean;
 
   constructor(
-    private loadService: LoadService,
     private smuEventsService: SmuEventsService,
     private cookieService: CookieService,
+    @Inject(WINDOW) private window: Window,
   ) {
     this.initSmuEventsService();
     this.initState();
@@ -30,12 +30,10 @@ export class DeviceDetectorService {
    * Инициализирует типы устройства с которого смотрим
    */
   initState(): void {
-    const {
-      deviceType = localStorage.getItem(LOCAL_STORAGE_PLATFORM_TYPE),
-    } = this.loadService.attributes;
-    this.isMobile = deviceType === LoadServiceDeviceType.mob;
-    this.isTablet = deviceType === LoadServiceDeviceType.tab;
-    this.isDesktop = deviceType === LoadServiceDeviceType.desk;
+    const deviceInfo = isMobile(this.window.navigator);
+    this.isMobile = deviceInfo.phone;
+    this.isTablet = deviceInfo.tablet;
+    this.isDesktop = !this.isMobile && !this.isTablet;
     this.isWebView = this.smuEventsService.smuInit;
   }
 
