@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HighlightModule } from '@epgu/ui/pipes';
 import { DropdownListComponent } from './dropdown-list.component';
 import { BaseModule } from '../../../../shared/base.module';
 import { FilterPipe } from '../../pipes/filter.pipe';
-import { HighlightModule } from '@epgu/ui/pipes';
 
 describe('DropdownListComponent', () => {
   let component: DropdownListComponent;

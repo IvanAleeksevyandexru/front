@@ -9,50 +9,17 @@ interface iconType {
 }
 @Injectable()
 export class Icons {
-  get red(): IGeoObjectOptionsWithIconShape {
-    return {
-      iconLayout: 'default#image',
-      iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/pinred.svg`,
-      iconContentOffset: [11, 15],
-      iconShape: {
-        type: 'Circle',
-        coordinates: [0, 0],
-        radius: 23,
-      },
-      hideIconOnBalloonOpen: false,
-      openEmptyBalloon: true,
-    };
-  }
-
-  get redChecked(): IGeoObjectOptionsWithIconShape {
-    return {
-      iconLayout: 'default#image',
-      iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/pincheck.svg`,
-      iconContentOffset: [11, 15],
-      iconShape: {
-        type: 'Circle',
-        coordinates: [0, 0],
-        radius: 23,
-      },
-      hideIconOnBalloonOpen: false,
-      openEmptyBalloon: true,
-    };
-  }
 
   get blue(): IGeoObjectOptionsWithIconShape {
     return {
-      iconLayout: 'default#image',
-      iconImageHref: `${this.config.staticDomainAssetsPath}/assets/icons/svg/pinblue.svg`,
-      iconImageSize: [24, 40],
-      iconImageOffset: [-12, -20],
-      iconContentOffset: [11, 15],
+      iconLayout: this.pinLayout(),
       iconShape: {
         type: 'Circle',
-        coordinates: [0, 0],
-        radius: 23,
+        coordinates: [0, -10],
+        radius: 20,
       },
       hideIconOnBalloonOpen: false,
-      openEmptyBalloon: true,
+      openEmptyBalloon: false,
     };
   }
 
@@ -106,6 +73,23 @@ export class Icons {
   }
 
   constructor(public config: ConfigService) {}
+
+  private pinLayout(): ymaps.IClassConstructor<ymaps.ILayout> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ymaps = (window as any).ymaps;
+    return ymaps.templateLayoutFactory.createClass(
+      '<div class="pin {{properties.pinStyle}}{% if properties.isActive %} pin-red{% endif %}">',
+      {
+        build: function () {
+          this.constructor.superclass.build.call(this);
+        },
+
+        clear: function () {
+          this.constructor.superclass.clear.call(this);
+        },
+      },
+    );
+  }
 }
 
 export const KINDERGARTEN_SEARCH_RADIUS_IN_METERS = 5000;

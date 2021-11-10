@@ -236,6 +236,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
 
   private initComponentAttrs(): void {
     this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
+    this.yandexMapService.componentAttrs = this.data.attrs;
+
     this.selectMapObjectService.mapType =
       (this.data.attrs.mapType as MapTypes) || MapTypes.commonMap;
     this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
