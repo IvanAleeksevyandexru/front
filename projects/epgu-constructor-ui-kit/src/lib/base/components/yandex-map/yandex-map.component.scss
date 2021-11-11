@@ -7,9 +7,9 @@
 }
 
 ::ng-deep #map {
-  width: 100%;
-  position: absolute;
-
+  @include tablets-up() {
+    position: absolute;
+  }
   .popover,
   .balloon-common {
     background: $color-white;

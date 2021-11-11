@@ -13,6 +13,7 @@ export class YandexMapComponent implements OnInit {
   @Input() mapIsLoaded = false;
   @Input() showMap = false;
   @Input() zoom: number;
+  @Input() isListViewType: boolean;
 
   constructor(public config: ConfigService) {}
 

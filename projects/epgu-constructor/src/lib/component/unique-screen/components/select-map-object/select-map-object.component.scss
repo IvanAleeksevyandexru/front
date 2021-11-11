@@ -10,16 +10,17 @@ $header-height: 145px;
   @include tablets-down {
     flex-direction: column;
   }
-  @include tablets-up {
-    &__map-wrapper {
-      margin-left: $sidebar-width;
-    }
+}
+::ng-deep.widget__map-wrapper.hidden {
+  @include tablets-down {
+    visibility: hidden;
+    position: absolute;
   }
-  &__map-wrapper.hidden {
-    @include tablets-down {
-      visibility: hidden;
-      position: absolute;
-    }
+}
+::ng-deep#map {
+  @include tablets-up() {
+    left: $sidebar-width;
+    right: 0;
   }
 }
 .map-sidebar {
@@ -32,6 +33,7 @@ $header-height: 145px;
   padding: 0;
   display: flex;
   flex-direction: column;
+  z-index: 2;
   @include tablets-up {
     position: absolute;
     top: 0;
