@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  BusEventType,
   DeviceDetectorServiceStub,
   ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -14,7 +13,6 @@ import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ISuggestionItem } from '../../core/services/autocomplete/autocomplete.inteface';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
@@ -26,9 +24,9 @@ import { configureTestSuite } from 'ng-bullet';
 import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
-import { of } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
+import { TerraByteApiService } from '../../core/services/terra-byte-api/terra-byte-api.service';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;
@@ -82,6 +80,7 @@ describe('AttachUploadedFilesModalComponent', () => {
         ObjectHelperService,
         CurrentAnswersService,
         JsonHelperService,
+        TerraByteApiService,
       ],
     }).compileComponents();
   });
@@ -150,24 +149,4 @@ describe('AttachUploadedFilesModalComponent', () => {
     });
   });
 
-  describe('getImgSrc()', () => {
-    it('should return url for full file, if file null previewType', () => {
-      const result = '/763706287/2/download?mnemonic=fu3.FileUploadComponent.passport.0';
-      expect(component.getImgSrc(mockFile)).toBe(result);
-    });
-    it('should return url for preview file, if file has not null previewType', () => {
-      const newMockFile = cloneDeep(mockFile);
-      newMockFile.item.previewType = 1;
-      const result = '/763706287/1/download?mnemonic=fu3.FileUploadComponent.passport.0';
-      expect(component.getImgSrc(newMockFile)).toBe(result);
-    });
-  });
-
-  describe('handleImgError()', () => {
-    it('should set error on file', () => {
-      const fileSetErrorSpy = spyOn(mockFile, 'setError');
-      component.handleImgError({ target: { src: '' }}, mockFile);
-      expect(fileSetErrorSpy).toBeCalled();
-    });
-  });
 });

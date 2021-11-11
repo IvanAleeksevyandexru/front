@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Injector,
@@ -7,22 +8,23 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { take, takeUntil } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import {
-  ModalBaseComponent,
-  UnsubscribeService,
-  EventBusService,
   ConfigService,
-  DatesToolsService,
   DATE_STRING_DASH_FORMAT,
   DATE_TIME_STRING_SHORT,
+  DatesToolsService,
+  EventBusService,
+  ModalBaseComponent,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ErrorActions, FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { ScreenService } from '../../screen/screen.service';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';
+import { TerraByteApiService } from '../../core/services/terra-byte-api/terra-byte-api.service';
 
 @Component({
   selector: 'epgu-constructor-attach-uploaded-files-modal',
@@ -33,7 +35,7 @@ import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/compone
 })
 export class AttachUploadedFilesModalComponent extends ModalBaseComponent implements OnInit {
   @Input() filesList: FileItem[] = [];
-  @Input() galleryFilesList: UploadedFile[] = [];
+  @Input() galleryFilesList$: Observable<UploadedFile[]> = new BehaviorSubject([]);
   @Input() modalId: string;
   @Input() acceptTypes: string;
 
@@ -58,13 +60,61 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
     private ngUnsubscribe$: UnsubscribeService,
     private configService: ConfigService,
     private viewerService: ViewerService,
+    private teraService: TerraByteApiService,
+    private cdRef: ChangeDetectorRef,
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
-    this.galleryFiles = this.getGalleryFiles(this.galleryFilesList);
-    this.galleryFilesGroupByDate = this.getGalleryFilesGroupedByDate(this.galleryFiles);
+    this.galleryFilesList$
+      .pipe(
+        map((files) => this.getGalleryFiles(files)),
+        switchMap((files) =>
+          combineLatest(
+            files.map((file) =>
+              file.isImage
+                ? this.teraService
+                    .downloadFile({
+                      objectId: file.item.objectId,
+                      objectType: file.item.objectType,
+                      mnemonic: file.item.mnemonic,
+                      mimeType: file.item.mimeType,
+                    })
+                    .pipe(
+                      map(
+                        (blob) =>
+                          new FileItem(
+                            FileItemStatus.uploaded,
+                            `${this.fileUploadApiUrl}/`,
+                            new File([blob], file.item.fileName),
+                            file.item,
+                          ),
+                      ),
+                      catchError(() =>
+                        of(
+                          new FileItem(
+                            FileItemStatus.error,
+                            `${this.fileUploadApiUrl}/`,
+                            null,
+                            file.item,
+                          ).setError({
+                            type: ErrorActions.addInvalidFile,
+                            text: 'Что-то пошло не так',
+                          }),
+                        ),
+                      ),
+                    )
+                : of(file),
+            ),
+          ),
+        ),
+      )
+      .subscribe((galleryFilesList) => {
+        this.galleryFiles = galleryFilesList;
+        this.galleryFilesGroupByDate = this.getGalleryFilesGroupedByDate(this.galleryFiles);
+        this.cdRef.markForCheck();
+      });
 
     this.eventBusService
       .on('closeModalEvent_previewFiles')
@@ -100,29 +150,6 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       )
       .pipe(take(1))
       .subscribe();
-  }
-
-  public getImgSrc(file: FileItem): string {
-    const urlTemplate = (type: number): string =>
-      `${this.fileUploadApiUrl}/${file.item.objectId}/${type}/download?mnemonic=${file.item.mnemonic}`;
-
-    return urlTemplate(file.item.previewType || file.item.objectTypeId);
-  }
-
-  public handleImgError(event: Event, file: FileItem): void {
-    const target = event.target as HTMLImageElement;
-    target.src = `${this.basePath}${this.iconsTypes.error}.svg`;
-    file.setError({ type: ErrorActions.addInvalidFile, text: 'Что-то пошло не так' });
-    // TODO: убрать костыль ниже, когда придумают, что делать с битыми файлами
-    // Контекст боли тут: https://jira.egovdev.ru/browse/EPGUCORE-54485
-    this.galleryFilesGroupByDate.some((group) => {
-      const fileIndex = group[1].findIndex((gFile) => gFile.id === file.id);
-      if (fileIndex > -1) {
-        group[1].splice(fileIndex, 1);
-        return true;
-      }
-      return false;
-    });
   }
 
   private getGalleryFiles(galleryFiles: UploadedFile[]): FileItem[] {

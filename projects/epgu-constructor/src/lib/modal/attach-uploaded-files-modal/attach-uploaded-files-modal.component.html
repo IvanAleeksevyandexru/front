@@ -1,7 +1,7 @@
 <ng-container>
   <epgu-cf-ui-cta-modal [title]="title" [showCrossButton]="true" text="previewFiles">
     <ng-container modal-content>
-      <div class="text_modal_error" *ngIf="!galleryFilesList.length">
+      <div class="text_modal_error" *ngIf="!galleryFiles.length">
         <img
           class="text_modal_error__img"
           src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/image-error.svg"
@@ -31,16 +31,15 @@
                   (click)="previewFile(file)"
                   class="button"
                   [ngClass]="{ attached: file.attached }"
-                  *ngIf="!file.error"
                 >
                   <img
-                    *ngIf="file.isImage"
+                    *ngIf="file.isImage && !file.error"
                     class="img"
-                    [src]="getImgSrc(file)"
-                    (error)="handleImgError($event, file)"
+                    [src]="file?.urlToFile(file.item.previewType || file.item.objectTypeId) | safe : 'url'"
                     [alt]="file.item.fileName"
                   />
                   <div *ngIf="file.error">
+                    <img class="img" [src]="basePath + iconsTypes.error + '.svg'" alt="Ошибка" />
                     <figcaption class="caption">{{ file.item.fileName }}</figcaption>
                     <figcaption class="caption small mt-16">{{ file.error.text }}</figcaption>
                   </div>

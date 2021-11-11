@@ -14,7 +14,7 @@
 .wrapper {
   display: flex;
   flex-flow: row wrap;
-  gap: 12px;
+  gap: 24px;
 }
 
 .file-item {
@@ -32,7 +32,7 @@
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  padding: 0;
+  padding: 0 12px;
   width: 195px;
   height: 195px;
   position: relative;
@@ -78,6 +78,8 @@
   @include typ-plain-text();
   max-height: 100px;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   &.small {
     @include typ-plain-small();
   }
