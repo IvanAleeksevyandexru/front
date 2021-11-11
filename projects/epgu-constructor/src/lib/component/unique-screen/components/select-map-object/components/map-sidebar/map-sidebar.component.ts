@@ -10,12 +10,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { DisclaimerDto, KeyValueMap } from '@epgu/epgu-constructor-types';
-import {
-  DeviceDetectorService,
-  UnsubscribeService,
-  YandexMapService,
-  YMapItem,
-} from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, YandexMapService, YMapItem } from '@epgu/epgu-constructor-ui-kit';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { SelectMapObjectService } from '../../select-map-object.service';
@@ -49,7 +44,6 @@ export class MapSidebarComponent implements OnInit {
   constructor(
     public screenService: ScreenService,
     public selectMapObjectService: SelectMapObjectService,
-    public deviceDetector: DeviceDetectorService,
     private cdr: ChangeDetectorRef,
     private yandexMapService: YandexMapService,
     private ngUnsubscribe$: UnsubscribeService,

@@ -1,4 +1,7 @@
+<ng-content select=".map-sidebar"></ng-content>
 <lib-map
+  class="widget__map-wrapper"
+  [ngClass]="{ hidden: isListViewType }"
   *ngIf="showMap"
   [externalMode]="!config.staticDomainAssetsPath"
   [enterpriseYandexMapsEnabled]="true"

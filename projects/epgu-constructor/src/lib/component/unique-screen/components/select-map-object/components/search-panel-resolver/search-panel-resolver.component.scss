@@ -18,6 +18,9 @@
       margin-bottom: 0;
     }
     &__toolbar {
+      @include tablets-up() {
+        display: none;
+      }
       .icon {
         width: 24px;
         height: 24px;

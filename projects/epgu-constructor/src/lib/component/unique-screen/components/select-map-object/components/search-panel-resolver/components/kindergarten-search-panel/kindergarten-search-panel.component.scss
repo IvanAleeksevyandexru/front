@@ -5,3 +5,11 @@
 ::ng-deep.widget-form__title > p {
   font-size: $font-sm;
 }
+
+::ng-deep.map-search-panel {
+  .lookup-list-wrapper {
+    @include tablets-up() {
+      display: none;
+    }
+  }
+}

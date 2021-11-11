@@ -30,7 +30,6 @@ import {
 } from '@epgu/epgu-constructor-types';
 import {
   ModalService,
-  DeviceDetectorService,
   UnsubscribeService,
   ConfigService,
   AddressesToolsService,
@@ -88,12 +87,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   public mapCenter: number[];
   public mapControls = [];
   public showMap = false;
-  public isMobile: boolean;
   public isNoDepartmentErrorVisible = false;
   public screenActionButtons: ScreenButton[] = [];
   public initZoom: number;
   public hasPreviouslyChoosen: DictionaryItem;
-  public mapRedraw = true;
 
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
@@ -121,7 +118,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     private addressesToolsService: AddressesToolsService,
     private cdr: ChangeDetectorRef,
     private currentAnswersService: CurrentAnswersService,
-    private deviceDetector: DeviceDetectorService,
     private dictionaryApiService: DictionaryApiService,
     private dictionaryToolsService: DictionaryToolsService,
     private jsonHelperService: JsonHelperService,
@@ -132,12 +128,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     private yaMapService: YaMapService,
     private zone: NgZone,
     private priorityItemsService: PriorityItemsService,
-  ) {
-    this.isMobile = this.deviceDetector.isMobile;
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.handleMapRedraw();
     this.screenService.isLoaderVisible.next(true);
     this.initData$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -218,20 +211,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       this.controlsLogicInit();
     }
     this.initMapCenter();
-  }
-
-  // это workaround, чтобы заставить карту перерисоваться,
-  // после того, как ее контейнер получил необходимую высоту
-  private handleMapRedraw(): void {
-    this.selectMapObjectService.isMapLoaded
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((value) => {
-        if (value) {
-          requestAnimationFrame(() => {
-            this.mapRedraw = false;
-          });
-        }
-      });
   }
 
   private initComponentAttrs(): void {

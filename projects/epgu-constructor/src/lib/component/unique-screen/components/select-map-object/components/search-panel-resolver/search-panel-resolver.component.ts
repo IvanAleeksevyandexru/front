@@ -13,7 +13,6 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { DisclaimerDto } from '@epgu/epgu-constructor-types';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { MapTypes, SelectMapObjectService, SidebarViewType } from '../../select-map-object.service';
 import { KindergartenSearchPanelComponent } from './components/kindergarten-search-panel/kindergarten-search-panel.component';
@@ -68,7 +67,6 @@ export class SearchPanelResolverComponent implements AfterViewInit {
   constructor(
     public screenService: ScreenService,
     public selectMapObjectService: SelectMapObjectService,
-    public deviceDetector: DeviceDetectorService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef,
   ) {}

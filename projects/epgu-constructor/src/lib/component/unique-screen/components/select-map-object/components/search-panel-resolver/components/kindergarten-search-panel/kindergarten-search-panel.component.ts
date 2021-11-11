@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import {
   ConstructorLookupComponent,
-  DeviceDetectorService,
   KINDERGATEN_MAX_VALUE,
   UnsubscribeService,
   YandexMapService,
@@ -47,7 +46,6 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
   constructor(
     public selectMapObjectService: SelectMapObjectService,
     public kindergartenSearchPanelService: KindergartenSearchPanelService,
-    public deviceDetector: DeviceDetectorService,
     private cdr: ChangeDetectorRef,
     private dictionaryToolsService: DictionaryToolsService,
     private yandexMapService: YandexMapService,
