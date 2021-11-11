@@ -14,7 +14,6 @@ import { CertificateEaisdoService } from '../../../../shared/services/certificat
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
 import { IdentificationApiServiceStub } from '../../shared/identification-api/identification-api.service.stub';
 import { IdentificationUploadScreenComponent } from './identification-upload-screen.component';
-
 import { IdentificationUploadScreenModule } from './identification-upload-screen.module';
 import {
   FileUploadItem,
@@ -27,6 +26,7 @@ import { UniqueScreenComponentTypes } from '../../unique-screen-components.types
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const componentMock = {
   id: 'id',
@@ -39,12 +39,11 @@ describe('IdentificationUploadScreenComponent', () => {
   let fixture: ComponentFixture<IdentificationUploadScreenComponent>;
 
   let screenService: ScreenServiceStub;
-  let currentAnswersService: CurrentAnswersService;
   let eventBusService: EventBusService;
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
-      imports: [BaseComponentsModule, IdentificationUploadScreenModule],
+      imports: [BaseComponentsModule, IdentificationUploadScreenModule, HttpClientTestingModule],
       declarations: [MockDirective(ActionDirective)],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -65,7 +64,6 @@ describe('IdentificationUploadScreenComponent', () => {
   beforeEach(() => {
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
     screenService.component = componentMock as any;
-    currentAnswersService = TestBed.inject(CurrentAnswersService);
     eventBusService = TestBed.inject(EventBusService);
 
     fixture = TestBed.createComponent(IdentificationUploadScreenComponent);

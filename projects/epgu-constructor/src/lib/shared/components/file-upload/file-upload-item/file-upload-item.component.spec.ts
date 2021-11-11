@@ -39,7 +39,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ErrorActions, FileItem, FileItemStatus } from '../data';
+import { FileItem, FileItemStatus } from '../data';
 import { of } from 'rxjs';
 import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
 import { ViewerService } from '../../uploader/services/viewer/viewer.service';
