@@ -103,13 +103,13 @@ export class FileItem {
     return this;
   }
 
-  urlToFile(): string {
+  urlToFile(type = this.item?.objectTypeId): string {
     if (!this.isRawMock) {
       return window.URL.createObjectURL(this.raw);
     }
 
     return this.item
-      ? `${this.fileUploadApiUrl}/${this.item?.objectId}/${this.item?.objectTypeId}/download?mnemonic=${this.item?.mnemonic}`
+      ? `${this.fileUploadApiUrl}/${this.item?.objectId}/${type}/download?mnemonic=${this.item?.mnemonic}`
       : '';
   }
 

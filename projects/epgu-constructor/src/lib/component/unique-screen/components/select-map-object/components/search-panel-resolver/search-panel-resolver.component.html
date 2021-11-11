@@ -4,7 +4,7 @@
       class="map-search-panel__nav__prev-button"
       *ngIf="screenService.showNav$ | async"
     ></epgu-cf-ui-prev-button>
-    <div *ngIf="!deviceDetector.isDesktop" class="map-search-panel__nav__toolbar">
+    <div class="map-search-panel__nav__toolbar">
       <button
         class="icon map"
         [ngClass]="{ active: selectMapObjectService.isMapViewType }"

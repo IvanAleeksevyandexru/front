@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -57,7 +58,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     this.uploader.maxFileNumber = -1;
     this.initFilesList.next(files);
   }
-  @Input() galleryFiles: UploadedFile[] = [];
+  @Input() galleryFiles$: Observable<UploadedFile[]> = new BehaviorSubject([]);
 
   @ViewChild('takePhoto', { static: false })
   takePhoto: UploaderButtonComponent;
@@ -147,6 +148,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private store: UploaderStoreService,
     private validation: UploaderValidationService,
     private process: UploaderProcessService,
+    private cdRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -172,7 +174,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
         this.suggest(payload);
       });
 
-    this.isGalleryFilesButtonShown = !!this.galleryFiles.length;
+    this.galleryFiles$.subscribe((files) => {
+      this.isGalleryFilesButtonShown = !!files.length;
+      this.cdRef.markForCheck();
+    });
   }
 
   ngOnDestroy(): void {
@@ -331,7 +336,7 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
       showCloseButton: false,
       showCrossButton: true,
       filesList: this.files.getValue(),
-      galleryFilesList: this.galleryFiles,
+      galleryFilesList$: this.galleryFiles$,
     });
   }
 }

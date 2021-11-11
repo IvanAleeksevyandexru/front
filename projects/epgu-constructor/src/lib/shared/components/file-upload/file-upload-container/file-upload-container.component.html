@@ -1,6 +1,6 @@
 <epgu-constructor-file-upload-item
   *ngIf="files$ | async as files"
   [initFiles]="files"
-  [galleryFiles]="galleryFiles$ | async"
+  [galleryFiles$]="galleryFiles$"
   [clarification]="clarifications"
 ></epgu-constructor-file-upload-item>

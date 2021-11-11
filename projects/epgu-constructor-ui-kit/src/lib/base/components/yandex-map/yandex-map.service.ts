@@ -92,7 +92,7 @@ export class YandexMapService implements OnDestroy {
     LOMSettings?,
   ): void {
     this.objectManager = this.createMapsObjectManager(OMSettings, urlTemplate, LOMSettings);
-    if (this.componentAttrs.miniBalloonTexts) {
+    if (this.componentAttrs?.miniBalloonTexts && this.deviceDetector.isDesktop) {
       this.initMiniBalloonEvents();
       this.objectManager.objects.options.set('balloonLayout', MapLayouts.getCommonBalloonLayout());
       this.objectManager.objects.options.set(

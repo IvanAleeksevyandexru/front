@@ -1,0 +1,9 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/index';
+
+::ng-deep.map-search-panel {
+  .lookup-list-wrapper {
+    @include tablets-up() {
+      display: none;
+    }
+  }
+}

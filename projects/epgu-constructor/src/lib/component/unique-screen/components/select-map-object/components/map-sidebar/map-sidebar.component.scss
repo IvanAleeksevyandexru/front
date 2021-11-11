@@ -11,9 +11,22 @@
     color: $color-text-helper
   }
 }
+
+.previously-choosen.hidden {
+  @include tablets-down() {
+      display: none;
+  }
+}
+
 .perfect-scrollbar {
   @include tablets-down() {
     flex-grow: 1;
+  }
+}
+
+.perfect-scrollbar.hidden {
+  @include tablets-down() {
+      display: none;
   }
 }
 
@@ -24,6 +37,12 @@
 ::ng-deep.previously-choosen .balloon-content-wrapper {
   padding-bottom: 16px !important;
   padding-top: 16px !important;
+}
+
+.swipeable-mode {
+  @include tablets-up() {
+    display: none;
+  }
 }
 
 ::ng-deep.swipeable-mode {

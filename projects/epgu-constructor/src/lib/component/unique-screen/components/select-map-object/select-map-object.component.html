@@ -2,15 +2,16 @@
   <epgu-cf-ui-constructor-yandex-map
     [showMap]="showMap"
     [mapCenter]="mapCenter"
-    [mapIsLoaded]="selectMapObjectService.isMapLoaded.getValue() && mapRedraw"
+    [mapIsLoaded]="selectMapObjectService.isMapLoaded.getValue()"
     [mapControls]="mapControls"
+    [isListViewType]="selectMapObjectService.isListViewType"
     [zoom]="initZoom"
   >
     <epgu-constructor-map-sidebar
       (selectObjectEvent)="selectObject($event)"
       [previouslyChoosenItem]="hasPreviouslyChoosen"
       [sidebarData]="data"
-      class="map-sidebar map-objects-list"
+      class="map-sidebar"
     >
     </epgu-constructor-map-sidebar>
   </epgu-cf-ui-constructor-yandex-map>

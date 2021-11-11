@@ -7,7 +7,7 @@
     [clearable]="true"
     [clearInconsistent]="'ignore'"
     [itemsProvider]="provider"
-    [hideSearchResult]="deviceDetector.isDesktop || selectMapObjectService.isListViewType"
+    [hideSearchResult]="selectMapObjectService.isListViewType"
     [showSuggestion]="true"
     [disabled]="!mapIsLoaded"
     (changed)="lookupChanged($event?.originalItem, libLookup)"

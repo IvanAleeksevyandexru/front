@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import {
   ConstructorLookupComponent,
-  DeviceDetectorService,
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -34,7 +33,6 @@ export class CommonSearchPanelComponent implements AfterViewInit {
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
-    public deviceDetector: DeviceDetectorService,
     private cdr: ChangeDetectorRef,
     private dictionaryToolsService: DictionaryToolsService,
     private yandexMapService: YandexMapService,
