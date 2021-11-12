@@ -11,12 +11,13 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  reduce,
   switchMap,
   takeUntil,
   tap,
 } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-import { BehaviorSubject, combineLatest, of, throwError } from 'rxjs';
+import { BehaviorSubject, combineLatest, from, of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
@@ -78,7 +79,22 @@ export class FileUploadComponent implements OnInit {
             catchError((e: HttpErrorResponse) => (e.status === 404 ? of([]) : throwError(e))),
           ) as Observable<UploadedFile[]>,
     ),
+    concatMap((files: UploadedFile[]) =>
+      // TODO: Добавить тестов
+      from(files).pipe(
+        reduce<UploadedFile, Record<string, UploadedFile[]>>((acc, value) => {
+          const id = this.getMnemonicWithoutOrder(value.mnemonic);
+          if (!acc[id]) {
+            acc[id] = [];
+          }
+          if (this) acc[id].push(value);
+
+          return acc;
+        }, {}),
+      ),
+    ),
   );
+
   getGalleryList$ = this.screenService.display$.pipe(
     switchMap((display) => display.components),
     concatMap((component: ComponentDto) =>
@@ -130,6 +146,12 @@ export class FileUploadComponent implements OnInit {
       files: files[id] || [],
       galleryFiles: galleryFiles || [],
     } as UploadContext;
+  }
+
+  // TODO: Упростить(удалить?) метод
+  private getMnemonicWithoutOrder(mnemonic: string): string {
+    const result = mnemonic.match(/\.[0-9]*$/);
+    return result ? mnemonic.replace(result[0], '') : mnemonic;
   }
 
   private setUploadersRestrictions(): void {
