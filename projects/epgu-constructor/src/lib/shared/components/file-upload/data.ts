@@ -84,6 +84,7 @@ export class FileItem {
   ) {
     if (item) {
       this.item.uploaded = true;
+      if (!this.item.objectTypeId) this.item.objectTypeId = this.item.objectType; // TODO: разобраться откуда взялось дублирование данных
     }
     if (!raw && item) {
       const type = this.getMimeType();
@@ -93,7 +94,6 @@ export class FileItem {
         type,
       } as File;
       this.isRawMock = true;
-      this.item.objectTypeId = this.item.objectType; // TODO: разобраться откуда взялось дублирование данных
     }
     this.isImage = /^.*\.(jpe?g|gif|png|bmp)$/i.test(this.raw.name);
   }
