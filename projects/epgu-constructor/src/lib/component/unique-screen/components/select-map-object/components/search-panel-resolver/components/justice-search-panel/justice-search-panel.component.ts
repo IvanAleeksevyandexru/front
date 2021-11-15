@@ -12,11 +12,9 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
-import {
-  DadataNormalizeResponse,
-  DadataSuggestionsAddress,
-} from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
+import { DadataNormalizeResponse } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { JusticeSearchPanelService } from './justice-search-panel.service';
+import { SelectMapObjectService } from '../../../../select-map-object.service';
 
 @Component({
   selector: 'epgu-constructor-justice-search-panel',
@@ -42,6 +40,7 @@ export class JusticeSearchPanelComponent implements AfterViewInit {
     private yaMapService: YaMapService,
     private ngUnsubscribe$: UnsubscribeService,
     private justiceSearchPanelService: JusticeSearchPanelService,
+    private selectMapObjectService: SelectMapObjectService,
   ) {
     this.data = this.screenService.getCompFromDisplay().attrs.searchPanel || ({} as ComponentDto);
   }
@@ -64,17 +63,20 @@ export class JusticeSearchPanelComponent implements AfterViewInit {
         takeUntil(this.ngUnsubscribe$),
       )
       .subscribe(() => {
+        if (this.selectMapObjectService.userAddress) {
+          this.lookupChanged(this.selectMapObjectService.userAddress);
+        }
         this.yandexMapService.placeObjectsOnMap([]);
         this.justiceSearchPanelService.initPolygons();
       });
   }
 
-  public lookupChanged(dadataSuggestion: DadataSuggestionsAddress): void {
-    if (!dadataSuggestion) {
+  public lookupChanged(address: string): void {
+    if (!address) {
       return;
     }
     this.dictionaryApiService
-      .getDadataNormalize(dadataSuggestion.address)
+      .getDadataNormalize(address)
       .subscribe((response: DadataNormalizeResponse) => {
         if (response.geo_lon && response.geo_lat) {
           const defaultMapZoomRate = 8;
