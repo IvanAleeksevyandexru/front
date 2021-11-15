@@ -68,6 +68,7 @@ export class SelectMapObjectService implements OnDestroy {
   public mapType = MapTypes.commonMap;
   public isMapLoaded = new BehaviorSubject<boolean>(false);
   public isSelectedView = new BehaviorSubject<boolean>(false);
+  public userAddress: string;
   private _viewType = new BehaviorSubject(SidebarViewType.Map);
   private objectManager;
   private __mapStateCenter: number[];
@@ -360,6 +361,19 @@ export class SelectMapObjectService implements OnDestroy {
     this._viewType.next(type);
   }
 
+  /**
+   * Возвращает точку, симметричную параметру point, относительно параметра center
+   * @param point точка
+   * @param center центр симметрии
+   */
+  public getReflectionPoint(point: number[], center: number[]): number[] {
+    const longitudeDifference = point[0] - center[0];
+    const reflectionLongitude = center[0] - longitudeDifference;
+    const latitudeDifference = point[1] - center[1];
+    const reflectionLatitude = center[1] - latitudeDifference;
+    return [reflectionLongitude, reflectionLatitude];
+  }
+
   private convertDictionaryItemsToMapPoints(
     dictionaryItems: DictionaryYMapItem[],
   ): { obj: DictionaryYMapItem; center: [number, number] }[] {
@@ -382,18 +396,6 @@ export class SelectMapObjectService implements OnDestroy {
     const minDistance = Math.max(...distances);
     const minDistanceIdx = distances.indexOf(minDistance);
     return points[minDistanceIdx];
-  }
-  /**
-   * Возвращает точку, симметричную параметру point, относительно параметра center
-   * @param point точка
-   * @param center центр симметрии
-   */
-  private getReflectionPoint(point: number[], center: number[]): number[] {
-    const longitudeDifference = point[0] - center[0];
-    const reflectionLongitude = center[0] - longitudeDifference;
-    const latitudeDifference = point[1] - center[1];
-    const reflectionLatitude = center[1] - latitudeDifference;
-    return [reflectionLongitude, reflectionLatitude];
   }
 
   private getRadiusPoints(

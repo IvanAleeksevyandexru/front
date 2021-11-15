@@ -11,7 +11,7 @@
     [itemsProvider]="provider"
     [showSuggestion]="true"
     [disabled]="!mapIsLoaded"
-    (changed)="lookupChanged($event?.originalItem)"
+    (changed)="lookupChanged($event?.originalItem?.address)"
     [showExpandCollapse]="false"
     [queryMinSymbolsCount]="0"
     [showMagnifyingGlass]="true"

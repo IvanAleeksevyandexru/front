@@ -156,6 +156,7 @@ export class JusticeSearchPanelService implements OnDestroy {
       this.courtZones.setOptions('fillOpacity', 0.25);
       polygon.options.set('fillOpacity', 0.75);
     } else {
+      this.yandexMapService.setCenter(coords);
       this.yandexMapService.closeBalloon();
       this.yandexMapService.objectManager.removeAll();
       this.selectMapObjectService.isNoDepartmentErrorVisible.next(true);
@@ -168,18 +169,8 @@ export class JusticeSearchPanelService implements OnDestroy {
     const point1 = this.myPlacemark.geometry.getCoordinates();
     const courtCoordinates = this.yandexMapService.objectManager.objects.getById(0).geometry
       .coordinates;
-    const deltaX = parseFloat((point1[0] - courtCoordinates[0]).toFixed(14));
-    const deltaY = parseFloat((point1[1] - courtCoordinates[1]).toFixed(14));
-    const point2 = [courtCoordinates[0] - deltaX, courtCoordinates[1] - deltaY];
-
-    const leftX = Math.min(point1[0], point2[0]);
-    const leftY = Math.min(point1[1], point2[1]);
-    const rightX = Math.max(point1[0], point2[0]);
-    const rightY = Math.max(point1[1], point2[1]);
-    const bounds = [
-      [leftX, leftY],
-      [rightX, rightY],
-    ];
+    const point2 = this.selectMapObjectService.getReflectionPoint(point1, courtCoordinates);
+    const bounds = this.yandexMapService.getBoundsByCoords([point1, point2]);
 
     this.yaMapService.map.setBounds(bounds, { duration: 500 });
   }
