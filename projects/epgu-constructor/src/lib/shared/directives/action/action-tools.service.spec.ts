@@ -207,40 +207,43 @@ describe('ActionToolsService', () => {
   describe('copyToClipboard()', () => {
     it('should call notifierService.success()', () => {
       const spy = jest.spyOn(notifierService, 'success');
+      service.bufferData = copyToClipboardAction.value;
       service.copyToClipboard(copyToClipboardAction);
       expect(spy).toBeCalled();
     });
     it('should call service.sendAction(), if action.attrs.additionalParams exists', () => {
-      const spy = jest.spyOn(service, 'sendAction');
+      service.bufferData = '';
+      const spy = jest.spyOn(service, 'loadClipboardData');
       const newAction = cloneDeep(copyToClipboardAction);
       newAction.attrs.additionalParams = { screenId: 's1' };
       service.copyToClipboard(newAction);
       expect(spy).toBeCalled();
     });
     it('should call copyAndNotify() within service.sendAction(), with value + host + response.value string', () => {
-      const spy = jest.spyOn(service, 'copyAndNotify');
+      service.bufferData = '';
       const newAction = cloneDeep(copyToClipboardAction);
       newAction.attrs.additionalParams = { screenId: 's1' };
       service.copyToClipboard(newAction);
-      expect(spy).toHaveBeenCalledWith('Скопирована ссылка: https://host.com/600101/1/formvalue');
+      expect(service.bufferData).toEqual('Скопирована ссылка: https://host.com/600101/1/formvalue');
     });
     it('should call copyAndNotify() within service.sendAction(), with value + host + response.value string without current url queryParams, if any', () => {
-      const spy = jest.spyOn(service, 'copyAndNotify');
       const newAction = cloneDeep(copyToClipboardAction);
       locationService['setHref']('https://host.com/600101/1/form?key=value');
       newAction.attrs.additionalParams = { screenId: 's1' };
       service.copyToClipboard(newAction);
-      expect(spy).toHaveBeenCalledWith('Скопирована ссылка: https://host.com/600101/1/formvalue');
+      expect(service.bufferData).toEqual('Скопирована ссылка: https://host.com/600101/1/formvalue');
     });
   });
 
   describe('copyAndNotify()', () => {
     it('should call clipboard.copy() with value', () => {
+      service.bufferData = copyToClipboardAction.value;
       const spy = jest.spyOn(clipboard, 'copy');
       service.copyToClipboard(copyToClipboardAction);
       expect(spy).toHaveBeenCalledWith(copyToClipboardAction.value);
     });
     it('should call notifierService.success() with value', () => {
+      service.bufferData = copyToClipboardAction.value;
       const spy = jest.spyOn(notifierService, 'success');
       service.copyToClipboard(copyToClipboardAction);
       expect(spy).toHaveBeenCalledWith({ message: copyToClipboardAction.value });

@@ -11,12 +11,10 @@ import {
 import {
   BusEventType,
   ConfigService,
-  DeviceDetectorService,
   DownloadService,
   EventBusService,
   LocationService,
   ModalService,
-  System,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   FormPlayerNavigation,
@@ -50,6 +48,8 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionToolsService {
+
+  bufferData = '';
   constructor(
     private formPlayerApiService: FormPlayerApiService,
     private autocompleteApiService: AutocompleteApiService,
@@ -67,7 +67,6 @@ export class ActionToolsService {
     private navModalService: NavigationModalService,
     private notifierService: NotifierService,
     private screenService: ScreenService,
-    private deviceDetector: DeviceDetectorService,
   ) {}
 
   public openConfirmationModal(
@@ -211,7 +210,7 @@ export class ActionToolsService {
     return bodyResult;
   }
 
-  public copyToClipboard(action: ComponentActionDto): void {
+  public loadClipboardData(action: ComponentActionDto): void {
     const { value } = action;
     if (action.attrs?.additionalParams) {
       this.sendAction<string>(action)
@@ -223,65 +222,22 @@ export class ActionToolsService {
             const str = `${value ? value : ''} ${currentUrl ? currentUrl : ''}${
               queryParams ? queryParams : ''
             }`;
-
-            this.copyAndNotify(str);
+            this.bufferData = str;
           },
           (error) => console.log(error),
         );
       return;
     }
-    this.copyAndNotify(value);
+    this.bufferData = value;
+  }
+
+  public copyToClipboard(action: ComponentActionDto): void {
+    // Для того чтобы не было проблем с копированием в буффер обмена на IOS подгружаем данные для буффера заранее
+    this.bufferData ? this.copyAndNotify(this.bufferData) : this.loadClipboardData(action);
   }
 
   private copyAndNotify(value: string): void {
-    /* TODO: ниже уродливый костыль, обеспечивающий работу копирования текста в буфер обмена на iOS
-    Вот бы Apple не выделывались и реализовывали веб-стандарты как все, а не как они видят.
-    В перспективе избавиться от этого костыля в пользу Clipboard API, если этот код доживет до таких времен,
-    когда будет адекватная поддержка стандарта, а не вот это все.  */
-    const iosCopyToClipboard = (value): void => {
-      const el = document.createElement('textarea');
-      el.value = value;
-      el.setAttribute('readonly', '');
-      // @ts-ignore
-      el.style = { position: 'absolute', left: '-9999px' };
-      document.body.appendChild(el);
-
-      if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
-        // save current contentEditable/readOnly status
-        const editable = el.contentEditable;
-        const readOnly = el.readOnly;
-
-        // convert to editable with readonly to stop iOS keyboard opening
-        el.contentEditable = 'true';
-        el.readOnly = true;
-
-        // create a selectable range
-        const range = document.createRange();
-        range.selectNodeContents(el);
-
-        // select the range
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-        el.setSelectionRange(0, 999999);
-
-        // restore contentEditable/readOnly to original state
-        el.contentEditable = editable;
-        el.readOnly = readOnly;
-      } else {
-        el.select();
-      }
-
-      document.execCommand('copy');
-      document.body.removeChild(el);
-    };
-
-    if (this.deviceDetector.system !== System.iOS) {
-      this.clipboard.copy(value);
-    } else {
-      iosCopyToClipboard(value);
-    }
-
+    this.clipboard.copy(value);
     this.notifierService.success({ message: `${value}` });
   }
 
