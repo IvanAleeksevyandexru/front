@@ -161,6 +161,9 @@ export class YandexMapService implements OnDestroy {
   }
 
   public getObjectById<T>(id: number): IFeatureItem<T> {
+    if (!id) {
+      return;
+    }
     return this.objectManager.objects
       .getAll()
       .find((mapObj) => mapObj.properties.res.idForMap === id);
@@ -459,7 +462,7 @@ export class YandexMapService implements OnDestroy {
   ): ymaps.ObjectManager {
     const LOMSettings = {
       clusterize: true,
-      hasBalloon: false,
+      clusterHasBalloon: false,
       splitRequests: false,
       paddingTemplate: 'uik_%b',
       ...settings,
@@ -475,6 +478,7 @@ export class YandexMapService implements OnDestroy {
         res: {
           ...obj.properties,
         },
+        pinStyle: 'pin-blue',
       };
     });
 
