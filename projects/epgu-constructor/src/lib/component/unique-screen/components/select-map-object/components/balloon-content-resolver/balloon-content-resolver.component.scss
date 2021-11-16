@@ -17,7 +17,8 @@
     @include typ-plain-small;
 
     &__header {
-      padding-bottom: 0px;
+      margin: -24px;
+      padding: 24px;
       font-weight: normal;
       &__bold {
         font-weight: $fw-bold;
