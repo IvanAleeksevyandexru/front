@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { DictionaryYMapItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { IBalloonContent } from '../../balloon-content-resolver.interface';
 import { Ielection, IuikFullDataResponse } from './elections-balloon-content.interface';
@@ -20,7 +21,7 @@ import { Ielection, IuikFullDataResponse } from './elections-balloon-content.int
 export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloonContent {
   @Input() isSelectButtonHidden = false;
   @Input() showLoader: Observable<boolean>;
-  @Input() mapObject;
+  @Input() mapObject: DictionaryYMapItem;
   @Input() attrs;
   public selectObject: Function;
   public objectClick: Function;
@@ -50,5 +51,9 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
         }),
       );
     this.cdr.detectChanges();
+  }
+
+  public headerClick(): void {
+    this.mapObject.expanded = !this.mapObject.expanded;
   }
 }
