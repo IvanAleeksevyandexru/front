@@ -11,7 +11,7 @@
     "@angular/core": "12.2.5",
     "@angular/forms": "12.2.5",
     "@angular/cdk": "12.2.5",
-    "@epgu/ui": "3.0.385-3-core-frontv3",
+    "@epgu/ui": "3.0.391-1-frontv5",
     "rxjs": "6.6.6",
     "lodash": ""
   },
