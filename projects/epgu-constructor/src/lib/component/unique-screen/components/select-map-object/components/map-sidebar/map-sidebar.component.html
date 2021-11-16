@@ -22,7 +22,14 @@
       (collapseObjectEvent)="collapseObject($event)" >
     </epgu-constructor-balloon-content-resolver>
   </div>
-
+  <div
+    *ngIf="
+      originalValue.length
+      && (sidebarData.attrs.mapType === MapTypes.justiceMap || sidebarData.attrs.mapType === MapTypes.electionsMap)"
+    class="cross-btn"
+    (click)="collapseObject(activeItem)"
+  >
+  </div>
   <perfect-scrollbar [config]="scrollConfig" class="perfect-scrollbar" [ngClass]="{ hidden: selectMapObjectService.isMapViewType }">
     <ng-container *ngIf="balloonDictionaryItems.length">
       <ng-container *ngFor="let mapObject of balloonDictionaryItems">
@@ -44,26 +51,43 @@
         {{ sidebarData.attrs.notFoundItemsMessage || 'По вашему запросу ничего не найдено' }}
       </p>
     </ng-container>
-    <ng-container *ngIf="activeItem && sidebarData.attrs.mapType === 'justiceMap' || sidebarData.attrs.mapType === 'electionsMap'">
-      <epgu-constructor-balloon-content-resolver
-        [contentType]="balloonContentType"
-        [mapObject]="activeItem"
-        [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
-        [attrs]="sidebarData.attrs.balloonAttrs"
-        (selectObject)="selectObject($event)"
-        (handleObjectClickEvent)="handleMapObjectClick(activeItem)"
-        (collapseObjectEvent)="collapseObject(activeItem)" >
-      </epgu-constructor-balloon-content-resolver>
+    <ng-container
+      *ngIf="originalValue.length
+      && (sidebarData.attrs.mapType === MapTypes.justiceMap || sidebarData.attrs.mapType === MapTypes.electionsMap)"
+    >
+      <ng-container *ngFor="let mapObject of originalValue">
+        <epgu-constructor-balloon-content-resolver
+          [contentType]="balloonContentType"
+          [mapObject]="mapObject"
+          [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
+          [attrs]="sidebarData.attrs.balloonAttrs"
+          (selectObject)="selectObject($event)"
+          (handleObjectClickEvent)="handleMapObjectClick(activeItem)"
+          (collapseObjectEvent)="collapseObject(activeItem)"
+        >
+        </epgu-constructor-balloon-content-resolver>
+      </ng-container>
     </ng-container>
   </perfect-scrollbar>
 
 <epgu-constructor-swipeable-wrapper *ngIf="activeItem && selectMapObjectService.isMapViewType" class="swipeable-mode">
-  <epgu-constructor-balloon-content-resolver
-    [contentType]="balloonContentType"
-    [mapObject]="activeItem"
-    [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
-    [attrs]="sidebarData.attrs.balloonAttrs"
-    (selectObject)="selectObject($event)"
-    (collapseObjectEvent)="activeItem = null" >
-  </epgu-constructor-balloon-content-resolver>
+  <div
+    *ngIf="originalValue.length && (sidebarData.attrs.mapType === 'justiceMap' || sidebarData.attrs.mapType === 'electionsMap')"
+    class="cross-btn"
+    (click)="collapseObject(activeItem)"
+  >
+  </div>
+  <perfect-scrollbar [config]="scrollConfig" class="perfect-scrollbar">
+    <ng-container *ngFor="let mapObject of originalValue">
+      <epgu-constructor-balloon-content-resolver
+        [contentType]="balloonContentType"
+        [mapObject]="mapObject"
+        [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
+        [attrs]="sidebarData.attrs.balloonAttrs"
+        (selectObject)="selectObject($event)"
+        (collapseObjectEvent)="activeItem = null"
+      >
+      </epgu-constructor-balloon-content-resolver>
+    </ng-container>
+  </perfect-scrollbar>
 </epgu-constructor-swipeable-wrapper>

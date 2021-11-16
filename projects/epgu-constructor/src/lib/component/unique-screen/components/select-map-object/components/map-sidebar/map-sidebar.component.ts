@@ -13,7 +13,7 @@ import { DisclaimerDto, KeyValueMap } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService, YandexMapService, YMapItem } from '@epgu/epgu-constructor-ui-kit';
 import { takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { SelectMapObjectService } from '../../select-map-object.service';
+import { MapTypes, SelectMapObjectService } from '../../select-map-object.service';
 
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { PanelTypes } from '../search-panel-resolver/search-panel-resolver.component';
@@ -40,6 +40,8 @@ export class MapSidebarComponent implements OnInit {
   public balloonContentType: string;
   public balloonDictionaryItems: DictionaryItem[];
   public activeItem: DictionaryItem;
+  public originalValue: DictionaryItem[] = [];
+  public MapTypes = MapTypes;
 
   constructor(
     public screenService: ScreenService,
@@ -91,9 +93,12 @@ export class MapSidebarComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: DictionaryItem[]) => {
         if (value) {
+          this.originalValue = value;
           [this.activeItem] = value;
-          this.activeItem.expanded = true;
-          this.expandObject(value[0]);
+          if (value.length === 1 || this.sidebarData.attrs.mapType !== MapTypes.electionsMap) {
+            this.activeItem.expanded = true;
+            this.expandObject(value[0]);
+          }
           this.cdr.detectChanges();
           const matchingBalloon = this.balloonComponents.find((item) =>
             arePointsEqual(item.mapObject, value[0]),
@@ -102,6 +107,7 @@ export class MapSidebarComponent implements OnInit {
             matchingBalloon.balloonContentComponentRef.location.nativeElement.scrollIntoView();
           }
         } else {
+          this.originalValue = [];
           this.activeItem = null;
         }
       });
