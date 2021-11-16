@@ -1,11 +1,11 @@
 <div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded"></div>
-<div
-  class="balloon-content-wrapper"
-  (click)="objectClick(mapObject)"
->
-  <h6 [ngClass]="{
-  'map-object__header': !mapObject.expanded,
-  'map-object__header__bold': mapObject.expanded }"
+<div class="balloon-content-wrapper">
+  <h6
+    (click)="objectClick(mapObject)"
+    [ngClass]="{
+      'map-object__header__bold': mapObject.expanded
+    }"
+    class="map-object__header"
   >
     {{ mapObject.title }}
   </h6>
