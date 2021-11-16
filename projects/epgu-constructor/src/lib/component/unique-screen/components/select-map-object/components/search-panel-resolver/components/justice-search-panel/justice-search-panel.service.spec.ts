@@ -201,6 +201,7 @@ describe('JusticeSearchPanelService', () => {
 
       setOptions: () => null,
     };
+    jest.spyOn(yandexMapService, 'setCenter').mockImplementation(() => null);
     const spy = jest.spyOn(yandexMapService, 'closeBalloon');
     justiceSearchPanelService['highlightResult'](placemark);
     expect(spy).toHaveBeenCalled();

@@ -46,57 +46,30 @@
       border-radius: 50%;
     }
   }
-  .preview {
-    .icon {
-      width: 24px;
-      height: 24px;
-      background-repeat: no-repeat;
-      background-color: transparent;
-      box-sizing: content-box;
-      border: none;
-      padding: 0 12px;
-      background-position: 50% 50%;
-      border-right: 1px solid $color-blu-selvaggio;
 
-      &:first-child {
-        padding-left: 0;
-        background-position: calc(50% - 6px) 50%;
-      }
-      &:last-child {
-        border-right: none;
-        padding-right: 0;
-        background-position: calc(50% + 6px) 50%;
-      }
-    }
-
-    .map {
-      background-image: url('./../../../../../assets/icons/map.svg');
-
-      &:hover {
-        background-image: url('./../../../../../assets/icons/map-hover.svg');
-        cursor: pointer;
-      }
-
-      &.active {
-        background-image: url('./../../../../../assets/icons/map-active.svg');
-        cursor: default;
-      }
-    }
-
-    .list {
-      background-image: url('./../../../../../assets/icons/list.svg');
-
-      &:hover {
-        background-image: url('./../../../../../assets/icons/list-hover.svg');
-        cursor: pointer;
-      }
-
-      &.active {
-        background-image: url('./../../../../../assets/icons/list-active.svg');
-        cursor: default;
-      }
-    }
+  .nav-bar {
+    display: flex;
   }
+
+  .nav-item {
+    color: $color-gosblue;
+    cursor: pointer;
+
+    &:first-child {
+      border-right: 1px solid $color-blu-selvaggio;
+      padding-right: 12px;
+    }
+
+    &:last-child {
+      padding-left: 12px
+    }
+
+    &.active {
+      color: $color-black;
+      font-weight: $fw-bold;
+    }
+
+    }
 }
 .back-button {
   display: flex;

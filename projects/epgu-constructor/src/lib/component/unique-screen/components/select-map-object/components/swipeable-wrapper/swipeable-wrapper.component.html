@@ -7,7 +7,7 @@
   <div class="swipeable-marker-wrapper"
        (click)="expanded = !expanded"
   >
-    <img src="assets/icons/svg/swipeable-marker.svg"
+    <img src="{{config.staticDomainAssetsPath}}/assets/icons/svg/swipeable-marker.svg"
          class="swipeable-marker"
          [ngClass]="{rotated: !expanded}">
   </div>

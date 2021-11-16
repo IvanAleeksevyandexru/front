@@ -1783,10 +1783,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.3.tgz#90420f9f9c6d3987f176a19a7d8e764271a2f55d"
   integrity sha512-Fxt+AfXgjMoin2maPIYzFZnQjAXjAL0PHscM5pRTtatFqB+vZxAM9tLp2Optnuw3QOQC40jTNeGYFOMvyf7v9g==
 
-"@epgu/ui@3.0.385-3-core-frontv3":
-  version "3.0.385-3-core-frontv3"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.385-3-core-frontv3.tgz#336487d747580527e6b6d2b59af5834a191166de"
-  integrity sha512-nRMzNb49I66AifE5720AJCizbnkwet5ezQowhU+Fh5lTrj4dGBkRNsoeU6Fc+p+GW8S1FgAIXDntITCYH1VYDg==
+"@epgu/ui@3.0.391-1-frontv5":
+  version "3.0.391-1-frontv5"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.391-1-frontv5.tgz#24579c77a43a7e705b45d31793ec3ec8c7b2951d"
+  integrity sha512-kuHayaByP9cKgedNW1JQV2pFnvvZDUj/tmH1msHDkH9O6phnkkU3Kp04pz/Zl/pHc0I2lTltEwFz46OLxCEcgQ==
   dependencies:
     "@epgu/zipkin" "0.0.3"
     tslib "^2.0.0"

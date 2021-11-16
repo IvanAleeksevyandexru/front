@@ -12,6 +12,16 @@
   }
 }
 
+.cross-btn {
+  position: relative;
+  margin-left: auto;
+  padding-bottom: 60px;
+  display: none;
+  @include tablets-up() {
+    display: block;
+  }
+}
+
 .previously-choosen.hidden {
   @include tablets-down() {
       display: none;
@@ -46,12 +56,13 @@
 }
 
 ::ng-deep.swipeable-mode {
+  .cross-btn {
+    display: block;
+    position: absolute;
+  }
   .balloon-content-wrapper {
-    height: 100vh;
     display: flex !important;
     flex-direction: column;
-    padding-top: 0 !important;
-    overflow: scroll;
   }
   .submit-button {
     margin-top: auto !important;

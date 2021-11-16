@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-swipeable-wrapper',
@@ -8,4 +9,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class SwipeableWrapperComponent {
   public expanded = false;
+
+  constructor(public config: ConfigService) {}
 }

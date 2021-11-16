@@ -11,8 +11,11 @@
   </h6>
   <ng-container *ngIf="mapObject.expanded">
     <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
-      <span class="map-object__label">{{ itemContent.label }}: </span>
-      <span class="PGU-AttrsValue">{{ itemContent.value }}</span>
+      <div class="map-object__label">{{ itemContent.label }}: </div>
+      <epgu-constructor-output-html
+      [html]="itemContent.value"
+      >
+      </epgu-constructor-output-html>
     </div>
     <div *ngIf="mapObject.attributeValues.AREA_DESCR" class="map-baloon-content-Bottom">
       На данной площадке действуют дополнительные условия оказания услуг.
