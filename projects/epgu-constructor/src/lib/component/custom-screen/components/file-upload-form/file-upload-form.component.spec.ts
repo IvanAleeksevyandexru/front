@@ -195,12 +195,11 @@ describe('FileUploadComponent', () => {
     expect(controlValue.setErrors).toHaveBeenCalledWith({ required: true });
   });
 
-  it('should be prefixForMnemonic', (done) => {
-    component.prefixForMnemonic$.subscribe((mnemonic) => {
-      expect(mnemonic).toBe(`${mockId}.FileUploadComponent`);
-      done();
+  describe('getUploadComponentPrefixForMnemonic', () => {
+    it('should return mnemonic', () => {
+      const testMnemonic = component.getUploadComponentPrefixForMnemonic(mockComponent);
+      expect(testMnemonic).toBe('test.FileUploadComponent');
     });
-    control.updateValueAndValidity();
   });
 
   describe('Total size info plate', () => {
