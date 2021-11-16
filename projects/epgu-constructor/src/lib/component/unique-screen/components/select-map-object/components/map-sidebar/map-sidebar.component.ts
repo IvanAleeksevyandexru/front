@@ -55,6 +55,7 @@ export class MapSidebarComponent implements OnInit {
     this.searchPanelType = PanelTypes[this.sidebarData.attrs.mapType];
     this.balloonContentType = ContentTypes[this.sidebarData.attrs.mapType];
     this.handleSubscriptions();
+    console.log('Elections must work!');
   }
 
   public handleFiltering(data: DictionaryItem[]): void {
