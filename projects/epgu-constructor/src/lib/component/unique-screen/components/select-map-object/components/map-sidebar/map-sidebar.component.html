@@ -39,6 +39,7 @@
         [mapObject]="mapObject"
         [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
         [attrs]="sidebarData.attrs.balloonAttrs"
+        [redraw]="mapObject.expanded"
         (selectObject)="selectObject($event)"
         (handleObjectClickEvent)="handleMapObjectClick(mapObject)"
         (collapseObjectEvent)="collapseObject(mapObject)" >

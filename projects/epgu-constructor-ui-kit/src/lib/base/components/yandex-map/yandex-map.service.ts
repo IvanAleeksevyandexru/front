@@ -69,7 +69,7 @@ export class YandexMapService implements OnDestroy {
           id: item.id || index,
           geometry: { type: 'Point', coordinates: item.center },
           properties: {
-            res: { ...item.obj },
+            res: item.obj,
             pinStyle: item.obj.isSelected ? 'pin-red-checked' : 'pin-blue',
             miniBalloonText: this.getMiniBalloonText(item),
           },
