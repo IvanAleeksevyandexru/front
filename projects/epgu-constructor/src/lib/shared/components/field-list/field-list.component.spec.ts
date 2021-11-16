@@ -183,6 +183,90 @@ describe('FieldListComponent', () => {
     });
   });
 
+  describe('epgu-constructor-output-html groupName', () => {
+    const selector = 'epgu-constructor-output-html';
+
+    it('html should be groupName', async () => {
+      component.preparedData = mockPreparedData;
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
+      expect(debugEl.componentInstance.html).toBe('groupName');
+    });
+
+    it('clarifications should be data.attrs.clarifications', async () => {
+      const clarifications = {
+        clarification: {
+          title: 'clarification title',
+          text: 'clarification text',
+          setting: {},
+          type: 'clarification type',
+          id: 'clarification id',
+        }
+      };
+      component.data.attrs.clarifications = clarifications;
+      component.preparedData = mockPreparedData;
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
+      expect(debugEl.componentInstance.clarifications).toBe(clarifications);
+    });
+
+    it('ngClass should be style.groupTitle', async () => {
+      component.preparedData = mockPreparedData;
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const debugEl = fixture.debugElement.queryAll(By.css(selector))[0];
+      expect(debugEl.attributes['ng-reflect-ng-class']).toBe('mb-12');
+    });
+  });
+
+  describe('epgu-constructor-output-html field.label', () => {
+    const selector = 'epgu-constructor-output-html';
+
+    it('should create if field.label', async () => {
+      component.preparedData = mockPreparedData;
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
+      expect(debugEl).toBeTruthy();
+    });
+
+    it('html should be field.label', async () => {
+      component.preparedData = mockPreparedData;
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
+      expect(debugEl.componentInstance.html).toBe('label');
+    });
+
+    it('clarifications should be data.attrs.clarifications', async () => {
+      const clarifications = {
+        clarification: {
+          title: 'clarification title',
+          text: 'clarification text',
+          setting: {},
+          type: 'clarification type',
+          id: 'clarification id',
+        }
+      };
+      component.data.attrs.clarifications = clarifications;
+      component.preparedData = mockPreparedData;
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
+      expect(debugEl.componentInstance.clarifications).toBe(clarifications);
+    });
+
+    it('ngClass should be style.label', async () => {
+      component.preparedData = mockPreparedData;
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const debugEl = fixture.debugElement.queryAll(By.css(selector))[1];
+      expect(debugEl.attributes['ng-reflect-ng-class']).toBe('mb-4');
+    });
+  });
+
   describe('calculateVisibility()', () => {
     it('should return true, if current fieldGroup item passed by index contain visibilityLabel and match currentEaisdoState', () => {
       component.currentEaisdoState = EaisdoStateTypes.wait;
@@ -210,6 +294,12 @@ describe('FieldListComponent', () => {
       currentAnswersService.state = { id: { value: { value: { placeholder: 'someValue' }}}};
       const result = component['transformString'](str);
       expect(result).toBe('someValue');
+    });
+
+    it('should return passed string if path is incorrectly specified', () => {
+      currentAnswersService.state = { id: { value: { value: {}}}};
+      const result2 = component['transformString'](str);
+      expect(result2).toBe(str);
     });
   });
 
