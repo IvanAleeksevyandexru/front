@@ -40,4 +40,10 @@
       color: $color-summer-night;
     }
   }
+
+  & .confirm{
+    display: block;
+    width: fit-content;
+    margin-top: 4px;
+  }
 }

@@ -10,6 +10,7 @@
         [title]="notifier.title"
         [description]="notifier.message"
         [isNotifierDisclaimer]="true"
+        (destroy)="removeNotifier(notifier)"
       ></epgu-constructor-disclaimer>
     </div>
     <a class="icon-close icon-close--small" (click)="removeNotifier(notifier)" title="Закрыть"></a>
