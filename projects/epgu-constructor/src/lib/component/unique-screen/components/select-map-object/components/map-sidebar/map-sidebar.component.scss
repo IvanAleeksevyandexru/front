@@ -59,6 +59,7 @@
   .cross-btn {
     display: block;
     position: absolute;
+    top: 0;
   }
   .balloon-content-wrapper {
     display: flex !important;
@@ -71,4 +72,9 @@
 }
 ::ng-deep.swipeable-mode .map-object {
   position: static !important;
+  &__header {
+    &__bold {
+      max-width: none !important;
+    }
+  }
 }
