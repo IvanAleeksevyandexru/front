@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import { ChipModule, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { MultipleChoiceDictionaryComponent } from './multiple-choice-dictionary.component';
 import { BaseModule } from '../../../base.module';
@@ -17,7 +16,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
   let fixture: ComponentFixture<MultipleChoiceDictionaryComponent>;
   let modalService: ModalService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MultipleChoiceDictionaryComponent],
       imports: [MockModule(BaseModule), MockModule(ChipModule)],

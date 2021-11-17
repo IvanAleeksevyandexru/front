@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { DownloadService } from './download.service';
-import { configureTestSuite } from 'ng-bullet';
 import { DeviceDetectorService } from '../device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../device-detector/device-detector.service.stub';
 
 describe('DownloadService', () => {
   let service: DownloadService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },

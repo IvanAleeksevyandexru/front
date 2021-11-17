@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { TimeSlotSmev3Component } from './time-slot-smev3.component';
 import { MockComponent } from 'ng-mocks';
 import { TimeSlotMonthComponent } from '../../calendar/time-slot-month/time-slot-month.component';
@@ -70,8 +69,8 @@ describe('TimeSlotSmev3Component', () => {
   let error: TimeSlotErrorService;
   let smev3: TimeSlotSmev3StateService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [
         TimeSlotSmev3Component,
         MockComponent(TimeSlotMonthComponent),

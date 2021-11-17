@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import { ScreenTypes, DisplayDto } from '@epgu/epgu-constructor-types';
 import {
   ScreenPadModule,
@@ -70,7 +69,7 @@ describe('CarListContainerComponent', () => {
     ],
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CarListContainerComponent, CarListComponent],
       providers: [

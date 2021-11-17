@@ -18,7 +18,6 @@ import { DictionaryToolsService } from '../../../services/dictionary/dictionary-
 import { ComponentsListRelationsService } from '../../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../services/date-range/date-range.service';
 import { RefRelationService } from '../../../services/ref-relation/ref-relation.service';
-import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -61,7 +60,7 @@ describe('MultiChoiceDictionaryModalComponent', () => {
     },
   ];
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MultiChoiceDictionaryModalComponent],
       imports: [MockModule(ConfirmationModalModule), MockModule(BaseModule), HttpClientModule],

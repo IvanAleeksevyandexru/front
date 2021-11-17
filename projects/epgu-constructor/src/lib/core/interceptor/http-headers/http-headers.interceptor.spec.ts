@@ -1,7 +1,6 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { HttpHeadersInterceptor } from './http-headers.interceptor';
 import { InitDataService } from '../../services/init-data/init-data.service';
@@ -14,7 +13,7 @@ describe('HttpHeadersInterceptor', () => {
   let httpTestingController: HttpTestingController;
   let http: HttpClient;
 
-  configureTestSuite(() =>
+  beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

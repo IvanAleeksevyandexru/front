@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { TimeSlotTimeComponent } from './time-slot-time.component';
 import { MockModule } from 'ng-mocks';
 import { CalendarModule } from '../../../../../../../shared/components/calendar/calendar.module';
@@ -23,8 +22,8 @@ describe('TimeSlotTimeComponent', () => {
   let component: TimeSlotTimeComponent;
   let fixture: ComponentFixture<TimeSlotTimeComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSlotTimeComponent],
       imports: [MockModule(CalendarModule)],
       providers: [],

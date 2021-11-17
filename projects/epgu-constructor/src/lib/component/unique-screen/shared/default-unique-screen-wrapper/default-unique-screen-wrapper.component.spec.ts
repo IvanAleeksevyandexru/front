@@ -20,7 +20,6 @@ import { ActionServiceStub } from '../../../../shared/directives/action/action.s
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
@@ -37,7 +36,7 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
   let component: DefaultUniqueScreenWrapperComponent;
   let fixture: ComponentFixture<DefaultUniqueScreenWrapperComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, UserInfoLoaderModule, ScreenButtonsModule, BaseModule],
       declarations: [

@@ -12,8 +12,8 @@ describe('ConfirmationModalBaseComponent', () => {
   let component: CtaModalComponent;
   let fixture: ComponentFixture<CtaModalComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [CtaModalComponent],
       imports: [BaseUiModule, A11yModule, BaseUiModule],
       providers: [

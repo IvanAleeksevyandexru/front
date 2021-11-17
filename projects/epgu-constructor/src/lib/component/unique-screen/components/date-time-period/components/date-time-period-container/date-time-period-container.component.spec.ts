@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateTimePeriodContainerComponent } from './date-time-period-container.component';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { DateTimePeriodComponent } from '../date-time-period/date-time-period.component';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
@@ -51,8 +50,8 @@ describe('DateTimePeriodContainerComponent', () => {
     };
   };
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [DateTimePeriodContainerComponent, MockComponent(DateTimePeriodComponent)],
       imports: [MockModule(DefaultUniqueScreenWrapperModule)],
       providers: [

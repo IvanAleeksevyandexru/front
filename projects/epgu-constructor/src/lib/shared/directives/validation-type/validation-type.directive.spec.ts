@@ -24,7 +24,6 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ValidationTypeModule } from './validation-type.module';
-import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -74,7 +73,7 @@ describe('ValidationTypeDirective', () => {
   let fixture: ComponentFixture<MockComponent>;
   let service: ValidationService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
       imports: [

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { DisplayDto } from '@epgu/epgu-constructor-types';
 
 import { PrevButtonNavigationService } from './prev-button-navigation.service';
@@ -13,7 +12,7 @@ describe('PrevButtonNavigationService', () => {
   let navigationService: NavigationService;
   let screenService: ScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         PrevButtonNavigationService,

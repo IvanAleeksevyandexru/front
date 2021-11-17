@@ -2,7 +2,6 @@ import { cloneDeep } from 'lodash';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BaseComponentsModule, ConfigService, ConfigServiceStub, ConstructorLookupModule, DatesToolsService, DeviceDetectorService, DeviceDetectorServiceStub, Icons, LocalStorageService, LocalStorageServiceStub, mockSelectMapObjectStore, YandexMapService } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
@@ -26,7 +25,7 @@ describe('JusticeSearchPanelComponent', () => {
   let screenService: ScreenService;
   let MapStore: ScenarioDto;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         JusticeSearchPanelComponent,

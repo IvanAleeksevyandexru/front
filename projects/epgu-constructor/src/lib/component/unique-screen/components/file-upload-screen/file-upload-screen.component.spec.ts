@@ -20,7 +20,6 @@ import { ScreenButtonsModule } from '../../../../shared/components/screen-button
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { LongButtonComponent } from '@epgu/epgu-constructor-ui-kit';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
@@ -74,7 +73,7 @@ describe('FileUploadScreenComponent', () => {
   let currentAnswersService: CurrentAnswersService;
   let eventBusService: EventBusService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ScreenButtonsModule, PluralizeModule, FileSizeModule],
       declarations: [

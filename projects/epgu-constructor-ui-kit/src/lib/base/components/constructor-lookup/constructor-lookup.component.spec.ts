@@ -5,7 +5,6 @@ import { LookupProvider } from '@epgu/ui/models/dropdown';
 import { of } from 'rxjs';
 import { ConstructorLookupComponent } from './constructor-lookup.component';
 import { BaseUiModule } from '../../base-ui.module';
-import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -13,7 +12,7 @@ describe('ConstructorLookupComponent', () => {
   let component: ConstructorLookupComponent;
   let fixture: ComponentFixture<ConstructorLookupComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConstructorLookupComponent],
       imports: [BaseUiModule, HttpClientModule],

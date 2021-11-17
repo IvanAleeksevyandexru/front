@@ -1,7 +1,6 @@
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TextAreaComponent } from './text-area.component';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponents, MockProvider } from 'ng-mocks';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
@@ -15,7 +14,7 @@ describe('TextAreaComponent', () => {
   let component: TextAreaComponent;
   let fixture: ComponentFixture<TextAreaComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         TextAreaComponent,

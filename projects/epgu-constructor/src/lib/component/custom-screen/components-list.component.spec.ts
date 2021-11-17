@@ -10,7 +10,6 @@ import {
 } from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponents, MockPipe, MockProvider } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import { cloneDeep } from 'lodash';
 import {
   EventBusService,
@@ -84,7 +83,7 @@ describe('ComponentsListComponent', () => {
   let restToolsService: RestToolsService;
   let unsubscribeService: UnsubscribeService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientTestingModule, MemoModule, ReactiveFormsModule],
       declarations: [
@@ -296,8 +295,8 @@ describe('ComponentsListComponent', () => {
 
   describe('unsubscribe()', () => {
     it('should unsubscribe', () => {
-      const nextSpy = spyOn(unsubscribeService.ngUnsubscribe$, 'next');
-      const completeSpy = spyOn(unsubscribeService.ngUnsubscribe$, 'complete');
+      const nextSpy = jest.spyOn(unsubscribeService.ngUnsubscribe$, 'next');
+      const completeSpy = jest.spyOn(unsubscribeService.ngUnsubscribe$, 'complete');
 
       component['unsubscribe']();
 

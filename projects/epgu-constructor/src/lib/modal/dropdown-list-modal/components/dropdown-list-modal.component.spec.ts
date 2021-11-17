@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DropdownListModalComponent } from './dropdown-list-modal.component';
 import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
@@ -58,7 +57,7 @@ describe('DropdownListModalComponent', () => {
   let screenService: ScreenService;
   let eventBusService: EventBusService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [DropdownListModalComponent, DropdownListComponent, FilterPipe],
       imports: [MockModule(BaseModule), MockModule(ConfirmationModalModule), HighlightModule],

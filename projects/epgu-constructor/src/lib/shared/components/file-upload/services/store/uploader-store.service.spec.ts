@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UploaderStoreService } from './uploader-store.service';
-import { configureTestSuite } from 'ng-bullet';
 import {
   MaxCountByType,
   TerraUploadFileOptions,
@@ -52,7 +51,7 @@ const createError = (type: ErrorActions, text?: string, description?: string) =>
 describe('UploaderStoreService', () => {
   let service: UploaderStoreService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UploaderStoreService],
     });

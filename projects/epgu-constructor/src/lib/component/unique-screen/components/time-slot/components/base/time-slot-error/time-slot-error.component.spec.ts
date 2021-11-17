@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { TimeSlotErrorComponent } from './time-slot-error.component';
 import { TimeSlotEmptyErrorComponent } from '../time-slot-error-templates/time-slot-empty-error/time-slot-empty-error.component';
 import { TimeSlotCheckboxErrorComponent } from '../time-slot-error-templates/time-slot-checkbox-error/time-slot-checkbox-error.component';
@@ -38,8 +37,8 @@ describe('TimeSlotErrorComponent', () => {
   let calendarService: TimeSlotCalendarService;
   let errorService: TimeSlotErrorService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [
         TimeSlotErrorComponent,
         MockComponent(TimeSlotEmptyErrorComponent),

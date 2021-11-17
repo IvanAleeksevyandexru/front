@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
@@ -65,7 +64,7 @@ describe('AddPassportComponent', () => {
     ],
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AddPassportComponent, ScreenPadComponent],
       imports: [

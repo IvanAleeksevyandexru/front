@@ -68,9 +68,9 @@ describe('DragAndDropDirective', () => {
     const files = new FileListMock() as FileList;
     files[0] = new File([], '');
     fixture.detectChanges();
-    spyOn(comp, 'onFileSelected').and.callThrough();
+    const spy = jest.spyOn(comp, 'onFileSelected');
     div.triggerEventHandler('drop', createDragEventMock(files));
     fixture.detectChanges();
-    expect(comp.onFileSelected).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 });

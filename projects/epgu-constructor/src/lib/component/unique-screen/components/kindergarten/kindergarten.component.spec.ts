@@ -22,7 +22,6 @@ import {
   SessionStorageServiceStub,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -63,7 +62,7 @@ describe('KindergartenComponent', () => {
   let screenService: ScreenService;
   let MapStore: ScenarioDto;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [KindergartenComponent],
       imports: [BaseModule, SelectMapObjectModule, HttpClientModule],

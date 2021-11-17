@@ -3,7 +3,6 @@ import { FormControl, FormControlDirective } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { ConstructorDropdownComponent } from './constructor-dropdown.component';
 import { BaseUiModule } from '../../base-ui.module';
-import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,7 +11,7 @@ describe('ConstructorDropdownComponent', () => {
   let component: ConstructorDropdownComponent;
   let fixture: ComponentFixture<ConstructorDropdownComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConstructorDropdownComponent],
       imports: [BaseUiModule, HttpClientModule],
@@ -80,6 +79,28 @@ describe('ConstructorDropdownComponent', () => {
     expect(debugEl.componentInstance.localSearch).toBeTruthy();
     expect(debugEl.componentInstance.placeholder).toBe('---');
     expect(debugEl.componentInstance.items).toEqual([
+      {
+        collapsable: false,
+        collapsed: false,
+        dimensions: null,
+        formatted: '---',
+        groupId: undefined,
+        hidden: undefined,
+        highlightFormatted: '---',
+        highlightedAll: false,
+        id: 'empty-item',
+        lineBreak: undefined,
+        listFormatted: '---',
+        originalItem: {
+          id: 'empty-item',
+          text: '---',
+          unselectable: false,
+        },
+        selected: false,
+        text: '---',
+        textFormatted: '---',
+        unselectable: false,
+      },
       {
         id: 1,
         text: 'some text',

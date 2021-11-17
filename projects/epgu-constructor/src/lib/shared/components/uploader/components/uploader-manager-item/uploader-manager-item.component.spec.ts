@@ -21,7 +21,6 @@ import {
 } from '../../../file-upload/data';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import { FileSizePipe } from '@epgu/ui/pipes';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
@@ -78,7 +77,7 @@ describe('UploaderManagerItemComponent', () => {
   let smuService: SmuEventsService;
   let deviceDetectorService: DeviceDetectorService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderManagerItemComponent, FileSizePipe],
       imports: [MockModule(BaseModule)],

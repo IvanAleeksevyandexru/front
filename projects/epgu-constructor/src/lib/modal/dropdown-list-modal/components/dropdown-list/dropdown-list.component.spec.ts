@@ -8,8 +8,8 @@ describe('DropdownListComponent', () => {
   let component: DropdownListComponent;
   let fixture: ComponentFixture<DropdownListComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [DropdownListComponent, FilterPipe],
       imports: [BaseModule, HighlightModule],
       providers: [],

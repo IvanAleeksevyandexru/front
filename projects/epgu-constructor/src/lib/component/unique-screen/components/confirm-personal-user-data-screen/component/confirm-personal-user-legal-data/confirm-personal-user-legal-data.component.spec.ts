@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { configureTestSuite } from 'ng-bullet';
 import { MockModule, MockPipe } from 'ng-mocks';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
@@ -40,7 +39,7 @@ describe('ConfirmPersonalUserLegalDataComponent', () => {
   let screenService: ScreenServiceStub;
   let currentAnswersService: CurrentAnswersService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         ConfirmPersonalUserLegalDataComponent,

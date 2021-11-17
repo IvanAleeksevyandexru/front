@@ -19,7 +19,6 @@ import {
 import { TimerModule } from '../../../../shared/components/timer/timer.module';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
-import { configureTestSuite } from 'ng-bullet';
 
 const mockData: TimerComponentBase = {
   id: null,
@@ -42,7 +41,7 @@ describe('TimerScreenComponent', () => {
   let fixture: ComponentFixture<TimerScreenComponent>;
   let currentAnswersService: CurrentAnswersService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         TimerScreenComponent,

@@ -7,7 +7,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponents, MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { MultiChoiceDictionaryComponent } from './multi-choice-dictionary.component';
@@ -28,7 +27,7 @@ describe('MultiChoiceDictionaryComponent', () => {
   let valueControl: FormControl;
   let control: FormGroup;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         MultiChoiceDictionaryComponent,

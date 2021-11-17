@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { DaySelectorComponent } from './day-selector.component';
 import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DayComponent } from '../day/day.component';
@@ -7,6 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { SectionType } from '@epgu/epgu-constructor-types';
 import { addDays } from 'date-fns';
 import { By } from '@angular/platform-browser';
+import { take } from 'rxjs/operators';
 
 describe('DaySelectorComponent', () => {
   let component: DaySelectorComponent;
@@ -15,8 +15,8 @@ describe('DaySelectorComponent', () => {
   const today = new Date('2012-12-12');
   const testDate = new Date('2011-12-12');
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [DaySelectorComponent, MockComponent(DayComponent)],
       imports: [],
       providers: [{ provide: DatesToolsService, useClass: DatesToolsServiceStub }],
@@ -44,7 +44,7 @@ describe('DaySelectorComponent', () => {
 
   describe('base', () => {
     it('should be month$', (done) => {
-      component.month$.subscribe((v) => {
+      component.month$.pipe(take(1)).subscribe((v) => {
         expect(v).toEqual([2012, 11]);
         done();
       });

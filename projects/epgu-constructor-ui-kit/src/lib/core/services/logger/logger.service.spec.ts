@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { KEY_SHOW_LOG, LoggerService } from './logger.service';
 import * as AngularCoreModule from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('LoggerService', () => {
   let service: LoggerService;
   let message;
   const groupName = 'some group';
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [LoggerService],
     });
@@ -20,28 +19,28 @@ describe('LoggerService', () => {
 
   beforeEach(() => {
     message = ['some log', 'some log 2'];
-    spyOn(console, 'error');
-    spyOn(console, 'log');
-    spyOn(console, 'group');
-    spyOn(console, 'groupEnd');
+    jest.spyOn(console, 'error');
+    jest.spyOn(console, 'log');
+    jest.spyOn(console, 'group');
+    jest.spyOn(console, 'groupEnd');
   });
 
   describe('log()', () => {
     it('should do nothing if isDevMode is false AND localStorage SHOW_LOG property is not empty', () => {
-      const isDevModeFn = spyOn<any>(AngularCoreModule, 'isDevMode');
+      const isDevModeFn = jest.spyOn<any, string>(AngularCoreModule, 'isDevMode');
+      const spy = jest.spyOn(console, 'log');
 
-      isDevModeFn.and.returnValue(false);
+      isDevModeFn.mockReturnValue(false);
       service.log(message, groupName);
       // не вызывается, т.к. isDevMode false и в localStorage нет SHOW_LOG
       expect(console.log).not.toBeCalled();
 
-      isDevModeFn.and.returnValue(true);
+      isDevModeFn.mockReturnValue(true);
       service.log(message, groupName);
       // вызывается, т.к. isDevMode true
       expect(console.log).toBeCalled();
 
-      (console.log as jasmine.Spy).calls.reset();
-      isDevModeFn.and.returnValue(false);
+      isDevModeFn.mockReturnValue(false);
       localStorage.setItem('SHOW_LOG', '1');
       service.log(message, groupName);
       // вызывается, т.к. SHOW_LOG не пустой
@@ -49,107 +48,107 @@ describe('LoggerService', () => {
     });
 
     it('should call isShowLog', () => {
-      spyOn<any>(service, 'isShowLog').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'isShowLog');
       service.log(message, groupName);
-      expect(service['isShowLog']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should call openGroup', () => {
-      spyOn<any>(service, 'openGroup').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'openGroup');
       service.log(message, groupName);
-      expect(service['openGroup']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should call closeGroup', () => {
-      spyOn<any>(service, 'closeGroup').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'closeGroup');
       service.log(message, groupName);
-      expect(service['closeGroup']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('shouldn\'t call openGroup', () => {
-      spyOn<any>(service, 'openGroup').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'openGroup');
       service.log(message);
-      expect(service['openGroup']).not.toBeCalled();
+      expect(spy).not.toBeCalled();
     });
 
     it('shouldn\'t call closeGroup', () => {
-      spyOn<any>(service, 'closeGroup').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'closeGroup');
       service.log(message);
-      expect(service['closeGroup']).not.toBeCalled();
+      expect(spy).not.toBeCalled();
     });
 
     it('should call once showMessage', () => {
-      spyOn<any>(service, 'showMessage').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'showMessage');
       service.log(['another log'], groupName);
-      expect(service['showMessage']).toBeCalledTimes(1);
+      expect(spy).toBeCalledTimes(1);
     });
 
     it('should call twice showMessage', () => {
-      spyOn<any>(service, 'showMessage').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'showMessage');
       service.log(message, groupName);
-      expect(service['showMessage']).toBeCalledTimes(2);
+      expect(spy).toBeCalledTimes(2);
     });
   });
 
   describe('error()', () => {
     it('shouldn\'t call isShowLog', () => {
-      spyOn<any>(service, 'isShowLog').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'isShowLog');
       service.error(message, groupName);
-      expect(service['isShowLog']).not.toBeCalled();
+      expect(spy).not.toBeCalled();
     });
 
     it('should call openGroup', () => {
-      spyOn<any>(service, 'openGroup').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'openGroup');
       service.error(message, groupName);
-      expect(service['openGroup']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should call closeGroup', () => {
-      spyOn<any>(service, 'closeGroup').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'closeGroup');
       service.error(message, groupName);
-      expect(service['closeGroup']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('shouldn\'t call openGroup', () => {
-      spyOn<any>(service, 'openGroup').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'openGroup');
       service.error(message);
-      expect(service['openGroup']).not.toBeCalled();
+      expect(spy).not.toBeCalled();
     });
 
     it('shouldn\'t call closeGroup', () => {
-      spyOn<any>(service, 'closeGroup').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'closeGroup');
       service.error(message);
-      expect(service['closeGroup']).not.toBeCalled();
+      expect(spy).not.toBeCalled();
     });
 
     it('should call once showError', () => {
-      spyOn<any>(service, 'showError').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'showError');
       service.error(['another log'], groupName);
-      expect(service['showError']).toBeCalledTimes(1);
+      expect(spy).toBeCalledTimes(1);
     });
 
     it('should call twice showError', () => {
-      spyOn<any>(service, 'showError').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'showError');
       service.error(message, groupName);
-      expect(service['showError']).toBeCalledTimes(2);
+      expect(spy).toBeCalledTimes(2);
     });
   });
 
   describe('isShowLog()', () => {
     it('should call isDevMode', () => {
-      spyOn<any>(AngularCoreModule, 'isDevMode').and.callThrough();
+      const spy = jest.spyOn<any, string>(AngularCoreModule, 'isDevMode');
       service['isShowLog']();
-      expect(AngularCoreModule['isDevMode']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should return true when isDevMode', () => {
-      spyOn<any>(AngularCoreModule, 'isDevMode').and.returnValue(true);
+      jest.spyOn<any, string>(AngularCoreModule, 'isDevMode').mockReturnValue(true);
       const isShowLog = service['isShowLog']();
       expect(isShowLog).toBeTruthy();
     });
 
     it('should return true when lib not in isDevMode and localStorage has KEY_SHOW_LOG item', () => {
-      spyOn<any>(AngularCoreModule, 'isDevMode').and.returnValue(false);
+      jest.spyOn<any, string>(AngularCoreModule, 'isDevMode').mockReturnValue(false);
       localStorage.setItem(KEY_SHOW_LOG, '{}');
       const isShowLog = service['isShowLog']();
       expect(isShowLog).toBeTruthy();
@@ -157,7 +156,7 @@ describe('LoggerService', () => {
     });
 
     it('should return false when lib not in isDevMode and localStorage hasn\'t KEY_SHOW_LOG item', () => {
-      spyOn<any>(AngularCoreModule, 'isDevMode').and.returnValue(false);
+      jest.spyOn<any, string>(AngularCoreModule, 'isDevMode').mockReturnValue(false);
       const isShowLog = service['isShowLog']();
       expect(isShowLog).toBeFalsy();
     });

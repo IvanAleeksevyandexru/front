@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MonthSelectorComponent } from './month-selector.component';
 import { FormsModule } from '@angular/forms';
 import { BaseModule } from '../../../../base.module';
@@ -13,8 +12,8 @@ describe('MonthSelectorComponent', () => {
   let fixture: ComponentFixture<MonthSelectorComponent>;
   let dateService: DatesToolsService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [MonthSelectorComponent],
       providers: [DatesToolsService, { provide: ConfigService, useClass: ConfigServiceStub }],
       imports: [BaseModule, FormsModule, HttpClientTestingModule],

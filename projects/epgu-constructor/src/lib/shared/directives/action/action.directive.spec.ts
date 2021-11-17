@@ -32,7 +32,6 @@ import { HtmlRemoverService } from '../../services/html-remover/html-remover.ser
 import { ActionDirective } from './action.directive';
 import { ActionService } from './action.service';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import {
@@ -142,7 +141,6 @@ const sendActionMock = of({
 
 describe('ActionDirective', () => {
   let fixture: ComponentFixture<ActionTestComponent>;
-  let component: ActionTestComponent;
   let formPlayerApiService: FormPlayerApiService;
   let screenService: ScreenService;
   let navigationService: NavigationService;
@@ -151,7 +149,7 @@ describe('ActionDirective', () => {
   let localStorageService: LocalStorageService;
   let actionService: ActionService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ActionDirective, ActionTestComponent],
       providers: [
@@ -184,7 +182,6 @@ describe('ActionDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ActionTestComponent);
-    component = fixture.componentInstance;
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
     screenService = TestBed.inject(ScreenService);
     navigationService = TestBed.inject(NavigationService);
@@ -201,90 +198,90 @@ describe('ActionDirective', () => {
   it('test directive - download action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.download')).nativeElement;
     fixture.detectChanges();
-    spyOn(downloadService, 'downloadFile').and.callThrough();
+    const spy = jest.spyOn(downloadService, 'downloadFile');
     button.click();
 
-    expect(downloadService.downloadFile).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test directive - prevStepModal Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.prevStepModal')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationModalService, 'prev').and.callThrough();
+    const spy = jest.spyOn(navigationModalService, 'prev');
     button.click();
 
-    expect(navigationModalService.prev).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test directive - nextStepModal Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.nextStepModal')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationModalService, 'next').and.callThrough();
+    const spy = jest.spyOn(navigationModalService, 'next');
     button.click();
 
-    expect(navigationModalService.next).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test directive - skipStep Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.skipStep')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService, 'skip').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'skip');
     button.click();
 
-    expect(navigationService.skip).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test directive - nextStep Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.nextStep')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService, 'next').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'next');
     button.click();
 
-    expect(navigationService.next).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test directive - prevStep Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.prevStep')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService, 'prev').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'prev');
     button.click();
 
-    expect(navigationService.prev).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test directive - redirectToLK Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.redirectToLK')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService, 'redirectToLKByOrgType').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'redirectToLKByOrgType');
     button.click();
 
-    expect(navigationService.redirectToLKByOrgType).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test directive - profileEdit Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.profileEdit')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService, 'redirectToProfileEdit').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'redirectToProfileEdit');
     button.click();
 
-    expect(navigationService.redirectToProfileEdit).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test directive - home Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.home')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService, 'redirectToHome').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'redirectToHome');
     button.click();
 
-    expect(navigationService.redirectToHome).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test directive - quizToOrder Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.quizToOrder')).nativeElement;
     fixture.detectChanges();
-    spyOn(navigationService, 'redirectTo').and.callThrough();
-    spyOn(screenService, 'getStore').and.returnValue({ applicantAnswers: {}});
-    spyOn(localStorageService, 'set').and.callThrough();
+    const spyRedirectTo = jest.spyOn(navigationService, 'redirectTo');
+    jest.spyOn(screenService, 'getStore').mockReturnValue({ applicantAnswers: {}});
+    const spySet = jest.spyOn(localStorageService, 'set');
     button.click();
 
     const applicantAnswers = {
@@ -294,14 +291,14 @@ describe('ActionDirective', () => {
       },
     };
 
-    expect(localStorageService.set).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, { applicantAnswers });
-    expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
+    expect(spySet).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, { applicantAnswers });
+    expect(spyRedirectTo).toHaveBeenCalledWith('/to-some-order');
   });
 
   it('test directive - empty Action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.empty')).nativeElement;
     fixture.detectChanges();
-    const switchSpy = spyOn(actionService, 'switchAction').and.callThrough();
+    const switchSpy = jest.spyOn(actionService, 'switchAction');
     button.click();
     expect(switchSpy).not.toBeCalled();
   });

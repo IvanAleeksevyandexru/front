@@ -20,7 +20,6 @@ import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/da
 import { FilesCollection, ViewerInfo } from '../../data';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import { HttpClientModule } from '@angular/common/http';
 import { FileSizeModule } from '@epgu/ui/pipes';
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
@@ -70,7 +69,7 @@ describe('UploaderViewerContentComponent', () => {
   let component: UploaderViewerContentComponent;
   let fixture: ComponentFixture<UploaderViewerContentComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderViewerContentComponent],
       imports: [BaseUiModule, MockModule(ZoomModule), HttpClientModule, FileSizeModule],

@@ -2,7 +2,6 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MockProvider } from 'ng-mocks';
-
 import { LocalStorageService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
@@ -84,13 +83,13 @@ describe('UniquenessErrorsService', () => {
     service['_initErrors'] = [[{ 1: 'error', 2: 'error2' }]];
     service['_initValues'] = [{ 1: 'value' }];
     service['_componendIdErrorsMap'] = { 1.2: [[0, 0]] };
-    spyOn<any>(service, 'triggerComponentErrorsUpdate').and.callThrough();
+    const spy = jest.spyOn<any, string>(service, 'triggerComponentErrorsUpdate');
 
     service.calculatePreparedUniqErrors([{ 1: 'error' }], 0);
     tick();
 
     expect(screenService.componentErrors).toBeTruthy();
-    expect(service['triggerComponentErrorsUpdate']).toBeCalled();
+    expect(spy).toBeCalled();
   }));
 
   it('should set _componendIdErrorsMap', () => {

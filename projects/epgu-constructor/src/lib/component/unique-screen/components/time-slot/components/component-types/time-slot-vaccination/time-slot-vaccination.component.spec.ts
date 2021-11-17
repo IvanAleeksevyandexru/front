@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { TimeSlotVaccinationComponent } from './time-slot-vaccination.component';
 import { MockComponent } from 'ng-mocks';
@@ -28,8 +27,8 @@ describe('TimeSlotVaccinationComponent', () => {
   let fixture: ComponentFixture<TimeSlotVaccinationComponent>;
   let errorService: TimeSlotErrorService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSlotVaccinationComponent, MockComponent(TimeSlotSmev3Component)],
       imports: [],
       providers: [

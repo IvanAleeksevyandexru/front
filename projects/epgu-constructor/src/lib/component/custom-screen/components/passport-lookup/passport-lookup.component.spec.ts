@@ -7,7 +7,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponents, MockProviders } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { PassportLookupComponent } from './passport-lookup.component';
@@ -28,7 +27,7 @@ describe('PassportLookupComponent', () => {
   let control: FormGroup;
   let valueControl: FormControl;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         PassportLookupComponent,

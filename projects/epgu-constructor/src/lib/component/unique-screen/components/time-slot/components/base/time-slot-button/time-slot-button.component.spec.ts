@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { TimeSlotButtonComponent } from './time-slot-button.component';
 import { BaseModule } from '../../../../../../../shared/base.module';
 import { FormsModule } from '@angular/forms';
@@ -34,8 +33,8 @@ describe('TimeSlotButtonComponent', () => {
   let actionService: ActionService;
   let stateService: TimeSlotStateService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSlotButtonComponent],
       imports: [BaseModule, FormsModule],
       providers: [

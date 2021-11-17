@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 
 import { InformationCenterSimpleComponent } from './information-center-simple.component';
 import { BaseModule } from '../../../../../../shared/base.module';
@@ -16,7 +15,7 @@ describe('InformationCenterPfrSimpleComponent', () => {
     html: '<p>html</p>',
   } as Simple;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InformationCenterSimpleComponent],
       imports: [MockModule(BaseModule), MockModule(BaseComponentsModule)],

@@ -18,13 +18,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
 import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
 import { LabelComponent } from '../../../../../../shared/components/base-components/label/label.component';
 import { HelperTextComponent, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
-import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
+import { ActionType, ComponentActionDto, DisclaimerDtoType } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 import { DisclaimerComponent } from '../../../../../../shared/components/disclaimer/disclaimer.component';
@@ -48,7 +47,10 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
         },
       ],
       disclaimer: {
-        type: 'warn',
+        level: null,
+        clarifications: null,
+        uniquenessErrors: null,
+        type: DisclaimerDtoType.warn,
         title: 'Добавьте адрес',
         description:
           'Адрес постоянной регистрации нужен для отправки заявления. Этот адрес сохранится в профиле, и в будущих заявлениях не придется вводить его заново',
@@ -70,7 +72,7 @@ describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
     type: ActionType.nextStepModal,
   };
 
-  configureTestSuite(async () => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,

@@ -8,7 +8,6 @@ import {
 import { BaseModule } from '../../../shared/base.module';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import { LogicComponents } from '@epgu/epgu-constructor-types';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
@@ -63,7 +62,7 @@ describe('LogicComponentsContainerComponent', () => {
   let screenService: ScreenService;
   let hookService: HookService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [LogicComponentsContainerComponent, LogicComponentResolverComponent],
       imports: [BaseModule, HttpClientModule],

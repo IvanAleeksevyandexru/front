@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MedicalReferralsListContainerComponent } from './medical-refferals-list-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
@@ -56,7 +55,7 @@ describe('MedicalReferralsListContainerComponent', () => {
     },
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         MedicalReferralsListContainerComponent,
@@ -98,7 +97,6 @@ describe('MedicalReferralsListContainerComponent', () => {
     jest.useFakeTimers();
 
     component.medicalReferralsInfo$.subscribe((referralsInfo) => {
-      console.log(referralsInfo.referrals);
       const referralResult = {
         originalItem: JSON.parse(JSON.parse(mockComponent.value).medicalInfo).medicalData.items[0],
         referralId: '205206',

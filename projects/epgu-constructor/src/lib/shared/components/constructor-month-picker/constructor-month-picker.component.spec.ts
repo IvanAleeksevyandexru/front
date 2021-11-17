@@ -7,7 +7,6 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ConstructorMonthPickerComponent } from './constructor-month-picker.component';
 import { BaseModule } from '../../base.module';
-import { configureTestSuite } from 'ng-bullet';
 import { MonthYear } from '@epgu/ui/models/date-time';
 import { Align, ValidationShowOn } from '@epgu/ui/models/common-enums';
 
@@ -17,7 +16,7 @@ describe('ConstructorMonthPickerComponent', () => {
   let debugEl: DebugElement;
   const selector = 'lib-month-picker';
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConstructorMonthPickerComponent],
       imports: [MockModule(BaseModule), RouterTestingModule, BrowserAnimationsModule],

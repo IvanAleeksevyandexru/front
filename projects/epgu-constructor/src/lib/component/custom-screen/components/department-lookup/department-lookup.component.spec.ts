@@ -1,7 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockModule, MockProviders } from 'ng-mocks';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
@@ -156,7 +155,7 @@ describe('DepartmentLookupComponent', () => {
   let dictionaryToolsService: DictionaryToolsService;
   let formService: ComponentsListFormServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [DepartmentLookupComponent, MockComponents(ComponentItemComponent)],
       imports: [MockModule(DropDownDeptsModule)],

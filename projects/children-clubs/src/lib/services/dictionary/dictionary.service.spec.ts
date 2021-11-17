@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import {
   MicroAppStateQuery,
   MicroAppStateService,
@@ -16,7 +15,7 @@ describe('DictionaryService', () => {
   let service: DictionaryService;
   let state: StateService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         DictionaryService,
@@ -26,7 +25,7 @@ describe('DictionaryService', () => {
         MicroAppStateStore,
         { provide: ApiService, useClass: ApiServiceStub },
       ],
-    });
+    }).compileComponents();
     service = TestBed.inject(DictionaryService);
     state = TestBed.inject(StateService);
   });

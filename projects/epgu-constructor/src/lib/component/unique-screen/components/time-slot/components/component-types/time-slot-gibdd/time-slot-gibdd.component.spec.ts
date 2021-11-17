@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { TimeSlotGibddComponent } from './time-slot-gibdd.component';
 import { MockComponent } from 'ng-mocks';
@@ -13,8 +12,8 @@ describe('TimeSlotGibddComponent', () => {
   let component: TimeSlotGibddComponent;
   let fixture: ComponentFixture<TimeSlotGibddComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSlotGibddComponent, MockComponent(TimeSlotSmev3Component)],
       imports: [],
       providers: [{ provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub }],

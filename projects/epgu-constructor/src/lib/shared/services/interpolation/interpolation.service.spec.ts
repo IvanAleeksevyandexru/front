@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { InterpolationService } from './interpolation.service';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('InterpolationService', () => {
   let service: InterpolationService;
@@ -10,7 +9,7 @@ describe('InterpolationService', () => {
     value: { var1: 'one var', obj1: { var2: 'second var' }},
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [InterpolationService],
     });

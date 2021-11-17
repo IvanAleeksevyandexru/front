@@ -19,7 +19,6 @@ import { AddPassportComponent } from '../component/add-passport.component';
 import { AddPassportContainerComponent } from './add-passport-component-container.component';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { SuggestHandlerService } from '../../../../../shared/services/suggest-handler/suggest-handler.service';
-import { configureTestSuite } from 'ng-bullet';
 import { SuggestMonitorService } from '../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -36,7 +35,7 @@ describe('AddPassportContainerComponent', () => {
     visited: false,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         AddPassportContainerComponent,

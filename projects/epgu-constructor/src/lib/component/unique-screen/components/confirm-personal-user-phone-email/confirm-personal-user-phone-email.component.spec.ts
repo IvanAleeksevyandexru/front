@@ -10,7 +10,6 @@ import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { configureTestSuite } from 'ng-bullet';
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { By } from '@angular/platform-browser';
 import { ConfirmUserDataError } from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
@@ -53,7 +52,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     type: ActionType.nextStep,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ConfirmPersonalUserPhoneEmailComponent, FormatPhonePipe, ActionDirective],
@@ -98,7 +97,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
 
   describe('ngOnInit()', () => {
     it('should set initial state', () => {
-      const updateValue = spyOn(component, 'updateValue');
+      const updateValue = jest.spyOn(component, 'updateValue');
       component.ngOnInit();
       expect(updateValue).toHaveBeenCalled();
     });

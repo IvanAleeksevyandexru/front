@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PersonUserInnComponent } from './person-user-inn.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { configureTestSuite } from 'ng-bullet';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -43,7 +42,7 @@ describe('PersonUserInnComponent', () => {
     type: ActionType.nextStepModal,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [PersonUserInnComponent, ActionDirective],
@@ -110,7 +109,7 @@ describe('PersonUserInnComponent', () => {
 
   describe('ngOnInit()', () => {
     it('should set initial state', () => {
-      const updateValue = spyOn(component, 'updateValue');
+      const updateValue = jest.spyOn(component, 'updateValue');
       component.ngOnInit();
       expect(updateValue).toHaveBeenCalled();
     });

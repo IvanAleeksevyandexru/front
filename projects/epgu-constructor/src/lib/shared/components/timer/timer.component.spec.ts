@@ -12,7 +12,6 @@ import { PrepareComponentsService } from '../../services/prepare-components/prep
 import { TimerPipe } from './pipes/timer.pipe';
 import { TimerComponent } from './timer.component';
 import { TimerComponentBase } from './timer.interface';
-import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
 import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
@@ -159,7 +158,7 @@ describe('TimerComponent', () => {
     },
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TimerComponent, TimerPipe],
       providers: [

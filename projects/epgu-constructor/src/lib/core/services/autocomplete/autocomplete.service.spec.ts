@@ -22,7 +22,6 @@ import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
-import { configureTestSuite } from 'ng-bullet';
 import { getSuggestionGroupId } from './autocomplete.const';
 import { ScenarioDto, Gender } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
@@ -41,6 +40,7 @@ describe('AutocompleteService', () => {
   let modalService: ModalService;
   let deviceDetectorService: DeviceDetectorService;
   let autocompleteApiService: AutocompleteApiService;
+  // @ts-ignore
   let mockData: ScenarioDto = {
     applicantAnswers: {},
     currentScenarioId: null,
@@ -111,7 +111,7 @@ describe('AutocompleteService', () => {
     componentsGroupIndex: 0,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         HttpClient,
@@ -175,8 +175,8 @@ describe('AutocompleteService', () => {
     });
 
     it('should only call groupSuggestionsApiCall() after inited, if groupId is presented', () => {
-      const serviceGroupSuggestionsApiCallSpy = spyOn(service, 'groupSuggestionsApiCall');
-      const serviceFieldsSuggestionsApiCallSpy = spyOn(service, 'fieldsSuggestionsApiCall');
+      const serviceGroupSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'groupSuggestionsApiCall');
+      const serviceFieldsSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'fieldsSuggestionsApiCall');
       service.init();
       expect(serviceGroupSuggestionsApiCallSpy).toBeCalled();
       expect(serviceFieldsSuggestionsApiCallSpy).toBeCalledTimes(0);
@@ -184,8 +184,8 @@ describe('AutocompleteService', () => {
 
     it(`should only call fieldsSuggestionsApiCall() after inited,
       if groupId is not presented and componentsSuggestionsFieldsIds is not empty`, () => {
-      const serviceGroupSuggestionsApiCallSpy = spyOn(service, 'groupSuggestionsApiCall');
-      const serviceFieldsSuggestionsApiCallSpy = spyOn(service, 'fieldsSuggestionsApiCall');
+      const serviceGroupSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'groupSuggestionsApiCall');
+      const serviceFieldsSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'fieldsSuggestionsApiCall');
       const display = _cloneDeep(mockData.display);
       delete display.suggestion;
       screenService.display = display;
@@ -195,7 +195,7 @@ describe('AutocompleteService', () => {
     });
 
     it('should call setValuesToCachedAnswersOrCompValue() on "suggestionSelectedEvent"', () => {
-      const servicesetValuesToCachedAnswersOrCompValueSpy = spyOn(
+      const servicesetValuesToCachedAnswersOrCompValueSpy = jest.spyOn(
         prepareService,
         'setValuesToCachedAnswersOrCompValue',
       );
@@ -206,7 +206,7 @@ describe('AutocompleteService', () => {
     });
 
     it('should call findAndUpdateComponentsWithValue() on "suggestionSelectedEvent"', () => {
-      const serviceFindAndUpdateComponentsWithValueSpy = spyOn(
+      const serviceFindAndUpdateComponentsWithValueSpy = jest.spyOn(
         prepareService,
         'findAndUpdateComponentsWithValue',
       );
@@ -217,7 +217,7 @@ describe('AutocompleteService', () => {
     });
 
     it('should call screenService.updateScreenContent() on "suggestionSelectedEvent"', () => {
-      const screenServiceUpdateScreenContentSpy = spyOn(screenService, 'updateScreenContent');
+      const screenServiceUpdateScreenContentSpy = jest.spyOn(screenService, 'updateScreenContent');
       eventBusService.on(BusEventType.SuggestionSelectedEvent).subscribe(() => {
         expect(screenServiceUpdateScreenContentSpy).toBeCalled();
       });
@@ -225,7 +225,7 @@ describe('AutocompleteService', () => {
     });
 
     it('should call modalService.openModal() on "suggestionsEditEvent"', () => {
-      const modalServiceOpenModalSpy = spyOn(modalService, 'openModal');
+      const modalServiceOpenModalSpy = jest.spyOn(modalService, 'openModal');
       eventBusService.on(BusEventType.SuggestionsEditEvent).subscribe(() => {
         expect(modalServiceOpenModalSpy).toBeCalled();
       });
@@ -233,7 +233,7 @@ describe('AutocompleteService', () => {
     });
 
     it('should call groupSuggestionsApiCall() on "suggestionDeleteEvent"', () => {
-      const serviceGroupSuggestionsApiCallSpy = spyOn(service, 'groupSuggestionsApiCall');
+      const serviceGroupSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'groupSuggestionsApiCall');
       eventBusService.on(BusEventType.SuggestionDeleteEvent).subscribe(() => {
         expect(serviceGroupSuggestionsApiCallSpy).toBeCalled();
       });
@@ -241,7 +241,7 @@ describe('AutocompleteService', () => {
     });
 
     it('should call fieldsSuggestionsApiCall() on "suggestionDeleteEvent"', () => {
-      const serviceFieldsSuggestionsApiCallSpy = spyOn(service, 'fieldsSuggestionsApiCall');
+      const serviceFieldsSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'fieldsSuggestionsApiCall');
       const display = _cloneDeep(mockData.display);
       delete display.suggestion;
       eventBusService.on(BusEventType.SuggestionDeleteEvent).subscribe(() => {
@@ -251,7 +251,7 @@ describe('AutocompleteService', () => {
     });
 
     it('should call autocompletePrepareService.deleteCachedValueItem() on "deleteCachedValueItem"', () => {
-      const prepareServiceDeleteCachedValueItemSpy = spyOn(prepareService, 'deleteCachedValueItem');
+      const prepareServiceDeleteCachedValueItemSpy = jest.spyOn(prepareService, 'deleteCachedValueItem');
       eventBusService.on(BusEventType.DeleteCachedValueItem).subscribe(() => {
         expect(prepareServiceDeleteCachedValueItemSpy).toBeCalled();
       });
@@ -261,7 +261,7 @@ describe('AutocompleteService', () => {
 
   describe('groupSuggestionsApiCall()', () => {
     it('should autocompleteApiService() be called', () => {
-      const autocompleteApiServiceGetSuggestionFieldsSpy = spyOn(
+      const autocompleteApiServiceGetSuggestionFieldsSpy = jest.spyOn(
         autocompleteApiService,
         'getSuggestionsGroup',
       );
@@ -272,7 +272,7 @@ describe('AutocompleteService', () => {
 
   describe('fieldsSuggestionsApiCall()', () => {
     it('should autocompleteApiService() be called', () => {
-      const autocompleteApiServiceGetSuggestionFieldsSpy = spyOn(
+      const autocompleteApiServiceGetSuggestionFieldsSpy = jest.spyOn(
         autocompleteApiService,
         'getSuggestionsFields',
       );

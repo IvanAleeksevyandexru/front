@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { TableDirective } from './table.directive';
 
 @Component({
@@ -22,7 +21,7 @@ describe('TableDirective', () => {
     outerHtmlEl = fixture.debugElement.nativeElement;
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TableDirective, TableMockComponent, SafePipe],
     })

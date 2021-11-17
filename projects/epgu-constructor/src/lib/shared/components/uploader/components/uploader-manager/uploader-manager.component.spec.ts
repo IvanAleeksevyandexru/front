@@ -20,7 +20,6 @@ import {
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemStatus } from '../../../file-upload/data';
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule } from 'ng-mocks';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
@@ -59,7 +58,7 @@ describe('UploaderManagerComponent', () => {
   let fixture: ComponentFixture<UploaderManagerComponent>;
   let viewerService: ViewerService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderManagerComponent, MockComponent(UploaderManagerItemComponent)],
       providers: [

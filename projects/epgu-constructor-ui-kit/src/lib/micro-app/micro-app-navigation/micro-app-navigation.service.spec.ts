@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MicroAppNavigationService } from './micro-app-navigation.service';
 import { MicroAppStateService } from '../micro-app-state/micro-app-state.service';
 import { MicroAppStateServiceStub } from '../micro-app-state/micro-app-state.service.stub';
@@ -14,7 +13,7 @@ describe('MicroAppNavigationService', () => {
   let appNavigationRuleService: MicroAppNavigationRuleService;
   let eventBusService: EventBusService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         MicroAppNavigationService,

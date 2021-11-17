@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { ApiService } from '../api/api.service';
 import { ApiServiceStub } from '../api/api.service.stub';
@@ -19,7 +18,7 @@ import { ChildrenClubsState } from '../../children-clubs.types';
 describe('GroupListService', () => {
   let service: GroupListService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         GroupListService,
@@ -29,7 +28,7 @@ describe('GroupListService', () => {
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         { provide: ApiService, useClass: ApiServiceStub },
       ],
-    });
+    }).compileComponents();
     service = TestBed.inject(GroupListService);
   });
 

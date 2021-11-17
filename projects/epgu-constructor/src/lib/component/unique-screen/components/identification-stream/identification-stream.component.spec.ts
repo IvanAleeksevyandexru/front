@@ -11,7 +11,6 @@ import {
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { IdentificationStreamComponent } from './identification-stream.component';
-import { configureTestSuite } from 'ng-bullet';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { JsonHelperServiceStub } from '../../../../core/services/json-helper/json-helper.service.stub';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -43,7 +42,7 @@ describe('IdentificationStreamComponent', () => {
   let fixture: ComponentFixture<IdentificationStreamComponent>;
   let screenService: ScreenServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent(CtaModalComponent)],
       imports: [BaseModule, BaseComponentsModule, IdentificationStreamModule],

@@ -2,14 +2,13 @@ import { TestBed } from '@angular/core/testing';
 import { FileDownloaderService } from './file-downloader.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { FileSaverService } from './file-saver.service';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('FileDownloaderService', () => {
   let service: FileDownloaderService;
   let httpMock: HttpTestingController;
   let fileSaver: FileSaverService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [FileDownloaderService, FileSaverService],

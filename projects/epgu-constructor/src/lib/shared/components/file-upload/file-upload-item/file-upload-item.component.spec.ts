@@ -44,7 +44,6 @@ import { of } from 'rxjs';
 import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
 import { ViewerService } from '../../uploader/services/viewer/viewer.service';
 import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service.stub';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { UploaderValidationService } from '../services/validation/uploader-validation.service';
@@ -121,7 +120,7 @@ describe('FileUploadItemComponent', () => {
   let fileUploadService: UploaderLimitsService;
   let uploader: UploaderManagerService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [FileUploadItemComponent],
       imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule, PluralizeModule],

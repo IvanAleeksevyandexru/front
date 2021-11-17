@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { HealthService } from '../health/health.service';
 import { GlobalErrorHandler } from './global-error.service';
-import { configureTestSuite } from 'ng-bullet';
 import { ERROR_HANDLER_ORDER_PARAMS_SERVICES } from './global-error.token';
 import { DownloadService } from '../download/download.service';
 import { LoggerService } from '../logger/logger.service';
@@ -18,7 +17,7 @@ describe('GlobalErrorHandler', () => {
   let globalError: GlobalErrorHandler;
   let healthService: HealthService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         GlobalErrorHandler,
@@ -42,16 +41,16 @@ describe('GlobalErrorHandler', () => {
   });
 
   it('test base error', () => {
-    spyOn(healthService, 'measureStart').and.callThrough();
+    const spy = jest.spyOn(healthService, 'measureStart');
     // @ts-ignore
     globalError.handleError(new Error());
-    expect(healthService.measureStart).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('test httpError', () => {
-    spyOn(healthService, 'measureStart').and.callThrough();
+    const spy = jest.spyOn(healthService, 'measureStart');
     // @ts-ignore
     globalError.handleError(new HttpErrorResponse({}));
-    expect(healthService.measureStart).toHaveBeenCalledTimes(0);
+    expect(spy).toHaveBeenCalledTimes(0);
   });
 });

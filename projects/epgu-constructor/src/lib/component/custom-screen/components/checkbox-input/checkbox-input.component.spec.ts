@@ -3,7 +3,6 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockProvider } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
@@ -28,7 +27,7 @@ describe('CheckboxInputComponent', () => {
   let formService: ComponentsListFormServiceStub;
   let control: FormGroup;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         CheckboxInputComponent,

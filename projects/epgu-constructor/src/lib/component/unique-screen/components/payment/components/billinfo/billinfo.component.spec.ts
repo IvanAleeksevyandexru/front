@@ -13,7 +13,6 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { PaymentService } from '../../payment.service';
 import { BillInfoComponent } from './billinfo.component';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { PriorPrefixModule } from '../../../../../../shared/pipes/prior-prefix/prior-prefix.module';
@@ -34,7 +33,7 @@ describe('BillInfoComponent', () => {
   let fixture: ComponentFixture<BillInfoComponent>;
   let screenService: ScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [BillInfoComponent],

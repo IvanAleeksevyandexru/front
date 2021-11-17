@@ -10,7 +10,6 @@ import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
 import { ScreenModalService } from './screen-modal.service';
-import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';
 
 const response = new FormPlayerServiceStub()._store;
@@ -24,7 +23,7 @@ describe('ScreenModalService', () => {
   let orderId: number;
   let navigation: Navigation;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ScreenModalService,
@@ -50,19 +49,19 @@ describe('ScreenModalService', () => {
 
   describe('resetStore()', () => {
     it('should call updateLoading of screenService with false', () => {
-      spyOn<any>(service, 'updatePlayerLoaded').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'updatePlayerLoaded');
       service.resetStore();
-      expect(service['updatePlayerLoaded']).toBeCalledWith(false);
+      expect(spy).toBeCalledWith(false);
     });
 
     it('should set _store as null', () => {
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.resetStore();
       expect(service['_store']).toBe(null);
     });
 
     it('should set _initStore as null', () => {
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.resetStore();
       expect(service['_initStore']).toBe(null);
     });
@@ -77,42 +76,42 @@ describe('ScreenModalService', () => {
 
   describe('processResponse()', () => {
     it('should call hasError with response param', () => {
-      spyOn<any>(service, 'hasError').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'hasError');
       service.processResponse(response);
-      expect(service['hasError']).toHaveBeenCalledWith(response);
+      expect(spy).toHaveBeenCalledWith(response);
     });
 
     it('should call sendDataError with response param when hasError return true', () => {
-      spyOn<any>(service, 'hasError').and.returnValue(true);
-      spyOn<any>(service, 'sendDataError').and.callThrough();
+      jest.spyOn<any, string>(service, 'hasError').mockReturnValue(true);
+      const spy = jest.spyOn<any, string>(service, 'sendDataError');
       service.processResponse(response);
-      expect(service['sendDataError']).toHaveBeenCalledWith(response);
+      expect(spy).toHaveBeenCalledWith(response);
     });
 
     it('should call sendDataSuccess with response param when hasError return false', () => {
-      spyOn<any>(service, 'hasError').and.returnValue(false);
-      spyOn<any>(service, 'sendDataSuccess').and.callThrough();
+      jest.spyOn<any, string>(service, 'hasError').mockReturnValue(false);
+      const spy = jest.spyOn<any, string>(service, 'sendDataSuccess');
       service.processResponse(response);
-      expect(service['sendDataSuccess']).toHaveBeenCalledWith(response);
+      expect(spy).toHaveBeenCalledWith(response);
     });
   });
 
   describe('hasError()', () => {
     it('should return true if hasRequestErrors', () => {
-      spyOn<any>(service, 'hasRequestErrors').and.returnValue(true);
+      jest.spyOn<any, string>(service, 'hasRequestErrors').mockReturnValue(true);
       const hasError = service['hasError'](response);
       expect(hasError).toBeTruthy();
     });
 
     it('should return true if hasBusinessErrors', () => {
-      spyOn<any>(service, 'hasBusinessErrors').and.returnValue(true);
+      jest.spyOn<any, string>(service, 'hasBusinessErrors').mockReturnValue(true);
       const hasError = service['hasError'](response);
       expect(hasError).toBeTruthy();
     });
 
     it('should return false if not hasRequestErrors and not hasBusinessErrors', () => {
-      spyOn<any>(service, 'hasRequestErrors').and.returnValue(false);
-      spyOn<any>(service, 'hasBusinessErrors').and.returnValue(false);
+      jest.spyOn<any, string>(service, 'hasRequestErrors').mockReturnValue(false);
+      jest.spyOn<any, string>(service, 'hasBusinessErrors').mockReturnValue(false);
       const hasError = service['hasError'](response);
       expect(hasError).toBeFalsy();
     });
@@ -164,26 +163,26 @@ describe('ScreenModalService', () => {
     });
 
     it('should call log of loggerService', () => {
-      spyOn<any>(logger, 'log').and.callThrough();
+      const spy = jest.spyOn<any, string>(logger, 'log');
       service['updateRequest'](navigation);
-      expect(logger.log).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should call isEmptyNavigationPayload with param', () => {
-      spyOn<any>(service, 'isEmptyNavigationPayload').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'isEmptyNavigationPayload');
       service['updateRequest'](navigation);
-      expect(service['isEmptyNavigationPayload']).toBeCalledWith(navigation.payload);
+      expect(spy).toBeCalledWith(navigation.payload);
     });
 
     it('should call setDefaultCurrentValue when isEmptyNavigationPayload return true', () => {
-      spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(true);
-      spyOn<any>(service, 'setDefaultCurrentValue').and.callThrough();
+      jest.spyOn<any, string>(service, 'isEmptyNavigationPayload').mockReturnValue(true);
+      const spy = jest.spyOn<any, string>(service, 'setDefaultCurrentValue');
       service['updateRequest'](navigation);
-      expect(service['setDefaultCurrentValue']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should set prev-button.payload as currentValue when isEmptyNavigationPayload return false', () => {
-      spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(false);
+      jest.spyOn<any, string>(service, 'isEmptyNavigationPayload').mockReturnValue(false);
       service['updateRequest'](navigation);
       expect(service['_store'].scenarioDto.currentValue).toBe(navigation.payload);
     });
@@ -195,7 +194,7 @@ describe('ScreenModalService', () => {
           store: newStore,
         },
       };
-      spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(false);
+      jest.spyOn<any, string>(service, 'isEmptyNavigationPayload').mockReturnValue(false);
       service['updateRequest'](navigation);
       expect(service['_store']).toBe(navigation.options.store);
     });
@@ -237,15 +236,15 @@ describe('ScreenModalService', () => {
 
   describe('sendDataSuccess()', () => {
     it('should call log of loggerService', () => {
-      spyOn<any>(logger, 'log').and.callThrough();
+      const spy = jest.spyOn<any, string>(logger, 'log');
       service['sendDataSuccess'](response);
-      expect(logger.log).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should call initResponse with response param', () => {
-      spyOn<any>(service, 'initResponse').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'initResponse');
       service['sendDataSuccess'](response);
-      expect(service['initResponse']).toBeCalledWith(response);
+      expect(spy).toBeCalledWith(response);
     });
   });
 
@@ -258,15 +257,15 @@ describe('ScreenModalService', () => {
     });
 
     it('should call error of loggerService', () => {
-      spyOn<any>(logger, 'error').and.callThrough();
+      const spy = jest.spyOn<any, string>(logger, 'error');
       service['sendDataError'](errorResponse);
-      expect(logger.error).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should call initResponse with response param when response has business errors', () => {
-      spyOn<any>(service, 'initResponse').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'initResponse');
       service['sendDataError'](errorResponse);
-      expect(service['initResponse']).toBeCalledWith(errorResponse);
+      expect(spy).toBeCalledWith(errorResponse);
     });
 
     it('shouldn\'t call initResponse with response param when response error status', () => {
@@ -275,57 +274,57 @@ describe('ScreenModalService', () => {
         description: 'a-e-e-e-e-e...',
         status: 500,
       };
-      spyOn<any>(service, 'initResponse').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'initResponse');
       // @ts-ignore
       service['sendDataError'](errorResponse);
       expect(service['initResponse']).not.toBeCalled();
     });
 
     it('should call updateLoading with false param', () => {
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'updateLoading');
       service['sendDataError'](errorResponse);
-      expect(service['updateLoading']).toBeCalledWith(false);
+      expect(spy).toBeCalledWith(false);
     });
   });
 
   describe('initResponse()', () => {
     it('should call handleInvalidResponse when empty response', () => {
-      spyOn<any>(service, 'handleInvalidResponse').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'handleInvalidResponse');
       service['initResponse'](null);
-      expect(service['handleInvalidResponse']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should set store from response', () => {
       const newResponse = JSON.parse(JSON.stringify(response));
-      spyOn<any>(service, 'initResponse').and.callThrough();
+      jest.spyOn<any, string>(service, 'initResponse');
       service['initResponse'](newResponse);
       expect(service['_store']).toBe(newResponse);
     });
 
     it('should call initScreenStore with scenarioDto param', () => {
-      spyOn<any>(service, 'initScreenStore').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'initScreenStore');
       service['initResponse'](response);
-      expect(service['initScreenStore']).toBeCalledWith(response.scenarioDto);
+      expect(spy).toBeCalledWith(response.scenarioDto);
     });
 
     it('should call updatePlayerLoaded with true param', () => {
-      spyOn<any>(service, 'updatePlayerLoaded').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'updatePlayerLoaded');
       service['initResponse'](response);
-      expect(service['updatePlayerLoaded']).toBeCalledWith(true);
+      expect(spy).toBeCalledWith(true);
     });
 
     it('should call log of loggerService', () => {
-      spyOn<any>(logger, 'log').and.callThrough();
+      const spy = jest.spyOn<any, string>(logger, 'log');
       service['initResponse'](response);
-      expect(logger.log).toBeCalled();
+      expect(spy).toBeCalled();
     });
   });
 
   describe('handleInvalidResponse()', () => {
     it('should call error of loggerService', () => {
-      spyOn<any>(logger, 'error').and.callThrough();
+      const spy = jest.spyOn<any, string>(logger, 'error');
       service['handleInvalidResponse']();
-      expect(logger.error).toBeCalled();
+      expect(spy).toBeCalled();
     });
   });
 
@@ -338,9 +337,9 @@ describe('ScreenModalService', () => {
 
   describe('initScreenStore()', () => {
     it('should call initScreenStore of screenService with scenarioDto', () => {
-      spyOn<any>(screenService, 'initScreenStore').and.callThrough();
+      const spy = jest.spyOn<any, string>(screenService, 'initScreenStore');
       service['initScreenStore'](response.scenarioDto);
-      expect(screenService.initScreenStore).toBeCalledWith(response.scenarioDto);
+      expect(spy).toBeCalledWith(response.scenarioDto);
     });
   });
 
@@ -351,15 +350,15 @@ describe('ScreenModalService', () => {
     });
 
     it('should call isLoadingSubject next with new value', () => {
-      spyOn<any>(service['isLoadingSubject'], 'next').and.callThrough();
+      const spy = jest.spyOn<any, string>(service['isLoadingSubject'], 'next');
       service['updateLoading'](true);
-      expect(service['isLoadingSubject'].next).toBeCalledWith(true);
+      expect(spy).toBeCalledWith(true);
     });
 
     it('should call updateLoading of screenService with new value', () => {
-      spyOn<any>(screenService, 'updateLoading').and.callThrough();
+      const spy = jest.spyOn<any, string>(screenService, 'updateLoading');
       service['updateLoading'](true);
-      expect(screenService.updateLoading).toBeCalledWith(true);
+      expect(spy).toBeCalledWith(true);
     });
   });
 
@@ -370,9 +369,9 @@ describe('ScreenModalService', () => {
     });
 
     it('should call playerLoadedSubject next with new value', () => {
-      spyOn<any>(service['playerLoadedSubject'], 'next').and.callThrough();
+      const spy = jest.spyOn<any, string>(service['playerLoadedSubject'], 'next');
       service['updatePlayerLoaded'](true);
-      expect(service['playerLoadedSubject'].next).toBeCalledWith(true);
+      expect(spy).toBeCalledWith(true);
     });
   });
 });

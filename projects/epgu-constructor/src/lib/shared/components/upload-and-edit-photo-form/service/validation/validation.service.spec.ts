@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentValidationDto } from '@epgu/epgu-constructor-types';
 
 import { ValidationService } from './validation.service';
@@ -13,7 +12,7 @@ describe('ValidationService', () => {
     },
   ] as ComponentValidationDto[];
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ValidationService],
     });

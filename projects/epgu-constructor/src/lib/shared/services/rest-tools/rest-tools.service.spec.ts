@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { RestToolsService } from './rest-tools.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { RestService } from '../rest/rest.service';
@@ -21,7 +20,7 @@ describe('RestToolsService', () => {
   let localStorage: LocalStorageService;
   let componentsListRelationsService: ComponentsListRelationsService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

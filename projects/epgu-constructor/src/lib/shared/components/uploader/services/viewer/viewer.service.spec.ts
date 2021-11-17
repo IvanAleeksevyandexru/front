@@ -20,8 +20,8 @@ import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { By } from '@angular/platform-browser';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule } from 'ng-mocks';
+import { take } from 'rxjs/operators';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -58,7 +58,7 @@ describe('ViewerService', () => {
   let modalService: ModalService;
   let viewerService: ViewerService;
   const collection = [mockFileItem(), mockFileItem()];
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderViewerComponent, MockComponent(UploaderViewerContentComponent)],
       imports: [MockModule(ZoomModule), MockModule(BaseModule)],
@@ -111,7 +111,7 @@ describe('ViewerService', () => {
   });
 
   it('should be auto close without items', (done) => {
-    viewerService.result.subscribe((result) => {
+    viewerService.result.pipe(take(1)).subscribe((result) => {
       expect(result).toBeNull();
       done();
     });

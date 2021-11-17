@@ -1,4 +1,3 @@
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { DictionaryComponent } from './dictionary.component';
@@ -21,7 +20,6 @@ import {
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { By } from '@angular/platform-browser';
 import { CustomListDictionary } from '../../components-list.types';
-
 import { HttpClientModule } from '@angular/common/http';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -29,7 +27,6 @@ import DictionaryModelAttrs from './DictionaryModelAttrs';
 import DictionaryModel from './DictionaryModel';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
-import { of } from 'rxjs';
 import { defer } from 'lodash';
 
 const mockComponent = {
@@ -45,7 +42,7 @@ describe('DictionaryComponent', () => {
   let dictionaryToolsService: DictionaryToolsService;
   let formService: ComponentsListFormServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [DictionaryComponent, MockComponent(ComponentItemComponent)],
       imports: [BaseUiModule, HttpClientModule],

@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CurrentAnswersService } from './current-answers.service';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('CurrentAnswersService', () => {
   let service: CurrentAnswersService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CurrentAnswersService],
     });

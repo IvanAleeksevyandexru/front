@@ -9,7 +9,6 @@ import { DebugElement } from '@angular/core';
 
 import { ConstructorDatePickerComponent } from './constructor-date-picker.component';
 import { BaseModule } from '../../base.module';
-import { configureTestSuite } from 'ng-bullet';
 import { MonthYear } from '@epgu/ui/models/date-time';
 
 describe('ConstructorDatePickerComponent', () => {
@@ -18,7 +17,7 @@ describe('ConstructorDatePickerComponent', () => {
   let debugEl: DebugElement;
   const selector = 'lib-date-picker';
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConstructorDatePickerComponent],
       imports: [

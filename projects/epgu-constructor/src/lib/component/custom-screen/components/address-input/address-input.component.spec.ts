@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MockModule, MockProvider } from 'ng-mocks';
 import {
   ConfigService,
@@ -24,7 +23,7 @@ describe('AddressInputComponent', () => {
   let component: AddressInputComponent;
   let fixture: ComponentFixture<AddressInputComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AddressInputComponent],
       imports: [MockModule(ComponentItemModule), MockModule(ConstructorDadataWidgetModule)],

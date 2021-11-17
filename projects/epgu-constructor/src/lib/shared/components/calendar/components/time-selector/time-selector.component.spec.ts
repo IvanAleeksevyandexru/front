@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { TimeSelectorComponent } from './time-selector.component';
 import { ListItem } from '@epgu/ui/models/dropdown';
 import { By } from '@angular/platform-browser';
@@ -9,8 +8,8 @@ describe('TimeSelectorComponent', () => {
   let fixture: ComponentFixture<TimeSelectorComponent>;
 
   const testListItem = new ListItem({ id: 'test', text: '2012-12-12' });
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSelectorComponent],
       imports: [],
       providers: [],

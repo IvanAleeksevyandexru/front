@@ -6,8 +6,8 @@ describe('InfoListItemComponent', () => {
   let component: InfoListItemComponent;
   let fixture: ComponentFixture<InfoListItemComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [InfoListItemComponent],
     }).compileComponents();
   });

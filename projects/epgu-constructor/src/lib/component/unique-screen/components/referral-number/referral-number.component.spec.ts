@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import {
   UnsubscribeService,
   ConfigService,
@@ -62,7 +61,7 @@ describe('ReferralNumberComponent', () => {
   let navigationService: NavigationService;
   let modalService: ModalService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         ReferralNumberComponent,

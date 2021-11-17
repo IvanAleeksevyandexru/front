@@ -17,7 +17,6 @@ import { ActionService } from '../../../directives/action/action.service';
 import { ActionServiceStub } from '../../../directives/action/action.service.stub';
 import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { configureTestSuite } from 'ng-bullet';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 import { JsonHelperServiceStub } from '../../../../core/services/json-helper/json-helper.service.stub';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -28,7 +27,7 @@ describe('LabelComponent', () => {
   let fixture: ComponentFixture<LabelComponent>;
   let modalService: ModalService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [LabelComponent, SafePipe, ImgPrefixerPipe, ClickableLabelDirective],
@@ -59,9 +58,9 @@ describe('LabelComponent', () => {
 
     const span: HTMLDivElement = fixture.debugElement.query(By.css('span')).nativeElement;
 
-    spyOn(modalService, 'openModal').and.callThrough();
+    const spy = jest.spyOn(modalService, 'openModal');
     span.querySelector('a').click();
-    expect(modalService.openModal).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   describe('div', () => {

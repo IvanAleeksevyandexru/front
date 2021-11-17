@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MaritalStatusInputComponent } from './marital-status-input.component';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -105,7 +104,7 @@ describe('MaritalStatusInputComponent', () => {
   let control: FormGroup;
   let valueControl: FormControl;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         ActDateInputComponent,

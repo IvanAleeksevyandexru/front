@@ -2,7 +2,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
@@ -22,7 +21,7 @@ describe('AddressHelperService', () => {
     text: 'г Москва',
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         AddressHelperService,
@@ -69,10 +68,11 @@ describe('AddressHelperService', () => {
 
   describe('normalizeAddress method', () => {
     beforeEach(() => {
-      spyOn(
+      jest.spyOn(
         dictionaryApiService,
         'getDadataNormalize',
-      ).and.callFake((address: DadataSuggestionsAddressForLookup) => of());
+        // @ts-ignore
+      ).mockImplementation((address: DadataSuggestionsAddressForLookup) => of());
     });
 
     it('calls getDadataNormalize if address is not normalized', () => {

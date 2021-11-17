@@ -4,13 +4,12 @@ import { PhotoFormViewComponent } from './photo-form-view.component';
 import { SafeModule } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('PhotoFormViewComponent', () => {
   let component: PhotoFormViewComponent;
   let fixture: ComponentFixture<PhotoFormViewComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoFormViewComponent],
       imports: [SafeModule],

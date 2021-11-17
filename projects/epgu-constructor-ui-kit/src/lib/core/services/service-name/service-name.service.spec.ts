@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ServiceNameService } from './service-name.service';
-import { configureTestSuite } from 'ng-bullet';
 import { ObjectHelperService } from '../object-helper/object-helper.service';
 
 describe('ServiceNameService', () => {
   let service: ServiceNameService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ServiceNameService, ObjectHelperService],
     });

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { ScreenPadModule, ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 import { CarDetailInfoContainerComponent } from './car-detail-info-container.component';
@@ -77,7 +76,7 @@ describe('CarDetailsInfoComponent', () => {
     externalServiceCallResult: ServiceResult.SUCCESS,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         CarDetailInfoContainerComponent,

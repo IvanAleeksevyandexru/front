@@ -29,7 +29,6 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
-import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
@@ -71,10 +70,6 @@ describe('ActionService', () => {
   let navigationModalService: NavigationModalService;
   let navigationService: NavigationService;
   let screenService: ScreenService;
-  let modalPrevStepSpy: jasmine.Spy;
-  let modalNextStepSpy: jasmine.Spy;
-  let skipStepSpy: jasmine.Spy;
-  let restartOrderSpy: jasmine.Spy;
   let localStorageService: LocalStorageService;
   let sessionStorageService: SessionStorageService;
   let formPlayerApiService: FormPlayerApiService;
@@ -82,11 +77,15 @@ describe('ActionService', () => {
   let locationService: LocationService;
   let hookService: HookService;
 
-  let prevStepSpy: jasmine.Spy;
-  let nextStepSpy: jasmine.Spy;
-  let saveCacheSpy: jasmine.Spy;
+  let modalPrevStepSpy;
+  let modalNextStepSpy;
+  let skipStepSpy;
+  let restartOrderSpy;
+  let prevStepSpy;
+  let nextStepSpy;
+  let saveCacheSpy;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -133,14 +132,14 @@ describe('ActionService', () => {
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
 
-    skipStepSpy = spyOn(navigationService, 'skip');
-    restartOrderSpy = spyOn(navigationService, 'restartOrder');
-    nextStepSpy = spyOn(navigationService, 'next');
-    prevStepSpy = spyOn(navigationService, 'prev');
-    saveCacheSpy = spyOn(navigationService, 'saveCache');
+    skipStepSpy = jest.spyOn(navigationService, 'skip');
+    restartOrderSpy = jest.spyOn(navigationService, 'restartOrder');
+    nextStepSpy = jest.spyOn(navigationService, 'next');
+    prevStepSpy = jest.spyOn(navigationService, 'prev');
+    saveCacheSpy = jest.spyOn(navigationService, 'saveCache');
 
-    modalPrevStepSpy = spyOn(navigationModalService, 'prev');
-    modalNextStepSpy = spyOn(navigationModalService, 'next');
+    modalPrevStepSpy = jest.spyOn(navigationModalService, 'prev');
+    modalNextStepSpy = jest.spyOn(navigationModalService, 'next');
 
     screenService.display = new FormPlayerServiceStub()._store.scenarioDto.display;
   });
@@ -150,57 +149,50 @@ describe('ActionService', () => {
   });
 
   it('should call switchAction download', () => {
-    spyOn(downloadService, 'downloadFile').and.callThrough();
+    const spy = jest.spyOn(downloadService, 'downloadFile');
     actionService.switchAction(downloadAction, null);
-    expect(downloadService.downloadFile).toBeCalledTimes(1);
+    expect(spy).toBeCalledTimes(1);
   });
 
   it('should call switchAction prev modal', () => {
-    modalPrevStepSpy.calls.reset();
     actionService.switchAction(prevStepModalAction, null);
     expect(modalPrevStepSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction next modal', () => {
-    modalNextStepSpy.calls.reset();
     actionService.switchAction(nextStepModalAction, null);
     expect(modalNextStepSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction skip', () => {
-    skipStepSpy.calls.reset();
     actionService.switchAction(skipAction, null);
     expect(skipStepSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction restartOrder', () => {
-    restartOrderSpy.calls.reset();
     actionService.switchAction(restartOrderAction, null);
     expect(restartOrderSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction next', () => {
-    nextStepSpy.calls.reset();
     actionService.switchAction(nextAction, null);
     expect(nextStepSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction prev', () => {
-    prevStepSpy.calls.reset();
     actionService.switchAction(prevAction, null);
     expect(prevStepSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction saveCache', () => {
-    saveCacheSpy.calls.reset();
     actionService.switchAction(saveCacheAction, null);
     expect(saveCacheSpy).toBeCalledTimes(1);
   });
 
   it('should call switchAction quiz', () => {
-    spyOn(navigationService, 'redirectTo').and.callThrough();
-    spyOn(screenService, 'getStore').and.returnValue({ applicantAnswers: {}});
-    spyOn(localStorageService, 'set').and.callThrough();
+    const spySet = jest.spyOn(localStorageService, 'set');
+    const spyRedirectTo = jest.spyOn(navigationService, 'redirectTo');
+    jest.spyOn(screenService, 'getStore').mockReturnValue({ applicantAnswers: {}});
     actionService.switchAction(quizToOrderAction, null);
 
     const applicantAnswers = {
@@ -210,14 +202,14 @@ describe('ActionService', () => {
       },
     };
 
-    expect(localStorageService.set).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, { applicantAnswers });
-    expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
+    expect(spySet).toHaveBeenCalledWith(QUIZ_SCENARIO_KEY, { applicantAnswers });
+    expect(spyRedirectTo).toHaveBeenCalledWith('/to-some-order');
   });
 
   it('should call switchAction orderToOrder', () => {
-    spyOn(navigationService, 'redirectTo').and.callThrough();
-    spyOn(screenService, 'getStore').and.returnValue({ applicantAnswers: {}});
-    spyOn(localStorageService, 'set').and.callThrough();
+    const spySet = jest.spyOn(localStorageService, 'set');
+    const spyRedirectTo = jest.spyOn(navigationService, 'redirectTo');
+    jest.spyOn(screenService, 'getStore').mockReturnValue({ applicantAnswers: {}});
     actionService.switchAction(orderToOrderAction, null);
 
     const applicantAnswers = {
@@ -233,47 +225,48 @@ describe('ActionService', () => {
 
     const finishedAndCurrentScreens = ['s2', 's1'];
 
-    expect(localStorageService.set).toHaveBeenCalledWith(ORDER_TO_ORDER_SCENARIO_KEY, {
+    expect(spySet).toHaveBeenCalledWith(ORDER_TO_ORDER_SCENARIO_KEY, {
       applicantAnswers,
       finishedAndCurrentScreens,
     });
-    expect(navigationService.redirectTo).toHaveBeenCalledWith('/to-some-order');
+    expect(spyRedirectTo).toHaveBeenCalledWith('/to-some-order');
   });
 
   it('should call switchAction redirectToLK', () => {
-    spyOn(navigationService, 'redirectToLKByOrgType').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'redirectToLKByOrgType');
     actionService.switchAction(redirectToLKAction, null);
-    expect(navigationService.redirectToLKByOrgType).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call switchAction profileEdit', () => {
-    spyOn(navigationService, 'redirectToProfileEdit').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'redirectToProfileEdit');
     actionService.switchAction(profileEditAction, null);
-    expect(navigationService.redirectToProfileEdit).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call switchAction redirectToHome', () => {
-    spyOn(navigationService, 'redirectToHome').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'redirectToHome');
     actionService.switchAction(homeAction, null);
-    expect(navigationService.redirectToHome).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call switchAction reload', () => {
-    spyOn(locationService, 'reload').and.callThrough();
+    const spy = jest.spyOn(locationService, 'reload');
     actionService.switchAction(reloadAction, null);
-    expect(locationService.reload).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call switchAction openDropdownListModal', () => {
-    spyOn(actionToolsService, 'openDropdownListModal').and.callThrough();
+    const spy = jest.spyOn(actionToolsService, 'openDropdownListModal');
     actionService.switchAction(openDropdownModalAction, null);
-    expect(actionToolsService.openDropdownListModal).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call switchAction openConfirmationModal', () => {
-    spyOn(screenService, 'getStore').and.returnValue({
+    jest.spyOn(screenService, 'getStore').mockReturnValue({
       display: {
         confirmations: {
+          // @ts-ignore
           confirmation: {
             title: 'Some title',
             text: 'Some text',
@@ -281,21 +274,21 @@ describe('ActionService', () => {
         },
       },
     });
-    spyOn(actionToolsService, 'openConfirmationModal').and.callThrough();
+    const spy = jest.spyOn(actionToolsService, 'openConfirmationModal');
     actionService.switchAction(openConfirmationModalAction, null);
-    expect(actionToolsService.openConfirmationModal).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call switchAction handleDeliriumAction', () => {
-    spyOn(actionToolsService, 'handleDeliriumAction').and.callThrough();
+    const spy = jest.spyOn(actionToolsService, 'handleDeliriumAction');
     actionService.switchAction(deliriumAction, null);
-    expect(actionToolsService['handleDeliriumAction']).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call switchAction redirectExternal', () => {
-    spyOn(navigationService, 'redirectExternal').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'redirectExternal');
     actionService.switchAction(redirectAction, null);
-    expect(navigationService.redirectExternal).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   describe('getComponentStateForNavigate()', () => {
@@ -303,7 +296,7 @@ describe('ActionService', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
-      spyOn<any>(actionToolsService, 'isTimerComponent').and.returnValue(false);
+      jest.spyOn<any, string>(actionToolsService, 'isTimerComponent').mockReturnValue(false);
       const expectedValue = { 123: { value: 'some value', visited: true }};
       currentAnswersService.state = expectedValue;
       const value = actionToolsService['getComponentStateForNavigate'](nextAction, '123');
@@ -314,7 +307,7 @@ describe('ActionService', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
-      spyOn<any>(actionToolsService, 'isTimerComponent').and.returnValue(true);
+      jest.spyOn<any, string>(actionToolsService, 'isTimerComponent').mockReturnValue(true);
       const expectedValue = { 123: { visited: true, value: nextAction.value }};
       const value = actionToolsService['getComponentStateForNavigate'](nextAction, '123');
       expect(value).toEqual(expectedValue);
@@ -347,7 +340,7 @@ describe('ActionService', () => {
     });
 
     it('should call navigationService.redirectTo()', () => {
-      const spy = spyOn(navigationService, 'redirectTo');
+      const spy = jest.spyOn(navigationService, 'redirectTo');
       actionService.switchAction(redirectToPayByUinAction, '');
       expect(spy).toHaveBeenCalledWith('oplataUrl/pay/uin/100');
     });

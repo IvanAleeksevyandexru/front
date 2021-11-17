@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { TextTransformService } from './text-transform.service';
-import { configureTestSuite } from 'ng-bullet';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 
 describe('TextTransformService', () => {
   let service: TextTransformService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [TextTransformService],

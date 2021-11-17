@@ -17,7 +17,6 @@ import {
   HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
@@ -119,7 +118,7 @@ describe('ValidationService', () => {
     required: true,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -220,7 +219,7 @@ describe('ValidationService', () => {
           value: 12,
         },
       };
-      const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
+      const customValidator = service['calculateStringPredicate'](mockCalcStringComponent, '10');
       expect(customValidator).toBeFalsy();
     });
 
@@ -230,7 +229,7 @@ describe('ValidationService', () => {
           value: 8,
         },
       };
-      const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
+      const customValidator = service['calculateStringPredicate'](mockCalcStringComponent, '10');
       expect(customValidator).toBeTruthy();
     });
 
@@ -241,7 +240,7 @@ describe('ValidationService', () => {
           value: 'throw new Error("Evil code"); 12',
         },
       };
-      expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError(
+      expect(() => service['calculateStringPredicate'](mockCalcStringComponent, '10')).toThrowError(
         'Ошибка в выражении CalculatedPredicate. Component ID: rf2',
       );
     });
@@ -253,7 +252,7 @@ describe('ValidationService', () => {
           value: '12; throw new Error("Evil code")',
         },
       };
-      expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError(
+      expect(() => service['calculateStringPredicate'](mockCalcStringComponent, '10')).toThrowError(
         'Ошибка в выражении CalculatedPredicate. Component ID: rf2',
       );
     });
@@ -264,6 +263,7 @@ describe('ValidationService', () => {
       const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
       const control = new FormControl('input');
       control.setValue('12345678фи');
+      // @ts-ignore
       customAsyncValidator(control).subscribe((obj) => {
         expect(obj).toEqual({ msg: 'Поле должно содержать 9 символов', textFromJson: true });
         done();
@@ -274,6 +274,7 @@ describe('ValidationService', () => {
       const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
       const control = new FormControl('input');
       control.setValue('фыждлоекa');
+      // @ts-ignore
       customAsyncValidator(control).subscribe((obj) => {
         expect(obj).toEqual({
           msg: 'Поле должно содержать хотя бы одну цифру',
@@ -288,6 +289,7 @@ describe('ValidationService', () => {
       const control = new FormControl('input');
       control.setValue('');
       control.markAsTouched();
+      // @ts-ignore
       customAsyncValidator(control).subscribe((obj) => {
         expect(obj).toEqual({ msg: 'Обязательно для заполнения', textFromJson: false });
         done();
@@ -320,11 +322,12 @@ describe('ValidationService', () => {
       components.forEach((component) => {
         component.attrs.validation[0]['updateOn'] = 'blur';
         const customAsyncValidator = service.customAsyncValidator(component as any, 'blur');
+        // @ts-ignore
         customAsyncValidator(control).subscribe((obj) => {
           expect(obj).toEqual({ msg: 'ошибка', textFromJson: true });
-          done();
         });
       });
+      done();
     });
   });
 
@@ -395,8 +398,8 @@ describe('ValidationService', () => {
     const checkNumber = (number: any) => service.checkCardNumber(number);
 
     it('should return true', () => {
-      spyOn(health, 'measureStart').and.callThrough();
-      spyOn(health, 'measureEnd').and.callThrough();
+      const spyMeasureStart = jest.spyOn(health, 'measureStart');
+      const spyMeasureEnd = jest.spyOn(health, 'measureEnd');
       expect(checkNumber('3562990024016152')).toBeTruthy();
       expect(checkNumber('3562 9900 2401 6152')).toBeTruthy();
       expect(checkNumber('3562 99002401 6152')).toBeTruthy();
@@ -407,18 +410,19 @@ describe('ValidationService', () => {
       expect(checkNumber('6291 5700 1247 52832')).toBeTruthy();
       expect(checkNumber('2200 3307 9345 4721 809')).toBeTruthy();
       expect(checkNumber('2200 3307 1335 4721 6')).toBeTruthy();
-      expect(health.measureStart).toHaveBeenCalledWith(CARD_VALIDATION_EVENT);
-      expect(health.measureEnd).toHaveBeenCalledWith(CARD_VALIDATION_EVENT, 0, {
+      expect(spyMeasureStart).toHaveBeenCalledWith(CARD_VALIDATION_EVENT);
+      expect(spyMeasureEnd).toHaveBeenCalledWith(CARD_VALIDATION_EVENT, 0, {
         userId: '123456',
         validationStatus: true,
       });
     });
 
     it('should return false', () => {
-      spyOn(health, 'measureStart').and.callThrough();
-      spyOn(health, 'measureEnd').and.callThrough();
+      const spyMeasureStart = jest.spyOn(health, 'measureStart');
+      const spyMeasureEnd = jest.spyOn(health, 'measureEnd');
       expect(checkNumber('5439 3800 2401 6155')).toBeFalsy();
-      expect(health.measureEnd).toHaveBeenCalledWith(CARD_VALIDATION_EVENT, 0, {
+      expect(spyMeasureStart).toHaveBeenCalledWith(CARD_VALIDATION_EVENT);
+      expect(spyMeasureEnd).toHaveBeenCalledWith(CARD_VALIDATION_EVENT, 0, {
         userId: '123456',
         validationStatus: false,
       });

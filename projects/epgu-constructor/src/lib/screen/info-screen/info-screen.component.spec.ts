@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockDirective } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import { DeviceDetectorService, DeviceDetectorServiceStub, LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -64,7 +63,7 @@ describe('InfoScreenComponent', () => {
   let configService: ConfigService;
   let deviceDetectorService: DeviceDetectorService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BaseModule, ScreenButtonsModule, SocialShareModule, HttpClientModule],
       declarations: [

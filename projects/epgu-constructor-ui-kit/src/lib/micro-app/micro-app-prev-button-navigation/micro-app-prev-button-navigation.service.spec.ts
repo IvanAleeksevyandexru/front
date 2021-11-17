@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { MicroAppPrevButtonNavigationService } from './micro-app-prev-button-navigation.service';
 import { MicroAppNavigationServiceStub } from '../micro-app-navigation/micro-app-navigation.service.stub';
@@ -9,13 +8,13 @@ describe('MicroAppPrevButtonNavigationService', () => {
   let service: MicroAppPrevButtonNavigationService;
   let appNavigationService: MicroAppNavigationService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         MicroAppPrevButtonNavigationService,
         { provide: MicroAppNavigationService, useClass: MicroAppNavigationServiceStub },
       ],
-    });
+    }).compileComponents();
   });
 
   beforeEach(() => {

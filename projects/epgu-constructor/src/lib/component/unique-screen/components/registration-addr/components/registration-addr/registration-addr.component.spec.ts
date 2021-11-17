@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import { ActivatedRoute } from '@angular/router';
 import {
   ScreenPadModule,
@@ -76,7 +75,7 @@ describe('RegistrationAddrComponent', () => {
     required: true,
   } as unknown) as IRegistrationAddrComponent;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [RegistrationAddrComponent],
       imports: [
