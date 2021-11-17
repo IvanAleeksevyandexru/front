@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  OnInit,
+} from '@angular/core';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import {
   CustomComponent,
   CustomComponentOutputData,
@@ -15,14 +22,18 @@ import { CustomScreenService } from './custom-screen.service';
   templateUrl: './custom-screen.component.html',
   styleUrls: ['./custom-screen.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomScreenComponent extends ScreenBase implements OnInit {
   dataToSend: NavigationPayload;
   isValid: boolean;
   helperText: CustomComponent;
 
-  constructor(public injector: Injector, private customScreenService: CustomScreenService) {
+  constructor(
+    public injector: Injector,
+    private customScreenService: CustomScreenService,
+    private cdr: ChangeDetectorRef,
+  ) {
     super(injector);
   }
 
@@ -54,6 +65,7 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
     this.dataToSend = this.customScreenService.getFormattedData(changes);
     this.currentAnswersService.isValid = this.isValid;
     this.currentAnswersService.state = this.dataToSend;
+    this.cdr.detectChanges();
   }
 
   private setHelperText(): void {

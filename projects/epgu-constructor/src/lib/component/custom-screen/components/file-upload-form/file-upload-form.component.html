@@ -1,9 +1,10 @@
 <ng-container *ngIf="data$ | async">
   <epgu-constructor-file-upload
+    *ngIf="prefixForMnemonic"
     class="file-upload-custom-wrapper"
     [attributes]="$any(attrs)"
     [objectId]="screenService.orderIdAsString$ | async"
-    [prefixForMnemonic]="prefixForMnemonic$ | async"
+    [prefixForMnemonic]="prefixForMnemonic"
   ></epgu-constructor-file-upload>
 
   <div class="size-info" *ngIf="uploaderScreenService.showLimitsInfo()">

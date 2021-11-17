@@ -138,6 +138,7 @@ export class FileUploadComponent implements OnInit {
     Record<string, UploadedFile[]>,
   ]): UploadContext {
     const id = `${this.prefixForMnemonic}.${upload.uploadId}`;
+
     return {
       data: upload,
       prefixForMnemonic: this.prefixForMnemonic,

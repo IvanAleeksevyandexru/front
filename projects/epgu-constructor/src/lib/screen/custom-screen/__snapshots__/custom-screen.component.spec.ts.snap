@@ -2,6 +2,7 @@
 
 exports[`CustomScreenComponent check snapshot 1`] = `
 <epgu-constructor-custom-screen
+  cdr={[Function ViewRef_]}
   currentAnswersService={[Function CurrentAnswersService]}
   customScreenService={[Function CustomScreenService]}
   eventBusService={[Function EventBusService]}

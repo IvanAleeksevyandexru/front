@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
-import { first, mapTo, startWith, take, takeUntil, tap } from 'rxjs/operators';
+import { first, startWith, takeUntil, tap } from 'rxjs/operators';
 import { flatten as _flatten } from 'lodash';
+
 import { UnsubscribeService, EventBusService, BusEventType } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
@@ -28,9 +29,10 @@ export class FileUploadFormComponent
     tap((data: ComponentBase) => {
       const attrs: FileUploadModelAttrs = data.attrs as FileUploadModelAttrs;
       this.uploaderScreenService.setValuesFromAttrs(attrs);
+      this.prefixForMnemonic = this.getUploadComponentPrefixForMnemonic(data);
     }),
   );
-  prefixForMnemonic$: Observable<string>;
+  prefixForMnemonic: string;
   files: FileUploadEmitValue[] = [];
 
   constructor(
@@ -45,17 +47,20 @@ export class FileUploadFormComponent
   ngOnInit(): void {
     super.ngOnInit();
 
-    this.prefixForMnemonic$ = this.control.valueChanges.pipe(
-      take(1),
-      mapTo(`${this.control.value.id}.FileUploadComponent`),
-    );
-
     combineLatest([
       this.control.valueChanges.pipe(first(), startWith('')),
       this.eventBusService.on(BusEventType.FileUploadValueChangedEvent),
     ])
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([, uploads]) => this.updateParentForm(uploads));
+  }
+
+  /**
+   * Возвращает префикс для формирования мнемоники
+   * @param componentData - данные компонента
+   */
+  getUploadComponentPrefixForMnemonic(componentData: ComponentBase): string {
+    return [componentData.id, 'FileUploadComponent'].join('.');
   }
 
   private updateParentForm(uploads: FileResponseToBackendUploadsItem): void {
@@ -69,9 +74,10 @@ export class FileUploadFormComponent
     if (!this.isValid()) {
       this.control.get('value').setErrors({ required: true });
     }
+
     this.formService.emitChanges();
     this.uploaderScreenService.updateLimits();
-    if (this.uploaderScreenService.showLimitsInfo()) this.cdr.markForCheck();
+    this.cdr.markForCheck();
   }
 
   // @TODO разобраться с relatedUploads и required
