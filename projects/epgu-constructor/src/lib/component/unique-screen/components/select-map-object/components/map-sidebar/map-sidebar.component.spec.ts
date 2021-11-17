@@ -123,21 +123,6 @@ describe('MapSidebarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
-  it('expandObject should collapse all objects except passed ', () => {
-    component['selectMapObjectService'].isSelectedView.next(true);
-    const objects = new Array(12).fill({ expanded: true });
-    const testObject = { expanded: true };
-    objects[3] = testObject;
-    component.balloonDictionaryItems = objects;
-
-    component['expandObject']((testObject as unknown) as YMapItem<DictionaryItem>);
-
-    expect(testObject.expanded).toBeTruthy();
-    const collapsed = component.balloonDictionaryItems.filter((object) => !object.expanded);
-    expect(collapsed.length).toBe(11);
-  });
-
   describe('collapseObject', function () {
     it('should collapse previously choosen object', () => {
       const testObject: any = { center: [1,2], title: 'test' };

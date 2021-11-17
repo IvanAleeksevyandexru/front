@@ -47,6 +47,7 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
   @Input() isSelectButtonHidden = false;
   @Input() contentType = ContentTypes[MapTypes.commonMap];
   @Input() attrs = {};
+  @Input() redraw: boolean;
   @Output() selectObject = new EventEmitter<YMapItem<DictionaryItem>>();
   @Output() handleObjectClickEvent = new EventEmitter<YMapItem<DictionaryItem>>();
   @Output() collapseObjectEvent = new EventEmitter<YMapItem<DictionaryItem>>();

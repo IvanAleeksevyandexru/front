@@ -55,6 +55,7 @@ export class MapSidebarComponent implements OnInit {
     this.searchPanelType = PanelTypes[this.sidebarData.attrs.mapType];
     this.balloonContentType = ContentTypes[this.sidebarData.attrs.mapType];
     this.handleSubscriptions();
+    console.log('Elections must work!');
   }
 
   public handleFiltering(data: DictionaryItem[]): void {
@@ -92,19 +93,24 @@ export class MapSidebarComponent implements OnInit {
     this.yandexMapService.selectedValue$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: DictionaryItem[]) => {
+        if (this.activeItem) {
+          this.activeItem.expanded = false;
+        }
+
         if (value) {
           this.originalValue = value;
           [this.activeItem] = value;
           if (value.length === 1 || this.sidebarData.attrs.mapType !== MapTypes.electionsMap) {
             this.activeItem.expanded = true;
-            this.expandObject(value[0]);
           }
           this.cdr.detectChanges();
           const matchingBalloon = this.balloonComponents.find((item) =>
             arePointsEqual(item.mapObject, value[0]),
           );
           if (matchingBalloon) {
-            matchingBalloon.balloonContentComponentRef.location.nativeElement.scrollIntoView();
+            setTimeout(() => {
+              matchingBalloon.balloonContentComponentRef.location.nativeElement.scrollIntoView();
+            }, 0);
           }
         } else {
           this.originalValue = [];
@@ -127,15 +133,6 @@ export class MapSidebarComponent implements OnInit {
         this.balloonDictionaryItems = this.getBalloonItems();
         this.cdr.detectChanges();
       });
-  }
-
-  private expandObject(mapObject: DictionaryItem): void {
-    this.balloonDictionaryItems = this.balloonDictionaryItems.map(
-      (object: YMapItem<DictionaryItem>) => {
-        const expanded = object === mapObject || arePointsEqual(object, mapObject);
-        return { ...object, expanded };
-      },
-    );
   }
 
   private getBalloonItems(): DictionaryItem[] {
