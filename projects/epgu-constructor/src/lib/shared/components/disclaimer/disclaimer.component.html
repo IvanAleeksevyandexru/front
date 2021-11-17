@@ -23,6 +23,7 @@
       [clarifications]="clarifications"
     ></epgu-constructor-output-html>
   </ng-container>
+  <a class="confirm" *ngIf="isNotifierDisclaimer" (click)="destroy.emit()">Понятно, перейти к услуге</a>
 </div>
 
 <ng-template #contentDescription>

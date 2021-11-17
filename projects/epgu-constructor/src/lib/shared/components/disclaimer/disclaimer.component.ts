@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 
 @Component({
@@ -13,4 +13,6 @@ export class DisclaimerComponent {
   @Input() description: string;
   @Input() clarifications: Clarifications;
   @Input() isNotifierDisclaimer = false;
+
+  @Output() destroy = new EventEmitter();
 }
