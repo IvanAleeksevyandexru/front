@@ -476,8 +476,8 @@ export class ComponentsListRelationsService {
           shownElements,
           dependentComponent,
           reference,
-          componentVal,
           dependentControl,
+          form,
         );
         break;
       case CustomComponentRefRelation.displayOn:
@@ -617,13 +617,16 @@ export class ComponentsListRelationsService {
     shownElements: CustomListStatusElements,
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
-    componentVal: KeyValueMap,
     dependentControl: AbstractControl,
+    form: FormArray
   ): void {
     const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
-    const isShown =
-      !shownElements[reference.relatedRel]?.isShown ||
-      !this.refRelationService.isValueEquals(reference.val, componentVal);
+    const refs = dependentComponent.attrs.ref;
+    const isShown = !refs.some((ref) => {
+      return this.refRelationService.isDisplayOffRelation(ref.relation) &&
+        this.refRelationService.isValueEquals(reference.val, this.getControlValueById(ref.relatedRel, form)) &&
+        shownElements[ref.relatedRel]?.isShown;
+    });
 
     if (element.isShown === true || !isDisplayOn) {
       shownElements[dependentComponent.id] = {
@@ -904,5 +907,9 @@ export class ComponentsListRelationsService {
         { onlySelf: true, emitEvent: false },
       );
     }
+  }
+
+  private getControlValueById(id: string, form: FormArray): { id?: string } | string | number {
+    return form.controls.find((control) => control.value.id === id).get('value').value;
   }
 }
