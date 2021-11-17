@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { TimeSlotBookedInfoComponent } from './time-slot-booked-info.component';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
@@ -24,8 +23,8 @@ describe('TimeSlotBookedInfoComponent', () => {
   let smev3: TimeSlotSmev3Service;
   let dateService: DatesToolsService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSlotBookedInfoComponent],
       imports: [BaseModule, HttpClientTestingModule],
       providers: [

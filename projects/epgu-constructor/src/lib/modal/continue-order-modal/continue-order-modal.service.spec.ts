@@ -25,9 +25,9 @@ describe('ContinueOrderModalService', () => {
 
   describe('openModal', () => {
     it('should call openModal of ModalService', () => {
-      spyOn(modalService, 'openModal').and.callThrough();
+      const spy = jest.spyOn(modalService, 'openModal');
       service.openModal();
-      expect(modalService.openModal).toBeCalled();
+      expect(spy).toBeCalled();
     });
   });
 });

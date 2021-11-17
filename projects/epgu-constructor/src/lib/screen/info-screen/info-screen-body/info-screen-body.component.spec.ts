@@ -6,7 +6,6 @@ import { MockComponent } from 'ng-mocks';
 import { OutputHtmlComponent } from '../../../shared/components/output-html/output-html.component';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 const mockDataWithAttrs: ComponentDto = {
@@ -38,7 +37,7 @@ describe('InfoScreenBodyComponent', () => {
   let component: InfoScreenBodyComponent;
   let fixture: ComponentFixture<InfoScreenBodyComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InfoScreenBodyComponent, MockComponent(OutputHtmlComponent)],
       providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],

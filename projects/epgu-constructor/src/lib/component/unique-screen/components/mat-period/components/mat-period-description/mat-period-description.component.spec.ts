@@ -4,7 +4,6 @@ import { MockModule } from 'ng-mocks';
 import { MatPeriodDescriptionComponent } from './mat-period-description.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { AddZeroPennyPipe } from '../../pipe/add-zero-penny.pipe';
-import { configureTestSuite } from 'ng-bullet';
 import { HttpClientModule } from '@angular/common/http';
 import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 
@@ -12,7 +11,7 @@ describe('MatPeriodDescriptionComponent', () => {
   let component: MatPeriodDescriptionComponent;
   let fixture: ComponentFixture<MatPeriodDescriptionComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MatPeriodDescriptionComponent, AddZeroPennyPipe],
       imports: [MockModule(BaseModule), HttpClientModule, PluralizeModule, ToMoneyModule],

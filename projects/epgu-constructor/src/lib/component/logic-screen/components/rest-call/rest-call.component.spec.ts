@@ -10,7 +10,6 @@ import {
 
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { HttpClientModule } from '@angular/common/http';
 import RestCallComponent from './rest-call.component';
@@ -44,7 +43,7 @@ describe('RestCallComponent', () => {
   let logicService: LogicService;
   let hookService: HookService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [LogicComponentsContainerComponent, LogicComponentResolverComponent, RestCallComponent],
       imports: [BaseModule, HttpClientModule],

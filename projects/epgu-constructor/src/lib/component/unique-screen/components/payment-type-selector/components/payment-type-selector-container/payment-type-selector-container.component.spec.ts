@@ -24,7 +24,6 @@ import { PaymentTypeSelectorContainerComponent } from './payment-type-selector-c
 import { PaymentTypeSelectorComponent } from '../payment-type-selector/payment-type-selector.component';
 import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
-import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
@@ -66,7 +65,7 @@ describe('PaymentTypeSelectorContainerComponent', () => {
     visited: true,
   } as ComponentDto;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         PaymentTypeSelectorContainerComponent,

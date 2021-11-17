@@ -5,6 +5,7 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 
 import { PriorityItemsService } from './priority-items.service';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
+import { take, takeLast } from 'rxjs/operators';
 
 const mockCreateItem = (CODE: string) => {
   const attributeValues = { CODE };
@@ -277,7 +278,7 @@ describe('PriorityItemsService', () => {
     });
     it('should be leftItems$', (done) => {
       jest.spyOn(service, 'getStep');
-      service.leftItems$.subscribe(() => {
+      service.leftItems$.pipe(take(1)).subscribe(() => {
         expect(service.getStep).toHaveBeenCalled();
         done();
       });

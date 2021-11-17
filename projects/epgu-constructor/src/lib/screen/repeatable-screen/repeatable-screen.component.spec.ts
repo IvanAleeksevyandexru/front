@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
-import { configureTestSuite } from 'ng-bullet';
 
 import {
   ScreenContainerComponent,
@@ -155,7 +154,7 @@ describe('RepeatableScreenComponent', () => {
   let navigationService: NavigationService;
   let cachedAnswersService: CachedAnswersService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         MockModule(BaseModule),
@@ -247,14 +246,14 @@ describe('RepeatableScreenComponent', () => {
       displayMock.components[0].attrs.components[0],
       displayMock.components[0].attrs.components[1],
     ];
-    const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
+    const setNewScreenSpy = jest.spyOn<any, string>(component, 'setNewScreen');
     eventBusService.emit(BusEventType.CloneButtonClickEvent, 'any');
     expect(setNewScreenSpy).toBeCalledTimes(1);
     expect(setNewScreenSpy).toBeCalledWith(components, true);
   });
 
   it('should been called setNewScreen method with screens components', () => {
-    const setNewScreenSpy = spyOn<any>(component, 'setNewScreen');
+    const setNewScreenSpy = jest.spyOn<any, string>(component, 'setNewScreen');
     const { components } = displayMock.components[0].attrs;
     component.init$.subscribe(() => {
       expect(setNewScreenSpy).toBeCalledTimes(1);
@@ -266,7 +265,7 @@ describe('RepeatableScreenComponent', () => {
     const displayMockWithMinOccures = { ...displayMock };
     displayMockWithMinOccures.components[0].attrs.minOccures = 2;
     screenService.display = displayMockWithMinOccures;
-    const createScreenSpy = spyOn<any>(component, 'createScreen').and.callFake(jest.fn());
+    const createScreenSpy = jest.spyOn<any, string>(component, 'createScreen').mockImplementation(jest.fn());
 
     component.init$.subscribe();
     expect(createScreenSpy).toBeCalledTimes(2);
@@ -277,7 +276,7 @@ describe('RepeatableScreenComponent', () => {
       const displayMockWithMinRepeatAmount = { ...displayMock };
       displayMockWithMinRepeatAmount.components[0].attrs.repeatAmount = repeatAmount;
       screenService.display = displayMockWithMinRepeatAmount;
-      spyOn<any>(component, 'createScreen').and.callFake(jest.fn());
+      jest.spyOn<any, string>(component, 'createScreen').mockImplementation(jest.fn());
 
       const screens: { [key: string]: CustomComponent[] } = {};
       for (let i = 0; i < screensCount; i += 1) {

@@ -4,7 +4,6 @@ import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { brakBookRequest } from './mocks/mock-time-slots';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('FormPlayerApiService', () => {
   const slotReqBody = {
@@ -22,7 +21,7 @@ describe('FormPlayerApiService', () => {
   let http: HttpTestingController;
   let responseMock = [42];
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

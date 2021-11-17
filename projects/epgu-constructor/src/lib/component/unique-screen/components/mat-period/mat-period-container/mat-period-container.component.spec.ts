@@ -13,7 +13,6 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { FormValue, MatPeriod } from '../mat-period.models';
-import { configureTestSuite } from 'ng-bullet';
 import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
 
 describe('MatPeriodContainerComponent', () => {
@@ -82,7 +81,7 @@ describe('MatPeriodContainerComponent', () => {
       visited: true,
     },
   };
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         MatPeriodContainerComponent,

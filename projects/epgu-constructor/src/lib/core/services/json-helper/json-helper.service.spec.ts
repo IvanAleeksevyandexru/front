@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { JsonHelperService } from './json-helper.service';
 
@@ -7,7 +6,7 @@ describe('JsonHelperService', () => {
   let service: JsonHelperService;
   let elem: HTMLElement;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [JsonHelperService],
     });

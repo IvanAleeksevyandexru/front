@@ -10,7 +10,6 @@ import { Full } from '../../information-center.models';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 
 describe('InformationCenterFullComponent', () => {
@@ -39,7 +38,7 @@ describe('InformationCenterFullComponent', () => {
     },
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InformationCenterFullComponent],
       imports: [

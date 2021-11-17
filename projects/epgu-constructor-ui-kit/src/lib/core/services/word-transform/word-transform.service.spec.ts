@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { WordTransformService } from './word-transform.service';
 import { ObjectHelperService } from '../object-helper/object-helper.service';
@@ -7,7 +6,7 @@ import { ObjectHelperService } from '../object-helper/object-helper.service';
 describe('WordTransformService', () => {
   let service: WordTransformService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [WordTransformService, ObjectHelperService],
     });

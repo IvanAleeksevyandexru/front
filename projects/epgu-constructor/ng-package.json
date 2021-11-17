@@ -3,12 +3,10 @@
   "dest": "../../dist/epgu-constructor",
   "assets": ["src/assets"],
   "allowedNonPeerDependencies": [
-    "@epgu/ui",
     "@epgu/epgu-constructor-types",
     "@epgu/epgu-constructor-ui-kit",
     "ics",
     "@alyle/ui",
-    "angular-resize-event",
     "@tanker/file-ponyfill",
     "node-fetch",
     "os"
@@ -30,6 +28,7 @@
       "@alyle/ui/image-cropper": "i4$1",
       "@alyle/ui/themes/minima": "minima",
       "angular-resize-event": "angular-resize-event",
+      "angular2-text-mask": "angular2-text-mask",
       "@tanker/file-ponyfill": "@tanker/file-ponyfill",
       "file-saver": "file-saver",
       "date-fns": "date-fns",

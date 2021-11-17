@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { HtmlRemoverService } from './html-remover.service';
-import { configureTestSuite } from 'ng-bullet';
 import { DisplayDto } from '@epgu/epgu-constructor-types';
 
 describe('HtmlRemoverService', () => {
@@ -50,7 +49,7 @@ describe('HtmlRemoverService', () => {
     firstScreen: true,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [HtmlRemoverService],
     });

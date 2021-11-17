@@ -5,7 +5,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CurrencyPipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { FormBuilder, FormControl, FormGroup, NgControl } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { BaseModule } from '@epgu/epgu-constructor/src/lib/shared/base.module';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { TextTransformService } from '../../../core/services/text-transform/text-transform.service';
@@ -57,7 +56,7 @@ describe('TextTransformDirective', () => {
   let component: TextTransformTestComponent;
   let fixture: ComponentFixture<TextTransformTestComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TextTransformDirective, TextTransformTestComponent],
       imports: [BaseModule],

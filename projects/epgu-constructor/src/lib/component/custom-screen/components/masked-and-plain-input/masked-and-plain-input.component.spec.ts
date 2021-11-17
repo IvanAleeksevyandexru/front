@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -53,7 +52,7 @@ describe('MaskedAndPlainInputComponent', () => {
     visited: false,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MaskedAndPlainInputComponent],
       imports: [

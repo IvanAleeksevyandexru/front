@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { BatchRecorder, Tracer } from '@epgu/zipkin';
 
 import { TracingService } from './tracing.service';
@@ -14,7 +13,7 @@ describe('TracingService', () => {
   const someUrl1 = '/some/url/1';
   const someUrl2 = '/some/url/2';
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

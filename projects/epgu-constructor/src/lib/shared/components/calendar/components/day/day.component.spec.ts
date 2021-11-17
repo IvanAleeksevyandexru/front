@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { DayComponent } from './day.component';
 import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
@@ -11,8 +10,8 @@ describe('DayComponent', () => {
   let fixture: ComponentFixture<DayComponent>;
   let dateService: DatesToolsService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [DayComponent],
       imports: [],
       providers: [{ provide: DatesToolsService, useClass: DatesToolsServiceStub }],

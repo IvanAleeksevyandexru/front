@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { TimeSlotBaseScreenComponent } from './time-slot-base-screen.component';
 import { FormsModule } from '@angular/forms';
@@ -34,8 +33,8 @@ describe('TimeSlotBaseScreenComponent', () => {
   let component: TestScreenComponent;
   let fixture: ComponentFixture<TestScreenComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSlotBaseScreenComponent, TestScreenComponent],
       imports: [FormsModule, BaseModule, ScreenContainerModule, BaseComponentsModule],
       providers: [

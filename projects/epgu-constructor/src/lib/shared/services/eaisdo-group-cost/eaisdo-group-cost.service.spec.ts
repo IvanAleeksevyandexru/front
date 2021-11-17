@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { EaisdoGroupCostService } from './eaisdo-group-cost.service';
-import { configureTestSuite } from 'ng-bullet';
 import {
   EaisdoFinancialSourceTypes,
   EaisdoResponseTypes,
@@ -18,7 +17,7 @@ import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 describe('EaisdoGroupCostService', () => {
   let service: EaisdoGroupCostService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         EaisdoGroupCostService,

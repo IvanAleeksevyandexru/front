@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
 import { EmployeeHistoryClarificationComponent } from './employee-history-clarification.component';
@@ -10,7 +9,7 @@ describe('EmployeeHistoryClarificationComponent', () => {
   let component: EmployeeHistoryClarificationComponent;
   let fixture: ComponentFixture<EmployeeHistoryClarificationComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [EmployeeHistoryClarificationComponent, MockComponent(ClickableLabelDirective)],
     })

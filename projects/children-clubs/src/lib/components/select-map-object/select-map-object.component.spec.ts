@@ -18,7 +18,6 @@ import {
   YMapItem,
   YandexMapService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { ApiService } from '../../services/api/api.service';
 import { ApiServiceStub } from '../../services/api/api.service.stub';
 import { ProgramListService } from '../../services/program-list/program-list.service';
@@ -39,7 +38,7 @@ describe('SelectMapObjectComponent', () => {
   let yandexMapService: YandexMapService;
   let programListService: ProgramListService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [SelectMapObjectModule, HttpClientModule],
       providers: [

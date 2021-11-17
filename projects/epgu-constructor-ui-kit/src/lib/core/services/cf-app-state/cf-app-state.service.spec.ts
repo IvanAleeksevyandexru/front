@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { CfAppStateService } from './cf-app-state.service';
-import { configureTestSuite } from 'ng-bullet';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
 import {
@@ -15,7 +14,7 @@ describe('CfAppStateService', () => {
   let service: CfAppStateService;
   let localStorageService: LocalStorageService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         CfAppStateService,

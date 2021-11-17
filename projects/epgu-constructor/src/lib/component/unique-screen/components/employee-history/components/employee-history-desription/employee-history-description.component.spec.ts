@@ -2,13 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { EmployeeHistoryDescriptionComponent } from './employee-history-description.component';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('EmployeeHistoryDescriptionComponent', () => {
   let component: EmployeeHistoryDescriptionComponent;
   let fixture: ComponentFixture<EmployeeHistoryDescriptionComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [EmployeeHistoryDescriptionComponent],
       providers: [],

@@ -1,7 +1,6 @@
 import { DictionaryComponent } from '../dictionary/dictionary.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import {
@@ -61,7 +60,7 @@ describe('RestLookupInputComponent', () => {
   let formService: ComponentsListFormServiceStub;
   let restToolsService: RestToolsService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [RestLookupInputComponent, MockComponent(ComponentItemComponent)],
       imports: [

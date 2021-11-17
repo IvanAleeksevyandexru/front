@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockDirective } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 
 import { SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
@@ -66,7 +65,7 @@ describe('PhotoDescriptionComponent', () => {
     required: true,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoDescriptionComponent, MockDirective(ClickableLabelDirective), SafePipe],
     }).compileComponents();

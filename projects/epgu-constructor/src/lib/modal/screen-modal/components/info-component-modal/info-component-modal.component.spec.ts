@@ -11,7 +11,6 @@ import { ActionDirective } from '../../../../shared/directives/action/action.dir
 import { InfoScreenBodyComponent } from '../../../../screen/info-screen/info-screen-body/info-screen-body.component';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import { ActionType, DTOActionAction, ComponentDto } from '@epgu/epgu-constructor-types';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
@@ -31,7 +30,7 @@ describe('InfoComponentModalComponent', () => {
   let screenModalService: ScreenModalService;
   let screenService: ScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ScreenButtonsModule, ActionModule],
       declarations: [

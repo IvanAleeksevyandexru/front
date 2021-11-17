@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { TimeSlotSmev3ResolverComponent } from './time-slot-smev3-resolver.component';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver } from '@angular/core';
@@ -24,8 +23,8 @@ describe('TimeSlotSmev3ResolverComponent', () => {
   let fixture: ComponentFixture<TimeSlotSmev3ResolverComponent>;
   let smev3Service: TimeSlotSmev3StateService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [
         TimeSlotSmev3ResolverComponent,
         TimeSlotVaccinationComponent,

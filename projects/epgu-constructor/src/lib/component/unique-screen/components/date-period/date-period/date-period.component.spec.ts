@@ -3,7 +3,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import { addDays, format } from 'date-fns';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import {
@@ -20,8 +19,8 @@ describe('DatePeriodComponent', () => {
   let component: DatePeriodComponent;
   let fixture: ComponentFixture<DatePeriodComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [DatePeriodComponent],
       imports: [
@@ -44,7 +43,7 @@ describe('DatePeriodComponent', () => {
   });
 
   it('should emit updateState', () => {
-    spyOn(component.updateState, 'emit');
+    const spy = jest.spyOn(component.updateState, 'emit');
 
     const startDate: Date = new Date();
     const endDate: Date = addDays(startDate, 30);
@@ -54,7 +53,7 @@ describe('DatePeriodComponent', () => {
     };
     fixture.detectChanges();
 
-    expect(component.updateState.emit).toHaveBeenCalledWith({
+    expect(spy).toHaveBeenCalledWith({
       ...component.initialState,
       isValid: true,
     });

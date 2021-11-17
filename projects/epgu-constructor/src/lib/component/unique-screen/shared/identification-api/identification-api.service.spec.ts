@@ -15,8 +15,8 @@ describe('IdentificationApiService', () => {
   let configService: ConfigService;
   let apiUrl: string;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         IdentificationApiService,

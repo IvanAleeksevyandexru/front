@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
-import { configureTestSuite } from 'ng-bullet';
 
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
@@ -71,7 +70,7 @@ describe('FileUploadComponent', () => {
     terminal: false,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [PluralizeModule, FileSizeModule],
       declarations: [

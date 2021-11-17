@@ -3,13 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileUploadSliderComponent } from './file-upload-slider.component';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('SliderComponent', () => {
   let component: FileUploadSliderComponent;
   let fixture: ComponentFixture<FileUploadSliderComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
       declarations: [FileUploadSliderComponent],

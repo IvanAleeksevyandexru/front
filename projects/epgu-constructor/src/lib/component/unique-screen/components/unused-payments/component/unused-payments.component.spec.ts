@@ -5,7 +5,6 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { RadioTaxComponent } from '../../../../../shared/components/radio-tax/radio-tax.component';
 import { UnusedPaymentInterface } from '../unused-payment.interface';
 import { UnusedPaymentsComponent } from './unused-payments.component';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('UnusedPaymentsComponent', () => {
   let component: UnusedPaymentsComponent;
@@ -21,7 +20,7 @@ describe('UnusedPaymentsComponent', () => {
     link: 'sdf',
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UnusedPaymentsComponent, MockComponent(RadioTaxComponent)],
     })

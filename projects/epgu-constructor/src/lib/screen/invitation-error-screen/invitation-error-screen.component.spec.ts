@@ -1,7 +1,6 @@
 import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -49,7 +48,7 @@ describe('InvitationErrorScreenComponent', () => {
     fixture.detectChanges();
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         InvitationErrorScreenComponent,

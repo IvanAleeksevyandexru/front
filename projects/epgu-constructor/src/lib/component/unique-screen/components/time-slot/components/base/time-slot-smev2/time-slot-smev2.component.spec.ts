@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { TimeSlotSmev2Component } from './time-slot-smev2.component';
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
@@ -57,8 +56,8 @@ describe('TimeSlotSmev2Component', () => {
   let dateService: DatesToolsService;
   let smev2Service: TimeSlotSmev2Service;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [
         TimeSlotSmev2Component,
         MockComponent(TimeSlotMonthComponent),

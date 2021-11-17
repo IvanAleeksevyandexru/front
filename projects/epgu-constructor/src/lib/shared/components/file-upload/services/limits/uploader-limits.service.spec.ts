@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
 import { UploaderLimitsService } from './uploader-limits.service';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('UploaderLimitsService', () => {
   let service: UploaderLimitsService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UploaderLimitsService],
     });

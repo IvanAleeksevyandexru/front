@@ -4,7 +4,6 @@ import { MinimaDark, MinimaLight } from '@alyle/ui/themes/minima';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { isBoolean } from 'lodash';
-import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 
@@ -32,7 +31,7 @@ describe('PhotoEditorModalComponent', () => {
   let component: PhotoEditorModalComponent;
   let fixture: ComponentFixture<PhotoEditorModalComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         PhotoEditorModalComponent,

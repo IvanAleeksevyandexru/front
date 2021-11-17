@@ -30,7 +30,6 @@ import { RefRelationService } from '../../shared/services/ref-relation/ref-relat
 import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
 import { ScreenModalServiceStub } from './screen-modal.service.stub';
 import { ScreenModalResolverComponent } from './screen-modal-resolver/screen-modal-resolver.component';
-import { configureTestSuite } from 'ng-bullet';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
@@ -44,7 +43,7 @@ describe('ScreenModalComponent', () => {
   let fixture: ComponentFixture<ScreenModalComponent>;
   let screenService: ScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         ScreenModalComponent,
@@ -110,6 +109,7 @@ describe('ScreenModalComponent', () => {
     });
     describe('when resize event is fired', () => {
       beforeAll(() => {
+        // @ts-ignore
         window.innerWidth = testWidth;
         window.dispatchEvent(new Event('resize'));
       });
@@ -126,7 +126,7 @@ describe('ScreenModalComponent', () => {
       });
     });
     it('should call nextStep on nextStep$ event ', () => {
-      const nextStepSpy = spyOn(component, 'nextStep').and.callThrough();
+      const nextStepSpy = jest.spyOn(component, 'nextStep');
       const navigation = {
         options: { isInternalScenarioFinish: true },
       };
@@ -134,7 +134,7 @@ describe('ScreenModalComponent', () => {
       expect(nextStepSpy).toHaveBeenCalled();
     });
     it('should call prevStep on prevStep$ event ', () => {
-      const prevStepSpy = spyOn(component, 'prevStep').and.callThrough();
+      const prevStepSpy = jest.spyOn(component, 'prevStep');
       const navigation = {
         options: { isInternalScenarioFinish: true },
       };
@@ -183,19 +183,19 @@ describe('ScreenModalComponent', () => {
 
   describe('closeModal', () => {
     it('sould call switchNavigationToFormPlayer()', () => {
-      const switchNavigationToFormPlayerSpy = jest.spyOn(component, 'switchNavigationToFormPlayer');
+      const switchNavigationToFormPlayerSpy = jest.spyOn<any, string>(component, 'switchNavigationToFormPlayer');
       component.showModal = true;
       component.closeModal();
       expect(switchNavigationToFormPlayerSpy).toHaveBeenCalled();
     });
     it('sould call screenModalService.resetStore()', () => {
-      const resetStoreSpy = jest.spyOn(component.screenModalService, 'resetStore');
+      const resetStoreSpy = jest.spyOn<any, string>(component.screenModalService, 'resetStore');
       component.showModal = true;
       component.closeModal();
       expect(resetStoreSpy).toHaveBeenCalled();
     });
     it('sould not call any, if showModal is false', () => {
-      const switchNavigationToFormPlayerSpy = jest.spyOn(component, 'switchNavigationToFormPlayer');
+      const switchNavigationToFormPlayerSpy = jest.spyOn<any, string>(component, 'switchNavigationToFormPlayer');
       const resetStoreSpy = jest.spyOn(component.screenModalService, 'resetStore');
       component.showModal = false;
       component.closeModal();

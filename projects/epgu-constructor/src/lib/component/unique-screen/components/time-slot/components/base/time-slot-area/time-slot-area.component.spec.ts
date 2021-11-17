@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { TimeSlotAreaComponent } from './time-slot-area.component';
 import { BaseModule } from '../../../../../../../shared/base.module';
 import { FormsModule } from '@angular/forms';
@@ -32,8 +31,8 @@ describe('TimeSlotAreaComponent', () => {
   let smev3Service: TimeSlotSmev3Service;
   let dictionaryApiService: DictionaryApiService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSlotAreaComponent],
       imports: [BaseModule, FormsModule],
       providers: [

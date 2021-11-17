@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponents, MockDirective, MockModule, MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -64,7 +63,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
   let fixture: ComponentFixture<ConfirmPersonalUserAddressComponent>;
   let screenService: ScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         MockModule(ScreenPadModule),

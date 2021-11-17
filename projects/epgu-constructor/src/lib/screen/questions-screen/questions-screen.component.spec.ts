@@ -29,7 +29,6 @@ import { ScreenButtonsModule } from '../../shared/components/screen-buttons/scre
 import { BaseModule } from '../../shared/base.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
-import { configureTestSuite } from 'ng-bullet';
 import {
   ComponentDto,
   ActionType,
@@ -51,12 +50,14 @@ const componentActionDtoSample1: ComponentActionDto = {
   label: 'actionLabel1',
   value: 'actionValue1',
   action: DTOActionAction.editPhoneNumber,
+  type: ActionType.profileEdit,
 };
 
 const componentActionDtoSample2: ComponentActionDto = {
   label: 'actionLabel2',
   value: 'actionValue2',
   action: DTOActionAction.editPhoneNumber,
+  type: ActionType.profileEdit,
 };
 
 const navigationPayloadSample: NavigationPayload = {
@@ -82,7 +83,7 @@ describe('QuestionsScreenComponent', () => {
   let modalService: ModalService;
   let configService: ConfigService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MockModule(UserInfoLoaderModule), BaseModule, ScreenButtonsModule],
       declarations: [
@@ -126,7 +127,7 @@ describe('QuestionsScreenComponent', () => {
 
   describe('nextStep() method', () => {
     it('should call navigationService.next()', () => {
-      const nextStepSpy = spyOn(navigationService, 'next');
+      const nextStepSpy = jest.spyOn(navigationService, 'next');
 
       component.nextStep(navigationPayloadSample);
 
@@ -139,8 +140,8 @@ describe('QuestionsScreenComponent', () => {
 
   describe('answerChoose() method', () => {
     it('should do nothing if action is disabled', () => {
-      const showModalRedirectToSpy = spyOn<any>(component, 'showModalRedirectTo');
-      const nextStepSpy = spyOn(component, 'nextStep');
+      const showModalRedirectToSpy = jest.spyOn<any, string>(component, 'showModalRedirectTo');
+      const nextStepSpy = jest.spyOn(component, 'nextStep');
 
       const disabledAction: ComponentActionDto = {
         ...componentActionDtoSample1,
@@ -154,8 +155,8 @@ describe('QuestionsScreenComponent', () => {
     });
 
     it('should call showModalRedirectTo() method if action.type is ActionType.modalRedirectTo', () => {
-      const showModalRedirectToSpy = spyOn<any>(component, 'showModalRedirectTo');
-      const nextStepSpy = spyOn(component, 'nextStep');
+      const showModalRedirectToSpy = jest.spyOn<any, string>(component, 'showModalRedirectTo');
+      const nextStepSpy = jest.spyOn(component, 'nextStep');
 
       const actionWithModalRedirectToActionType: ComponentActionDto = {
         ...componentActionDtoSample1,
@@ -170,8 +171,8 @@ describe('QuestionsScreenComponent', () => {
     });
 
     it('should call nextStep() method if action.type is NOT ActionType.modalRedirectTo', () => {
-      const showModalRedirectToSpy = spyOn<any>(component, 'showModalRedirectTo');
-      const nextStepSpy = spyOn(component, 'nextStep');
+      const showModalRedirectToSpy = jest.spyOn<any, string>(component, 'showModalRedirectTo');
+      const nextStepSpy = jest.spyOn(component, 'nextStep');
 
       const actionWithDownloadActionType: ComponentActionDto = {
         ...componentActionDtoSample1,
@@ -195,8 +196,8 @@ describe('QuestionsScreenComponent', () => {
     });
 
     it('should mutate action if action.underConstruction && config.disableUnderConstructionMode || disableUnderConstructionMode', () => {
-      const showModalRedirectToSpy = spyOn<any>(component, 'showModalRedirectTo');
-      const nextStepSpy = spyOn(component, 'nextStep');
+      const showModalRedirectToSpy = jest.spyOn<any, string>(component, 'showModalRedirectTo');
+      const nextStepSpy = jest.spyOn(component, 'nextStep');
 
       const actionUnderConstruction: ComponentActionDto = {
         ...componentActionDtoSample1,
@@ -219,7 +220,7 @@ describe('QuestionsScreenComponent', () => {
       // call showModalRedirectTo() because action is modalRedirectTo
       expect(showModalRedirectToSpy).toBeCalledTimes(1);
       expect(nextStepSpy).not.toBeCalled();
-      showModalRedirectToSpy.calls.reset();
+      showModalRedirectToSpy.mockReset();
 
       configService['_disableUnderConstructionMode'] = true;
       // should mutate action because configService.disableUnderConstructionMode is TRUE
@@ -231,7 +232,6 @@ describe('QuestionsScreenComponent', () => {
       expect(showModalRedirectToSpy).not.toBeCalled();
       // call nextStep() because action is changed to ActionType.nextStep
       expect(nextStepSpy).toBeCalledTimes(1);
-      showModalRedirectToSpy.calls.reset();
 
       configService['_disableUnderConstructionMode'] = false;
       component.disableUnderConstructionMode = true;

@@ -10,7 +10,6 @@ import {
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import {
   DictionaryItem,
   DictionaryResponseForYMap,
@@ -32,7 +31,7 @@ describe('SelectMapObjectComponent', () => {
   let kindergartenSearchPanelService: KindergartenSearchPanelService;
   let screenService: ScreenServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

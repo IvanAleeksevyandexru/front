@@ -32,7 +32,6 @@ import { By } from '@angular/platform-browser';
 import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { MockModule } from 'ng-mocks';
@@ -60,7 +59,7 @@ describe('PaymentTypeSelectorComponent', () => {
     ],
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PaymentTypeSelectorComponent, PaymentTypeSelectorButtonComponent],
       imports: [

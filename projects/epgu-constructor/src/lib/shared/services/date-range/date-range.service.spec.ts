@@ -10,7 +10,6 @@ import { DateRangeAttrs } from './date-range.models';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 
 describe('DateRangeService', () => {
@@ -41,7 +40,7 @@ describe('DateRangeService', () => {
 
   const MOCK_TODAY = '2021-01-01T00:00:00.000Z';
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         DateRangeService,

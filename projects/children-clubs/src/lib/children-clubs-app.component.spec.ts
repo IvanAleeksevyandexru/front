@@ -44,8 +44,8 @@ describe('ChildrenClubsComponent', () => {
   let fixture: ComponentFixture<ChildrenClubsAppComponent>;
   let cfAppStateService: CfAppStateService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         ProgramListModule,
         BaseModule,

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { TimeSlotMarriageComponent } from './time-slot-marriage.component';
 import { MockComponent } from 'ng-mocks';
@@ -20,8 +19,8 @@ describe('TimeSlotMarriageComponent', () => {
   let component: TimeSlotMarriageComponent;
   let fixture: ComponentFixture<TimeSlotMarriageComponent>;
   let smev3StateService: TimeSlotSmev3StateService;
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [
         TimeSlotMarriageComponent,
         MockComponent(TimeSlotSmev3Component),

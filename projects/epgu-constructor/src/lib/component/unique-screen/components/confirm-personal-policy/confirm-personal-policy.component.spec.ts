@@ -10,7 +10,6 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { configureTestSuite } from 'ng-bullet';
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { By } from '@angular/platform-browser';
 import { ConfirmPersonalPolicyComponent } from './confirm-personal-policy.component';
@@ -44,7 +43,7 @@ describe('ConfirmPersonalPolicyComponent', () => {
     type: ActionType.nextStepModal,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [ConfirmPersonalPolicyComponent, ActionDirective],

@@ -29,8 +29,8 @@ describe('ToggleTextComponent', () => {
   let fixture: ComponentFixture<ToggleTextComponent>;
   let window: Window;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [ToggleTextComponent],
       providers: [WINDOW_PROVIDERS],
     }).compileComponents();

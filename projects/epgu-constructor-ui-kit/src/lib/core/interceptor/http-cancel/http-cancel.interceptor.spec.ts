@@ -2,7 +2,6 @@ import { HttpCancelInterceptor } from './http-cancel.interceptor';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpCancelService } from './http-cancel.service';
-import { configureTestSuite } from 'ng-bullet';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
@@ -12,7 +11,7 @@ describe('HttpCancelInterceptor', () => {
   let httpTestingController: HttpTestingController;
   let http: HttpClient;
 
-  configureTestSuite(() =>
+  beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { filter } from 'rxjs/operators';
 import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
 import { ConfigService } from '../../../core/services/config/config.service';
@@ -18,7 +17,7 @@ describe('SelectMapObjectComponent', () => {
   let yandexMapService: YandexMapService;
   let icons: Icons;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         WINDOW_PROVIDERS,

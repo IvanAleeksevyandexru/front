@@ -22,8 +22,8 @@ describe('ConstructorDadataWidgetComponent', () => {
   let component: ConstructorDadataWidgetComponent;
   let fixture: ComponentFixture<ConstructorDadataWidgetComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [ConstructorDadataWidgetComponent],
       imports: [CoreModule, BaseModule, RouterTestingModule, HttpClientModule],
       providers: [

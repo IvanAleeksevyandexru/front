@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { TimeSlotCheckboxErrorComponent } from './time-slot-checkbox-error.component';
 import {
@@ -42,8 +41,8 @@ describe('TimeSlotCheckboxErrorComponent', () => {
   let component: TimeSlotCheckboxErrorComponent;
   let fixture: ComponentFixture<TimeSlotCheckboxErrorComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSlotCheckboxErrorComponent],
       imports: [BaseModule, BaseComponentsModule, ConstructorCheckboxModule, ScreenButtonsModule],
       providers: [

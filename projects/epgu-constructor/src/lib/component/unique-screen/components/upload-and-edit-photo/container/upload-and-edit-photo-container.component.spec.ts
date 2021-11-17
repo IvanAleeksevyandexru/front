@@ -18,7 +18,6 @@ import { BaseComponentsModule } from '../../../../../shared/components/base-comp
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 describe('UploadAndEditPhotoContainerComponent', () => {
@@ -71,7 +70,7 @@ describe('UploadAndEditPhotoContainerComponent', () => {
   };
   let screenService: ScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         UploadAndEditPhotoContainerComponent,

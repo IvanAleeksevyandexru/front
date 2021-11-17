@@ -8,7 +8,6 @@ import { InitDataServiceStub } from '../../../core/services/init-data/init-data.
 import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { Gender } from '@epgu/epgu-constructor-types';
 
 describe('FormPlayerApiService', () => {
@@ -72,7 +71,7 @@ describe('FormPlayerApiService', () => {
     url: '',
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

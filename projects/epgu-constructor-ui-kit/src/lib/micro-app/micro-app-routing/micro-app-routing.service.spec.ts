@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MicroAppRoutingService } from './micro-app-routing.service';
 import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 import { MicroAppStateQueryStub } from '../micro-app-state/micro-app-state.query.stub';
@@ -25,13 +24,13 @@ describe('MicroAppRoutingService', () => {
     test2: Test2Component,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         MicroAppRoutingService,
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
       ],
-    });
+    }).compileComponents();
   });
 
   beforeEach(() => {

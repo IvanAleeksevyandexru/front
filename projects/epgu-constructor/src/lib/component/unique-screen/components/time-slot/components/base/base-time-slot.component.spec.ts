@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { BaseTimeSlotComponent } from './base-time-slot.component';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
@@ -42,8 +41,8 @@ describe('BaseTimeSlotComponent', () => {
   let stateService: TimeSlotStateService;
 
   const testId = 'testId';
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TestTimeSlotComponent],
       imports: [],
       providers: [

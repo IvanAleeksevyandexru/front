@@ -20,7 +20,6 @@ import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
-import { configureTestSuite } from 'ng-bullet';
 import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
 import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
@@ -61,7 +60,7 @@ describe('AttachUploadedFilesModalComponent', () => {
   };
   let mockFile = new FileItem(FileItemStatus.uploaded, '', null, mockUploadedFile);
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AttachUploadedFilesModalComponent],
       imports: [BaseModule, ConfirmationModalModule, HttpClientTestingModule],
@@ -108,7 +107,7 @@ describe('AttachUploadedFilesModalComponent', () => {
     });
 
     it('should call closeModal() on "closeModalEvent_previewFiles"', () => {
-      const componentCloseModalSpy = spyOn(component, 'closeModal');
+      const componentCloseModalSpy = jest.spyOn(component, 'closeModal');
       // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
       eventBusService.on('closeModalEvent_previewFiles').subscribe(() => {
         expect(componentCloseModalSpy).toBeCalled();

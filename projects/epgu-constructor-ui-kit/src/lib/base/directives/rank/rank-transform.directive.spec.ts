@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { FormControl, NgControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { BaseUiModule } from '../../base-ui.module';
 
 @Component({
@@ -18,7 +17,7 @@ class RankTransformTestComponent {
 describe('RankTransformDirective', () => {
   let fixture: ComponentFixture<RankTransformTestComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [RankTransformTestComponent],
       imports: [RouterTestingModule, BaseUiModule],

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatePeriodContainerComponent } from './date-period-container.component';
 import { ScreenService } from '../../../../screen/screen.service';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -25,8 +24,8 @@ describe('DatePeriodContainerComponent', () => {
   let screenService: ScreenService;
   let currentAnswersService: CurrentAnswersService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [DatePeriodContainerComponent, MockComponent(DatePeriodComponent)],
       imports: [MockModule(DefaultUniqueScreenWrapperModule), HttpClientModule],
       providers: [

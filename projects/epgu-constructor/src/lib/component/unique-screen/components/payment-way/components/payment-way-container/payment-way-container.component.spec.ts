@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -45,7 +44,7 @@ describe('PaymentWayContainerComponent', () => {
   let fixture: ComponentFixture<PaymentWayContainerComponent>;
   let screenService: ScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PaymentWayContainerComponent, MockComponent(PaymentWayComponent)],
       imports: [MockModule(DefaultUniqueScreenWrapperModule), MockModule(ScreenPadModule)],

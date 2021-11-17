@@ -6,7 +6,6 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
-import { configureTestSuite } from 'ng-bullet';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 
 describe('ComponentsListToolsService', () => {
@@ -23,7 +22,7 @@ describe('ComponentsListToolsService', () => {
     required: true,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ComponentsListToolsService,
@@ -39,7 +38,7 @@ describe('ComponentsListToolsService', () => {
 
   describe('convertedValue()', () => {
     it('should call parseValue()', () => {
-      const parseValueSpy = spyOn(service, 'parseValue');
+      const parseValueSpy = jest.spyOn<any, string>(service, 'parseValue');
       service.convertedValue(mockComponent);
       expect(parseValueSpy).toHaveBeenCalled();
     });

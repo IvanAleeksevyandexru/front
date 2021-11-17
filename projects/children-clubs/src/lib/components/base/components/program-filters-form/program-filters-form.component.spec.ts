@@ -29,8 +29,8 @@ describe('ProgramFiltersComponent', () => {
   let component: ProgramFiltersFormComponent;
   let fixture: ComponentFixture<ProgramFiltersFormComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [MockComponent(PaymentSelectorComponent)],
       providers: [
         EventBusService,

@@ -2,7 +2,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { ApiService } from './api.service';
 import { FindOptionsGroup, FindOptionsProgram } from '../../typings';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
@@ -23,7 +22,7 @@ describe('ApiService', () => {
   let responseMock = { items: 42 };
   const uuid = '1';
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -33,7 +32,7 @@ describe('ApiService', () => {
         SessionService,
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
-    });
+    }).compileComponents();
   });
 
   beforeEach(() => {

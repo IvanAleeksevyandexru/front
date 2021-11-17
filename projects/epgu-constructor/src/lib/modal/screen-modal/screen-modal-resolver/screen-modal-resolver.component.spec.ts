@@ -15,7 +15,6 @@ import { ScreenModalService } from '../screen-modal.service';
 import { ScreenModalServiceStub } from '../screen-modal.service.stub';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 
 jest.useFakeTimers();
 
@@ -23,7 +22,7 @@ describe('ScreenModalResolverComponent', () => {
   let component: ScreenModalResolverComponent;
   let fixture: ComponentFixture<ScreenModalResolverComponent>;
   let screenService: ScreenService;
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ScreenModalResolverComponent],
       imports: [UniqueComponentModalModule, InfoComponentModalModule],

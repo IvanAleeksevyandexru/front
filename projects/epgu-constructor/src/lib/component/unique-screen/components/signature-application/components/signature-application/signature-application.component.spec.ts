@@ -22,7 +22,6 @@ import { SignatureApplicationComponent } from './signature-application.component
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import {
   ComponentDto,
   ComponentAttrsDto,
@@ -55,7 +54,7 @@ describe('SignatureApplicationComponent', () => {
     value: 'ActionButton',
     action: DTOActionAction.getNextStep,
   };
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, ClickableLabelModule],
       declarations: [

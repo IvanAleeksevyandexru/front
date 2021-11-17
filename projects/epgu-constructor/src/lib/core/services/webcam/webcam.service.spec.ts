@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { WebcamService } from './webcam.service';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('WebcamService', () => {
   let service: WebcamService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [WebcamService],
     });

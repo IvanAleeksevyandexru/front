@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import { MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 
@@ -30,7 +29,7 @@ describe('EmptyScreenComponent', () => {
   let fileDownloaderService: FileDownloaderService;
   let actionService: ActionService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [EmptyScreenComponent, RedirectComponent],
       providers: [
@@ -79,10 +78,10 @@ describe('EmptyScreenComponent', () => {
         type: 'type1',
       } as ComponentDto;
 
-      spyOn(locationService, 'href').and.callThrough();
+      const spy = jest.spyOn(locationService, 'href');
       component.createLink([componentSchema, applicantAnswers])();
 
-      expect(locationService.href).toHaveBeenCalledWith('http://example.com');
+      expect(spy).toHaveBeenCalledWith('http://example.com');
     });
 
     it('should return link from component if ref does not exist', () => {
@@ -94,14 +93,14 @@ describe('EmptyScreenComponent', () => {
         type: 'type1',
       } as ComponentDto;
 
-      spyOn(locationService, 'href').and.callThrough();
+      const spy = jest.spyOn(locationService, 'href');
       component.createLink([componentSchema, {}])();
 
-      expect(locationService.href).toHaveBeenCalledWith('http://example.com');
+      expect(spy).toHaveBeenCalledWith('http://example.com');
     });
 
     it('should unknown', () => {
-      spyOn(loggerService, 'error').and.callThrough();
+      const spy = jest.spyOn(loggerService, 'error');
       fixture = TestBed.createComponent(EmptyScreenComponent);
       component = fixture.componentInstance;
       const componentSchema = {
@@ -112,7 +111,7 @@ describe('EmptyScreenComponent', () => {
 
       component.createLink([componentSchema, {}])();
 
-      expect(loggerService.error).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalled();
     });
   });
 

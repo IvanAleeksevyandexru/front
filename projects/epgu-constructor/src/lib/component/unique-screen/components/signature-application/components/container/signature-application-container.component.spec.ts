@@ -31,7 +31,6 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import {
   ComponentDto,
   ComponentAttrsDto,
@@ -76,7 +75,7 @@ describe('SignatureApplicationContainerComponent', () => {
     value: 'ActionButton',
     action: DTOActionAction.getNextStep,
   };
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, ClickableLabelModule],
       declarations: [

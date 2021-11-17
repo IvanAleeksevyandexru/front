@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MockModule, MockProviders } from 'ng-mocks';
 import { BaseUiModule, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
@@ -25,7 +24,7 @@ describe('CalendarInputComponent', () => {
 
   let formService: ComponentsListFormService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         CalendarInputComponent,

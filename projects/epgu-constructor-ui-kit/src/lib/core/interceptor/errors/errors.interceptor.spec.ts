@@ -17,7 +17,6 @@ import DOUBLE_ORDER_ERROR_DISPLAY from '@epgu/epgu-constructor/src/lib/core/disp
 import EXPIRE_ORDER_ERROR_DISPLAY from '@epgu/epgu-constructor/src/lib/core/display-presets/410-error';
 import { FormPlayerNavigation } from '@epgu/epgu-constructor/src/lib/form-player/form-player.types';
 import { FormPlayerServiceStub } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service.stub';
-import { configureTestSuite } from 'ng-bullet';
 import { ErrorHandlerService } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler.service';
 import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
 import { ConfirmationModalComponent } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.component';
@@ -51,7 +50,7 @@ describe('ErrorsInterceptor', () => {
   let serviceId = 'local';
   let orderId = 12345;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -94,7 +93,7 @@ describe('ErrorsInterceptor', () => {
   });
 
   it('should not call open modal', fakeAsync(() => {
-    spyOn(modalService, 'openModal').and.callThrough();
+    const spy = jest.spyOn(modalService, 'openModal');
     formPlayerApi.checkIfOrderExist().subscribe((response) => {
       expect(response).toBeTruthy();
     });
@@ -102,12 +101,12 @@ describe('ErrorsInterceptor', () => {
       `${config.apiUrl}/service/${init.serviceId}/scenario/checkIfOrderIdExists`,
     );
     requestToSucceed.flush({});
-    expect(modalService.openModal).toHaveBeenCalledTimes(0);
+    expect(spy).toHaveBeenCalledTimes(0);
     tick();
   }));
 
   it('should open modal with AUTH_ERROR_MODAL_PARAMS params', fakeAsync(() => {
-    spyOn(modalService, 'openModal').and.callThrough();
+    const spy = jest.spyOn(modalService, 'openModal');
     formPlayerApi.checkIfOrderExist().subscribe(
       () => fail('should have failed with the 401 error'),
       (error: HttpErrorResponse) => {
@@ -119,7 +118,7 @@ describe('ErrorsInterceptor', () => {
     );
     const body = new HttpErrorResponse({ status: 401, statusText: 'Unauthorized' });
     requestToError.flush('Unauthorized', body);
-    expect(modalService.openModal).toHaveBeenCalledWith(
+    expect(spy).toHaveBeenCalledWith(
       ConfirmationModalComponent,
       AUTH_ERROR_MODAL_PARAMS,
     );
@@ -139,13 +138,13 @@ describe('ErrorsInterceptor', () => {
         },
       },
     } as FormPlayerApiSuccessResponse;
-    spyOn(modalService, 'openModal').and.callThrough();
+    const spy = jest.spyOn(modalService, 'openModal');
     formPlayerApi.getBooking().subscribe();
     const req = httpMock.expectOne(`${config.apiUrl}/service/booking`);
     expect(req.request.method).toBe('POST');
 
     req.flush(data);
-    expect(modalService.openModal).toHaveBeenCalledWith(
+    expect(spy).toHaveBeenCalledWith(
       ConfirmationModalComponent,
       BOOKING_ONLINE_ERROR,
     );
@@ -153,7 +152,7 @@ describe('ErrorsInterceptor', () => {
   }));
 
   it('should switch screen to double order display error when get 409 status code on getNextStep request', fakeAsync(() => {
-    spyOn(navigationService, 'patchOnCli').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'patchOnCli');
     formPlayerApi.navigate(responseDto, {}, FormPlayerNavigation.NEXT).subscribe(
       () => fail('should have failed with the 409 error'),
       (error: HttpErrorResponse) => {
@@ -175,14 +174,14 @@ describe('ErrorsInterceptor', () => {
       },
       body,
     );
-    expect(navigationService.patchOnCli).toHaveBeenCalledWith({
+    expect(spy).toHaveBeenCalledWith({
       display: DOUBLE_ORDER_ERROR_DISPLAY,
     });
     tick();
   }));
 
   it('should switch screen to expire order display error when get 410 status code on getOrderStatus request', fakeAsync(() => {
-    spyOn(navigationService, 'patchOnCli').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'patchOnCli');
     const orderId = '42';
     formPlayerApi.getOrderStatus(Number(orderId)).subscribe(
       () => fail('should have failed with the 410 error'),
@@ -204,7 +203,7 @@ describe('ErrorsInterceptor', () => {
       },
       body,
     );
-    expect(navigationService.patchOnCli).toHaveBeenCalledWith({
+    expect(spy).toHaveBeenCalledWith({
       display: EXPIRE_ORDER_ERROR_DISPLAY,
     });
     tick();

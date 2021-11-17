@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { FormArray } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { cloneDeep } from 'lodash';
-import { configureTestSuite } from 'ng-bullet';
 import {
   ScenarioDto,
   DictionaryConditions,
@@ -16,7 +15,6 @@ import {
   ConfigServiceStub,
   mockSelectMapObjectStore,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../date-range/date-range.service';
@@ -79,7 +77,7 @@ describe('DictionaryToolsService', () => {
   let MapStore: ScenarioDto;
   let compValue;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -99,6 +97,7 @@ describe('DictionaryToolsService', () => {
 
   beforeEach(() => {
     service = TestBed.inject(DictionaryToolsService);
+    // @ts-ignore
     MapStore = cloneDeep(mockSelectMapObjectStore);
     compValue = JSON.parse(MapStore.display.components[0].value);
   });

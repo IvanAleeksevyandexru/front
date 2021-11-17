@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { PluralizePipe } from '@epgu/ui/pipes';
 import {
   CoreUiModule,
@@ -18,7 +17,7 @@ describe('EquipmentChoiceComponent', () => {
   let component: EquipmentCategoryComponent;
   let fixture: ComponentFixture<EquipmentCategoryComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         EquipmentCategoryComponent,

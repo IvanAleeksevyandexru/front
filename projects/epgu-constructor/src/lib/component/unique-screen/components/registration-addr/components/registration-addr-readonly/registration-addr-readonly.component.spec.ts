@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProviders } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -41,7 +40,7 @@ describe('RegistrationAddrReadonlyComponent', () => {
     required: true,
   } as unknown) as IRegistrationAddrReadonlyComponent;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         RegistrationAddrReadonlyComponent,

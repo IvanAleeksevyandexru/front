@@ -8,7 +8,6 @@ import {
 import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 import { EmployeeHistoryAvailableDates, EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MockProvider } from 'ng-mocks';
 import { MonthYear } from '@epgu/ui/models/date-time';
 
@@ -16,7 +15,7 @@ describe('EmployeeHistoryMonthsService', () => {
   let service: EmployeeHistoryMonthsService;
   let datesToolsService: DatesToolsService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

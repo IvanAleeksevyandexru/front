@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DatesToolsService } from './dates-tools.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import {
   DATE_ISO_STRING_FORMAT,
   DATE_STRING_DOT_FORMAT,
@@ -21,7 +20,7 @@ describe('DatesToolsService', () => {
   let service: DatesToolsService;
   let httpTestingController: HttpTestingController;
   const MOCK_TODAY = '2020-01-01T00:00:00.000Z';
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

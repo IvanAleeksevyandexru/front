@@ -21,7 +21,6 @@ import {
   FormPlayerApiSuccessResponse,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
-import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';
 
 declare global {
@@ -42,7 +41,7 @@ describe('FormPlayerService', () => {
   let location: Location;
   let orderId: number;
   let navigation: Navigation;
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         FormPlayerService,
@@ -57,7 +56,7 @@ describe('FormPlayerService', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
-    });
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -67,13 +66,13 @@ describe('FormPlayerService', () => {
     location = TestBed.inject(Location);
     logger = TestBed.inject(LoggerService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
-    orderId = '1234';
+    orderId = 1234;
     service['_store'] = JSON.parse(JSON.stringify(response));
   });
 
   describe('checkIfOrderExist()', () => {
     it('should call checkIfOrderExist of formPlayerApiService when call ', () => {
-      spyOn(formPlayerApiService, 'checkIfOrderExist').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'checkIfOrderExist');
       service.checkIfOrderExist();
       expect(formPlayerApiService.checkIfOrderExist).toHaveBeenCalled();
     });
@@ -81,8 +80,8 @@ describe('FormPlayerService', () => {
 
   describe('getOrderStatus()', () => {
     it('should call getOrderStatus of formPlayerApiService when call ', () => {
-      const orderId = '1234';
-      spyOn(formPlayerApiService, 'getOrderStatus').and.callThrough();
+      const orderId = 1234;
+      jest.spyOn<any, string>(formPlayerApiService, 'getOrderStatus');
       service.getOrderStatus(orderId);
       expect(formPlayerApiService.getOrderStatus).toHaveBeenCalledWith(orderId);
     });
@@ -90,13 +89,13 @@ describe('FormPlayerService', () => {
 
   describe('initData()', () => {
     it('should call updateLoading with true param', () => {
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.initData();
       expect(service['updateLoading']).toHaveBeenCalled();
     });
 
     it('should call getOrderData with orderId when isNeedToShowLastScreen return false and hasn\'t invited case', () => {
-      spyOn<any>(service, 'getOrderData').and.callThrough();
+      jest.spyOn<any, string>(service, 'getOrderData');
       service.initData(orderId);
       expect(service['getOrderData']).toHaveBeenCalledWith(orderId);
     });
@@ -104,14 +103,14 @@ describe('FormPlayerService', () => {
 
   describe('getOrderData()', () => {
     it('should call getServiceData of formPlayerApiService when call getOrderData', () => {
-      spyOn(formPlayerApiService, 'getServiceData').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'getServiceData');
       service.getOrderData(orderId);
       expect(formPlayerApiService.getServiceData).toHaveBeenCalled();
     });
 
     it('should call processResponse with response when call getOrderData with success response case', () => {
-      spyOn(formPlayerApiService, 'getServiceData').and.returnValue(of(response));
-      spyOn<any>(service, 'processResponse').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'getServiceData').mockReturnValue(of(response));
+      jest.spyOn<any, string>(service, 'processResponse');
       service.getOrderData(orderId);
       expect(service.processResponse).toHaveBeenCalledWith(response);
     });
@@ -122,15 +121,15 @@ describe('FormPlayerService', () => {
         description: 'a-e-e-e-e-e...',
         status: 500,
       };
-      spyOn(formPlayerApiService, 'getServiceData').and.returnValue(throwError(errorResponse));
-      spyOn<any>(service, 'sendDataError').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'getServiceData').mockReturnValue(throwError(errorResponse));
+      jest.spyOn<any, string>(service, 'sendDataError');
       service.getOrderData(orderId);
       expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call getOrderData', () => {
-      spyOn(formPlayerApiService, 'getServiceData').and.returnValue(of(response));
-      spyOn<any>(service, 'getOrderData').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'getServiceData').mockReturnValue(of(response));
+      jest.spyOn<any, string>(service, 'getOrderData');
       service.getOrderData(orderId);
       expect(service['getOrderData']).toHaveBeenCalled();
     });
@@ -138,29 +137,29 @@ describe('FormPlayerService', () => {
 
   describe('navigate()', () => {
     it('should call updateLoading with false true', () => {
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.navigate({}, FormPlayerNavigation.NEXT);
       expect(service['updateLoading']).toHaveBeenCalled();
     });
 
     it('should call updateRequest with prev-button param', () => {
       const navigation = {};
-      spyOn<any>(service, 'updateRequest').and.callThrough();
+      jest.spyOn<any, string>(service, 'updateRequest');
       service.navigate(navigation, FormPlayerNavigation.NEXT);
       expect(service['updateRequest']).toHaveBeenCalledWith(navigation);
     });
 
     it('should call navigate of formPlayerApiService with params when call navigate', () => {
       const navigation = {};
-      spyOn(formPlayerApiService, 'navigate').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'navigate');
       service.navigate(navigation, FormPlayerNavigation.NEXT);
       expect(formPlayerApiService.navigate).toHaveBeenCalled();
     });
 
     it('should call processResponse with response when call navigate with success response case', () => {
       const navigation = {};
-      spyOn(formPlayerApiService, 'navigate').and.returnValue(of(response));
-      spyOn<any>(service, 'processResponse').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'navigate').mockReturnValue(of(response));
+      jest.spyOn<any, string>(service, 'processResponse');
       service.navigate(navigation, FormPlayerNavigation.NEXT);
       expect(service.processResponse).toHaveBeenCalledWith(response);
     });
@@ -172,16 +171,16 @@ describe('FormPlayerService', () => {
         description: 'a-e-e-e-e-e...',
         status: 500,
       };
-      spyOn(formPlayerApiService, 'navigate').and.returnValue(throwError(errorResponse));
-      spyOn<any>(service, 'sendDataError').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'navigate').mockReturnValue(throwError(errorResponse));
+      jest.spyOn<any, string>(service, 'sendDataError');
       service.navigate(navigation, FormPlayerNavigation.NEXT);
       expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call navigate', () => {
       const navigation = {};
-      spyOn(formPlayerApiService, 'navigate').and.returnValue(of(response));
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'navigate').mockReturnValue(of(response));
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.navigate(navigation, FormPlayerNavigation.NEXT);
       expect(service['updateLoading']).toHaveBeenCalled();
     });
@@ -189,20 +188,20 @@ describe('FormPlayerService', () => {
 
   describe('getBooking()', () => {
     it('should call updateLoading with false true', () => {
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.getBooking();
       expect(service['updateLoading']).toHaveBeenCalled();
     });
 
     it('should call getBooking of formPlayerApiService', () => {
-      spyOn(formPlayerApiService, 'getBooking').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'getBooking');
       service.getBooking();
       expect(formPlayerApiService.getBooking).toHaveBeenCalled();
     });
 
     it('should call processResponse with response when call navigate with success response case', () => {
-      spyOn(formPlayerApiService, 'getBooking').and.returnValue(of(response));
-      spyOn<any>(service, 'processResponse').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'getBooking').mockReturnValue(of(response));
+      jest.spyOn<any, string>(service, 'processResponse');
       service.getBooking();
       expect(service.processResponse).toHaveBeenCalledWith(response);
     });
@@ -213,15 +212,15 @@ describe('FormPlayerService', () => {
         description: 'a-e-e-e-e-e...',
         status: 500,
       };
-      spyOn(formPlayerApiService, 'getBooking').and.returnValue(throwError(errorResponse));
-      spyOn<any>(service, 'sendDataError').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'getBooking').mockReturnValue(throwError(errorResponse));
+      jest.spyOn<any, string>(service, 'sendDataError');
       service.getBooking();
       expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call navigate', () => {
-      spyOn(formPlayerApiService, 'getBooking').and.returnValue(of(response));
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'getBooking').mockReturnValue(of(response));
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.getBooking();
       expect(service['updateLoading']).toHaveBeenCalled();
     });
@@ -229,7 +228,7 @@ describe('FormPlayerService', () => {
 
   describe('patchStore()', () => {
     it('should call updateLoading with false true', () => {
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.patchStore({});
       expect(service['updateLoading']).toHaveBeenCalled();
     });
@@ -254,11 +253,11 @@ describe('FormPlayerService', () => {
           id: '2222',
           name: 'some name 2',
           terminal: false,
-          type: ScreenTypes.COMPONENT,
+          type: ScreenTypes.CUSTOM,
         },
       };
       state.scenarioDto = { ...state.scenarioDto, ...newScenarioDtoDiff };
-      spyOn<any>(service, 'processResponse').and.callThrough();
+      jest.spyOn<any, string>(service, 'processResponse');
       service.patchStore(newScenarioDtoDiff);
       expect(service['processResponse']).toHaveBeenCalledWith(state);
     });
@@ -267,7 +266,7 @@ describe('FormPlayerService', () => {
   describe('getQuizDataByToken()', () => {
     it('should call getQuizDataByToken with passed token', () => {
       const token = 'some token';
-      spyOn<any>(service, 'getQuizDataByToken').and.callThrough();
+      jest.spyOn<any, string>(service, 'getQuizDataByToken');
       service.getQuizDataByToken(token);
       expect(service['getQuizDataByToken']).toHaveBeenCalledWith(token);
     });
@@ -276,14 +275,14 @@ describe('FormPlayerService', () => {
   describe('initPlayerFromQuiz()', () => {
     it('should call updateLoading with false true', () => {
       const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.initPlayerFromQuiz(quiz);
       expect(service['updateLoading']).toHaveBeenCalled();
     });
 
     it('should call navigate of formPlayerApiService with params when call navigate', () => {
       const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };
-      spyOn(formPlayerApiService, 'quizToOrder').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'quizToOrder');
       service.initPlayerFromQuiz(quiz);
       expect(formPlayerApiService.quizToOrder).toHaveBeenCalled();
     });
@@ -295,16 +294,16 @@ describe('FormPlayerService', () => {
         description: 'a-e-e-e-e-e...',
         status: 500,
       };
-      spyOn(formPlayerApiService, 'quizToOrder').and.returnValue(throwError(errorResponse));
-      spyOn<any>(service, 'sendDataError').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'quizToOrder').mockReturnValue(throwError(errorResponse));
+      jest.spyOn<any, string>(service, 'sendDataError');
       service.initPlayerFromQuiz(quiz);
       expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call navigate', () => {
       const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };
-      spyOn(formPlayerApiService, 'navigate').and.returnValue(of(response));
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(formPlayerApiService, 'navigate').mockReturnValue(of(response));
+      jest.spyOn<any, string>(service, 'updateLoading');
       service.initPlayerFromQuiz(quiz);
       expect(service['updateLoading']).toHaveBeenCalled();
     });
@@ -312,12 +311,13 @@ describe('FormPlayerService', () => {
 
   describe('initPlayerFromOrder()', () => {
     it('should call updateLoading(true) before getServiceData', () => {
-      jest.spyOn(service, 'updateLoading');
+      jest.spyOn<any, string>(service, 'updateLoading');
 
       const getServiceDataSubject = new Subject();
 
       jest
         .spyOn(formPlayerApiService, 'getServiceData')
+        // @ts-ignore
         .mockReturnValue(getServiceDataSubject.asObservable());
 
       service.initPlayerFromOrder({});
@@ -327,13 +327,14 @@ describe('FormPlayerService', () => {
     });
 
     it('should handle error', (done) => {
-      jest.spyOn(service, 'updateLoading').mockImplementation(() => undefined);
-      jest.spyOn(service, 'sendDataError').mockImplementation(() => undefined);
+      jest.spyOn<any, string>(service, 'updateLoading').mockImplementation(() => undefined);
+      jest.spyOn<any, string>(service, 'sendDataError').mockImplementation(() => undefined);
 
       const getServiceDataSubject = new Subject();
 
       jest
         .spyOn(formPlayerApiService, 'getServiceData')
+        // @ts-ignore
         .mockReturnValue(getServiceDataSubject.asObservable());
 
       service.initPlayerFromOrder({}).subscribe(
@@ -356,9 +357,9 @@ describe('FormPlayerService', () => {
     });
 
     it('should handle success', (done) => {
-      jest.spyOn(service, 'updateLoading').mockImplementation(() => undefined);
-      jest.spyOn(service, 'processResponse').mockImplementation(() => undefined);
-      jest.spyOn(service, 'hasError').mockReturnValue(false);
+      jest.spyOn<any, string>(service, 'updateLoading').mockImplementation(() => undefined);
+      jest.spyOn<any, string>(service, 'processResponse').mockImplementation(() => undefined);
+      jest.spyOn<any, string>(service, 'hasError').mockReturnValue(false);
 
       const successGetServiceDataResponse = {} as FormPlayerApiResponse;
       const successNavigateResponse = {} as FormPlayerApiResponse;
@@ -368,8 +369,9 @@ describe('FormPlayerService', () => {
 
       jest
         .spyOn(formPlayerApiService, 'getServiceData')
+        // @ts-ignore
         .mockReturnValue(getServiceDataSubject.asObservable());
-      jest.spyOn(formPlayerApiService, 'navigate').mockReturnValue(navigateSubject.asObservable());
+      jest.spyOn<any, string>(formPlayerApiService, 'navigate').mockReturnValue(navigateSubject.asObservable());
 
       service.initPlayerFromOrder({}).subscribe((response) => {
         expect(response).toBe(successNavigateResponse);
@@ -386,28 +388,28 @@ describe('FormPlayerService', () => {
 
   describe('processResponse()', () => {
     it('should call hasError with response param', () => {
-      spyOn<any>(service, 'hasError').and.callThrough();
+      jest.spyOn<any, string>(service, 'hasError');
       service.processResponse(response);
       expect(service['hasError']).toHaveBeenCalledWith(response);
     });
 
     it('should call sendDataError with response param when hasError return true', () => {
-      spyOn<any>(service, 'hasError').and.returnValue(true);
-      spyOn<any>(service, 'sendDataError').and.callThrough();
+      jest.spyOn<any, string>(service, 'hasError').mockReturnValue(true);
+      jest.spyOn<any, string>(service, 'sendDataError');
       service.processResponse(response);
       expect(service['sendDataError']).toHaveBeenCalledWith(response);
     });
 
     it('should call sendDataSuccess with response param when hasError return false', () => {
-      spyOn<any>(service, 'hasError').and.returnValue(false);
-      spyOn<any>(service, 'sendDataSuccess').and.callThrough();
+      jest.spyOn<any, string>(service, 'hasError').mockReturnValue(false);
+      jest.spyOn<any, string>(service, 'sendDataSuccess');
       service.processResponse(response);
       expect(service['sendDataSuccess']).toHaveBeenCalledWith(response);
     });
 
     it('should call resetViewByChangeScreen with response param when hasError return false', () => {
-      spyOn<any>(service, 'hasError').and.returnValue(false);
-      spyOn<any>(service, 'resetViewByChangeScreen').and.callThrough();
+      jest.spyOn<any, string>(service, 'hasError').mockReturnValue(false);
+      jest.spyOn<any, string>(service, 'resetViewByChangeScreen');
       service.processResponse(response);
       expect(service['resetViewByChangeScreen']).toHaveBeenCalled();
     });
@@ -416,7 +418,7 @@ describe('FormPlayerService', () => {
   describe('resetViewByChangeScreen()', () => {
     it('should call scroll method of window  with (0, 0) params', () => {
       const window = TestBed.inject(WINDOW);
-      spyOn<any>(window, 'scroll').and.callThrough();
+      jest.spyOn<any, string>(window, 'scroll');
       service['resetViewByChangeScreen']();
       expect(window['scroll']).toHaveBeenCalledWith(0, 0);
     });
@@ -424,20 +426,20 @@ describe('FormPlayerService', () => {
 
   describe('hasError()', () => {
     it('should return true if hasRequestErrors', () => {
-      spyOn<any>(service, 'hasRequestErrors').and.returnValue(true);
+      jest.spyOn<any, string>(service, 'hasRequestErrors').mockReturnValue(true);
       const hasError = service['hasError'](response);
       expect(hasError).toBeTruthy();
     });
 
     it('should return true if hasBusinessErrors', () => {
-      spyOn<any>(service, 'hasBusinessErrors').and.returnValue(true);
+      jest.spyOn<any, string>(service, 'hasBusinessErrors').mockReturnValue(true);
       const hasError = service['hasError'](response);
       expect(hasError).toBeTruthy();
     });
 
     it('should return false if not hasRequestErrors and not hasBusinessErrors', () => {
-      spyOn<any>(service, 'hasRequestErrors').and.returnValue(false);
-      spyOn<any>(service, 'hasBusinessErrors').and.returnValue(false);
+      jest.spyOn<any, string>(service, 'hasRequestErrors').mockReturnValue(false);
+      jest.spyOn<any, string>(service, 'hasBusinessErrors').mockReturnValue(false);
       const hasError = service['hasError'](response);
       expect(hasError).toBeFalsy();
     });
@@ -489,26 +491,26 @@ describe('FormPlayerService', () => {
     });
 
     it('should call log of loggerService', () => {
-      spyOn<any>(logger, 'log').and.callThrough();
+      jest.spyOn<any, string>(logger, 'log');
       service['updateRequest'](navigation);
       expect(logger.log).toBeCalled();
     });
 
     it('should call isEmptyNavigationPayload with param', () => {
-      spyOn<any>(service, 'isEmptyNavigationPayload').and.callThrough();
+      jest.spyOn<any, string>(service, 'isEmptyNavigationPayload');
       service['updateRequest'](navigation);
       expect(service['isEmptyNavigationPayload']).toBeCalledWith(navigation.payload);
     });
 
     it('should call setDefaultCurrentValue when isEmptyNavigationPayload return true', () => {
-      spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(true);
-      spyOn<any>(service, 'setDefaultCurrentValue').and.callThrough();
+      jest.spyOn<any, string>(service, 'isEmptyNavigationPayload').mockReturnValue(true);
+      jest.spyOn<any, string>(service, 'setDefaultCurrentValue');
       service['updateRequest'](navigation);
       expect(service['setDefaultCurrentValue']).toBeCalled();
     });
 
     it('should set prev-button.payload as currentValue when isEmptyNavigationPayload return false', () => {
-      spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(false);
+      jest.spyOn<any, string>(service, 'isEmptyNavigationPayload').mockReturnValue(false);
       service['updateRequest'](navigation);
       expect(service['_store'].scenarioDto.currentValue).toBe(navigation.payload);
     });
@@ -520,7 +522,7 @@ describe('FormPlayerService', () => {
           store: newStore,
         },
       };
-      spyOn<any>(service, 'isEmptyNavigationPayload').and.returnValue(false);
+      jest.spyOn<any, string>(service, 'isEmptyNavigationPayload').mockReturnValue(false);
       service['updateRequest'](navigation);
       expect(service['_store']).toBe(navigation.options.store);
     });
@@ -562,13 +564,13 @@ describe('FormPlayerService', () => {
 
   describe('sendDataSuccess()', () => {
     it('should call log of loggerService', () => {
-      spyOn<any>(logger, 'log').and.callThrough();
+      jest.spyOn<any, string>(logger, 'log');
       service['sendDataSuccess'](response);
       expect(logger.log).toBeCalled();
     });
 
     it('should call initResponse with response param', () => {
-      spyOn<any>(service, 'initResponse').and.callThrough();
+      jest.spyOn<any, string>(service, 'initResponse');
       service['sendDataSuccess'](response);
       expect(service['initResponse']).toBeCalledWith(response);
     });
@@ -583,13 +585,13 @@ describe('FormPlayerService', () => {
     });
 
     it('should call error of loggerService', () => {
-      spyOn<any>(logger, 'error').and.callThrough();
+      jest.spyOn<any, string>(logger, 'error');
       service['sendDataError'](errorResponse);
       expect(logger.error).toBeCalled();
     });
 
     it('should call initResponse with response param when response has business errors', () => {
-      spyOn<any>(service, 'initResponse').and.callThrough();
+      jest.spyOn<any, string>(service, 'initResponse');
       service['sendDataError'](errorResponse);
       expect(service['initResponse']).toBeCalledWith(errorResponse);
     });
@@ -600,14 +602,14 @@ describe('FormPlayerService', () => {
         description: 'a-e-e-e-e-e...',
         status: 500,
       };
-      spyOn<any>(service, 'initResponse').and.callThrough();
+      jest.spyOn<any, string>(service, 'initResponse');
       // @ts-ignore
       service['sendDataError'](errorResponse);
       expect(service['initResponse']).not.toBeCalled();
     });
 
     it('should call updateLoading with false param', () => {
-      spyOn<any>(service, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(service, 'updateLoading');
       service['sendDataError'](errorResponse);
       expect(service['updateLoading']).toBeCalledWith(false);
     });
@@ -615,32 +617,32 @@ describe('FormPlayerService', () => {
 
   describe('initResponse()', () => {
     it('should call handleInvalidResponse when empty response', () => {
-      spyOn<any>(service, 'handleInvalidResponse').and.callThrough();
+      jest.spyOn<any, string>(service, 'handleInvalidResponse');
       service['initResponse'](null);
       expect(service['handleInvalidResponse']).toBeCalled();
     });
 
     it('should set store from response', () => {
       const newResponse = JSON.parse(JSON.stringify(response));
-      spyOn<any>(service, 'initResponse').and.callThrough();
+      jest.spyOn<any, string>(service, 'initResponse');
       service['initResponse'](newResponse);
       expect(service['_store']).toBe(newResponse);
     });
 
     it('should call initScreenStore with scenarioDto param', () => {
-      spyOn<any>(service, 'initScreenStore').and.callThrough();
+      jest.spyOn<any, string>(service, 'initScreenStore');
       service['initResponse'](response);
       expect(service['initScreenStore']).toBeCalledWith(response.scenarioDto);
     });
 
     it('should call updatePlayerLoaded with true param', () => {
-      spyOn<any>(service, 'updatePlayerLoaded').and.callThrough();
+      jest.spyOn<any, string>(service, 'updatePlayerLoaded');
       service['initResponse'](response);
       expect(service['updatePlayerLoaded']).toBeCalledWith(true);
     });
 
     it('should call log of loggerService', () => {
-      spyOn<any>(logger, 'log').and.callThrough();
+      jest.spyOn<any, string>(logger, 'log');
       service['initResponse'](response);
       expect(logger.log).toBeCalled();
     });
@@ -648,7 +650,7 @@ describe('FormPlayerService', () => {
 
   describe('handleInvalidResponse()', () => {
     it('should call error of loggerService', () => {
-      spyOn<any>(logger, 'error').and.callThrough();
+      jest.spyOn<any, string>(logger, 'error');
       service['handleInvalidResponse']();
       expect(logger.error).toBeCalled();
     });
@@ -663,7 +665,7 @@ describe('FormPlayerService', () => {
 
   describe('initScreenStore()', () => {
     it('should call initScreenStore of screenService with scenarioDto', () => {
-      spyOn<any>(screenService, 'initScreenStore').and.callThrough();
+      jest.spyOn<any, string>(screenService, 'initScreenStore');
       service['initScreenStore'](response.scenarioDto);
       expect(screenService.initScreenStore).toBeCalledWith(response.scenarioDto);
     });
@@ -676,13 +678,13 @@ describe('FormPlayerService', () => {
     });
 
     it('should call isLoadingSubject next with new value', () => {
-      spyOn<any>(service['isLoadingSubject'], 'next').and.callThrough();
+      jest.spyOn<any, string>(service['isLoadingSubject'], 'next');
       service['updateLoading'](true);
       expect(service['isLoadingSubject'].next).toBeCalledWith(true);
     });
 
     it('should call updateLoading of screenService with new value', () => {
-      spyOn<any>(screenService, 'updateLoading').and.callThrough();
+      jest.spyOn<any, string>(screenService, 'updateLoading');
       service['updateLoading'](true);
       expect(screenService.updateLoading).toBeCalledWith(true);
     });
@@ -695,7 +697,7 @@ describe('FormPlayerService', () => {
     });
 
     it('should call playerLoadedSubject next with new value', () => {
-      spyOn<any>(service['playerLoadedSubject'], 'next').and.callThrough();
+      jest.spyOn<any, string>(service['playerLoadedSubject'], 'next');
       service['updatePlayerLoaded'](true);
       expect(service['playerLoadedSubject'].next).toBeCalledWith(true);
     });

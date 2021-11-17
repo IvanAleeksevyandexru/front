@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmPersonalPolicyChangeComponent } from './confirm-personal-policy-change.component';
@@ -50,7 +49,7 @@ describe('ConfirmPersonalPolicyChangeComponent', () => {
   let control: FormGroup;
   let valueControl: FormControl;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPersonalPolicyChangeComponent],
       providers: [

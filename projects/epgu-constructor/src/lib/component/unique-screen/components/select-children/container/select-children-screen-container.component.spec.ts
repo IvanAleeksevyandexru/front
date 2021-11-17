@@ -19,7 +19,6 @@ import { SelectChildrenComponent } from '../components/select-children/select-ch
 import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
-import { configureTestSuite } from 'ng-bullet';
 import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
@@ -73,7 +72,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
     firstScreen: false,
     impasse: false,
   };
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         SelectChildrenScreenContainerComponent,

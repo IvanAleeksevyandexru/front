@@ -19,7 +19,6 @@ import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { CustomListDictionary } from '../../../component/custom-screen/components-list.types';
 import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
 import IDropDownDeptsAttrs from './IDropDownDeptsAttrs';
-import { configureTestSuite } from 'ng-bullet';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { HttpClientModule } from '@angular/common/http';
@@ -51,8 +50,8 @@ describe('DropDownDeptsComponent', () => {
   let itemsCount = 0;
   let repeatedWithNoFilters = true;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         CoreModule,
         BaseModule,

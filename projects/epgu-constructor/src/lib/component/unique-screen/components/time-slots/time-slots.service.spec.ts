@@ -19,7 +19,6 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsService } from './time-slots.service';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
 import { mockScreenDivorceWithCacheStore } from './mocks/mock-screen-divorce-with-cache-store';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -43,7 +42,7 @@ describe('TimeSlotsComponent', () => {
     timezone: '+03:00',
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [

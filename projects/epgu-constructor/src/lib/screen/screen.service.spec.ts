@@ -22,7 +22,6 @@ import {
   LoggerService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
-import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
@@ -93,7 +92,7 @@ describe('ScreenService', () => {
   let currentAnswersService: CurrentAnswersService;
   let deviceDetectorService: DeviceDetectorService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -148,7 +147,7 @@ describe('ScreenService', () => {
     });
 
     it('should call ScreenContent.updateScreenContent() method', () => {
-      const updateScreenContentSpy = spyOn(screenService, 'updateScreenContent');
+      const updateScreenContentSpy = jest.spyOn(screenService, 'updateScreenContent');
 
       const store = makeScreenStoreSample();
 
@@ -307,7 +306,7 @@ describe('ScreenService', () => {
         },
       };
 
-      const updateScreenContentSpy = spyOn(screenService, 'updateScreenContent');
+      const updateScreenContentSpy = jest.spyOn(screenService, 'updateScreenContent');
 
       screenService.updateScreenStore(mergeWithState);
 

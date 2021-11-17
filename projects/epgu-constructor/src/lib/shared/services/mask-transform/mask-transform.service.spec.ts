@@ -1,13 +1,12 @@
 import { DecimalPipe } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { MaskTransformService } from '../../services/mask-transform/mask-transform.service';
 
 describe('MaskTransformService', () => {
   let service: MaskTransformService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [],

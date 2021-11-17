@@ -4,14 +4,13 @@ import { MockComponent } from 'ng-mocks';
 
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { ButtonComponent } from '@epgu/ui/base';
 
 describe('PhotoErrorModalComponent', () => {
   let component: PhotoErrorModalComponent;
   let fixture: ComponentFixture<PhotoErrorModalComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoErrorModalComponent, MockComponent(ButtonComponent)],
       providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],

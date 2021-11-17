@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { ObjectHelperService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 
 import { ErrorHandlerOrderParamsServiceService } from './error-handler-order-params-service.service';
@@ -10,7 +9,7 @@ describe('ErrorHandlerOrderParamsServiceService', () => {
   let service: ErrorHandlerOrderParamsServiceService;
   let screenService: ScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ErrorHandlerOrderParamsServiceService,

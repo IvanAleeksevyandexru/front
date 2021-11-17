@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { HtmlSelectService } from './html-select.service';
 
@@ -7,7 +6,7 @@ describe('HtmlSelectService', () => {
   let service: HtmlSelectService;
   let elem: HTMLElement;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [HtmlSelectService],
     });

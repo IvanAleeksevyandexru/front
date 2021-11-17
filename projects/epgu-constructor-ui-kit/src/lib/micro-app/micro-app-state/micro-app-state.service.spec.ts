@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MicroAppStateService } from './micro-app-state.service';
 import { MicroAppStateStore } from './micro-app-state.store';
 
@@ -8,10 +7,10 @@ describe('MicroAppStateService', () => {
   let store: MicroAppStateStore<unknown, unknown>;
   let spyStoreUpdate;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [MicroAppStateService, MicroAppStateStore],
-    });
+    }).compileComponents();
   });
 
   beforeEach(() => {

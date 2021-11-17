@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { FormControl, NgControl } from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 
 import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../base.module';
@@ -31,7 +30,7 @@ describe('MaskTransformDirective', () => {
   let component: MaskTransformTestComponent;
   let fixture: ComponentFixture<MaskTransformTestComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MaskTransformDirective, MaskTransformTestComponent],
       imports: [CoreModule, MockModule(CoreUiModule), BaseModule],
