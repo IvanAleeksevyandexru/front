@@ -3,39 +3,20 @@ import { ConfirmationModalComponent } from './confirmation-modal.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import {
-  ConfigService,
-  ConfigServiceStub,
   CtaModalComponent,
-  DeviceDetectorService,
-  DeviceDetectorServiceStub,
-  EventBusService,
   BaseUiModule,
-  DownloadService,
   LocationService,
-  LocationServiceStub,
-  ModalService,
-  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenService } from '../../screen/screen.service';
-import { ScreenServiceStub } from '../../screen/screen.service.stub';
-import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
-import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
-import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { NavigationModalService } from '../../core/services/navigation-modal/navigation-modal.service';
-import { NavigationModalServiceStub } from '../../core/services/navigation-modal/navigation-modal.service.stub';
-import { MockComponents, MockDirectives, MockProvider } from 'ng-mocks';
+import { MockComponents, MockDirectives } from 'ng-mocks';
 import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { ScreenButtonsComponent } from '../../shared/components/screen-buttons/screen-buttons.component';
 import { By } from '@angular/platform-browser';
 import { NotifierService } from '@epgu/ui/services/notifier';
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
-import { ActionService } from '../../shared/directives/action/action.service';
-import { CurrentAnswersService } from '../../screen/current-answers.service';
-import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
-import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 import { ActionType, CloseHandlerCases, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ForTestsOnlyModule } from '../../core/for-tests-only.module';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
@@ -64,26 +45,8 @@ describe('ConfirmationModalComponent', () => {
         MockComponents(CtaModalComponent, OutputHtmlComponent, ScreenButtonsComponent),
         MockDirectives(ActionDirective),
       ],
-      imports: [BaseUiModule, AnswerButtonModule],
-      providers: [
-        EventBusService,
-        ModalService,
-        DownloadService,
-        ObjectHelperService,
-        Clipboard,
-        NotifierService,
-        { provide: NavigationService, useClass: NavigationServiceStub },
-        { provide: LocationService, useClass: LocationServiceStub },
-        { provide: NavigationModalService, useClass: NavigationModalServiceStub },
-        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        MockProvider(ActionService),
-        MockProvider(CurrentAnswersService),
-        MockProvider(HtmlSelectService),
-        MockProvider(JsonHelperService),
-      ],
+      imports: [BaseUiModule, AnswerButtonModule, ForTestsOnlyModule],
+      providers: [],
     })
       .overrideComponent(ConfirmationModalComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
