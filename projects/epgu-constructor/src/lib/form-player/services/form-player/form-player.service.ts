@@ -17,7 +17,7 @@ import { catchError, finalize, mergeMap, tap } from 'rxjs/operators';
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
  * Хранит текущий респонс в store и транслирует поток данных в screenService
- * Не используйте этот сервис в скринах и компанентах, для этих нужд есть screenService
+ * Не используйте этот сервис в скринах и компонентах, для этих нужд есть screenService
  */
 @Injectable()
 export class FormPlayerService extends FormPlayerBaseService {
@@ -145,7 +145,7 @@ export class FormPlayerService extends FormPlayerBaseService {
 
   patchStore(newScenarioDtoDiff: Partial<ScenarioDto>): void {
     this.updateLoading(true);
-    const newStore = JSON.parse(JSON.stringify(this._store));
+    const newStore = this._store ? JSON.parse(JSON.stringify(this._store)) : {};
     newStore.scenarioDto = { ...newStore.scenarioDto, ...newScenarioDtoDiff };
     this.processResponse(newStore);
   }
