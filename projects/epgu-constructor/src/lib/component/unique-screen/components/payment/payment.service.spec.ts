@@ -14,7 +14,6 @@ import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { PaymentsAttrs } from './payment.types';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('PaymentService', () => {
   let service: PaymentService;
@@ -30,7 +29,7 @@ describe('PaymentService', () => {
     ref: { fiasCode: 'ms1.value' },
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

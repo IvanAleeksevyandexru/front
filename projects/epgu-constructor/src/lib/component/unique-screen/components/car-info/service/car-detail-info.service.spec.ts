@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 import { CarDetailInfoService } from './car-detail-info.service';
@@ -45,7 +44,7 @@ describe('CarDetailInfoService', () => {
   let fetchDataSuccess: Function;
   let fetchDataError: Function;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

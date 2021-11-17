@@ -2,14 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { ChipComponent } from './chip.component';
-import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 
 describe('ChipComponent', () => {
   let component: ChipComponent;
   let fixture: ComponentFixture<ChipComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ChipComponent],
     })

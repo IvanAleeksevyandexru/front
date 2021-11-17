@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import {
   UnsubscribeService,
   ConfigService,
@@ -84,7 +83,7 @@ describe('AbstractPaymentComponent', () => {
     ],
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AbstractPaymentComponent],
       imports: [],

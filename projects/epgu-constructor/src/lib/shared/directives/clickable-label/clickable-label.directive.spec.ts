@@ -2,7 +2,6 @@ import { ClickableLabelDirective } from './clickable-label.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { configureTestSuite } from 'ng-bullet';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 import {
   UnsubscribeService,
@@ -48,7 +47,7 @@ describe('ClickableLabelDirective', () => {
   let screenService: ScreenService;
   let currentAnswersService: CurrentAnswersService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ClickableLabelDirective, LabelTestComponent, SafePipe, ImgPrefixerPipe],
       providers: [
@@ -80,9 +79,9 @@ describe('ClickableLabelDirective', () => {
     component.clarifications = { test: { text: '', title: '' }};
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
-    spyOn(modalService, 'openModal').and.callThrough();
+    const spy = jest.spyOn(modalService, 'openModal');
     div.querySelector('a').click();
-    expect(modalService.openModal).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should not open modal if clarifications are not set', () => {
@@ -90,9 +89,9 @@ describe('ClickableLabelDirective', () => {
     component.clarifications = undefined; //{ test: { text: '', title: '' }};
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
-    spyOn(modalService, 'openModal').and.callThrough();
+    const spy = jest.spyOn(modalService, 'openModal');
     div.querySelector('a').click();
-    expect(modalService.openModal).not.toHaveBeenCalled();
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it('should not open modal if clicked element without clarifications', () => {
@@ -100,9 +99,9 @@ describe('ClickableLabelDirective', () => {
     component.clarifications = { test: { text: '', title: '' }};
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
-    spyOn(modalService, 'openModal').and.callThrough();
+    const spy = jest.spyOn(modalService, 'openModal');
     div.querySelector('p').click();
-    expect(modalService.openModal).not.toHaveBeenCalled();
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it('should call _handleAction if target element is ActionType', () => {
@@ -114,9 +113,9 @@ describe('ClickableLabelDirective', () => {
     component.label = '<p><a data-action-type="nextStep" data-action-value=0>Ссылка</a></p>';
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
-    spyOn(actionService, 'switchAction').and.callThrough();
+    const spy = jest.spyOn(actionService, 'switchAction');
     div.querySelector('a').click();
-    expect(actionService.switchAction).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should not set _currentAnswersService.state if target ActionType is deleteSuggest', () => {

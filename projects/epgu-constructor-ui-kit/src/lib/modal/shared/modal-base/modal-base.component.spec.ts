@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModalBaseComponent } from './modal-base.component';
-import { configureTestSuite } from 'ng-bullet';
 import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ModalBaseComponent', () => {
   let component: ModalBaseComponent;
   let fixture: ComponentFixture<ModalBaseComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ModalBaseComponent],
     }).compileComponents();

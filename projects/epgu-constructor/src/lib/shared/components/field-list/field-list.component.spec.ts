@@ -5,7 +5,6 @@ import { FieldListComponent } from './field-list.component';
 import { UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlModule } from '../output-html/output-html.module';
 import { RankPipe, SafePipe } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
@@ -113,7 +112,7 @@ describe('FieldListComponent', () => {
     }
   ];
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [FieldListComponent, RankPipe],
       imports: [MockModule(OutputHtmlModule)],

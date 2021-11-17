@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
+import { fakeAsync, TestBed, flush, waitForAsync } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -41,8 +41,8 @@ describe('HealthHandlerService', () => {
   let http: HttpClient;
   const apiUrl = 'http://localhost:8180/api/v1/';
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         HealthHandlerService,
@@ -57,7 +57,7 @@ describe('HealthHandlerService', () => {
           multi: true,
         },
       ],
-    });
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -72,7 +72,7 @@ describe('HealthHandlerService', () => {
   afterEach(waitForAsync(() => httpMock.verify()));
 
   describe('Call start and end measure', () => {
-    it('should call healthService measureStart and measureEnd with name', fakeAsync((done) => {
+    it('should call healthService measureStart and measureEnd with name', fakeAsync(() => {
       const api = 'http://localhost:8180/api/v1/regions';
       const payload = {};
       jest.spyOn(healthService, 'measureStart');
@@ -80,7 +80,6 @@ describe('HealthHandlerService', () => {
       jest.spyOn<any, any>(service, 'getPayload').mockReturnValue(payload);
       http.get(api).subscribe((response) => {
         expect(response).toBeTruthy();
-        done();
       });
       const requestToDictionary = httpMock.expectOne(api);
       const dataToFlush = {};
@@ -91,23 +90,23 @@ describe('HealthHandlerService', () => {
         RequestStatus.Succeed,
         payload,
       );
+      flush();
     }));
 
     it('shouldn\'t call healthService measureStart and measureEnd if it\'s not valid request for health', fakeAsync((
-      done,
     ) => {
       const api = 'https://pgu-uat-fed.test.gosuslugi.ru/api/v1/some-wrong-endpoint';
       jest.spyOn(healthService, 'measureStart');
       jest.spyOn(healthService, 'measureEnd');
       http.get(api).subscribe((response) => {
         expect(response).toBeTruthy();
-        done();
       });
       const requestToDictionary = httpMock.expectOne(api);
       const dataToFlush = {};
       requestToDictionary.flush(dataToFlush);
       expect(healthService.measureStart).not.toHaveBeenCalled();
       expect(healthService.measureEnd).not.toHaveBeenCalled();
+      flush();
     }));
   });
 });

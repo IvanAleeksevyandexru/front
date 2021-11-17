@@ -15,7 +15,6 @@ import { CustomListDropDowns } from '../../components-list.types';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { configureTestSuite } from 'ng-bullet';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import {
   DatesToolsService,
@@ -35,7 +34,7 @@ describe('MvdGiacLookupComponent', () => {
   let dictionaryToolsService: DictionaryToolsService;
   let formService: ComponentsListFormServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MvdGiacLookupComponent, MockComponent(ComponentItemComponent)],
       imports: [BaseUiModule, HttpClientModule],

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RadioInputComponent } from './radio-input.component';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
@@ -34,7 +33,7 @@ describe('RadioInputComponent', () => {
   let formService: ComponentsListFormServiceStub;
   let control: FormGroup;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [RadioInputComponent, MockComponents(ComponentItemComponent)],
       imports: [MockModule(BaseUiModule)],

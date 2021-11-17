@@ -8,8 +8,8 @@ describe('ConstructorCheckboxComponent', () => {
   let component: ConstructorCheckboxComponent;
   let fixture: ComponentFixture<ConstructorCheckboxComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [ConstructorCheckboxComponent],
       imports: [BaseUiModule],
       providers: [],

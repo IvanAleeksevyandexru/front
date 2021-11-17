@@ -38,8 +38,8 @@ describe('ConfirmationModalComponent', () => {
     component.showCloseButton = false;
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [
         ConfirmationModalComponent,
         MockComponents(CtaModalComponent, OutputHtmlComponent, ScreenButtonsComponent),

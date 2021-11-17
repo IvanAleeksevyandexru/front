@@ -8,7 +8,6 @@ import { CompressionService } from '../compression/compression.service';
 import { ObjectHelperService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 
 describe('UploadService', () => {
@@ -45,7 +44,7 @@ describe('UploadService', () => {
     alternativeMimeTypes: [],
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

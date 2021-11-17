@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import {
   CoreUiModule,
   LongButtonModule,
@@ -22,8 +21,8 @@ describe('ViewComponent', () => {
   let component: ItemComponent;
   let fixture: ComponentFixture<ItemComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },

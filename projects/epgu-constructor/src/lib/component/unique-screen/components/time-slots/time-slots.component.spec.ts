@@ -41,7 +41,6 @@ import { ActionServiceStub } from '../../../../shared/directives/action/action.s
 import { SmevSlotsResponseInterface } from './time-slots.types';
 import { slotsError } from './mocks/mock-time-slots';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { mockWeeks } from './mocks/mock-weeks';
 import { HttpClient } from '@angular/common/http';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
@@ -73,7 +72,7 @@ describe('TimeSlotsComponent', () => {
   let store: ScreenStore;
   let httpClient: HttpClient;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     Date.now = jest.fn().mockReturnValue(new Date('2021-01-01T00:00:00.000Z'));
     TestBed.configureTestingModule({
       imports: [
@@ -124,6 +123,7 @@ describe('TimeSlotsComponent', () => {
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
     httpClient = TestBed.inject(HttpClient);
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
+      // @ts-ignore
     store = cloneDeep(mockScreenDivorceStore);
     screenService.initScreenStore(store);
     fixture = TestBed.createComponent(TimeSlotsComponent);
@@ -332,7 +332,7 @@ describe('TimeSlotsComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     // @ts-ignore
-    const cancelRequestSpy = spyOn(component['timeSlotsService'], 'cancelSlot').and.callThrough();
+    const cancelRequestSpy = jest.spyOn(component['timeSlotsService'], 'cancelSlot');
     component['timeSlotsService']['checkBooking'](EMPTY_SLOT);
     expect(cancelRequestSpy).toBeCalledTimes(1);
   });
@@ -554,6 +554,7 @@ describe('TimeSlotsComponent', () => {
     }
 
     it('MVD', async () => {
+      // @ts-ignore
       store = cloneDeep(mockScreenMvdStore);
       screenService.initScreenStore(store);
       await fixture.detectChanges();
@@ -567,6 +568,7 @@ describe('TimeSlotsComponent', () => {
     });
 
     it('DOCTOR', async () => {
+      // @ts-ignore
       store = cloneDeep(mockScreenDoctorStore);
       screenService.initScreenStore(store);
       await fixture.detectChanges();

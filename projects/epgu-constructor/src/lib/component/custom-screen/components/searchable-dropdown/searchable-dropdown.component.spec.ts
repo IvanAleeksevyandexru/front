@@ -13,7 +13,6 @@ import { CustomListDropDowns } from '../../components-list.types';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { configureTestSuite } from 'ng-bullet';
 import {
   DatesToolsService,
   ConfigService,
@@ -36,7 +35,7 @@ describe('SearchableDropdownComponent', () => {
 
   let formService: ComponentsListFormServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [SearchableDropdownComponent, MockComponent(ComponentItemComponent)],
       imports: [BaseUiModule, HttpClientModule],

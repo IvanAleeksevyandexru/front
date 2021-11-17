@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { PrevButtonNavigation } from '@epgu/epgu-constructor-types';
 import { PrevButtonComponent } from './prev-button.component';
 import { PREV_BUTTON_NAVIGATION } from './prev-button.token';
@@ -18,7 +17,7 @@ describe('NavigationComponent', () => {
   let prevButtonNavigation: PrevButtonNavigation;
   let prevSpy;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PrevButtonComponent],
       providers: [{ provide: PREV_BUTTON_NAVIGATION, useClass: TestService }],

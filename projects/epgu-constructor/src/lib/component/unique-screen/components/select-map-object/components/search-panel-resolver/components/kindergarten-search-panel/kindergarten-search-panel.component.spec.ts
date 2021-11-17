@@ -9,7 +9,6 @@ import {
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { MockProvider } from 'ng-mocks';
 import { KindergartenSearchPanelComponent } from './kindergarten-search-panel.component';
 import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
@@ -41,7 +40,7 @@ describe('KindergartenSearchPanelComponent', () => {
   let searchPanelService: KindergartenSearchPanelService;
   let screenService: ScreenServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [SelectMapObjectModule, BaseComponentsModule],

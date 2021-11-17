@@ -3,7 +3,6 @@ import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from './init-data.service';
 import { FormPlayerContext, ServiceEntity } from '../../../form-player/form-player.types';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('InitDataService', () => {
   let service: InitDataService;
@@ -11,7 +10,7 @@ describe('InitDataService', () => {
   let serviceEntity: ServiceEntity;
   let context: FormPlayerContext;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [InitDataService, { provide: LoggerService, useClass: LoggerServiceStub }],
     });
@@ -29,9 +28,9 @@ describe('InitDataService', () => {
 
   describe('init()', () => {
     it('should call checkProps method', () => {
-      spyOn<any>(service, 'checkProps').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'checkProps');
       service.init(serviceEntity, context);
-      expect(service['checkProps']).toBeCalledWith(serviceEntity, context);
+      expect(spy).toBeCalledWith(serviceEntity, context);
     });
 
     it('should call set serviceId', () => {
@@ -91,19 +90,19 @@ describe('InitDataService', () => {
 
   describe('setters', () => {
     it('canStartNew should set true if set undefined', () => {
-      spyOn<any>(service, 'checkProps').and.callThrough();
+      jest.spyOn<any, string>(service, 'checkProps');
       service.canStartNew = undefined;
       expect(service['_canStartNew']).toBe(true);
     });
 
     it('canStartNew should set false if set false', () => {
-      spyOn<any>(service, 'checkProps').and.callThrough();
+      jest.spyOn<any, string>(service, 'checkProps');
       service.canStartNew = false;
       expect(service['_canStartNew']).toBe(false);
     });
 
     it('canStartNew should set true if set true', () => {
-      spyOn<any>(service, 'checkProps').and.callThrough();
+      jest.spyOn<any, string>(service, 'checkProps');
       service.canStartNew = true;
       expect(service['_canStartNew']).toBe(true);
     });
@@ -134,19 +133,20 @@ describe('InitDataService', () => {
           path: '',
           codes: [],
         },
+        queryParams: {},
       };
       service['_serviceInfo'] = serviceInfo;
       expect(service.serviceInfo).toBe(serviceInfo);
     });
 
     it('orderId', () => {
-      const orderId = '12345';
+      const orderId = 12345;
       service['_orderId'] = orderId;
       expect(service.orderId).toBe(orderId);
     });
 
     it('gepsId', () => {
-      const gepsId = '12345';
+      const gepsId = 12345;
       service['_gepsId'] = gepsId;
       expect(service.gepsId).toBe(gepsId);
     });
@@ -184,9 +184,9 @@ describe('InitDataService', () => {
 
   describe('checkProps()', () => {
     it('should call loggerService log', () => {
-      spyOn<any>(loggerService, 'log').and.callThrough();
+      const spy = jest.spyOn<any, string>(loggerService, 'log');
       service['checkProps'](serviceEntity);
-      expect(loggerService.log).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should throw error when empty error', () => {

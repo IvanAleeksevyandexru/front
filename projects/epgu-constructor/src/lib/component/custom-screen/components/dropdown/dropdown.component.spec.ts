@@ -1,6 +1,5 @@
 import { DropdownComponent } from './dropdown.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockProviders } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
@@ -106,7 +105,7 @@ describe('DropdownComponent', () => {
   let formService: ComponentsListFormServiceStub;
   let service: SuggestHandlerService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [DropdownComponent, MockComponent(ComponentItemComponent)],
       imports: [ValidationTypeModule, BaseUiModule, HttpClientModule],
@@ -263,7 +262,7 @@ describe('DropdownComponent', () => {
 
   describe('onChange', () => {
     it('should call updateDropDowns and set selectedDropDown event when have event with dropDown', () => {
-      jest.spyOn<any>(component, 'updateDropDowns');
+      jest.spyOn<any, string>(component, 'updateDropDowns');
       expect(component['selectedDropDown']).toBeUndefined();
       component['isNotDuplicate'] = true;
       fixture.detectChanges();
@@ -273,7 +272,7 @@ describe('DropdownComponent', () => {
     });
 
     it('should call updateDropDowns and set selectedDropDown null when have not event with dropDown', () => {
-      jest.spyOn<any>(component, 'updateDropDowns');
+      jest.spyOn<any, string>(component, 'updateDropDowns');
       expect(component['selectedDropDown']).not.toBeNull();
       component['isNotDuplicate'] = true;
       fixture.detectChanges();

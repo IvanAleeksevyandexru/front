@@ -1,5 +1,6 @@
+require('jest-preset-angular/ngcc-jest-processor');
+
 module.exports = {
-  preset: 'jest-preset-angular',
   modulePaths: ['<rootDir>'],
   moduleDirectories: ['node_modules'],
   setupFiles: ['<rootDir>/setup-jest.ts', 'jest-canvas-mock'],
@@ -23,22 +24,21 @@ module.exports = {
     'projects/**/*.validators.ts',
     'projects/**/*.guard.ts',
   ],
+  testEnvironment: 'jsdom',
+  transform: {
+    '^.+\\.(ts|js|html|svg)$': 'jest-preset-angular',
+  },
+  moduleFileExtensions: ['ts', 'html', 'js', 'json'],
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
       isolatedModules: true,
       stringifyContentPathRegex: '\\.html$',
-      astTransformers: {
-        before: [
-          'jest-preset-angular/build/InlineFilesTransformer',
-          'jest-preset-angular/build/StripStylesTransformer',
-        ],
-      },
     },
   },
   testEnvironmentOptions: {
     beforeParse(window) {
-      window.scroll = () => {};
+      window.scroll = () => { };
     },
   },
 };

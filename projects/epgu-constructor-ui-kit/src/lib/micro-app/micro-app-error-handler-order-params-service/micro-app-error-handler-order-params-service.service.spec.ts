@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MicroAppErrorHandlerOrderParamsServiceService } from './micro-app-error-handler-order-params-service.service';
 import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
 import { MicroAppStateQueryStub } from '../micro-app-state/micro-app-state.query.stub';
@@ -9,7 +8,7 @@ import { ObjectHelperService } from '../../core/services/object-helper/object-he
 describe('MicroAppErrorHandlerOrderParamsServiceService', () => {
   let service: MicroAppErrorHandlerOrderParamsServiceService;
   let appStateQuery: MicroAppStateQuery<unknown, unknown>;
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         MicroAppErrorHandlerOrderParamsServiceService,

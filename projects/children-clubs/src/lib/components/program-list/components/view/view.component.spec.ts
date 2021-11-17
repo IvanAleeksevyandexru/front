@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import {
   MicroAppStateService,
   CoreUiModule,
@@ -24,8 +23,8 @@ describe('ViewComponent', () => {
   let component: ViewComponent;
   let fixture: ComponentFixture<ViewComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },

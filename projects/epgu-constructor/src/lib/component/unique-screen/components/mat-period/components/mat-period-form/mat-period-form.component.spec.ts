@@ -25,7 +25,6 @@ import { ValidationService } from '../../../../../../shared/services/validation/
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { LabelPipe } from '../../pipe/label.pipe';
-import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -87,7 +86,7 @@ describe('MatPeriodFormComponent', () => {
     paymentDate: '23',
   };
   let validationService: ValidationService;
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MatPeriodFormComponent, FilterPipe, LabelPipe],
       imports: [

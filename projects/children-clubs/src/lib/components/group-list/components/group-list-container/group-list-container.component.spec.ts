@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import {
   CoreUiModule,
   LongButtonModule,
@@ -24,8 +23,8 @@ describe('GroupListContainerComponent', () => {
   let component: GroupListContainerComponent;
   let fixture: ComponentFixture<GroupListContainerComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [],
       providers: [
         { provide: MicroAppNavigationService, useClass: MicroAppNavigationServiceStub },

@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { LogicService } from './logic.service';
 import {
@@ -90,7 +89,7 @@ describe('LogicService', () => {
     },
   ];
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

@@ -5,7 +5,6 @@ import { LoadService } from '@epgu/ui/services/load';
 import { ConfigService } from './config.service';
 import { Config } from './config.types';
 import { LoadServiceStub } from './load-service-stub';
-import { configureTestSuite } from 'ng-bullet';
 
 const configMock: Config = {
   dictionaryUrl: 'dictionaryUrl',
@@ -73,7 +72,7 @@ const configMock: Config = {
 describe('ConfigService', () => {
   let service: ConfigService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ConfigService,

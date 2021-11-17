@@ -13,7 +13,6 @@ import {
   UnsubscribeService,
   YandexMapModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../../../../../../core/services/date-ref/date-ref.service';
 import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
@@ -43,7 +42,7 @@ describe('KindergartenContentComponent', () => {
   let kindergartenSearchPanelService: KindergartenSearchPanelService;
   let MapStore: ScenarioDto;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [KindergartenContentComponent],
       imports: [BaseModule, YandexMapModule],

@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MockComponent, MockProvider } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
@@ -31,7 +30,7 @@ describe('FormOutputHtmlComponent', () => {
   let fb: FormBuilder;
   let interpolationService: InterpolationService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [FormOutputHtmlComponent, MockComponent(OutputHtmlComponent)],
       providers: [

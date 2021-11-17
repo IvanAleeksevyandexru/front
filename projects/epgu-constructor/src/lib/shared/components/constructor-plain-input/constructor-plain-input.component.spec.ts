@@ -31,8 +31,8 @@ describe('ConstructorPlainInputComponent', () => {
   let component: ConstructorPlainInputComponent;
   let fixture: ComponentFixture<ConstructorPlainInputComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [ConstructorPlainInputComponent],
       imports: [
         CoreModule,

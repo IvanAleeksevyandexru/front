@@ -17,7 +17,6 @@ import { DenyReason, FinancialSourceType, Group } from '../../../../typings';
 import { GroupItemComponent } from './group-item.component';
 import { DenyReasonTitleComponent } from '../../../base/components/deny-reason-title/deny-reason-title.component';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -64,8 +63,8 @@ describe('GroupItemComponent', () => {
   let fixture: ComponentFixture<GroupItemComponent>;
   let stateQuery: MicroAppStateQueryStub;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         BaseUiModule,
         ImgPrefixerModule,

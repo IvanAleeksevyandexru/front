@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { SuggestMonitorService } from '../suggest-monitor/suggest-monitor.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { HealthServiceStub, HealthService } from '@epgu/epgu-constructor-ui-kit';
@@ -39,14 +38,14 @@ describe('SuggestMonitorService', () => {
 
   describe('handleAutocompleteEvent', () => {
     it('should be called with specific params', () => {
-      spyOn(health, 'measureStart').and.callThrough();
-      spyOn(health, 'measureEnd').and.callThrough();
+      const spyMeasureStart = jest.spyOn(health, 'measureStart');
+      const spyMeasureEnd = jest.spyOn(health, 'measureEnd');
       screen.screenStore = DTO as any;
       monitor.handleAutocompleteEvent(SuggestActions.REUSE_ACTION, SOURCE, {
         date: DATE,
       });
-      expect(health.measureStart).toHaveBeenCalledWith(SuggestActions.REUSE_ACTION);
-      expect(health.measureEnd).toHaveBeenCalledWith(SuggestActions.REUSE_ACTION, 0, {
+      expect(spyMeasureStart).toHaveBeenCalledWith(SuggestActions.REUSE_ACTION);
+      expect(spyMeasureEnd).toHaveBeenCalledWith(SuggestActions.REUSE_ACTION, 0, {
         suggestField: `10000000101_scrchld2_${SOURCE}`,
         date: DATE,
         userId: '123456',

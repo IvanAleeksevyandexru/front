@@ -33,7 +33,6 @@ import { PrepareComponentsService } from '../../../../../../shared/services/prep
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
-import { configureTestSuite } from 'ng-bullet';
 import { Gender, TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
@@ -62,7 +61,7 @@ describe('EmployeeHistoryFormComponent', () => {
     required: true,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         EmployeeHistoryFormComponent,

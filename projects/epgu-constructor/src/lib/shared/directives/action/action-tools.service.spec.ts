@@ -29,7 +29,6 @@ import { ScreenService } from '../../../screen/screen.service';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ActionService } from './action.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { configureTestSuite } from 'ng-bullet';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
@@ -61,17 +60,17 @@ describe('ActionToolsService', () => {
   let downloadService: DownloadService;
   let navigationModalService: NavigationModalService;
   let screenService: ScreenService;
-  let modalNextStepSpy: jasmine.Spy;
   let formPlayerApiService: FormPlayerApiService;
   let currentAnswersService: CurrentAnswersService;
   let formPlayerService: FormPlayerService;
   let locationService: LocationService;
   let notifierService: NotifierService;
   let htmlRemoverService: HtmlRemoverService;
-  let modalService: ModalService;
   let clipboard: Clipboard;
 
-  configureTestSuite(() => {
+  let modalNextStepSpy;
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -113,14 +112,13 @@ describe('ActionToolsService', () => {
     currentAnswersService = TestBed.inject(CurrentAnswersService);
     notifierService = TestBed.inject(NotifierService);
     htmlRemoverService = TestBed.inject(HtmlRemoverService);
-    modalService = TestBed.inject(ModalService);
     clipboard = TestBed.inject(Clipboard);
     locationService = TestBed.inject(LocationService);
 
     jest.spyOn(screenService, 'component', 'get').mockReturnValue(mockComponent);
     jest.spyOn(formPlayerApiService, 'sendAction').mockReturnValue(sendActionMock);
 
-    modalNextStepSpy = spyOn(navigationModalService, 'next');
+    modalNextStepSpy = jest.spyOn(navigationModalService, 'next');
   });
 
   it('should be created', () => {
@@ -153,7 +151,7 @@ describe('ActionToolsService', () => {
 
   describe('downloadAction()', () => {
     it('should call sendAction()', () => {
-      const spy = jest.spyOn(service, 'sendAction');
+      const spy = jest.spyOn<any, string>(service, 'sendAction');
       service['downloadAction'](downloadAction);
       expect(spy).toBeCalled();
     });
@@ -179,7 +177,7 @@ describe('ActionToolsService', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
-      const formPlayerServiceNavigateSpy = spyOn(formPlayerService, 'navigate');
+      const formPlayerServiceNavigateSpy = jest.spyOn(formPlayerService, 'navigate');
       service['handleDeliriumAction'](deliriumAction, 'componentId');
       expect(formPlayerServiceNavigateSpy).toBeCalled();
     });
@@ -213,7 +211,7 @@ describe('ActionToolsService', () => {
     });
     it('should call service.sendAction(), if action.attrs.additionalParams exists', () => {
       service.bufferData = '';
-      const spy = jest.spyOn(service, 'loadClipboardData');
+      const spy = jest.spyOn<any, string>(service, 'loadClipboardData');
       const newAction = cloneDeep(copyToClipboardAction);
       newAction.attrs.additionalParams = { screenId: 's1' };
       service.copyToClipboard(newAction);
@@ -295,7 +293,7 @@ describe('ActionToolsService', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
-      spyOn<any>(service, 'isTimerComponent').and.returnValue(false);
+      jest.spyOn<any, string>(service, 'isTimerComponent').mockReturnValue(false);
       const expectedValue = { 123: { value: 'some value', visited: true }};
       currentAnswersService.state = expectedValue;
       const value = service['getComponentStateForNavigate'](nextAction, '123');
@@ -306,7 +304,7 @@ describe('ActionToolsService', () => {
       const display = new FormPlayerServiceStub()._store.scenarioDto.display;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
-      spyOn<any>(service, 'isTimerComponent').and.returnValue(true);
+      jest.spyOn<any, string>(service, 'isTimerComponent').mockReturnValue(true);
       const expectedValue = { 123: { visited: true, value: nextAction.value }};
       const value = service['getComponentStateForNavigate'](nextAction, '123');
       expect(value).toEqual(expectedValue);

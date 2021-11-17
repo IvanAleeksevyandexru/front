@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent } from 'ng-mocks';
 
 import { CheckboxCubeContainerComponent } from './checkbox-cube-container.component';
@@ -55,7 +54,7 @@ describe('CheckboxCubeContainerComponent', () => {
     visited: false,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         CheckboxCubeContainerComponent,

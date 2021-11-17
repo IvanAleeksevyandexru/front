@@ -9,7 +9,6 @@ import { UniqueScreenComponentTypes } from '../unique-screen-components.types';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
-import { configureTestSuite } from 'ng-bullet';
 
 @Component({ template: '<div>test</div>' })
 class TestComponent {}
@@ -33,7 +32,7 @@ describe('ComponentUniqueResolverComponent', () => {
   let fixture: ComponentFixture<ComponentUniqueResolverComponent>;
   let screenService: ScreenServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ComponentUniqueResolverComponent, TestComponent, Test2Component],
       providers: [{ provide: ScreenService, useClass: ScreenServiceStub }, UnsubscribeService],

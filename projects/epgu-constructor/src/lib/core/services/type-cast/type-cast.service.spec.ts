@@ -1,12 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { TypeCastService } from './type-cast.service';
 
 describe('TypeCastService', () => {
   let service: TypeCastService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [TypeCastService],
     });

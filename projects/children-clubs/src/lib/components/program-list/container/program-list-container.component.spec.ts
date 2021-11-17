@@ -3,7 +3,6 @@ import { MockComponent, MockModule } from 'ng-mocks';
 import { ProgramListContainerComponent } from './program-list-container.component';
 import { ProgramListService } from '../../../services/program-list/program-list.service';
 import { ListComponent } from '../components/list/list.component';
-import { configureTestSuite } from 'ng-bullet';
 import { ItemComponent } from '../components/item/item.component';
 import {
   AddressesToolsService,
@@ -36,8 +35,8 @@ describe('ListComponent', () => {
   let component: ProgramListContainerComponent;
   let fixture: ComponentFixture<ProgramListContainerComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [
         ProgramListContainerComponent,
         MockComponent(ListComponent),

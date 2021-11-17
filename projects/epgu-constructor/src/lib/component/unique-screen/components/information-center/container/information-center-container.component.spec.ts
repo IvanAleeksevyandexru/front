@@ -27,7 +27,6 @@ import { DictionaryToolsServiceStub } from '../../../../../shared/services/dicti
 import { ComponentsListRelationsService } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
-import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
@@ -116,7 +115,7 @@ describe('InformationCenterContainerComponent', () => {
     },
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         InformationCenterContainerComponent,

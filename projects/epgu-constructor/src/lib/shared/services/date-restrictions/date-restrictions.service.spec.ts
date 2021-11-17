@@ -1,4 +1,3 @@
-import { configureTestSuite } from 'ng-bullet';
 import { TestBed } from '@angular/core/testing';
 import { DateRestrictionsService } from './date-restrictions.service';
 import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
@@ -13,7 +12,7 @@ describe('DateRestrictionsService', () => {
   let service: DateRestrictionsService;
   let datesToolsService: DatesToolsService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         DateRestrictionsService,

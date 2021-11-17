@@ -4,7 +4,6 @@ import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('AutocompleteApiService', () => {
   let service: AutocompleteApiService;
@@ -18,7 +17,7 @@ describe('AutocompleteApiService', () => {
   let groupId = 'PASSPORT_DATA';
   let responseMock = [42];
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

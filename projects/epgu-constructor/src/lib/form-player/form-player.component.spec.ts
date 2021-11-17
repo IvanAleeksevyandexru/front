@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockProvider } from 'ng-mocks';
 import {
   LoadServiceStub,
@@ -88,7 +87,7 @@ describe('FormPlayerComponent', () => {
   };
   let contextMock = {};
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         MainContainerModule,
@@ -162,71 +161,71 @@ describe('FormPlayerComponent', () => {
 
   describe('ngOnInit()', () => {
     it('should call init method of initDataService with service param', () => {
-      spyOn(initDataService, 'init').and.callThrough();
+      const spy = jest.spyOn(initDataService, 'init');
       component.ngOnInit();
-      expect(initDataService.init).toBeCalledWith(serviceDataMock, contextMock);
+      expect(spy).toBeCalledWith(serviceDataMock, contextMock);
     });
 
     it('should call initFormPlayerConfig', () => {
-      spyOn<any>(component, 'initFormPlayerConfig').and.callThrough();
+      const spy = jest.spyOn<any, string>(component, 'initFormPlayerConfig');
       component.ngOnInit();
-      expect(component['initFormPlayerConfig']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should call initNavigation', () => {
-      spyOn<any>(component, 'initNavigation').and.callThrough();
+      const spy = jest.spyOn<any, string>(component, 'initNavigation');
       component.ngOnInit();
-      expect(component['initNavigation']).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should call initSettingOfScreenIdToAttr', () => {
-      spyOn<any>(component, 'initSettingOfScreenIdToAttr').and.callThrough();
+      const spy = jest.spyOn<any, string>(component, 'initSettingOfScreenIdToAttr');
       component.ngOnInit();
-      expect(component['initSettingOfScreenIdToAttr']).toBeCalled();
+      expect(spy).toBeCalled();
     });
   });
 
   describe('ngAfterViewInit()', () => {
     it('should call startPlayer', () => {
-      spyOn<any>(component, 'startPlayer').and.callThrough();
+      const spy = jest.spyOn<any, string>(component, 'startPlayer');
       component.ngAfterViewInit();
-      expect(component['startPlayer']).toBeCalled();
+      expect(spy).toBeCalled();
     });
   });
 
   describe('ngOnChanges()', () => {
     it('should call init method of initDataService with service param', () => {
-      spyOn(initDataService, 'init').and.callThrough();
+      const spy = jest.spyOn(initDataService, 'init');
       component.ngOnChanges({ service: new SimpleChange(null, serviceDataMock, true) });
-      expect(initDataService.init).toBeCalledWith(serviceDataMock, contextMock);
+      expect(spy).toBeCalledWith(serviceDataMock, contextMock);
     });
   });
 
   describe('initConfigDependentEntities()', () => {
     it('should call autocompleteService init with true', () => {
       configService['_isAutocompleteServiceDisabled'] = true;
-      spyOn(autocompleteService, 'init').and.callThrough();
+      const spy = jest.spyOn(autocompleteService, 'init');
       component['initConfigDependentEntities']();
-      expect(autocompleteService.init).toBeCalledWith(true);
+      expect(spy).toBeCalledWith(true);
     });
 
     it('should call autocompleteService init with false', () => {
-      spyOn(autocompleteService, 'init').and.callThrough();
+      const spy = jest.spyOn(autocompleteService, 'init');
       component['initConfigDependentEntities']();
-      expect(autocompleteService.init).toBeCalledWith(false);
+      expect(spy).toBeCalledWith(false);
     });
 
     it('should call tracingService init with true', () => {
       configService['_zipkinGenerationEnabled'] = true;
-      spyOn(tracingService, 'init').and.callThrough();
+      const spy = jest.spyOn(tracingService, 'init');
       component['initConfigDependentEntities']();
-      expect(tracingService.init).toBeCalledWith(true);
+      expect(spy).toBeCalledWith(true);
     });
 
     it('should call tracingService init with false', () => {
-      spyOn(tracingService, 'init').and.callThrough();
+      const spy = jest.spyOn(tracingService, 'init');
       component['initConfigDependentEntities']();
-      expect(tracingService.init).toBeCalledWith(false);
+      expect(spy).toBeCalledWith(false);
     });
 
     it('should call tracingService setter serviceCode', () => {
@@ -242,36 +241,37 @@ describe('FormPlayerComponent', () => {
   describe('initFormPlayerConfig()', () => {
     it('shouldn\'t call getFormPlayerConfig method of formPlayerConfigApiService when loadService not loaded', () => {
       loadService.loaded.next(false);
-      spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
+      const spy = jest.spyOn(formPlayerConfigApiService, 'getFormPlayerConfig');
       component['initFormPlayerConfig']();
-      expect(formPlayerConfigApiService.getFormPlayerConfig).not.toBeCalled();
+      expect(spy).not.toBeCalled();
     });
 
     it('shouldn\'t call initCore method of configService when loadService not loaded', () => {
       loadService.loaded.next(false);
-      spyOn(configService, 'initCore').and.callThrough();
+      const spy = jest.spyOn(configService, 'initCore');
       component['initFormPlayerConfig']();
-      expect(configService.initCore).not.toBeCalled();
+      expect(spy).not.toBeCalled();
     });
 
     it('should call initCore method of configService when loadService has loaded', () => {
       loadService.loaded.next(true);
-      spyOn(configService, 'initCore').and.callThrough();
+      const spy = jest.spyOn(configService, 'initCore');
       component['initFormPlayerConfig']();
-      expect(configService.initCore).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should call getFormPlayerConfig method of formPlayerConfigApiService when loadService has loaded', () => {
       loadService.loaded.next(true);
-      spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.callThrough();
+      const spy = jest.spyOn(formPlayerConfigApiService, 'getFormPlayerConfig');
       component['initFormPlayerConfig']();
-      expect(formPlayerConfigApiService.getFormPlayerConfig).toBeCalled();
+      expect(spy).toBeCalled();
     });
 
     it('should set form player config', () => {
       const config = {};
       loadService.loaded.next(true);
-      spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.returnValue(of(config));
+      // @ts-ignore
+      jest.spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').mockReturnValue(of(config));
       const setterSpy = jest.spyOn(configService, 'config', 'set');
       component['initFormPlayerConfig']();
       expect(setterSpy).toBeCalled();
@@ -280,51 +280,52 @@ describe('FormPlayerComponent', () => {
     it('should call next of isConfigReady$', () => {
       const config = {};
       loadService.loaded.next(true);
-      spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').and.returnValue(of(config));
-      spyOn<any>(component['isConfigReady$'], 'next').and.callThrough();
+      // @ts-ignore
+      jest.spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').mockReturnValue(of(config));
+      const spy = jest.spyOn<any, string>(component['isConfigReady$'], 'next');
       component['initFormPlayerConfig']();
-      expect(component['isConfigReady$'].next).toBeCalledWith(true);
+      expect(spy).toBeCalledWith(true);
     });
   });
 
   describe('initNavigation()', () => {
     it('should call nextStep with param when push nextStep prev-button', () => {
       const navigationParam = {};
-      spyOn<any>(component, 'nextStep').and.callThrough();
+      const spy = jest.spyOn<any, string>(component, 'nextStep');
       navService.next(navigationParam);
       component['initNavigation']();
-      expect(component['nextStep']).toBeCalledWith(navigationParam);
+      expect(spy).toBeCalledWith(navigationParam);
     });
 
     it('should call prevStep with param when push prevStep prev-button', () => {
       const navigationParam = {};
-      spyOn<any>(component, 'prevStep').and.callThrough();
+      const spy = jest.spyOn<any, string>(component, 'prevStep');
       navService.prev(navigationParam);
       component['initNavigation']();
-      expect(component['prevStep']).toBeCalledWith(navigationParam);
+      expect(spy).toBeCalledWith(navigationParam);
     });
 
     it('should call skipStep with param when push skipStep prev-button', () => {
       const navigationParam = {};
-      spyOn<any>(component, 'skipStep').and.callThrough();
+      const spy = jest.spyOn<any, string>(component, 'skipStep');
       navService.skip(navigationParam);
       component['initNavigation']();
-      expect(component['skipStep']).toBeCalledWith(navigationParam);
+      expect(spy).toBeCalledWith(navigationParam);
     });
 
     it('should call formPlayerService initData with param when push restartOrder', () => {
-      spyOn<any>(formPlayerService, 'initData').and.callThrough();
+      const spy = jest.spyOn<any, string>(formPlayerService, 'initData');
       navService.restartOrder();
       component['initNavigation']();
-      expect(formPlayerService['initData']).toBeCalledWith();
+      expect(spy).toBeCalledWith();
     });
 
     it('should call patchStepOnCli with param when push patchStepOnCli prev-button', () => {
       const navigationParam = {};
-      spyOn<any>(component, 'patchStepOnCli').and.callThrough();
+      const spy = jest.spyOn<any, string>(component, 'patchStepOnCli');
       navService.patchOnCli(navigationParam);
       component['initNavigation']();
-      expect(component['patchStepOnCli']).toBeCalledWith(navigationParam);
+      expect(spy).toBeCalledWith(navigationParam);
     });
   });
 
@@ -355,36 +356,36 @@ describe('FormPlayerComponent', () => {
   describe('nextStep()', () => {
     it('should call navigate of formPlayerService with next param', () => {
       const navigation = {};
-      spyOn(formPlayerService, 'navigate').and.callThrough();
+      const spy = jest.spyOn(formPlayerService, 'navigate');
       component['nextStep'](navigation);
-      expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.NEXT);
+      expect(spy).toBeCalledWith(navigation, FormPlayerNavigation.NEXT);
     });
   });
 
   describe('prevStep()', () => {
     it('should call navigate of formPlayerService with prev param', () => {
       const navigation = {};
-      spyOn(formPlayerService, 'navigate').and.callThrough();
+      const spy = jest.spyOn(formPlayerService, 'navigate');
       component['prevStep'](navigation);
-      expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.PREV);
+      expect(spy).toBeCalledWith(navigation, FormPlayerNavigation.PREV);
     });
   });
 
   describe('skipStep()', () => {
     it('should call navigate of formPlayerService with skip param', () => {
       const navigation = {};
-      spyOn(formPlayerService, 'navigate').and.callThrough();
+      const spy = jest.spyOn(formPlayerService, 'navigate');
       component['skipStep'](navigation);
-      expect(formPlayerService.navigate).toBeCalledWith(navigation, FormPlayerNavigation.SKIP);
+      expect(spy).toBeCalledWith(navigation, FormPlayerNavigation.SKIP);
     });
   });
 
   describe('patchStepOnCli()', () => {
     it('should call patchStore of formPlayerService with skip param', () => {
       const newScenarioDtoDiff = {};
-      spyOn(formPlayerService, 'patchStore').and.callThrough();
+      const spy = jest.spyOn(formPlayerService, 'patchStore');
       component['patchStepOnCli'](newScenarioDtoDiff);
-      expect(formPlayerService.patchStore).toBeCalledWith(newScenarioDtoDiff);
+      expect(spy).toBeCalledWith(newScenarioDtoDiff);
     });
   });
 

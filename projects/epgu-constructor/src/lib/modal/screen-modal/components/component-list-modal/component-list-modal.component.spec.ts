@@ -15,7 +15,6 @@ import { DictionaryToolsService } from '../../../../shared/services/dictionary/d
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
-import { configureTestSuite } from 'ng-bullet';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -44,7 +43,7 @@ describe('ComponentListModalComponent', () => {
     type: ScreenTypes.CUSTOM,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ComponentListModalComponent],
       imports: [

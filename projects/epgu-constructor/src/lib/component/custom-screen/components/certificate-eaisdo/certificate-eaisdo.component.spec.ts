@@ -7,7 +7,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockPipe, MockProvider } from 'ng-mocks';
 import { CertificateEaisdoComponent } from './certificate-eaisdo.component';
 import {
@@ -174,7 +173,7 @@ describe('CertificateEaisdoComponent', () => {
   let fixture: ComponentFixture<CertificateEaisdoComponent>;
   let control: FormControl;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         CertificateEaisdoComponent,

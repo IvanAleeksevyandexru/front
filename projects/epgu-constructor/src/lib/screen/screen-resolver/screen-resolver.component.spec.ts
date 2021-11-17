@@ -6,7 +6,6 @@ import { ScreenServiceStub } from '../screen.service.stub';
 import { SCREEN_COMPONENTS } from '../screen.const';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 
 @Component({
@@ -35,7 +34,7 @@ describe('ScreenResolverComponent', () => {
   let fixture: ComponentFixture<ScreenResolverComponent>;
   let screenService: ScreenServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ScreenResolverComponent, TestComponent, Test2Component],
       providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],

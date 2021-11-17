@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import {
   ScreenPadModule,
   ConfigService,
@@ -48,7 +47,7 @@ describe('CarInfoContainerComponent', () => {
   let fixture: ComponentFixture<CarInfoContainerComponent>;
   const mockData = {} as any;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         CarInfoComponent,

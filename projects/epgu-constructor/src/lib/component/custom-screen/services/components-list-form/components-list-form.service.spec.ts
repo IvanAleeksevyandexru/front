@@ -26,7 +26,6 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { CustomComponent, CustomListFormGroup, CustomScreenComponentTypes, } from '../../components-list.types';
 import { Observable, of } from 'rxjs';
 import { Component, Input } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MaskTransformService } from '../../../../shared/services/mask-transform/mask-transform.service';
 import { cloneDeep } from 'lodash';
@@ -133,7 +132,7 @@ describe('ComponentsListFormService', () => {
     }
   }
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MockComponent],
       imports: [ReactiveFormsModule, HttpClientTestingModule],

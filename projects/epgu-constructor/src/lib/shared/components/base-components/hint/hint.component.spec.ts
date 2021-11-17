@@ -10,8 +10,8 @@ describe('HintComponent', () => {
   let component: HintComponent;
   let fixture: ComponentFixture<HintComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [HintComponent],
       imports: [SafeModule, MockModule(ImgPrefixerModule), MockModule(ClickableLabelModule)],
     }).compileComponents();

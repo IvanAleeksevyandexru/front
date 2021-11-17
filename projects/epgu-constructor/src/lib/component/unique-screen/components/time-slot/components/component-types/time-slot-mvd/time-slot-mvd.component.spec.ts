@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { TimeSlotMvdComponent } from './time-slot-mvd.component';
 import { MockComponent } from 'ng-mocks';
 import { TimeSlotSmev3Component } from '../../base/time-slot-smev3/time-slot-smev3.component';
@@ -11,8 +10,8 @@ describe('TimeSlotMvdComponent', () => {
   let component: TimeSlotMvdComponent;
   let fixture: ComponentFixture<TimeSlotMvdComponent>;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [TimeSlotMvdComponent, MockComponent(TimeSlotSmev3Component)],
       imports: [],
       providers: [{ provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub }],

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploaderButtonComponent } from './uploader-button.component';
-import { configureTestSuite } from 'ng-bullet';
 
 const mockCapture = 'user';
 const mockMultiple = false;
@@ -11,7 +10,7 @@ describe('UploaderButtonComponent', () => {
   let component: UploaderButtonComponent;
   let fixture: ComponentFixture<UploaderButtonComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderButtonComponent],
     }).compileComponents();

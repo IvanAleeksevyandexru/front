@@ -9,7 +9,6 @@ import { ActionDirective } from '../../../../shared/directives/action/action.dir
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
 import { IdentificationApiServiceStub } from '../../shared/identification-api/identification-api.service.stub';
@@ -41,7 +40,7 @@ describe('IdentificationUploadScreenComponent', () => {
   let screenService: ScreenServiceStub;
   let eventBusService: EventBusService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BaseComponentsModule, IdentificationUploadScreenModule, HttpClientTestingModule],
       declarations: [MockDirective(ActionDirective)],

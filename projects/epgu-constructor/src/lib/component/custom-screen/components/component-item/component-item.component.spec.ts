@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponents, MockModule } from 'ng-mocks';
 import {
   HelperTextComponent,
@@ -45,7 +44,7 @@ describe('ComponentItemComponent', () => {
     required: true,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         ComponentItemComponent,

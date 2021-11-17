@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import {
   LocalStorageService,
@@ -36,7 +35,7 @@ describe('PrepareComponentsService', () => {
   let components: ComponentDto[];
   let cachedAnswers: CachedAnswers;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         CachedAnswersService,
@@ -73,9 +72,9 @@ describe('PrepareComponentsService', () => {
 
   describe('prepareComponents()', () => {
     it('should call loadValueFromCachedAnswer with component from params', () => {
-      spyOn<any>(service, 'loadValueFromCachedAnswer').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'loadValueFromCachedAnswer');
       service.prepareComponents(components, cachedAnswers);
-      expect(service['loadValueFromCachedAnswer']).toBeCalledWith(components, cachedAnswers);
+      expect(spy).toBeCalledWith(components, cachedAnswers);
     });
 
     it('should call hideComponents with component returned from loadValueFromCachedAnswer method', () => {
@@ -83,10 +82,10 @@ describe('PrepareComponentsService', () => {
         { id: 'a1', type: 'HtmlString', attrs: {}},
         { id: 'a2', type: 'HtmlString', attrs: {}, value: '' },
       ];
-      spyOn<any>(service, 'loadValueFromCachedAnswer').and.returnValue(loadedValueComponents);
-      spyOn<any>(service, 'handleRelatedRelComponents').and.callThrough();
+      jest.spyOn<any, string>(service, 'loadValueFromCachedAnswer').mockReturnValue(loadedValueComponents);
+      const spy = jest.spyOn<any, string>(service, 'handleRelatedRelComponents');
       service.prepareComponents(components, cachedAnswers);
-      expect(service['handleRelatedRelComponents']).toBeCalledWith(
+      expect(spy).toBeCalledWith(
         loadedValueComponents,
         cachedAnswers,
       );
@@ -97,7 +96,7 @@ describe('PrepareComponentsService', () => {
         { id: 'a1', type: 'HtmlString', attrs: { hidden: true }},
         { id: 'a2', type: 'HtmlString', attrs: {}, value: '' },
       ];
-      spyOn<any>(service, 'handleRelatedRelComponents').and.returnValue(relatedRelComponents);
+      jest.spyOn<any, string>(service, 'handleRelatedRelComponents').mockReturnValue(relatedRelComponents);
       const result = service.prepareComponents(components, cachedAnswers);
       expect(result).toBe(relatedRelComponents);
     });
@@ -579,7 +578,7 @@ describe('PrepareComponentsService', () => {
 
     it('should return changed components that passed in to params', () => {
       prepareRef();
-      spyOn<any>(service, 'handleCustomComponentRef').and.returnValue({
+      jest.spyOn<any, string>(service, 'handleCustomComponentRef').mockReturnValue({
         id: 'a1',
         type: 'HtmlString',
         attrs: { ref: [relation], hidden: true },
@@ -591,22 +590,22 @@ describe('PrepareComponentsService', () => {
 
     it('should call once handleRelatedRelComponents', () => {
       prepareRef();
-      spyOn<any>(service, 'handleCustomComponentRef').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'handleCustomComponentRef');
       service['handleRelatedRelComponents'](components, cachedAnswers);
-      expect(service['handleCustomComponentRef']).toBeCalledTimes(1);
+      expect(spy).toBeCalledTimes(1);
     });
 
     it('shouldn\'t call handleRelatedRelComponents', () => {
-      spyOn<any>(service, 'handleCustomComponentRef').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'handleCustomComponentRef');
       service['handleRelatedRelComponents'](components, cachedAnswers);
-      expect(service['handleCustomComponentRef']).toBeCalledTimes(0);
+      expect(spy).toBeCalledTimes(0);
     });
 
     it('should call handleRelatedRelComponents with params', () => {
       prepareRef();
-      spyOn<any>(service, 'handleCustomComponentRef').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'handleCustomComponentRef');
       service['handleRelatedRelComponents'](components, cachedAnswers);
-      expect(service['handleCustomComponentRef']).toBeCalledWith(
+      expect(spy).toBeCalledWith(
         components[0],
         components[0].attrs.ref,
         components,
@@ -656,14 +655,14 @@ describe('PrepareComponentsService', () => {
 
     it('should call handleDisplayOff with params', () => {
       prepareRef();
-      spyOn<any>(service, 'handleDisplayOff').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'handleDisplayOff');
       service['handleCustomComponentRef'](
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
         cachedAnswers,
       );
-      expect(service['handleDisplayOff']).toBeCalledWith(
+      expect(spy).toBeCalledWith(
         components[0],
         components[0].attrs.ref[0] as CustomComponentRef[],
         cachedAnswers.s2.value,
@@ -671,7 +670,7 @@ describe('PrepareComponentsService', () => {
     });
 
     it('shouldn\'t call handleDisplayOff', () => {
-      spyOn<any>(service, 'handleDisplayOff').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'handleDisplayOff');
       components[0].attrs.ref = [];
       service['handleCustomComponentRef'](
         components[0],
@@ -679,12 +678,12 @@ describe('PrepareComponentsService', () => {
         components,
         cachedAnswers,
       );
-      expect(service['handleDisplayOff']).not.toBeCalled();
+      expect(spy).not.toBeCalled();
     });
 
     it('should call handleDisplayOn with params', () => {
       prepareRef();
-      spyOn<any>(service, 'handleDisplayOn').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'handleDisplayOn');
       components[0].attrs.ref[0].relation = CustomComponentRefRelation.displayOn;
       service['handleCustomComponentRef'](
         components[0],
@@ -692,7 +691,7 @@ describe('PrepareComponentsService', () => {
         components,
         cachedAnswers,
       );
-      expect(service['handleDisplayOn']).toBeCalledWith(
+      expect(spy).toBeCalledWith(
         components[0],
         components[0].attrs.ref[0] as CustomComponentRef[],
         cachedAnswers.s2.value,
@@ -700,7 +699,7 @@ describe('PrepareComponentsService', () => {
     });
 
     it('shouldn\'t call handleDisplayOn', () => {
-      spyOn<any>(service, 'handleDisplayOn').and.callThrough();
+      const spy = jest.spyOn<any, string>(service, 'handleDisplayOn');
       components[0].attrs.ref = [];
       service['handleCustomComponentRef'](
         components[0],
@@ -708,7 +707,7 @@ describe('PrepareComponentsService', () => {
         components,
         cachedAnswers,
       );
-      expect(service['handleDisplayOn']).not.toBeCalled();
+      expect(spy).not.toBeCalled();
     });
   });
 

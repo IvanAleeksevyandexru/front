@@ -7,9 +7,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "experimentalDecorators": true,
     "paths": {
+      "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
+      "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
       "@epgu/epgu-constructor-types": ["projects/epgu-constructor-types/src"],
       "@epgu/epgu-constructor-ui-kit": ["projects/epgu-constructor-ui-kit/src/public-api"]
     }

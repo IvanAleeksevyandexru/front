@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponents } from 'ng-mocks';
 import { PaymentWayComponent } from './payment-way.component';
 import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
@@ -29,7 +28,7 @@ describe('PaymentWayComponent', () => {
   let component: PaymentWayComponent;
   let fixture: ComponentFixture<PaymentWayComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PaymentWayComponent, MockComponents(OutputHtmlComponent)],
       imports: [BaseUiModule, PluralizeModule],

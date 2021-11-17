@@ -3,13 +3,12 @@ import { MockModule } from 'ng-mocks';
 
 import { UsePaymentsModalComponent } from './use-payments-modal.component';
 import { BaseModule } from '../../shared/base.module';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('UsePaymentsModalComponent', () => {
   let component: UsePaymentsModalComponent;
   let fixture: ComponentFixture<UsePaymentsModalComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UsePaymentsModalComponent],
       imports: [MockModule(BaseModule)],

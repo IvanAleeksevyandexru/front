@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 
 import { BaseComponentsModule, CoreUiModule, ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CoreModule } from '../../../../../core/core.module';
@@ -22,7 +21,7 @@ describe('EquipmentChoiceContainerComponent', () => {
   let screenService: ScreenService;
   let currentAnswersService: CurrentAnswersService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         EquipmentChoiceContainerComponent,

@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
 import { MockModule, MockProvider } from 'ng-mocks';
 
@@ -52,7 +51,7 @@ describe('ConfirmWithCodeComponent', () => {
     pd1: { value: '', visited: false },
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmWithCodeComponent, CounterDirective],
       imports: [

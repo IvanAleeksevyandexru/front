@@ -17,7 +17,6 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { PaymentService } from '../../payment.service';
 import { PaymentComponent } from './payment.component';
-import { configureTestSuite } from 'ng-bullet';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { ComponentDto, DTOActionAction } from '@epgu/epgu-constructor-types';
@@ -49,7 +48,7 @@ describe('PaymentComponent', () => {
     });
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies
       declarations: [PaymentComponent],

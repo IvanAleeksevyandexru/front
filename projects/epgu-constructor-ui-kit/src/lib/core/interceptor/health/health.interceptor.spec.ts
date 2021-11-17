@@ -35,8 +35,8 @@ describe('HealthInterceptor', () => {
   let interceptor: HealthInterceptor;
   let service: HealthHandler;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       providers: [
         HealthInterceptor,
         {

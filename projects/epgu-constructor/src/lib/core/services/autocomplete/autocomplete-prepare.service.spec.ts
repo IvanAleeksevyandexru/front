@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { MockProvider } from 'ng-mocks';
 import { cloneDeep as _cloneDeep } from 'lodash';
 
@@ -180,7 +179,7 @@ describe('AutocompletePrepareService', () => {
 
   let deviceDetectorService: DeviceDetectorService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -257,7 +256,7 @@ describe('AutocompletePrepareService', () => {
 
   describe('findAndUpdateComponentsWithValue()', () => {
     it('should setComponentValue() be called', () => {
-      const serviceSetComponentValue = spyOn<any>(service, 'setComponentValue');
+      const serviceSetComponentValue = jest.spyOn<any, string>(service, 'setComponentValue');
       service.findAndUpdateComponentsWithValue(
         repeatableComponents,
         componentsSuggestionsList,
@@ -268,9 +267,10 @@ describe('AutocompletePrepareService', () => {
       expect(serviceSetComponentValue).toBeCalled();
     });
     it('should prepareCachedAnswers() and screenService.setCompValueToCachedAnswer() be called, if isChildrenListType passed', () => {
-      const spy1 = spyOn<any>(service, 'prepareCachedAnswers');
-      const spy2 = spyOn(screenService, 'setCompValueToCachedAnswer');
+      const spy1 = jest.spyOn<any, string>(service, 'prepareCachedAnswers');
+      const spy2 = jest.spyOn(screenService, 'setCompValueToCachedAnswer');
       const newParentComponent = { ...parentComponent };
+      currentAnswersService.state = [{ value: 'value', ai18: 'value' }];
       newParentComponent.type = UniqueScreenComponentTypes.childrenList;
       service.findAndUpdateComponentsWithValue(
         repeatableComponents,
@@ -283,7 +283,7 @@ describe('AutocompletePrepareService', () => {
       expect(spy2).toBeCalled();
     });
     it('should call setComponentValue with findAndUpdateComponentsWithValue(... value) if component.type === .AddressInput',() => {
-      const spy = spyOn<any>(service, 'setComponentValue');
+      const spy = jest.spyOn<any, string>(service, 'setComponentValue');
       jest
         .spyOn(AutocompletePrepareService.prototype as any, 'findComponents')
         .mockReturnValueOnce([mockAddressInput]);

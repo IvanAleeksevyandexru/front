@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { SessionStorageService } from './session-storage.service';
-import { configureTestSuite } from 'ng-bullet';
 
 const TEST_KEY = 'TEST_KEY';
 
@@ -10,7 +9,7 @@ describe('SessionStorageService', () => {
     someKey: 'someValue',
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [SessionStorageService],
     });

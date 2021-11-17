@@ -16,7 +16,6 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { configureTestSuite } from 'ng-bullet';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
@@ -27,7 +26,7 @@ describe('SelectChildrenItemWrapperComponent', () => {
   let component: SelectChildrenItemWrapperComponent;
   let fixture: ComponentFixture<SelectChildrenItemWrapperComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [SelectChildrenItemWrapperComponent],
       imports: [RouterTestingModule, BaseModule, BaseComponentsModule],

@@ -5,7 +5,6 @@ import { CompressionService } from './compression.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('CompressionService', () => {
   const LOAD_SUCCESS_SRC =
@@ -30,7 +29,7 @@ describe('CompressionService', () => {
   let service: CompressionService;
   let terraByteApiService: TerraByteApiService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

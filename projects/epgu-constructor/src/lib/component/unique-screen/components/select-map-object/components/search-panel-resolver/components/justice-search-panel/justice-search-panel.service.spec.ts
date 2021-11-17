@@ -11,7 +11,6 @@ import {
   YandexMapService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { YaMapService } from '@epgu/ui/services/ya-map';
-import { configureTestSuite } from 'ng-bullet';
 import { MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
@@ -57,7 +56,7 @@ describe('JusticeSearchPanelService', () => {
     },
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [

@@ -43,12 +43,12 @@ describe('CounterDirective', () => {
   });
 
   it('test counter directive', () => {
-    spyOn(comp, 'change').and.callThrough();
+    const spy = jest.spyOn(comp, 'change');
     const count = 1;
     comp.count = count;
     fixture.detectChanges();
     jest.runAllTimers();
-    expect(comp.change).toHaveBeenCalledTimes(count);
-    expect(comp.change).toHaveBeenLastCalledWith(0);
+    expect(spy).toHaveBeenCalledTimes(count);
+    expect(spy).toHaveBeenLastCalledWith(0);
   });
 });

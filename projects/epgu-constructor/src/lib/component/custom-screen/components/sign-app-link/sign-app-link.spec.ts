@@ -64,8 +64,8 @@ describe('SignAppLinkComponent', () => {
   let control: FormGroup;
   let userAgent;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [SignAppLinkComponent, MockComponents(ComponentItemComponent)],
       providers: [
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },

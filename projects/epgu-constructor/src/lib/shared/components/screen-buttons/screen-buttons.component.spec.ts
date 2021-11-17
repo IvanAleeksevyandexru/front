@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 
 import { ScreenButtonsComponent } from './screen-buttons.component';
@@ -21,7 +20,7 @@ describe('ScreenButtonsComponent', () => {
   let component: ScreenButtonsComponent;
   let fixture: ComponentFixture<ScreenButtonsComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BaseModule],
       declarations: [ScreenButtonsComponent, DisabledButtonPipe, ShowLoaderButtonPipe],

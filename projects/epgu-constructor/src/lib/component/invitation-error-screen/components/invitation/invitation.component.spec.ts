@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { of } from 'rxjs';
 import { MockComponents } from 'ng-mocks';
 import {
@@ -86,7 +85,7 @@ describe('InvitationComponent', () => {
   let LkInvitationInputPathWithTemplateId: string;
   let LkInvitationInputPathWithoutTemplateId: string;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         InvitationComponent,
@@ -134,7 +133,7 @@ describe('InvitationComponent', () => {
 
   describe('ngOnInit()', () => {
     it('should set custom validator', () => {
-      const spy = spyOn(validationService, 'customValidator').and.callThrough();
+      const spy = jest.spyOn(validationService, 'customValidator');
       component.ngOnInit();
 
       expect(spy).toBeCalledWith(mockData as CustomComponent);

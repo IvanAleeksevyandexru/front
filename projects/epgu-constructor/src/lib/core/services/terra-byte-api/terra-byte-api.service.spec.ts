@@ -12,7 +12,6 @@ import {
 } from './terra-byte-api.types';
 import * as FileSaver from 'file-saver';
 import { TerraUploadedFile } from '../../../shared/components/file-upload/data';
-import { configureTestSuite } from 'ng-bullet';
 
 const createMockBlob = (size: number): Blob => {
   const mockObj = { size, type: 'application/file' };
@@ -56,7 +55,7 @@ describe('TerraByteApiService', () => {
   let http: HttpTestingController;
   let configService: ConfigServiceStub;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [TerraByteApiService, { provide: ConfigService, useClass: ConfigServiceStub }],

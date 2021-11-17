@@ -1,7 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MockProvider } from 'ng-mocks';
 import { CheckboxListComponent } from './checkbox-list.component';
 import { ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
@@ -51,7 +50,7 @@ describe('CheckboxListComponent', () => {
   let fixture: ComponentFixture<CheckboxListComponent>;
   let control: FormControl;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CheckboxListComponent],
       imports: [FormsModule, ReactiveFormsModule, ConstructorCheckboxModule],

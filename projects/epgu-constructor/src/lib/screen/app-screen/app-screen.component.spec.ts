@@ -7,7 +7,6 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { AppScreenComponent } from './app-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
-import { configureTestSuite } from 'ng-bullet';
 import {
   ComponentDto,
   DataDirectionType,
@@ -58,7 +57,7 @@ describe('SpaScreenComponent', () => {
     component = fixture.componentInstance;
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AppScreenComponent, ComponentUniqueResolverComponent],
       providers: [

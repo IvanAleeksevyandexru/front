@@ -5,6 +5,7 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DateTypeTypes } from '../../time-slot.const';
+import { take } from 'rxjs/operators';
 
 describe('TimeSlotCalendarService', () => {
   let service: TimeSlotCalendarService;
@@ -33,7 +34,7 @@ describe('TimeSlotCalendarService', () => {
       expect(Array.from(service.monthList.getValue())).toEqual(['2012-12']);
     });
     it('should be resetToday', (done) => {
-      service.today$$.subscribe((v) => {
+      service.today$$.pipe(take(1)).subscribe((v) => {
         expect(v).toBeNull();
         done();
       });

@@ -19,7 +19,6 @@ import {
   YMapItem
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormsModule } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { MapTypes, SelectMapObjectService } from '../../select-map-object.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { MockModule, MockProvider } from 'ng-mocks';
@@ -56,7 +55,7 @@ describe('MapSidebarComponent', () => {
   let selectMapObjectService: SelectMapObjectService;
   let yaMapService: YaMapService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         MapSidebarComponent,

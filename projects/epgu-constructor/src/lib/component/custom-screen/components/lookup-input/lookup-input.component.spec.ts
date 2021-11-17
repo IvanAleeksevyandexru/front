@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { configureTestSuite } from 'ng-bullet';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -66,7 +65,7 @@ describe('LookupInputComponent', () => {
   let dictionaryToolsService: DictionaryToolsServiceStub;
   let providerSearchSpy;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [LookupInputComponent, MockComponent(ComponentItemComponent)],
       imports: [
@@ -122,7 +121,7 @@ describe('LookupInputComponent', () => {
     fixture = TestBed.createComponent(LookupInputComponent);
     component = fixture.componentInstance;
     // @ts-ignore
-    providerSearchSpy = jest.spyOn<any>(component, 'providerSearch');
+    providerSearchSpy = jest.spyOn<any, string>(component, 'providerSearch');
     component.componentIndex = 0;
     fixture.detectChanges();
   });
@@ -151,7 +150,7 @@ describe('LookupInputComponent', () => {
   });
 
   it('Should call re-render on dictionary update', () => {
-    const reRenderSpy = jest.spyOn(component, 'reRenderChildLookup');
+    const reRenderSpy = jest.spyOn<any, string>(component, 'reRenderChildLookup');
     component.ngOnInit();
 
     component.model['_dictionary$'].next({ list: [{ id: 1, text: 'text' } ] }  as any );
@@ -160,7 +159,7 @@ describe('LookupInputComponent', () => {
   });
 
   it('Should call setFocus after re-render if focusOnInitAndStartSearch is true', () => {
-    const setFocusSpy = jest.spyOn(component, 'setFocusIfNeeded');
+    const setFocusSpy = jest.spyOn<any, string>(component, 'setFocusIfNeeded');
 
     jest.useFakeTimers();
     component['reRenderChildLookup']();

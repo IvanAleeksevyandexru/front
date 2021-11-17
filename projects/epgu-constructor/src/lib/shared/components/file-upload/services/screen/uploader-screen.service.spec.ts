@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 
 import { UploaderScreenService } from './uploader-screen.service';
 import {
@@ -29,7 +28,7 @@ const fileSample: UploadedFile = {
 describe('UploaderScreenService', () => {
   let service: UploaderScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UploaderScreenService],
     });

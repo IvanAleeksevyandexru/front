@@ -21,8 +21,7 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { ComponentsListRelationsService } from './components-list-relations.service';
 import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
-import { configureTestSuite } from 'ng-bullet';
-import { CustomComponentRefRelation, DictionaryConditions, DictionaryValueTypes, } from '@epgu/epgu-constructor-types';
+import { CustomComponentRefRelation, DictionaryConditions, DictionaryValueTypes } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -111,7 +110,7 @@ describe('ComponentsListRelationsService', () => {
   let dateRangeService: DateRangeService;
   let dateRestrictionsService: DateRestrictionsService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         DateRefService,

@@ -25,7 +25,6 @@ import { PhotoFormViewComponent } from '../photo-form-view/photo-form-view.compo
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CompressionService } from '../../service/compression/compression.service';
-import { configureTestSuite } from 'ng-bullet';
 
 describe('PhotoFormComponent', () => {
   let component: PhotoFormComponent;
@@ -35,7 +34,7 @@ describe('PhotoFormComponent', () => {
   let uploadService: UploadService;
   let modalService: ModalService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoFormComponent, MockComponent(PhotoFormViewComponent)],
       imports: [RouterTestingModule, HttpClientTestingModule],

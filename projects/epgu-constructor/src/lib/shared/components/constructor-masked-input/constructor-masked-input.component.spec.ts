@@ -5,7 +5,6 @@ import { EventBusService, MaskHandleModule } from '@epgu/epgu-constructor-ui-kit
 import { By } from '@angular/platform-browser';
 import { MaskModule } from '../../directives/mask/mask.module';
 import { FormControl, NgControl } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 import { RemoveMaskSymbols } from '@epgu/ui/models/common-enums';
 
 describe('ConstructorMaskedInputComponent', () => {
@@ -14,7 +13,7 @@ describe('ConstructorMaskedInputComponent', () => {
   let debugEl: DebugElement;
   const selector = 'lib-standard-masked-input';
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MaskModule, MaskHandleModule],
       schemas: [NO_ERRORS_SCHEMA],

@@ -19,7 +19,6 @@ import { FileItem, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
 import { By } from '@angular/platform-browser';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { configureTestSuite } from 'ng-bullet';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -57,7 +56,7 @@ describe('UploaderViewerComponent', () => {
   let component: UploaderViewerComponent;
   let fixture: ComponentFixture<UploaderViewerComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderViewerComponent, MockComponent(UploaderViewerContentComponent)],
       providers: [

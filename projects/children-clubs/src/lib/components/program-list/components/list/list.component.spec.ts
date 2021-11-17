@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import {
   MicroAppStateQuery,
   MicroAppStateQueryStub,
@@ -27,8 +26,8 @@ describe('ListComponent', () => {
   let fixture: ComponentFixture<ListComponent>;
   let listService: ProgramListService;
 
-  configureTestSuite(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [ListComponent, ItemComponent],
       providers: [
         ProgramListService,

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { ReactiveFormsModule } from '@angular/forms';
-import { configureTestSuite } from 'ng-bullet';
 
 import { CoreUiModule, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CoreModule } from '../../../../../../core/core.module';
@@ -25,7 +24,7 @@ describe('EquipmentChoiceComponent', () => {
   let component: EquipmentChoiceComponent;
   let fixture: ComponentFixture<EquipmentChoiceComponent>;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [EquipmentChoiceComponent, MockComponent(EquipmentCategoryComponent)],
       imports: [CoreModule, MockModule(CoreUiModule), ReactiveFormsModule],

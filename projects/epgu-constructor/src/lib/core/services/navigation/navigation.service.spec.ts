@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { NavigationService } from './navigation.service';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
@@ -8,7 +7,6 @@ import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { MobilViewEvents } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
-import { configureTestSuite } from 'ng-bullet';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { OrgType } from '@epgu/epgu-constructor-types';
@@ -35,7 +33,7 @@ describe('NavigationService', () => {
     },
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         NavigationService,
@@ -121,22 +119,22 @@ describe('NavigationService', () => {
     navigationService.redirectToLK();
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all`);
     navigationService.isWebView = true;
-    spyOn(smuEventsService, 'notify').and.callThrough();
+    jest.spyOn(smuEventsService, 'notify');
     navigationService.redirectToLK();
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/notifications`);
   });
   it('test redirectToLKByOrgType', () => {
-    spyOn(navigationService, 'redirectToLK').and.callThrough();
+    const spy = jest.spyOn(navigationService, 'redirectToLK');
     screenService.initScreenStore({ additionalParameters: {}});
     navigationService.redirectToLKByOrgType(mockAction);
-    expect(navigationService.redirectToLK).toHaveBeenCalledWith(false, mockAction);
+    expect(spy).toHaveBeenCalledWith(false, mockAction);
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all`);
     screenService.initScreenStore({ additionalParameters: {}});
     navigationService.redirectToLKByOrgType({ ...mockAction, ...mockQueryParams });
     expect(navigationService.redirectToLK).toHaveBeenCalledWith(false, mockAction);
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all?${Object.keys(mockQueryParams.queryParams)[0]}=${Object.values(mockQueryParams.queryParams)[0]}`);
     screenService.initScreenStore({ additionalParameters: { orgType: OrgType.Legal }});
-    spyOn(smuEventsService, 'notify').and.callThrough();
+    jest.spyOn(smuEventsService, 'notify');
     navigationService.redirectToLKByOrgType(mockAction);
     expect(navigationService.redirectToLK).toHaveBeenCalledWith(true, mockAction);
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/notifications`);
@@ -146,15 +144,15 @@ describe('NavigationService', () => {
     navigationService.redirectToHome();
     expect(locationService.getHref()).toBe('/');
     navigationService.isWebView = true;
-    spyOn(smuEventsService, 'notify').and.callThrough();
+    const spy = jest.spyOn(smuEventsService, 'notify');
     navigationService.redirectToHome();
-    expect(smuEventsService.notify).toHaveBeenCalledWith(MobilViewEvents.exit);
+    expect(spy).toHaveBeenCalledWith(MobilViewEvents.exit);
   });
   it('test redirectExternal', () => {
     const url = '#';
 
-    spyOn(window, 'open').and.callFake((url: string, target: string) => {
-      // do nothing
+    jest.spyOn(window, 'open').mockImplementation((url: string, target: string): Window => {
+      return;
     });
     navigationService.redirectExternal(url);
     expect(window.open).toHaveBeenCalledWith(url, '_blank');

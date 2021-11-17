@@ -20,7 +20,6 @@ import { ActionService } from '../../directives/action/action.service';
 import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ClickableLabelDirective } from '../../directives/clickable-label/clickable-label.directive';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { configureTestSuite } from 'ng-bullet';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { JsonHelperServiceStub } from '../../../core/services/json-helper/json-helper.service.stub';
@@ -31,7 +30,7 @@ describe('OutputHtmlComponent', () => {
   let component: OutputHtmlComponent;
   let modalService: ModalService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ImgPrefixerPipe, SafePipe, OutputHtmlComponent, ClickableLabelDirective],
       providers: [
@@ -60,9 +59,9 @@ describe('OutputHtmlComponent', () => {
     component.clarifications = { test: { text: '', title: '' }};
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
-    spyOn(modalService, 'openModal').and.callThrough();
+    const spy = jest.spyOn(modalService, 'openModal');
     div.querySelector('a').click();
-    expect(modalService.openModal).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   describe('div', () => {

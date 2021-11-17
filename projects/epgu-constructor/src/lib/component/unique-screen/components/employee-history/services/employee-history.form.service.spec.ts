@@ -8,7 +8,6 @@ import { EmployeeHistoryDataSourceServiceStub } from './employee-history.data-so
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { Gender } from '@epgu/epgu-constructor-types';
 import { PrepareComponentsService } from '../../../../../shared/services/prepare-components/prepare-components.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
@@ -22,7 +21,7 @@ describe('EmployeeHistoryFormService', () => {
   let monthsService: EmployeeHistoryMonthsService;
   let ds: EmployeeHistoryDataSourceService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [

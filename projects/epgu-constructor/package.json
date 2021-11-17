@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-constructor",
-  "version": "37.8.1",
+  "version": "42.0.0",
   "scripts": {
     "build": "cd ../../ && ng build epgu-constructor --prod",
     "watch": "cd ../../ && ng build epgu-constructor --watch",
@@ -15,6 +15,7 @@
     "@angular/animations": "12.2.5",
     "@ngx-translate/http-loader": "6.0.0",
     "angular2-text-mask": "9.0.0",
+    "angular-resize-event": "2.0.0",
     "ngx-webcam": "0.3.0",
     "file-saver": "2.0.5",
     "rxjs": "6.6.6",
@@ -26,14 +27,13 @@
     "uuid": "8.3.0",
     "@types/hammerjs": "2.0.38",
     "hammerjs": "2.0.8",
-    "lodash": ""
+    "lodash": "4.17.21"
   },
   "dependencies": {
     "@alyle/ui": "10.5.1",
-    "@epgu/epgu-constructor-types": "37.8.1",
-    "@epgu/epgu-constructor-ui-kit": "37.8.1",
+    "@epgu/epgu-constructor-types": "42.0.0",
+    "@epgu/epgu-constructor-ui-kit": "42.0.0",
     "@tanker/file-ponyfill": "2.6.3",
-    "angular-resize-event": "2.0.0",
     "ics": "2.24.0",
     "node-fetch": "2.6.1",
     "os": "0.1.1",

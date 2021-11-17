@@ -15,7 +15,6 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { EmployeeHistoryFormData } from '../employee-history.types';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { configureTestSuite } from 'ng-bullet';
 import { Gender } from '@epgu/epgu-constructor-types';
 
 describe('EmployeeHistoryContainerComponent', () => {
@@ -35,7 +34,7 @@ describe('EmployeeHistoryContainerComponent', () => {
     required: true,
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         EmployeeHistoryContainerComponent,

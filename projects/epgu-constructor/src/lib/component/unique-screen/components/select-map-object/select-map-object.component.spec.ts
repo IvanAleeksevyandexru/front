@@ -1,7 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import {
   ModalService,
@@ -60,7 +59,7 @@ describe('SelectMapObjectComponent', () => {
   let MapStore: ScenarioDto;
   let comp;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         MapSidebarComponent,

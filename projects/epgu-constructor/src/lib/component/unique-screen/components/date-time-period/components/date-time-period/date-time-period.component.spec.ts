@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DateTimePeriodComponent } from './date-time-period.component';
-import { configureTestSuite } from 'ng-bullet';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockProvider } from 'ng-mocks';
 import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -65,7 +64,7 @@ describe('DateTimePeriodComponent', () => {
     component.attrs = ({ beginDate: {}, endDate: {}} as unknown) as ComponentAttrsDto;
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         DateTimePeriodComponent,

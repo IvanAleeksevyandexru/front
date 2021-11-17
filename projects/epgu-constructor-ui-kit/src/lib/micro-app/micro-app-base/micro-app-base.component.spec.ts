@@ -1,7 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { configureTestSuite } from 'ng-bullet';
 import { AppTypes, DataDirectionType, InputAppDto, KeyValueMap } from '@epgu/epgu-constructor-types';
 
 import { MicroAppBaseComponent, getAppStorageKey } from './micro-app-base.component';
@@ -63,7 +62,7 @@ describe('MicroAppBaseComponent', () => {
   let setStateSpy;
   let key: string;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestAppComponent],
       providers: [

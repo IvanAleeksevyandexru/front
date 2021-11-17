@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { UploaderValidationService } from './uploader-validation.service';
 import { CompressionService } from '../../../upload-and-edit-photo-form/service/compression/compression.service';
 import { UploaderLimitsService } from '../limits/uploader-limits.service';
@@ -63,7 +62,7 @@ describe('UploaderValidationService', () => {
   let uploaderService: UploaderManagerService;
   let screenService: ScreenService;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         UploaderValidationService,

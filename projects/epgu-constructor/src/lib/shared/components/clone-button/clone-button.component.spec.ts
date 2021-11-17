@@ -7,8 +7,8 @@ describe('CloneButtonComponent', () => {
   let fixture: ComponentFixture<CloneButtonComponent>;
   let eventBusService: EventBusService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [CloneButtonComponent],
       providers: [EventBusService],
     }).compileComponents();

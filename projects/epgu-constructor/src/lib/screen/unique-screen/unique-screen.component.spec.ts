@@ -8,7 +8,6 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
-import { configureTestSuite } from 'ng-bullet';
 import { ComponentDto, DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
@@ -40,7 +39,7 @@ describe('UniqueScreenComponent', () => {
     component = fixture.componentInstance;
   };
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UniqueScreenComponent, ComponentUniqueResolverComponent],
       providers: [
@@ -63,7 +62,7 @@ describe('UniqueScreenComponent', () => {
 
   describe('nextDataForStep() method', () => {
     it('should call nextStep() method with payload object', () => {
-      const nextStepSpy = spyOn(component, 'nextStep');
+      const nextStepSpy = jest.spyOn(component, 'nextStep');
 
       screenService.component = componentDtoSample;
 
@@ -76,7 +75,7 @@ describe('UniqueScreenComponent', () => {
           value: undefined,
         },
       });
-      nextStepSpy.calls.reset();
+      nextStepSpy.mockReset();
 
       component.nextDataForStep('some value');
 
@@ -87,13 +86,12 @@ describe('UniqueScreenComponent', () => {
           value: 'some value',
         },
       });
-      nextStepSpy.calls.reset();
     });
   });
 
   describe('nextStep() method', () => {
     it('should call navigationService.next()', () => {
-      const nextStepSpy = spyOn(navigationService, 'next');
+      const nextStepSpy = jest.spyOn(navigationService, 'next');
 
       component.nextStep();
 
@@ -101,7 +99,7 @@ describe('UniqueScreenComponent', () => {
       expect(nextStepSpy).toBeCalledWith({
         payload: undefined,
       });
-      nextStepSpy.calls.reset();
+      nextStepSpy.mockReset();
 
       const navigationPayload: NavigationPayload = {
         foo: {

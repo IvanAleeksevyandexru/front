@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import { ListElement, ListItem } from '@epgu/ui/models/dropdown';
@@ -80,7 +73,7 @@ export const NO_DATA = 'В настоящее время отсутствуют 
   selector: 'epgu-constructor-time-slot-doctors-container',
   templateUrl: './time-slot-doctors-container.component.html',
 })
-export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, AfterViewInit {
+export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   @ViewChild('timeSlotDoctorsComponent') timeSlotDoctorsComponent: TimeSlotDoctorsComponent;
 
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
@@ -214,9 +207,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy, Aft
         this.screenService.component.attrs?.cancelReservation,
       );
     }
-  }
 
-  ngAfterViewInit(): void {
     this.focusOnFirstLookup();
   }
 

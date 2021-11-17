@@ -1,6 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { configureTestSuite } from 'ng-bullet';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import {
@@ -37,12 +36,12 @@ describe('ConfirmEmailComponent', () => {
     visited: true,
     required: true,
     attrs: {
-      characterMask: [],
+      characterMask: null,
       codeLength: 4,
       resendCodeUrl: 'url',
     },
   };
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmEmailComponent, CounterDirective],
       imports: [
@@ -79,7 +78,7 @@ describe('ConfirmEmailComponent', () => {
 
   it('should be call this.navModalService.next() after interval', () => {
     const navigationModalServiceNextFn = jest.spyOn(navigationModalService, 'next');
-    jest.runTimersToTime(5000);
+    jest.advanceTimersByTime(5000);
 
     expect(navigationModalServiceNextFn).toHaveBeenCalled();
   });

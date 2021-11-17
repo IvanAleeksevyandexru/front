@@ -34,8 +34,8 @@ describe('ConstructorMultilineInputComponent', () => {
   let component: ConstructorMultilineInputComponent;
   let fixture: ComponentFixture<ConstructorMultilineInputComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [ConstructorMultilineInputComponent],
       imports: [
         CoreModule,

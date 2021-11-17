@@ -8,8 +8,8 @@ describe('UniqueComponentModalComponent', () => {
   let component: UniqueComponentModalComponent;
   let fixture: ComponentFixture<UniqueComponentModalComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [UniqueComponentModalComponent],
       providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA], // TODO: remove this line when resolve issue with @ifc/plugin and @ifc/common dependencies

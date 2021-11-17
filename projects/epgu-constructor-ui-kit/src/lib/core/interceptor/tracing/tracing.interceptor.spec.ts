@@ -15,7 +15,6 @@ import { InitDataService } from '@epgu/epgu-constructor/src/lib/core/services/in
 import { InitDataServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
 import { TracingService } from '../../services/tracing/tracing.service';
 import { TracingHttpInterceptor } from './tracing.interceptor';
-import { configureTestSuite } from 'ng-bullet';
 import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '@epgu/epgu-constructor/src/lib/shared/services/date-restrictions/date-restrictions.service';
 import { ConfigService } from '../../services/config/config.service';
@@ -56,7 +55,7 @@ describe('TracingHttpInterceptor', () => {
     },
   } as ActionRequestPayload;
 
-  configureTestSuite(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -109,7 +108,7 @@ describe('TracingHttpInterceptor', () => {
 
   describe('doIntercept()', () => {
     it('should not call doIntercept(), if configService.zipkinSpanSendEnabled is disabled', fakeAsync(() => {
-      const doInterceptSpy = spyOn<any>(interceptor, 'doIntercept');
+      const doInterceptSpy = jest.spyOn<any, string>(interceptor, 'doIntercept');
       config.zipkinSpanSendEnabled = false;
       formPlayerApi.sendAction(api, dto).subscribe((response) => {
         expect(response).toBeTruthy();
@@ -126,7 +125,7 @@ describe('TracingHttpInterceptor', () => {
       discardPeriodicTasks();
     }));
     it('should not call doIntercept(), if no tracer', fakeAsync(() => {
-      const doInterceptSpy = spyOn<any>(interceptor, 'doIntercept');
+      const doInterceptSpy = jest.spyOn<any, string>(interceptor, 'doIntercept');
       formPlayerApi.sendAction(api, dto).subscribe((response) => {
         expect(response).toBeTruthy();
       });
@@ -142,7 +141,7 @@ describe('TracingHttpInterceptor', () => {
       discardPeriodicTasks();
     }));
     it('should not call doIntercept(), if no allowedRemoteServices in req.url', fakeAsync(() => {
-      const doInterceptSpy = spyOn<any>(interceptor, 'doIntercept');
+      const doInterceptSpy = jest.spyOn<any, string>(interceptor, 'doIntercept');
       tracingService.init(true);
       const notAllowedApi = 'service/10000000101/scenario/notAllowedApi';
       formPlayerApi.sendAction(notAllowedApi, dto).subscribe((response) => {
@@ -160,7 +159,7 @@ describe('TracingHttpInterceptor', () => {
       discardPeriodicTasks();
     }));
     it('should call doIntercept(), if nothing above', fakeAsync((done) => {
-      const doInterceptSpy = spyOn<any>(interceptor, 'doIntercept');
+      const doInterceptSpy = jest.spyOn<any, string>(interceptor, 'doIntercept');
       tracingService.init(true);
       formPlayerApi.sendAction(api, dto).subscribe((response) => {
         expect(response).toBeTruthy();
