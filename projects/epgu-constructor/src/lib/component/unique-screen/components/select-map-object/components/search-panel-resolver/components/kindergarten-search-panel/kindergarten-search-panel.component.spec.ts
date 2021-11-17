@@ -33,7 +33,7 @@ import { KindergartenSearchPanelService } from './kindergarten-search-panel.serv
 import { Observable, of } from 'rxjs';
 import { BaseComponentsModule } from '../../../../../../../../shared/components/base-components/base-components.module';
 
-const componentMock = { arguments: {}, attrs: {}, id: 'test', type: '1' };
+const componentMock = { arguments: { municipalOktmo: 1 }, attrs: {}, id: 'test', type: '1' };
 
 describe('KindergartenSearchPanelComponent', () => {
   let component: KindergartenSearchPanelComponent;

@@ -48,10 +48,10 @@ export class ElectionsSearchPanelComponent implements AfterViewInit {
     }
     this.dictionaryApiService
       .getDadataNormalize(dadataSuggestion.address)
-      .subscribe((qwe: DadataNormalizeResponse) => {
+      .subscribe((response: DadataNormalizeResponse) => {
         this.yandexMapService.setCenter(
-          [+qwe.geo_lon, +qwe.geo_lat],
-          Math.max(+qwe.fiasLevel * 2, 8),
+          [+response.geo_lon, +response.geo_lat],
+          Math.max(+response.fiasLevel * 2, 8),
         );
       });
   }

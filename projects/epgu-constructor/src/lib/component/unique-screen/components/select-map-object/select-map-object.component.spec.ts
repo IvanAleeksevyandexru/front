@@ -4,47 +4,20 @@ import { of } from 'rxjs';
 import { configureTestSuite } from 'ng-bullet';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import {
-  DeviceDetectorService,
-  DeviceDetectorServiceStub,
-  ConfigService,
-  ConfigServiceStub,
-  LocalStorageService,
-  LocalStorageServiceStub,
   ModalService,
-  ModalServiceStub,
   ConstructorLookupModule,
-  Icons,
   mockSelectMapObjectStore,
   IGeoCoordsResponse,
-  AddressesToolsService,
   YandexMapService,
-  UnsubscribeService,
   YMapItem,
   IFeatureItem,
   YandexMapModule,
-  WINDOW_PROVIDERS,
   WINDOW,
 } from '@epgu/epgu-constructor-ui-kit';
-import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
-import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
-import { NavigationService } from '../../../../core/services/navigation/navigation.service';
-import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerApiService } from '../../../../form-player/services/form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { PrevButtonModule } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
-import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { HtmlRemoverService } from '../../../../shared/services/html-remover/html-remover.service';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import {
   mockDictionaryWithObjectError,
@@ -56,22 +29,11 @@ import {
   DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
-import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
-import { PrepareComponentsService } from '../../../../shared/services/prepare-components/prepare-components.service';
-import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
-import { ActionService } from '../../../../shared/directives/action/action.service';
-import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
-import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
-import { ModalErrorService } from '../../../../modal/modal-error.service';
-import { MockModule, MockProvider } from 'ng-mocks';
+import { MockModule } from 'ng-mocks';
 import { SearchPanelResolverComponent } from './components/search-panel-resolver/search-panel-resolver.component';
 import { BalloonContentResolverComponent } from './components/balloon-content-resolver/balloon-content-resolver.component';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
-import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
-import { mockMvdPoint } from './mocks/mock-select-map-mvdPoints';
 import { CommonBalloonContentComponent } from './components/balloon-content-resolver/components/common-balloon-content/common-balloon-content.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { By } from '@angular/platform-browser';
 import { CommonSearchPanelComponent } from './components/search-panel-resolver/components/common-search-panel/common-search-panel.component';
 import { SelectMapObjectService } from './select-map-object.service';
 import { mockDivorceMapFeature } from './mocks/mock-select-map-mapFeatures';
@@ -79,14 +41,12 @@ import { divorceApplicantAnswers } from './mocks/mock-select-map-divorceAnswers'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
-import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
-import { PriorityItemsService } from './services/priority-items/priority-items.service';
-import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { YaMapService } from '@epgu/ui/services/ya-map';
 import { FormsModule } from '@angular/forms';
 import { MapSidebarComponent } from './components/map-sidebar/map-sidebar.component';
 import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipeable-wrapper.component';
+import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -119,42 +79,7 @@ describe('SelectMapObjectComponent', () => {
         DisclaimerModule,
         FormsModule,
         YandexMapModule,
-      ],
-      providers: [
-        WINDOW_PROVIDERS,
-        { provide: ActionService, useClass: ActionServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide: DownloadService, useClass: DownloadServiceStub },
-        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: NavigationModalService, useClass: NavigationModalServiceStub },
-        { provide: NavigationService, useClass: NavigationServiceStub },
-        MockProvider(ActionToolsService),
-        MockProvider(DateRestrictionsService),
-        MockProvider(KindergartenSearchPanelService),
-        AddressesToolsService,
-        AutocompleteApiService,
-        CachedAnswersService,
-        ComponentsListRelationsService,
-        CurrentAnswersService,
-        DateRangeService,
-        DateRefService,
-        DatesToolsService,
-        DictionaryToolsService,
-        HtmlRemoverService,
-        Icons,
-        JsonHelperService,
-        ModalErrorService,
-        PrepareComponentsService,
-        PriorityItemsService,
-        RefRelationService,
-        ScreenService,
-        SelectMapObjectService,
-        UnsubscribeService,
-        YandexMapService,
+        ForTestsOnlyModule,
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, {

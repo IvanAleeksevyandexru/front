@@ -41,7 +41,10 @@ export class KindergartenSearchPanelService implements OnDestroy {
   }
 
   public getEDUORGMAX(): Observable<DictionaryResponse> {
-    const municipalOktmo = this.screenService.component.arguments.municipalOktmo as string;
+    const municipalOktmo = this.screenService.component?.arguments.municipalOktmo as string;
+    if (!municipalOktmo) {
+      return;
+    }
     const requestBody = {
       filter: {
         simple: {
