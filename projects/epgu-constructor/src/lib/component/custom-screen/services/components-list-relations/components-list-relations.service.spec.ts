@@ -22,11 +22,7 @@ import { ComponentsListRelationsService } from './components-list-relations.serv
 import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
 import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
 import { configureTestSuite } from 'ng-bullet';
-import {
-  CustomComponentRefRelation,
-  DictionaryConditions,
-  DictionaryValueTypes,
-} from '@epgu/epgu-constructor-types';
+import { CustomComponentRefRelation, DictionaryConditions, DictionaryValueTypes, } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
@@ -1530,6 +1526,80 @@ describe('ComponentsListRelationsService', () => {
       const form = new FormBuilder().group({ ...component });
       formMock = new FormArray([form]);
       expect(service.getCalcValueFromRelation(calcRefMock, components, formMock)).toBe('2');
+    });
+  });
+
+  describe('handleIsDisplayOffRelation()', () => {
+    it('should hide dependent component if at least one of ref value condition is true', () => {
+      const fb = new FormBuilder();
+      const form1 = fb.group({
+        ...componentMock,
+        value: true,
+        id: 'rp1_1',
+      });
+      const form2 = fb.group({
+        ...componentMock,
+        value: false,
+        id: 'rp1_2',
+      });
+      const form3 = fb.group({ ...componentMock });
+      const mockForm = new FormArray([form1, form2, form3]);
+
+      const element: CustomStatusElement = {
+        isShown: true,
+        relation: CustomComponentRefRelation.displayOff,
+      };
+      const shownElements: CustomListStatusElements = {
+        rp1_1: {
+          isShown: true,
+          relation: CustomComponentRefRelation.displayOff,
+        },
+        rp1_2: {
+          isShown: true,
+          relation: CustomComponentRefRelation.displayOff,
+        },
+        rp1_3: {
+          isShown: true,
+          relation: CustomComponentRefRelation.displayOff,
+        }
+      };
+      const dependentComponent: CustomComponent = {
+        attrs: {
+          ref: [
+            {
+              relatedRel: 'rp1_1',
+              val: true,
+              relation: CustomComponentRefRelation.displayOff,
+            },
+            {
+              relatedRel: 'rp1_2',
+              val: true,
+              relation: CustomComponentRefRelation.displayOff,
+            }
+          ]
+        },
+        id: 'rp1_3',
+        type: CustomScreenComponentTypes.LabelSection
+      };
+      const reference: CustomComponentRef = {
+        relatedRel: 'rp1_3',
+        relation: CustomComponentRefRelation.displayOff,
+        val: true,
+      };
+      const dependentControl: AbstractControl = form3;
+
+      expect(shownElements['rp1_3'].isShown).toEqual(true);
+
+      service['handleIsDisplayOffRelation'](
+        element,
+        shownElements,
+        dependentComponent,
+        reference,
+        dependentControl,
+        mockForm,
+      );
+
+      expect(shownElements['rp1_3'].isShown).toEqual(false);
     });
   });
 
