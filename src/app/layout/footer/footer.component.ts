@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FooterService } from '@epgu/ui/services/footer';
 
 @Component({
   selector: 'app-footer',
@@ -8,4 +9,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class FooterComponent {
   scenarioUrl = '';
+
+  constructor(public footerService: FooterService) {}
 }
