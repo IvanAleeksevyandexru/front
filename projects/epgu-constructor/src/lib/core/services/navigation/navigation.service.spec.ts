@@ -1,15 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { NavigationService } from './navigation.service';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { SmuEventsServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { MobilViewEvents } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  LocationService,
+  MobilViewEvents,
+  SmuEventsServiceStub,
+  WINDOW_PROVIDERS
+} from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { OrgType } from '@epgu/epgu-constructor-types';
+import { ActionType, ComponentActionDto, DTOActionAction, OrgType } from '@epgu/epgu-constructor-types';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('NavigationService', () => {
@@ -20,17 +23,22 @@ describe('NavigationService', () => {
   let locationService: LocationService;
   let screenService: ScreenService;
 
-  const mockAction = {
+  const mockAction: ComponentActionDto = {
     label: 'В личный кабинет',
     value: 'В личный кабинет',
-    type: 'redirectToLK',
-    action: 'getNextScreen',
+    type: ActionType.redirectToLK,
+    action: DTOActionAction.getNextStep,
   };
 
-  const mockQueryParams = {
+  const mockQueryParams: Pick<ComponentActionDto, 'queryParams'> = {
     queryParams: {
       type: 'EQUEUE',
     },
+  };
+
+  const mockActionWithQueryParams: ComponentActionDto = {
+    ...mockAction,
+    ...mockQueryParams,
   };
 
   beforeEach(() => {
@@ -118,10 +126,17 @@ describe('NavigationService', () => {
     navigationService.isWebView = false;
     navigationService.redirectToLK();
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all`);
+    navigationService.redirectToLK(false, mockActionWithQueryParams);
+    expect(locationService.getHref())
+      .toBe(`${configService.lkUrl}/orders?${Object.keys(mockActionWithQueryParams.queryParams)[0]}=${Object.values(mockActionWithQueryParams.queryParams)[0]}`);
+
     navigationService.isWebView = true;
     jest.spyOn(smuEventsService, 'notify');
     navigationService.redirectToLK();
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/notifications`);
+    navigationService.redirectToLK(false, mockActionWithQueryParams);
+    expect(locationService.getHref())
+      .toBe(`${configService.lkUrl}/notifications?${Object.keys(mockActionWithQueryParams.queryParams)[0]}=${Object.values(mockActionWithQueryParams.queryParams)[0]}`);
   });
   it('test redirectToLKByOrgType', () => {
     const spy = jest.spyOn(navigationService, 'redirectToLK');
@@ -132,7 +147,7 @@ describe('NavigationService', () => {
     screenService.initScreenStore({ additionalParameters: {}});
     navigationService.redirectToLKByOrgType({ ...mockAction, ...mockQueryParams });
     expect(navigationService.redirectToLK).toHaveBeenCalledWith(false, mockAction);
-    expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all?${Object.keys(mockQueryParams.queryParams)[0]}=${Object.values(mockQueryParams.queryParams)[0]}`);
+    expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders?${Object.keys(mockQueryParams.queryParams)[0]}=${Object.values(mockQueryParams.queryParams)[0]}`);
     screenService.initScreenStore({ additionalParameters: { orgType: OrgType.Legal }});
     jest.spyOn(smuEventsService, 'notify');
     navigationService.redirectToLKByOrgType(mockAction);
