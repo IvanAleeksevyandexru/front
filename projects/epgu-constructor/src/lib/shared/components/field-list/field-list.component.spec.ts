@@ -13,6 +13,7 @@ import { By } from '@angular/platform-browser';
 import { EaisdoGroupCostServiceStub } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service.stub';
 import { JsonHelperServiceStub } from '../../../core/services/json-helper/json-helper.service.stub';
 import { ConfirmUserDataErrorType } from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
+import { cloneDeep } from 'lodash';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -315,12 +316,76 @@ describe('FieldListComponent', () => {
   });
 
   describe('data item value html', () => {
-    it('should render "-" when value is missing', async () => {
-      component.preparedData = mockPreparedData;
+    it('should not render anything when value and label are empty', async () => {
+      component.preparedData = cloneDeep(mockPreparedData);
+      component.preparedData[0].fields[0].label = '';
+      component.preparedData[0].fields[0].value = '';
+
       fixture.detectChanges();
       await fixture.whenRenderingDone();
+      const dataItemLabel = fixture.debugElement.query(By.css('.data-item__label'));
       const dataItemValue = fixture.debugElement.query(By.css('.data-item__value'));
+      expect(dataItemLabel).toBeNull();
+      expect(dataItemValue).toBeNull();
+    });
+
+    it('should render value without label, when value exists and label is empty', async () => {
+      component.preparedData = cloneDeep(mockPreparedData);
+      component.preparedData[0].fields[0].label = '';
+      component.preparedData[0].fields[0].value = 'foo';
+
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const dataItemLabel = fixture.debugElement.query(By.css('.data-item__label'));
+      const dataItemValue = fixture.debugElement.query(By.css('.data-item__value'));
+      expect(dataItemLabel).toBeNull();
+      expect(dataItemValue).toBeTruthy();
+      expect(dataItemValue.componentInstance.html).toEqual('foo');
+    });
+
+    it('should render label with "-", when label exists and value is empty', async () => {
+      component.preparedData = cloneDeep(mockPreparedData);
+      component.preparedData[0].fields[0].label = 'foo';
+      component.preparedData[0].fields[0].value = '';
+
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const dataItemLabel = fixture.debugElement.query(By.css('.data-item__label'));
+      const dataItemValue = fixture.debugElement.query(By.css('.data-item__value'));
+      expect(dataItemLabel).toBeTruthy();
+      expect(dataItemValue).toBeTruthy();
+      expect(dataItemLabel.componentInstance.html).toEqual('foo');
       expect(dataItemValue.componentInstance.html).toEqual('-');
+    });
+
+    it('should render label with "-", when label exists and value is missing', async () => {
+      component.preparedData = cloneDeep(mockPreparedData);
+      component.preparedData[0].fields[0].label = 'foo';
+      component.preparedData[0].fields[0].value = undefined;
+
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const dataItemLabel = fixture.debugElement.query(By.css('.data-item__label'));
+      const dataItemValue = fixture.debugElement.query(By.css('.data-item__value'));
+      expect(dataItemLabel).toBeTruthy();
+      expect(dataItemValue).toBeTruthy();
+      expect(dataItemLabel.componentInstance.html).toEqual('foo');
+      expect(dataItemValue.componentInstance.html).toEqual('-');
+    });
+
+    it('should render label and value, when they exists', async () => {
+      component.preparedData = cloneDeep(mockPreparedData);
+      component.preparedData[0].fields[0].label = 'foo';
+      component.preparedData[0].fields[0].value = 'bar';
+
+      fixture.detectChanges();
+      await fixture.whenRenderingDone();
+      const dataItemLabel = fixture.debugElement.query(By.css('.data-item__label'));
+      const dataItemValue = fixture.debugElement.query(By.css('.data-item__value'));
+      expect(dataItemLabel).toBeTruthy();
+      expect(dataItemValue).toBeTruthy();
+      expect(dataItemLabel.componentInstance.html).toEqual('foo');
+      expect(dataItemValue.componentInstance.html).toEqual('bar');
     });
   });
 });

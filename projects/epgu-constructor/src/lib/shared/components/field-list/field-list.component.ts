@@ -109,6 +109,8 @@ export class FieldListComponent implements OnInit, OnChanges {
   }
 
   private transformString(str: string): string {
+    if (!str) return '';
+
     const regexp = /\$?{([^{]+)}/g;
 
     return str.replace(regexp, (ignore) => {

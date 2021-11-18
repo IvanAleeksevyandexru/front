@@ -188,16 +188,6 @@ xdescribe('ConfirmPersonalUserDataComponent', () => {
     screenService.getStore().errors = {};
   });
 
-  // TODO починить тест
-  xit('should call ngDoCheck', () => {
-    screenService.getStore().errors = {
-      id: 'error',
-    };
-    const spy = jest.spyOn(component, 'ngDoCheck');
-    fixture.detectChanges();
-    expect(spy).toHaveBeenCalled();
-  });
-
   it('should set session param in ngOnInit', () => {
     screenService.cycledApplicantAnswerContext = {
       cycledApplicantAnswerItem: {
