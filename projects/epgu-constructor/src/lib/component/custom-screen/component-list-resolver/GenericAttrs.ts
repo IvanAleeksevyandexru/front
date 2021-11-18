@@ -19,6 +19,7 @@ export default class GenericAttrs {
   readonly placeholder: string;
   readonly onlyFirstScreen: boolean;
   readonly grid: string;
+  readonly disabled: boolean;
 
   constructor(attrs: CustomComponentAttr) {
     this.preset = attrs.preset;
@@ -32,5 +33,6 @@ export default class GenericAttrs {
     this.onlyFirstScreen = attrs.onlyFirstScreen;
     this.refs = attrs.refs;
     this.grid = attrs.grid;
+    this.disabled = attrs.disabled;
   }
 }

@@ -14,8 +14,10 @@ import { filter, subscribeOn, takeUntil, tap } from 'rxjs/operators';
 import { asyncScheduler } from 'rxjs';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { FooterService } from '@epgu/ui/services/footer';
 import { SCREEN_COMPONENTS, ScreenComponent } from '../screen.const';
 import { ScreenService } from '../screen.service';
+import { NO_FOOTER_COMPONENTS } from '../../shared/constants/no-footer-components';
 
 @Component({
   selector: 'epgu-constructor-screen-resolver',
@@ -32,6 +34,7 @@ export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
     private screenService: ScreenService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private ngUnsubscribe$: UnsubscribeService,
+    private footerService: FooterService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -45,6 +48,7 @@ export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
       .subscribe((screenType) => {
         this.createComponent(screenType);
       });
+    this.handleFooterDisplaying();
   }
 
   ngOnDestroy(): void {
@@ -78,5 +82,12 @@ export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
     );
 
     this.componentRef = this.screenContainer.createComponent(componentFactory);
+  }
+
+  private handleFooterDisplaying(): void {
+    this.screenService.componentType$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((type) => {
+      const isVisible = !NO_FOOTER_COMPONENTS.includes(type);
+      this.footerService.setVisible(isVisible);
+    });
   }
 }
