@@ -31,10 +31,6 @@ describe('ConfirmationModalComponent', () => {
     component = fixture.componentInstance;
     clipboard = TestBed.inject(Clipboard);
     notifierService = TestBed.inject(NotifierService);
-
-    // без этого будет ошибка
-    // Expression has changed after it was checked. Previous value: 'showButtons: false'. Current value: 'showButtons: true'
-    // из-за этого, что в ngAfterViewInit меняется showCloseButton
     component.showCloseButton = false;
   };
 
@@ -117,12 +113,16 @@ describe('ConfirmationModalComponent', () => {
 
   it('should render lib-button if showCloseButton', () => {
     const selector = 'lib-button';
-
     let debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeNull();
 
-    // @todo. Не удается протестировать отображение кнопок при component.showCloseButton = true
-    // из-за ошибки Expression has changed after it was checked. Previous value: 'showButtons: false'. Current value: 'showButtons: true'
+    component.showCloseButton = true;
+    component.buttons = [{ label: 'Закрыть', closeModal: true }];
+    component.ngAfterViewInit();
+    fixture.detectChanges();
+
+    debugEl = fixture.debugElement.query(By.css(selector));
+    expect(debugEl).toBeTruthy();
   });
 
   it('should render epgu-constructor-screen-buttons if actionButtons is not empty', () => {
