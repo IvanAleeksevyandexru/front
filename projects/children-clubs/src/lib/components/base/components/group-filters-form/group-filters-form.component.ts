@@ -13,6 +13,7 @@ import {
   FormGroup,
   ValidationErrors,
   ValidatorFn,
+  Validators,
 } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -87,7 +88,10 @@ export class GroupFiltersFormComponent extends ModalBaseComponent implements OnI
       [this.formFields.isRegistrationOpen]: new FormControl(value?.isRegistrationOpen || false),
       [this.filterKey]: new FormControl(this.initFilters || defaultFilters),
       [this.formFields.maxPrice]: new FormControl(value?.maxPrice || null, this.numberValidators()),
-      [this.formFields.age]: new FormControl(value?.age || null, this.numberValidators()),
+      [this.formFields.age]: new FormControl(value?.age || null, [
+        this.numberValidators(),
+        Validators.maxLength(2),
+      ]),
     });
   }
 
