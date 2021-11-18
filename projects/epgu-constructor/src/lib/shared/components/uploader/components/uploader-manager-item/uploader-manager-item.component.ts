@@ -98,6 +98,7 @@ export class UploaderManagerItemComponent {
   cancelAction(type: OperationType): void {
     this.cancel.emit({ type, item: this.fileItem });
   }
+
   viewAction(): void {
     if (!this.isError) {
       if (this.isImage) {

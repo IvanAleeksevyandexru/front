@@ -195,13 +195,6 @@ describe('FileUploadComponent', () => {
     expect(controlValue.setErrors).toHaveBeenCalledWith({ required: true });
   });
 
-  describe('getUploadComponentPrefixForMnemonic', () => {
-    it('should return mnemonic', () => {
-      const testMnemonic = component.getUploadComponentPrefixForMnemonic(mockComponent);
-      expect(testMnemonic).toBe('test.FileUploadComponent');
-    });
-  });
-
   describe('Total size info plate', () => {
     const selector = '.size-info';
 
@@ -211,47 +204,81 @@ describe('FileUploadComponent', () => {
     });
 
     it('should be hidden if attrs.hideTotalAvailableSize and attrs.hideTotalAvailableCount is TRUE', () => {
-      screenService.component = {
-        ...mockComponent,
-        ...{
-          attrs: {
-            hideTotalAvailableSize: true,
-            hideTotalAvailableCount: true,
-          } as FileUploadAttributes,
-        },
-      };
-      fixture.detectChanges();
+      mockAttributes.hideTotalAvailableCount = true;
+      mockAttributes.hideTotalAvailableSize = true;
+      const { type, attrs, id, label, required } = mockComponent;
+      form = new FormArray([
+        fb.group({
+          type,
+          attrs,
+          id,
+          label,
+          required,
+          value: [
+            {
+              value: mockComponent,
+              disabled: mockComponent.attrs.disabled,
+            },
+          ],
+        }),
+      ]);
+      control = form.controls[0];
+      component.ngOnInit();
 
       const debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeNull();
     });
 
-    it('should be visible if attrs.hideTotalAvailableSize is FALSE and attrs.maxSize is defined', () => {
-      screenService.component = {
-        ...mockComponent,
-        ...{
-          attrs: {
-            maxSize: 10000,
-            hideTotalAvailableSize: false,
-          } as FileUploadAttributes,
-        },
-      };
+    it('should be visible if attrs.hideTotalAvailableSize is FALSE and attrs.maxSize is DEFINED', () => {
+      mockAttributes.maxSize = 10000;
+      mockAttributes.hideTotalAvailableSize = false;
+      const { type, attrs, id, label, required } = mockComponent;
+      form = new FormArray([
+        fb.group({
+          type,
+          attrs,
+          id,
+          label,
+          required,
+          value: [
+            {
+              value: mockComponent,
+              disabled: mockComponent.attrs.disabled,
+            },
+          ],
+        }),
+      ]);
+      control = form.controls[0];
+      component.ngOnInit();
+
       fixture.detectChanges();
 
       const debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl).toBeTruthy();
     });
 
-    it('should be visible if attrs.hideTotalAvailableCount is FALSE and attrs.maxFileCount is defined', () => {
-      screenService.component = {
-        ...mockComponent,
-        ...{
-          attrs: {
-            maxFileCount: 10,
-            hideTotalAvailableCount: false,
-          } as FileUploadAttributes,
-        },
-      };
+    it('should be visible if attrs.hideTotalAvailableCount is FALSE and attrs.maxFileCount is DEFINED', () => {
+      mockAttributes.maxFileCount = 10;
+      mockAttributes.hideTotalAvailableCount = false;
+      const { type, attrs, id, label, required } = mockComponent;
+      form = new FormArray([
+        fb.group({
+          type,
+          attrs,
+          id,
+          label,
+          required,
+          value: [
+            {
+              value: mockComponent,
+              disabled: mockComponent.attrs.disabled,
+            },
+          ],
+        }),
+      ]);
+      control = form.controls[0];
+      component.ngOnInit();
+
       fixture.detectChanges();
 
       const debugEl = fixture.debugElement.query(By.css(selector));
