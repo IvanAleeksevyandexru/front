@@ -15,8 +15,8 @@ export class Icons {
       iconLayout: this.pinLayout(),
       iconShape: {
         type: 'Circle',
-        coordinates: [0, -10],
-        radius: 20,
+        coordinates: [0, -25],
+        radius: 25,
       },
       hideIconOnBalloonOpen: false,
       openEmptyBalloon: false,

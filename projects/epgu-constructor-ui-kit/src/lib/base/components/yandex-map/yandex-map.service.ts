@@ -30,7 +30,7 @@ export class YandexMapService implements OnDestroy {
   public objectManager;
   public componentAttrs: ComponentAttrsDto;
   private activePlacemarkId: number | string;
-  private activeClusterHash: string;
+  private activeClusterHash: string = null;
   private MIN_ZOOM = 4;
   private MAX_ZOOM = 17;
   private DEFAULT_ZOOM = 9;
@@ -126,6 +126,10 @@ export class YandexMapService implements OnDestroy {
     needSetCenter = true,
   ): void {
     this.objectManager.objects.balloon.close();
+    if (this.activePlacemarkId === feature.id || this.activeClusterHash === this.getClusterHash(feature as IClusterItem<T>)) {
+      this.closeBalloon();
+      return;
+    }
     this.closeBalloon();
     if (
       feature.type === IFeatureTypes.Cluster &&
@@ -346,7 +350,7 @@ export class YandexMapService implements OnDestroy {
   }
 
   private getClusterHash<T>(cluster: IClusterItem<T>): string {
-    return cluster.features.map(({ id }) => id).join('$');
+    return cluster.features?.map(({ id }) => id).join('$');
   }
 
   private getClusterByHash(clusterHash: string): IClusterItem<unknown> {
