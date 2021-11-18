@@ -22,6 +22,7 @@
       font-weight: normal;
       &__bold {
         font-weight: $fw-bold;
+        max-width: 280px;
       }
     }
 

@@ -176,6 +176,10 @@ describe('ErrorsInterceptor', () => {
     );
     expect(spy).toHaveBeenCalledWith({
       display: DOUBLE_ORDER_ERROR_DISPLAY,
+      errors: {
+        description: 'Заявление уже было подано',
+        name: 'Conflict',
+       },
     });
     tick();
   }));
@@ -205,6 +209,10 @@ describe('ErrorsInterceptor', () => {
     );
     expect(spy).toHaveBeenCalledWith({
       display: EXPIRE_ORDER_ERROR_DISPLAY,
+      errors: {
+        description: 'Ссылка уже не актуальна',
+        name: 'Gone',
+      },
     });
     tick();
   }));

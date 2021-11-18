@@ -165,9 +165,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
       });
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
-      this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY });
+      this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY, errors: error });
     } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
-      this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY });
+      this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY, errors: error });
     } else if (status !== 404) {
       if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);

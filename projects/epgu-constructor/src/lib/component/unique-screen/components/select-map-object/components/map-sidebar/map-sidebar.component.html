@@ -86,6 +86,7 @@
         [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
         [attrs]="sidebarData.attrs.balloonAttrs"
         (selectObject)="selectObject($event)"
+        (handleObjectClickEvent)="$event.expanded = true"
         (collapseObjectEvent)="activeItem = null"
       >
       </epgu-constructor-balloon-content-resolver>

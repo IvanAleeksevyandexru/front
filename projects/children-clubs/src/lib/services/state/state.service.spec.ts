@@ -4,24 +4,55 @@ import {
   MicroAppStateQueryStub,
   MicroAppStateService,
   MicroAppStateServiceStub,
-  MicroAppStateStore,
 } from '@epgu/epgu-constructor-ui-kit';
-import { StateService } from '../state/state.service';
-import { PfdoPaymentFilters } from '../../typings';
+import { StateService } from './state.service';
+import { FindOptionsGroup, PfdoPaymentFilters, VendorType } from '../../typings';
+
+interface TestState {
+  nextSchoolYear: string;
+  programFilters: {
+    age: number,
+  },
+  groupFilters: FindOptionsGroup,
+}
+
+const testState: TestState = {
+  nextSchoolYear: 'true',
+  programFilters: {
+    age: 42,
+  },
+  groupFilters: {
+    nextSchoolYear: true,
+    vendor: VendorType.inlearno,
+    isRegistrationOpen: true,
+    maxPrice: 20000,
+    age: 10,
+    inlearnoPayments: {
+      free: true,
+      certificate: false,
+      personalFunds: false,
+    }
+  }
+};
 
 describe('StateService', () => {
   let service: StateService;
+  let stateQuery: MicroAppStateQueryStub;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         StateService,
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
-        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
-        MicroAppStateStore
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub }
       ],
     });
+  });
+
+  beforeEach(() => {
     service = TestBed.inject(StateService);
+    stateQuery = TestBed.inject(MicroAppStateQuery);
+    jest.spyOn(stateQuery, 'state', 'get').mockReturnValue(testState);
   });
 
   it('should be created', () => {
@@ -51,8 +82,11 @@ describe('StateService', () => {
       expect(Object.keys(res).length).toBe(6);
     });
 
-    // TODO починить тест
-    xit('should return existing group filters if object is not empty', () => {
+    it('should return existing group filters if object is not empty', () => {
+      const testStateCopy = Object.assign({}, testState);
+      testStateCopy.groupFilters.pfdoPayments = ({} as unknown) as PfdoPaymentFilters;
+      jest.spyOn(stateQuery, 'state', 'get').mockReturnValue(testStateCopy);
+
       service.groupFilters = { pfdoPayments: ({} as unknown) as PfdoPaymentFilters };
 
       const res = service.groupFilters;
@@ -70,18 +104,19 @@ describe('StateService', () => {
 
   describe('get programFilters()', () => {
     it('should return default programFilters if programFilters is undefined', () => {
+      jest.spyOn(stateQuery, 'state', 'get').mockReturnValue({});
+
       const res = service.programFilters;
 
       expect(res).toEqual({});
     });
 
-    // TODO: починить тест
-    xit('should return existing programFilters if programFilters exist', () => {
-      service.programFilters = { age: 42 };
+    it('should return existing programFilters if programFilters exist', () => {
+      service.programFilters = testState.programFilters;
 
       const res = service.programFilters;
 
-      expect(res).toEqual({ age: 42 });
+      expect(res).toEqual(testState.programFilters);
     });
   });
 });

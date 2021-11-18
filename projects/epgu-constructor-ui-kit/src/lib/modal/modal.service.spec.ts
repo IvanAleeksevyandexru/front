@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalService } from './modal.service';
 import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -10,8 +10,8 @@ import { ModalContainerComponent } from './shared/modal-container/modal-containe
 })
 class BlankComponent {}
 
-// TODO: починить тест
-xdescribe('ModalService', () => {
+describe('ModalService', () => {
+  let fixture: ComponentFixture<ModalContainerComponent>;
   let service: ModalService;
 
   beforeEach(() => {
@@ -28,7 +28,9 @@ xdescribe('ModalService', () => {
   });
 
   beforeEach(() => {
+    fixture = TestBed.createComponent(ModalContainerComponent);
     service = TestBed.inject(ModalService);
+    fixture.detectChanges();
   });
 
   it('isModalOpen()', () => {
