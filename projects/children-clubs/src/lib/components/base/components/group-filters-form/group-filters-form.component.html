@@ -33,7 +33,7 @@
 
     <div class="mb-24 half-for-desktop">
       <div class="label">{{ formFieldsLabel[formFields.age] }}</div>
-      <lib-plain-input [formControlName]="formFields.age"></lib-plain-input>
+      <lib-plain-input [formControlName]="formFields.age" [maxlength]="2"></lib-plain-input>
       <epgu-cf-ui-constructor-error
         [data]="form.get(formFields.age)"
       ></epgu-cf-ui-constructor-error>
