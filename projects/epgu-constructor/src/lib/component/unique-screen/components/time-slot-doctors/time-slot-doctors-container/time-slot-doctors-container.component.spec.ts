@@ -414,6 +414,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       docLookup: null,
       bookingRequestAttrs: null,
     });
+    timeSlotDoctorService.init = jest.fn(() => of(true));
+    timeSlotDoctorService.getAvailableSlots = jest.fn(() => of([]));
 
     fixture.detectChanges();
   });
@@ -520,8 +522,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       expect(component['recalcDaysStyles']).not.toHaveBeenCalled();
     });
 
-    // TODO починить тест
-    xit('if the date was changed', () => {
+    it('if the date was changed', () => {
       jest.spyOn(component, 'isDateLocked').mockReturnValue(false);
       component.date = new Date('2020-01-15T00:00:00Z');
 
@@ -621,8 +622,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     expect(component.timeSlotDoctorsComponent.docLookup.setFocus).toHaveBeenCalled();
   });
 
-  // TODO починить тест
-  xit('handleDocLookupValue()', () => {
+  it('handleDocLookupValue()', () => {
     jest.spyOn<any, string>(component, 'loadTimeSlots');
 
     expect(component.doctorWasChosen$$.value).toEqual(false);
@@ -726,8 +726,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       jest.spyOn(component, 'showCustomError');
     });
 
-    // TODO починить тест
-    xit('should set state and invoke next action process (complex test)', () => {
+    it('should set state and invoke next action process (complex test)', () => {
       jest
         .spyOn(timeSlotDoctorService, 'checkBooking')
         .mockImplementation(() => of(({ bookId: 'test' } as unknown) as SmevBookResponseInterface));

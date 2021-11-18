@@ -117,11 +117,6 @@ describe('CustomScreenComponent', () => {
     fixture.detectChanges();
   });
 
-  // TODO: починить тест
-  xit('check snapshot', () => {
-    expect(fixture).toMatchSnapshot();
-  });
-
   describe('ngOnInit()', () => {
     it('should call setHelperText()', () => {
       const spy = jest.spyOn<any, string>(component, 'setHelperText');

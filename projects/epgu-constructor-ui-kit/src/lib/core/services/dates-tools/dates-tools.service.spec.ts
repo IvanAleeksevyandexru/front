@@ -12,10 +12,6 @@ import { LoggerService } from '../logger/logger.service';
 import { ConfigServiceStub } from '../config/config.service.stub';
 import { LoggerServiceStub } from '../logger/logger.service.stub';
 
-/* TODO: зарезолвить ошибку 'setSystemTime is not available when not using modern/legacy timers.'
-Related github issue: https://github.com/facebook/jest/issues/11662 */
-// jest.useFakeTimers('modern').setSystemTime(new Date('2020-01-01').getTime());
-
 describe('DatesToolsService', () => {
   let service: DatesToolsService;
   let httpTestingController: HttpTestingController;
@@ -142,8 +138,7 @@ describe('DatesToolsService', () => {
   });
 
   describe('isSameDate() method', () => {
-    // TODO: починить тест
-    xit('should return true if two dates are equal', async () => {
+    it('should return true if two dates are equal', async () => {
       const today = new Date();
       jest.spyOn(service, 'getToday').mockReturnValue(Promise.resolve(today));
       const serviceToday = await service.getToday();
@@ -304,7 +299,7 @@ describe('DatesToolsService', () => {
       ).toEqual('30.09.2014, 00:00:00');
     });
 
-    xit('should return setted date for january', () => {
+    it('should return setted date for january', () => {
       const date = new Date();
       const resultDate = service.setCalendarDate(date, 2019, 3, 10);
       expect(resultDate instanceof Date).toBeTruthy();
