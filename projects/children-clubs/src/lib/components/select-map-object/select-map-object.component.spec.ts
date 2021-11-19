@@ -117,13 +117,13 @@ describe('SelectMapObjectComponent', () => {
           });
         });
 
-      programListService.data$$.next(([baseProgramStub] as unknown) as BaseProgram[]);
       component['fillCoords']().subscribe((coords: any) => {
         expect(coords[0].center[0]).toBe(37.61017);
         expect(coords[0].center[1]).toBe(55.649489);
         expect(coords[0].obj.name).toBe('Ритмика, основы танцевального искусства');
         done();
       });
+      programListService.data$$.next(([baseProgramStub] as unknown) as BaseProgram[]);
     });
   });
 

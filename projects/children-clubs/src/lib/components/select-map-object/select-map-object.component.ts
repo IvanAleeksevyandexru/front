@@ -39,6 +39,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   public scrollConfig = { suppressScrollX: true, wheelPropagation: false };
   public isMobile: boolean;
   public financingTypes = financingTypes;
+  public mapOptions;
 
   constructor(
     public yandexMapService: YandexMapService,
@@ -113,6 +114,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private controlsLogicInit(): void {
+    this.initMapOptions();
     this.yaMapService.mapSubject
       .pipe(
         filter((yMap) => yMap),
@@ -121,6 +123,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
       .subscribe(() => {
         this.initMap();
       });
+  }
+
+  private initMapOptions(): void {
+    this.mapOptions = JSON.parse(this.stateService.mapOptions || '{}');
   }
 
   /**
@@ -134,7 +140,20 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         filter((coords: IYMapPoint<BaseProgram>[]) => !!coords),
         tap((coords: IYMapPoint<BaseProgram>[]) => this.handleGettingCoordinatesResponse(coords)),
       )
-      .subscribe(() => this.yandexMapService.centerAllPoints());
+      .subscribe(() => {
+        const { addressString } = this.stateService;
+        if (addressString) {
+          this.yandexMapService.geoCode(addressString).subscribe((geoCode) => {
+            const envelope =
+              geoCode.response.GeoObjectCollection.featureMember[0].GeoObject.boundedBy.Envelope;
+            const bound1 = envelope.lowerCorner.split(' ').map((coord) => +coord);
+            const bound2 = envelope.upperCorner.split(' ').map((coord) => +coord);
+            this.yandexMapService.setBounds([bound1, bound2]);
+          });
+        } else {
+          this.yandexMapService.centerAllPoints();
+        }
+      });
   }
 
   private openModal(title: string, text: string): Observable<unknown> {
