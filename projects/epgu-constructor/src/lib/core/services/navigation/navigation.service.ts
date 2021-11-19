@@ -90,9 +90,9 @@ export class NavigationService {
     const preparedQueryParams = queryParams ? `?${new URLSearchParams(queryParams as Record<string, string>).toString()}` : '';
 
     if (this.isWebView || isLegal) {
-      this.locationService.href(`${this.configService.lkUrl}/notifications`);
+      this.locationService.href(`${this.configService.lkUrl}/notifications${preparedQueryParams}`);
     } else {
-      this.locationService.href(`${this.configService.lkUrl}/orders/all${preparedQueryParams}`);
+      this.locationService.href(`${this.configService.lkUrl}/orders${preparedQueryParams ? preparedQueryParams : '/all'}`);
     }
   }
 
