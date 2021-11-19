@@ -12,10 +12,10 @@ import {
   DatesToolsService,
   LocalStorageService,
   LocalStorageServiceStub,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DatePeriodComponent } from './date-period/date-period.component';
 import { parseISO } from 'date-fns';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { HttpClientModule } from '@angular/common/http';
 
 describe('DatePeriodContainerComponent', () => {

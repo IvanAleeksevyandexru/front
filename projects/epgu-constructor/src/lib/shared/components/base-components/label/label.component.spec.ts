@@ -5,12 +5,15 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   SafePipe,
+  JsonHelperService,
+  JsonHelperServiceStub,
+  ImgPrefixerPipe,
+  ConfigService,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 import { ClickableLabelDirective } from '../../../directives/clickable-label/clickable-label.directive';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ActionService } from '../../../directives/action/action.service';
@@ -18,8 +21,6 @@ import { ActionServiceStub } from '../../../directives/action/action.service.stu
 import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
-import { JsonHelperServiceStub } from '../../../../core/services/json-helper/json-helper.service.stub';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('LabelComponent', () => {

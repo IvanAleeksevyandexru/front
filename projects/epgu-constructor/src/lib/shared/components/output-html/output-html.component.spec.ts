@@ -3,16 +3,16 @@ import { OutputHtmlComponent } from './output-html.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import {
-  DeviceDetectorService,
-  DeviceDetectorServiceStub,
-  ImgPrefixerPipe,
-} from '@epgu/epgu-constructor-ui-kit';
-import {
   SafePipe,
   ConfigService,
   ConfigServiceStub,
   ModalService,
   ModalServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  ImgPrefixerPipe,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -21,8 +21,6 @@ import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ClickableLabelDirective } from '../../directives/clickable-label/clickable-label.directive';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
-import { JsonHelperServiceStub } from '../../../core/services/json-helper/json-helper.service.stub';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('OutputHtmlComponent', () => {

@@ -7,6 +7,7 @@ import {
   LocalStorageService,
   LocalStorageServiceStub,
   ObjectHelperService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
@@ -23,7 +24,6 @@ import { ComponentsListFormServiceStub } from '../../custom-screen/services/comp
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ComponentValue, LogicComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { of, throwError } from 'rxjs';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { RestService } from '../../../shared/services/rest/rest.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 

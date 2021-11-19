@@ -10,12 +10,12 @@ import {
   ModalService,
   DeviceDetectorService,
   createOpenBrowserEvent,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { SmuEvent } from '@epgu/ui/models';
 

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { ConfigService, ObjectHelperService, SessionService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ObjectHelperService, SessionService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
@@ -21,7 +21,6 @@ import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { of } from 'rxjs';
 import { mockScreenDivorceWithCacheStore } from './mocks/mock-screen-divorce-with-cache-store';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
 import { HttpClientModule } from '@angular/common/http';

@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 import {
   LocalStorageService,
   LocalStorageServiceStub,
@@ -10,6 +9,7 @@ import {
   DownloadService,
   DatesToolsService,
   ObjectHelperService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   ComponentAttrsDto,
@@ -27,7 +27,6 @@ import { CustomComponentRef } from '../../../component/custom-screen/components-
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
 
 describe('PrepareComponentsService', () => {

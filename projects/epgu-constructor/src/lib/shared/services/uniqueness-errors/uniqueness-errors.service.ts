@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import { takeUntil } from 'rxjs/operators';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const isSameValue = (compValue, value): boolean => {
   if (typeof compValue === 'string') {

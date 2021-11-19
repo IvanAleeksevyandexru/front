@@ -18,9 +18,9 @@ import {
   ConfigService,
   LoggerService,
   BaseUiModule,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SearchableDropdownComponent } from './searchable-dropdown.component';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';

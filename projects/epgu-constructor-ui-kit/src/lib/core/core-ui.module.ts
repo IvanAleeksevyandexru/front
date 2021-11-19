@@ -31,6 +31,7 @@ import { HealthService } from './services/health/health.service';
 import { ObjectHelperService } from './services/object-helper/object-helper.service';
 import { WordTransformService } from './services/word-transform/word-transform.service';
 import { ServiceNameService } from './services/service-name/service-name.service';
+import { JsonHelperService } from './services/json-helper/json-helper.service';
 
 @NgModule({
   imports: [HttpClientModule],
@@ -58,6 +59,7 @@ import { ServiceNameService } from './services/service-name/service-name.service
     AddressesToolsService,
     HealthService,
     ServiceNameService,
+    JsonHelperService,
     WINDOW_PROVIDERS,
     {
       provide: ErrorHandler,

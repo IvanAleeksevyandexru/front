@@ -22,7 +22,6 @@ import { ErrorHandlerOrderParamsServiceService } from './services/error-handler-
 import { DateRefService } from './services/date-ref/date-ref.service';
 import { TypeCastService } from './services/type-cast/type-cast.service';
 import { HtmlSelectService } from './services/html-select/html-select.service';
-import { JsonHelperService } from './services/json-helper/json-helper.service';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 /**
@@ -42,7 +41,6 @@ import { SmuEventsService } from '@epgu/ui/services/smu-events';
     DateRefService,
     TypeCastService,
     HtmlSelectService,
-    JsonHelperService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpHeadersInterceptor,

@@ -2,16 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { FieldListComponent } from './field-list.component';
-import { UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  UnsubscribeService,
+  UnsubscribeServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
+  RankPipe,
+} from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlModule } from '../output-html/output-html.module';
-import { RankPipe, SafePipe } from '@epgu/epgu-constructor-ui-kit';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { By } from '@angular/platform-browser';
 import { EaisdoGroupCostServiceStub } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service.stub';
-import { JsonHelperServiceStub } from '../../../core/services/json-helper/json-helper.service.stub';
 import { ConfirmUserDataErrorType } from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 
 describe('FieldListComponent', () => {

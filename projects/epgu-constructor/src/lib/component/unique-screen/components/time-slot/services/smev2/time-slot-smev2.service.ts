@@ -19,8 +19,8 @@ import {
   DATE_ISO_STRING_FORMAT,
   DatesToolsService,
   SessionService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { TimeSlotStateService } from '../state/time-slot-state.service';
 

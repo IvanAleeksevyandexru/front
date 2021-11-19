@@ -13,8 +13,8 @@ import {
   SessionStorageService,
   ConfigService,
   LocationService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -22,7 +22,6 @@ import { ActionAnswerDto, ApplicantAnswersDto } from '@epgu/epgu-constructor-typ
 import { ORDER_TO_ORDER_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { ScreenStore } from '../../../screen/screen.types';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { ActionToolsService } from './action-tools.service';
 
 @Injectable()

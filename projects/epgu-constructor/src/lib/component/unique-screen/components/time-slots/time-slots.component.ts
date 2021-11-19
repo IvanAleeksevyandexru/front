@@ -21,6 +21,7 @@ import {
   weekDaysAbbr,
   IDay,
   SlotInterface,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { FormControl } from '@angular/forms';
@@ -50,7 +51,6 @@ import {
   TimeSlotValueInterface,
 } from './time-slots.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
 
 @Component({

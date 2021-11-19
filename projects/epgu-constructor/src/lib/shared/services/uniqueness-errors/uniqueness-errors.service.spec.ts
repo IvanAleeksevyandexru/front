@@ -2,17 +2,20 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MockProvider } from 'ng-mocks';
-import { LocalStorageService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  LocalStorageService,
+  WINDOW,
+  JsonHelperService,
+  ConfigService,
+  DeviceDetectorService,
+  LoggerService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../prepare-components/prepare-components.service';
 import { UniquenessErrorsService } from './uniqueness-errors.service';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { CachedAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 
 describe('UniquenessErrorsService', () => {

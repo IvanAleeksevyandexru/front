@@ -4,6 +4,7 @@ import {
   ConfigServiceStub,
   DownloadService,
   ObjectHelperService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { UserInfoLoaderComponent } from './user-info-loader.component';
 import { ScreenService } from '../../../screen/screen.service';
@@ -25,7 +26,6 @@ import {
   UserInfoComponentTypes,
 } from '@epgu/epgu-constructor-types';
 import { componentMock } from '../../../component/unique-screen/components/select-children/components/select-children/mocks/select-children.mock';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const displayMock = ({
   id: 's113',

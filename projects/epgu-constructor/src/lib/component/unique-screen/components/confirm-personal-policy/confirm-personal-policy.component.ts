@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
-import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
-
+import {
+  UnsubscribeService,
+  ConfigService,
+  JsonHelperService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { PersonalPolicyWithErrors } from './confirm-personal-policy.types';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-policy',

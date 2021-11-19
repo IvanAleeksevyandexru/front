@@ -19,6 +19,7 @@ import {
   BaseUiModule,
   DatesToolsServiceStub,
   UnsubscribeServiceStub,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
@@ -31,7 +32,6 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import LookupInputModelAttrs from './LookupInputModelAttrs';

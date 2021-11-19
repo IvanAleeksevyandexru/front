@@ -13,6 +13,7 @@ import {
   LocalStorageService,
   LocalStorageServiceStub,
   BusEventType,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../current-answers.service';
@@ -30,7 +31,6 @@ import { CachedAnswersService } from '../../shared/services/cached-answers/cache
 import { CustomComponent } from '../../component/custom-screen/components-list.types';
 import { UniquenessErrorsService } from '../../shared/services/uniqueness-errors/uniqueness-errors.service';
 import { UserInfoLoaderModule } from '../../shared/components/user-info-loader/user-info-loader.module';
-import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
 
 const displayMock = ({

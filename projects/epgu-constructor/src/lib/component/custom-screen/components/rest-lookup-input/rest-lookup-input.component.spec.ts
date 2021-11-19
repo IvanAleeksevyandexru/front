@@ -27,11 +27,6 @@ import RestLookupInputModel from './RestLookupInputModel';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
-import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
-import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
-import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 
 const mockComponent = {

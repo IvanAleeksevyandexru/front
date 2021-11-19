@@ -16,19 +16,16 @@ import {
   ModalServiceStub,
   ScreenPadModule,
   UnsubscribeService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../../shared/directives/action/action.service.stub';
 import { TimeSlotErrorService } from '../../../services/error/time-slot-error.service';
-
 import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
-
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
 import { TimeSlotSmev3ServiceStub } from '../../../services/smev3/time-slot-smev3.service.stub';
-
 import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
 import { FormPlayerService } from '../../../../../../../form-player/services/form-player/form-player.service';
@@ -50,7 +47,6 @@ import { baseHandlers } from '../../../handlers/base-handlers';
 import { getConfirmChangeTimeModalParams, templateList } from './data';
 import { CurrentAnswersService } from '../../../../../../../screen/current-answers.service';
 import { CurrentAnswersServiceStub } from '../../../../../../../screen/current-answers-service.stub';
-import { JsonHelperService } from '../../../../../../../core/services/json-helper/json-helper.service';
 
 const createMockSlot = (id: string, date: string) =>
   ({

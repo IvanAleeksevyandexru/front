@@ -33,6 +33,7 @@ import {
   SessionStorageServiceStub,
   TimeCalendarModule,
   UnsubscribeService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
@@ -40,7 +41,6 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { Smev3TimeSlotsRestService } from '../../time-slots/smev3-time-slots-rest.service';
 import { Smev3TimeSlotsRestServiceStub } from '../../time-slots/stubs/smev3-time-slots-rest.service.stub';
-import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';

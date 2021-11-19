@@ -1,17 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { RestToolsService } from './rest-tools.service';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LocalStorageService, LocalStorageServiceStub, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { RestService } from '../rest/rest.service';
 import { MockProvider } from 'ng-mocks';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { InterpolationService } from '../interpolation/interpolation.service';
-import { mockComponent } from '../../directives/action/action.mock';
-import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 
 describe('RestToolsService', () => {

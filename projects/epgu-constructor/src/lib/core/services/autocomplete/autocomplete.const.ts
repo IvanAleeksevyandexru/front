@@ -2,8 +2,7 @@ import { CustomScreenComponentTypes } from '../../../component/custom-screen/com
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { ISuggestionItem } from './autocomplete.inteface';
 import { ComponentDto, DisplayDto } from '@epgu/epgu-constructor-types';
-import { JsonHelperService } from '../json-helper/json-helper.service';
-
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 const jsonHelperService = new JsonHelperService();
 
 export const prepareClassifiedSuggestionItems = (

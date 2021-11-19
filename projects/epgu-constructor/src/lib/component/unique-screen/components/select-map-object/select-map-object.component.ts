@@ -36,6 +36,7 @@ import {
   YMapItem,
   IGeoCoordsResponse,
   YandexMapService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { YaMapService } from '@epgu/ui/services/ya-map';
@@ -63,7 +64,6 @@ import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ModalErrorService } from '../../../../modal/modal-error.service';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import {
   COMMON_ERROR_MODAL_PARAMS,
   NO_MAP_ITEMS_AVAILABLE,
