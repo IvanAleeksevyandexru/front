@@ -27,11 +27,6 @@ describe('HelperTextComponent', () => {
     component = fixture.componentInstance;
   });
 
-  // TODO: починить тест
-  xit('should match snapshot', () => {
-    expect(fixture).toMatchSnapshot();
-  });
-
   it('should render passed content', () => {
     const helperText = fixture.debugElement.query(By.css('.helper-text')).nativeElement.textContent;
     expect(helperText).toEqual(helperTextMock);
