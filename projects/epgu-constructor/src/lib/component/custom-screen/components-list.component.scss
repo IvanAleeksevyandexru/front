@@ -33,6 +33,19 @@
         margin-bottom: 0;
       }
     }
+    &--date {
+      @include tablets-up {
+        width: calc((100% - #{$screen-pad-32}) / 2);
+        flex-basis: auto !important;
+        &::ng-deep .component-item {
+          margin-bottom: 0 !important;
+        }
+      }
+      // добавляет отступ после периода дат
+      &:not(:last-child) ~ div:not(.form__item--date) {
+        margin-top: 24px;
+      }
+    }
     &[class*='grid'] {
       .component-list-resolver {
         justify-content: flex-start;
