@@ -12,6 +12,7 @@ import {
   ModalServiceStub,
   SessionStorageService,
   SessionStorageServiceStub,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -45,7 +46,6 @@ import { HtmlRemoverService } from '../../../../../../shared/services/html-remov
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 import { ConfirmPersonalUserDataPipe } from '../../confirm-personal-user-data.pipe';
 

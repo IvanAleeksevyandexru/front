@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
@@ -8,8 +7,15 @@ import {
   UnsubscribeService,
   ModalService,
   ModalServiceStub,
+  JsonHelperService,
+  EventBusService,
+  DownloadService,
+  DownloadServiceStub,
+  DatesToolsService,
+  DatesToolsServiceStub,
+  LoggerService,
+  LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { FileUploadItemComponent } from './file-upload-item.component';
 import { UserInfoLoaderModule } from '../../user-info-loader/user-info-loader.module';
 import { BaseModule } from '../../../base.module';
@@ -25,11 +31,7 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteApiServiceStub } from '../../../../core/services/autocomplete/autocomplete-api.service.stub';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
   FileUploadItem,
   TerraUploadFileOptions,
@@ -37,8 +39,6 @@ import {
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FileItem, FileItemStatus } from '../data';
 import { of } from 'rxjs';
 import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
@@ -53,7 +53,6 @@ import { UploaderManagerService } from '../services/manager/uploader-manager.ser
 import { UploaderStatService } from '../services/stat/uploader-stat.service';
 import { UploaderProcessService } from '../services/process/uploader-process.service';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { PluralizeModule } from '@epgu/ui/pipes';
 
 const objectIdMock = '1231';

@@ -6,6 +6,8 @@ import {
   DeviceDetectorServiceStub,
   LoggerService,
   LoggerServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
@@ -19,8 +21,6 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
-import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { VideoModalComponent } from './video-modal.component';
 import {

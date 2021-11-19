@@ -1,9 +1,22 @@
 import { cloneDeep } from 'lodash';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BaseComponentsModule, ConfigService, ConfigServiceStub, ConstructorLookupModule, DatesToolsService, DeviceDetectorService, DeviceDetectorServiceStub, Icons, LocalStorageService, LocalStorageServiceStub, mockSelectMapObjectStore, YandexMapService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  BaseComponentsModule,
+  ConfigService,
+  ConfigServiceStub,
+  ConstructorLookupModule,
+  DatesToolsService,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  Icons,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  mockSelectMapObjectStore,
+  YandexMapService,
+  JsonHelperService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { MockModule, MockProvider } from 'ng-mocks';
-import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { BaseModule } from '../../../../../../../../shared/base.module';

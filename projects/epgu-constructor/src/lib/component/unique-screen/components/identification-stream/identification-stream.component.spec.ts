@@ -7,19 +7,19 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   ModalServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { IdentificationStreamComponent } from './identification-stream.component';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
-import { JsonHelperServiceStub } from '../../../../core/services/json-helper/json-helper.service.stub';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { IdentificationStreamService } from '../../shared/identification-stream/identification-stream.service';
 import { BaseModule } from '@epgu/ui/base';
 import { ModalService } from '@epgu/ui/services/modal';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';

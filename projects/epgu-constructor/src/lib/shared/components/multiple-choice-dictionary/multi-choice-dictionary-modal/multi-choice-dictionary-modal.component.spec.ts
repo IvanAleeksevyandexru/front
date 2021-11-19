@@ -9,8 +9,9 @@ import {
   LoggerService,
   UnsubscribeService,
   DatesToolsService,
+  JsonHelperService,
+  EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../services/dictionary/dictionary-api.service.stub';
 import { BaseModule } from '../../../base.module';
@@ -20,7 +21,6 @@ import { DateRangeService } from '../../../services/date-range/date-range.servic
 import { RefRelationService } from '../../../services/ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import { HttpClientModule } from '@angular/common/http';
 

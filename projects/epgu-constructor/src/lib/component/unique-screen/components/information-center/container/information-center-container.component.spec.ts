@@ -10,6 +10,7 @@ import {
   DatesToolsService,
   ConfigService,
   LoggerService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
@@ -29,7 +30,6 @@ import { DateRangeService } from '../../../../../shared/services/date-range/date
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
-import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../../core/services/date-ref/date-ref.service';
 import { HttpClientModule } from '@angular/common/http';
 

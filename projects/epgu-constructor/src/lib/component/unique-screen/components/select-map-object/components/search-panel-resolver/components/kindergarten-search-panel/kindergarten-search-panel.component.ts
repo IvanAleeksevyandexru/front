@@ -12,11 +12,11 @@ import {
   UnsubscribeService,
   YandexMapService,
   YMapItem,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ListElement, LookupProvider } from '@epgu/ui/models/dropdown';
 import { Observable, of } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
 import { ModalErrorService } from '../../../../../../../../modal/modal-error.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { DictionaryYMapItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';

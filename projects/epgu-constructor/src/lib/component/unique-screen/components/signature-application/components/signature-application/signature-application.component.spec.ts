@@ -1,23 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, LocationServiceStub, SafePipe } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ObjectHelperService,
+  JsonHelperService,
+  JsonHelperServiceStub,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  LocationService,
+  LocationServiceStub,
+  SafePipe,
+  DownloadService,
+  ModalService,
+  ModalServiceStub,
+  PrevButtonComponent,
+  ScreenContainerComponent,
+  ImgPrefixerPipe,
+} from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { PageNameComponent } from '../../../../../../shared/components/base-components/page-name/page-name.component';
-import { PrevButtonComponent } from '@epgu/epgu-constructor-ui-kit';
 import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
-import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
-import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
 import { SignatureApplicationComponent } from './signature-application.component';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
@@ -29,8 +37,6 @@ import {
   DTOActionAction,
 } from '@epgu/epgu-constructor-types';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
-import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
 import { ButtonComponent, LoaderComponent } from '@epgu/ui/base';
 
 describe('SignatureApplicationComponent', () => {

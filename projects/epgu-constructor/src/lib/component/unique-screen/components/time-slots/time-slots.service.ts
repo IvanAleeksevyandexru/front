@@ -11,6 +11,7 @@ import {
   LoggerService,
   SessionService,
   SlotInterface,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
@@ -39,7 +40,6 @@ import {
   DictionaryUnionKind,
   KeyValueMap,
 } from '@epgu/epgu-constructor-types';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { addDays, format, subSeconds } from 'date-fns';
 import {

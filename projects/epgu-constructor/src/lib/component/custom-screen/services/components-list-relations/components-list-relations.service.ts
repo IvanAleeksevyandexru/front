@@ -27,8 +27,8 @@ import {
   CustomComponentRefRelation,
   KeyValueMap,
 } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import BaseModel from '../../component-list-resolver/BaseModel';

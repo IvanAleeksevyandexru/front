@@ -16,6 +16,7 @@ import {
   DatesToolsService,
   LoggerService,
   UnsubscribeService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -30,7 +31,6 @@ import { DateRestrictionsService } from '../../../../shared/services/date-restri
 import { MaskTransformService } from '../../../../shared/services/mask-transform/mask-transform.service';
 import { cloneDeep } from 'lodash';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';

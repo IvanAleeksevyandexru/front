@@ -14,8 +14,9 @@ import {
   ConfigService,
   ConfigServiceStub,
   mockSelectMapObjectStore,
+  JsonHelperService,
+  DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryApiService } from './dictionary-api.service';
@@ -23,7 +24,6 @@ import { DictionaryToolsService } from './dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { getDictKeyByComp } from './dictionary-helper';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';

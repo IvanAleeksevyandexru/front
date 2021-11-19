@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { distinctUntilChanged, map, pluck, shareReplay } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ConfigService, TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
+import { ConfigService, TimeSlotsApiItem, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import {
   TimeSlotAttribute,

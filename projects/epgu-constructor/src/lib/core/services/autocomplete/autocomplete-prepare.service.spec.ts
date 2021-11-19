@@ -9,6 +9,7 @@ import {
   ConfigService,
   EventBusServiceStub,
   UnsubscribeServiceStub,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
@@ -25,7 +26,6 @@ import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { Answer } from '@epgu/epgu-constructor-types';
-import { JsonHelperService } from '../json-helper/json-helper.service';
 import { CurrentAnswersServiceStub } from '../../../screen/current-answers-service.stub';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 

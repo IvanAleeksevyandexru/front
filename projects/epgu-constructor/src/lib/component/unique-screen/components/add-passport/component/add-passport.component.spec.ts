@@ -13,8 +13,10 @@ import {
   DeviceDetectorServiceStub,
   FocusManagerService,
   FocusManagerServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
+  DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
@@ -30,8 +32,6 @@ import { DateRestrictionsService } from '../../../../../shared/services/date-res
 import { SuggestMonitorService } from '../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { HtmlSelectService } from '../../../../../core/services/html-select/html-select.service';
 import { MockProvider } from 'ng-mocks';
-import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
-import { JsonHelperServiceStub } from '../../../../../core/services/json-helper/json-helper.service.stub';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { HealthService } from '@epgu/ui/services/health';
 import { HttpClientModule } from '@angular/common/http';

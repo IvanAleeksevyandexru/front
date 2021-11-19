@@ -8,6 +8,7 @@ import {
   UnsubscribeService,
   YandexMapService,
   YMapItem,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockProvider } from 'ng-mocks';
 import { KindergartenSearchPanelComponent } from './kindergarten-search-panel.component';
@@ -15,7 +16,6 @@ import { DictionaryApiServiceStub } from '../../../../../../../../shared/service
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ModalErrorService } from '../../../../../../../../modal/modal-error.service';
 import { DictionaryToolsService } from '../../../../../../../../shared/services/dictionary/dictionary-tools.service';
-import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
 import { PrepareComponentsService } from '../../../../../../../../shared/services/prepare-components/prepare-components.service';
 import { CachedAnswersService } from '../../../../../../../../shared/services/cached-answers/cached-answers.service';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';

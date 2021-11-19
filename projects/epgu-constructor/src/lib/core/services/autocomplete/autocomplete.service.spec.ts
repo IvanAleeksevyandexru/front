@@ -1,25 +1,33 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
-import { BusEventType, DownloadService, ModalService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  BusEventType,
+  DownloadService,
+  ModalService,
+  ObjectHelperService,
+  JsonHelperService,
+  ConfigService,
+  ConfigServiceStub,
+  DatesToolsService,
+  EventBusService,
+  UnsubscribeService,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  LocalStorageService,
+  LocalStorageServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteService } from './autocomplete.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
 import { cloneDeep as _cloneDeep } from 'lodash';
 import { getSuggestionGroupId } from './autocomplete.const';
@@ -28,8 +36,6 @@ import { DateRestrictionsService } from '../../../shared/services/date-restricti
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { JsonHelperService } from '../json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
 
 describe('AutocompleteService', () => {

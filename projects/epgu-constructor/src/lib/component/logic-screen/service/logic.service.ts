@@ -3,7 +3,7 @@ import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/ht
 import { Observable, of, TimeoutError } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
 
-import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
+import { LocalStorageService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import {
   ApplicantAnswersDto,
   DictionaryOptions,
@@ -15,7 +15,6 @@ import { ScreenService } from '../../../screen/screen.service';
 import { CustomComponent } from '../../custom-screen/components-list.types';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { RestService } from '../../../shared/services/rest/rest.service';
 
 @Injectable()

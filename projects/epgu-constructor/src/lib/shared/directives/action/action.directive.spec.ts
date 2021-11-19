@@ -12,16 +12,20 @@ import {
   LocationServiceStub,
   SessionStorageService,
   SessionStorageServiceStub,
+  ModalService,
+  ModalServiceStub,
+  JsonHelperService,
+  ConfigServiceStub,
+  EventBusService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  DownloadService,
+  DownloadServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
@@ -31,7 +35,6 @@ import { QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ActionDirective } from './action.directive';
 import { ActionService } from './action.service';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import {
@@ -42,7 +45,6 @@ import {
   ComponentDto,
 } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { ActionToolsService } from './action-tools.service';
 
 @Component({

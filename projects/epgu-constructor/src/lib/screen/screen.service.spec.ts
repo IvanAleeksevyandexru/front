@@ -6,9 +6,7 @@ import { CachedAnswersService } from '../shared/services/cached-answers/cached-a
 import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
 import { ScreenStore } from './screen.types';
-import { ObjectHelperService, DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { DateRangeService } from '../shared/services/date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -20,12 +18,16 @@ import {
   DeviceDetectorServiceStub,
   ConfigService,
   LoggerService,
+  JsonHelperService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  DatesToolsService,
+  ObjectHelperService,
+  DownloadService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
-import { JsonHelperService } from '../core/services/json-helper/json-helper.service';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../core/services/date-ref/date-ref.service';
 

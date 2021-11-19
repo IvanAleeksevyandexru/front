@@ -9,15 +9,13 @@ import {
   WINDOW,
   WINDOW_PROVIDERS,
   YandexMapService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { YaMapService } from '@epgu/ui/services/ya-map';
 import { MockProvider } from 'ng-mocks';
-import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { JusticeSearchPanelService } from './justice-search-panel.service';
-
 import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KindergartenSearchPanelService } from '../kindergarten-search-panel/kindergarten-search-panel.service';

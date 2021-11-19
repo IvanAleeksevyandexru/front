@@ -20,8 +20,8 @@ import { DeviceDetectorServiceStub } from '../../../core/services/device-detecto
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { CurrentAnswersService } from '@epgu/epgu-constructor/src/lib/screen/current-answers.service';
 import { HtmlSelectService } from '@epgu/epgu-constructor/src/lib/core/services/html-select/html-select.service';
-import { JsonHelperService } from '@epgu/epgu-constructor/src/lib/core/services/json-helper/json-helper.service';
 import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
+import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const blankModalParameters = {
   clarifications: {},

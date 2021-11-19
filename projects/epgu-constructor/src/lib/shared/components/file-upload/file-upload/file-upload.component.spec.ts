@@ -1,12 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  EventBusService,
+  UnsubscribeService,
+  JsonHelperService,
+  MemoModule,
+  DatesToolsService,
+  DatesToolsServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
 import { FileUploadComponent } from './file-upload.component';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
-import { MemoModule } from '@epgu/epgu-constructor-ui-kit';
 import { FileUploadContainerComponent } from '../file-upload-container/file-upload-container.component';
 import { UploaderStoreService } from '../services/store/uploader-store.service';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
@@ -15,9 +21,6 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { BaseModule } from '../../../base.module';
 
 describe('FileUploadComponent', () => {

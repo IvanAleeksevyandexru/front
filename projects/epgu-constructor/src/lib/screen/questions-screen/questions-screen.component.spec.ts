@@ -7,6 +7,8 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   SessionService,
+  JsonHelperService,
+  JsonHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
@@ -37,8 +39,6 @@ import {
   Clarifications,
 } from '@epgu/epgu-constructor-types';
 import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
-import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
-import { JsonHelperServiceStub } from '../../core/services/json-helper/json-helper.service.stub';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

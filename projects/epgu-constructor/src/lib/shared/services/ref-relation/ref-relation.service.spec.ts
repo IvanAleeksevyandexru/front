@@ -10,7 +10,7 @@ import {
   getValueRefMock,
 } from './ref-relation.mock';
 import { ListElement } from '@epgu/ui/models/dropdown';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('RefRelationService', () => {
   let service: RefRelationService;

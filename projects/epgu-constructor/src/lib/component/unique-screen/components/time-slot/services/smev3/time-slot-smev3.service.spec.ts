@@ -7,21 +7,18 @@ import {
   DatesToolsServiceStub,
   ModalService,
   ModalServiceStub,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Smev3RestApiService } from '../api/smev3/smev3-rest-api.service';
 import { Smev3RestApiServiceStub } from '../api/smev3/smev3-rest-api.service.stub';
 import { TimeSlotCalendarService } from '../calendar/time-slot-calendar.service';
 import { TimeSlotCalendarServiceStub } from '../calendar/time-slot-calendar.service.stub';
 import { TimeSlotStateService } from '../state/time-slot-state.service';
-
 import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.service';
-
 import { TimeSlotErrorService } from '../error/time-slot-error.service';
 import { TimeSlotErrorServiceStub } from '../error/time-slot-error.service.stub';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-
 import {
   CancelSlotResponseInterface,
   DepartmentInterface,

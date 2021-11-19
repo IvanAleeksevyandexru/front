@@ -27,9 +27,8 @@ import {
   KeyValueMap,
   DictionarySubFilter,
 } from '@epgu/epgu-constructor-types';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { ListElement } from '@epgu/ui/models/dropdown';
 // eslint-disable-next-line max-len
 import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';

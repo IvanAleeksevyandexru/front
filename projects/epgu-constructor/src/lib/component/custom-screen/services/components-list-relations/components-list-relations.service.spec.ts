@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsService, LoggerService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import {
@@ -24,7 +24,6 @@ import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relati
 import { CustomComponentRefRelation, DictionaryConditions, DictionaryValueTypes } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import DictionaryModel from '../../components/dictionary/DictionaryModel';
 import LookupInputModel from '../../components/lookup-input/LookupInputModel';

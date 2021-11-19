@@ -1,34 +1,40 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockComponent, MockProvider } from 'ng-mocks';
+import { MockComponent } from 'ng-mocks';
 import {
   LoadServiceStub,
   MainContainerModule,
   TracingServiceStub,
   ObjectHelperService,
   BaseUiModule,
+  JsonHelperService,
+  UnsubscribeService,
+  ModalContainerComponent,
+  ModalServiceStub,
+  ModalService,
+  LoggerService,
+  LoggerServiceStub,
+  ConfigService,
+  ConfigApiService,
+  ConfigApiServiceStub,
+  ConfigServiceStub,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  LocationService,
+  WINDOW_PROVIDERS,
+  EventBusService,
+  DownloadService,
+  DatesToolsService,
+  DeviceDetectorService,
+  SessionService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { FormPlayerServiceStub } from './services/form-player/form-player.service.stub';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import {
-  ModalContainerComponent,
-  ModalServiceStub,
-  ModalService,
-} from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../core/services/navigation/navigation.service';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenResolverComponent } from '../screen/screen-resolver/screen-resolver.component';
 import { ScreenModalComponent } from '../modal/screen-modal/screen-modal.component';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { NavigationServiceStub } from '../core/services/navigation/navigation.service.stub';
-import {
-  ConfigService,
-  ConfigApiService,
-  ConfigApiServiceStub,
-} from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { InitDataServiceStub } from '../core/services/init-data/init-data.service.stub';
@@ -39,26 +45,18 @@ import { ContinueOrderModalServiceStub } from '../modal/continue-order-modal/con
 import { By } from '@angular/platform-browser';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
 import { FormPlayerStartManagerStub } from './services/form-player-start/form-player-start.manager.stub';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { SimpleChange } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
 import { AutocompleteService } from '../core/services/autocomplete/autocomplete.service';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { AutocompleteApiService } from '../core/services/autocomplete/autocomplete-api.service';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../screen/current-answers.service';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub, TracingService } from '@epgu/epgu-constructor-ui-kit';
-import { SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { LogicComponentsContainerComponent } from '../component/logic-screen/component/logic-components-container.component';
 import { AutocompleteAutofillService } from '../core/services/autocomplete/autocomplete-autofill.service';
 import { AutocompletePrepareService } from '../core/services/autocomplete/autocomplete-prepare.service';
 import { TerraByteApiService } from '../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { AnimationBuilder } from '@angular/animations';
-import { JsonHelperService } from '../core/services/json-helper/json-helper.service';
 import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
 import { FormPlayerApiServiceStub } from './services/form-player-api/form-player-api.service.stub';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
