@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../shared/base.module';
 import { UniqueScreenComponent } from './unique-screen.component';
@@ -11,9 +10,6 @@ import { UniqueScreenComponentsModule } from '../../component/unique-screen/uniq
   declarations: [UniqueScreenComponent, AbstractPaymentComponent],
   exports: [UniqueScreenComponent],
   imports: [BaseModule, ComponentUniqueResolverModule, UniqueScreenComponentsModule],
-  providers: [
-    EventBusService,
-    DatesToolsService, // TODO: чекнуть нужен ли тут этот сервис?
-  ],
+  providers: [EventBusService],
 })
 export class UniqueScreenModule {}
