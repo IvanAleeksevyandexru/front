@@ -200,8 +200,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           { ...file.item, isFromSuggests: true, objectId: this.screenService.orderId.toString() },
         );
         newFile.setAttached(true);
-        this.addCopy(file);
         this.store.add(newFile);
+        this.addCopy(file);
       });
     } else {
       file.setAttached(false);
