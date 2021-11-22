@@ -7,12 +7,11 @@ import { concatMap, map, mergeMap, reduce } from 'rxjs/operators';
 import {
   Chunk,
   ChunkPacket,
-  FileCopyEmitValue,
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
 } from './terra-byte-api.types';
-import { BYTES_IN_KB, FileItem } from '../../../shared/components/file-upload/data';
+import { BYTES_IN_KB } from '../../../shared/components/file-upload/data';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -139,32 +138,6 @@ export class TerraByteApiService {
     return file.size <= this.chunkSize
       ? this.uploadForm(this.createFormData(options, file))
       : this.uploadByChunkFile(options, file);
-  }
-
-  /**
-   * Копирование файла на сервер
-   * @param options - опции конечного файла
-   * @param storedFile - данные и опции начального файла
-   */
-  copyFile(options: TerraUploadFileOptions, storedFile: FileItem): Observable<void> {
-    const body: FileCopyEmitValue = {
-      data: [{
-          srcFile: {
-            objectId: +storedFile.item.objectId,
-            mnemonic: storedFile.item.mnemonic,
-            objectType: storedFile.item.objectType
-          },
-          trgFile: {
-            objectId: +options.objectId,
-            mnemonic: options.mnemonic,
-            objectType: options.objectType
-          },
-      }] };
-    return this.http.post<void>(
-      this.getTerabyteApiUrl('/copy'),
-      body,
-      this.getServerRequestOptions()
-      );
   }
 
   createFormData(options: TerraUploadFileOptions, file: File | Blob): FormData {
