@@ -241,6 +241,7 @@ export type HintTimeTypes =
 export interface DisclaimerDto {
   type: DisclaimerDtoType;
   level: DisclaimerDtoLevel;
+  mnemonic: DisclaimerMnemonic;
   message?: string;
   id?: number;
   title: string;
@@ -260,6 +261,14 @@ export enum DisclaimerDtoLevel {
   info = 'INFO',
   warn = 'WARN',
   error = 'ERROR',
+}
+
+export enum DisclaimerMnemonic {
+  SERVICE_TARGET = 'SERVICE_TARGET',
+  EPGU_V3_SERVICE_TARGET = 'EPGU_V3_SERVICE_TARGET',
+  EPGU_V3_SERVICE_TARGET_DESKTOP = 'EPGU_V3_SERVICE_TARGET_DESKTOP',
+  EPGU_V3_SERVICE_TARGET_MOBILE = 'EPGU_V3_SERVICE_TARGET_MOBILE',
+  SMU_SERVICE_TARGET = 'SMU_SERVICE_TARGET',
 }
 
 export interface HintDto {

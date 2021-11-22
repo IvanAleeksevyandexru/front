@@ -5,7 +5,7 @@ import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { ComponentDto, DisclaimerMnemonic } from '@epgu/epgu-constructor-types';
 import { NotifierDisclaimerService } from '../shared/services/notifier/notifier.service';
 
 @Injectable()
@@ -106,19 +106,42 @@ export class ScreenService extends ScreenContent {
   private initNotifierDisclaimers(): void {
     const disclaimers = this.screenStore.disclaimers || [];
     if (!disclaimers.length) return;
-
+    const disclaimerMnemonicTypes = this.getDisclaimerMnemonics();
     disclaimers.forEach((disclaimer) => {
-      const { level, title, message, id: notifierId } = disclaimer;
-      const type = level.toLocaleLowerCase();
-      setTimeout(() => {
-        this.notifierDisclaimerService.open({
-          notifierId,
-          title,
-          message,
-          type,
+      if(disclaimerMnemonicTypes.includes(disclaimer.mnemonic)) {
+        const { level, title, message, id: notifierId } = disclaimer;
+        const type = level.toLocaleLowerCase();
+        setTimeout(() => {
+          this.notifierDisclaimerService.open({
+            notifierId,
+            title,
+            message,
+            type,
+          });
         });
-      });
+      }
     });
+  }
+
+  private getDisclaimerMnemonics(): DisclaimerMnemonic[] {
+    if (this.deviceDetectorService.isDesktop) {
+      return [
+        DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET_DESKTOP,
+        DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET,
+        DisclaimerMnemonic.SERVICE_TARGET
+      ];
+    }
+    if (this.deviceDetectorService.isMobile || this.deviceDetectorService.isTablet) {
+      return [
+        DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET_MOBILE,
+        DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET,
+        DisclaimerMnemonic.SERVICE_TARGET
+      ];
+    }
+    if(this.deviceDetectorService.isWebView) {
+      return [DisclaimerMnemonic.SMU_SERVICE_TARGET, DisclaimerMnemonic.SERVICE_TARGET];
+    }
+    return [DisclaimerMnemonic.SERVICE_TARGET];
   }
 
   private prepareComponents(): void {
