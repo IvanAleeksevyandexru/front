@@ -135,22 +135,3 @@ export interface FileUploadEmitValueForComponent {
   totalSize?: number;
   totalCount?: number;
 }
-
-/**
- * Интерфейс для апи по копированию файла
- */
-export interface FileCopyEmitValue {
-  data: FileCopyData[];
-}
-
-interface FileCopyData {
-  srcFile: FileCopyInfo;
-  trgFile: FileCopyInfo;
-}
-
-interface FileCopyInfo {
-  fdcOnly?: boolean;
-  mnemonic: string;
-  objectId: number;
-  objectType: number;
-}
