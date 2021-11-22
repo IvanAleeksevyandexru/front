@@ -15,6 +15,7 @@ import { By } from '@angular/platform-browser';
 import { ConfirmUserDataError } from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
 import { MockProvider } from 'ng-mocks';
 import { FormatPhonePipe } from '@epgu/ui/pipes';
+import { DisclaimerDtoType } from '@epgu/epgu-constructor-types';
 
 type PersonalUserPhoneEmailWithErrors = ComponentBase & {
   errors: ConfirmUserDataError[];
@@ -28,7 +29,10 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
   const mockData: PersonalUserPhoneEmailWithErrors = {
     attrs: {
       disclaimer: {
-        type: 'warn',
+        level: null,
+        uniquenessErrors: null,
+        clarifications: null,
+        type: DisclaimerDtoType.warn,
         title: 'Нашли ошибку?',
         description:
           'Измените данные <a href=\'https://lk.gosuslugi.ru/settings/account\'>в личном кабинете</a>',
