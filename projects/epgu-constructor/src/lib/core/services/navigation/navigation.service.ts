@@ -82,7 +82,11 @@ export class NavigationService {
   }
 
   redirectToProfileEdit(): void {
-    this.locationService.href(`${this.configService.lkUrl}/settings/edit`);
+    if (this.isWebView) {
+      this.navigateInsideWebView(MobilViewEvents.profile);
+    } else {
+      this.locationService.href(`${this.configService.lkUrl}/settings/edit`);
+    }
   }
 
   redirectToLK(isLegal?: boolean, action?: ComponentActionDto): void {

@@ -55,6 +55,7 @@ export const OPTIONS_FEED_EXIT: MobileEvent<string> = {
 export const MobilViewEvents: Record<string, MobileEvent<string>> = {
   feed: OPTIONS_FEED_MV,
   exit: OPTIONS_FEED_EXIT,
+  profile: OPTIONS_PROFILE_MV,
 };
 
 export const createMobileEvent = <T>(
