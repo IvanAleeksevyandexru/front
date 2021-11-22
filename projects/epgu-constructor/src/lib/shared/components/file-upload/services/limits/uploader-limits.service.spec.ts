@@ -208,8 +208,7 @@ describe('UploaderLimitsService', () => {
     });
   });
 
-  // TODO: Переписать тесты с учётом того, что изменился механизм определения лимитов для услуги
-  xdescribe('checkFilesAmount', () => {
+  describe('checkFilesAmount', () => {
     it('returns -1 if totalMax and newTotal > totalMax', () => {
       service.setTotalMaxAmount(100);
 
@@ -229,29 +228,25 @@ describe('UploaderLimitsService', () => {
     });
 
     // eslint-disable-next-line max-len
-    it('returns 1 if maxUploadersRes[uploader] and newUploaderResValue < 0', () => {
+    it('returns -1 if maxUploadersRes[uploader] and newUploaderResValue < 0', () => {
+      service.setTotalMaxAmount(10);
       service.registerUploader('someUploader', 100, 1);
 
       const result = service.checkAmount(-10, 'someUploader');
 
       // потому что newUploaderResValue (-10) < 0
-      expect(result).toEqual(1);
+      expect(result).toEqual(-1);
     });
 
     // eslint-disable-next-line max-len
     it('returns 1 if maxUploadersRes[uploader] and newUploaderResValue > maxUploadersRes[uploader]', () => {
+      service.setTotalMaxAmount(200);
       service.registerUploader('someUploader', 100, 1);
 
-      const result = service.checkAmount(200, 'someUploader');
+      const result = service.checkAmount(150, 'someUploader');
 
-      // потому что newUploaderResValue (200) > maxUploadersRes[uploader] (100)
+      // потому что newUploaderResValue (150) > maxUploadersRes[uploader] (100)
       expect(result).toEqual(1);
-    });
-
-    it('returns 0 if NOT totalMax and NOT maxUploadersRes[uploader]', () => {
-      const result = service.checkAmount(200, 'someUploader');
-
-      expect(result).toEqual(0);
     });
 
     it('returns 0 if totalMax and newTotal <= totalMax', () => {
@@ -283,6 +278,7 @@ describe('UploaderLimitsService', () => {
     });
 
     it('returns 0 if maxUploadersRes[uploader] and newUploaderResValue >= 0', () => {
+      service.setTotalMaxAmount(100);
       service.registerUploader('someUploader', 100, 1);
 
       let result = service.checkAmount(0, 'someUploader');
@@ -297,6 +293,7 @@ describe('UploaderLimitsService', () => {
     });
 
     it('returns 0 if maxUploadersRes[uploader] and newUploaderResValue <= maxUploadersRes[uploader]', () => {
+      service.setTotalMaxAmount(100);
       service.registerUploader('someUploader', 100, 1);
 
       let result = service.checkAmount(50, 'someUploader');

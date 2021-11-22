@@ -5,8 +5,11 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { DisplayDto } from '@epgu/epgu-constructor-types';
 import {
   CustomComponent,
   CustomComponentOutputData,
@@ -25,6 +28,9 @@ import { CustomScreenService } from './custom-screen.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomScreenComponent extends ScreenBase implements OnInit {
+  data$: Observable<DisplayDto> = this.screenService.display$.pipe(
+    tap(() => this.cdr.markForCheck()),
+  );
   dataToSend: NavigationPayload;
   isValid: boolean;
   helperText: CustomComponent;
@@ -65,12 +71,13 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
     this.dataToSend = this.customScreenService.getFormattedData(changes);
     this.currentAnswersService.isValid = this.isValid;
     this.currentAnswersService.state = this.dataToSend;
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   private setHelperText(): void {
     const components = this.screenService.display?.components;
     let helperTextIndex = -1;
+
     this.helperText = components?.find((component: CustomComponent, index: number) => {
       if (
         component.attrs.isTextHelper &&
@@ -82,6 +89,7 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
       }
       return false;
     }) as CustomComponent;
+
     if (helperTextIndex > -1) {
       components?.splice(helperTextIndex, 1);
     }

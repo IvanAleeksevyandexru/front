@@ -35,6 +35,7 @@ import {
   ActionType,
   DTOActionAction,
   ScreenTypes,
+  DisplayDto
 } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
@@ -114,6 +115,16 @@ describe('CustomScreenComponent', () => {
     customScreenService = TestBed.inject(CustomScreenService);
     datesToolsService = TestBed.inject(DatesToolsService);
     screenService.buttons = [];
+    screenService.display = {
+      components,
+      header: 'header1',
+      id: 'id1',
+      name: 'name1',
+      type: ScreenTypes.CUSTOM,
+      terminal: true,
+    } as DisplayDto;
+
+    component.ngOnInit();
     fixture.detectChanges();
   });
 
@@ -127,15 +138,6 @@ describe('CustomScreenComponent', () => {
 
   describe('setHelperText()', () => {
     it('should mutate initial components list length, if there is LabelSection with specific attrs among them', () => {
-      screenService.display = {
-        components,
-        header: 'header1',
-        id: 'id1',
-        name: 'name1',
-        type: ScreenTypes.CUSTOM,
-        terminal: true,
-      };
-      component.ngOnInit();
       expect(screenService.display.components.length).toBe(1);
     });
   });
@@ -263,8 +265,6 @@ describe('CustomScreenComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
 
     expect(debugEl).toBeTruthy();
-
-    expect(debugEl.componentInstance.components).toBeNull();
     expect(debugEl.componentInstance.errors).toBeNull();
 
     const components: ComponentDto[] = [
