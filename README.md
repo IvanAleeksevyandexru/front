@@ -25,6 +25,21 @@ yarn start:config
 ng serve --host 0.0.0.0 --disable-host-check --hmr --configuration fast
 ```
 
+## Быстрый запуск приложения с импортом библиотек из исходников, а не из сборки (на стенде UAT)
+
+```
+yarn start:fast:uat
+```
+
+Изменения во всех файлах отслеживаются. Эта команда запускает config сервер, и запускает `ng serve` с конфигурацией fast.
+
+`yarn start:fast:uat` выполнит следующие команды:
+
+```
+yarn start:config:uat
+ng serve --host 0.0.0.0 --disable-host-check --hmr --configuration fast
+```
+
 ## Запуск приложения с отслеживанием изменений кода в папке projects
 
 ```
@@ -38,6 +53,7 @@ yarn watch:all
 
 ```
 yarn start:config              # Запуск config сервера
+yarn start:config:uat          # Запуск config uat сервера
 yarn clean                     # удаление папки /dist и /projects/epgu-constructor-types/dist
 yarn lib:type:watch            # сборка библиотеки epgu-constructor-types (с отслеиванием изменений)
 yarn lib:ui-kit:watch          # сборка библиотеки epgu-constructor-ui-kit (с отслеиванием изменений)

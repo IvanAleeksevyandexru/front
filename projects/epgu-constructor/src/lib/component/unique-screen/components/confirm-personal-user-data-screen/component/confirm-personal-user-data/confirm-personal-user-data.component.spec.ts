@@ -188,6 +188,16 @@ xdescribe('ConfirmPersonalUserDataComponent', () => {
     screenService.getStore().errors = {};
   });
 
+  it('should augment errors, if any in screenService while ngDoCheck', () => {
+    expect(component.errors.length).toBe(0);
+    screenService.getStore().errors = {
+      id: 'error',
+    };
+    component.ngDoCheck();
+    fixture.detectChanges();
+    expect(component.errors.length).toBe(1);
+  });
+
   it('should set session param in ngOnInit', () => {
     screenService.cycledApplicantAnswerContext = {
       cycledApplicantAnswerItem: {
