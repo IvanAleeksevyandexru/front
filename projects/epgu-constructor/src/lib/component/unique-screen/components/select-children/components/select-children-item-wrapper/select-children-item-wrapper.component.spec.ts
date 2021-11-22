@@ -8,6 +8,8 @@ import {
   ConfigService,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
@@ -17,8 +19,6 @@ import { ActionService } from '../../../../../../shared/directives/action/action
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
-import { JsonHelperServiceStub } from '../../../../../../core/services/json-helper/json-helper.service.stub';
 import { HealthService } from '@epgu/ui/services/health';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 

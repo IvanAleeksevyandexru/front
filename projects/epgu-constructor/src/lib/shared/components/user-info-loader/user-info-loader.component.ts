@@ -8,9 +8,9 @@ import {
   UserInfo,
   InfoComponentDto,
 } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { ComponentValue } from '../../../screen/screen-content';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 @Component({
   selector: 'epgu-constructor-user-info-loader',

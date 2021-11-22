@@ -1,22 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TimeSlotVaccinationComponent } from './time-slot-vaccination.component';
 import { MockComponent } from 'ng-mocks';
 import { TimeSlotSmev3Component } from '../../base/time-slot-smev3/time-slot-smev3.component';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
 import { TimeSlotSmev3ServiceStub } from '../../../services/smev3/time-slot-smev3.service.stub';
 import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
-import { TimeSlotSmev3StateServiceStub } from '../../../services/smev3-state/time-slot-smev3-state.service.stub';
 import { TimeSlotErrorService } from '../../../services/error/time-slot-error.service';
-import { TimeSlotErrorServiceStub } from '../../../services/error/time-slot-error.service.stub';
 import {
   ConfigService,
   ConfigServiceStub,
   ModalService,
   ModalServiceStub,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
-import { JsonHelperService } from '../../../../../../../core/services/json-helper/json-helper.service';
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 import { TimeSlotValueInterface } from '../../../typings';

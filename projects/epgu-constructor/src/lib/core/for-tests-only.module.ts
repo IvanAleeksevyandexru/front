@@ -19,6 +19,7 @@ import {
   UnsubscribeService,
   WINDOW,
   YandexMapService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { KindergartenSearchPanelService } from '../component/unique-screen/components/select-map-object/components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { SelectMapObjectService } from '../component/unique-screen/components/select-map-object/select-map-object.service';
@@ -39,7 +40,6 @@ import { RefRelationService } from '../shared/services/ref-relation/ref-relation
 import { AutocompleteApiService } from './services/autocomplete/autocomplete-api.service';
 import { DateRefService } from './services/date-ref/date-ref.service';
 import { InitDataService } from './services/init-data/init-data.service';
-import { JsonHelperService } from './services/json-helper/json-helper.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { NavigationServiceStub } from './services/navigation/navigation.service.stub';

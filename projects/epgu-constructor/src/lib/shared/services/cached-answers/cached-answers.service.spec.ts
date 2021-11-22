@@ -1,9 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CachedAnswersService } from './cached-answers.service';
-import { ObjectHelperService, DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
+import {
+  ObjectHelperService,
+  DownloadService,
+  JsonHelperService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 
 describe('CachedAnswersService', () => {
   let service: CachedAnswersService;

@@ -12,10 +12,10 @@ import {
   LocalStorageServiceStub,
   UnsubscribeService,
   YandexMapModule,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../../../../../../core/services/date-ref/date-ref.service';
-import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { BaseModule } from '../../../../../../../../shared/base.module';

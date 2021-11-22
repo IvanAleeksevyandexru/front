@@ -16,6 +16,7 @@ import {
   DatesToolsService,
   LoggerService,
   UnsubscribeService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { By } from '@angular/platform-browser';
@@ -25,7 +26,6 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import DictionaryModelAttrs from './DictionaryModelAttrs';
 import DictionaryModel from './DictionaryModel';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 import { defer } from 'lodash';
 

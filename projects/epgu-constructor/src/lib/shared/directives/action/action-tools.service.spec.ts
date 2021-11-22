@@ -17,6 +17,7 @@ import {
   LocationService,
   DeviceDetectorServiceStub,
   DeviceDetectorService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HookService } from '../../../core/services/hook/hook.service';
@@ -31,7 +32,6 @@ import { ActionService } from './action.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
-import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';

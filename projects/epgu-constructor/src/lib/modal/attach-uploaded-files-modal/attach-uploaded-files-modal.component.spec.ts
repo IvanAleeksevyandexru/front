@@ -2,27 +2,27 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   DeviceDetectorServiceStub,
   ObjectHelperService,
+  JsonHelperService,
+  DeviceDetectorService,
+  EventBusService,
+  UnsubscribeService,
+  DatesToolsService,
+  ConfigService,
+  ConfigServiceStub,
+  DownloadService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { AttachUploadedFilesModalComponent } from './attach-uploaded-files-modal.component';
 import { BaseModule } from '../../shared/base.module';
 import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
-import { JsonHelperService } from '../../core/services/json-helper/json-helper.service';
 import { cloneDeep } from 'lodash';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
 import { TerraByteApiService } from '../../core/services/terra-byte-api/terra-byte-api.service';

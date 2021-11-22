@@ -5,10 +5,10 @@ import {
   IFeatureItem,
   MapLayouts,
   YandexMapService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
 import { Subject } from 'rxjs';
-import { JsonHelperService } from '../../../../../../../../core/services/json-helper/json-helper.service';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryYMapItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { SelectMapObjectService } from '../../../../select-map-object.service';

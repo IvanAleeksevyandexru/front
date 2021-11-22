@@ -4,14 +4,13 @@ import { TimeSlotStateService } from '../state/time-slot-state.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { Smev2RestApiService } from '../api/smev2/smev2-rest-api.service';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import {
   ConfigService,
   ConfigServiceStub,
-  DATE_ISO_STRING_FORMAT,
   DatesToolsService,
   DatesToolsServiceStub,
   SessionService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotStateServiceStub } from '../state/time-slot-state.service.stub';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';

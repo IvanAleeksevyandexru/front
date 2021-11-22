@@ -1,9 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { TimeSlotSmev3StateService } from './time-slot-smev3-state.service';
-import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { JsonHelperService } from '../../../../../../core/services/json-helper/json-helper.service';
 import { TimeSlotsTypes } from '../../time-slot.const';
 import { of } from 'rxjs';
 import { TimeSlotsAnswerInterface, TimeSlotValueInterface } from '../../typings';

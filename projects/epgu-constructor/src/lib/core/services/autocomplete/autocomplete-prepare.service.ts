@@ -16,9 +16,7 @@ import {
   CustomComponentAttr,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
-import { JsonHelperService } from '../json-helper/json-helper.service';
+import { DatesToolsService, JsonHelperService, DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class AutocompletePrepareService {

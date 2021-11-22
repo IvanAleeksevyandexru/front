@@ -24,7 +24,7 @@ import {
   TimeSlotDoctorState,
   TimeSlotValueInterface,
 } from './time-slot-doctors.interface';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 
 type attributesMapType = { name: string; value: string }[];
 

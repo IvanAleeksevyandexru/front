@@ -5,6 +5,8 @@ import {
   ConfigServiceStub,
   UnsubscribeService,
   UnsubscribeServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -14,8 +16,6 @@ import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-cons
 import { By } from '@angular/platform-browser';
 import { ConfirmPersonalPolicyComponent } from './confirm-personal-policy.component';
 import { ConfirmPolicyError, PersonalPolicyWithErrors } from './confirm-personal-policy.types';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
-import { JsonHelperServiceStub } from '../../../../core/services/json-helper/json-helper.service.stub';
 
 describe('ConfirmPersonalPolicyComponent', () => {
   let component: ConfirmPersonalPolicyComponent;

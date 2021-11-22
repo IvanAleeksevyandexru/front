@@ -21,10 +21,10 @@ import {
   SessionStorageService,
   SessionStorageServiceStub,
   UnsubscribeService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockProvider } from 'ng-mocks';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
-import { JsonHelperService } from '../../../../core/services/json-helper/json-helper.service';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';

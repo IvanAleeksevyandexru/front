@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -10,10 +10,14 @@ import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique
 import { UnusedPaymentsComponent } from '../component/unused-payments.component';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
-import { ObjectHelperService, DownloadService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ObjectHelperService,
+  DownloadService,
+  JsonHelperService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto, ComponentAttrsDto, CachedAnswersDto } from '@epgu/epgu-constructor-types';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { JsonHelperService } from '../../../../../core/services/json-helper/json-helper.service';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;
