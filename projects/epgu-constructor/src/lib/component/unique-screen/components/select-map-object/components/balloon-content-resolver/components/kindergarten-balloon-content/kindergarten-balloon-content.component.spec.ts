@@ -1,39 +1,15 @@
 import { cloneDeep } from 'lodash';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  ConfigService,
-  ConfigServiceStub,
-  DatesToolsService,
-  DatesToolsServiceStub,
-  DeviceDetectorService,
-  DeviceDetectorServiceStub,
-  LocalStorageService,
-  LocalStorageServiceStub,
-  UnsubscribeService,
-  YandexMapModule,
-  JsonHelperService,
-} from '@epgu/epgu-constructor-ui-kit';
-import { MockProvider } from 'ng-mocks';
-import { DateRefService } from '../../../../../../../../core/services/date-ref/date-ref.service';
-import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
+import { YandexMapModule } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { BaseModule } from '../../../../../../../../shared/base.module';
-import { CachedAnswersService } from '../../../../../../../../shared/services/cached-answers/cached-answers.service';
-import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { DictionaryToolsService } from '../../../../../../../../shared/services/dictionary/dictionary-tools.service';
-import { PrepareComponentsService } from '../../../../../../../../shared/services/prepare-components/prepare-components.service';
-import { RefRelationService } from '../../../../../../../../shared/services/ref-relation/ref-relation.service';
-import { ComponentsListRelationsService } from '../../../../../../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { mockKindergartenStore } from '../../../../../kindergarten/mocks/stores';
-import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { KindergartenSearchPanelService } from '../../../search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { KindergartenContentComponent } from './kindergarten-balloon-content.component';
-import { KindergartenService } from '../../../../../kindergarten/kindergarten.service';
 import { mockKindergartenMapObject } from './mocks/map-objects';
 import { By } from '@angular/platform-browser';
-import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
+import { ForTestsOnlyModule } from '../../../../../../../../core/for-tests-only.module';
 
 describe('KindergartenContentComponent', () => {
   let component: KindergartenContentComponent;
@@ -45,32 +21,14 @@ describe('KindergartenContentComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [KindergartenContentComponent],
-      imports: [BaseModule, YandexMapModule],
-      providers: [
-        MockProvider(SelectMapObjectService),
-        KindergartenSearchPanelService,
-        MockProvider(KindergartenService),
-        MockProvider(UnsubscribeService),
-        MockProvider(CurrentAnswersService),
-        MockProvider(DictionaryToolsService),
-        MockProvider(JsonHelperService),
-        MockProvider(PrepareComponentsService),
-        MockProvider(CachedAnswersService),
-        MockProvider(RefRelationService),
-        MockProvider(DateRefService),
-        MockProvider(ComponentsListRelationsService),
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-      ],
+      imports: [BaseModule, YandexMapModule, ForTestsOnlyModule],
+      providers: [],
     }).compileComponents();
   });
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
+    // @ts-ignore
     MapStore = cloneDeep(mockKindergartenStore);
     screenService.initScreenStore(MapStore);
     fixture = TestBed.createComponent(KindergartenContentComponent);

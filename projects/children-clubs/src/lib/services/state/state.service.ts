@@ -39,6 +39,14 @@ export class StateService {
     return +this.stateQuery.state.okato;
   }
 
+  get mapOptions(): string {
+    return this.stateQuery.state.mapOptions;
+  }
+
+  get addressString(): string {
+    return this.stateQuery.state.addressString;
+  }
+
   get nextSchoolYear(): boolean {
     return this.stateQuery.state.nextSchoolYear === 'true';
   }

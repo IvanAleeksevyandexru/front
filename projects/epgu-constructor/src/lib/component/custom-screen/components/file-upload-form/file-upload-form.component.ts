@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
-import { first, startWith, takeUntil, tap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { first, startWith, takeUntil } from 'rxjs/operators';
 import { flatten as _flatten } from 'lodash';
 
 import { UnsubscribeService, EventBusService, BusEventType } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentBase } from '../../../../screen/screen.types';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
@@ -25,13 +24,6 @@ import FileUploadModelAttrs from './FileUploadModelAttrs';
 export class FileUploadFormComponent
   extends AbstractComponentListItemComponent<FileUploadModelAttrs>
   implements OnInit {
-  data$: Observable<ComponentBase> = this.screenService.component$.pipe(
-    tap((data: ComponentBase) => {
-      const attrs: FileUploadModelAttrs = data.attrs as FileUploadModelAttrs;
-      this.uploaderScreenService.setValuesFromAttrs(attrs);
-      this.prefixForMnemonic = this.getUploadComponentPrefixForMnemonic(data);
-    }),
-  );
   prefixForMnemonic: string;
   files: FileUploadEmitValue[] = [];
 
@@ -47,20 +39,15 @@ export class FileUploadFormComponent
   ngOnInit(): void {
     super.ngOnInit();
 
+    this.uploaderScreenService.setValuesFromAttrs(this.attrs);
+    this.prefixForMnemonic = `${this.control.value.id}.FileUploadComponent`;
+
     combineLatest([
       this.control.valueChanges.pipe(first(), startWith('')),
       this.eventBusService.on(BusEventType.FileUploadValueChangedEvent),
     ])
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([, uploads]) => this.updateParentForm(uploads));
-  }
-
-  /**
-   * Возвращает префикс для формирования мнемоники
-   * @param componentData - данные компонента
-   */
-  getUploadComponentPrefixForMnemonic(componentData: ComponentBase): string {
-    return [componentData.id, 'FileUploadComponent'].join('.');
   }
 
   private updateParentForm(uploads: FileResponseToBackendUploadsItem): void {

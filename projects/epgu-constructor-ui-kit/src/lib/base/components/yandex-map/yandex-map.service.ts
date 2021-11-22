@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { YaMapService } from '@epgu/ui/services/ya-map';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
@@ -18,6 +18,9 @@ import { IDirectProblemSolution } from './yandex-map.interface';
 import type * as ymaps from 'yandex-maps';
 import { get } from 'lodash';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { ConfigService } from '../../../core/services/config/config.service';
+import { HttpClient } from '@angular/common/http';
+import { GeoCodeResponse } from './geo-code.interface';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
 
@@ -41,6 +44,8 @@ export class YandexMapService implements OnDestroy {
     private icons: Icons,
     private ngUnsubscribe$: UnsubscribeService,
     private deviceDetector: DeviceDetectorService,
+    private configService: ConfigService,
+    private http: HttpClient,
   ) {
     this.yaMapService.mapSubject
       .pipe(
@@ -347,6 +352,12 @@ export class YandexMapService implements OnDestroy {
       }
     });
     this.paintActiveCluster(this.icons.clusterRed);
+  }
+
+  public geoCode(geocode: string): Observable<GeoCodeResponse> {
+    return this.http.get<GeoCodeResponse>(
+      `https://geocode-maps.yandex.ru/1.x/?apikey=${this.configService.yandexMapsApiKey}&format=json&geocode=${geocode}`,
+    );
   }
 
   private getClusterHash<T>(cluster: IClusterItem<T>): string {

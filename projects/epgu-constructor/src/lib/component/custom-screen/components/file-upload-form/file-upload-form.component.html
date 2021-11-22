@@ -1,21 +1,19 @@
-<ng-container *ngIf="data$ | async">
-  <epgu-constructor-file-upload
-    *ngIf="prefixForMnemonic"
-    class="file-upload-custom-wrapper"
-    [attributes]="$any(attrs)"
-    [objectId]="screenService.orderIdAsString$ | async"
-    [prefixForMnemonic]="prefixForMnemonic"
-  ></epgu-constructor-file-upload>
+<epgu-constructor-file-upload
+  *ngIf="prefixForMnemonic"
+  class="file-upload-custom-wrapper"
+  [attributes]="$any(attrs)"
+  [objectId]="screenService.orderIdAsString$ | async"
+  [prefixForMnemonic]="prefixForMnemonic"
+></epgu-constructor-file-upload>
 
-  <div class="size-info" *ngIf="uploaderScreenService.showLimitsInfo()">
-    Можно выбрать еще
-    <span *ngIf="uploaderScreenService.showCountInfo()" class="size-info__bold">
-      {{ uploaderScreenService.getFileCountLeft() }}
-    </span>
-    {{ ['файл', 'файла', 'файлов'] | pluralize: uploaderScreenService.getFileCountLeft() }}
-    <ng-container *ngIf="uploaderScreenService.showSizeInfo()">
-      на
-      <span class="size-info__bold">{{ uploaderScreenService.getFileSizeLeft() | fileSize }}</span>
-    </ng-container>
-  </div>
-</ng-container>
+<div class="size-info" *ngIf="uploaderScreenService.showLimitsInfo()">
+  Можно выбрать еще
+  <span *ngIf="uploaderScreenService.showCountInfo()" class="size-info__bold">
+    {{ uploaderScreenService.getFileCountLeft() }}
+  </span>
+  {{ ['файл', 'файла', 'файлов'] | pluralize: uploaderScreenService.getFileCountLeft() }}
+  <ng-container *ngIf="uploaderScreenService.showSizeInfo()">
+    на
+    <span class="size-info__bold">{{ uploaderScreenService.getFileSizeLeft() | fileSize }}</span>
+  </ng-container>
+</div>

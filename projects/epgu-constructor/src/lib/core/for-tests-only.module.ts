@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import {
   AddressesToolsService,
@@ -21,6 +22,7 @@ import {
   YandexMapService,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { KindergartenService } from '../component/unique-screen/components/kindergarten/kindergarten.service';
 import { KindergartenSearchPanelService } from '../component/unique-screen/components/select-map-object/components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { SelectMapObjectService } from '../component/unique-screen/components/select-map-object/select-map-object.service';
 import { PriorityItemsService } from '../component/unique-screen/components/select-map-object/services/priority-items/priority-items.service';
@@ -48,6 +50,7 @@ import { NavigationServiceStub } from './services/navigation/navigation.service.
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
  */
 @NgModule({
+  imports: [HttpClientModule],
   providers: [
     { provide: ConfigService, useClass: ConfigServiceStub },
     { provide: LocationService, useClass: LocationServiceStub },
@@ -73,6 +76,7 @@ import { NavigationServiceStub } from './services/navigation/navigation.service.
     InitDataService,
     JsonHelperService,
     KindergartenSearchPanelService,
+    KindergartenService,
     LocalStorageService,
     LoggerService,
     ModalErrorService,

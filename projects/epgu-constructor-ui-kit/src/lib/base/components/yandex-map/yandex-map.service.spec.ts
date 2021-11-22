@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { filter } from 'rxjs/operators';
 import { WINDOW, WINDOW_PROVIDERS } from '../../../core/providers/window.provider';
@@ -19,6 +20,7 @@ describe('SelectMapObjectComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientModule],
       providers: [
         WINDOW_PROVIDERS,
         YandexMapService,

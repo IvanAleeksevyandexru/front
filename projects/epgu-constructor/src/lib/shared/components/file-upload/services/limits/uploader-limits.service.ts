@@ -143,7 +143,6 @@ export class UploaderLimitsService {
         ? this.getMaxTotalFilesAmount()
         : this.getMaxTotalFilesSize();
 
-
     if (maxTotal === 0 && type === UploaderCheckType.amount) return -1;
 
     if (maxTotal > 0) {
@@ -151,8 +150,8 @@ export class UploaderLimitsService {
         type === UploaderCheckType.amount
           ? this.currentAllAmount.getValue()
           : this.currentAllSize.getValue();
-
       const total = current + value;
+
       if (total < 0 || total > maxTotal) {
         return -1;
       }
@@ -162,7 +161,8 @@ export class UploaderLimitsService {
     if (uploader) {
       const count = uploader[type] + value;
       const maxKey = type === UploaderCheckType.amount ? 'maxAmount' : 'maxSize';
-      if (count < 0 || count > uploader[maxKey]) {
+
+      if (uploader[maxKey] && (count < 0 || count > uploader[maxKey])) {
         return 1;
       }
     }

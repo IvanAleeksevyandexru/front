@@ -13,6 +13,8 @@ export interface ChildrenClubsState {
   selectedProgramUUID?: string;
   programFilters?: Filters;
   groupFilters?: FindOptionsGroup;
+  mapOptions?: string;
+  addressString?: string;
   groupFiltersMode: GroupFiltersModes;
   isLoaderVisible: boolean;
   denyReason: string;

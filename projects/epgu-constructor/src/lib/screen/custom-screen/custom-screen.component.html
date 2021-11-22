@@ -2,12 +2,12 @@
   [show-nav]="screenService.showNav$ | async"
   [class.screen-container-mt]="!(screenService.showNav$ | async)"
 >
-  <div class="screen-body">
+  <div class="screen-body" *ngIf="data$ | async as data">
     <epgu-constructor-page-name>{{ screenService.header$ | async }} </epgu-constructor-page-name>
 
     <epgu-cf-ui-constructor-screen-pad class="body">
       <epgu-constructor-components-list
-        [components]="$any((screenService.display$ | async)?.components)"
+        [components]="$any(data?.components)"
         [errors]="screenService.componentErrors$ | async"
         (changes)="changeComponentsList($event)"
       >
