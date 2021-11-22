@@ -13,6 +13,7 @@ export default class DateInputModelAttrs  extends GenericAttrs  {
   readonly limit: string;
   readonly to: string;
   readonly from: string;
+  readonly hidden: boolean;
 
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
@@ -26,5 +27,6 @@ export default class DateInputModelAttrs  extends GenericAttrs  {
     this.limit = attrs.limit;
     this.to = attrs.to;
     this.from = attrs.from;
+    this.hidden = attrs.hidden;
   }
 }

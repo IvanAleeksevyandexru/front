@@ -2,6 +2,7 @@
   [control]="control.get('value')"
   [component]="control.value"
   [invalid]="control.invalid"
+  [hidden]="control.value?.attrs?.hidden"
 >
   <epgu-constructor-constructor-date-picker
     (clearedEvent)="clearDate(control.value?.id, attrs)"

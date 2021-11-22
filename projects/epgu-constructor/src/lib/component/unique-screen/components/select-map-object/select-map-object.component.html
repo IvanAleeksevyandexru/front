@@ -11,6 +11,7 @@
       (selectObjectEvent)="selectObject($event)"
       [previouslyChoosenItem]="hasPreviouslyChoosen"
       [sidebarData]="data"
+      [ngClass]="{ hidden: selectMapObjectService.isMapViewType }"
       class="map-sidebar"
     >
     </epgu-constructor-map-sidebar>
