@@ -511,6 +511,14 @@ describe('ComponentsListRelationsService', () => {
           screenService,
         );
 
+        // потому что isShown === false AND isDisplayOn
+        expect(dependentControl.touched).toBeTruthy();
+        expect(updatedShownElements).toEqual({
+          [dependentComponent.id]: {
+            isShown: false,
+            relation: CustomComponentRefRelation.displayOn,
+          },
+        });
 
         updatedShownElements = service['getDependentComponentUpdatedShownElements'](
           dependentComponent,
@@ -1582,6 +1590,7 @@ describe('ComponentsListRelationsService', () => {
       expect(shownElements['rp1_3'].isShown).toEqual(true);
 
       service['handleIsDisplayOffRelation'](
+        element,
         shownElements,
         dependentComponent,
         reference,
