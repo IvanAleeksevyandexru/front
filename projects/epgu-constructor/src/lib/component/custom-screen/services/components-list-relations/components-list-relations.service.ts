@@ -71,7 +71,6 @@ export class ComponentsListRelationsService {
   ): CustomListStatusElements {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
-        // TODO здесь идет повторная проверка? тоже самое, что и getDependentComponents?
         dependentComponent.attrs.ref
         // апдейт только при изменении значений компонента, у которого указаны связи
         ?.filter((el) => (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id))
@@ -144,7 +143,6 @@ export class ComponentsListRelationsService {
       return {
         ...acc,
         [component.id]: {
-          // TODO: зачем нужно это поле? разобраться
           relation:
             hasDisplayOff && !hasDisplayOn
               ? CustomComponentRefRelation.displayOff
@@ -474,6 +472,7 @@ export class ComponentsListRelationsService {
     switch (reference.relation) {
       case CustomComponentRefRelation.displayOff:
         this.handleIsDisplayOffRelation(
+          element,
           shownElements,
           dependentComponent,
           reference,
@@ -614,12 +613,14 @@ export class ComponentsListRelationsService {
   }
 
   private handleIsDisplayOffRelation(
+    element: CustomStatusElement,
     shownElements: CustomListStatusElements,
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
     dependentControl: AbstractControl,
     form: FormArray
   ): void {
+    const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
     const refs = dependentComponent.attrs.ref;
     const isShown = !refs.some((ref) => {
       return this.refRelationService.isDisplayOffRelation(ref.relation) &&
@@ -627,11 +628,13 @@ export class ComponentsListRelationsService {
         shownElements[ref.relatedRel]?.isShown;
     });
 
+    if (element.isShown === true || !isDisplayOn) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOff,
         isShown,
       };
       dependentControl.markAsUntouched();
+    }
   }
 
   private handleIsDisplayOnRelation(
@@ -645,7 +648,7 @@ export class ComponentsListRelationsService {
   ): void {
     const isDisplayOff = this.refRelationService.isDisplayOffRelation(element.relation);
     const isShown = this.refRelationService.isValueEquals(reference.val, componentVal);
-    //TODO нужно ли это условие? от чего оно уберегает?
+
     if (element.isShown === true || !isDisplayOff) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOn,
