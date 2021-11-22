@@ -73,6 +73,7 @@ export class FileItem {
   id = v4();
   error: FileItemError;
   isImage: boolean;
+  isArchive: boolean;
   limited = false;
   isRawMock = false;
   attached = false;
@@ -96,6 +97,7 @@ export class FileItem {
       this.isRawMock = true;
     }
     this.isImage = /^.*\.(jpe?g|gif|png|bmp)$/i.test(this.raw.name);
+    this.isArchive = /^.*\.(zip|rar)$/i.test(this.raw.name);
   }
 
   setAttached(attached: boolean): FileItem {
