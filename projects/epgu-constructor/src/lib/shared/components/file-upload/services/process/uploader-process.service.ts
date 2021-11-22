@@ -183,9 +183,7 @@ export class UploaderProcessService {
     return of(item).pipe(
       tap((file: FileItem) => this.store.changeStatus(file, FileItemStatus.uploading)),
       tap((file: FileItem) => this.stat.incrementLimits(file)),
-      map((file: FileItem) =>
-        this.store.files.getValue().find((storeFile) => storeFile.item.fileName === file.item.fileName)),
-      concatMap((storedFile) => this.api.copyFile(options, storedFile)),
+      concatMap((file: FileItem) => this.api.copyFile(options, file)),
       catchError((e) => {
         this.store.update(item.setError(this.uploader.getError(ErrorActions.addUploadErr)));
         this.stat.decrementLimits(item);
