@@ -8,15 +8,15 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { map, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 import {
   EventBusService,
   BusEventType,
   ModalBaseComponent,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import { map, takeUntil, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { ListElement, ListItem, LookupProvider } from '@epgu/ui/models/dropdown';
 import {
   defaultInlearnoFilters,
@@ -126,7 +126,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     return (searchString): Observable<Partial<ListElement>[]> => {
       return this.dictionary.municipalitiesList$.pipe(
         map((data) => {
-          if (searchString.length === 0) {
+          if (!searchString || searchString.length === 0) {
             return data;
           }
           return data.filter((item) =>

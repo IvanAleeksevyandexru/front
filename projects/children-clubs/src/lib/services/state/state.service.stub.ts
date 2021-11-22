@@ -26,8 +26,8 @@ export class StateServiceStub {
     return VendorType.inlearno;
   }
 
-  get okato(): number {
-    return 46434000000;
+  get okato(): string {
+    return '46434000000';
   }
 
   get nextSchoolYear(): boolean {
