@@ -200,8 +200,8 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
           { ...file.item, isFromSuggests: true, objectId: this.screenService.orderId.toString() },
         );
         newFile.setAttached(true);
-        this.addPrepare(newFile);
         this.store.add(newFile);
+        this.addCopy(file);
       });
     } else {
       file.setAttached(false);
@@ -243,6 +243,10 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
 
   addPrepare(file: FileItem): void {
     this.process.prepare(file);
+  }
+
+  addCopy(file: FileItem): void {
+    this.process.copy(file);
   }
 
   addDownload(file: FileItem): void {
