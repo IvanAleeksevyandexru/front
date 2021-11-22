@@ -34,9 +34,16 @@
   }
 }
 
+.search-panel-resolver {
+  @include tablets-down() {
+    visibility: visible;
+    background-color: $color-white;
+  }
+}
+
 .perfect-scrollbar.hidden {
   @include tablets-down() {
-      display: none;
+      visibility: hidden;
   }
 }
 
@@ -56,6 +63,9 @@
 }
 
 ::ng-deep.swipeable-mode {
+  @include tablets-down() {
+    visibility: visible;
+  }
   .cross-btn {
     display: block;
     position: absolute;
