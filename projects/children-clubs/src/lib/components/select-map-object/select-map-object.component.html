@@ -1,4 +1,7 @@
-<epgu-cf-ui-constructor-yandex-map [showMap]="showMap">
+<epgu-cf-ui-constructor-yandex-map
+  [showMap]="showMap"
+  [zoom]="mapOptions?.initZoom"
+>
   <div *ngIf="yandexMapService.selectedValue$ | async as selectedValue" class="map-objects-list">
     <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
