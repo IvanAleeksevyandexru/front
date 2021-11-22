@@ -23,7 +23,7 @@
 
     <div class="mb-24 half-for-desktop">
       <div class="label">{{ formFieldsLabel[formFields.maxPrice] }}</div>
-      <lib-plain-input [formControlName]="formFields.maxPrice"></lib-plain-input>
+      <lib-plain-input [formControlName]="formFields.maxPrice" [maxlength]="18"></lib-plain-input>
       <epgu-cf-ui-constructor-error
         [data]="form.get(formFields.maxPrice)"
       ></epgu-cf-ui-constructor-error>
