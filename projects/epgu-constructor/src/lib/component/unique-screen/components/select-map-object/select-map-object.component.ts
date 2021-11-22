@@ -313,7 +313,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         return;
       }
 
-      this.fillCoords(this.data.attrs.dictionaryFilter)
+      this.fillCoords(this.data.attrs.dictionaryFilter, !this.data.attrs.secondaryDictionaryFilter)
         .pipe(
           takeUntil(this.ngUnsubscribe$),
           switchMap((coords: IGeoCoordsResponse) => {
@@ -429,6 +429,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
    */
   private fillCoords(
     dictionaryFilters: ComponentDictionaryFilterDto[],
+    isEmptyDictionaryCritical = true,
   ): Observable<IFillCoordsResponse> {
     let options;
     try {
@@ -441,7 +442,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         if (dictionary.error !== null && dictionary.error?.code !== 0) {
           return throwError(dictionary.error);
         }
-        if (!dictionary.total) {
+        if (!dictionary.total && isEmptyDictionaryCritical) {
           return throwError(NO_MAP_ITEMS_AVAILABLE);
         }
         this.selectMapObjectService.dictionary = dictionary;
