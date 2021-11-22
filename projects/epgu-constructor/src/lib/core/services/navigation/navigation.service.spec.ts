@@ -119,8 +119,13 @@ describe('NavigationService', () => {
     expect(hrefFn).toBeCalledWith('/abc');
   });
   it('test redirectToProfileEdit', () => {
+    navigationService.isWebView = false;
     navigationService.redirectToProfileEdit();
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/settings/edit`);
+    navigationService.isWebView = true;
+    const spy = jest.spyOn(smuEventsService, 'notify');
+    navigationService.redirectToProfileEdit();
+    expect(spy).toHaveBeenCalledWith(MobilViewEvents.profile);
   });
   it('test redirectToLK', () => {
     navigationService.isWebView = false;
