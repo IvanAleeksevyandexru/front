@@ -4,4 +4,9 @@
   .epgu-constructor {
     height: 100%;
   }
+  ::ng-deep {
+    h3.conf-modal__title {
+      margin-bottom: 14px;
+    }
+  }
 }
