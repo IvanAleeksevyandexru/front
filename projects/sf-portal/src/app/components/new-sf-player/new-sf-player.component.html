@@ -1,0 +1,39 @@
+<div class="container" *ngIf="checkInProgress; else complete">
+  <div class="grid-row">
+    <div class="col-3 col-md-6 col-lg-12">
+      <lib-throbber [defaultHeaders]="true"></lib-throbber>
+    </div>
+  </div>
+</div>
+
+<ng-template #complete>
+  <div class="container" *ngIf="permissionData">
+    <div class="grid-row">
+      <div class="col-3 col-md-6 col-lg-12">
+        <div class="permission-error-container mt-24">
+          <lib-frame noEffects="true">
+            <div class="permission-error">
+              <img
+                class="error-icon"
+                [src]="staticDomainAssetsPath + 'icons/svg/warn.svg'"
+                alt=""
+              />
+              <h4 class="title-h4 mt-24 error-message">{{ permissionData.message }}</h4>
+              <div class="small-text gray mt-16 error-hint" [innerHTML]="permissionData.hint"></div>
+            </div>
+          </lib-frame>
+          <div *ngIf="permissionData.code === 'default'" class="permission-button mt-32 mt-md-40">
+            <lib-button width="wide" [routerLink]="['/']">
+              <span class="hide show-md">На главную</span>
+              <span class="show hide-md">Вернуться на главную</span></lib-button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <epgu-constructor-form-player
+    *ngIf="!permissionData && newSfService"
+    [service]="newSfService"
+  ></epgu-constructor-form-player>
+</ng-template>

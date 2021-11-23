@@ -18,7 +18,7 @@ After building your library with `ng build epgu-constructor`, go to the dist fol
 
 ## Running unit tests
 
-Run `ng test epgu-constructor` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng test epgu-constructor` to execute the unit tests.
 
 ## Further help
 

@@ -2,7 +2,7 @@ include:
   - project: appsec/cicd
     file: /luxsoft/epgu2-form-frontend.yml
 
-image: node:latest
+image: node:14
 
 cache: &global_cache
   key: cache-${CI_COMMIT_REF_SLUG}
@@ -22,6 +22,7 @@ stages:
   - library-build
   - library-publish
   - build
+  - portal-build
   - image
   - deploy
   - code_check
@@ -170,6 +171,19 @@ Build:
   #    - /devops/notify/notify.sh fronted_new_master_available
   only:
     - merge_requests
+
+Portal-build:
+  stage: portal-build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  script:
+    - yarn install
+    - yarn build:portal
+  only:
+    - merge_requests
+    - master
+    - stage
 # Build-image:
 #   stage: image
 #   except:

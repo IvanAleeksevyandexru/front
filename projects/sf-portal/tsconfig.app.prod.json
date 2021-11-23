@@ -7,8 +7,6 @@
   },
   "files": [
     "src/main.ts",
-    "src/polyfills.ts",
-    "../epgu-constructor-ui-kit/src/lib/modal/modal.service.ts",
-    "../epgu-constructor-ui-kit/src/lib/core/decorators/replace-arguments.ts"
+    "src/polyfills.ts"
   ]
 }

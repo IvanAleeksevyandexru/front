@@ -3,8 +3,8 @@ require('jest-preset-angular/ngcc-jest-processor');
 module.exports = {
   modulePaths: ['<rootDir>'],
   moduleDirectories: ['node_modules'],
-  setupFiles: ['<rootDir>/setup-jest.ts', 'jest-canvas-mock'],
-  setupFilesAfterEnv: ['<rootDir>/setup-jest-env.ts'],
+  setupFiles: ['<rootDir>/configs/jest/setup-jest.ts', 'jest-canvas-mock'],
+  setupFilesAfterEnv: ['<rootDir>/configs/jest/setup-jest-env.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/'],
   moduleNameMapper: {
     '@ifc/plugin': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js',

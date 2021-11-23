@@ -4,7 +4,7 @@ WORKDIR /opt
 COPY *.json .npmrc ./
 RUN npm i
 COPY . .
-RUN npm run build-all
+RUN npm run build:portal:all
 
 FROM registry.gosuslugi.local/base_images/nginx:1.13.10-1_centos-7.5
 
