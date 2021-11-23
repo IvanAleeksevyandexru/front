@@ -103,25 +103,12 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('centeredPlaceMark should call paintActiveCluster with red cluster', () => {
+    yandexMapService.ymaps = {};
+    yandexMapService.ymaps.util = { math: {}};
+    yandexMapService.ymaps.util.math.areEqual = () => false;
     const spy = jest.spyOn<any, any>(yandexMapService, 'paintActiveCluster');
     yandexMapService.centeredPlaceMark((mockBrakCluster as unknown) as IClusterItem<unknown>);
     expect(spy).toBeCalledWith(icons.clusterRed);
-  });
-
-  it('isClusterZoomable should return false for non zoomable cluster', () => {
-    const isClusterZoomable = yandexMapService['isClusterZoomable'](
-      (mockBrakCluster as unknown) as IClusterItem<unknown>,
-    );
-    expect(isClusterZoomable).toBeFalsy();
-  });
-
-  it('isClusterZoomable should return true for zoomable cluster', () => {
-    const cluster = { ...mockBrakCluster };
-    cluster.features[0].geometry.coordinates[0]++;
-    const isClusterZoomable = yandexMapService['isClusterZoomable'](
-      (mockBrakCluster as unknown) as IClusterItem<unknown>,
-    );
-    expect(isClusterZoomable).toBeTruthy();
   });
 
   describe('mapPaint()', () => {

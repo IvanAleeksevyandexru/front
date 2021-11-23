@@ -504,10 +504,11 @@ export class YandexMapService implements OnDestroy {
   private isClusterZoomable(cluster: IClusterItem<unknown>): boolean {
     return cluster.features.some((feature, index, arr) => {
       const i = index > 0 ? index : 1;
-      return (
-        feature.geometry.coordinates[0] !== arr[i - 1].geometry.coordinates[0] ||
-        feature.geometry.coordinates[1] !== arr[i - 1].geometry.coordinates[1]
-      );
+      const point1 = feature.geometry.coordinates;
+      const point2 = arr[i - 1].geometry.coordinates;
+      // точки с приблизительно такой разницей собираются в кластер
+      const ALLOWED_ERROR = 0.0006;
+      return !this.ymaps.util.math.areEqual(point1, point2, ALLOWED_ERROR);
     });
   }
 
