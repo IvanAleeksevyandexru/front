@@ -55,6 +55,7 @@ export class UploaderManagerItemComponent {
       this.link = this.teraService.getDownloadApiPath(file.createUploadedParams());
     }
     this.isImage = file.isImage;
+    this.isArchive = file.isArchive;
     this.extension = file.raw.name.split('.').pop().toLowerCase();
     this.size = file.raw.size;
     this.name = file.raw.name;
@@ -80,6 +81,7 @@ export class UploaderManagerItemComponent {
   isError = false;
   errorType: ErrorActions;
   isImage = false;
+  isArchive = false;
   fileItem: FileItem;
 
   statusText = FileItemStatusText;
@@ -100,18 +102,15 @@ export class UploaderManagerItemComponent {
   }
 
   viewAction(): void {
-    if (!this.isError) {
-      if (this.isImage) {
-        this.preview();
-      } else if (this.link) {
-        if (this.deviceDetector.isWebView) {
-          this.smu.notify(createDownloadEvent(this.link));
-        } else {
-          this.teraService.openFileNewTabByMimeType(
-            this.fileItem.createUploadedParams(),
-            this.type,
-          );
-        }
+    if (this.isError) return;
+
+    if (this.isImage) {
+      this.preview();
+    } else if (this.link) {
+      if (this.deviceDetector.isWebView) {
+        this.smu.notify(createDownloadEvent(this.link));
+      } else {
+        this.teraService.openFileNewTabByMimeType(this.fileItem.createUploadedParams(), this.type);
       }
     }
   }
