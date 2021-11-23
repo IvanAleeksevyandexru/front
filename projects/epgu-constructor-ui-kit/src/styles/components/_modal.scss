@@ -2,39 +2,15 @@
 @import '../core/breakpoint';
 
 .modal {
-  //TODO Заменить на .icon-close
   &__close {
     position: absolute;
     right: 32px;
-    width: 20px;
-    height: 20px;
     cursor: pointer;
     z-index: 2;
-
-    &:before,
-    &:after {
-      content: '';
-      position: absolute;
-      width: 2px;
-      height: 20px;
-      left: 9px;
-      background: $color-gosblue;
-      transform: rotate(45deg);
-    }
-
-    &:before {
-      transform: rotate(45deg);
-    }
-
-    &:after {
-      transform: rotate(-45deg);
-    }
   }
 
   &__title {
     padding-right: 50px;
-    //TODO дублирование/переопределение кода, нужно просто заменить везде тег на h3
     color: $color-summer-night;
-    @include typ-h3;
   }
 }
