@@ -30,6 +30,8 @@ import {
   SUGGEST_SEPARATOR_DEFAULT,
 } from '../../../../../../core/services/autocomplete/autocomplete.const';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
+import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
+import { CustomComponent } from '../../../../../custom-screen/components-list.types';
 
 type AddressFields = ConfirmAddressFieldsInterface & {
   isDate: boolean | FieldNames;
@@ -42,10 +44,10 @@ type AddressFields = ConfirmAddressFieldsInterface & {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnInit, OnDestroy {
-  data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
+  public data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
     ConfirmAddressInterface
   >;
-  fields$: Observable<AddressFields[]> = this.data$.pipe(
+  public fields$: Observable<AddressFields[]> = this.data$.pipe(
     map(({ attrs }) => {
       return attrs.fields.map((field) => ({
         ...field,
@@ -53,13 +55,13 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       }));
     }),
   );
-  classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
-  form: FormGroup;
-  isRequired: boolean;
-  strategy = BrokenDateFixStrategy;
-  readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
+  public classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
+  public form: FormGroup;
+  public isRequired: boolean;
+  public strategy = BrokenDateFixStrategy;
+  public readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
-  constructor(
+  public constructor(
     public config: ConfigService,
     private fb: FormBuilder,
     public screenService: ScreenService,
@@ -69,9 +71,10 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
     private cdr: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
     private httpCancelService: HttpCancelService,
+    private validationService: ValidationService,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.isRequired = data.required;
       this.createForm(data);
@@ -87,19 +90,33 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
       });
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.subscribeFormChanges();
     this.cdr.detectChanges();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.httpCancelService.cancelPendingRequests();
   }
 
-  createForm(data: ConfirmAddressInterface): void {
+  public createForm(data: ConfirmAddressInterface): void {
     const { attrs, value } = data;
-    const form = attrs.fields.reduce((acc, { fieldName }) => {
-      return { ...acc, [fieldName]: new FormControl(null) };
+    const form = attrs.fields.reduce((acc, field, fieldIndex) => {
+      return {
+        ...acc,
+        [field.fieldName]: new FormControl(
+          null,
+          field.fieldName === FieldNames.regDate
+            ? {
+                validators: this.validationService.dateValidator(
+                  (data as unknown) as CustomComponent,
+                  fieldIndex,
+                ),
+                updateOn: 'change',
+              }
+            : null,
+        ),
+      };
     }, {});
     this.form = this.fb.group(form);
     if (value) {
