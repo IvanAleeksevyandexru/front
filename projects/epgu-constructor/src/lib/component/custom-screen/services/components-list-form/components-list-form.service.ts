@@ -3,7 +3,11 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from 
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { isEqual } from 'lodash';
-import { DatesToolsService, LoggerService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  LoggerService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
@@ -16,6 +20,7 @@ import {
   CustomListStatusElements,
   CustomScreenComponentTypes,
   UpdateOn,
+  Fields,
 } from '../../components-list.types';
 import {
   AddressHelperService,
@@ -25,12 +30,17 @@ import { ComponentsListToolsService } from '../components-list-tools/components-
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { DictionaryConditions } from '@epgu/epgu-constructor-types';
+import {
+  DictionaryConditions,
+  ComponentRelationFieldDto,
+  RelationCondition,
+} from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/services/mask-transform/mask-transform.service';
 import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
+import { MaritalStatusInputField } from '../../components/marital-status-input/marital-status-input.types';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -118,19 +128,16 @@ export class ComponentsListFormService {
     return this._form;
   }
 
-  public onAfterFilterOnRel(
-    component: BaseModel<DictionarySharedAttrs>,
-  ): void {
+  public onAfterFilterOnRel(component: BaseModel<DictionarySharedAttrs>): void {
     component.value = this.componentsListToolsService.convertedValue(component) as string;
-    this.componentsListRelationsService.onAfterFilterOnRel(
-      component,
-      this.form,
-    );
+    this.componentsListRelationsService.onAfterFilterOnRel(component, this.form);
   }
 
   public patch(component: BaseModel<DictionarySharedAttrs>): void {
     const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
-    const patched = component.patchControlValue && component.patchControlValue(control, this.screenService.getStore());
+    const patched =
+      component.patchControlValue &&
+      component.patchControlValue(control, this.screenService.getStore());
     if (!patched) {
       control.get('value').patchValue(this.componentsListToolsService.convertedValue(component));
     }
@@ -154,6 +161,28 @@ export class ComponentsListFormService {
     attrs: CustomComponentAttr,
   ): LookupProvider | LookupPartialProvider {
     return this.addressHelperService.getProvider(attrs.searchType, attrs.cityFilter);
+  }
+
+  public relationMapChanges(
+    next: CustomListFormGroup | Fields,
+    relationField?: ComponentRelationFieldDto,
+    relationValue?: unknown,
+    refControl?: AbstractControl,
+    refComponent?: Fields,
+  ): void {
+    if (!relationField) {
+      const value = next.value;
+      if (!next.attrs?.relationField || !value) {
+        return;
+      }
+      const { ref, conditions } = next.attrs?.relationField;
+      const refComponent = this.form.getRawValue()[this.indexesByIds[ref]];
+      this.updateRelationMap(conditions, value, refComponent);
+    } else {
+      const { conditions } = relationField;
+
+      this.updateRelationMap(conditions, relationValue, refComponent, refControl);
+    }
   }
 
   private markForFirstRoundValidation(components: CustomComponent[]): void {
@@ -216,64 +245,83 @@ export class ComponentsListFormService {
     return this.datesToolsService.isSameOrBefore(dateLeft, dateRight);
   }
 
-  private changeValidators(component: CustomComponent, control: AbstractControl): void {
+  private changeValidators(component: CustomComponent | Fields, control: AbstractControl): void {
     const validators = [this.validationService.customValidator(component)];
     if (
       component.type === CustomScreenComponentTypes.DateInput ||
       component.type === CustomScreenComponentTypes.MonthPicker ||
-      component.type === CustomScreenComponentTypes.CalendarInput
+      component.type === CustomScreenComponentTypes.CalendarInput ||
+      !!(component as MaritalStatusInputField)?.fieldName
     ) {
       validators.push(this.validationService.dateValidator(component, null));
     }
     control.setValidators(validators);
   }
 
-  private relationPatch(component: CustomComponent, patch: object): void {
+  private relationPatch(
+    component: CustomComponent,
+    patch: object,
+    refControl?: AbstractControl,
+  ): void {
     const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
 
-    const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
-
-    control.patchValue(
-      {
-        attrs: { ...component.attrs, ...patch },
-      },
-      { onlySelf: true, emitEvent: false },
-    );
-    this.changeValidators(resultComponent, control.controls.value);
-    control.get('value').updateValueAndValidity();
+    if (!refControl) {
+      const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
+      control.patchValue(
+        {
+          attrs: { ...component.attrs, ...patch },
+        },
+        { onlySelf: true, emitEvent: false },
+      );
+      this.changeValidators(resultComponent, control.controls.value);
+      control.get('value').updateValueAndValidity();
+    } else {
+      this.changeValidators(resultComponent, refControl);
+      refControl.updateValueAndValidity();
+    }
   }
 
-  private resetRelation(component: CustomComponent): void {
-    return this.relationPatch(component, this.cachedAttrsComponents[component.id].base);
+  private resetRelation(
+    component: CustomComponent | Fields,
+    accessKey: string,
+    refControl?: AbstractControl,
+  ): void {
+    return this.relationPatch(component, this.cachedAttrsComponents[accessKey]?.base, refControl);
   }
 
-  private setRelationResult(component: CustomComponent, result?: Partial<CustomComponent>): void {
+  private setRelationResult(
+    component: CustomComponent | Fields,
+    result?: Partial<CustomComponent>,
+    refControl?: AbstractControl,
+  ): void {
+    const accessKey = !!(component as Fields)?.fieldName
+      ? (component as Fields).fieldName
+      : component.id;
+    
     if (!result) {
-      if (this.cachedAttrsComponents[component.id]) {
-        this.resetRelation(component);
+      if (this.cachedAttrsComponents[accessKey]) {
+        this.resetRelation(component, accessKey, refControl);
       }
       return;
     }
-    if (!this.cachedAttrsComponents[component.id]) {
-      this.cachedAttrsComponents[component.id] = { base: component.attrs, last: '' };
+    if (!this.cachedAttrsComponents[accessKey]) {
+      this.cachedAttrsComponents[accessKey] = { base: component.attrs, last: '' };
     }
 
     const stringResult = JSON.stringify(result);
-    if (this.cachedAttrsComponents[component.id].last !== stringResult) {
-      component.attrs = this.cachedAttrsComponents[component.id].base;
-      this.relationPatch(component, result.attrs);
-      this.cachedAttrsComponents[component.id].last = stringResult;
+    if (this.cachedAttrsComponents[accessKey].last !== stringResult) {
+      component.attrs = this.cachedAttrsComponents[accessKey].base;
+      this.relationPatch(component, result.attrs, refControl);
+      this.cachedAttrsComponents[accessKey].last = stringResult;
     }
   }
 
-  private relationMapChanges(next: CustomListFormGroup): void {
-    const value = next.value;
-    if (!next.attrs?.relationField || !value) {
-      return;
-    }
-    const { ref, conditions } = next.attrs?.relationField;
-    const refComponent = this.form.getRawValue()[this.indexesByIds[ref]];
-
+  private updateRelationMap(
+    conditions: RelationCondition[],
+    value: unknown,
+    refComponent: CustomComponent | Fields,
+    refControl?: AbstractControl,
+  ): void {
     let result;
     for (let condition of conditions) {
       const func = this.mapRelationTypes[condition.type];
@@ -294,7 +342,7 @@ export class ComponentsListFormService {
       }
     }
 
-    this.setRelationResult(refComponent, result);
+    this.setRelationResult(refComponent, result, refControl);
   }
 
   private createGroup(
@@ -387,8 +435,11 @@ export class ComponentsListFormService {
 
       // TODO: моделмодел
       const carModelModel: DictionaryLikeModel = carModelControl.value.model;
-      carModelModel.loadReferenceData$(this.dictionaryToolsService
-        .getDictionaries$('MODEL_TS', carModelModel, options)).subscribe();
+      carModelModel
+        .loadReferenceData$(
+          this.dictionaryToolsService.getDictionaries$('MODEL_TS', carModelModel, options),
+        )
+        .subscribe();
     }
   }
 
