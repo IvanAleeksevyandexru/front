@@ -270,7 +270,8 @@ export class PrepareComponentsService {
 
     if (
       component.type === CustomScreenComponentTypes.DocInput ||
-      component.type === UniqueScreenComponentTypes.registrationAddr
+      component.type === UniqueScreenComponentTypes.registrationAddr ||
+      component.type === CustomScreenComponentTypes.MaritalStatusInput
     ) {
       const fields = attrs.fields as DocInputField[];
       const haveDateRef = ({ attrs }: DocInputField): boolean =>

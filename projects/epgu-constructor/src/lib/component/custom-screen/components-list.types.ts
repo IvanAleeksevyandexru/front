@@ -123,6 +123,15 @@ export type CustomComponentDropDownItem = {
   disable: boolean;
 };
 
+export interface Fields extends CustomComponent {
+  fieldName: string;
+  label?: string;
+  placeholder?: string;
+  required?: boolean;
+  hint?: string;
+  attrs: CustomComponentAttr;
+}
+
 export type CustomComponentAttrField = {
   fieldName?: string;
   label?: string;
