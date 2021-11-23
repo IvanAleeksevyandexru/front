@@ -22,16 +22,18 @@
 
   .suggest-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     position: relative;
     &:not(:last-child) {
       margin-bottom: 16px;
     }
   }
+
   .suggest-hint {
     @include typ-plain-small();
     color: $color-text-helper;
   }
+
   .suggest-delete {
     cursor: pointer;
     width: 24px;
@@ -39,7 +41,7 @@
     background: none;
     border: none;
     background-image: url(../../../assets/icons/svg/delete.svg);
-    position: absolute;
+    flex-shrink: 0;
     right: 0;
     top: 0;
     &[disabled] {
