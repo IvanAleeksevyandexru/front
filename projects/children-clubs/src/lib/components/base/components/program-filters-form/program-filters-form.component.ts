@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Injector,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -44,6 +52,11 @@ import { DictionaryService } from '../../../../services/dictionary/dictionary.se
   providers: [UnsubscribeService],
 })
 export class ProgramFiltersFormComponent extends ModalBaseComponent implements OnInit {
+  @ViewChild('focus', { read: ElementRef }) focus;
+  @ViewChild('direction', { read: ElementRef }) direction;
+  @ViewChild('level', { read: ElementRef }) level;
+  @ViewChild('ovzType', { read: ElementRef }) ovzType;
+
   @Input() formValue?: Filters;
   provider: LookupProvider<Partial<ListElement>> = { search: this.placeSearch() };
   healthListElements = HealthListElements;
@@ -186,6 +199,10 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     };
 
     this.closeModal(outputValue);
+  }
+
+  scrollIntoView(fieldKey: string, alignToTop: boolean): void {
+    this[fieldKey].nativeElement.scrollIntoView(alignToTop);
   }
 
   private numberValidators(): ValidatorFn {

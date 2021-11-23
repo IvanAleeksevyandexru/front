@@ -39,8 +39,8 @@ export class ModalService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public createModal<R, K = any>(modalComponent: Type<R>, modalParameters?: K): ComponentRef<R> {
+    document.body.style.overflow = 'hidden';
     if (HelperService.isTouchDevice()) {
-      document.body.style.overflow = 'hidden';
       const screenResolver = document.querySelector<HTMLElement>(
         'epgu-constructor-screen-resolver',
       );
