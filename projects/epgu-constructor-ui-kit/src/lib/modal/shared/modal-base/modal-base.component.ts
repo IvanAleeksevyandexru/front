@@ -40,8 +40,8 @@ export class ModalBaseComponent {
   }
 
   closeModal(value?: unknown): void {
+    document.body.style.overflow = null;
     if (HelperService.isTouchDevice()) {
-      document.body.style.overflow = null;
       const screenResolver = document.querySelector<HTMLElement>(
         'epgu-constructor-screen-resolver',
       );
