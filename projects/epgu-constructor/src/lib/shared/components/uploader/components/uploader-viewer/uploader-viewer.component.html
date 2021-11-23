@@ -1,9 +1,9 @@
 <div class="uploader-viewer">
   <div class="uploader-viewer__header">
-    <a class="modal__close" (click)="closeModal()"></a>
-    <h4 class="modal__title">
+    <a class="modal__close icon-close" (click)="closeModal()"></a>
+    <h3 class="modal__title">
       {{ type === filesType.suggest ? 'Ранее загруженные файлы' : 'Просмотр фото' }}
-    </h4>
+    </h3>
   </div>
   <div class="uploader-viewer__body">
     <epgu-constructor-uploader-viewer-content
