@@ -10,7 +10,7 @@ import {
   distinctUntilChanged,
   catchError,
   pluck,
-  skip,
+  filter,
 } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { StateService } from '../state/state.service';
@@ -51,7 +51,7 @@ export class ProgramListService {
   }
 
   data$$ = new BehaviorSubject<BaseProgram[]>([]);
-  data$ = this.data$$.pipe(skip(1));
+  data$ = this.data$$.pipe(filter((val) => !!val.length));
   paginatedData$ = new BehaviorSubject<BaseProgram[]>([]);
   programFilters$ = new BehaviorSubject<Filters>({});
 
