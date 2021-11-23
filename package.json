@@ -15,7 +15,7 @@
     "start:config": "json-server --watch form-player-config.json --routes form-player-config-routes.json",
     "start:config:uat": "json-server --watch form-player-config.uat.json --routes form-player-config-routes.json",
     "start:portal": "ng serve sf-portal --host vbeta.test.gosuslugi.ru --port 8888 --ssl",
-    "build: portal": "ng build sf-portal --configuration production",
+    "build:portal": "ng build sf-portal --configuration production",
     "test:portal": "ng test sf-portal",
     "lint:portal": "ng lint sf-portal",
     "copy-dev-i18n": "cpx \"dist/sf-portal-st/dev/lib-assets/i18n/**/*\" \"dist/sf-portal-st/dev/lib-assets/i18n\"",
