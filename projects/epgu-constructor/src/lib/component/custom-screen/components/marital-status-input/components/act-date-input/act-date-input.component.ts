@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { AbstractControl } from '@angular/forms';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
-import { MaritalStatusInputFieldsTypes } from '../../marital-status-input.types';
 
 @Component({
   selector: 'epgu-constructor-act-date-input',
@@ -16,8 +15,7 @@ export class ActDateInputComponent {
   @Input() control: AbstractControl;
   @Input() brokenDateFixStrategy?: BrokenDateFixStrategy = BrokenDateFixStrategy.NONE;
   @Input() validationShowOn: ValidationShowOn | string | boolean;
-
-  public FieldsTypes = MaritalStatusInputFieldsTypes;
+  @Input() id: string;
 
   public markControlAsDirty(): void {
     this.control.markAsDirty();

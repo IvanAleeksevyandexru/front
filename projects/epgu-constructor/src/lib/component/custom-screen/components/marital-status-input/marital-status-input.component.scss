@@ -22,4 +22,26 @@
     display: block;
     margin-top: 4px;
   }
+
+  &__date-group {
+    @include phones-up() {
+      display: flex;
+
+      & > div {
+        flex: 1;
+
+        &:not(:first-child) {
+          margin-left: $screen-pad-24;
+        }
+
+        &:first-child:not(:only-child) {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  & > div:last-child {
+    margin-bottom: 0;
+  }
 }

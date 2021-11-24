@@ -38,11 +38,7 @@ export class MaritalStatusInputComponent
   public classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   public MaritalStatusInputFieldsTypes = MaritalStatusInputFieldsTypes;
   public fields: MaritalStatusInputField[];
-  public fieldsNames = [
-    this.MaritalStatusInputFieldsTypes.date,
-    this.MaritalStatusInputFieldsTypes.number,
-    this.MaritalStatusInputFieldsTypes.registrator,
-  ];
+  public fieldsNames: string[] = [];
 
   public validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   public brokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
@@ -68,6 +64,10 @@ export class MaritalStatusInputComponent
     super.ngOnInit();
     this.itemsProvider = { search: this.providerSearch() };
     this.fields = this.attrs?.fields as MaritalStatusInputField[];
+    this.fieldsNames = this.fields.reduce((accumulator, field) => {
+      accumulator.push(field.fieldName);
+      return accumulator;
+    }, []);
     this.addFormGroupControls();
     this.subscribeOnFormChange();
     this.updateParentIfNotValid();
@@ -184,7 +184,9 @@ export class MaritalStatusInputComponent
 
       const validators = [this.validationService.customValidator(subComponent)];
       const value =
-        fieldName === MaritalStatusInputFieldsTypes.date && componentValues[fieldName]
+        (fieldName === MaritalStatusInputFieldsTypes.actRecDate ||
+          fieldName === MaritalStatusInputFieldsTypes.issueDate) &&
+        componentValues[fieldName]
           ? new Date(componentValues[fieldName])
           : componentValues[fieldName];
 
@@ -229,7 +231,7 @@ export class MaritalStatusInputComponent
 
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
-      const regComponent = this.getFieldByName(MaritalStatusInputFieldsTypes.registrator);
+      const regComponent = this.getFieldByName(MaritalStatusInputFieldsTypes.actRecRegistrator);
       const filters = [...regComponent.attrs.searchProvider.dictionaryFilter];
       filters[0].value = searchString;
       const value = new FormArray(
