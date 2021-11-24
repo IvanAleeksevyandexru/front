@@ -57,6 +57,17 @@
     height: 100%;
     background: $color-white;
     overflow-y: hidden;
+    z-index: 12;
+  }
+
+  .shadow-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    user-select: none;
+    background: rgba(11, 31, 51, 0.62);
     z-index: 10;
   }
 
