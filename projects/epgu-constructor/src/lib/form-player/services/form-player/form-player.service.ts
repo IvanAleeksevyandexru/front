@@ -2,7 +2,6 @@ import { Inject, Injectable, Injector } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
-import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
   CheckOrderApiResponse,
@@ -10,6 +9,8 @@ import {
   FormPlayerApiSuccessResponse,
   QuizDataDtoResponse,
   QuizRequestDto,
+  FormPlayerNavigation,
+  Navigation,
 } from '@epgu/epgu-constructor-types';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import { catchError, finalize, mergeMap, tap } from 'rxjs/operators';

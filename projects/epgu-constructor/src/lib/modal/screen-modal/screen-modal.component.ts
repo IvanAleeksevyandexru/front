@@ -8,20 +8,18 @@ import {
 } from '@angular/core';
 import { debounceTime, delay, takeUntil } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import {
+  ScreenTypes,
+  FormPlayerNavigation,
+  Navigation,
+  NavigationPayload,
+} from '@epgu/epgu-constructor-types';
 import {
   ModalBaseComponent,
   DeviceDetectorService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import {
-  FormPlayerNavigation,
-  Navigation,
-  NavigationPayload,
-} from '../../form-player/form-player.types';
 import { NavigationModalService } from '../../core/services/navigation-modal/navigation-modal.service';
-
 import { ScreenModalService } from './screen-modal.service';
 import { ScreenService } from '../../screen/screen.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';

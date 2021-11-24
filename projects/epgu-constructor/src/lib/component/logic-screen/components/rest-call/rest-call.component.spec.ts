@@ -10,7 +10,7 @@ import {
   LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { ApplicantAnswersDto, NavigationPayload } from '@epgu/epgu-constructor-types';
 import { HttpClientModule } from '@angular/common/http';
 import RestCallComponent from './rest-call.component';
 import { LogicComponentsContainerComponent } from '../../component/logic-components-container.component';
@@ -32,7 +32,6 @@ import { RestService } from '../../../../shared/services/rest/rest.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { HookTypes } from '../../../../core/services/hook/hook.constants';
-import { NavigationPayload } from '../../../../form-player/form-player.types';
 import { LogicComponentResolverComponent } from '../../component-list-resolver/logic-component-resolver.component';
 
 describe('RestCallComponent', () => {

@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { Navigation } from '../../form-player/form-player.types';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../form-player/services/form-player-api/form-player-api.service.stub';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
@@ -10,7 +9,7 @@ import { ScreenService } from '../../screen/screen.service';
 import { ScreenServiceStub } from '../../screen/screen.service.stub';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
 import { ScreenModalService } from './screen-modal.service';
-import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiErrorStatuses, Navigation } from '@epgu/epgu-constructor-types';
 
 const response = new FormPlayerServiceStub()._store;
 

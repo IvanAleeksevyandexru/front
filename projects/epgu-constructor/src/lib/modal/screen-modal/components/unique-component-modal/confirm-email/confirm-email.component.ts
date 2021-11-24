@@ -1,17 +1,18 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DTOActionAction } from '@epgu/epgu-constructor-types';
+import {
+  DTOActionAction,
+  NavigationOptions,
+  NavigationPayload,
+} from '@epgu/epgu-constructor-types';
 import {
   EventBusService,
   UnsubscribeService,
   ConfigService,
   BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
-
-import { NavigationOptions, NavigationPayload } from '../../../../../form-player/form-player.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UniqueScreenComponentTypes } from '../../../../../component/unique-screen/unique-screen-components.types';
 

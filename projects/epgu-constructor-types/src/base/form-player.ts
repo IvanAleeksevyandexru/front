@@ -1,8 +1,6 @@
-import {
-  Answer,
-  FormPlayerApiSuccessResponse,
-  ComponentActionDto,
-} from '@epgu/epgu-constructor-types';
+import { Answer } from './answer';
+import { FormPlayerApiSuccessResponse } from '../api';
+import { ComponentActionDto } from './component-action-dto';
 
 export interface QueryParams {
   [key: string]: string;
@@ -89,6 +87,7 @@ export interface NavigationOptions {
   deliriumAction?: string;
 }
 
+// @ts-ignore
 export type NavigationParams = Pick<ComponentActionDto['attrs'], 'stepsBack'>;
 
 export interface Navigation {
