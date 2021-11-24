@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { FormPlayerStartManager } from './form-player-start.manager';
-import { FormPlayerNavigation, ServiceEntity } from '../../form-player.types';
 import { of } from 'rxjs';
 import {
   LAST_SCENARIO_KEY,
@@ -29,7 +28,13 @@ import { InitDataServiceStub } from '../../../core/services/init-data/init-data.
 import { ContinueOrderModalServiceStub } from '../../../modal/continue-order-modal/continue-order-modal.service.stub';
 import { Location } from '@angular/common';
 import { cloneDeep } from 'lodash';
-import { OrderDto, APP_OUTPUT_KEY, CheckOrderApiResponse } from '@epgu/epgu-constructor-types';
+import {
+  OrderDto,
+  APP_OUTPUT_KEY,
+  CheckOrderApiResponse,
+  FormPlayerNavigation,
+  ServiceEntity,
+} from '@epgu/epgu-constructor-types';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 

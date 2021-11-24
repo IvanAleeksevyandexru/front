@@ -4,7 +4,7 @@ import {
   QueryParams,
   ServiceEntity,
   ServiceInfo,
-} from '../../../form-player/form-player.types';
+} from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class InitDataServiceStub implements ServiceEntity, FormPlayerContext {
