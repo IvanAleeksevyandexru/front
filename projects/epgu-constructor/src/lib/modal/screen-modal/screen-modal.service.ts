@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FormPlayerNavigation, Navigation } from '../../form-player/form-player.types';
+import { FormPlayerNavigation, Navigation } from '@epgu/epgu-constructor-types';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';

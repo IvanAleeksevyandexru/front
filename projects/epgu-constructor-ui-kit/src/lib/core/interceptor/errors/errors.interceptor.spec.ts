@@ -15,10 +15,9 @@ import { InitDataService } from '@epgu/epgu-constructor/src/lib/core/services/in
 import { InitDataServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
 import DOUBLE_ORDER_ERROR_DISPLAY from '@epgu/epgu-constructor/src/lib/core/display-presets/409-error';
 import EXPIRE_ORDER_ERROR_DISPLAY from '@epgu/epgu-constructor/src/lib/core/display-presets/410-error';
-import { FormPlayerNavigation } from '@epgu/epgu-constructor/src/lib/form-player/form-player.types';
 import { FormPlayerServiceStub } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service.stub';
 import { ErrorHandlerService } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler.service';
-import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiSuccessResponse, FormPlayerNavigation } from '@epgu/epgu-constructor-types';
 import { ConfirmationModalComponent } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.component';
 import { ModalService } from '../../../modal/modal.service';
 import { ConfigService } from '../../services/config/config.service';

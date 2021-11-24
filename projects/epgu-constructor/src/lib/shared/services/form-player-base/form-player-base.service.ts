@@ -5,7 +5,7 @@ import {
   FormPlayerNavigation,
   Navigation,
   NavigationPayload,
-} from '../../../form-player/form-player.types';
+} from '@epgu/epgu-constructor-types';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { HtmlRemoverService } from '../html-remover/html-remover.service';

@@ -9,7 +9,6 @@ import {
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerNavigation } from '../../form-player.types';
 import { FormPlayerService } from '../form-player/form-player.service';
 import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 import { UnsubscribeService, LocationService } from '@epgu/epgu-constructor-ui-kit';
@@ -21,6 +20,7 @@ import {
   APP_OUTPUT_KEY,
   FormPlayerApiResponse,
   OrderDto,
+  FormPlayerNavigation,
 } from '@epgu/epgu-constructor-types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 
