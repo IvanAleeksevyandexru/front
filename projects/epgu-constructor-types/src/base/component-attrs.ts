@@ -349,15 +349,16 @@ export interface ComponentPresetDto {
   value: string;
 }
 
+export interface RelationCondition {
+  type: 'RegExp' | 'MinDate' | 'MaxDate';
+  value: string;
+  result: {
+    attrs: ComponentAttrsDto;
+  };
+}
 export interface ComponentRelationFieldDto {
   ref: string;
-  conditions: {
-    type: 'RegExp' | 'MinDate' | 'MaxDate';
-    value: string;
-    result: {
-      attrs: ComponentAttrsDto;
-    };
-  }[];
+  conditions: RelationCondition[];
 }
 
 export interface ComponentValidationDto {
