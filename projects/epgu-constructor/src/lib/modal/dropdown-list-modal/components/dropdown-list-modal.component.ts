@@ -38,7 +38,6 @@ export class DropdownListModalComponent extends ModalBaseComponent implements On
     private eventBusService: EventBusService,
   ) {
     super(injector);
-    this.screenService.dropdownListModalComponent = this;
   }
 
   ngOnInit(): void {
