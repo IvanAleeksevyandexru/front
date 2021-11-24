@@ -102,13 +102,6 @@ describe('ComponentsListFormService', () => {
     value: 'value',
     required: true,
   };
-  let dictionaryMock = (index) => ({
-    originalItem: {
-      attributeValues: {
-        OKATO: index === 0 ? '40000000000' : '45000000000',
-      },
-    },
-  });
   let component: MockComponent;
   let dictionaryToolsService: DictionaryToolsService;
   let addressHelperService: AddressHelperService;

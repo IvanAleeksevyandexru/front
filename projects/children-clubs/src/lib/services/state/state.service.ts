@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs';
+import { pluck } from 'rxjs/operators';
+
 import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { MicroAppStateQuery, MicroAppStateService } from '@epgu/epgu-constructor-ui-kit';
 import {
@@ -6,9 +10,6 @@ import {
   ChildrenClubsValue,
   GroupFiltersModes,
 } from '../../children-clubs.types';
-import { cloneDeep } from 'lodash';
-import { Observable } from 'rxjs';
-import { pluck } from 'rxjs/operators';
 
 @Injectable()
 export class StateService {
@@ -35,8 +36,8 @@ export class StateService {
     return +this.stateQuery.state.pageSize || 10;
   }
 
-  get okato(): number {
-    return +this.stateQuery.state.okato;
+  get okato(): string {
+    return this.stateQuery.state.okato;
   }
 
   get mapOptions(): string {

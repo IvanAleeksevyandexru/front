@@ -51,8 +51,8 @@ Thumbs.db
 
 # Generated file
 /projects/epgu-constructor/src/assets/version.json
-documentation
 .run
+documentation
 /documentation.json
 /report/*
 # stryker temp files

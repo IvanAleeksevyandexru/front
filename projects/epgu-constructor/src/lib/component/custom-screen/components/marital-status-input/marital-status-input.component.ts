@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { ListElement } from '@epgu/ui/models/dropdown';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
+
 import {
   MaritalStatusInputField,
   MaritalStatusInputFields,
@@ -20,6 +21,8 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import MaritalStatusInputModelAttrs from './MaritalStatusInputModelAttrs';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { Fields } from '../../components-list.types';
 
 @Component({
   selector: 'epgu-constructor-marital-status-input',
@@ -46,6 +49,8 @@ export class MaritalStatusInputComponent
   public hasExpirationDate = false;
   public form: FormGroup;
 
+  private values: string;
+
   public constructor(
     public injector: Injector,
     public suggestHandlerService: SuggestHandlerService,
@@ -54,6 +59,7 @@ export class MaritalStatusInputComponent
     private fb: FormBuilder,
     private textTransform: TextTransformService,
     private dictionaryToolsService: DictionaryToolsService,
+    private componentList: ComponentsListFormService,
   ) {
     super(injector);
   }
@@ -120,6 +126,7 @@ export class MaritalStatusInputComponent
 
   public subscribeOnFormChange(): void {
     this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((formFields) => {
+      this.relationMapChanges(formFields);
       const patchedFormFields = Object.entries(formFields).reduce<MaritalStatusInputFields>(
         (acc: MaritalStatusInputFields, [key, value]) => {
           if (this.fields[key]?.attrs?.fstuc) {
@@ -188,6 +195,30 @@ export class MaritalStatusInputComponent
     }, {});
 
     this.form = this.fb.group(fields);
+  }
+
+  private relationMapChanges(next: Fields): void {
+    const keys = Object.keys(next);
+    const current = JSON.stringify(next);
+
+    if (this.values !== current) {
+      this.values = current;
+
+      keys.forEach((key) => {
+        const maritalFieldAttrs = this.fields.find((field) => field.fieldName === key).attrs;
+        const relationField = maritalFieldAttrs?.relationField;
+
+        if (!relationField) {
+          return;
+        }
+
+        const { ref } = relationField;
+        const value = next[key];
+        const refControl = this.form.get(ref);
+        const refComponent = this.getFieldByName(ref);
+        this.componentList.relationMapChanges(next, relationField, value, refControl, refComponent);
+      });
+    }
   }
 
   private getParsedComponentValues(): MaritalStatusInputFields {

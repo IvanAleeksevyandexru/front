@@ -9,7 +9,6 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
 import { HtmlRemoverService } from '../../../shared/services/html-remover/html-remover.service';
-import { FormPlayerNavigation, Navigation } from '../../form-player.types';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
@@ -20,6 +19,8 @@ import {
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   ScreenTypes,
+  FormPlayerNavigation,
+  Navigation,
 } from '@epgu/epgu-constructor-types';
 import { FormPlayerApiErrorStatuses } from '@epgu/epgu-constructor-types';
 

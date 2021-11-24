@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Injector,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,15 +16,15 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { map, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 import {
   EventBusService,
   BusEventType,
   ModalBaseComponent,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import { map, takeUntil, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { ListElement, ListItem, LookupProvider } from '@epgu/ui/models/dropdown';
 import {
   defaultInlearnoFilters,
@@ -44,6 +52,11 @@ import { DictionaryService } from '../../../../services/dictionary/dictionary.se
   providers: [UnsubscribeService],
 })
 export class ProgramFiltersFormComponent extends ModalBaseComponent implements OnInit {
+  @ViewChild('focus', { read: ElementRef }) focus;
+  @ViewChild('direction', { read: ElementRef }) direction;
+  @ViewChild('level', { read: ElementRef }) level;
+  @ViewChild('ovzType', { read: ElementRef }) ovzType;
+
   @Input() formValue?: Filters;
   provider: LookupProvider<Partial<ListElement>> = { search: this.placeSearch() };
   healthListElements = HealthListElements;
@@ -126,7 +139,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     return (searchString): Observable<Partial<ListElement>[]> => {
       return this.dictionary.municipalitiesList$.pipe(
         map((data) => {
-          if (searchString.length === 0) {
+          if (!searchString || searchString.length === 0) {
             return data;
           }
           return data.filter((item) =>
@@ -151,7 +164,10 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
       [this.formFields.municipality]: new FormControl(value?.municipality || null),
       [this.formFields.onlyDistanceProgram]: new FormControl(value?.onlyDistanceProgram || false),
       [this.filterKey]: new FormControl(this.initFilters || defaultFilters),
-      [this.formFields.maxPrice]: new FormControl(value?.maxPrice || null, this.numberValidators()),
+      [this.formFields.maxPrice]: new FormControl(value?.maxPrice || null, [
+        this.numberValidators(),
+        Validators.maxLength(18),
+      ]),
       [this.formFields.focus]: new FormControl(null),
       [this.formFields.direction]: new FormControl(null),
       [this.formFields.level]: new FormControl(level || this.levelListElements[0]),
@@ -186,6 +202,10 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     };
 
     this.closeModal(outputValue);
+  }
+
+  scrollIntoView(fieldKey: string, alignToTop: boolean): void {
+    this[fieldKey].nativeElement.scrollIntoView(alignToTop);
   }
 
   private numberValidators(): ValidatorFn {

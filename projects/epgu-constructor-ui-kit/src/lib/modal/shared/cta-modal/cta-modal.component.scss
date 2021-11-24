@@ -23,9 +23,11 @@ $closeBtnWidth: 24px;
     height: auto;
     border-radius: 12px;
   }
+
   @include phones-down {
     padding: 24px;
   }
+
   &--short {
     @include phones-down {
       padding: 16px 16px 24px;
@@ -58,6 +60,7 @@ $closeBtnWidth: 24px;
   &__body {
     display: flex;
     overflow: auto; // для отработки скрола в модалке в моб
+    flex: 1 1 auto;
     @include rubles('.conf-modal__body');
     @include tablets-down {
       height: 100%;
@@ -75,10 +78,10 @@ $closeBtnWidth: 24px;
 
   &__content {
     overflow: auto;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    height: 100%;
     @include flex-container();
-    @include tablets-down {
-      height: 100%;
-    }
 
     .scroll-padding {
       padding-right: 16px;

@@ -675,6 +675,7 @@ export class ComponentsListRelationsService {
     const relation: CustomComponentRef = this.getRelation(dependentComponent, reference);
     const newValue = this.getValueFromRelationComponent(relation, components, componentVal, form);
     dependentControl.get('value').patchValue(newValue, { onlySelf: true, emitEvent: false });
+    dependentComponent.value = newValue as string;
   }
 
   private handleIsCalcRelation(

@@ -2,14 +2,13 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError, concatMap, delay, map, takeUntil, tap } from 'rxjs/operators';
-import { LogicComponents } from '@epgu/epgu-constructor-types';
+import { LogicComponents, NavigationPayload } from '@epgu/epgu-constructor-types';
 import { forkJoin, ObservableInput, of } from 'rxjs';
 import AbstractLogicComponent from '../abstract-logic/abstract-logic.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { LogicService } from '../../service/logic.service';
 import { HookService } from '../../../../core/services/hook/hook.service';
 import { HookTypes } from '../../../../core/services/hook/hook.constants';
-import { NavigationPayload } from '../../../../form-player/form-player.types';
 
 @Component({
   selector: 'epgu-constructor-rest-call',

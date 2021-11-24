@@ -191,7 +191,7 @@ export interface FindOptionsProgram {
   filters: Filters;
   nextSchoolYear: boolean; //Следующий учебный год (с 1 сентября), выбирается после региона
   vendor: VendorType; //Вендор выбранного региона, со значениями "inlearno" или "pfdo"
-  okato: number; //ОКАТО региона, в котором ищутся программы. Обязательное поле.
+  okato: string; //ОКАТО региона, в котором ищутся программы. Обязательное поле.
   page: number; //Номера страницы, начиная с 0. По умолчанию 0
   pageSize: number; // Размер страницы
 }

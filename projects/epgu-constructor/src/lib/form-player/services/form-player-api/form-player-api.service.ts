@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { LocationService } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerNavigation, NavigationOptions, NavigationParams } from '../../form-player.types';
 import {
   ActionApiResponse,
   ActionRequestPayload,
@@ -13,6 +12,9 @@ import {
   FormPlayerApiSuccessResponse,
   QuizDataDtoResponse,
   QuizRequestDto,
+  FormPlayerNavigation,
+  NavigationOptions,
+  NavigationParams,
 } from '@epgu/epgu-constructor-types';
 import { map } from 'rxjs/operators';
 

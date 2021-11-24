@@ -13,6 +13,7 @@
         componentData.value?.attrs?.grid ? componentData.value?.attrs?.grid : ''
       }}"
       [class.form__item--checkbox]="[componentType.CheckBox].includes(componentData.value?.type)"
+      [class.form__item--date]="[componentType.MonthPicker].includes(componentData.value?.type)"
       [class.show]="
         formService.shownElements[componentData.value?.id]?.isShown
           | showComponent: componentData.value?.attrs?.hidden

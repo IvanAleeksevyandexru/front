@@ -30,7 +30,8 @@ import { HealthServiceStub, HealthService } from '@epgu/epgu-constructor-ui-kit'
 import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 import { DadataWidgetComponent, PlainInputComponent } from '@epgu/ui/controls';
 import { of } from 'rxjs';
-import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
+import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
+import { ValidationServiceStub } from '../../../../../../shared/services/validation/validation.service.stub';
 
 const mockData = {
   attrs: {
@@ -50,12 +51,6 @@ const mockData = {
   value: '{}',
   type: UniqueScreenComponentTypes.confirmPersonalUserRegAddr,
   required: true,
-};
-const actionMock: ComponentActionDto = {
-  label: '',
-  value: '',
-  action: null,
-  type: ActionType.nextStepModal,
 };
 
 describe('ConfirmPersonalUserAddressComponent', () => {
@@ -91,6 +86,7 @@ describe('ConfirmPersonalUserAddressComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        { provide: ValidationService, useClass: ValidationServiceStub },
         MockProvider(SuggestHandlerService),
         MockProvider(EventBusService),
         MockProvider(HttpCancelService),

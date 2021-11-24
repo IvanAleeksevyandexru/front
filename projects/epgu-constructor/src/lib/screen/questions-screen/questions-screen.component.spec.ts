@@ -15,7 +15,7 @@ import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { NavigationPayload } from '../../form-player/form-player.types';
+import { NavigationPayload } from '@epgu/epgu-constructor-types';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';

@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { MockModule } from 'ng-mocks';
+
 import { UploaderManagerItemComponent } from './uploader-manager-item.component';
 import { BaseModule } from '../../../../base.module';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
@@ -7,7 +11,6 @@ import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ChangeDetectionStrategy } from '@angular/core';
 import {
   TerraUploadFileOptions,
   UploadedFile,
@@ -19,8 +22,6 @@ import {
   FileItemStatus,
   OperationType,
 } from '../../../file-upload/data';
-import { By } from '@angular/platform-browser';
-import { MockModule } from 'ng-mocks';
 import { FileSizePipe } from '@epgu/ui/pipes';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
@@ -46,6 +47,7 @@ const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): 
     uploaded: true,
     hasError: false,
     alternativeMimeTypes: [],
+    description: '',
     ...options,
   };
 };
@@ -174,6 +176,14 @@ describe('UploaderManagerItemComponent', () => {
     jest.spyOn(component, 'preview');
     component.viewAction();
     expect(component.preview).toHaveBeenCalled();
+  });
+
+  it('should be no view action for archive', () => {
+    component.file = mockFileItem('test.zip', FileItemStatus.uploaded);
+    fixture.detectChanges();
+    jest.spyOn(component, 'preview');
+    component.viewAction();
+    expect(component.preview).not.toHaveBeenCalled();
   });
 
   it('should be view action for pdf and webview  = true', () => {

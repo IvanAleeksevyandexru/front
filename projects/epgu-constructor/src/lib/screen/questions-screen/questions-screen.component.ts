@@ -13,6 +13,7 @@ import {
   ComponentAnswerDto,
   Answer,
   ConfirmationModal,
+  NavigationPayload,
 } from '@epgu/epgu-constructor-types';
 import {
   ModalService,
@@ -21,8 +22,6 @@ import {
   ConfigService,
   SessionService,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import { NavigationPayload } from '../../form-player/form-player.types';
 import { ScreenBase } from '../screen-base';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
 

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModalBaseComponent } from './modal-base.component';
-import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ModalBaseComponent', () => {
   let component: ModalBaseComponent;
@@ -60,7 +59,7 @@ describe('ModalBaseComponent', () => {
 
   describe('closeModal', () => {
     it('should be reset overflow', () => {
-      jest.spyOn(HelperService, 'isTouchDevice').mockReturnValue(true);
+      document.body.style.overflow = 'hidden';
       component.closeModal();
       expect(document.body.style.overflow).toBe('');
     });

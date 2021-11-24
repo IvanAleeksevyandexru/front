@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavigationPayload } from '../../../form-player/form-player.types';
+import { NavigationPayload } from '@epgu/epgu-constructor-types';
 import { ObservableInput } from 'rxjs';
 import { HookTypes } from './hook.constants';
 

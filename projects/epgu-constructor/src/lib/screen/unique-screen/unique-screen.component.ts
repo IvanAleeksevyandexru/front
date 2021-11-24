@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { NavigationPayload } from '@epgu/epgu-constructor-types';
 import { UniqueScreenComponentTypes } from '../../component/unique-screen/unique-screen-components.types';
-import { NavigationPayload } from '../../form-player/form-player.types';
 import { ScreenBase } from '../screen-base';
 
 @Component({

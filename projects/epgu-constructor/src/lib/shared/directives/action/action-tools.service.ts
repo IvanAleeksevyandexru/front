@@ -7,6 +7,10 @@ import {
   CurrentValueDto,
   DTOActionAction,
   ScreenTypes,
+  FormPlayerNavigation,
+  Navigation,
+  NavigationOptions,
+  NavigationParams,
 } from '@epgu/epgu-constructor-types';
 import {
   BusEventType,
@@ -16,12 +20,6 @@ import {
   LocationService,
   ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
-import {
-  FormPlayerNavigation,
-  Navigation,
-  NavigationOptions,
-  NavigationParams,
-} from '../../../form-player/form-player.types';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, filter } from 'rxjs/operators';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
