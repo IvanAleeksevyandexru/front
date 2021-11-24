@@ -2,6 +2,7 @@
   [showMap]="showMap"
   [zoom]="mapOptions?.initZoom"
 >
+  <div *ngIf="(yandexMapService.selectedValue$ | async) && isMobile" class="shadow-overlay"></div>
   <div *ngIf="yandexMapService.selectedValue$ | async as selectedValue" class="map-objects-list">
     <perfect-scrollbar *ngIf="!isMobile; else contentBlock" [config]="scrollConfig">
       <ng-container *ngTemplateOutlet="contentBlock"></ng-container>
@@ -24,9 +25,9 @@
             />
             <span class="PGU-AttrsValue">{{ financingTypes[item].text }}</span>
           </div>
-          <lib-button (click)="selectObject(mapObject)" class="submit-button" width="wide"
-            >Выбрать</lib-button
-          >
+          <lib-button (click)="selectObject(mapObject)" class="submit-button" width="wide">
+            Выбрать
+          </lib-button>
         </ng-container>
       </div>
     </ng-template>

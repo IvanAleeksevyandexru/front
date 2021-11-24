@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { Navigation } from '../../../form-player/form-player.types';
+import { Navigation } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class NavigationModalService {

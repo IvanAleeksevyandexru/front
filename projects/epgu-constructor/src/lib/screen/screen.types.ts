@@ -1,5 +1,10 @@
-import { NavigationPayload } from '../form-player/form-player.types';
-import { ComponentDto, Answer, DisplayDto, ScenarioDto } from '@epgu/epgu-constructor-types';
+import {
+  ComponentDto,
+  Answer,
+  DisplayDto,
+  ScenarioDto,
+  NavigationPayload,
+} from '@epgu/epgu-constructor-types';
 
 /**
  * Интерфейс для базового компонента

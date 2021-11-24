@@ -13,7 +13,14 @@ import {
 import { LoadService } from '@epgu/ui/services/load';
 import { filter, mergeMap, takeUntil, tap, take, distinctUntilChanged } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { ScenarioDto } from '@epgu/epgu-constructor-types';
+import {
+  ScenarioDto,
+  FormPlayerContext,
+  FormPlayerNavigation,
+  Navigation,
+  NavigationPayload,
+  ServiceEntity,
+} from '@epgu/epgu-constructor-types';
 import {
   UnsubscribeService,
   ConfigService,
@@ -22,13 +29,6 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../core/services/navigation/navigation.service';
 import { ScreenService } from '../screen/screen.service';
-import {
-  FormPlayerContext,
-  FormPlayerNavigation,
-  Navigation,
-  NavigationPayload,
-  ServiceEntity,
-} from './form-player.types';
 import { FormPlayerService } from './services/form-player/form-player.service';
 import { InitDataService } from '../core/services/init-data/init-data.service';
 import { FormPlayerStartManager } from './services/form-player-start/form-player-start.manager';
