@@ -38,7 +38,7 @@ import { NavigationServiceStub } from '../core/services/navigation/navigation.se
 import { ScreenService } from '../screen/screen.service';
 import { ScreenServiceStub } from '../screen/screen.service.stub';
 import { InitDataServiceStub } from '../core/services/init-data/init-data.service.stub';
-import { FormPlayerNavigation, ServiceEntity } from './form-player.types';
+import { FormPlayerNavigation, ServiceEntity } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
 import { ContinueOrderModalService } from '../modal/continue-order-modal/continue-order-modal.service';
 import { ContinueOrderModalServiceStub } from '../modal/continue-order-modal/continue-order-modal.service.stub';

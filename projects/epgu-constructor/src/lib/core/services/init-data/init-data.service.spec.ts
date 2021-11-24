@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { InitDataService } from './init-data.service';
-import { FormPlayerContext, ServiceEntity } from '../../../form-player/form-player.types';
+import { FormPlayerContext, ServiceEntity } from '@epgu/epgu-constructor-types';
 
 describe('InitDataService', () => {
   let service: InitDataService;

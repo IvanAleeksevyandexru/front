@@ -2,6 +2,7 @@
   [showMap]="showMap"
   [zoom]="mapOptions?.initZoom"
 >
+  <div *ngIf="(yandexMapService.selectedValue$ | async) && isMobile" class="shadow-overlay"></div>
   <div *ngIf="yandexMapService.selectedValue$ | async as selectedValue" class="map-objects-list">
     <div class="cross-btn" (click)="yandexMapService.closeBalloon()"></div>
     <div class="map-object__header__wrapper" >

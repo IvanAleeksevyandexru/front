@@ -4,7 +4,7 @@ import {
   QueryParams,
   ServiceEntity,
   ServiceInfo,
-} from '../../../form-player/form-player.types';
+} from '@epgu/epgu-constructor-types';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 
 /**

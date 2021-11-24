@@ -1,6 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormPlayerNavigation, ServiceInfo } from '../../form-player.types';
 import { FormPlayerApiService } from './form-player-api.service';
 import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { FormPlayerApiSuccessResponse, ScreenTypes } from '@epgu/epgu-constructor-types';
@@ -8,7 +7,7 @@ import { InitDataServiceStub } from '../../../core/services/init-data/init-data.
 import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
-import { Gender } from '@epgu/epgu-constructor-types';
+import { Gender, FormPlayerNavigation, ServiceInfo } from '@epgu/epgu-constructor-types';
 
 describe('FormPlayerApiService', () => {
   let service: FormPlayerApiService;

@@ -9,14 +9,13 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { DisplayDto } from '@epgu/epgu-constructor-types';
+import { DisplayDto, NavigationPayload } from '@epgu/epgu-constructor-types';
 import {
   CustomComponent,
   CustomComponentOutputData,
   CustomComponentValidationConditions,
   CustomScreenComponentTypes,
 } from '../../component/custom-screen/components-list.types';
-import { NavigationPayload } from '../../form-player/form-player.types';
 import { ScreenBase } from '../screen-base';
 import { CustomScreenService } from './custom-screen.service';
 
