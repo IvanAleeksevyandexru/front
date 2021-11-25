@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   NgZone,
   OnDestroy,
   OnInit,
@@ -56,6 +57,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private modalService: ModalService,
     private addressesToolsService: AddressesToolsService,
     private footerService: FooterService,
+    private elementRef: ElementRef,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -93,12 +95,13 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
    */
   public expandObject(mapObject: YMapItem<BaseProgram>): void {
     if (!mapObject || mapObject.expanded) return;
-    this.yandexMapService.selectedValue$.next(
-      this.yandexMapService.selectedValue$.value.map((object: YMapItem<BaseProgram>) => {
-        return { ...object, expanded: object === mapObject };
-      }),
-    );
-    this.cdr.markForCheck();
+    const expandedClub = this.yandexMapService.selectedValue$.value.find((club) => club.expanded);
+    if (expandedClub) {
+      expandedClub.expanded = false;
+    }
+    // eslint-disable-next-line no-param-reassign
+    mapObject.expanded = true;
+    this.cdr.detectChanges();
   }
 
   public handleError(error: string): Observable<unknown> {
@@ -143,18 +146,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         filter((coords: IYMapPoint<BaseProgram>[]) => !!coords),
         tap((coords: IYMapPoint<BaseProgram>[]) => this.handleGettingCoordinatesResponse(coords)),
       )
-      .subscribe(() => {
-        const { addressString } = this.stateService;
-        if (addressString) {
-          this.yandexMapService.geoCode(addressString).subscribe((geoCode) => {
-            const envelope =
-              geoCode.response.GeoObjectCollection.featureMember[0].GeoObject.boundedBy.Envelope;
-            const bound1 = envelope.lowerCorner.split(' ').map((coord) => +coord);
-            const bound2 = envelope.upperCorner.split(' ').map((coord) => +coord);
-            this.yandexMapService.setBounds([bound1, bound2]);
-          });
-        } else {
-          this.yandexMapService.centerAllPoints();
+      .subscribe((coords) => {
+        if (coords.length) {
+          this.initCenter();
         }
       });
   }
@@ -210,5 +204,39 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     // Необходимо очистить behaviorSubject чтобы при следующей подписке он не стрельнул 2 раза (текущее значение и новое при создание карты)
     this.yaMapService.mapSubject.next(null);
     this.footerService.setVisible(true);
+  }
+
+  private initCenter(): void {
+    const { addressString, selectedProgramUUID } = this.stateService;
+    if (selectedProgramUUID) {
+      // Нельзя сразу выбрать кластер, так как без центровки и зума его еще нет
+      const selectedClub = this.yandexMapService.objectManager.objects
+        .getAll()
+        .find((club) => club.properties.res.uuid === this.stateService.selectedProgramUUID);
+      selectedClub.properties.res.expanded = true;
+      this.yandexMapService.setCenter(selectedClub.geometry.coordinates);
+      this.yandexMapService.setZoom(99);
+      const clusters = this.yandexMapService.objectManager.clusters.getAll();
+      const selectedCluster = clusters.find((cluster) => {
+        return cluster.features.find(
+          (club) => club.properties.res.uuid === this.stateService.selectedProgramUUID,
+        );
+      });
+      this.yandexMapService.centeredPlaceMark(selectedCluster);
+      setTimeout(() => {
+        const expandedNode = this.elementRef.nativeElement.querySelector('.map-object.expanded');
+        expandedNode?.scrollIntoView();
+      }, 0);
+    } else if (addressString) {
+      this.yandexMapService.geoCode(addressString).subscribe((geoCode) => {
+        const envelope =
+          geoCode.response.GeoObjectCollection.featureMember[0].GeoObject.boundedBy.Envelope;
+        const bound1 = envelope.lowerCorner.split(' ').map((coord) => +coord);
+        const bound2 = envelope.upperCorner.split(' ').map((coord) => +coord);
+        this.yandexMapService.setBounds([bound1, bound2]);
+      });
+    } else {
+      this.yandexMapService.centerAllPoints();
+    }
   }
 }
