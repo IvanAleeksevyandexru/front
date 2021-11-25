@@ -9,20 +9,6 @@
   (handleFiltering)="handleFiltering($event)"
 ></epgu-constructor-search-panel-resolver>
 
-  <div class="previously-choosen" [ngClass]="{ hidden: selectMapObjectService.isMapViewType }" *ngIf="previouslyChoosenItem">
-    <p class="previously-choosen__title">
-      Вы ранее выбрали
-    </p>
-    <epgu-constructor-balloon-content-resolver
-      [contentType]="balloonContentType"
-      [mapObject]="previouslyChoosenItem"
-      [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
-      [attrs]="sidebarData.attrs.balloonAttrs"
-      (selectObject)="selectObject($event)"
-      (handleObjectClickEvent)="handlePreviouslyChoosenClick($event)"
-      (collapseObjectEvent)="collapseObject($event)" >
-    </epgu-constructor-balloon-content-resolver>
-  </div>
   <div
     *ngIf="
       originalValue.length
@@ -32,6 +18,20 @@
   >
   </div>
   <perfect-scrollbar [config]="scrollConfig" class="perfect-scrollbar" [ngClass]="{ hidden: selectMapObjectService.isMapViewType }">
+    <div class="previously-choosen" [ngClass]="{ hidden: selectMapObjectService.isMapViewType }" *ngIf="previouslyChoosenItem">
+      <p class="previously-choosen__title">
+        Вы ранее выбрали
+      </p>
+      <epgu-constructor-balloon-content-resolver
+        [contentType]="balloonContentType"
+        [mapObject]="previouslyChoosenItem"
+        [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
+        [attrs]="sidebarData.attrs.balloonAttrs"
+        (selectObject)="selectObject($event)"
+        (handleObjectClickEvent)="handlePreviouslyChoosenClick($event)"
+        (collapseObjectEvent)="collapseObject($event)" >
+      </epgu-constructor-balloon-content-resolver>
+    </div>
     <ng-container *ngIf="balloonDictionaryItems.length">
       <ng-container *ngFor="let mapObject of balloonDictionaryItems">
       <epgu-constructor-balloon-content-resolver
