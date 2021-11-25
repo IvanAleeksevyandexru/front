@@ -5,6 +5,7 @@ import { BaseUiModule, Icons, YandexMapModule } from '@epgu/epgu-constructor-ui-
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NotifierModule } from '@epgu/ui/components/notifier';
 import { NotifierService } from '@epgu/ui/services/notifier';
+import { PluralizeModule } from '@epgu/ui/pipes';
 
 @NgModule({
   declarations: [SelectMapObjectComponent],
@@ -17,7 +18,7 @@ import { NotifierService } from '@epgu/ui/services/notifier';
     },
   ],
   exports: [SelectMapObjectComponent],
-  imports: [CommonModule, NotifierModule, BaseUiModule, PerfectScrollbarModule, YandexMapModule],
+  imports: [CommonModule, NotifierModule, BaseUiModule, PerfectScrollbarModule, YandexMapModule, PluralizeModule],
   entryComponents: [SelectMapObjectComponent],
 })
 export class SelectMapObjectModule {}
