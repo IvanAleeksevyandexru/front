@@ -7,7 +7,7 @@
     <div class="cross-btn" (click)="yandexMapService.closeBalloon()"></div>
     <div class="map-object__header__wrapper" >
       <h5  class="map-object__header">
-        Найден{{ selectedValue.length === 1 ? 'а' : 'о' }}
+        {{ ['Найдена', 'Найдено', 'Найдено'] | pluralize: selectedValue.length }}
         {{ selectedValue.length }}
         {{ ['программа', 'программы', 'программ'] | pluralize: selectedValue.length }}
       </h5>
