@@ -1,13 +1,13 @@
-<div class="marital-status-input__group-item marital-status-input__number" *ngIf="!attrs.hidden">
+<div class="marital-status-input__number" *ngIf="!attrs.hidden">
   <epgu-constructor-label
     [tips]="attrs?.labelHint"
     [label]="label"
-    [for]="FieldsTypes.number"
+    [for]="id"
   ></epgu-constructor-label>
   <epgu-constructor-masked-input
     *ngIf="attrs.mask; else plainInputNumber"
     [textTransformType]="attrs?.fstuc"
-    [id]="FieldsTypes.number"
+    [id]="id"
     [control]="$any(control)"
     [mask]="attrs?.mask"
     [showMaskAsPlaceholder]="!!placeholder"
@@ -21,7 +21,7 @@
   <ng-template #plainInputNumber>
     <epgu-constructor-constructor-plain-input
       [textTransformType]="attrs?.fstuc"
-      [id]="FieldsTypes.number"
+      [id]="id"
       [control]="$any(control)"
       [placeholder]="placeholder"
       [invalid]="control.invalid && control.dirty"

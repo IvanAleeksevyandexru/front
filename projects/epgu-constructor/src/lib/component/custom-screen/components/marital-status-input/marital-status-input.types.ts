@@ -30,7 +30,10 @@ export interface MaritalStatusInputFields {
 }
 
 export enum MaritalStatusInputFieldsTypes {
-  date = 'act_rec_date',
-  number = 'act_rec_number',
-  registrator = 'act_rec_registrator',
+  actRecDate = 'act_rec_date',
+  actRecNumber = 'act_rec_number',
+  actRecRegistrator = 'act_rec_registrator',
+  number = 'number',
+  series = 'series',
+  issueDate = 'issueDate',
 }

@@ -89,6 +89,47 @@ const mockComponent = {
           dictionaryUrlType: 'nsiSuggest',
         },
       },
+      {
+        fieldName: 'series',
+        label: 'Серия',
+        type: 'input',
+        attrs: {}
+      },
+      {
+        fieldName: 'number',
+        label: 'Номер',
+        type: 'input',
+        attrs: {}
+      },
+      {
+        fieldName: 'issueDate',
+        label: 'Дата выдачи свидетельства',
+        type: 'input',
+        attrs: {
+          accuracy: 'day',
+          maxDate: 'today',
+          validation: [
+            {
+              type: 'RegExp',
+              value: '.*',
+              ref: '',
+              condition: '',
+              errorMsg: 'Поле должно быть заполнено'
+            },
+            {
+              type: 'Date',
+              condition: '<',
+              errorMsg: 'Дата не может быть меньше, чем дата рождения заявителя + 14 лет'
+            },
+            {
+              type: 'maxDate',
+              ref: '',
+              value: 'TODAY',
+              add: {}
+            }
+          ]
+        }
+      }
     ],
   },
   value: '',
@@ -206,7 +247,7 @@ describe('MaritalStatusInputComponent', () => {
     });
 
     it('should create the form', () => {
-      const addFormSpy = jest.spyOn(component, 'addFormGroupControls');
+      const addFormSpy = jest.spyOn<MaritalStatusInputComponent, any>(component, 'addFormGroupControls');
 
       component.ngOnInit();
 
@@ -228,6 +269,9 @@ describe('MaritalStatusInputComponent', () => {
             dataN: '2003-01-01',
           },
         },
+        issueDate: '2023-10-04',
+        number: '342442',
+        series: 'C-УЦ',
       };
 
       const expectedValue = {
@@ -243,6 +287,9 @@ describe('MaritalStatusInputComponent', () => {
             dataN: '2003-01-01',
           },
         },
+        issueDate: '2023-10-04',
+        number: '342442',
+        series: 'C-УЦ',
       };
       const emitToParentSpy = jest.spyOn(component, 'emitToParentForm');
       const subscribeSpy = jest.spyOn(component, 'subscribeOnFormChange');
@@ -260,6 +307,25 @@ describe('MaritalStatusInputComponent', () => {
       component.ngOnInit();
 
       expect(component.updateParentIfNotValid).toHaveBeenCalled();
+    });
+
+    it('should fill fieldsNames array with fieldName', () => {
+      component.fieldsNames = [];
+      expect(component.fieldsNames.length).toEqual(0);
+
+      component.ngOnInit();
+
+      expect(component.fieldsNames.length).toEqual(mockComponent.attrs.fields.length);
+    });
+  });
+
+  describe('group-item render', () => {
+    const selector = '.marital-status-input__group-item';
+
+    it('should render group items equivalent "attrs.fields"', () => {
+      const groupItems = fixture.debugElement.queryAll(By.css(selector));
+
+      expect(groupItems.length).toEqual(mockComponent.attrs.fields.length);
     });
   });
 
@@ -290,6 +356,9 @@ describe('MaritalStatusInputComponent', () => {
             dataN: '2003-01-01',
           },
         },
+        issueDate: '2023-10-04',
+        number: '342442',
+        series: 'C-УЦ',
       };
 
       const expectedValue = {
@@ -305,6 +374,9 @@ describe('MaritalStatusInputComponent', () => {
             dataN: '2003-01-01',
           },
         },
+        issueDate: '2023-10-04',
+        number: '342442',
+        series: 'C-УЦ',
       };
       const emitChangesSpy = jest.spyOn(formService, 'emitChanges');
 
@@ -331,6 +403,9 @@ describe('MaritalStatusInputComponent', () => {
             dataN: '2003-01-01',
           },
         },
+        issueDate: '2023-10-04',
+        number: '342442',
+        series: 'C-УЦ',
       };
       const emitChangesSpy = jest.spyOn(formService, 'emitChanges');
 

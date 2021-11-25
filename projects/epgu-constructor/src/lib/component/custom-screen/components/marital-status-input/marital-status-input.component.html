@@ -15,17 +15,17 @@
 
   <div
     class="marital-status-input__group-item"
-    *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.date) as dateField"
+    *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.series) as numberField"
   >
-    <epgu-constructor-act-date-input
-      *ngIf="!dateField?.attrs.hidden"
-      [label]="dateField?.label"
-      [attrs]="dateField?.attrs"
-      [hint]="dateField?.hint"
-      [control]="form.get(MaritalStatusInputFieldsTypes.date)"
+    <epgu-constructor-act-number-input
+      *ngIf="!numberField?.attrs.hidden"
+      [label]="numberField?.label"
+      [attrs]="numberField?.attrs"
+      [hint]="numberField?.hint"
+      [control]="form.get(MaritalStatusInputFieldsTypes.series)"
       [validationShowOn]="validationShowOn"
-      [brokenDateFixStrategy]="brokenDateFixStrategy"
-    ></epgu-constructor-act-date-input>
+      [id]="MaritalStatusInputFieldsTypes.series"
+    ></epgu-constructor-act-number-input>
   </div>
 
   <div
@@ -39,21 +39,72 @@
       [hint]="numberField?.hint"
       [control]="form.get(MaritalStatusInputFieldsTypes.number)"
       [validationShowOn]="validationShowOn"
+      [id]="MaritalStatusInputFieldsTypes.number"
     ></epgu-constructor-act-number-input>
   </div>
 
   <div
     class="marital-status-input__group-item"
-    *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.registrator) as regField"
+    *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.actRecNumber) as numberField"
+  >
+    <epgu-constructor-act-number-input
+      *ngIf="!numberField?.attrs.hidden"
+      [label]="numberField?.label"
+      [attrs]="numberField?.attrs"
+      [hint]="numberField?.hint"
+      [control]="form.get(MaritalStatusInputFieldsTypes.actRecNumber)"
+      [validationShowOn]="validationShowOn"
+      [id]="MaritalStatusInputFieldsTypes.actRecNumber"
+    ></epgu-constructor-act-number-input>
+  </div>
+
+  <div class="marital-status-input__date-group">
+    <div
+      class="marital-status-input__group-item"
+      *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.actRecDate) as dateField"
+    >
+      <epgu-constructor-act-date-input
+        *ngIf="!dateField?.attrs.hidden"
+        [label]="dateField?.label"
+        [attrs]="dateField?.attrs"
+        [hint]="dateField?.hint"
+        [control]="form.get(MaritalStatusInputFieldsTypes.actRecDate)"
+        [validationShowOn]="validationShowOn"
+        [brokenDateFixStrategy]="brokenDateFixStrategy"
+        [id]="MaritalStatusInputFieldsTypes.actRecDate"
+      ></epgu-constructor-act-date-input>
+    </div>
+
+    <div
+      class="marital-status-input__group-item"
+      *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.issueDate) as dateField"
+    >
+      <epgu-constructor-act-date-input
+        *ngIf="!dateField?.attrs.hidden"
+        [label]="dateField?.label"
+        [attrs]="dateField?.attrs"
+        [hint]="dateField?.hint"
+        [control]="form.get(MaritalStatusInputFieldsTypes.issueDate)"
+        [validationShowOn]="validationShowOn"
+        [brokenDateFixStrategy]="brokenDateFixStrategy"
+        [id]="MaritalStatusInputFieldsTypes.issueDate"
+      ></epgu-constructor-act-date-input>
+    </div>
+  </div>
+
+  <div
+    class="marital-status-input__group-item"
+    *ngIf="getFieldByName(MaritalStatusInputFieldsTypes.actRecRegistrator) as regField"
   >
     <epgu-constructor-act-registrator-input
-      *ngIf="form.get(MaritalStatusInputFieldsTypes.date).value && !regField?.attrs.hidden"
+      *ngIf="form.get(MaritalStatusInputFieldsTypes.actRecDate)?.value && !regField?.attrs.hidden"
       [label]="regField?.label"
       [attrs]="regField?.attrs"
       [hint]="regField?.hint"
-      [control]="form.get(MaritalStatusInputFieldsTypes.registrator)"
+      [control]="form.get(MaritalStatusInputFieldsTypes.actRecRegistrator)"
       [validationShowOn]="validationShowOn"
       [itemsProvider]="itemsProvider"
+      [id]="MaritalStatusInputFieldsTypes.actRecRegistrator"
     ></epgu-constructor-act-registrator-input>
   </div>
 </section>
