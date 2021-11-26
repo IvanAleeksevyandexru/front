@@ -9,6 +9,7 @@ export interface ComponentActionDto {
   applicantType?: string;
   attrs?: {
     stepsBack?: number;
+    hidden?: boolean;
     clarifications?: Clarifications;
     additionalParams?: KeyValueMap;
   };
