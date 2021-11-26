@@ -27,6 +27,7 @@ import { IuikFullDataResponse } from './components/balloon-content-resolver/comp
 // eslint-disable-next-line max-len
 import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { YaMapService } from '@epgu/ui/services/ya-map';
+import { arePointsEqual } from './select-map-object.helpers';
 
 export interface SelectMapComponentAttrs {
   attributeNameWithAddress: string;
@@ -195,6 +196,7 @@ export class SelectMapObjectService implements OnDestroy {
     if (!this.isSelectedView.getValue()) {
       this.filteredDictionaryItems = searchResult;
     }
+    this.handleSelectedSearchResultPainting(searchResult);
     return searchResult;
   }
 
@@ -431,5 +433,21 @@ export class SelectMapObjectService implements OnDestroy {
     });
     this.dictionary.items = newItems;
     this.filteredDictionaryItems = newItems;
+  }
+
+  private handleSelectedSearchResultPainting(searchResult: DictionaryYMapItem[]): void {
+    const selectedValue: DictionaryYMapItem[] = this.yandexMapService.selectedValue$.getValue();
+    if (selectedValue) {
+      searchResult.forEach(resultItem => {
+        const resultIsInSelectedValues = selectedValue.find(value => arePointsEqual(value, resultItem));
+        if (resultIsInSelectedValues) {
+          const feature = this.yandexMapService.getObjectById(resultItem.idForMap);
+          if (feature) {
+            this.yandexMapService.markPointAsActive(feature);
+          }
+        }
+      });
+      this.yandexMapService.mapPaint();
+    }
   }
 }

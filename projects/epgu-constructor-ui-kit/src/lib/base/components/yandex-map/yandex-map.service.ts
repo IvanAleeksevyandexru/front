@@ -185,6 +185,12 @@ export class YandexMapService implements OnDestroy {
     this.selectedValue$.next(object);
   }
 
+  public markPointAsActive<T>(feature: IFeatureItem<T>): void {
+    this.activePlacemarkId = feature.id;
+    this.objectManager.objects.setObjectProperties(feature.id, { pinStyle: 'pin-red' });
+    this.objectManager.objects.setObjectProperties(feature.id, { isActive: true });
+  }
+
   /**
    * centers the map by coords
    * @param coords координаты
