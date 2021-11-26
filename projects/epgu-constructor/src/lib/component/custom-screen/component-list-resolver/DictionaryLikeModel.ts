@@ -118,8 +118,8 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
     dictionary.data = reference.data;
     dictionary.list = this.adaptDictionaryToListItem(
       reference.data.items,
-      reference.component.attrs.mappingParams,
-      reference.component.attrs.mappingParams?.isRoot,
+      reference.component?.attrs.mappingParams,
+      reference.component?.attrs.mappingParams?.isRoot,
     ) as ListItem[];
     dictionary.repeatedWithNoFilters = reference?.meta?.repeatedWithNoFilters;
 
