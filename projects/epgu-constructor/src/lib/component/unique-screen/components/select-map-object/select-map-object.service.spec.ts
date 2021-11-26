@@ -269,6 +269,39 @@ describe('SelectMapObjectComponent', () => {
       expect(res.length).toBe(2);
     });
 
+    it('should highlight selected feature if search result includes it', () => {
+      const testItem = { title: 'abc', center: [1, 2], attributeValues: {}};
+      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = [testItem, testItem] as unknown as DictionaryYMapItem[];
+      selectMapObjectService['yandexMapService'].selectedValue$.next([testItem, testItem]);
+      jest
+        .spyOn(selectMapObjectService['yandexMapService'], 'getObjectById')
+        .mockReturnValue({} as any);
+      const spy = jest
+        .spyOn(selectMapObjectService['yandexMapService'], 'markPointAsActive')
+        .mockReturnValue(null);
+
+      selectMapObjectService.searchMapObject('abc');
+
+      expect(spy).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not highlight anything if result does not include selected value', () => {
+      const testItem = { title: 'abc', center: [1, 2], attributeValues: {}};
+      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = [testItem] as unknown as DictionaryYMapItem[];
+      selectMapObjectService['yandexMapService'].selectedValue$.next([{ title: 'aaa', center: [1, 2], attributeValues: {}}]);
+      jest
+        .spyOn(selectMapObjectService['yandexMapService'], 'getObjectById')
+        .mockReturnValue({} as any);
+      const spy = jest
+        .spyOn(selectMapObjectService['yandexMapService'], 'markPointAsActive');
+
+      selectMapObjectService.searchMapObject('abc');
+
+      expect(spy).toHaveBeenCalledTimes(0);
+    });
+
 
   });
 
