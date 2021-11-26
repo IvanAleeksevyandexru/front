@@ -11,14 +11,14 @@ import { Observable } from 'rxjs';
 export class ScreenContainerComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('show-nav') showNav = true;
-  @Input() button$: Observable<ScreenButton>;
+  @Input() buttons$: Observable<ScreenButton[]>;
   hiddenPrevButton: ScreenButton;
 
   ngOnInit(): void {
-    this.button$?.subscribe((button) => {
-      if (button?.hidden && button?.type === ActionType.prevStep) {
-        this.hiddenPrevButton = button;
-      }
+    this.buttons$?.subscribe((buttons) => {
+      this.hiddenPrevButton = buttons.find(
+        (button) => button?.attrs?.hidden && button?.type === ActionType.prevStep,
+      );
     });
   }
 }
