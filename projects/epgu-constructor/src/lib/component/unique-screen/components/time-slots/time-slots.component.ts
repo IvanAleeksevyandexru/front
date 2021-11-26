@@ -91,6 +91,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         label: 'Да',
         closeModal: true,
         handler: this.bookTimeSlot.bind(this),
+        value: 'confirm',
       },
       {
         label: 'Нет',
@@ -403,7 +404,13 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     }
     if (this.bookedSlot) {
       if (this.isCachedValueChanged()) {
-        this.showModal(this.confirmModalParameters);
+        this.showModal(this.confirmModalParameters).subscribe((confirmation) => {
+          if (!confirmation) {
+            this.clearDateSelection();
+            this.selectDate(this.bookedSlot.slotTime);
+            this.chooseTimeSlot(this.bookedSlot);
+          }
+        });
       } else {
         this.currentAnswersService.state = this.cachedAnswer;
         this.actionService.switchAction(this.nextStepAction, this.screenService.component.id);
