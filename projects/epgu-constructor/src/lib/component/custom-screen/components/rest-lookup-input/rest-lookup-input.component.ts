@@ -14,7 +14,7 @@ import RestLookupInputModel from './RestLookupInputModel';
 import { ComponentRestUpdates } from '../../services/components-list-relations/components-list-relations.interface';
 import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
-import { CustomListDictionary } from '../../components-list.types';
+import { CustomComponentAttr, CustomListDictionary } from '../../components-list.types';
 
 @Component({
   selector: 'epgu-constructor-rest-lookup-input',
@@ -93,14 +93,13 @@ export class RestLookupInputComponent
       switchMap((updates: ComponentRestUpdates) => {
         if (updates[this.model.id] !== undefined || this.attrs.needUnfilteredDictionaryToo) {
           const update = updates[this.model.id];
-          const attrs = {
+          this.control.value.attrs = this.model.getAttrs({
             ...this.attrs,
             ...(update
               ? this.interpolationService.interpolateObject(update.rest, update.value)
               : {}),
             emptyWhenNoFilter: !update,
-          };
-          this.control.value.attrs = attrs;
+          } as CustomComponentAttr);
           return this.loadReferenceData();
         }
         return of(null);
