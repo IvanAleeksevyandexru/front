@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 @Component({
   selector: 'portal-clubs',
   templateUrl: './clubs.component.html',
-  styleUrls: ['./clubs.component.scss'],
 })
 export class ClubsComponent implements OnInit, OnDestroy {
   constructor() {}

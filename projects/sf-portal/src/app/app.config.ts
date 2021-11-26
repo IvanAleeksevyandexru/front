@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { mergeMap } from 'rxjs/operators';
@@ -32,11 +33,12 @@ export class AppConfig {
             },
             attrs: {}
           };
+
           if (this.cookieService.get('acc_t')) {
             return this.loadUser();
-          } else {
-            return of();
           }
+
+          return of();
         })
       ).toPromise().then((response: any) => {
         (window as any).serverData.data.user = response || {};

@@ -1,3 +1,5 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+
 .permission-error-container {
   max-width: 480px;
   margin-left:  auto;
@@ -21,9 +23,8 @@
   }
 }
 
-
-@media all and (min-width: 768px){
-  .permission-button {
+.permission-button {
+  @include tablets-up() {
     display: flex;
     justify-content: center;
   }
