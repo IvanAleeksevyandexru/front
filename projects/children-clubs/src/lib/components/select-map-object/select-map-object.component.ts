@@ -130,6 +130,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initMapOptions(): void {
     this.mapOptions = JSON.parse(this.stateService.mapOptions || '{}');
+    Object.assign(this.yandexMapService.mapOptions || {}, this.mapOptions);
   }
 
   /**

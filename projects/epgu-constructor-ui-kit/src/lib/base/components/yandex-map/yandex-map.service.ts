@@ -106,7 +106,7 @@ export class YandexMapService implements OnDestroy {
       );
     }
     this.objectManager.objects.options.set(this.icons.blue);
-    this.objectManager.clusters.options.set('clusterIcons', [this.icons.clusterBlue]);
+    this.objectManager.clusters.options.set(this.icons.cluster);
 
     if (!urlTemplate) {
       const objects = this.prepareFeatureCollection(items);
@@ -135,18 +135,18 @@ export class YandexMapService implements OnDestroy {
       this.closeBalloon();
       return;
     }
-    this.closeBalloon();
     if (
       feature.type === IFeatureTypes.Cluster &&
       this.isClusterZoomable(feature as IClusterItem<T>)
     ) {
       return;
     }
+    this.closeBalloon();
     this.activePlacemarkId = feature.id;
     const coords = feature.geometry?.coordinates;
     if (feature.type === IFeatureTypes.Cluster) {
       this.activeClusterHash = this.getClusterHash(feature as IClusterItem<T>);
-      this.paintActiveCluster(this.icons.clusterRed);
+      this.paintActiveCluster('cluster-red');
     }
     if (coords && coords[0] && coords[1] && feature.type === IFeatureTypes.Feature) {
       this.objectManager.objects.setObjectProperties(feature.id, { pinStyle: 'pin-red' });
@@ -209,7 +209,7 @@ export class YandexMapService implements OnDestroy {
     });
 
     this.selectedValue$.next(null);
-    this.paintActiveCluster(this.icons.clusterBlue);
+    this.paintActiveCluster('cluster-blue');
     this.activePlacemarkId = null;
     this.activeClusterHash = null;
     this.mapPaint();
@@ -318,7 +318,6 @@ export class YandexMapService implements OnDestroy {
     this.objectManager?.clusters.getAll().forEach((cluster) => {
       let isClusterWithActiveObject;
       let selectedFeatureCnt = 0;
-      let clusterColor;
       const idsFromActiveCluster = this.activeClusterHash && this.activeClusterHash.split('$').map(id => +id);
       for (let feature of cluster.features) {
         if (this.activePlacemarkId &&
@@ -336,22 +335,14 @@ export class YandexMapService implements OnDestroy {
         isClusterWithActiveObject ||
         (selectedFeatureCnt && cluster.features.length > selectedFeatureCnt)
       ) {
-        clusterColor = this.icons.clusterBlueRed;
+        this.objectManager.clusters.setClusterProperties(cluster.id, { clusterStyle: 'cluster-blue-red' });
       } else if (cluster.features.length === selectedFeatureCnt) {
-        clusterColor = this.icons.clusterRed;
+        this.objectManager.clusters.setClusterProperties(cluster.id, { clusterStyle: 'cluster-red' });
       } else {
-        clusterColor = this.icons.clusterBlue;
-      }
-      const currentColor = JSON.stringify(
-        this.objectManager.clusters.getById(cluster.id).options.clusterIcons,
-      );
-      if (currentColor !== JSON.stringify([clusterColor])) {
-        this.objectManager.clusters.setClusterOptions(cluster.id, {
-          clusterIcons: [clusterColor],
-        });
+        this.objectManager.clusters.setClusterProperties(cluster.id, { clusterStyle: 'cluster-blue' });
       }
     });
-    this.paintActiveCluster(this.icons.clusterRed);
+    this.paintActiveCluster('cluster-red');
   }
 
   public geoCode(geocode: string): Observable<GeoCodeResponse> {
@@ -373,9 +364,7 @@ export class YandexMapService implements OnDestroy {
   private paintActiveCluster(color): void {
     const cluster = this.getClusterByHash(this.activeClusterHash);
     if (cluster) {
-      this.objectManager.clusters.setClusterOptions(cluster.id, {
-        clusterIcons: [color],
-      });
+      this.objectManager.clusters.setClusterProperties(cluster.id, { clusterStyle: color });
     }
   }
 
@@ -508,11 +497,10 @@ export class YandexMapService implements OnDestroy {
   private isClusterZoomable(cluster: IClusterItem<unknown>): boolean {
     return cluster.features.some((feature, index, arr) => {
       const i = index > 0 ? index : 1;
-      const point1 = feature.geometry.coordinates;
-      const point2 = arr[i - 1].geometry.coordinates;
-      // точки с приблизительно такой разницей собираются в кластер
-      const ALLOWED_ERROR = 0.0006;
-      return !this.ymaps.util.math.areEqual(point1, point2, ALLOWED_ERROR);
+      return (
+        feature.geometry.coordinates[0] !== arr[i - 1].geometry.coordinates[0] ||
+        feature.geometry.coordinates[1] !== arr[i - 1].geometry.coordinates[1]
+      );
     });
   }
 
