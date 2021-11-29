@@ -11,7 +11,7 @@
     "@epgu/children-clubs": "42.2.0",
     "@epgu/epgu-constructor-types": "42.2.0",
     "@epgu/epgu-constructor": "42.2.0",
-    "@epgu/ui": "3.0.392-1-frontv3",
+    "@epgu/ui": "3.0.392-2-frontv4",
     "ngx-cookie-service": "12.0.3",
     "ngx-device-detector": "^2.1.1",
     "ngx-infinite-scroll": "10.0.1",

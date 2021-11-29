@@ -1832,12 +1832,13 @@
     os "0.1.1"
     tslib "2.1.0"
 
-"@epgu/ui@3.0.392-1-frontv3":
-  version "3.0.392-1-frontv3"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.392-1-frontv3.tgz#d92cfd8b1cde00b50bdc68a6c76a3b7abd32dbe2"
-  integrity sha512-q7h7OIh/ZjrIIKdudQ2N77AmR+HzmbRwu2DU4Sa3kcPJn5k+v7918xbQanjPKxTiAkik0zPXRL1Cv9wcKGHiYA==
+"@epgu/ui@3.0.392-2-frontv4":
+  version "3.0.392-2-frontv4"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.392-2-frontv4.tgz#08482d5c2d7fedac37499b7442157c3ae38465b7"
+  integrity sha512-vDWbRSKm6gs/73r/uXugQASxQqd6+nGoekkQZfP1y+zsdEbZGIkjeVncJfMWvcH3M8d2P2xeskX6GLR6Indpow==
   dependencies:
     "@epgu/zipkin" "0.0.3"
+    date-fns "2.24.0"
     tslib "^2.0.0"
     zipkin-transport-http "0.22.0"
 
@@ -5583,6 +5584,11 @@ date-fns@2.21.3:
   version "2.21.3"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.21.3.tgz#8f5f6889d7a96bbcc1f0ea50239b397a83357f9b"
   integrity sha512-HeYdzCaFflc1i4tGbj7JKMjM4cKGYoyxwcIIkHzNgCkX8xXDNJDZXgDDVchIWpN4eQc3lH37WarduXFZJOtxfw==
+
+date-fns@2.24.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.24.0.tgz#7d86dc0d93c87b76b63d213b4413337cfd1c105d"
+  integrity sha512-6ujwvwgPID6zbI0o7UbURi2vlLDR9uP26+tW6Lg+Ji3w7dd0i3DOcjcClLjLPranT60SSEFBwdSyYwn/ZkPIuw==
 
 date-fns@^2.16.1:
   version "2.25.0"

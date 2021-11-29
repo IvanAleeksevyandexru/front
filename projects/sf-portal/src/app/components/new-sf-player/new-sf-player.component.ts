@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
@@ -12,6 +13,7 @@ import {
   ServerFormData,
   ServiceInfoDepartment,
 } from './cards-forms.service';
+import { ObservableInput } from '../../../../../../node_modules/rxjs/index';
 
 @Component({
   selector: 'portal-new-sf-player',
@@ -62,10 +64,12 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
           return this.cardsFormsService.getService(params).pipe(
             filter((service) => service !== null),
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            switchMap((service: any) => {
-              this.service = service;
-              return this.checkPermissionsAndRegion();
-            }),
+            switchMap(
+              (service): ObservableInput<any> => {
+                this.service = service;
+                return this.checkPermissionsAndRegion();
+              },
+            ),
           );
         }),
       )
@@ -93,7 +97,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
   /** *
    * проверка доступности услуги по уровню учетной записи, получение выбранного региона и проверка доступности услуги по региону
    ** */
-  private checkPermissionsAndRegion(): unknown {
+  private checkPermissionsAndRegion(): ObservableInput<any> {
     return forkJoin([
       this.checkTarget(this.passportId, this.targetId),
       this.checkServiceByRegion(this.passportId, this.targetId),
