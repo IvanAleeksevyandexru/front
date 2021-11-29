@@ -2,14 +2,8 @@ import { Injectable } from '@angular/core';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { IGeoObjectOptionsWithIconShape } from './yandex-map.interface';
 
-interface iconType {
-  href: string;
-  size: number[];
-  offset: number[];
-}
 @Injectable()
 export class Icons {
-
   get blue(): IGeoObjectOptionsWithIconShape {
     return {
       iconLayout: this.pinLayout(),
@@ -35,27 +29,15 @@ export class Icons {
     };
   }
 
-  get clusterBlue(): iconType {
+  // TODO: На данный момент нет интерфейса под кластер в ymaps. Подождать когда добавят
+  get cluster(): unknown {
     return {
-      href: `${this.config.staticDomainAssetsPath}/assets/icons/svg/clusterblue.svg`,
-      size: [40, 40],
-      offset: [-20, -20],
-    };
-  }
-
-  get clusterRed(): iconType {
-    return {
-      href: `${this.config.staticDomainAssetsPath}/assets/icons/svg/clusterred.svg`,
-      size: [40, 40],
-      offset: [-20, -20],
-    };
-  }
-
-  get clusterBlueRed(): iconType {
-    return {
-      href: `${this.config.staticDomainAssetsPath}/assets/icons/svg/clusterbluered.svg`,
-      size: [40, 40],
-      offset: [-20, -20],
+      clusterIconLayout: this.clusterLayout(),
+      iconShape: {
+        type: 'Circle',
+        coordinates: [0, -20],
+        radius: 20,
+      },
     };
   }
 
@@ -79,13 +61,27 @@ export class Icons {
     const ymaps = (window as any).ymaps;
     return ymaps.templateLayoutFactory.createClass(
       '<div class="pin {{properties.pinStyle}}{% if properties.isActive %} pin-red{% endif %}">',
+    );
+  }
+
+  private clusterLayout(): ymaps.IClassConstructor<ymaps.ILayout> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ymaps = (window as any).ymaps;
+    return ymaps.templateLayoutFactory.createClass(
+      '<div class="cluster {{properties.clusterStyle}}"><span class="cluster-elements">{{ properties.amount }}</span></div>',
       {
         build: function () {
           this.constructor.superclass.build.call(this);
-        },
-
-        clear: function () {
-          this.constructor.superclass.clear.call(this);
+          const props = this.getData().properties;
+          props.amount =
+            this.getData().properties.geoObjects.length > 99
+              ? '99+'
+              : this.getData().properties.geoObjects.length;
+          props.clusterStyle = props.clusterStyle || 'cluster-blue';
+          if (!this.inited) {
+            this.inited = true;
+            this.rebuild();
+          }
         },
       },
     );
