@@ -15,6 +15,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { YMapItem } from '@epgu/epgu-constructor-ui-kit';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonBalloonContentComponent } from './components/common-balloon-content/common-balloon-content.component';
 import { ElectionsBalloonContentComponent } from './components/elections-balloon-content/elections-balloon-content.component';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
@@ -39,6 +40,12 @@ export const ContentTypes = {
   templateUrl: './balloon-content-resolver.component.html',
   styleUrls: ['./balloon-content-resolver.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('flyInOut', [
+      transition('void => *', [style({ opacity: 0, transform: 'translateY(100%)' }), animate(600)]),
+      transition('* => void', [animate(600, style({ opacity: 0, transform: 'translateY(100%)' }))]),
+    ]),
+  ],
 })
 export class BalloonContentResolverComponent implements AfterViewInit, OnChanges {
   @ViewChild('content', { read: ViewContainerRef }) content: ViewContainerRef;
@@ -67,7 +74,7 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.mapObject !== this.mapObject && this.content) {
+    if (changes.mapObject && changes.mapObject !== this.mapObject && this.content) {
       this.balloonContentComponentRef.destroy();
       this.balloonContentComponentRef = null;
       this.addContent();

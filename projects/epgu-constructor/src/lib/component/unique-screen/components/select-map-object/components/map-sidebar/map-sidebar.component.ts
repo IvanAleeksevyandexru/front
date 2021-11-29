@@ -38,7 +38,7 @@ export class MapSidebarComponent implements OnInit {
   public scrollConfig = { suppressScrollX: false, wheelPropagation: false };
   public searchPanelType: string;
   public balloonContentType: string;
-  public balloonDictionaryItems: DictionaryItem[];
+  public balloonDictionaryItems: DictionaryItem[] = [];
   public activeItem: DictionaryItem;
   public originalValue: DictionaryItem[] = [];
   public MapTypes = MapTypes;
@@ -121,7 +121,7 @@ export class MapSidebarComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value) => {
         if (value) {
-          this.balloonDictionaryItems = this.getBalloonItems();
+          this.getBalloonItems();
           this.cdr.detectChanges();
         }
       });
@@ -129,15 +129,31 @@ export class MapSidebarComponent implements OnInit {
     this.selectMapObjectService.isSelectedView
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
-        this.balloonDictionaryItems = this.getBalloonItems();
+        this.getBalloonItems();
         this.cdr.detectChanges();
       });
   }
 
-  private getBalloonItems(): DictionaryItem[] {
-    return this.selectMapObjectService.isSelectedView.getValue()
+  private getBalloonItems(): void {
+    this.balloonDictionaryItems = [];
+    const items = this.selectMapObjectService.isSelectedView.getValue()
       ? this.selectMapObjectService.selectedViewItems$.getValue()
       : this.selectMapObjectService.filteredDictionaryItems;
+    // const timer = (ms) => new Promise((res) => setTimeout(res, ms));
+    // const { cdr, balloonDictionaryItems } = this;
+    // async function load(): Promise<void> {
+    //   // We need to wrap the loop into an async function for this to work
+    //   // eslint-disable-next-line no-restricted-syntax
+    //   for (const item of items) {
+    //     balloonDictionaryItems.push(item);
+    //     cdr.detectChanges();
+    //     // eslint-disable-next-line no-await-in-loop
+    //     await timer(1);
+    //   }
+    // }
+    //
+    // load();
+    items.forEach((item) => this.balloonDictionaryItems.push(item));
   }
 }
 

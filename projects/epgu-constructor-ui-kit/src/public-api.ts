@@ -88,6 +88,9 @@ export * from './lib/base/directives/currency/currency-transform.directive';
 export * from './lib/base/directives/rank/rank.module';
 export * from './lib/base/directives/rank/rank-transform.directive';
 
+export * from './lib/base/directives/smooth-height/smooth-height.module';
+export * from './lib/base/directives/smooth-height/smooth-height.directive';
+
 // Pipes
 
 export * from './lib/base/pipes/mask-handle/mask-handle.module';
