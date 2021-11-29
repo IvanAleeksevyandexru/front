@@ -8,7 +8,6 @@ import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { ISuggestionItem } from '../../../../../../core/services/autocomplete/autocomplete.inteface';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { MaritalStatusInputFieldsTypes } from '../../marital-status-input.types';
 
 @Component({
   selector: 'epgu-constructor-act-registrator-input',
@@ -22,11 +21,11 @@ export class ActRegistratorInputComponent {
   @Input() control: AbstractControl;
   @Input() validationShowOn: ValidationShowOn;
   @Input() itemsProvider: LookupProvider<Partial<ListElement>>;
+  @Input() id: string;
 
   public provider;
   public searchIconForcedShowing = false;
   public showNotFound;
-  public FieldsTypes = MaritalStatusInputFieldsTypes;
 
   suggestions$: Observable<ISuggestionItem> = this.screenService.suggestions$.pipe(
     map((suggestions) => {

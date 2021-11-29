@@ -1,15 +1,15 @@
 <div
-  class="marital-status-input__group-item marital-status-input__registrator"
+  class="marital-status-input__registrator"
   *ngIf="!attrs?.hidden"
 >
   <epgu-constructor-label
     [tips]="attrs?.labelHint"
     [label]="label"
-    [for]="FieldsTypes.registrator"
+    [for]="id"
   ></epgu-constructor-label>
 
   <epgu-cf-ui-constructor-constructor-lookup
-    [id]="FieldsTypes.registrator"
+    [id]="id"
     [invalid]="control.invalid && control.touched"
     [searchOnFocus]="true"
     [showExpandCollapse]="true"

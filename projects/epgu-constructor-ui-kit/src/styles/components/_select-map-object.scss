@@ -234,6 +234,9 @@
 
       perfect-scrollbar {
         max-height: 100vh;
+        @include tablets-down() {
+          max-height: 380px;
+        }
       }
     }
 

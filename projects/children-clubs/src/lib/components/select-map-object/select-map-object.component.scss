@@ -1,4 +1,5 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components/_select-map-object';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 
 :host {
   position: relative;
@@ -14,8 +15,27 @@
   border-bottom: 1px solid $color-mercury;
   @include typ-plain-small;
 
+  &__header {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    &__wrapper {
+      border-bottom: 1px solid $color-divider;
+    }
+  }
   &:not(.expanded) &__header {
     cursor: pointer;
+  }
+  &__title {
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-gosblue;
+    cursor: pointer;
+  }
+  &__single-object {
+    padding: 24px;
+    padding-top: 0;
   }
 }
 
@@ -30,4 +50,8 @@
 .map-object__building {
   color: $color-text-helper;
   margin-bottom: 16px;
+}
+.map-objects-list {
+  display: flex;
+  flex-direction: column;
 }

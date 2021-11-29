@@ -1,12 +1,12 @@
-<div class="marital-status-input__group-item marital-status-input__date">
+<div class="marital-status-input__date">
   <epgu-constructor-label
     [tips]="attrs?.labelHint"
     [label]="label"
-    [for]="FieldsTypes.date"
+    [for]="id"
   ></epgu-constructor-label>
   <epgu-constructor-constructor-date-picker
     align="left"
-    [id]="FieldsTypes.date"
+    [id]="id"
     [control]="control"
     [minDate]="attrs?.minDate || '-120y'"
     [maxDate]="attrs?.maxDate || 'today'"

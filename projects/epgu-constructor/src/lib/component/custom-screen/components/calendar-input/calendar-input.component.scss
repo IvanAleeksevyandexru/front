@@ -19,6 +19,7 @@
   justify-content: flex-start;
   flex: 1 1 100%;
   max-width: 50%;
+  margin-bottom: $screen-pad-24;
   @include tablets-up {
     &:first-child {
       margin-right: calc(#{$screen-pad-16} / 2);
