@@ -39,6 +39,7 @@ import DropdownModel from '../../components/dropdown/DropdownModel';
 import LookupInputModel from '../../components/lookup-input/LookupInputModel';
 import StringInputModel from '../../components/masked-and-plain-input/StringInputModel';
 import DepartmentLookupModel from '../../components/department-lookup/DepartmentLookupModel';
+import { RelationResolverService } from '../components-list-relations/relation-resolver.service';
 
 describe('ComponentsListFormService', () => {
   let service: ComponentsListFormService;
@@ -145,6 +146,7 @@ describe('ComponentsListFormService', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         DictionaryToolsService,
         ComponentsListRelationsService,
+        RelationResolverService,
         HttpClient,
         HttpHandler,
         RefRelationService,

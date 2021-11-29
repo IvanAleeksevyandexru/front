@@ -22,7 +22,7 @@ describe('RestToolsService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         RestToolsService,
-        ComponentsListRelationsService,
+        MockProvider(ComponentsListRelationsService),
         MockProvider(RestService),
         MockProvider(InterpolationService),
         MockProvider(DateRangeService),
