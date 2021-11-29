@@ -77,6 +77,7 @@ import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-perso
 import { MaritalStatusInputModule } from './components/marital-status-input/marital-status-input.module';
 import { PluralizeModule } from '@epgu/ui/pipes';
 import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-draft-handler/kinder-garten-draft-handler.component';
+import { RelationResolverService } from './services/components-list-relations/relation-resolver.service';
 
 @NgModule({
   declarations: [
@@ -158,6 +159,7 @@ import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-dr
     RestService,
     RestToolsService,
     InterpolationService,
+    RelationResolverService,
   ],
   entryComponents: [
     AddressInputComponent,

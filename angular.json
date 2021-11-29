@@ -52,7 +52,7 @@
               }
             ],
             "styles": ["src/styles.scss"],
-            "scripts": ["scripts/luna-pass-0.0.1a.js"]
+            "scripts": ["vendors/luna-pass-0.0.1a.js"]
           },
           "configurations": {
             "fast": {
@@ -350,19 +350,7 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/epgu-constructor-docs/src/test.ts",
-            "polyfills": "projects/epgu-constructor-docs/src/polyfills.ts",
-            "tsConfig": "projects/epgu-constructor-docs/tsconfig.spec.json",
-            "karmaConfig": "projects/epgu-constructor-docs/karma.conf.js",
-            "assets": [
-              "projects/epgu-constructor-docs/src/favicon.ico",
-              "projects/epgu-constructor-docs/src/assets"
-            ],
-            "styles": ["projects/epgu-constructor-docs/src/styles.scss"],
-            "scripts": []
-          }
+          "builder": "@angular-builders/jest:run"
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
@@ -373,18 +361,112 @@
               "projects/epgu-constructor-docs/src/**/*.spec.ts"
             ]
           }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        }
+      }
+    },
+    "sf-portal": {
+      "projectType": "application",
+      "root": "projects/sf-portal",
+      "sourceRoot": "projects/sf-portal/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "protractorConfig": "projects/epgu-constructor-docs/e2e/protractor.conf.js",
-            "devServerTarget": "epgu-constructor-docs:serve"
+            "outputPath": "dist/sf-portal",
+            "index": "projects/sf-portal/src/index.html",
+            "main": "projects/sf-portal/src/main.ts",
+            "polyfills": "projects/sf-portal/src/polyfills.ts",
+            "tsConfig": "projects/sf-portal/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "preserveSymlinks": true,
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@epgu/ui/assets",
+                "output": "./lib-assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@epgu/epgu-constructor/src/assets",
+                "output": "./assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@epgu/children-clubs/src/assets",
+                "output": "./assets"
+              },
+              "projects/sf-portal/src/favicon.ico",
+              "projects/sf-portal/src/assets"
+            ],
+            "styles": ["projects/sf-portal/src/styles.scss"],
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
-              "devServerTarget": "epgu-constructor-docs:serve:production"
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/sf-portal/src/environments/environment.ts",
+                  "with": "projects/sf-portal/src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "sf-portal:build:production"
+            },
+            "development": {
+              "browserTarget": "sf-portal:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "sf-portal:build"
           }
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run"
         }
       }
     }

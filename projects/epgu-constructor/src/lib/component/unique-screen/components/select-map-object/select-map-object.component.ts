@@ -342,6 +342,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     if (error === NO_MAP_ITEMS_AVAILABLE) {
       this.modalService.openModal(ConfirmationModalComponent, {
         ...NO_MAP_ITEMS_AVAILABLE,
+        backdropDismiss: false,
         text: this.data.attrs.noDepartmentsErrorMsg
           ? this.data.attrs.noDepartmentsErrorMsg
           : error.text,

@@ -69,9 +69,6 @@ export class MapSidebarComponent implements OnInit {
   public collapseObject(mapObject: DictionaryItem): void {
     // eslint-disable-next-line no-param-reassign
     mapObject.expanded = false;
-    if (arePointsEqual(this.previouslyChoosenItem, mapObject)) {
-      this.previouslyChoosenItem.expanded = false;
-    }
     this.yandexMapService.closeBalloon();
     this.cdr.detectChanges();
   }
@@ -81,8 +78,7 @@ export class MapSidebarComponent implements OnInit {
   }
 
   public handlePreviouslyChoosenClick(previouslyChoosen: DictionaryItem): void {
-    // eslint-disable-next-line no-param-reassign
-    previouslyChoosen.expanded = true;
+    this.yandexMapService.closeBalloon();
     this.previouslyChoosenItem.expanded = true;
     const { center } = previouslyChoosen;
     this.yandexMapService.setCenter(center as [number, number]);
@@ -95,7 +91,9 @@ export class MapSidebarComponent implements OnInit {
         if (this.activeItem) {
           this.activeItem.expanded = false;
         }
-
+        if (this.previouslyChoosenItem) {
+          this.previouslyChoosenItem.expanded = false;
+        }
         if (value) {
           this.originalValue = value;
           [this.activeItem] = value;

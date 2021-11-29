@@ -258,22 +258,25 @@ export class ValidationService {
   }
 
   public checkRS(rs: string, refs: KeyValueMap): boolean {
-    const check = (rs: string, bik: string | null, corr?: string | null): boolean => {
+    const check = (rs: string, bik: string | null,): boolean => {
       const bikRs = `${bik?.slice(-3)}${rs}`;
       const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
       const checkSum = coefficients.reduce(
         (sum, coefficient, index) => sum + coefficient * (parseFloat(bikRs[index]) % 10),
         0,
       );
-      return typeof corr === 'string' && corr[0] === '0' ? true : checkSum % 10 === 0;
+      const isRsStartsWithZero = typeof rs === 'string' && rs[0] === '0';
+      const isCheckSumValid = checkSum % 10 === 0;
+
+      return isRsStartsWithZero || isCheckSumValid;
     };
     const values = this.form?.controls
       .filter((control) => Object.values(refs).includes(control.value?.id))
       .map(({ value }) => value.value?.id || value.value);
-    const [bik, manualBik, manualCorr] = values;
+    const [bik, manualBik] = values;
 
     return manualBik !== null && manualBik !== undefined
-      ? check(rs, manualBik, manualCorr)
+      ? check(rs, manualBik)
       : check(rs, bik);
   }
 

@@ -18,7 +18,7 @@ After building your library with `ng build children-clubs`, go to the dist folde
 
 ## Running unit tests
 
-Run `ng test children-clubs` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng test children-clubs` to execute the unit tests.
 
 ## Further help
 

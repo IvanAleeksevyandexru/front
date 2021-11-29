@@ -1,0 +1,58 @@
+@import '~@epgu/ui/assets/styles/reset';
+@import '~@epgu/ui/assets/styles/main';
+@import '~@epgu/ui/assets/styles/grid';
+@import '~@epgu/ui/assets/styles/titles';
+@import '~@epgu/ui/assets/styles/offsets';
+@import '~@epgu/ui/assets/styles/forms';
+@import '~@epgu/ui/assets/styles/modal';
+
+
+body, .app-root {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background: #FAFCFF;
+}
+
+body.web-view-mode {
+  lib-header,
+  header,
+  lib-breadcrumbs,
+  lib-small-footer,
+  lib-footer {
+    display: none;
+  }
+}
+
+
+portal-new-sf-player,
+portal-clubs {
+  width: 100%;
+  max-width: 100%;
+}
+
+portal-new-sf-player {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+
+label {
+  cursor: inherit;
+}
+
+.main-container {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.footer-wrapper {
+  flex-shrink: 0;
+}
+
+@media all and (max-width: 768px){
+  .footer-wrapper {
+    display: none;
+  }
+}

@@ -14,12 +14,7 @@
   padding: 24px;
   border-bottom: 1px solid $color-mercury;
   @include typ-plain-small;
-  &__title {
-    font-size: 14px;
-    line-height: 20px;
-    color: $color-gosblue;
-    cursor: pointer;
-  }
+
   &__header {
     padding: 24px;
     display: flex;
@@ -28,6 +23,15 @@
     &__wrapper {
       border-bottom: 1px solid $color-divider;
     }
+  }
+  &:not(.expanded) &__header {
+    cursor: pointer;
+  }
+  &__title {
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-gosblue;
+    cursor: pointer;
   }
   &__single-object {
     padding: 24px;

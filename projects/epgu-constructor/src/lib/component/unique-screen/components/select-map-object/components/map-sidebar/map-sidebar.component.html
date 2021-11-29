@@ -27,6 +27,7 @@
         [mapObject]="previouslyChoosenItem"
         [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
         [attrs]="sidebarData.attrs.balloonAttrs"
+        [redraw]="previouslyChoosenItem.expanded"
         (selectObject)="selectObject($event)"
         (handleObjectClickEvent)="handlePreviouslyChoosenClick($event)"
         (collapseObjectEvent)="collapseObject($event)" >

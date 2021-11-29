@@ -29,6 +29,10 @@
           *ngIf="action.value === currentInnState"
           [action]="action"
         >
+          <img
+            class="btn-edit__icon"
+            src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/ion_pencil-line1.svg"
+          />
           <span class="btn-edit__text">{{ action.label }}</span>
         </button>
       </ng-container>

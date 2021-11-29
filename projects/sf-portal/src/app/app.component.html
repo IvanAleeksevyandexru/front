@@ -1,0 +1,17 @@
+<ng-container *ngIf="loaded">
+  <lib-header [mergeHeaderMenu]="true"
+              [isPortal]="true"
+              [rolesListEnabled]="true"
+              [searchSputnikEnabled]="true"
+              [loginWithNode]="true"
+              [userCounter]="userCounter"
+              [translation]="'lib'"
+              [logoHref]="loadService.config.baseUrl"></lib-header>
+  <div class="main-container" id="print-page">
+    <router-outlet></router-outlet>
+    <lib-modal-placeholder></lib-modal-placeholder>
+  </div>
+  <div class="footer-wrapper no-print" id="footer-wrapper">
+    <lib-footer [onlyCopyright]="true"></lib-footer>
+  </div>
+</ng-container>

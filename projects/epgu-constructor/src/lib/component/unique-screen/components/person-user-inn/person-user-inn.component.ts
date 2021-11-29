@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from 'lodash';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import {
@@ -35,6 +35,7 @@ export class PersonUserInnComponent implements OnInit {
   constructor(
     public currentAnswersService: CurrentAnswersService,
     public screenService: ScreenService,
+    public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetectionRef: ChangeDetectorRef,
   ) {}

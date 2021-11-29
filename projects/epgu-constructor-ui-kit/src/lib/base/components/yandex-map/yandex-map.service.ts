@@ -295,6 +295,10 @@ export class YandexMapService implements OnDestroy {
     this.yaMapService.map.setBounds(bounds);
   }
 
+  public setZoom(zoomLevel: number): void {
+    this.yaMapService.map.setZoom(zoomLevel);
+  }
+
   public getDistance(point1: number[], point2: number[]): number {
     return this.ymaps.coordSystem.geo.getDistance(point1, point2);
   }

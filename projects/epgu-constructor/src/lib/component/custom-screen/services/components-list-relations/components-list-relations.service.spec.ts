@@ -1,16 +1,14 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ConfigService, DatesToolsService, LoggerService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import {
   CustomComponent,
   CustomComponentRef,
-  CustomListDictionaries,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  CustomStatusElement,
   DATE_RESTRICTION_GROUP_DEFAULT_KEY,
   DateRestriction,
 } from '../../components-list.types';
@@ -19,95 +17,27 @@ import { DictionaryApiService } from '../../../../shared/services/dictionary/dic
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { ComponentsListRelationsService } from './components-list-relations.service';
-import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
-import { calcRefMock } from '../../../../shared/services/ref-relation/ref-relation.mock';
-import { CustomComponentRefRelation, DictionaryConditions, DictionaryValueTypes } from '@epgu/epgu-constructor-types';
+import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
-import DictionaryModel from '../../components/dictionary/DictionaryModel';
 import LookupInputModel from '../../components/lookup-input/LookupInputModel';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import { of } from 'rxjs';
+import { componentMock, createComponentMock } from './components-list-relations.mock';
+import { RelationResolverService } from './relation-resolver.service';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
-  let componentMock: CustomComponent = {
-    id: 'rf1',
-    type: CustomScreenComponentTypes.StringInput,
-    label: 'Прежняя фамилия',
-    attrs: {
-      dictionaryType: '',
-      ref: [
-        {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.displayOn,
-        },
-      ],
-      labelAttr: '',
-      fields: [],
-      validation: [
-        {
-          type: 'RegExp',
-          value: '^.{0,10}$',
-          ref: '',
-          dataType: '',
-          condition: '',
-          errorMsg: 'Поле может содержать не более 10 символов',
-          updateOn: 'change',
-        },
-        {
-          type: 'RegExp',
-          value: '^[-а-яА-ЯЁё0-9 .,/]+$',
-          ref: '',
-          dataType: '',
-          condition: '',
-          errorMsg:
-            'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
-          updateOn: 'change',
-        },
-        {
-          type: 'RegExp',
-          value: '^.{9}$',
-          ref: '',
-          dataType: '',
-          condition: '',
-          errorMsg: 'Поле должно содержать 9 символов',
-          updateOn: 'blur',
-        },
-        {
-          type: 'RegExp',
-          value: '.*[0-9]+.*',
-          ref: '',
-          dataType: '',
-          condition: '',
-          errorMsg: 'Поле должно содержать хотя бы одну цифру',
-          updateOn: 'blur',
-        },
-      ],
-    },
-    value: '4',
-    required: true,
-  };
-  const componentsMock: CustomComponent[] = [componentMock];
-  const createComponentMock = (
-    mergedData: unknown = {},
-    component: CustomComponent = componentMock,
-  ): CustomComponent => {
-    return _mergeWith({}, component, mergedData, (objValue, srcValue) => {
-      if (_isArray(objValue)) {
-        return srcValue;
-      }
-    });
-  };
 
+  const componentsMock: CustomComponent[] = [componentMock];
   let screenService: ScreenService;
   let dictionaryToolsService: DictionaryToolsService;
   let refRelationService: RefRelationService;
   let dateRangeService: DateRangeService;
   let dateRestrictionsService: DateRestrictionsService;
+  let relationResolverService: RelationResolverService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -127,6 +57,7 @@ describe('ComponentsListRelationsService', () => {
         LoggerService,
         FormBuilder,
         MockProvider(DateRestrictionsService),
+        MockProvider(RelationResolverService),
       ],
     });
   });
@@ -138,6 +69,7 @@ describe('ComponentsListRelationsService', () => {
     refRelationService = TestBed.inject(RefRelationService);
     dateRangeService = TestBed.inject(DateRangeService);
     dateRestrictionsService = TestBed.inject(DateRestrictionsService);
+    relationResolverService = TestBed.inject(RelationResolverService);
   });
 
   describe('getUpdatedShownElements()', () => {
@@ -151,7 +83,9 @@ describe('ComponentsListRelationsService', () => {
 
     it('should do nothing if there is no dependent components', () => {
       jest.spyOn(dateRangeService, 'updateLimitDate');
-      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements');
+      const getStrategySpy = jest.spyOn<any, any>(relationResolverService, 'getStrategy').mockReturnValue({
+        handleRelation: jest.fn()
+      });
 
       let result = service.getUpdatedShownElements(
         [],
@@ -167,7 +101,7 @@ describe('ComponentsListRelationsService', () => {
 
       // ничего не делаем, потому что массив components пустой (функция возвращает shownElements без изменений)
       expect(dateRangeService.updateLimitDate).not.toBeCalled();
-      expect(service['getDependentComponentUpdatedShownElements']).not.toBeCalled();
+      expect(getStrategySpy).not.toBeCalled();
       expect(result).toEqual({
         foo: {
           isShown: true,
@@ -203,7 +137,7 @@ describe('ComponentsListRelationsService', () => {
       // (component.id (compId) !== attrs.ref[0].relatedRel (rf1) )
       // (функция возвращает shownElements без изменений)
       expect(dateRangeService.updateLimitDate).not.toBeCalled();
-      expect(service['getDependentComponentUpdatedShownElements']).not.toBeCalled();
+      expect(getStrategySpy).not.toBeCalled();
       expect(result).toEqual({
         foo: {
           isShown: true,
@@ -214,11 +148,13 @@ describe('ComponentsListRelationsService', () => {
 
     it('should update shown elements for dependent components if el.relatedRel === component.id', () => {
       jest.spyOn(dateRangeService, 'updateLimitDate').mockImplementation(() => undefined);
-      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements').mockReturnValue({
-        bar: {
-          isShown: false,
-          relation: CustomComponentRefRelation.calc,
-        },
+      const getStrategySpy = jest.spyOn<any, any>(relationResolverService, 'getStrategy').mockReturnValue({
+        handleRelation: jest.fn().mockReturnValue({
+          bar: {
+            isShown: false,
+            relation: CustomComponentRefRelation.calc,
+          },
+        })
       });
 
       const reference: CustomComponentRef = {
@@ -247,7 +183,7 @@ describe('ComponentsListRelationsService', () => {
         dictionaryToolsService,
       );
 
-      expect(service['getDependentComponentUpdatedShownElements']).toBeCalledTimes(1);
+      expect(getStrategySpy).toBeCalledTimes(1);
       expect(result).toEqual({
         bar: {
           isShown: false,
@@ -258,11 +194,13 @@ describe('ComponentsListRelationsService', () => {
 
     it('should update limit date of dependent components if el.relatedDate === component.id', () => {
       jest.spyOn(dateRangeService, 'updateLimitDate').mockImplementation(() => undefined);
-      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements').mockReturnValue({
-        bar: {
-          isShown: false,
-          relation: CustomComponentRefRelation.calc,
-        },
+      jest.spyOn<any, any>(relationResolverService, 'getStrategy').mockReturnValue({
+        handleRelation: jest.fn().mockReturnValue({
+          bar: {
+            isShown: false,
+            relation: CustomComponentRefRelation.calc,
+          },
+        })
       });
 
       const dependentComponent = createComponentMock({
@@ -317,7 +255,9 @@ describe('ComponentsListRelationsService', () => {
       const components = [component];
 
       jest.spyOn(dateRangeService, 'updateLimitDate');
-      jest.spyOn<any, any>(service, 'getDependentComponentUpdatedShownElements');
+      jest.spyOn<any, any>(relationResolverService, 'getStrategy').mockReturnValue({
+        handleRelation: jest.fn()
+      });
       jest.spyOn<any, any>(service, 'getDependentComponents').mockReturnValue(components);
 
       let result = service.getUpdatedShownElements(
@@ -451,912 +391,6 @@ describe('ComponentsListRelationsService', () => {
     });
   });
 
-  describe('getDependentComponentUpdatedShownElements()', () => {
-    let dependentComponent: CustomComponent;
-    let components: CustomComponent[];
-    let dependentComponentStatus: CustomStatusElement;
-    let shownElements: CustomListStatusElements;
-    let dependentControl: AbstractControl;
-    let form: FormArray;
-    let dictionaries: CustomListDictionaries;
-    let initInitialValues;
-    let componentVal;
-
-    beforeEach(() => {
-      dependentComponent = createComponentMock({
-        id: 'dependentComponentId',
-      });
-      dependentComponentStatus = {
-        isShown: true,
-        relation: CustomComponentRefRelation.autofillFromDictionary,
-      };
-      shownElements = {
-        dependentComponentId: dependentComponentStatus,
-      };
-      componentVal = { foo: 'bar' };
-      dependentControl = new FormControl({
-        id: 'dependentComponentId',
-      });
-      form = new FormArray([dependentControl]);
-      initInitialValues = false;
-    });
-
-    describe('if relation === displayOff', () => {
-      it('should update shownElements and mark as untouched if NOT isDisplayOn OR element.isShown === TRUE', () => {
-        let updatedShownElements: CustomListStatusElements;
-
-        dependentControl.markAsTouched();
-
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.displayOff,
-        };
-
-        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          {
-            [dependentComponent.id]: {
-              isShown: false,
-              relation: CustomComponentRefRelation.displayOn,
-            },
-          },
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // потому что isShown === false AND isDisplayOn
-        expect(dependentControl.touched).toBeTruthy();
-        expect(updatedShownElements).toEqual({
-          [dependentComponent.id]: {
-            isShown: false,
-            relation: CustomComponentRefRelation.displayOn,
-          },
-        });
-
-        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          {
-            [dependentComponent.id]: {
-              isShown: true,
-              relation: CustomComponentRefRelation.displayOn,
-            },
-          },
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // потому что isShown === true
-        expect(dependentControl.touched).toBeFalsy();
-        expect(updatedShownElements).toEqual({
-          [dependentComponent.id]: {
-            isShown: true,
-            relation: CustomComponentRefRelation.displayOff,
-          },
-        });
-
-        dependentControl.markAsTouched();
-
-        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          {
-            [dependentComponent.id]: {
-              isShown: false,
-              relation: CustomComponentRefRelation.getValue,
-            },
-          },
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // потому что NOT isDisplayOn
-        expect(dependentControl.touched).toBeFalsy();
-        expect(updatedShownElements).toEqual({
-          [dependentComponent.id]: {
-            isShown: true,
-            relation: CustomComponentRefRelation.displayOff,
-          },
-        });
-      });
-    });
-
-    describe('if relation === displayOn', () => {
-      it('should update shownElements and mark as untouched if NOT isDisplayOff OR element.isShown === TRUE', () => {
-        let updatedShownElements: CustomListStatusElements;
-
-        dependentControl.markAsTouched();
-
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.displayOn,
-        };
-
-        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          {
-            [dependentComponent.id]: {
-              isShown: false,
-              relation: CustomComponentRefRelation.displayOff,
-            },
-          },
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // потому что isShown === false AND isDisplayOff
-        expect(dependentControl.touched).toBeTruthy();
-        expect(updatedShownElements).toEqual({
-          [dependentComponent.id]: {
-            isShown: false,
-            relation: CustomComponentRefRelation.displayOff,
-          },
-        });
-
-        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          {
-            [dependentComponent.id]: {
-              isShown: true,
-              relation: CustomComponentRefRelation.displayOff,
-            },
-          },
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // потому что isShown === true
-        expect(dependentControl.touched).toBeFalsy();
-        expect(updatedShownElements).toEqual({
-          [dependentComponent.id]: {
-            isShown: false,
-            relation: CustomComponentRefRelation.displayOn,
-          },
-        });
-
-        dependentControl.markAsTouched();
-        updatedShownElements = service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          {
-            [dependentComponent.id]: {
-              isShown: false,
-              relation: CustomComponentRefRelation.getValue,
-            },
-          },
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // потому что NOT isDisplayOff
-        expect(dependentControl.touched).toBeFalsy();
-        expect(updatedShownElements).toEqual({
-          [dependentComponent.id]: {
-            isShown: false,
-            relation: CustomComponentRefRelation.displayOn,
-          },
-        });
-      });
-    });
-
-    describe('if relation === getValue', () => {
-      it('should patch dependentControl value', () => {
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.getValue,
-        };
-
-        dependentComponent = createComponentMock({
-          attrs: {
-            ref: [
-              {
-                relatedRel: 'rf2',
-                val: 'some value',
-                relation: CustomComponentRefRelation.getValue,
-                sourceId: 'someSourceId',
-              },
-            ],
-          },
-        });
-
-        components = [
-          createComponentMock({
-            id: 'someSourceId',
-          }),
-        ];
-
-        componentVal = 'some value';
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormGroup({
-            firstControl: new FormControl('first value'),
-            secondControl: new FormControl('second value'),
-          }),
-        });
-
-        form = new FormArray([dependentControl]);
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        expect(dependentControl.get('value').value).toEqual({
-          firstControl: 'first value',
-          secondControl: 'second value',
-        });
-      });
-    });
-
-    describe('if relation === autofillFromDictionary', () => {
-      it('should update dependent control if initInitialValues is TRUE', () => {
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.autofillFromDictionary,
-        };
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl('some value'),
-        });
-        form = new FormArray([dependentControl]);
-
-        dependentControl.markAsTouched();
-        initInitialValues = false;
-
-        componentVal = {
-          id: 'foo',
-          regOkato: '450000',
-        };
-
-        // почему-то ожидается, что dictionaries - это объект, а не массив.
-        // Несмотря на то, что это тип CustomListDictionaries
-        // (type CustomListDictionaries = Array<{ [key: string]: CustomListDictionary[] }>;)
-        dictionaries = {} as CustomListDictionaries;
-        dependentComponent = new DictionaryModel(dependentComponent);
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // dependentControl не изменился, потому что initInitialValues === FALSE
-        expect(dependentControl.touched).toBeTruthy();
-        expect(dependentControl.get('value').value).toBe('some value');
-
-        initInitialValues = true;
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // dependentControl изменился, потому что initInitialValues === TRUE
-        // value === '', потому что в dictinaries нет нужного словаря
-        expect(dependentControl.touched).toBeFalsy();
-        expect(dependentControl.get('value').value).toBe(null);
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl('some value'),
-        });
-        form = new FormArray([dependentControl]);
-        dependentControl.markAsTouched();
-        components[0] = new LookupInputModel(components[0]);
-        components[0].id = 'rf1';
-        components[0]['_dictionary$'].next({
-          list: [
-            {
-              id: 'foo',
-              originalItem: {
-                attributeValues: {
-                  [reference.val as string]: 'some attribute value',
-                },
-              },
-            },
-          ],
-        } as any);
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // dependentControl изменился, потому что initInitialValues === TRUE
-        // value === 'some value', потому что в dictionaries есть нужный словарь
-        expect(dependentControl.touched).toBeFalsy();
-        expect(dependentControl.get('value').value).toBe('some value');
-      });
-
-      it('should update dependent control if it is equal empty string', () => {
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.autofillFromDictionary,
-        };
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl(''),
-        });
-        form = new FormArray([dependentControl]);
-
-        dependentControl.markAsTouched();
-        initInitialValues = false;
-
-        componentVal = {
-          id: 'foo',
-          regOkato: '450000',
-        };
-
-        dictionaries = {} as CustomListDictionaries;
-
-        initInitialValues = true;
-        jest.spyOn(service, 'getDictionaryAttributeValue').mockReturnValue('new value');
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        expect(dependentControl.touched).toBeFalsy();
-        expect(dependentControl.get('value').value).toBe('new value');
-      });
-    });
-
-    describe('if relation === calc', () => {
-      it('should update dependent control', () => {
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.calc,
-        };
-
-        dependentComponent = createComponentMock({
-          attrs: {
-            ref: [
-              {
-                relatedRel: 'rf1',
-                val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-                relation: CustomComponentRefRelation.displayOn,
-              },
-            ],
-          },
-        });
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl(''),
-        });
-        form = new FormArray([dependentControl]);
-
-        jest.spyOn(service, 'getCalcValueFromRelation').mockReturnValue('some value');
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        expect(dependentControl.get('value').value).toBe('some value');
-      });
-    });
-
-    describe('if relation === disabled', () => {
-      it('should do nothing if isValueEquals() === TRUE AND component is disabled', () => {
-        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-
-        let reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.disabled,
-        };
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl('a'),
-        });
-        dependentControl.disable();
-        form = new FormArray([dependentControl]);
-        dependentControl.markAsTouched();
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        expect(dependentControl.get('value').value).toBe('a');
-        expect(dependentControl.touched).toBeTruthy();
-        expect(dependentControl.enabled).toBeFalsy();
-      });
-
-      it('should patchValueAndDisable if isValueEquals() === TRUE and control is enabled', () => {
-        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-
-        let reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.disabled,
-        };
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl('a'),
-        });
-        form = new FormArray([dependentControl]);
-        dependentControl.markAsTouched();
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // если в reference нет defaultValue, то контролу устанавливается ""
-        expect(dependentControl.get('value').value).toBe('');
-        expect(dependentControl.touched).toBeFalsy();
-        expect(dependentControl.enabled).toBeFalsy();
-
-        reference = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.disabled,
-          defaultValue: 'some default value',
-        };
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl('a'),
-        });
-        form = new FormArray([dependentControl]);
-        dependentControl.markAsTouched();
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // контролу устанавливается значение reference.defaultValue
-        expect(dependentControl.get('value').value).toBe('some default value');
-        expect(dependentControl.touched).toBeFalsy();
-        expect(dependentControl.enabled).toBeFalsy();
-      });
-
-      it('should patchValueAndEnable if isValueEquals() === FALSE AND component does not have any disabled refs with same value', () => {
-        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
-
-        let reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.disabled,
-        };
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl('a'),
-        });
-        form = new FormArray([dependentControl]);
-
-        dependentComponent = createComponentMock({
-          id: 'dependentComponentId',
-          attrs: {
-            ref: [
-              {
-                relatedRel: dependentComponent.id,
-                val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-                relation: CustomComponentRefRelation.disabled,
-              },
-            ],
-          },
-        });
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        expect(dependentControl.enabled).toBeTruthy();
-
-        // значение контрола не изменилось, т.к. в кэше сервиса (this.prevValues) нет значения для компонента
-        expect(dependentControl.get('value').value).toBe('a');
-
-        // делаем это для того, чтобы в кэше сервиса (this.prevValues) сохранилось значение для компонента
-        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl('b'),
-        });
-        dependentControl.disable();
-        form = new FormArray([dependentControl]);
-
-        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // значение контрола изменилось, т.к. в кэше сервиса (this.prevValues) есть значение для компонента
-        expect(dependentControl.get('value').value).toBe('a');
-        expect(dependentControl.enabled).toBeTruthy();
-      });
-
-      it('should do nothing if isValueEquals() === FALSE AND component has any disabled refs with same value', () => {
-        // делаем это для того, чтобы в кэше сервиса (this.prevValues) сохранилось значение для компонента
-        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-
-        let reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.disabled,
-        };
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl('a'),
-        });
-        form = new FormArray([dependentControl]);
-
-        dependentComponent = createComponentMock({
-          id: 'dependentComponentId',
-          attrs: {
-            ref: [
-              {
-                relatedRel: dependentComponent.id,
-                val: 'any value',
-                relation: CustomComponentRefRelation.filterOn,
-              },
-              {
-                relatedRel: dependentComponent.id,
-                val: 'b',
-                relation: CustomComponentRefRelation.disabled,
-              },
-            ],
-          },
-        });
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          value: new FormControl('b'),
-        });
-        dependentControl.disable();
-        form = new FormArray([dependentControl]);
-
-        // эта функция будет вызываться 2 раза, первый раз должна вернуть FALSE, второй раз она используется в приватной функции
-        // componentHasAnyDisabledRefsWithSameValue() и должна вернуть TRUE, поэтому вместо mockReturnValue сделал mockImplementation
-        jest
-          .spyOn(refRelationService, 'isValueEquals')
-          .mockImplementation((a: unknown, b: unknown) => a === b);
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        expect(dependentControl.get('value').value).toBe('b');
-        expect(dependentControl.enabled).toBeFalsy();
-      });
-    });
-
-    describe('if relation === filterOn', () => {
-      it('should apply filter if isValueEquals() AND isDictionaryLike()', () => {
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.filterOn,
-          dictionaryFilter: [
-            {
-              attributeName: 'okato',
-              condition: DictionaryConditions.EQUALS,
-              value: 'regOkato',
-              valueType: DictionaryValueTypes.preset,
-            },
-          ],
-        };
-
-        const resultFilter = {
-          simple: {
-            attributeName: 'okato',
-            condition: 'EQUALS',
-            value: {
-              asString: componentVal.regOkato,
-            },
-          },
-        };
-
-        const applyFilterSpy = jest.spyOn(dictionaryToolsService, 'applyFilter').mockImplementation(() => undefined);
-        const clearFilterSpy = jest.spyOn(dictionaryToolsService, 'clearFilter').mockImplementation(() => undefined);
-
-        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-        jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(true);
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // вызывается applyFilter(), потому что isValueEquals() === TRUE AND isDictionaryLike() === TRUE
-        expect(clearFilterSpy).not.toBeCalled();
-        expect(applyFilterSpy).toBeCalledTimes(1);
-        expect(applyFilterSpy).toBeCalledWith(dependentComponent.id, resultFilter);
-      });
-
-      it('should apply filter if isValueEquals() AND isDictionaryLike()', () => {
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-          relation: CustomComponentRefRelation.filterOn,
-        };
-
-        const applyFilterSpy = jest.spyOn(dictionaryToolsService, 'applyFilter').mockImplementation(() => undefined);
-        const clearFilterSpy = jest.spyOn(dictionaryToolsService, 'clearFilter').mockImplementation(() => undefined);
-
-        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-        jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(false);
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // вызывается clearFilter(), потому что isDictionaryLike() === FALSE
-        expect(applyFilterSpy).not.toBeCalled();
-        expect(clearFilterSpy).toBeCalledTimes(1);
-        expect(clearFilterSpy).toBeCalledWith(dependentComponent.id);
-
-        clearFilterSpy.mockClear();
-        jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
-        jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(true);
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        // вызывается clearFilter(), потому что isValueEquals() === FALSE
-        expect(applyFilterSpy).not.toBeCalled();
-        expect(clearFilterSpy).toBeCalledTimes(1);
-        expect(clearFilterSpy).toBeCalledWith(dependentComponent.id);
-      });
-    });
-
-    describe('if relation === autoFillTextFromRefs', () => {
-      it('should patch dependentControl value', () => {
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf2',
-          relation: CustomComponentRefRelation.autoFillTextFromRefs,
-          relatedRelValues: {
-            reference_to_name: 'title',
-            reference_to_address: 'address',
-          },
-          val: '',
-        };
-
-        componentVal = { title: 'some title', address: 'some address' };
-
-        dependentComponent = createComponentMock({
-          id: 'rf2',
-          label: 'label with ${reference_to_name}',
-          clarification: 'clarification with ${reference_to_address}',
-          hint: 'not match for replace ${not_match}',
-        });
-
-        dependentControl = new FormGroup({
-          id: new FormControl(dependentComponent.id),
-          label: new FormControl(dependentComponent.label),
-          clarification: new FormControl((dependentComponent as any).clarification),
-          hint: new FormControl(dependentComponent.hint),
-        });
-
-        service['handleAutoFillTextFromRefs'](
-          reference,
-          componentVal,
-          dependentControl,
-          dependentComponent,
-        );
-
-        expect(dependentControl.value).toEqual({
-          id: 'rf2',
-          label: 'label with some title',
-          clarification: 'clarification with some address',
-          hint: 'not match for replace ${not_match}',
-        });
-      });
-    });
-
-    describe('if relation === formatOn', () => {
-      it('should set value from related component', () => {
-        const reference: CustomComponentRef = {
-          relatedRel: 'rf1',
-          val: '*',
-          relation: CustomComponentRefRelation.formatOn,
-        };
-
-        const dependentControl = form.controls[0];
-        const patchValue = jest.spyOn(dependentControl, 'patchValue');
-
-        service['getDependentComponentUpdatedShownElements'](
-          dependentComponent,
-          reference,
-          componentVal,
-          components,
-          form,
-          shownElements,
-          initInitialValues,
-          dictionaryToolsService,
-          screenService,
-        );
-
-        expect(patchValue).toBeCalled();
-        expect(patchValue).toBeCalledTimes(1);
-        expect(patchValue).toBeCalledWith(
-          {
-            id: 'dependentComponentId',
-            value: { rf1: { foo: 'bar' }},
-          },
-          {
-            emitEvent: false,
-            onlySelf: true,
-          },
-        );
-      });
-    });
-  });
-
   describe('isComponentShown()', () => {
     const cachedAnswers = {
       rf1: {
@@ -1443,189 +477,6 @@ describe('ComponentsListRelationsService', () => {
     });
   });
 
-  describe('getDictionaryAttributeValue()', () => {
-    it('should return attribute value', () => {
-      const dictionaryAttributeName = 'someAttributeName';
-
-      const componentId = 'comp1';
-
-      const components = [
-        new LookupInputModel(createComponentMock({
-          id: 'comp1',
-        })),
-        new LookupInputModel(createComponentMock({
-          id: 'comp2',
-        })),
-      ];
-
-      const componentVal = { id: 'foo' };
-
-      // undefined потому что в словаре нет нет значения для компонента comp1
-      expect(
-        service.getDictionaryAttributeValue(
-          dictionaryAttributeName,
-          componentId,
-          components,
-          componentVal,
-        ),
-      ).toBeUndefined();
-
-      components[0]['_dictionary$'].next({ list: [
-          {
-            id: 'foo',
-            originalItem: {
-              attributeValues: {
-                someAttributeName: 'some attribute value',
-              },
-            },
-          },
-        ] } as any);
-      expect(
-        service.getDictionaryAttributeValue(
-          dictionaryAttributeName,
-          componentId,
-          components,
-          componentVal,
-        ),
-      ).toBe('some attribute value');
-    });
-  });
-
-  describe('getRelation()', () => {
-    it('should return reference relation found by component relation', () => {
-      const component = componentMock;
-      const reference = {
-        relatedRel: 'rf1',
-        val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-        relation: CustomComponentRefRelation.displayOn,
-      };
-      expect(service.getRelation(component, reference)).toEqual(reference);
-    });
-  });
-
-  describe('getCalcFieldValue()', () => {
-    it('should return number calculated from passed string formula', () => {
-      expect(service.getCalcFieldValue('(50 + 150) / 100')).toBe(2);
-    });
-  });
-
-  describe('getCalcValueFromRelation()', () => {
-    const component = createComponentMock({
-      value: '4',
-    });
-    const components = [component];
-    let formMock: FormArray;
-
-    it('should return empty string, if not all components have valid values', () => {
-      formMock = new FormArray([]);
-      expect(service.getCalcValueFromRelation(calcRefMock, components, formMock)).toBe('');
-    });
-    it('should return number calculated by formula, if components have valid values', () => {
-      const form = new FormBuilder().group({ ...component });
-      formMock = new FormArray([form]);
-      expect(service.getCalcValueFromRelation(calcRefMock, components, formMock)).toBe('2');
-    });
-  });
-
-  describe('handleIsDisplayOffRelation()', () => {
-    it('should hide dependent component if at least one of ref value condition is true', () => {
-      const fb = new FormBuilder();
-      const form1 = fb.group({
-        ...componentMock,
-        value: true,
-        id: 'rp1_1',
-      });
-      const form2 = fb.group({
-        ...componentMock,
-        value: false,
-        id: 'rp1_2',
-      });
-      const form3 = fb.group({ ...componentMock });
-      const mockForm = new FormArray([form1, form2, form3]);
-
-      const element: CustomStatusElement = {
-        isShown: true,
-        relation: CustomComponentRefRelation.displayOff,
-      };
-      const shownElements: CustomListStatusElements = {
-        rp1_1: {
-          isShown: true,
-          relation: CustomComponentRefRelation.displayOff,
-        },
-        rp1_2: {
-          isShown: true,
-          relation: CustomComponentRefRelation.displayOff,
-        },
-        rp1_3: {
-          isShown: true,
-          relation: CustomComponentRefRelation.displayOff,
-        }
-      };
-      const dependentComponent: CustomComponent = {
-        attrs: {
-          ref: [
-            {
-              relatedRel: 'rp1_1',
-              val: true,
-              relation: CustomComponentRefRelation.displayOff,
-            },
-            {
-              relatedRel: 'rp1_2',
-              val: true,
-              relation: CustomComponentRefRelation.displayOff,
-            }
-          ]
-        },
-        id: 'rp1_3',
-        type: CustomScreenComponentTypes.LabelSection
-      };
-      const reference: CustomComponentRef = {
-        relatedRel: 'rp1_3',
-        relation: CustomComponentRefRelation.displayOff,
-        val: true,
-      };
-      const dependentControl: AbstractControl = form3;
-
-      expect(shownElements['rp1_3'].isShown).toEqual(true);
-
-      service['handleIsDisplayOffRelation'](
-        element,
-        shownElements,
-        dependentComponent,
-        reference,
-        dependentControl,
-        mockForm,
-      );
-
-      expect(shownElements['rp1_3'].isShown).toEqual(false);
-    });
-  });
-
-  describe('handleResetControl()', () => {
-    const relatedComponent = {
-      id: 'acc_org',
-      type: 'CheckingAccount',
-      required: true,
-      label: 'Расчётный счёт',
-      attrs: {
-        refs: {},
-        ref: [{ relatedRel: 'rf1', val: '', relation: 'reset' }],
-      },
-      value: '',
-      visited: false,
-    };
-    const reference = { relatedRel: 'rf1', val: '', relation: 'reset' };
-    it('should reset dependent control', () => {
-      const fb = new FormBuilder();
-      const form = fb.group({ ...componentMock });
-      const form2 = fb.group({ ...relatedComponent });
-      const mockForm = new FormArray([form, form2]);
-      const control = mockForm.controls[1];
-      service['handleResetControl'](control, mockForm, reference as any);
-      expect(control.value.value).toBeNull();
-    });
-  });
-
   describe('onAfterFilterOnRel()', () => {
     const setup = (
       references = [
@@ -1664,7 +515,7 @@ describe('ComponentsListRelationsService', () => {
       const { dependentControl, mockForm } = setup(null);
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
 
-      service.onAfterFilterOnRel(componentMock, mockForm);
+      service.onAfterFilterOnRel(componentMock as BaseModel<DictionarySharedAttrs>, mockForm);
 
       expect(dependentControlSpy).not.toBeCalled();
     });

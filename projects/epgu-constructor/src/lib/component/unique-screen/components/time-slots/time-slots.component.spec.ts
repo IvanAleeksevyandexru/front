@@ -152,6 +152,29 @@ describe('TimeSlotsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should handle confirmation modal result if there is no confirmation', () => {
+    component.bookedSlot = {
+      slotTime: new Date('2021-08-28T09:00:00Z'),
+      timezone: '',
+      areaId: '',
+      slotId: '',
+    };
+
+    jest.spyOn(component, 'showModal');
+    jest.spyOn(component as any, 'isCachedValueChanged').mockImplementation(() => true);
+    jest.spyOn(component as any, 'showModal').mockImplementation(() => of(false));
+    const clearDateSelectionSpy = jest.spyOn<any, any>(component, 'clearDateSelection');
+    const selectDateSpy = jest.spyOn<any, any>(component, 'selectDate');
+    const chooseTimeSlotSpy = jest.spyOn<any, any>(component, 'chooseTimeSlot');
+
+
+    component.clickSubmit();
+
+    expect(clearDateSelectionSpy).toHaveBeenCalled();
+    expect(selectDateSpy).toHaveBeenLastCalledWith(component.bookedSlot.slotTime);
+    expect(chooseTimeSlotSpy).toHaveBeenLastCalledWith(component.bookedSlot);
+  });
+
   it('set bookingErrorHandlingParams as empty array if there in no bookingErrorHandlingParams in component attrs ', () => {
     component.ngOnInit();
     expect(component['bookingErrorHandlingParams']).toEqual([]);
