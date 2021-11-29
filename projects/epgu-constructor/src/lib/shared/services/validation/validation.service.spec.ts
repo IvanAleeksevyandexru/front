@@ -373,17 +373,9 @@ describe('ValidationService', () => {
       expect(isValid).toBeTruthy();
     });
 
-    it('should return true', () => {
-      service.form = new FormArray([
-        new FormControl({ id: 'bik_dict', value: null }),
-        new FormControl({ id: 'bik', value: '004525988' }),
-        new FormControl({ id: 'corr', value: '03100643000000017300' }),
-      ]);
-      const isValid = service.checkRS('40102810545370000003', {
-        bik_dict: 'bik_dict',
-        bik: 'bik',
-        corr: 'corr',
-      });
+    it('should return true when "rs" starts with "0"', () => {
+      service.form = new FormArray([new FormControl({ id: 'bik', value: '044030827' })]);
+      const isValid = service.checkRS('00702810900000002851', { bik: 'bik' });
       expect(isValid).toBeTruthy();
     });
 
