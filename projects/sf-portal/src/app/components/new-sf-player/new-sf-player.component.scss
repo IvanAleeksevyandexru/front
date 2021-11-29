@@ -1,0 +1,31 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+
+.permission-error-container {
+  max-width: 480px;
+  margin-left:  auto;
+  margin-right:  auto;
+}
+
+.permission-error {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  text-align: center;
+  align-items: center;
+
+  .error-icon {
+    width: 80px;
+  }
+
+  .error-message,
+  .error-hint {
+    word-break: break-word;
+  }
+}
+
+.permission-button {
+  @include tablets-up() {
+    display: flex;
+    justify-content: center;
+  }
+}

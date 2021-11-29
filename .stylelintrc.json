@@ -41,6 +41,7 @@
     "./src/app/**",
     "./dist/**",
     "./projects/epgu-constructor-ui-kit/src/styles/core/_palettes.scss",
-    "./projects/epgu-constructor-docs/**"
+    "./projects/epgu-constructor-docs/**",
+    "./projects/sf-portal/src/styles.scss"
   ]
 }
