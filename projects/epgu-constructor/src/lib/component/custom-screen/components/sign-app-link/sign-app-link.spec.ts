@@ -10,13 +10,13 @@ import {
   DeviceDetectorServiceStub,
   EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { SignAppLinkComponent } from './sign-app-link.component';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ComponentItemComponent } from '../component-item/component-item.component';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ErrorType } from './sign-app-link.types';
+import { SignAppLinkComponent } from './sign-app-link.component';
 
 const appLinks = [
   {

@@ -66,7 +66,11 @@ describe('ScreenButtonsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BaseModule],
-      declarations: [DisabledButtonPipe, ScreenButtonsComponent, ShowLoaderButtonPipe],
+      declarations: [
+        DisabledButtonPipe,
+        ScreenButtonsComponent,
+        ShowLoaderButtonPipe
+      ],
       providers: [
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
@@ -158,6 +162,110 @@ describe('ScreenButtonsComponent', () => {
     const debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
     expect(debugElements[0].nativeElement.disabled).toBeFalsy();
     expect(debugElements[1].nativeElement.disabled).toBeTruthy();
+  });
+
+  describe('ngOnInit()', () => {
+    it('should set clientSystem', () => {
+      deviceDetectorServiceSpy.mockReturnValue(System.Android);
+      component.ngOnInit();
+
+      expect(component['clientSystem']).toEqual(System.Android);
+    });
+
+    it('should set shownButtons by filtered screenButtons', () => {
+      deviceDetectorServiceSpy.mockReturnValue(System.Android);
+      component.ngOnInit();
+
+      expect(component.shownButtons.length).toEqual(4);
+    });
+  });
+
+  describe('render', () => {
+    it('should render two buttons', () => {
+      let debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
+      expect(debugElements.length).toBe(2);
+    });
+
+    it('should render one button', () => {
+      component.screenButtons = [
+        {
+          action: DTOActionAction.getNextStep,
+          type: ActionType.nextStep,
+          label: 'Далее',
+        },
+      ];
+      component.ngOnInit();
+      fixture.detectChanges();
+      let debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
+
+      expect(debugElements.length).toBe(1);
+    });
+
+    it('should render buttons filtered for client system', () => {
+      deviceDetectorServiceSpy.mockReturnValue(System.iOS);
+      component.ngOnInit();
+      fixture.detectChanges();
+      let debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
+
+      expect(debugElements.length).toBe(3);
+    });
+
+    it('should have button labels', () => {
+      let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+
+      expect(debugElements[0].nativeElement.textContent.trim()).toBe('На главную');
+      expect(debugElements[1].nativeElement.textContent.trim()).toBe('Далее');
+    });
+
+    it('should call setClickedButton when click on button and set clickedButton', () => {
+      const setClickedButtonSpy = jest.spyOn(component, 'setClickedButton');
+      let debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
+      debugElements[0].nativeElement.click();
+
+      expect(setClickedButtonSpy).toBeCalledWith(component.screenButtons[0]);
+      expect(component.clickedButton).toBe(component.screenButtons[0]);
+    });
+
+    it('should disable all buttons when isLoading', () => {
+      component.isLoading = true;
+      fixture.detectChanges();
+      let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+
+      expect(debugElements[0].nativeElement.disabled).toBeTruthy();
+      expect(debugElements[1].nativeElement.disabled).toBeTruthy();
+    });
+
+    it('should add loaded class for clickedButton', () => {
+      component.isLoading = true;
+      component.clickedButton = component.screenButtons[1];
+      fixture.detectChanges();
+      let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+
+      expect(debugElements[0].classes['loader']).toBeFalsy();
+      expect(debugElements[1].classes['loader']).toBeTruthy();
+    });
+
+    it('should disable all buttons when disabled and disabledForAll', () => {
+      component.isLoading = false;
+      component.disabled = true;
+      component.disabledForAll = true;
+      fixture.detectChanges();
+      let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+
+      expect(debugElements[0].nativeElement.disabled).toBeTruthy();
+      expect(debugElements[1].nativeElement.disabled).toBeTruthy();
+    });
+
+    it('should disable only for next screen buttons when disabled and not disabledForAll', () => {
+      component.isLoading = false;
+      component.disabled = true;
+      component.disabledForAll = false;
+      fixture.detectChanges();
+      let debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
+
+      expect(debugElements[0].nativeElement.disabled).toBeFalsy();
+      expect(debugElements[1].nativeElement.disabled).toBeTruthy();
+    });
   });
 
   describe('ngOnInit()', () => {

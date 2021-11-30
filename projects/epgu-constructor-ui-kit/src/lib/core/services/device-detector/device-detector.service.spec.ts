@@ -21,7 +21,7 @@ describe('DeviceDetectorService', () => {
         DeviceDetectorService,
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: SmuEventsService, useClass: SmuEventsServiceStub },
-        { provide: WINDOW, useValue: { navigator: {} } },
+        { provide: WINDOW, useValue: { navigator: {}}}
       ],
     }).compileComponents();
   });
