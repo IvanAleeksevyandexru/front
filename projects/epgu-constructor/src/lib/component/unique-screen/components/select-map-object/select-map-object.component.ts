@@ -97,7 +97,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   private screenStore: ScreenStore;
   private needToAutoFocus = false; // Флаг из атрибутов для авто центровки ближайшего объекта к центру
   private needToAutoCenterAllPoints = false;
-  private DEFAULT_ZOOM = 9;
   private nextStepAction = NEXT_STEP_ACTION;
   private isMultiSelect = false;
   private isCommonDictionary; // Флаг отвечающий за общую логику карты. Например для правосудия она отключается и реализована на searchPanel
@@ -252,7 +251,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       } else if (this.needToAutoFocus && this.areMapObjectsFound()) {
         this.selectClosestMapObject();
       } else if (this.needToAutoCenterAllPoints) {
-        this.centerAllPoints();
+        this.yandexMapService.centerAllPoints();
       }
     }
   }
@@ -599,23 +598,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     this.yandexMapService.centeredPlaceMark(
       this.yandexMapService.getObjectById(chosenMapObject.objectId),
     );
-  }
-
-  private centerAllPoints(): void {
-    const bounds = this.yaMapService.map.geoObjects.getBounds();
-    if (bounds) {
-      this.yaMapService.map
-        .setBounds(bounds, {
-          checkZoomRange: true,
-        })
-        .then(() => {
-          const zoom = this.yaMapService.map.getZoom();
-          // Уменьшаем зум в случае если точки близко или точка одна
-          if (zoom > this.DEFAULT_ZOOM) {
-            this.yaMapService.map.setZoom(this.DEFAULT_ZOOM);
-          }
-        });
-    }
   }
 
   // Проверяет в справочнике наличие объекта из кэша

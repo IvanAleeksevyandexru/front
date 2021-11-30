@@ -16,7 +16,7 @@ import { AbstractConfirmPersonalUserDataDirective } from '../abstract-confirm-pe
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-data',
   templateUrl: './confirm-personal-user-data.component.html',
-  styleUrls: ['./confirm-personal-user-data.component.scss'],
+  styleUrls: ['../confirm-personal.styles.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })

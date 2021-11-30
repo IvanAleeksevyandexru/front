@@ -26,6 +26,7 @@ import { TerraByteApiService } from '../../../../core/services/terra-byte-api/te
 import { TerraByteApiServiceStub } from '../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { UniqueScreenService } from '../../unique-screen.service';
 
 const componentMock = {
   id: 'id',
@@ -54,6 +55,7 @@ describe('IdentificationUploadScreenComponent', () => {
         EventBusService,
         CertificateEaisdoService,
         CurrentAnswersService,
+        UniqueScreenService,
       ],
     }).overrideComponent(IdentificationUploadScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },
