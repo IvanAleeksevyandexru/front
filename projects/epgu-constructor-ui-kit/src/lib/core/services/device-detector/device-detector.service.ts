@@ -1,9 +1,9 @@
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
-import { CookieService } from 'ngx-cookie-service';
 import { Inject, Injectable } from '@angular/core';
-import { System } from './device-detector.types';
-import { WINDOW } from '../../providers/window.provider';
+import { CookieService } from 'ngx-cookie-service';
 import isMobile from 'ismobilejs';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { System } from '@epgu/epgu-constructor-types';
+import { WINDOW } from '../../providers/window.provider';
 
 export const MOBILE_VIEW_COOKIE_NAME = 'mobVersion';
 
@@ -50,14 +50,14 @@ export class DeviceDetectorService {
    * Возвращает IOS в браузере Chrome это или нет
    */
   isChromeIOS(): boolean {
-    return /CriOS\/[\d]+/.test(navigator.userAgent);
+    return /CriOS\/[\d]+/.test(this.window.navigator.userAgent);
   }
 
   /**
    * Возвращает Android в браузере Mi это или нет
    */
   isMiAndroid(): boolean {
-    return /XiaoMi\/+/.test(navigator.userAgent);
+    return /XiaoMi\/+/.test(this.window.navigator.userAgent);
   }
 
   initSmuEventsService(): void {
@@ -68,11 +68,12 @@ export class DeviceDetectorService {
     }
   }
 
-  /**
-   * Возвращает название операционной системы пользователя
-   */
-  get system(): string | null {
-    const userAgent = navigator?.userAgent;
+  get system(): System {
+    if (this.isDesktop) {
+      return System.Desktop;
+    }
+
+    const userAgent = this.window.navigator?.userAgent;
 
     if (!userAgent) {
       return System.Error;

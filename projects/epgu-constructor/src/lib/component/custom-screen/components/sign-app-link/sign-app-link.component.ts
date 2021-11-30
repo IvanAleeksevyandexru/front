@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DeviceDetectorService, System, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
+import { System } from '@epgu/epgu-constructor-types';
+import { DeviceDetectorService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { AppLink, ErrorType } from './sign-app-link.types';
 import SingAppLinkModelAttrs from './SingAppLinkModelAttrs';
@@ -14,7 +16,7 @@ import SingAppLinkModelAttrs from './SingAppLinkModelAttrs';
 export class SignAppLinkComponent extends AbstractComponentListItemComponent<SingAppLinkModelAttrs>
   implements OnInit {
   public appLinks: AppLink[];
-  private clientSystem: string | null;
+  private clientSystem: System;
   private clientAppLink: AppLink;
 
   constructor(public injector: Injector, private deviceDetectorService: DeviceDetectorService) {
@@ -28,6 +30,8 @@ export class SignAppLinkComponent extends AbstractComponentListItemComponent<Sin
     this.clientSystem = this.deviceDetectorService.system;
 
     switch (this.clientSystem) {
+      case System.Desktop:
+        break;
       case System.Error:
         this.emitToParentForm('error', ErrorType.userAgent);
         break;
