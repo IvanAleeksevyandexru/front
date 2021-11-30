@@ -50,6 +50,7 @@ describe('SelectMapObjectComponent', () => {
       },
       clusters: {
         getAll: () => [],
+        setClusterProperties: () => [],
       },
     };
   });
@@ -99,7 +100,7 @@ describe('SelectMapObjectComponent', () => {
   it('closeBalloon should call paintActiveCluster with blue cluster', () => {
     const spy = jest.spyOn<any, any>(yandexMapService, 'paintActiveCluster');
     yandexMapService.closeBalloon();
-    expect(spy).toBeCalledWith(icons.clusterBlue);
+    expect(spy).toBeCalledWith('cluster-blue');
   });
 
   it('centeredPlaceMark should call paintActiveCluster with red cluster', () => {
@@ -108,28 +109,27 @@ describe('SelectMapObjectComponent', () => {
     yandexMapService.ymaps.util.math.areEqual = () => false;
     const spy = jest.spyOn<any, any>(yandexMapService, 'paintActiveCluster');
     yandexMapService.centeredPlaceMark((mockBrakCluster as unknown) as IClusterItem<unknown>);
-    expect(spy).toBeCalledWith(icons.clusterRed);
+    expect(spy).toBeCalledWith('cluster-red');
   });
 
   describe('mapPaint()', () => {
 
     let cluster;
-    let setClusterOptionsSpy;
+    let setClusterPropertiesSpy;
     beforeEach(() => {
       const feature1 = { properties: { res: {}}};
       const feature2 = { properties: { res: {}}};
       cluster = { id: 1, features: [feature1, feature2] };
       yandexMapService['objectManager'].clusters.getAll = () => [cluster];
-      yandexMapService['objectManager'].clusters.getById = () => { return { options: { clusterIcons: 'test' }}; };
+      yandexMapService['objectManager'].clusters.getById = () => { return { options: { clusterStyle: 'test' }}; };
       yandexMapService['objectManager'].clusters.setClusterOptions = () => null;
-      setClusterOptionsSpy = jest.spyOn(yandexMapService['objectManager'].clusters, 'setClusterOptions').mockImplementation(() => null);
+      setClusterPropertiesSpy = jest.spyOn(yandexMapService['objectManager'].clusters, 'setClusterProperties').mockImplementation(() => null);
     });
 
     it('should paint cluster with blue', () => {
-
       yandexMapService.mapPaint();
 
-      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1, { clusterIcons: [icons.clusterBlue] });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1, { clusterStyle: 'cluster-blue' });
       });
 
     it('should paint to bluered', () => {
@@ -138,7 +138,7 @@ describe('SelectMapObjectComponent', () => {
 
       yandexMapService.mapPaint();
 
-      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-blue-red' });
     });
 
     it('should paint to bluered', () => {
@@ -147,7 +147,7 @@ describe('SelectMapObjectComponent', () => {
 
       yandexMapService.mapPaint();
 
-      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-blue-red' });
     });
 
     it('should paint to bluered', () => {
@@ -156,7 +156,7 @@ describe('SelectMapObjectComponent', () => {
 
       yandexMapService.mapPaint();
 
-      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-blue-red' });
     });
 
     it('should paint to red', () => {
@@ -166,7 +166,7 @@ describe('SelectMapObjectComponent', () => {
 
       yandexMapService.mapPaint();
 
-      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterBlueRed] });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-blue-red' });
     });
 
     it('should paint to red', () => {
@@ -176,18 +176,7 @@ describe('SelectMapObjectComponent', () => {
 
       yandexMapService.mapPaint();
 
-      expect(setClusterOptionsSpy).toHaveBeenCalledWith(1,  { clusterIcons: [icons.clusterRed] });
-    });
-
-    it('should not paint anything', () => {
-      yandexMapService['activePlacemarkId'] = 24;
-      cluster.features[0].properties.res.isSelected = true;
-      cluster.features[1].properties.res.isSelected = true;
-      yandexMapService['objectManager'].clusters.getById = () => { return { options: { clusterIcons: [icons.clusterRed] }}; };
-
-      yandexMapService.mapPaint();
-
-      expect(setClusterOptionsSpy).toBeCalledTimes(0);
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-red' });
     });
 
 

@@ -1,5 +1,7 @@
 // stylelint-disable selector-type-no-unknown
-@import './../../../../styles/core';
+@import './../../../../styles/core/typography';
+@import './../../../../styles/core/variables';
+@import './../../../../styles/core/functions';
 
 :host {
   @include flex-container();
@@ -98,5 +100,34 @@
 
   .pin-red-checked {
     background-position: -69px 0;
+  }
+
+  .cluster {
+    position: absolute;
+    width: 40px;
+    height: 43px;
+    background-image: escape-svg($clusters-icon);
+    top: -43px;
+    left: -20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .cluster-elements {
+      @include typ-plain-small;
+      font-weight: $fw-bold;
+    }
+  }
+
+  .cluster-blue {
+    background-position: -85px 0;
+  }
+
+  .cluster-red {
+    background-position: -253px 0;
+  }
+
+  .cluster-blue-red {
+    background-position: -210px 0;
   }
 }
