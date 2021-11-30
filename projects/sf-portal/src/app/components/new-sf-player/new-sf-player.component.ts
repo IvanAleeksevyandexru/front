@@ -41,6 +41,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
     this.route.snapshot.paramMap.get('orderId');
   private readonly billNumber: string = this.route.snapshot.queryParamMap.get('billNumber');
   private readonly routeNumber: string = this.route.snapshot.queryParamMap.get('routeNumber');
+  private readonly formId: string = this.route.snapshot.queryParamMap.get('targetId');
 
   constructor(
     public route: ActivatedRoute,
@@ -174,6 +175,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
             path: this.region.path,
           },
           queryParams: this.route.snapshot.queryParams,
+          formId: this.formId,
         },
       };
     }

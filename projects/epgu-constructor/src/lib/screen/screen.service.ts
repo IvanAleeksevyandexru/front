@@ -7,6 +7,7 @@ import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto, DisclaimerMnemonic } from '@epgu/epgu-constructor-types';
 import { NotifierDisclaimerService } from '../shared/services/notifier/notifier.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable()
 export class ScreenService extends ScreenContent {
@@ -27,6 +28,7 @@ export class ScreenService extends ScreenContent {
     private deviceDetectorService: DeviceDetectorService,
     private prepareComponentsService: PrepareComponentsService,
     private notifierDisclaimerService: NotifierDisclaimerService,
+    private route: ActivatedRoute,
   ) {
     super();
   }
@@ -156,5 +158,9 @@ export class ScreenService extends ScreenContent {
     if (screenStoreComponent.length) {
       this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };
     }
+  }
+
+  private getRouteParam(): void{
+    console.log(this.route.snapshot);
   }
 }
