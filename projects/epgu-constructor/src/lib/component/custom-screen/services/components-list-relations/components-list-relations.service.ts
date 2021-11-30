@@ -476,6 +476,7 @@ export class ComponentsListRelationsService {
           shownElements,
           dependentComponent,
           reference,
+          componentVal,
           dependentControl,
           form,
         );
@@ -617,15 +618,24 @@ export class ComponentsListRelationsService {
     shownElements: CustomListStatusElements,
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
+    componentVal: KeyValueMap,
     dependentControl: AbstractControl,
     form: FormArray
   ): void {
     const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
     const refs = dependentComponent.attrs.ref;
-    const isShown = !refs.some((ref) => {
-      return this.refRelationService.isDisplayOffRelation(ref.relation) &&
-        this.refRelationService.isValueEquals(reference.val, this.getControlValueById(ref.relatedRel, form)) &&
-        shownElements[ref.relatedRel]?.isShown;
+
+    // проверка значений из cachedAnswers
+    let isShown = !shownElements[reference.relatedRel]?.isShown ||
+      !this.refRelationService.isValueEquals(reference.val, componentVal);
+
+    // проверка значений из текущего экрана
+    isShown &&= !refs.some((ref) => {
+      if (this.refRelationService.isDisplayOffRelation(ref.relation) && this.hasControlWithId(ref.relatedRel, form)) {
+        return this.refRelationService.isValueEquals(reference.val, this.getControlValueById(ref.relatedRel, form)) &&
+          shownElements[ref.relatedRel]?.isShown;
+      }
+      return false;
     });
 
     if (element.isShown === true || !isDisplayOn) {
@@ -908,6 +918,10 @@ export class ComponentsListRelationsService {
         { onlySelf: true, emitEvent: false },
       );
     }
+  }
+
+  private hasControlWithId(id: string, form: FormArray): boolean {
+    return !!form.controls.find((control) => control.value.id === id);
   }
 
   private getControlValueById(id: string, form: FormArray): { id?: string } | string | number {
