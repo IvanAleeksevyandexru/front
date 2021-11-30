@@ -122,7 +122,7 @@ describe('TimeSlotsComponent', () => {
     smev3TimeSlotsRestService = TestBed.inject(Smev3TimeSlotsRestService);
     httpClient = TestBed.inject(HttpClient);
     screenService = (TestBed.inject(ScreenService) as unknown) as ScreenServiceStub;
-      // @ts-ignore
+    // @ts-ignore
     store = cloneDeep(mockScreenDivorceStore);
     screenService.initScreenStore(store);
     fixture = TestBed.createComponent(TimeSlotsComponent);
@@ -181,9 +181,11 @@ describe('TimeSlotsComponent', () => {
   });
 
   it('setting bookingErrorHandlingParams ', () => {
-    const mockBookingErrorHandling = [{
-      errorCode: 2
-    } as unknown as IBookingErrorHandling];
+    const mockBookingErrorHandling = [
+      ({
+        errorCode: 2,
+      } as unknown) as IBookingErrorHandling,
+    ];
     // @ts-ignore
     screenService.component.attrs?.bookingErrorHandling = mockBookingErrorHandling;
 
@@ -210,7 +212,7 @@ describe('TimeSlotsComponent', () => {
 
   it('should show content when slots are loaded without errors', () => {
     component.inLoadingSlotsProgress = false;
-    component.weeks = [[]] as unknown as IDay[][];
+    component.weeks = ([[]] as unknown) as IDay[][];
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('.lib-loader'))).toBeNull();
     expect(fixture.debugElement.query(By.css('.screen-footer'))).toBeTruthy();
@@ -634,7 +636,7 @@ describe('TimeSlotsComponent', () => {
         slotTime: new Date('2021-08-28T08:00:00Z'),
         timezone: '',
         areaId: '',
-        slotId: '',
+        slotId: '1',
       };
 
       component.showTimeSlots(new Date());
@@ -652,7 +654,7 @@ describe('TimeSlotsComponent', () => {
         slotTime: new Date('2021-08-28T10:00:00Z'),
         timezone: '',
         areaId: '',
-        slotId: '',
+        slotId: '1',
       };
 
       component.showTimeSlots(new Date());
@@ -670,7 +672,7 @@ describe('TimeSlotsComponent', () => {
         slotTime: new Date('2021-08-28T10:00:00Z'),
         timezone: '',
         areaId: '',
-        slotId: '',
+        slotId: '1',
       };
 
       component.showTimeSlots(new Date());
@@ -691,7 +693,7 @@ describe('TimeSlotsComponent', () => {
         slotTime: new Date('2021-08-28T12:00:00Z'),
         timezone: '',
         areaId: '',
-        slotId: '',
+        slotId: '1',
       };
 
       component.showTimeSlots(new Date());
