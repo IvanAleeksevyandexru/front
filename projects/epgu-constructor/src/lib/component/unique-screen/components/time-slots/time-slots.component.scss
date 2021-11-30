@@ -29,6 +29,9 @@
   ::ng-deep.dropdown.compact {
     width: 195px;
     min-width: 100px;
+    div.structure-container {
+      box-sizing: content-box;
+    }
 
     ::ng-deep.dropdown-field {
       border: none;
