@@ -35,7 +35,7 @@ export class YandexMapService implements OnDestroy {
   private activePlacemarkId: number | string;
   private activeClusterHash: string = null;
   private MIN_ZOOM = 4;
-  private MAX_ZOOM = 17;
+  private MAX_ZOOM = 18;
   private DEFAULT_ZOOM = 9;
   private hoverPinId: number;
 

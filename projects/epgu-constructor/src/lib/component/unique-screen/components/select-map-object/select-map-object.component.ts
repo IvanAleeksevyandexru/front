@@ -79,7 +79,7 @@ const INTERNAL_ERROR_MESSAGE = 'Internal Error';
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService, SelectMapObjectService, YandexMapService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDestroy {
   data: ComponentBase;
@@ -419,7 +419,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     const { geo_lon, geo_lat, center } = this.componentValue;
     const moscowCenter = [37.64, 55.76]; // Москва
     const geoCode = geo_lon && geo_lat ? [geo_lon, geo_lat] : null;
-    this.mapCenter = (geoCode || center || moscowCenter) as number[]; // TODO fix as
+    this.mapCenter = (geoCode || center || moscowCenter) as number[];
   }
 
   /**
@@ -505,9 +505,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         this.screenStore,
         dictionaryFilters,
       ),
-      // TODO: после правки JSON услуг, вернуть
-      // selectAttributes: this.screenService.component.attrs.selectAttributes || ['*'],
-      selectAttributes: ['*'],
+      selectAttributes: this.screenService.component.attrs.selectAttributes || ['*'],
       pageSize: '100000',
     };
   }
