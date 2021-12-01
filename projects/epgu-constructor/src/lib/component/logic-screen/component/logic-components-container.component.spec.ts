@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
 import { LogicComponentsContainerComponent } from './logic-components-container.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -7,13 +11,10 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../shared/base.module';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { LogicComponents } from '@epgu/epgu-constructor-types';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
-import { HttpClientModule } from '@angular/common/http';
 import { LogicComponentResolverComponent } from '../component-list-resolver/logic-component-resolver.component';
-import { BehaviorSubject } from 'rxjs';
 
 const componentsMock = [
   {
@@ -51,6 +52,22 @@ const componentsMock = [
           valueType: 'ref',
         },
       ],
+    },
+    value: '{}',
+  },
+  {
+    id: 's7restcall',
+    type: 'RestCall',
+    attrs: {
+      url: 'https://pgu-uat-fed.test.gosuslugi.ru',
+      method: 'POST',
+      path: '/api/nsi/v1/dictionary/CONC_COMPETENT_ORG',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+      body: '',
+      events: ['ON_BEFORE_REJECT'],
     },
     value: '{}',
   },
@@ -98,6 +115,15 @@ describe('LogicComponentsContainerComponent', () => {
     expect(clearSpy).toHaveBeenCalled();
   });
 
+  it('should not clear hooks if reject & submit components are present', () => {
+    const clearSpy = jest.spyOn(hookService, 'clearHook');
+    screenService.logicComponents = [componentsMock] as unknown as LogicComponents[];
+
+    component.ngOnInit();
+
+    expect(clearSpy).not.toHaveBeenCalled();
+  });
+
   it('should set loading to true if init component is present', () => {
     screenService.logicComponents = componentsMock as unknown as LogicComponents[];
 
@@ -121,6 +147,4 @@ describe('LogicComponentsContainerComponent', () => {
     testSubject.next(true);
     expect(screenService.isLogicComponentLoading).toBeFalsy();
   });
-
-
 });
