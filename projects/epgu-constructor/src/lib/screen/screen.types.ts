@@ -35,4 +35,5 @@ export interface Screen {
 
 export interface ServiceInfo {
   billNumber?: string;
+  formId?: string;
 }
