@@ -1593,6 +1593,7 @@ describe('ComponentsListRelationsService', () => {
         shownElements,
         dependentComponent,
         reference,
+        null,
         dependentControl,
         mockForm,
       );
