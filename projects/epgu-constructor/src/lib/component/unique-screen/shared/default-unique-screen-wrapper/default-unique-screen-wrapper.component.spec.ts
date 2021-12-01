@@ -25,13 +25,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { BaseModule } from '../../../../shared/base.module';
-
-import {
-  ActionType,
-  ButtonColor,
-  ComponentActionDto,
-  DTOActionAction,
-} from '@epgu/epgu-constructor-types';
+import { ActionType, ButtonColor, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
