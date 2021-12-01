@@ -1,4 +1,4 @@
-<div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded"></div>
+<div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded" [@rotateAndDiminish]></div>
 <div class="balloon-content-wrapper">
   <h6
     (click)="objectClick(mapObject)"
@@ -9,7 +9,12 @@
   >
     {{ mapObject.title }}
   </h6>
-  <div class="expandable-content" epgu-cf-ui-smooth-height [smoothHeight]="mapObject.expanded" [ngClass]="{ expanded: mapObject.expanded }" >
+  <div epgu-cf-ui-smooth-height
+       [ngClass]="{'expanded': mapObject.expanded}"
+       [smoothHeight]="mapObject.expanded"
+       [lockAnimation]="lockAnimation"
+       class="map-object__expandable-content"
+  >
     <ng-container *ngIf="mapObject.expanded">
     <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
       <div class="map-object__label">{{ itemContent.label }}: </div>

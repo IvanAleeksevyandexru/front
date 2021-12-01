@@ -11,7 +11,7 @@ import {
   YMapItem,
   IFeatureItem,
   YandexMapModule,
-  WINDOW,
+  WINDOW, SmoothHeightAnimationDirective,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
@@ -69,6 +69,7 @@ describe('SelectMapObjectComponent', () => {
         CommonBalloonContentComponent,
         CommonSearchPanelComponent,
         SwipeableWrapperComponent,
+        SmoothHeightAnimationDirective
       ],
       imports: [
         BaseModule,

@@ -1,24 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import {
-  ConfigService,
-  ConfigServiceStub,
-  DeviceDetectorService,
-  DeviceDetectorServiceStub,
-  Icons,
-  UnsubscribeService,
   WINDOW,
-  WINDOW_PROVIDERS,
   YandexMapService,
-  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { YaMapService } from '@epgu/ui/services/ya-map';
-import { MockProvider } from 'ng-mocks';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { JusticeSearchPanelService } from './justice-search-panel.service';
 import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { KindergartenSearchPanelService } from '../kindergarten-search-panel/kindergarten-search-panel.service';
+import { ForTestsOnlyModule } from '../../../../../../../../core/for-tests-only.module';
 
 describe('JusticeSearchPanelService', () => {
   let selectMapObjectService: SelectMapObjectService;
@@ -56,21 +47,7 @@ describe('JusticeSearchPanelService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
-        WINDOW_PROVIDERS,
-        JusticeSearchPanelService,
-        SelectMapObjectService,
-        MockProvider(Icons),
-        YandexMapService,
-        MockProvider(JsonHelperService),
-        YaMapService,
-        UnsubscribeService,
-        MockProvider(KindergartenSearchPanelService),
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        DictionaryApiService,
-      ],
+      imports: [HttpClientTestingModule, ForTestsOnlyModule],
     }).compileComponents();
   });
 

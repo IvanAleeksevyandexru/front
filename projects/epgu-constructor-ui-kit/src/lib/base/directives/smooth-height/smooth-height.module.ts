@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SmoothHeightAnimDirective } from './smooth-height.directive';
+import { SmoothHeightAnimationDirective } from './smooth-height.directive';
 
 @NgModule({
-  declarations: [SmoothHeightAnimDirective],
+  declarations: [SmoothHeightAnimationDirective],
   imports: [CommonModule],
-  exports: [SmoothHeightAnimDirective],
+  exports: [SmoothHeightAnimationDirective],
 })
-export class SmoothHeightAnimDirectiveModule {}
+export class SmoothHeightAnimationDirectiveModule {}

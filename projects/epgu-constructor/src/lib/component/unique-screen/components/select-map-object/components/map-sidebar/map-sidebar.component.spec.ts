@@ -47,6 +47,7 @@ import { CommonBalloonContentComponent } from '../balloon-content-resolver/compo
 import { BaseModule } from '../../../../../../shared/base.module';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { SwipeableWrapperComponent } from '../swipeable-wrapper/swipeable-wrapper.component';
+import { ForTestsOnlyModule } from '../../../../../../core/for-tests-only.module';
 
 describe('MapSidebarComponent', () => {
   let component: MapSidebarComponent;
@@ -72,27 +73,10 @@ describe('MapSidebarComponent', () => {
         HttpClientTestingModule,
         DisclaimerModule,
         FormsModule,
+        ForTestsOnlyModule
       ],
       providers: [
-        { provide: ActionService, useClass: ActionServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: DownloadService, useClass: DownloadServiceStub },
-        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: ModalService, useClass: ModalServiceStub },
-        { provide: NavigationModalService, useClass: NavigationModalServiceStub },
-        { provide: NavigationService, useClass: NavigationServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        MockProvider(ActionToolsService),
-        MockProvider(DateRestrictionsService),
-        MockProvider(KindergartenSearchPanelService),
-        CurrentAnswersService,
-        Icons,
-        PriorityItemsService,
-        SelectMapObjectService,
-        UnsubscribeService,
-        YandexMapService,
+
       ],
     })
       .overrideModule(BrowserDynamicTestingModule, {
@@ -144,7 +128,7 @@ describe('MapSidebarComponent', () => {
 
       selectMapObjectService.isSelectedView.next(false);
 
-      expect(component.balloonDictionaryItems).toBe(testArray);
+      expect(component.balloonDictionaryItems).toEqual(testArray);
     });
 
     it('should set balloon items to selected objects on view change', () => {
@@ -154,7 +138,7 @@ describe('MapSidebarComponent', () => {
 
       selectMapObjectService.isSelectedView.next(true);
 
-      expect(component.balloonDictionaryItems).toBe(testArray);
+      expect(component.balloonDictionaryItems).toEqual(testArray);
     });
 
     it('should set balloon items on map load', () => {
@@ -164,7 +148,7 @@ describe('MapSidebarComponent', () => {
 
       selectMapObjectService.isMapLoaded.next(true);
 
-      expect(component.balloonDictionaryItems).toBe(testArray);
+      expect(component.balloonDictionaryItems).toEqual(testArray);
     });
 
   });

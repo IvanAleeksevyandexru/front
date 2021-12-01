@@ -88,13 +88,23 @@ export class MapSidebarComponent implements OnInit {
     this.yandexMapService.selectedValue$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: DictionaryItem[]) => {
-        if (this.activeItem) {
-          this.activeItem.expanded = false;
-        }
         if (this.previouslyChoosenItem) {
           this.previouslyChoosenItem.expanded = false;
         }
         if (value) {
+          // при автоскролле с одного открытого элемента списка на другой,
+          // необходимо мгновенно закрыть ранее выбранный элемент,
+          // для этого у него блокируется скролл с помощью этого костыля
+          let activeBalloonRef;
+          if (this.activeItem) {
+            this.activeItem.expanded = false;
+            activeBalloonRef = this.balloonComponents.find((item) =>
+              arePointsEqual(item.mapObject, this.activeItem),
+            );
+            if (activeBalloonRef) {
+              activeBalloonRef.balloonContentComponentRef.instance.lockAnimation = true;
+            }
+          }
           this.originalValue = value;
           [this.activeItem] = value;
           if (value.length === 1 || this.sidebarData.attrs.mapType !== MapTypes.electionsMap) {
@@ -107,6 +117,9 @@ export class MapSidebarComponent implements OnInit {
           if (matchingBalloon) {
             setTimeout(() => {
               matchingBalloon.balloonContentComponentRef.location.nativeElement.scrollIntoView();
+              if (activeBalloonRef) {
+                activeBalloonRef.balloonContentComponentRef.instance.lockAnimation = false;
+              }
             }, 0);
           }
         } else {
@@ -137,20 +150,7 @@ export class MapSidebarComponent implements OnInit {
     const items = this.selectMapObjectService.isSelectedView.getValue()
       ? this.selectMapObjectService.selectedViewItems$.getValue()
       : this.selectMapObjectService.filteredDictionaryItems;
-    // const timer = (ms) => new Promise((res) => setTimeout(res, ms));
-    // const { cdr, balloonDictionaryItems } = this;
-    // async function load(): Promise<void> {
-    //   // We need to wrap the loop into an async function for this to work
-    //   // eslint-disable-next-line no-restricted-syntax
-    //   for (const item of items) {
-    //     balloonDictionaryItems.push(item);
-    //     cdr.detectChanges();
-    //     // eslint-disable-next-line no-await-in-loop
-    //     await timer(1);
-    //   }
-    // }
-    //
-    // load();
+    // пушим для анимации
     items.forEach((item) => this.balloonDictionaryItems.push(item));
   }
 }

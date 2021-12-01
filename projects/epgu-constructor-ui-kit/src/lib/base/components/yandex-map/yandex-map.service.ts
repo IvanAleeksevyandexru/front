@@ -21,6 +21,7 @@ import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { HttpClient } from '@angular/common/http';
 import { GeoCodeResponse } from './geo-code.interface';
+import { MapAnimationService } from './map-animation.service';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
 
@@ -46,6 +47,7 @@ export class YandexMapService implements OnDestroy {
     private deviceDetector: DeviceDetectorService,
     private configService: ConfigService,
     private http: HttpClient,
+    private mapAnimationService: MapAnimationService
   ) {
     this.yaMapService.mapSubject
       .pipe(
@@ -115,6 +117,7 @@ export class YandexMapService implements OnDestroy {
 
     this.yaMapService.map.geoObjects.removeAll();
     this.addObjectsOnMap(this.objectManager);
+    this.prepareMapObjectsForAnimation();
   }
 
   public addObjectsOnMap(object: ymaps.ObjectManager | ymaps.Placemark): void {
@@ -141,7 +144,7 @@ export class YandexMapService implements OnDestroy {
     ) {
       return;
     }
-    this.closeBalloon();
+    this.closeBalloon(true);
     this.activePlacemarkId = feature.id;
     const coords = feature.geometry?.coordinates;
     if (feature.type === IFeatureTypes.Cluster) {
@@ -202,7 +205,7 @@ export class YandexMapService implements OnDestroy {
     }
   }
 
-  public closeBalloon(): void {
+  public closeBalloon(skipSelectedValueReseting?: boolean): void {
     this.selectedValue$.getValue()?.forEach((element) => {
       element.expanded = false;
     });
@@ -213,8 +216,9 @@ export class YandexMapService implements OnDestroy {
       isActive: false,
       pinStyle: isSelected ? 'pin-red-checked' : 'pin-blue',
     });
-
-    this.selectedValue$.next(null);
+    if (!skipSelectedValueReseting) {
+      this.selectedValue$.next(null);
+    }
     this.paintActiveCluster('cluster-blue');
     this.activePlacemarkId = null;
     this.activeClusterHash = null;
@@ -361,6 +365,26 @@ export class YandexMapService implements OnDestroy {
       `https://geocode-maps.yandex.ru/1.x/?apikey=${this.configService.yandexMapsApiKey}&format=json&geocode=${geocode}`,
     );
   }
+
+  private prepareMapObjectsForAnimation(): void {
+    if (this.mapAnimationService.firstLoading) {
+      const clusters = this.objectManager.clusters.getAll();
+      const plainObjects = this.objectManager.objects.getAll();
+      const objectsInClustersIds = clusters.map(cluster => cluster.features.map(feature => feature.id)).flat();
+      const viewportBounds = this.yaMapService.map.getBounds();
+      const filteredPlainObjects = plainObjects.filter((object) => {
+        const coords = object.geometry.coordinates;
+        const isNotInCluster = !objectsInClustersIds.includes(object.id);
+        const isInViewport = this.ymaps.util.bounds.containsPoint(
+          viewportBounds,
+          coords
+        );
+        return isNotInCluster && isInViewport;
+      });
+      this.mapAnimationService.setInitData([...filteredPlainObjects, ...clusters]);
+    }
+  }
+
 
   private getClusterHash<T>(cluster: IClusterItem<T>): string {
     return cluster.features?.map(({ id }) => id).join('$');

@@ -4,9 +4,9 @@ import { Directive, OnChanges, Input, HostBinding, ElementRef, SimpleChanges } f
   selector: '[epgu-cf-ui-smooth-height]',
   host: { '[style.display]': '"block"', '[style.overflow]': '"hidden"' }
 })
-export class SmoothHeightAnimDirective implements OnChanges {
-  @Input()
-  smoothHeight;
+export class SmoothHeightAnimationDirective implements OnChanges {
+  @Input() smoothHeight;
+  @Input() lockAnimation;
   pulse: boolean;
   startHeight: number;
 
@@ -22,7 +22,10 @@ export class SmoothHeightAnimDirective implements OnChanges {
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
-    this.setStartHeight();
-    this.pulse = !this.pulse;
+    if ('smoothHeight' in _changes && (!_changes.lockAnimation || !_changes.lockAnimation.currentValue)) {
+      this.setStartHeight();
+      this.pulse = !this.pulse;
+    }
+
   }
 }
