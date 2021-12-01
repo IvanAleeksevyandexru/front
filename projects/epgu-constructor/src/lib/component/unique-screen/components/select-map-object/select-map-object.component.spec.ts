@@ -247,14 +247,6 @@ describe('SelectMapObjectComponent', () => {
     expect(isMapObjectExisted).toBeFalsy();
   });
 
-  it('initSelectedValue should call centerAllPoints when needToAutoCenterAllPoints is true', () => {
-    component['isMultiSelect'] = false;
-    const spy = jest.spyOn<any, any>(component, 'centerAllPoints');
-    component['needToAutoCenterAllPoints'] = true;
-    component['initSelectedValue']();
-    expect(spy).toHaveBeenCalled();
-  });
-
   it('initSelectedValue should call selectClosestMapObject when needToAutoFocus is true', () => {
     component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(component, 'selectClosestMapObject');

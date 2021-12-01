@@ -575,6 +575,14 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     }
   }
 
+  isBookedSlotSelectable(bookedSlot: SlotInterface, slots: SlotInterface[]): boolean {
+    return (
+      bookedSlot &&
+      slots.length &&
+      this.datesHelperService.isSameDate(bookedSlot.slotTime, slots[0].slotTime) &&
+      slots.findIndex((slot) => slot?.slotId === bookedSlot?.slotId) === -1
+    );
+  }
   private findJsonParamsForErrorHandling(error: ErrorInterface | string): IBookingErrorHandling {
     if (typeof error !== 'object') {
       return null;
@@ -681,11 +689,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   }
 
   private addBookedTimeSlotToList(timeSlots: SlotInterface[]): void {
-    if (
-      this.bookedSlot &&
-      timeSlots.length &&
-      this.datesHelperService.isSameDate(this.bookedSlot.slotTime, timeSlots[0].slotTime)
-    ) {
+    if (this.isBookedSlotSelectable(this.bookedSlot, timeSlots)) {
       const bookedSlotTime = this.bookedSlot.slotTime?.getTime();
       const insertIdx = timeSlots.findIndex((timeSlot, idx) => {
         const prevSlotTime = timeSlots[idx - 1]?.slotTime?.getTime();

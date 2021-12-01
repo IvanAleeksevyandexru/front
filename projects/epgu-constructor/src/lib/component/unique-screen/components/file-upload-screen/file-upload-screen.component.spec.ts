@@ -27,6 +27,7 @@ import { CertificateEaisdoService } from '../../../../shared/services/certificat
 import { PluralizeModule } from '@epgu/ui/pipes';
 import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
 import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
+import { UniqueScreenService } from '../../unique-screen.service';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -93,6 +94,7 @@ describe('FileUploadScreenComponent', () => {
         CurrentAnswersService,
         EaisdoGroupCostService,
         UploaderScreenService,
+        UniqueScreenService,
       ],
     }).overrideComponent(FileUploadScreenComponent, {
       set: { changeDetection: ChangeDetectionStrategy.Default },
