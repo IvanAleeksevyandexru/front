@@ -216,12 +216,12 @@ export * from './lib/base/constants/redirect-event';
 export * from './lib/base/constants/dates';
 export * from './lib/base/constants/regions';
 
-export * from './lib/base/components/yandex-map/map-animation.service';
+export * from './lib/base/components/yandex-map/yandex-map-animation/map-animation.service';
 
 // Interfaces
 export * from './lib/base/components/yandex-map/yandex-map.interface';
 export * from './lib/core/services/addresses-tools/addresses-tools.service.interface';
-export * from './lib/base/components/yandex-map/MAP_ANIMATION_CONSTANTS';
+export * from './lib/base/components/yandex-map/yandex-map-animation/MAP_ANIMATION_CONSTANTS';
 // Mocks
 export * from './lib/core/services/select-map-object/mocks/mock-select-map-object';
 

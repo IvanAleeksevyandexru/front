@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { IGeoObjectOptionsWithIconShape } from './yandex-map.interface';
-import { MapAnimationService } from './map-animation.service';
-import { PIN_ACTIVATION_DURATION } from './MAP_ANIMATION_CONSTANTS';
+import { MapAnimationService } from './yandex-map-animation/map-animation.service';
+import { PIN_ACTIVATION_DURATION } from './yandex-map-animation/MAP_ANIMATION_CONSTANTS';
 
 @Injectable()
 export class Icons {

@@ -6,7 +6,6 @@ import { Directive, OnChanges, Input, HostBinding, ElementRef, SimpleChanges } f
 })
 export class SmoothHeightAnimationDirective implements OnChanges {
   @Input() smoothHeight;
-  @Input() lockAnimation;
   pulse: boolean;
   startHeight: number;
 
@@ -22,10 +21,7 @@ export class SmoothHeightAnimationDirective implements OnChanges {
   }
 
   ngOnChanges(_changes: SimpleChanges): void {
-    if ('smoothHeight' in _changes && (!_changes.lockAnimation || !_changes.lockAnimation.currentValue)) {
       this.setStartHeight();
       this.pulse = !this.pulse;
-    }
-
   }
 }

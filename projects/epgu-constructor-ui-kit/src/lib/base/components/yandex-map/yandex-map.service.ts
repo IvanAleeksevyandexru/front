@@ -21,7 +21,7 @@ import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '../../../core/services/config/config.service';
 import { HttpClient } from '@angular/common/http';
 import { GeoCodeResponse } from './geo-code.interface';
-import { MapAnimationService } from './map-animation.service';
+import { MapAnimationService } from './yandex-map-animation/map-animation.service';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
 

@@ -10,10 +10,8 @@
     {{ mapObject.title }}
   </h6>
   <div epgu-cf-ui-smooth-height
-       [ngClass]="{'expanded': mapObject.expanded}"
        [smoothHeight]="mapObject.expanded"
-       [lockAnimation]="lockAnimation"
-       class="map-object__expandable-content"
+       [@.disabled]="lockAnimation || this.deviceDetector.isDesktop"
   >
     <ng-container *ngIf="mapObject.expanded">
     <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">

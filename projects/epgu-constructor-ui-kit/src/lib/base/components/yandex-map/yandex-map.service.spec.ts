@@ -13,7 +13,7 @@ import { mockBrakCluster, mockExpandedPoint, mockPointWithoutCoords } from './mo
 import { electionSinglePoint } from './mocks/mock-select-map-elections';
 import { IClusterItem, IFeatureItem } from './yandex-map.interface';
 import { YandexMapService } from './yandex-map.service';
-import { MapAnimationService } from './map-animation.service';
+import { MapAnimationService } from './yandex-map-animation/map-animation.service';
 
 describe('YandexMapService', () => {
   let yandexMapService: YandexMapService;

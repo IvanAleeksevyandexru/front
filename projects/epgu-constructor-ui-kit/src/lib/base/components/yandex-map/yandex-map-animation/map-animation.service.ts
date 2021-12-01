@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IFeatureItem } from './yandex-map.interface';
+import { IFeatureItem } from '../yandex-map.interface';
 import { OBJECT_APPEAR_DURATION, TOTAL_OBJECTS_APPEAR_DURATION } from './MAP_ANIMATION_CONSTANTS';
 
 @Injectable()
