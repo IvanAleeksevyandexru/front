@@ -11,7 +11,7 @@
     "@angular/core": "12.2.5",
     "@angular/forms": "12.2.5",
     "@angular/cdk": "12.2.5",
-    "@epgu/ui": "3.0.392-2-frontv4",
+    "@epgu/ui": "3.0.393-1-frontv2",
     "rxjs": "6.6.6"
   },
   "dependencies": {
