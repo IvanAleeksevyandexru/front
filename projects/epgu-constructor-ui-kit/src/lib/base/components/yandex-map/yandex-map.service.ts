@@ -170,7 +170,7 @@ export class YandexMapService implements OnDestroy {
   }
 
   public getObjectById<T>(id: number): IFeatureItem<T> {
-    if (!id) {
+    if (!id && id !== 0) {
       return;
     }
     return this.objectManager.objects
