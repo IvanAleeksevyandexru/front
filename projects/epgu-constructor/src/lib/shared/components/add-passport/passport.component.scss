@@ -9,7 +9,7 @@
     &__name {
       @include typ-plain-small;
 
-      margin-bottom: 4px;
+      margin-bottom: 24px;
       font-weight: bold;
     }
 
@@ -22,11 +22,8 @@
     }
 
     &__error {
+      margin-bottom: 8px;
       color: $color-gosred;
     }
-  }
-  .form__name + .form__error {
-    min-height: 20px;
-    margin-bottom: 4px;
   }
 }

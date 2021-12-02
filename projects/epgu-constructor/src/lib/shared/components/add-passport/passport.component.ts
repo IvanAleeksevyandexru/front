@@ -68,6 +68,8 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
     ISuggestionItem | ISuggestionItemList
   >();
 
+  public readonly DEFAULT_TITLE = 'Паспорт РФ';
+
   public passportForm: FormGroup;
   public fieldsNames: string[] = [];
 
