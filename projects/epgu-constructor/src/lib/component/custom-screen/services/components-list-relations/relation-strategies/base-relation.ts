@@ -27,6 +27,10 @@ export abstract class BaseRelation {
     return shownElements;
   }
 
+  protected hasControlWithIdOnForm(id: string, form: FormArray): boolean {
+    return !!form.controls.find((control) => control.value.id === id);
+  }
+
   protected getControlValueById(id: string, form: FormArray): { id?: string } | string | number {
     return form.controls.find((control) => control.value.id === id).get('value').value;
   }

@@ -133,6 +133,7 @@ export interface ServiceInfo {
     codes: string[];
   };
   queryParams: Record<string, string>;
+  formId: string;
 }
 
 export interface ServiceInfoDepartment {

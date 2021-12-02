@@ -1832,10 +1832,10 @@
     os "0.1.1"
     tslib "2.1.0"
 
-"@epgu/ui@3.0.392-2-frontv4":
-  version "3.0.392-2-frontv4"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.392-2-frontv4.tgz#08482d5c2d7fedac37499b7442157c3ae38465b7"
-  integrity sha512-vDWbRSKm6gs/73r/uXugQASxQqd6+nGoekkQZfP1y+zsdEbZGIkjeVncJfMWvcH3M8d2P2xeskX6GLR6Indpow==
+"@epgu/ui@3.0.393-1-frontv2":
+  version "3.0.393-1-frontv2"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.393-1-frontv2.tgz#08ee69e686823af6e91bb97f1e21f11b1d5ec37f"
+  integrity sha512-1u39KJrrimhnJ+YtuU0llqg5cPXhVeAMQOhnKY6n9wK5N+S+Zbp+fbm6+9bskhzvMbv+B/mRwYldZdnw/+bbrg==
   dependencies:
     "@epgu/zipkin" "0.0.3"
     date-fns "2.24.0"
@@ -2863,6 +2863,11 @@
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
+
+"@types/offscreencanvas@^2019.6.4":
+  version "2019.6.4"
+  resolved "https://registry.yarnpkg.com/@types/offscreencanvas/-/offscreencanvas-2019.6.4.tgz#64f6d120b53925028299c744fcdd32d2cd525963"
+  integrity sha512-u8SAgdZ8ROtkTF+mfZGOscl0or6BSj9A4g37e6nvxDc+YB/oDut0wHkK2PBBiC2bNR8TS0CPV+1gAk4fNisr1Q==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"

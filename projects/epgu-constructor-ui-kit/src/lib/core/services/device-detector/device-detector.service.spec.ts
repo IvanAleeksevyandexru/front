@@ -65,6 +65,11 @@ describe('DeviceDetectorService', () => {
     expect(deviceDetectorService.isWebView).toBe(true);
   });
 
+  it('is IOS', () => {
+    userAgent.mockReturnValue('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
+    expect(deviceDetectorService.isIOS()).toBe(true);
+  });
+
   it('is ChromeIOS', () => {
     userAgent.mockReturnValue('AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75');
     expect(deviceDetectorService.isChromeIOS()).toBe(true);

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 export interface CompressionOptions {
   maxSizeMB?: number;
   maxWidthOrHeight?: number;
@@ -13,8 +13,36 @@ export interface CompressionOptions {
 
 const unsupportedImageTypes = ['TIFF', 'TIF'];
 
+const testImageURL =
+  'data:image/jpeg;base64,/9j/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAYAAAA' +
+  'AAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBA' +
+  'QEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE' +
+  'BAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AABEIAAEAAgMBEQACEQEDEQH/x' +
+  'ABKAAEAAAAAAAAAAAAAAAAAAAALEAEAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAA' +
+  'AAAAAEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/8H//2Q==';
+
+enum BROWSER_NAME {
+  CHROME = 'CHROME',
+  FIREFOX = 'FIREFOX',
+  DESKTOP_SAFARI = 'DESKTOP_SAFARI',
+  MOBILE_SAFARI = 'MOBILE_SAFARI',
+  ETC = 'ETC',
+}
+
+const MAX_SIZE = {
+  [BROWSER_NAME.CHROME]: 16384,
+  [BROWSER_NAME.FIREFOX]: 11180,
+  [BROWSER_NAME.DESKTOP_SAFARI]: 16384,
+  [BROWSER_NAME.MOBILE_SAFARI]: 4096,
+  [BROWSER_NAME.ETC]: 8192,
+};
+
 @Injectable()
 export class CompressionService {
+  cachedResult: BROWSER_NAME;
+
+  constructor(private detector: DeviceDetectorService) {}
+
   isValidImageType(file: File | Blob): boolean {
     const hasImageType = /^image/.test(file?.type);
 
@@ -41,9 +69,9 @@ export class CompressionService {
     let compressedFile: File | Blob;
 
     if (!(file instanceof Blob)) {
-      throw new Error('The file given is not an instance of Blob or File');
+      throw new Error('The given file is not an instance of Blob or File');
     } else if (!(await this.isValidImage(file, options.deepChecking))) {
-      throw new Error('The file given is not a valid image');
+      throw new Error('The given file is not a valid image');
     }
 
     compressedFile = await this.compress(file, options);
@@ -67,18 +95,12 @@ export class CompressionService {
    * @returns {Promise<boolean>}
    */
   private async isAutoOrientationInBrowser(): Promise<boolean> {
-    const testImageURL =
-      'data:image/jpeg;base64,/9j/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAYAAAA' +
-      'AAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBA' +
-      'QEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE' +
-      'BAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/AABEIAAEAAgMBEQACEQEDEQH/x' +
-      'ABKAAEAAAAAAAAAAAAAAAAAAAALEAEAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAA' +
-      'AAAAAEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/8H//2Q==';
     const testImageFile: File | Blob = await this.getFilefromDataUrl(
       testImageURL,
       'image.jpg',
       Date.now(),
     );
+
     const testImageCanvas = (await this.drawFileInCanvas(testImageFile))[1];
     const testImageFile2 = await this.canvasToFile(
       testImageCanvas,
@@ -148,23 +170,88 @@ export class CompressionService {
     });
   }
 
+  private getBrowserName(): BROWSER_NAME {
+    if (this.cachedResult !== undefined) {
+      return this.cachedResult;
+    }
+
+    let browserName = BROWSER_NAME.ETC;
+
+    const { userAgent } = navigator;
+
+    if (/Chrom(e|ium)/i.test(userAgent)) {
+      browserName = BROWSER_NAME.CHROME;
+    } else if (
+      /iP(ad|od|hone)/i.test(userAgent) &&
+      /WebKit/i.test(userAgent) &&
+      !/(CriOS|FxiOS|OPiOS|mercury)/i.test(userAgent)
+    ) {
+      browserName = BROWSER_NAME.MOBILE_SAFARI;
+    } else if (/Safari/i.test(userAgent)) {
+      browserName = BROWSER_NAME.DESKTOP_SAFARI;
+    } else if (/Firefox/i.test(userAgent)) {
+      browserName = BROWSER_NAME.FIREFOX;
+    }
+    this.cachedResult = browserName;
+    return this.cachedResult;
+  }
+
+  private approximateBelowMaximumCanvasSizeOfBrowser(
+    initWidth: number,
+    initHeight: number,
+  ): { width: number; height: number } {
+    const browserName = this.getBrowserName();
+    const maximumCanvasSize = MAX_SIZE[browserName];
+
+    let width = initWidth;
+    let height = initHeight;
+    let size = width * height;
+    const ratio = width > height ? height / width : width / height;
+
+    while (size > maximumCanvasSize * maximumCanvasSize) {
+      const halfSizeWidth = (maximumCanvasSize + width) / 2;
+      const halfSizeHeight = (maximumCanvasSize + height) / 2;
+      if (halfSizeWidth < halfSizeHeight) {
+        height = halfSizeHeight;
+        width = halfSizeHeight * ratio;
+      } else {
+        height = halfSizeWidth * ratio;
+        width = halfSizeWidth;
+      }
+
+      size = width * height;
+    }
+
+    return {
+      width,
+      height,
+    };
+  }
+
   /**
    * @param {HTMLImageElement} img
    * @returns {HTMLCanvasElement | OffscreenCanvas}
    */
   private drawImageInCanvas(
     img: HTMLImageElement,
-    width?: number,
-    height?: number,
+    fileType = undefined,
   ): HTMLCanvasElement | OffscreenCanvas {
+    const { width, height } = this.approximateBelowMaximumCanvasSizeOfBrowser(
+      img.width,
+      img.height,
+    );
     const [canvas, ctx] = this.getNewCanvasAndCtx(width || img['width'], height || img['height']);
+    if (fileType && /jpe?g/.test(fileType)) {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
     ctx.drawImage(img, 0, 0, canvas['width'], canvas['height']);
     return canvas;
   }
 
   private async createImageBitmap(data: Blob | ImageData): Promise<void | HTMLImageElement> {
     return new Promise((resolve) => {
-      let dataURL;
+      let dataURL: string;
       if (data instanceof Blob) {
         dataURL = URL.createObjectURL(data);
       } else if (data instanceof ImageData) {
@@ -187,9 +274,9 @@ export class CompressionService {
   }
 
   private async getImageBitmap(file: File | Blob): Promise<ImageBitmap | HTMLImageElement> {
-    let img;
+    let img: HTMLImageElement;
     try {
-      img = await this.createImageBitmap(file);
+      img = (await this.createImageBitmap(file)) as HTMLImageElement;
     } catch (e) {
       const dataUrl = await this.getDataUrlFromFile(file);
       img = await this.loadImage(dataUrl as string);
@@ -204,11 +291,25 @@ export class CompressionService {
    */
   private async drawFileInCanvas(
     file: File | Blob,
-    width?: number,
-    height?: number,
   ): Promise<[ImageBitmap | HTMLImageElement, HTMLCanvasElement | OffscreenCanvas]> {
-    const img = await this.getImageBitmap(file);
-    const canvas = this.drawImageInCanvas(img as HTMLImageElement, width, height);
+    let img: ImageBitmap | HTMLImageElement;
+    try {
+      if (
+        this.detector.isIOS() ||
+        [BROWSER_NAME.DESKTOP_SAFARI, BROWSER_NAME.MOBILE_SAFARI].includes(this.getBrowserName())
+      ) {
+        throw new Error('Skip createImageBitmap on IOS and Safari');
+      }
+      img = (await this.createImageBitmap(file)) as ImageBitmap | HTMLImageElement;
+    } catch (e) {
+      try {
+        const dataUrl = await this.getDataUrlFromFile(file);
+        img = await this.loadImage(dataUrl);
+      } catch (e2) {
+        throw e2;
+      }
+    }
+    const canvas = this.drawImageInCanvas(img as HTMLImageElement);
     return [img, canvas];
   }
 
@@ -227,7 +328,7 @@ export class CompressionService {
     fileLastModified: number,
     quality: number = 1,
   ): Promise<File | Blob> {
-    let file;
+    let file: File | Blob;
     if (typeof OffscreenCanvas === 'function' && canvas instanceof OffscreenCanvas) {
       file = await canvas.convertToBlob({ type: fileType, quality });
       file['name'] = fileName;
@@ -315,7 +416,7 @@ export class CompressionService {
       }
     }
 
-    const [, canvas] = await this.drawFileInCanvas(file, newWidth, newHeight);
+    const [, canvas] = await this.drawFileInCanvas(file);
 
     return canvas;
   }
@@ -382,9 +483,12 @@ export class CompressionService {
   private getNewCanvasAndCtx(
     width: number,
     height: number,
-  ): [HTMLCanvasElement | OffscreenCanvas, CanvasRenderingContext2D] {
-    let canvas;
-    let ctx;
+  ): [
+    HTMLCanvasElement | OffscreenCanvas,
+    CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
+  ] {
+    let canvas: HTMLCanvasElement | OffscreenCanvas;
+    let ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
     try {
       canvas = new OffscreenCanvas(width, height) as OffscreenCanvas;
       ctx = canvas.getContext('2d');
@@ -393,11 +497,12 @@ export class CompressionService {
       }
     } catch (e) {
       canvas = document.createElement('canvas') as HTMLCanvasElement;
-      canvas['id'] = uuidv4();
+      canvas.id = uuidv4();
       ctx = canvas.getContext('2d');
     }
-    canvas['width'] = width;
-    canvas['height'] = height;
+    canvas.width = width;
+    canvas.height = height;
+
     return [canvas, ctx];
   }
 
@@ -406,8 +511,8 @@ export class CompressionService {
    * @returns void
    */
   private cleanupCanvasMemory(canvas: HTMLCanvasElement | OffscreenCanvas): void {
-    canvas['width'] = 0;
-    canvas['height'] = 0;
+    canvas.width = 0;
+    canvas.height = 0;
   }
 
   private async isValidImage(file: File | Blob, deepChecking?: boolean): Promise<boolean> {
@@ -487,9 +592,9 @@ export class CompressionService {
     const sourceSize = file['size'];
     const renderedSize = tempFile['size'];
     let currentSize = renderedSize;
-    let compressedFile;
-    let newCanvas;
-    let ctx;
+    let compressedFile: File | Blob;
+    let newCanvas: HTMLCanvasElement | OffscreenCanvas;
+    let ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
     let canvas = orientationFixedCanvas;
     while (remainingTrials-- && (currentSize > maxSizeByte || currentSize > sourceSize)) {
       const newWidth = origExceedMaxSize ? canvas['width'] * 0.95 : canvas['width'];
