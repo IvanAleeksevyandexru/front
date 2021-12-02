@@ -4,7 +4,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CompressionService } from './compression.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 
 describe('CompressionService', () => {
   const LOAD_SUCCESS_SRC =
@@ -36,6 +40,7 @@ describe('CompressionService', () => {
         CompressionService,
         TerraByteApiService,
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });
   });
@@ -89,7 +94,7 @@ describe('CompressionService', () => {
       try {
         await service.imageCompression({} as any, {});
       } catch (error) {
-        expect(error.message).toBe('The file given is not an instance of Blob or File');
+        expect(error.message).toBe('The given file is not an instance of Blob or File');
       }
     });
 
@@ -98,7 +103,7 @@ describe('CompressionService', () => {
         const file = new File([], 'txt', { type: 'txt' });
         await service.imageCompression(file, {});
       } catch (error) {
-        expect(error.message).toBe('The file given is not a valid image');
+        expect(error.message).toBe('The given file is not a valid image');
       }
     });
 
@@ -109,7 +114,7 @@ describe('CompressionService', () => {
         const file = new File([], 'image', { type: 'image' });
         await service.imageCompression(file, { deepChecking: true });
       } catch (error) {
-        expect(error.message).toBe('The file given is not a valid image');
+        expect(error.message).toBe('The given file is not a valid image');
       }
     });
   });
