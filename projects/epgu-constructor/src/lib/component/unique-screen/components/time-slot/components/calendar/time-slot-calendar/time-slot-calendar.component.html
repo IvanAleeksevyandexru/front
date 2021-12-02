@@ -5,6 +5,7 @@
   [lockProvider]="lockProvider$$ | async"
   [startSection]="startSection$ | async"
   [daysToShow]="daysToShow$ | async"
+  [isVisibleDays]="isVisibleDays$ | async"
   (monthChanged)="addMonthRangeAction($event)"
   (notExistsAvailable)="haveNotUnlockedDaysAction($event)"
   (choose)="chooseAction($event)"

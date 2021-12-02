@@ -7,6 +7,13 @@
 </ng-container>
 
 <ng-template #templateContent let-templates="templates" let-haveLockedDays="haveLockedDays">
+  <div
+    *ngIf="
+      (haveLockedDays && templates[types.DAYS_NOT_FOUND]) ||
+      (haveLockedDays && templates[types.SLOTS_NOT_FOUND] && !templates[types.DAYS_NOT_FOUND])
+    "
+    class="divider"
+  ></div>
   <epgu-constructor-time-slot-empty-error
     *ngIf="haveLockedDays && templates[types.DAYS_NOT_FOUND]"
     [error]="templates[types.DAYS_NOT_FOUND]"

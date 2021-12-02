@@ -17,6 +17,9 @@ export class DaySelectorComponent {
   @Input() set today(date: Date) {
     this.today$$.next(date);
   }
+  @Input() set isVisibleDays(visibleDays: boolean) {
+    this.isVisibleDays$$.next(visibleDays);
+  }
 
   @Input() selected: Date;
   @Input() set lockProvider(provider: LockProvider) {
@@ -36,6 +39,7 @@ export class DaySelectorComponent {
   @Output() monthChanged = new EventEmitter<string>();
   @Output() notExistsAvailable = new EventEmitter<boolean>();
 
+  isVisibleDays$$ = new BehaviorSubject<boolean>(true);
   lockProvider$$ = new BehaviorSubject<LockProvider>(null);
   lockProvider$ = this.lockProvider$$.pipe(filter((value) => !!value));
 
@@ -69,11 +73,13 @@ export class DaySelectorComponent {
   );
 
   days$: Observable<Day[][]> = combineLatest([
+    this.isVisibleDays$$,
     this.firstDayOfMainSection$,
     this.daysInMainSection$,
     this.lockProvider$,
   ]).pipe(
-    map(([firstDayOfMainSection, daysInMainSection]) =>
+    filter(([visibleDays]) => visibleDays),
+    map(([, firstDayOfMainSection, daysInMainSection]) =>
       this.createDays(firstDayOfMainSection, daysInMainSection),
     ),
     distinctUntilChanged(),

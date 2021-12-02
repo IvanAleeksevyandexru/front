@@ -8,16 +8,16 @@ import { DictionaryApiService } from '../../../../../../../shared/services/dicti
 import { DictionaryApiServiceStub } from '../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ListItem } from '@epgu/ui/models/dropdown';
 import { DepartmentInterface } from '../../../typings';
-import {
-  DictionaryConditions,
-  DictionarySubFilter,
-  DictionaryUnionKind,
-} from '@epgu/epgu-constructor-types';
+import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
 import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../../../../shared/services/dictionary/dictionary-api.types';
+import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
+import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenService } from '../../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 
 const mockCreateItem = (text: string) =>
   new ListItem({
@@ -36,6 +36,9 @@ describe('TimeSlotAreaComponent', () => {
       declarations: [TimeSlotAreaComponent],
       imports: [BaseModule, FormsModule],
       providers: [
+        TimeSlotCalendarService,
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: TimeSlotSmev3Service, useClass: TimeSlotSmev3ServiceStub },
       ],
@@ -87,13 +90,11 @@ describe('TimeSlotAreaComponent', () => {
         new ListItem({ id: attributeValues.AREA_NAME, text: attributeValues.AREA_NAME }),
       ];
 
-      jest
-        .spyOn(dictionaryApiService, 'getSelectMapDictionary')
-        .mockReturnValue(
-          of(({
-            items: [({ attributeValues } as unknown) as DictionaryItem],
-          } as unknown) as DictionaryResponse),
-        );
+      jest.spyOn(dictionaryApiService, 'getSelectMapDictionary').mockReturnValue(
+        of(({
+          items: [({ attributeValues } as unknown) as DictionaryItem],
+        } as unknown) as DictionaryResponse),
+      );
       component.getList(({} as unknown) as DepartmentInterface, []).subscribe((v) => {
         expect(v).toEqual(testCase);
         done();

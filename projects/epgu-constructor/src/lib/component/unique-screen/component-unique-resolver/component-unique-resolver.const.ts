@@ -110,7 +110,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   EmployeeHistory: EmployeeHistoryContainerComponent,
   TimeSlot: TimeSlotResolverVersionComponent,
   TimeSlotDoctor: TimeSlotDoctorsContainerComponent,
-  TimeSlotWithComputableDepartment: TimeSlotsComponent,
+  TimeSlotWithComputableDepartment: TimeSlotResolverVersionComponent,
   CarInfo: CarInfoContainerComponent,
   CarList: CarListContainerComponent,
   CarOwnerInfo: CarOwnerInfoContainerComponent,

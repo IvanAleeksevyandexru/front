@@ -42,7 +42,7 @@ export class TimeSlotGibddComponent {
     { serviceId }: TimeSlotsApiItem,
   ): Partial<TimeSlotRequest> {
     return {
-      organizationId: value.organizationId || (department.attributeValues.code as string),
+      organizationId: [value.organizationId || (department.attributeValues.code as string)],
       attributes: [
         { name: 'organizationId', value: department.attributeValues.code },
         { name: 'serviceId', value: (value.serviceId as string) || serviceId },

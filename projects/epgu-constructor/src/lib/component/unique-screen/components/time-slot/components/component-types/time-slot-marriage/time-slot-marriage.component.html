@@ -1,6 +1,7 @@
 <epgu-constructor-time-slot-smev3
   [slotListFilter]="slotListFilterProvider$ | async"
   [requestListParams]="requestListParams$ | async"
+  [requestBookParams]="requestBookParams$ | async"
   [defaultMonth]="defaultMonth$ | async"
   [months]="months$ | async"
 >
@@ -10,5 +11,8 @@
       [attributes]="attributes$ | async"
     >
     </epgu-constructor-time-slot-area>
+  </ng-container>
+  <ng-container after-content>
+    <epgu-constructor-time-slot-error></epgu-constructor-time-slot-error>
   </ng-container>
 </epgu-constructor-time-slot-smev3>
