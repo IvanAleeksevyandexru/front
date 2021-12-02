@@ -131,15 +131,15 @@ export class ScreenService extends ScreenContent {
         DisclaimerMnemonic.SERVICE_TARGET
       ];
     }
+    if(this.deviceDetectorService.isWebView) {
+      return [DisclaimerMnemonic.SMU_SERVICE_TARGET, DisclaimerMnemonic.SERVICE_TARGET];
+    }
     if (this.deviceDetectorService.isMobile || this.deviceDetectorService.isTablet) {
       return [
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET_MOBILE,
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET,
         DisclaimerMnemonic.SERVICE_TARGET
       ];
-    }
-    if(this.deviceDetectorService.isWebView) {
-      return [DisclaimerMnemonic.SMU_SERVICE_TARGET, DisclaimerMnemonic.SERVICE_TARGET];
     }
     return [DisclaimerMnemonic.SERVICE_TARGET];
   }
