@@ -8,7 +8,7 @@ import { DateTypeTypes } from '../../time-slot.const';
 
 @Injectable()
 export class TimeSlotCalendarService {
-  haveUnlockedDays$$ = new BehaviorSubject<boolean>(true);
+  haveUnlockedDays$$ = new BehaviorSubject<boolean>(false);
 
   set haveUnlockedDays(haveUnlockedDays: boolean) {
     this.haveUnlockedDays$$.next(haveUnlockedDays);
@@ -16,7 +16,15 @@ export class TimeSlotCalendarService {
   get haveUnlockedDays(): boolean {
     return this.haveUnlockedDays$$.getValue();
   }
+  get haveUnlockedDays$(): Observable<boolean> {
+    return this.haveUnlockedDays$$.asObservable();
+  }
 
+  isVisibleDays$$ = new BehaviorSubject<boolean>(true);
+
+  get isVisibleDays$(): Observable<boolean> {
+    return this.isVisibleDays$$.asObservable();
+  }
   today$$ = new BehaviorSubject<null>(null);
   today$: Observable<Date> = this.today$$.pipe(
     switchMapTo(from(this.datesTools.getToday(true))),
@@ -28,7 +36,10 @@ export class TimeSlotCalendarService {
 
   refDate$ = combineLatest([
     this.today$,
-    this.screenService.component$.pipe(pluck('attrs', 'dateType')),
+    this.screenService.component$.pipe(
+      pluck('attrs', 'dateType'),
+      map((value) => value || DateTypeTypes.TODAY),
+    ),
     this.screenService.component$.pipe(pluck('attrs', 'refDate')),
   ]).pipe(
     map(([today, dateType, refDate]) => this.getRefDate(today, dateType as DateTypeTypes, refDate)),

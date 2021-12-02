@@ -5,6 +5,7 @@ import { TimeSlotSmev3Component } from '../../base/time-slot-smev3/time-slot-sme
 import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
 import { TimeSlotSmev3StateServiceStub } from '../../../services/smev3-state/time-slot-smev3-state.service.stub';
 import { DepartmentInterface, TimeSlotValueInterface } from '../../../typings';
+import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
 
 describe('TimeSlotMvdComponent', () => {
   let component: TimeSlotMvdComponent;
@@ -12,7 +13,11 @@ describe('TimeSlotMvdComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TimeSlotMvdComponent, MockComponent(TimeSlotSmev3Component)],
+      declarations: [
+        TimeSlotMvdComponent,
+        MockComponent(TimeSlotErrorComponent),
+        MockComponent(TimeSlotSmev3Component),
+      ],
       imports: [],
       providers: [{ provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub }],
     }).compileComponents();
@@ -31,7 +36,7 @@ describe('TimeSlotMvdComponent', () => {
           ({} as unknown) as DepartmentInterface,
         ),
       ).toEqual({
-        organizationId: 'test',
+        organizationId: ['test'],
         caseNumber: 'test2',
       });
       expect(
@@ -40,7 +45,7 @@ describe('TimeSlotMvdComponent', () => {
           ({ value: 'test4' } as unknown) as DepartmentInterface,
         ),
       ).toEqual({
-        organizationId: 'test4',
+        organizationId: ['test4'],
         caseNumber: 'test2',
       });
     });

@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, EMPTY, forkJoin, Observable, of, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  EMPTY,
+  forkJoin,
+  iif,
+  Observable,
+  of,
+  Subject,
+} from 'rxjs';
 import {
   BookOperation,
   CancelFilterProvider,
@@ -47,11 +56,12 @@ import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.
 import { v4 as uuidv4 } from 'uuid';
 import { TimeSlotErrorService } from '../error/time-slot-error.service';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import { TimeSlotCalendarService } from '../calendar/time-slot-calendar.service';
 
 @Injectable()
 export class TimeSlotSmev3Service {
-  requestListParams$$ = new BehaviorSubject<Partial<TimeSlotRequest>>(null);
-  requestBookParams$$ = new BehaviorSubject<Partial<TimeSlotBookRequest>>(null);
+  requestListParams$$ = new BehaviorSubject<Partial<TimeSlotRequest>>(undefined);
+  requestBookParams$$ = new BehaviorSubject<Partial<TimeSlotBookRequest>>(undefined);
 
   reloadStore$$ = new Subject<null>();
 
@@ -60,11 +70,12 @@ export class TimeSlotSmev3Service {
     this.smev3.config$,
     this.smev3.ignoreRootParams$,
     this.smev3.timeSlotRequestAttrs$,
-    this.requestListParams$$,
+    this.requestListParams$$.pipe(filter((value) => value !== undefined)),
     this.reloadStore$$.pipe(startWith(null)),
   ]).pipe(
     distinctUntilChanged(),
-    tap(() => this.state.progressStart()),
+    tap(() => this.calendar.isVisibleDays$$.next(true)),
+    tap(() => this.state.startLoaded$$.next(false)),
     switchMap(
       ([data, config, ignoreRootParams, attributes, params]: [
         TimeSlotValueInterface,
@@ -78,9 +89,10 @@ export class TimeSlotSmev3Service {
           .getList(this.createRequest(data, config, ignoreRootParams, attributes, params))
           .pipe(
             catchError(() => {
-              return [];
+              this.calendar.isVisibleDays$$.next(false);
+              return of([]);
             }),
-            finalize(() => this.state.progressEnd()),
+            finalize(() => this.state.startLoaded$$.next(true)),
           ),
     ),
     map((result: TimeSlot[]) => this.createMap(result)),
@@ -109,8 +121,16 @@ export class TimeSlotSmev3Service {
     this.smev3.cachedAnswer$.pipe(pluck('timeSlot')),
     this.bookedSlot$$,
   ]).pipe(
-    map(([waitingTimeExpired, timeSlot, bookedSlot]) =>
-      bookedSlot ?? (!waitingTimeExpired && !!timeSlot) ? this.createSlot(timeSlot) : null,
+    distinctUntilChanged(([prevWait, prevSlot, prevBooked], [nextWait, nextSlot, nextBooked]) => {
+      return (
+        prevWait === nextWait &&
+        prevSlot?.slotId === nextSlot?.slotId &&
+        prevBooked?.slotId === nextBooked?.slotId
+      );
+    }),
+    map(
+      ([waitingTimeExpired, timeSlot, bookedSlot]) =>
+        bookedSlot ?? (!waitingTimeExpired && !!timeSlot ? this.createSlot(timeSlot) : null),
     ),
   );
 
@@ -145,44 +165,56 @@ export class TimeSlotSmev3Service {
   cancel$$ = new Subject<CancelOperation>();
 
   cancel$ = this.cancel$$.pipe(
-    filter((value: CancelOperation) => value.slotList.length > 0),
+    tap(() => this.state.progressStart()),
     concatMap(({ slotList, result }) =>
-      combineLatest([this.smev3.value$, this.smev3.config$]).pipe(
-        take(1),
-        concatMap(([data, config]) =>
-          forkJoin(
-            slotList.map(({ bookId }) =>
-              this.api
-                .cancel({
-                  bookId,
-                  eserviceId: (data.eserviceId as string) || config.eserviceId,
-                })
-                .pipe(catchError((err) => of(err))),
-            ),
-          ).pipe(
-            tap((response: CancelSlotResponseInterface[]) => {
-              const failedItems = response
-                .filter((item) => this.api.hasError(item?.error))
-                .map((item) => item.error.errorDetail.errorMessage);
+      iif(
+        () => slotList.length > 0,
+        combineLatest([this.smev3.value$, this.smev3.config$]).pipe(
+          take(1),
+          concatMap(([data, config]) =>
+            forkJoin(
+              slotList.map(({ bookId }) =>
+                this.api
+                  .cancel({
+                    bookId,
+                    eserviceId: (data.eserviceId as string) || config.eserviceId,
+                  })
+                  .pipe(catchError((err) => of(err))),
+              ),
+            ).pipe(
+              tap((response: CancelSlotResponseInterface[]) => {
+                const failedItems = response
+                  .filter((item) => this.api.hasError(item?.error))
+                  .map((item) => item.error.errorDetail.errorMessage);
 
-              if (failedItems.length) {
-                const error = failedItems.join(', ');
-                result.error(error);
-                this.error.setError(TimeSlotRequestType.cancel, error);
-              }
-              result.next(response);
-              this.bookedSlot$$.next(null);
-              this.bookId$$.next(null);
-            }),
+                if (failedItems.length) {
+                  const error = failedItems.join(', ');
+                  result.error(error);
+                  this.error.setError(TimeSlotRequestType.cancel, error);
+                }
+                result.next(response);
+                result.complete();
+                this.bookedSlot$$.next(null);
+                this.bookId$$.next(null);
+              }),
+            ),
           ),
+        ),
+        of(null).pipe(
+          tap(() => {
+            result.next([]);
+            result.complete();
+          }),
         ),
       ),
     ),
+    tap(() => this.state.progressEnd()),
   );
 
   book$$ = new Subject<BookOperation>();
   book$ = this.book$$.pipe(
-    concatMap(({ book, result }) =>
+    tap(() => this.state.progressStart()),
+    concatMap(({ book, result }: BookOperation) =>
       combineLatest([
         this.bookId$,
         this.isBookedDepartment$,
@@ -193,7 +225,7 @@ export class TimeSlotSmev3Service {
         this.smev3.attributeNameWithAddress$,
         this.smev3.ignoreRootParams$,
         this.smev3.bookAttributes$,
-        this.requestBookParams$$,
+        this.requestBookParams$$.pipe(filter((value) => value !== undefined)),
       ]).pipe(
         take(1),
         concatMap(
@@ -248,6 +280,7 @@ export class TimeSlotSmev3Service {
         ),
       ),
     ),
+    tap(() => this.state.progressEnd()),
   );
 
   private area$$ = new BehaviorSubject<string>(null);
@@ -258,6 +291,7 @@ export class TimeSlotSmev3Service {
     private state: TimeSlotStateService,
     private smev3: TimeSlotSmev3StateService,
     private error: TimeSlotErrorService,
+    private calendar: TimeSlotCalendarService,
   ) {}
 
   reloadStore(): void {
@@ -313,12 +347,12 @@ export class TimeSlotSmev3Service {
       bookId: nowBookId,
       organizationId: data.organizationId as string,
       calendarName: (data.calendarName as string) || calendarName,
-      areaId: [slot.areaId || ''],
-      selectedHallTitle: (department.attributeValues.AREA_NAME || slot.slotId) as string,
+      areaId: [slot?.areaId || ''],
+      selectedHallTitle: (department.attributeValues.AREA_NAME || slot?.slotId) as string,
       parentOrderId: data.orderId as string,
       preliminaryReservationPeriod,
       attributes: attributes || [],
-      slotId: [slot.slotId],
+      slotId: [slot?.slotId],
       serviceId: [(data.serviceId as string) || serviceId],
     };
 
@@ -343,22 +377,41 @@ export class TimeSlotSmev3Service {
 
   book(book: Slot): Observable<SmevBookResponseInterface> {
     const operation = {
+      status: false,
       book,
       result: new BehaviorSubject(null),
     } as BookOperation;
-    this.book$$.next(operation);
-    return operation.result.pipe(filter((value) => !!value));
+    return operation.result.pipe(
+      tap(() => {
+        if (!operation.status) {
+          operation.status = true;
+          this.book$$.next(operation);
+        }
+      }),
+      filter((value) => !!value),
+      take(1),
+    );
   }
 
   cancel(
     slotList: TimeSlotsAnswerInterface | TimeSlotsAnswerInterface[],
   ): Observable<CancelSlotResponseInterface[]> {
     const operation = {
+      status: false,
       slotList: Array.isArray(slotList) ? slotList : [slotList],
       result: new BehaviorSubject(null),
     } as CancelOperation;
-    this.cancel$$.next(operation);
-    return operation.result.pipe(filter((value) => !!value));
+
+    return operation.result.pipe(
+      tap(() => {
+        if (!operation.status) {
+          operation.status = true;
+          this.cancel$$.next(operation);
+        }
+      }),
+      filter((value) => !!value),
+      take(1),
+    );
   }
 
   createSlot(slot: TimeSlot): Slot {
@@ -451,7 +504,8 @@ export class TimeSlotSmev3Service {
     if (
       !bookedSlot ||
       slotList.length === 0 ||
-      !this.datesTools.isSameDate(bookedSlot?.slotTime, slotList[0]?.slotTime)
+      !this.datesTools.isSameDate(bookedSlot?.slotTime, slotList[0]?.slotTime) ||
+      slotList.findIndex((slot) => slot?.slotId === bookedSlot?.slotId) !== -1
     ) {
       return slotList;
     }

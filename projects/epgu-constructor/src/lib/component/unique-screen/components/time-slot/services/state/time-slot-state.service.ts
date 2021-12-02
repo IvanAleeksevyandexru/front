@@ -10,14 +10,27 @@ import { ConfirmationModalComponent } from '../../../../../../modal/confirmation
 
 @Injectable()
 export class TimeSlotStateService {
+  startLoaded$$ = new BehaviorSubject<boolean>(false);
+
   private progressCounter$$ = new BehaviorSubject<number>(0);
 
   get progress$(): Observable<boolean> {
-    return this.progressCounter$$.pipe(map((counter) => counter > 0));
+    return this.progressCounter$$.pipe(
+      map((counter) => counter > 0),
+      distinctUntilChanged(),
+    );
+  }
+
+  private haveSlots$$ = new BehaviorSubject<boolean>(true);
+  set haveSlots(haveWeeks: boolean) {
+    this.haveSlots$$.next(haveWeeks);
+  }
+  get haveSlots$(): Observable<boolean> {
+    return this.haveSlots$$.asObservable();
   }
 
   get loaded$(): Observable<boolean> {
-    return this.progress$.pipe(map((value) => !value));
+    return this.startLoaded$$.pipe(distinctUntilChanged());
   }
 
   private month$$ = new BehaviorSubject<string>(null);
@@ -77,7 +90,7 @@ export class TimeSlotStateService {
     this.months$$.next(months);
   }
 
-  private additionalDisplayingButton$$ = new BehaviorSubject<boolean>(true);
+  private additionalDisplayingButton$$ = new BehaviorSubject<boolean>(false);
   get additionalDisplayingButton$(): Observable<boolean> {
     return this.additionalDisplayingButton$$.asObservable();
   }

@@ -37,7 +37,7 @@ export class TimeSlotMvdComponent {
     department: DepartmentInterface,
   ): Partial<TimeSlotRequest> {
     return {
-      organizationId: value.organizationId || department.value,
+      organizationId: [value.organizationId || department.value],
       caseNumber: value.parentOrderId as string,
     };
   }

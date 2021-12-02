@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DATE_TIME_STRING_FULL, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
 import { Slot } from '../../../typings';
 
@@ -11,8 +12,9 @@ import { Slot } from '../../../typings';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSlotBookedInfoComponent {
-  bookedInfo$ = this.data.bookedSlot$.pipe(
-    map((slot: Slot) => (slot ? this.getBookedInfo(slot) : null)),
+  bookedInfo$ = combineLatest([this.data.bookedSlot$, this.data.isBookedDepartment$]).pipe(
+    filter(([bookedSlot, isBookedDepartment]) => isBookedDepartment && !!bookedSlot),
+    map(([slot]) => (slot ? this.getBookedInfo(slot) : null)),
   );
 
   constructor(private data: TimeSlotSmev3Service, private datesTools: DatesToolsService) {}

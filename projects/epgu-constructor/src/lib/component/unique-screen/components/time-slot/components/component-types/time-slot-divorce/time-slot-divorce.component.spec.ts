@@ -12,6 +12,7 @@ import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-stat
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { DepartmentInterface, TimeSlotValueInterface } from '../../../typings';
 import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
+import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
 
 describe('TimeSlotDivorceComponent', () => {
   let component: TimeSlotDivorceComponent;
@@ -22,6 +23,7 @@ describe('TimeSlotDivorceComponent', () => {
       declarations: [
         TimeSlotDivorceComponent,
         MockComponent(TimeSlotSmev3Component),
+        MockComponent(TimeSlotErrorComponent),
         MockComponent(TimeSlotAreaComponent),
       ],
       imports: [],
@@ -60,7 +62,7 @@ describe('TimeSlotDivorceComponent', () => {
           ({ attributeValues } as unknown) as DepartmentInterface,
         ),
       ).toEqual({
-        organizationId: 'test',
+        organizationId: ['test'],
       });
       attributeValues = { CODE: 'test2' };
       expect(
@@ -69,21 +71,26 @@ describe('TimeSlotDivorceComponent', () => {
           ({ attributeValues } as unknown) as DepartmentInterface,
         ),
       ).toEqual({
-        organizationId: 'test2',
+        organizationId: ['test2'],
       });
     });
     it('should be getPartialBookRequestParams', () => {
+      let attributeValues = { CODE: '1' };
       expect(
         component.getPartialBookRequestParams(
+          ({ attributeValues } as unknown) as DepartmentInterface,
           ({ serviceId: 'test' } as unknown) as TimeSlotValueInterface,
           ({} as unknown) as TimeSlotsApiItem,
         ),
       ).toEqual({
+        organizationId: '1',
         attributes: [{ name: 'serviceId', value: 'test' }],
       });
 
+      const empty = {};
       expect(
         component.getPartialBookRequestParams(
+          ({ attributeValues: empty } as unknown) as DepartmentInterface,
           ({} as unknown) as TimeSlotValueInterface,
           ({ serviceId: 'test2' } as unknown) as TimeSlotsApiItem,
         ),

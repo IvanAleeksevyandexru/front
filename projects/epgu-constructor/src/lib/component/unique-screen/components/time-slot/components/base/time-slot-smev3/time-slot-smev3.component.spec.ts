@@ -30,7 +30,7 @@ import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-sl
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
 import { FormPlayerService } from '../../../../../../../form-player/services/form-player/form-player.service';
 import { FormPlayerServiceStub } from '../../../../../../../form-player/services/form-player/form-player.service.stub';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { BaseModule } from '../../../../../../../shared/base.module';
 import {
   ITEMS_FAILURE,
@@ -39,6 +39,7 @@ import {
 import {
   Slot,
   SlotListFilterProvider,
+  TimeSlotBookRequest,
   TimeSlotError,
   TimeSlotsAnswerInterface,
 } from '../../../typings';
@@ -105,6 +106,7 @@ describe('TimeSlotSmev3Component', () => {
     error = TestBed.inject(TimeSlotErrorService);
     smev3Service.cancel$ = of(null);
     smev3Service.book$ = of(null);
+
     smev3Service.store$ = of([]);
     smev3Service.bookedSlot$ = of(null);
     screenService = TestBed.inject(ScreenService);
@@ -340,6 +342,24 @@ describe('TimeSlotSmev3Component', () => {
       smev3.slotsNotFoundTemplate$ = of(null);
       smev3Service.bookedSlot$ = of(null);
       smev3Service.isBookedDepartment$ = of(null);
+      smev3Service.requestBookParams$$ = new BehaviorSubject<Partial<TimeSlotBookRequest>>(
+        undefined,
+      );
+      smev3Service.requestListParams$$ = new BehaviorSubject<Partial<TimeSlotBookRequest>>(
+        undefined,
+      );
+    });
+
+    it('should be requestBookParams set null', () => {
+      jest.spyOn(smev3Service.requestBookParams$$, 'next');
+      component.ngOnInit();
+      expect(smev3Service.requestBookParams$$.next).toHaveBeenCalledWith(null);
+    });
+
+    it('should be requestListParams set null', () => {
+      jest.spyOn(smev3Service.requestListParams$$, 'next');
+      component.ngOnInit();
+      expect(smev3Service.requestListParams$$.next).toHaveBeenCalledWith(null);
     });
 
     it('should be resetHandlers', () => {
