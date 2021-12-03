@@ -54,6 +54,9 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
         }
         if (components.filter(isOnInitComponent).length) {
           this.screenService.isLogicComponentLoading = true;
+
+          // Необходимо для корректного обновления экрана при подстановке значений из suggestions
+          if (this.viewComponents) this.resetInitSubscribe();
         }
       });
   }
@@ -61,20 +64,27 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
   ngAfterViewInit(): void {
     this.subscribeToInitHooks();
     this.viewComponents.changes.subscribe(() => {
-      this.loadSubscription.unsubscribe();
-      this.subscribeToInitHooks();
+      this.resetInitSubscribe();
     });
+  }
+
+  private resetInitSubscribe(): void {
+    if (this.loadSubscription) this.loadSubscription.unsubscribe();
+    this.subscribeToInitHooks();
   }
 
   private subscribeToInitHooks(): void {
     const hasLoadedSubjects = this.viewComponents
       .filter((component) => isOnInitComponent(component.componentDto))
       .map((component) => component.componentRef?.instance.hasLoaded ?? of(true));
-    this.loadSubscription = combineLatest(hasLoadedSubjects).subscribe((hasLoadedResult) => {
-      if (hasLoadedResult.every((element) => !!element)) {
-        this.screenService.isLogicComponentLoading = false;
-        this.cdr.detectChanges();
-      }
-    });
+
+    this.loadSubscription = combineLatest(hasLoadedSubjects)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((hasLoadedResult) => {
+        if (hasLoadedResult.every((element) => !!element)) {
+          this.screenService.isLogicComponentLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 }
