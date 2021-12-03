@@ -51,7 +51,7 @@ export class CommonSearchPanelComponent implements AfterViewInit {
   }
 
   private selectMapObject(mapObject: YMapItem<DictionaryYMapItem>): void {
-    this.yandexMapService.selectMapObject(mapObject);
+    this.yandexMapService.selectMapObject(mapObject, undefined, false);
   }
 
   private providerSearch(): (val: string) => Observable<Partial<ListElement>[]> {
