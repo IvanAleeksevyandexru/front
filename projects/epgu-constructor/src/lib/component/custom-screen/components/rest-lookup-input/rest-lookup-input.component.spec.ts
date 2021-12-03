@@ -28,6 +28,9 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -68,8 +71,10 @@ describe('RestLookupInputComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        MockProvider(ComponentsListToolsService),
         MockProvider(InterpolationService),
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
+        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         MockProvider(RestToolsService),
         MockProvider(SuggestHandlerService),
         MockProvider(EventBusService),

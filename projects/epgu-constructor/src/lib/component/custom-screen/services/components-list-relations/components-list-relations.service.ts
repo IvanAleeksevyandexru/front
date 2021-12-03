@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { cloneDeep, get } from 'lodash';
 import {
   CustomComponent,
-  CustomComponentRef,
   CustomListFormGroup,
   CustomListStatusElements,
   DATE_RESTRICTION_GROUP_DEFAULT_KEY,
@@ -24,23 +23,29 @@ import {
 import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
-import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
-import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 import { UpdateRestLookupRelation } from './relation-strategies/update-rest-lookup-relation';
-import { ComponentRestUpdates } from './components-list-relations.interface';
+import { UpdateFiltersEvents, ComponentRestUpdates } from './components-list-relations.interface';
 import { Observable } from 'rxjs';
 import { RelationResolverService } from './relation-resolver.service';
+import { FilterOnRelation } from './relation-strategies/filter-on-relation';
 
 @Injectable()
 export class ComponentsListRelationsService {
-
   public get restUpdates$(): Observable<ComponentRestUpdates> {
     const relationStrategy: UpdateRestLookupRelation = this.relationResolverService.getStrategy(
       CustomComponentRefRelation.updateRestLookupOn
     ) as UpdateRestLookupRelation;
 
     return relationStrategy.restUpdates$;
+  }
+
+  public get filters$(): Observable<UpdateFiltersEvents> {
+    const relationStrategy: FilterOnRelation = this.relationResolverService.getStrategy(
+      CustomComponentRefRelation.filterOn
+    ) as FilterOnRelation;
+
+    return relationStrategy.filters$;
   }
 
   constructor(
@@ -218,38 +223,6 @@ export class ComponentsListRelationsService {
     return undefined;
   }
 
-  public onAfterFilterOnRel(
-    dependentComponent: BaseModel<DictionarySharedAttrs>,
-    form: FormArray,
-  ): void {
-    if (!Array.isArray(dependentComponent?.attrs?.ref)) {
-      return;
-    }
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
-    );
-
-    const relationsToHandle = [
-      CustomComponentRefRelation.updateRestLookupOn,
-      CustomComponentRefRelation.filterOn,
-    ];
-
-    dependentComponent?.attrs?.ref
-      .filter((reference) => relationsToHandle.includes(reference.relation))
-      .forEach((reference) => {
-        const refControl: AbstractControl = form.controls.find(
-          (control: AbstractControl) => control.value.id === reference.relatedRel,
-        );
-
-        this.handleAfterFilterOnRelation(
-          reference,
-          refControl,
-          dependentControl,
-          dependentComponent,
-        );
-      });
-  }
-
   public hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
     return component.attrs?.ref?.some((o) => o.relation === relation);
   }
@@ -392,23 +365,6 @@ export class ComponentsListRelationsService {
         dependentComponent,
         screenService.applicantAnswers,
       );
-    }
-  }
-
-  private handleAfterFilterOnRelation(
-    reference: CustomComponentRef,
-    refControl: AbstractControl,
-    dependentControl: AbstractControl,
-    dependentComponent: BaseModel<DictionarySharedAttrs>,
-  ): void {
-    if (refControl.touched) {
-      if (dependentComponent.isResultEmpty) {
-        dependentControl.get('value').patchValue(reference.defaultValue || '');
-        dependentControl.get('value').markAsUntouched();
-        dependentControl.disable({ onlySelf: true, emitEvent: false });
-      } else if (dependentControl.disabled) {
-        dependentControl.enable({ onlySelf: true, emitEvent: false });
-      }
     }
   }
 }

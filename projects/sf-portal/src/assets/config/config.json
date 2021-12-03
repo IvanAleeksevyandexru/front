@@ -33,5 +33,8 @@
   "timingApiUrl": "//pgu-dev-fed.test.gosuslugi.ru/health",
   "urlLk": "http://vbeta.test.gosuslugi.ru:8080/",
   "viewType": "PORTAL",
-  "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3"
+  "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3",
+  "psoOnlyRobomaxIco": true,
+  "showNewDesignPsoHel": true,
+  "excludePsoFromMain": false
 }

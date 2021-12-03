@@ -3,23 +3,14 @@ import { CustomComponentRefRelation, DictionaryConditions, DictionaryValueTypes,
 import { MockService } from 'ng-mocks';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { FilterOnRelation } from './filter-on-relation';
-import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
-import { ScreenService } from '../../../../../screen/screen.service';
 import { setupForRelationStrategy } from '../components-list-relations.mock';
+import { Observable } from 'rxjs';
+import { UpdateFilterEvent, UpdateFiltersEvents } from '../components-list-relations.interface';
 
 describe('FilterOnRelation', () => {
   let relation: FilterOnRelation;
   let componentVal =  { foo: 'bar', regOkato: '123' };
   let components: CustomComponent[] = [];
-  const dictionaryToolsService = MockService(DictionaryToolsService, {
-    applyFilter: jest.fn().mockReturnValue(undefined),
-    clearFilter: jest.fn().mockReturnValue(undefined),
-    isDictionaryLike: jest.fn().mockReturnValue(true),
-    getFilterOptions: jest.fn().mockReturnValue({
-      filter: { simple: { attributeName: 'okato', condition: 'EQUALS', value: { asString: '123' }}},
-    }),
-  });
-  const screenService = MockService(ScreenService);
   const refRelationService: RefRelationService = MockService(RefRelationService, {
     isDisplayOnRelation: jest.fn().mockImplementation(
       (relation: CustomComponentRefRelation) => relation === CustomComponentRefRelation.displayOn
@@ -32,19 +23,10 @@ describe('FilterOnRelation', () => {
 
   beforeEach(() => {
     relation = new FilterOnRelation(refRelationService);
-
-    (dictionaryToolsService.applyFilter as unknown as { mockReset: Function }).mockReset();
-    (dictionaryToolsService.clearFilter as unknown as { mockReset: Function }).mockReset();
   });
 
   it('should apply filter if isValueEquals() AND isDictionaryLike()', () => {
-    let {
-      reference,
-      dependentComponent,
-      form,
-      shownElements,
-    } = setupForRelationStrategy({
-      referenceExtra: {
+    const referenceExtra = {
         relation: CustomComponentRefRelation.filterOn,
         dictionaryFilter: [
           {
@@ -54,24 +36,22 @@ describe('FilterOnRelation', () => {
             valueType: DictionaryValueTypes.preset,
           },
         ],
-      },
+      };
+    let {
+      reference,
+      dependentComponent,
+      form,
+      shownElements,
+    } = setupForRelationStrategy({
+      referenceExtra
     });
 
-    const resultFilter = {
-      simple: {
-        attributeName: 'okato',
-        condition: 'EQUALS',
-        value: {
-          asString: componentVal.regOkato,
-        },
-      },
-    };
+    const resultFilter = { reference, value: componentVal };
 
-    const applyFilterSpy = jest.spyOn(dictionaryToolsService, 'applyFilter').mockImplementation(() => undefined);
-    const clearFilterSpy = jest.spyOn(dictionaryToolsService, 'clearFilter').mockImplementation(() => undefined);
+    const applyFilterSpy = jest.spyOn<FilterOnRelation, any>(relation, 'applyFilter').mockReturnValue(undefined);
+    const clearFilterSpy = jest.spyOn<FilterOnRelation, any>(relation, 'clearFilter').mockReturnValue(undefined);
 
     jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-    jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(true);
 
     relation.handleRelation(
       shownElements,
@@ -81,8 +61,6 @@ describe('FilterOnRelation', () => {
       form,
       components,
       false,
-      dictionaryToolsService,
-      screenService,
     );
 
     // вызывается applyFilter(), потому что isValueEquals() === TRUE AND isDictionaryLike() === TRUE
@@ -101,32 +79,11 @@ describe('FilterOnRelation', () => {
       referenceExtra: { relation: CustomComponentRefRelation.filterOn },
     });
 
-    const applyFilterSpy = jest.spyOn(dictionaryToolsService, 'applyFilter').mockImplementation(() => undefined);
-    const clearFilterSpy = jest.spyOn(dictionaryToolsService, 'clearFilter').mockImplementation(() => undefined);
-
-    jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-    jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(false);
-
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-      components,
-      false,
-      dictionaryToolsService,
-      screenService,
-    );
-
-    // вызывается clearFilter(), потому что isDictionaryLike() === FALSE
-    expect(applyFilterSpy).not.toBeCalled();
-    expect(clearFilterSpy).toBeCalledTimes(1);
-    expect(clearFilterSpy).toBeCalledWith(dependentComponent.id);
+    const applyFilterSpy = jest.spyOn<FilterOnRelation, any>(relation, 'applyFilter').mockReturnValue(undefined);
+    const clearFilterSpy = jest.spyOn<FilterOnRelation, any>(relation, 'clearFilter').mockReturnValue(undefined);
 
     clearFilterSpy.mockClear();
     jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
-    jest.spyOn(dictionaryToolsService, 'isDictionaryLike').mockReturnValue(true);
 
     relation.handleRelation(
       shownElements,
@@ -136,13 +93,72 @@ describe('FilterOnRelation', () => {
       form,
       components,
       false,
-      dictionaryToolsService,
-      screenService,
     );
 
     // вызывается clearFilter(), потому что isValueEquals() === FALSE
     expect(applyFilterSpy).not.toBeCalled();
     expect(clearFilterSpy).toBeCalledTimes(1);
     expect(clearFilterSpy).toBeCalledWith(dependentComponent.id);
+  });
+
+  describe('applyFilter()', () => {
+    it('should apply passed filter for dependent component', () => {
+      const dependentComponentId = 'rf1';
+      const filter: UpdateFilterEvent = {
+        reference: {
+          relatedRel: 'comp1',
+          val: 'some val',
+          relation: CustomComponentRefRelation.filterOn,
+        },
+        value: { comp1: 'some value' },
+      };
+      relation['applyFilter'](dependentComponentId, filter);
+      expect(relation['filters'][dependentComponentId]).toEqual(filter);
+    });
+  });
+
+  describe('clearFilter()', () => {
+    it('should clear filter for passed dependent component', () => {
+      const dependentComponentId = 'rf1';
+      relation['filters'][dependentComponentId] = {
+        reference: {
+          relatedRel: 'comp1',
+          val: 'some val',
+          relation: CustomComponentRefRelation.filterOn,
+        },
+        value: { comp1: 'some value' },
+      };
+      relation['clearFilter'](dependentComponentId);
+      expect(relation['filters'][dependentComponentId]).toBeNull();
+    });
+  });
+
+  describe('filters$ property', () => {
+    it('should be observable', (done) => {
+      relation.filters$.subscribe((result) => {
+        expect(result).toEqual({});
+        done();
+      });
+      expect(relation.filters$).toBeInstanceOf(Observable);
+    });
+
+    it('should be emitted if set filters property', (done) => {
+      const filters: UpdateFiltersEvents = {
+        a: null,
+      };
+
+      relation['filters'] = filters;
+
+      relation.filters$.subscribe((result) => {
+        expect(result).toBe(filters);
+        done();
+      });
+    });
+  });
+
+  describe('filters property', () => {
+    it('should be {} by default', () => {
+      expect(relation['filters']).toEqual({});
+    });
   });
 });
