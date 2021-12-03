@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
 import { NavigationEnd, Router } from '@angular/router';
 import { MainPageService } from '@epgu/ui/services/main-page';
 import { IMainData } from '@epgu/ui/models/main-data';
 import { CatalogTabsService } from '@epgu/ui/services/catalog-tabs';
 import { CountersService } from '@epgu/ui/services/counters';
+import { PsoService } from '@epgu/ui/services/pso';
 
 @Component({
   selector: '[app-root]',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public loaded = false;
 
   constructor(
@@ -20,17 +21,19 @@ export class AppComponent {
     private mainPageService: MainPageService,
     private catalogTabsService: CatalogTabsService,
     private countersService: CountersService,
+    private psoService: PsoService,
   ) {}
 
   private static documentScrollTop(): void {
     window.scrollTo(0, 0);
   }
 
-  public ngOnInit() {
+  ngOnInit() {
     this.onRouteChange();
     this.getMainBlocksData();
     this.initCounters();
     this.fadeOutEffect(document.getElementById('start-app-loader') as HTMLElement);
+    this.setWindowParams();
   }
 
   public getMainBlocksData(): void {
@@ -56,10 +59,12 @@ export class AppComponent {
   private fadeOutEffect(elem: HTMLElement) {
     const fadeEffect = setInterval(() => {
       if (!elem.style.opacity) {
+        // eslint-disable-next-line no-param-reassign
         elem.style.opacity = '1';
       }
       if (parseFloat(elem.style.opacity) > 0) {
         const magicNumber = 0.2;
+        // eslint-disable-next-line no-param-reassign
         elem.style.opacity = `${parseFloat(elem.style.opacity) - magicNumber}`;
       } else {
         clearInterval(fadeEffect);
@@ -76,5 +81,13 @@ export class AppComponent {
         AppComponent.documentScrollTop();
       }
     });
+  }
+
+  private setWindowParams() {
+    if (this.psoService.isPsoRequired()) {
+      window.psoOnlyRobomaxIcon = this.loadService.config.psoOnlyRobomaxIcon;
+      window.showNewDesignPsoHelp = this.loadService.config.showNewDesignPsoHelp;
+      window.betaUrl = this.loadService.config.betaUrl;
+    }
   }
 }
