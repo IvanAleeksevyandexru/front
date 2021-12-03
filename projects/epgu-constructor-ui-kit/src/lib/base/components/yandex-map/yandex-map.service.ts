@@ -123,15 +123,19 @@ export class YandexMapService implements OnDestroy {
 
   /**
    * centers the map by feature
-   * @param feature
+   * @param feature объект из карты
+   * @param zoomToObject нужно ли призумиться к объекту
+   * @param needSetCenter нужно ли центрировать кликнутую точку
+   * @param defaultUncheckLogic используется чтобы не сбрасывать выделение, например, при выборе объекта из выпадающего списка
    */
   public centeredPlaceMark<T>(
     feature: IFeatureItem<T> | IClusterItem<T>,
     zoomToObject = false,
     needSetCenter = true,
+    defaultUncheckLogic = true
   ): void {
-    this.objectManager.objects.balloon.close();
-    if (this.activePlacemarkId === feature.id || this.activeClusterHash === this.getClusterHash(feature as IClusterItem<T>)) {
+    if ((defaultUncheckLogic && this.activePlacemarkId === feature.id)
+      || this.activeClusterHash === this.getClusterHash(feature as IClusterItem<T>)) {
       this.closeBalloon();
       return;
     }
@@ -142,6 +146,8 @@ export class YandexMapService implements OnDestroy {
     ) {
       return;
     }
+    // TODO: нужно перевести activePlacemarkId на idForMap
+    //  поскольку id генерируется динамически и может привести к коллизиям
     this.activePlacemarkId = feature.id;
     const coords = feature.geometry?.coordinates;
     if (feature.type === IFeatureTypes.Cluster) {
@@ -197,6 +203,7 @@ export class YandexMapService implements OnDestroy {
   }
 
   public closeBalloon(): void {
+    this.objectManager.objects.balloon.close();
     this.selectedValue$.getValue()?.forEach((element) => {
       element.expanded = false;
     });
@@ -258,7 +265,7 @@ export class YandexMapService implements OnDestroy {
     }
   }
 
-  public selectMapObject<T>(mapObject: YMapItem<T>, zoomToObject = false): void {
+  public selectMapObject<T>(mapObject: YMapItem<T>, zoomToObject = false, defaultUncheckLogic = true): void {
     if (!mapObject) return;
     let chosenMapObject = this.getObjectById(mapObject.idForMap);
     if (!chosenMapObject) {
@@ -270,7 +277,7 @@ export class YandexMapService implements OnDestroy {
       };
       this.centerAllPoints();
     }
-    this.centeredPlaceMark(chosenMapObject, zoomToObject);
+    this.centeredPlaceMark(chosenMapObject, zoomToObject, undefined, defaultUncheckLogic);
   }
 
   public getBoundsByCoords(coords: number[][]): [number[], number[]] {

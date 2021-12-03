@@ -62,6 +62,31 @@ describe('SelectMapObjectComponent', () => {
     expect(spy).toBeCalledTimes(1);
   });
 
+  it('centeredPlaceMark should stop checking placemark if ids are equal', () => {
+    yandexMapService.selectedValue$.next(null);
+    yandexMapService['activePlacemarkId'] = '4504034394378_50';
+
+    yandexMapService.centeredPlaceMark(
+      (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
+    );
+
+    expect(yandexMapService.selectedValue$.getValue()).toBeNull();
+  });
+
+  it('centeredPlaceMark should proceed checking placemark if ids are equal and default logic is faklse', () => {
+    yandexMapService.selectedValue$.next(null);
+    yandexMapService['activePlacemarkId'] = '4504034394378_50';
+
+    yandexMapService.centeredPlaceMark(
+      (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
+      undefined,
+      undefined,
+      false
+    );
+
+    expect(yandexMapService.selectedValue$.getValue()).toBeTruthy();
+  });
+
   it('closeBalloon should set expanded = false', () => {
     yandexMapService.selectedValue$.next(mockExpandedPoint);
     yandexMapService.closeBalloon();
