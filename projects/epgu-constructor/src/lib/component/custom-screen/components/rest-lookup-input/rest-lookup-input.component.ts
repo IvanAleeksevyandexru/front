@@ -6,15 +6,14 @@ import { ConstantsService } from '@epgu/ui/services/constants';
 import { ListItem } from '@epgu/ui/models/dropdown';
 import { RestAttrsDto } from '@epgu/epgu-constructor-types';
 import { Observable, of } from 'rxjs';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
 import RestLookupInputModelAttrs from './RestLookupInputModelAttrs';
 import RestLookupInputModel from './RestLookupInputModel';
 import { ComponentRestUpdates } from '../../services/components-list-relations/components-list-relations.interface';
 import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { CustomComponentAttr, CustomListDictionary } from '../../components-list.types';
+import AbstractDictionaryLikeComponent from '../abstract-component-list-item/abstract-dictionary-like.component';
 
 @Component({
   selector: 'epgu-constructor-rest-lookup-input',
@@ -24,7 +23,7 @@ import { CustomComponentAttr, CustomListDictionary } from '../../components-list
   providers: [UnsubscribeService],
 })
 export class RestLookupInputComponent
-  extends AbstractComponentListItemComponent<RestLookupInputModelAttrs>
+  extends AbstractDictionaryLikeComponent<RestLookupInputModelAttrs>
   implements OnInit {
   public showNotFound;
   public forReRenderChildLookup = true;
@@ -43,7 +42,6 @@ export class RestLookupInputComponent
     private config: ConfigService,
     private restToolsService: RestToolsService,
     private interpolationService: InterpolationService,
-    private componentsListRelationsService: ComponentsListRelationsService,
   ) {
     super(injector);
   }
@@ -55,17 +53,6 @@ export class RestLookupInputComponent
   public ngOnInit(): void {
     super.ngOnInit();
     this.showNotFound = !!this.attrs?.hint;
-    this.loadReferenceData().subscribe(() => {
-      setTimeout(() => this.formService.patch(this.model), 0);
-      this.formService.emitChanges();
-    });
-
-    this.watchForUpdates().subscribe(() => {
-      this.formService.onAfterFilterOnRel(this.model);
-      this.cdr.markForCheck();
-      this.formService.emitChanges();
-    });
-
     this.model.dictionary$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((dictionary) => {
       if (this.list !== dictionary.list) {
         this.list = dictionary.list;
@@ -74,7 +61,7 @@ export class RestLookupInputComponent
     });
   }
 
-  protected loadReferenceData(): Observable<CustomListDictionary> {
+  protected loadReferenceData$(): Observable<CustomListDictionary> {
     if (this.attrs.isLoadingNeeded()) {
       const request: RestAttrsDto = {
         ...this.attrs,
@@ -88,23 +75,31 @@ export class RestLookupInputComponent
     return of(null);
   }
 
-  protected watchForUpdates(): Observable<CustomListDictionary> {
-    return this.componentsListRelationsService.restUpdates$.pipe(
-      switchMap((updates: ComponentRestUpdates) => {
-        if (updates[this.model.id] !== undefined || this.attrs.needUnfilteredDictionaryToo) {
-          const update = updates[this.model.id];
-          this.control.value.attrs = this.model.getAttrs({
-            ...this.attrs,
-            ...(update
-              ? this.interpolationService.interpolateObject(update.rest, update.value)
-              : {}),
-            emptyWhenNoFilter: !update,
-          } as CustomComponentAttr);
-          return this.loadReferenceData();
-        }
-        return of(null);
-      }),
-    );
+  protected watchForFilters(): void {
+    this.componentsListRelationsService.restUpdates$
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        switchMap((updates: ComponentRestUpdates) => {
+          if (updates[this.model.id] !== undefined || this.attrs.needUnfilteredDictionaryToo) {
+            const update = updates[this.model.id];
+            this.control.value.attrs = this.model.getAttrs({
+              ...this.attrs,
+              ...(update
+                ? this.interpolationService.interpolateObject(update.rest, update.value)
+                : {}),
+              emptyWhenNoFilter: !update,
+            } as CustomComponentAttr);
+            return this.loadReferenceData$();
+          }
+          return of(null);
+        }),
+      )
+      .subscribe(() => {
+        this.model.value = this.componentsListToolsService.convertedValue(this.model) as string;
+        this.onAfterFilterOnRel(this.model, this.formService.form);
+        this.cdr.markForCheck();
+        this.formService.emitChanges();
+      });
   }
 
   private reRenderChildLookup(): void {

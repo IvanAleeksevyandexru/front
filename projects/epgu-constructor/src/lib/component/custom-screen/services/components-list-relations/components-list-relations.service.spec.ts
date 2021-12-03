@@ -21,10 +21,6 @@ import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
-import LookupInputModel from '../../components/lookup-input/LookupInputModel';
-import BaseModel from '../../component-list-resolver/BaseModel';
-import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
-import { of } from 'rxjs';
 import { componentMock, createComponentMock } from './components-list-relations.mock';
 import { RelationResolverService } from './relation-resolver.service';
 
@@ -477,116 +473,6 @@ describe('ComponentsListRelationsService', () => {
     });
   });
 
-  describe('onAfterFilterOnRel()', () => {
-    const setup = (
-      references = [
-        {
-          relatedRel: componentMock.id,
-          val: '*',
-          relation: 'filterOn',
-          dictionaryFilter: [],
-        },
-      ],
-    ) => {
-      const dependentComponent = new LookupInputModel({
-        id: 'acc_org',
-        type: 'Lookup',
-        required: true,
-        label: 'Расчётный счёт',
-        attrs: {
-          ref: references ? [...references] : [],
-        },
-        value: '',
-        visited: false,
-      } as unknown as BaseModel<DictionarySharedAttrs>);
-
-      const fb = new FormBuilder();
-      const mockForm = new FormArray([
-        fb.group({ ...componentMock }),
-        fb.group({ ...dependentComponent }),
-      ]);
-      const control = mockForm.controls[0];
-      const dependentControl = mockForm.controls[1];
-
-      return { control, dependentComponent, dependentControl, mockForm, references };
-    };
-
-    it('should do nothing when no ref', () => {
-      const { dependentControl, mockForm } = setup(null);
-      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
-
-      service.onAfterFilterOnRel(componentMock as BaseModel<DictionarySharedAttrs>, mockForm);
-
-      expect(dependentControlSpy).not.toBeCalled();
-    });
-
-    it('should reset dependent control', () => {
-      const { dependentControl, control, mockForm, dependentComponent } = setup();
-      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
-      control.markAsTouched();
-      dependentComponent.loadReferenceData$(of({
-        component: dependentComponent as CustomComponent,
-        data: {
-          error: { code: 0, message: 'emptyDictionary' },
-          fieldErrors: [],
-          items: [],
-          total: 0,
-        },
-      }));
-      service.onAfterFilterOnRel(
-        dependentComponent,
-        mockForm,
-      );
-
-      expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
-    });
-
-    it('should NOT affect another relations', () => {
-      const refs = [
-        {
-          relatedRel: componentMock.id,
-          val: '',
-          relation: 'displayOff',
-        },
-        {
-          relatedRel: componentMock.id,
-          val: '*',
-          relation: 'filterOn',
-          dictionaryFilter: [
-            {
-              attributeName: 'section',
-              condition: 'EQUALS',
-              value: 'id',
-              valueType: 'preset',
-            },
-          ],
-        },
-      ];
-      const refsExpected = JSON.parse(JSON.stringify(refs));
-      const { dependentControl, control, mockForm, dependentComponent } = setup(refs as any);
-      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
-      control.markAsTouched();
-
-      dependentComponent.loadReferenceData$(of({
-        component: dependentComponent as CustomComponent,
-        data: {
-          error: { code: 0, message: 'emptyDictionary' },
-          fieldErrors: [],
-          items: [],
-          total: 0,
-        },
-      }));
-
-      service.onAfterFilterOnRel(
-        dependentComponent,
-        mockForm,
-      );
-
-      expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
-      expect(dependentComponent.attrs.ref).toEqual(refsExpected);
-    });
-  });
-
   describe('updateLimitDatesByDateRestrictions()', () => {
     it('should process date restrictions and pass right arguments to form update method', async () => {
       const dateRestrictions: DateRestriction[] = [
@@ -600,7 +486,7 @@ describe('ComponentsListRelationsService', () => {
       const form = new FormArray([]);
       const stub = jest
         .spyOn(service as any, 'updateFormWithDateRange')
-        .mockImplementation((...args) => null);
+        .mockReturnValue( null);
 
       await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
 
@@ -625,7 +511,7 @@ describe('ComponentsListRelationsService', () => {
       const form = new FormArray([]);
       const stub = jest
         .spyOn(service as any, 'updateFormWithDateRange')
-        .mockImplementation((...args) => null);
+        .mockReturnValue(null);
 
       await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
 
@@ -652,7 +538,7 @@ describe('ComponentsListRelationsService', () => {
       });
       const form = new FormArray([control]);
       const testDate = new Date('2021-01-02T00:00:00.000Z');
-      jest.spyOn(dateRestrictionsService, 'getDateRange').mockImplementation((...args) => {
+      jest.spyOn(dateRestrictionsService, 'getDateRange').mockImplementation(() => {
         return Promise.resolve({
           min: testDate,
           max: testDate,
@@ -688,7 +574,7 @@ describe('ComponentsListRelationsService', () => {
       });
       const form = new FormArray([control]);
       const testDate = new Date('2021-01-02T00:00:00.000Z');
-      jest.spyOn(dateRestrictionsService, 'getDateRange').mockImplementation((...args) => {
+      jest.spyOn(dateRestrictionsService, 'getDateRange').mockImplementation(() => {
         return Promise.resolve({
           min: testDate,
           max: testDate,

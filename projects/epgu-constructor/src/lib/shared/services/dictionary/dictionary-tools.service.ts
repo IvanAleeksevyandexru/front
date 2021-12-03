@@ -7,7 +7,7 @@ import {
   Searchable,
 } from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DictionaryApiService } from './dictionary-api.service';
 import { map } from 'rxjs/operators';
 import { get } from 'lodash';
@@ -30,8 +30,6 @@ import {
 import { DatesToolsService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
 import { ListElement } from '@epgu/ui/models/dropdown';
-// eslint-disable-next-line max-len
-import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
 
 export type ComponentValue = {
   [key: string]: string | number | object;
@@ -52,20 +50,6 @@ interface CalcFilterFuncArgs {
 
 @Injectable()
 export class DictionaryToolsService {
-  public get filters(): ComponentDictionaryFilters {
-    return this._filters$.getValue();
-  }
-
-  public set filters(val: ComponentDictionaryFilters) {
-    this._filters$.next(val);
-  }
-
-  public get filters$(): Observable<ComponentDictionaryFilters> {
-    return this._filters$.asObservable();
-  }
-
-  private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});
-
   constructor(
     private dictionaryApiService: DictionaryApiService,
     private datesToolsService: DatesToolsService,
@@ -306,19 +290,6 @@ export class DictionaryToolsService {
       CustomScreenComponentTypes.DropDownDepts,
       CustomScreenComponentTypes.Lookup,
     ].includes(type);
-  }
-
-  public applyFilter(
-    dependentComponentId: CustomComponent['id'],
-    filter: DictionaryFilters['filter'],
-  ): void {
-    this.filters = { [dependentComponentId]: filter };
-  }
-
-  public clearFilter(dependentComponentId: CustomComponent['id']): void {
-    if (this.filters[dependentComponentId]) {
-      this.filters = { [dependentComponentId]: null };
-    }
   }
 
   private getValueForFilter(
