@@ -105,4 +105,19 @@ describe('ConstructorLookupComponent', () => {
       text: 'some text',
     });
   });
+
+  it('should call lib-lookup clearInput()', () => {
+    const clearInputSpy = jest.spyOn(component.lookupComponent, 'clearInput');
+    component.clearInput();
+
+    expect(clearInputSpy).toBeCalledTimes(1);
+  });
+
+  it('should call lib-lookup setFocus()', () => {
+    const setFocusSpy = jest.spyOn(component.lookupComponent.searchBar, 'setFocus');
+    component.setFocus();
+
+    expect(setFocusSpy).toBeCalledTimes(1);
+  });
+
 });
