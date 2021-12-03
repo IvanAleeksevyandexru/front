@@ -9,6 +9,7 @@ import {
   ActionType,
   ComponentActionDto,
   DTOActionAction,
+  CachedAnswersDto,
 } from '@epgu/epgu-constructor-types';
 import { ConfigService, HttpCancelService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -20,6 +21,7 @@ import {
   VehicleOwnerInfo,
 } from '../../models/car-list.interface';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
 
 @Component({
   selector: 'epgu-constructor-car-list-container',
@@ -31,17 +33,13 @@ export class CarListContainerComponent implements OnDestroy {
   showNav$: Observable<boolean> = this.screenService.showNav$;
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   display$: Observable<DisplayDto> = this.screenService.display$;
-  component$: Observable<ComponentDto> = this.screenService.component$.pipe(
-    filter((component: ComponentDto) => !!component.value),
-    tap((component: ComponentDto) => {
-      const value = JSON.parse(component.value);
-
-      this.carFixedItems = this.getCarFixedItems(value);
-      this.initControl(this.carFixedItems?.[0]);
-
-      const attrs = <CarListComponentAttrsDto>component.attrs;
-      this.handleErrors(value, attrs);
-    }),
+  component$: Observable<ComponentDto> = combineLatest([
+    this.screenService.component$,
+    this.screenService.cachedAnswers$,
+  ]).pipe(
+    filter(([component]) => !!component.value),
+    tap(([component, cachedAnswers]) => this.init(component, cachedAnswers)),
+    map(([component]) => component),
   );
 
   showButtons$ = combineLatest([this.screenService.buttons$, this.screenService.component$]).pipe(
@@ -66,10 +64,35 @@ export class CarListContainerComponent implements OnDestroy {
     public currentAnswersService: CurrentAnswersService,
     public config: ConfigService,
     private httpCancelService: HttpCancelService,
+    private cachedAnswersService: CachedAnswersService,
   ) {}
 
   ngOnDestroy(): void {
     this.httpCancelService.cancelPendingRequests();
+  }
+
+  init(component: ComponentDto, cachedAnswers: CachedAnswersDto): void {
+    const value = JSON.parse(component.value);
+
+    this.carFixedItems = this.getCarFixedItems(value);
+
+    const initialItem = this.getInitialItem(component.id, cachedAnswers);
+    this.initControl(initialItem);
+
+    const attrs = <CarListComponentAttrsDto>component.attrs;
+    this.handleErrors(value, attrs);
+  }
+
+  getInitialItem(componentId: string, cachedAnswers: CachedAnswersDto): Partial<ListItem> {
+    const cachedValue = JSON.parse(
+      this.cachedAnswersService.getCachedValueById(cachedAnswers, componentId) || '{}',
+    );
+
+    if (cachedValue.vehicleInfo?.govRegNumber) {
+      return this.carFixedItems?.find((item) => item.id === cachedValue.vehicleInfo.govRegNumber);
+    }
+
+    return this.carFixedItems?.[0];
   }
 
   setState(carOriginalItem: VehicleOwnerInfo): void {
