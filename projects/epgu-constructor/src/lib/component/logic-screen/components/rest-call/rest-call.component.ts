@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { forkJoin, ObservableInput, of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError, concatMap, delay, map, takeUntil, tap } from 'rxjs/operators';
+
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { LogicComponents, NavigationPayload } from '@epgu/epgu-constructor-types';
-import { forkJoin, ObservableInput, of } from 'rxjs';
 import AbstractLogicComponent from '../abstract-logic/abstract-logic.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { LogicService } from '../../service/logic.service';
@@ -27,18 +28,22 @@ export default class RestCallComponent extends AbstractLogicComponent {
   }
 
   protected handleOnBeforeSubmitEvent(): void {
-    this.hookService.addHook(HookTypes.ON_BEFORE_SUBMIT, this.handleBeforeSubmitDataFetching());
+    this.hookService.addHook(HookTypes.ON_BEFORE_SUBMIT, this.handleDataFetching());
   }
 
-  protected handleBeforeSubmitDataFetching(): ObservableInput<NavigationPayload> {
+  protected handleOnBeforeRejectEvent(): void {
+    this.hookService.addHook(HookTypes.ON_BEFORE_REJECT, this.handleDataFetching());
+  }
+
+  protected handleDataFetching(): ObservableInput<NavigationPayload> {
     return of(null).pipe(
       concatMap(() => {
-        return this.handleOnInitEvent();
+        return this.handleFetchEvent();
       }),
     );
   }
 
-  protected handleOnInitEvent(): Observable<{}> {
+  protected handleFetchEvent(): Observable<{}> {
     const fetchData = [
       {
         id: this.componentDto.id,

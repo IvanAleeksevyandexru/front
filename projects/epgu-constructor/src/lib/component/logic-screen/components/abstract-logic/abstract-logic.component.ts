@@ -1,7 +1,12 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { LogicComponents } from '@epgu/epgu-constructor-types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { isOnBeforeSubmitComponent, isOnInitComponent } from '../helpers';
+
+import { LogicComponents } from '@epgu/epgu-constructor-types';
+import {
+  isOnInitComponent,
+  isOnBeforeSubmitComponent,
+  isOnBeforeRejectComponent,
+} from '../helpers';
 
 @Component({
   template: '',
@@ -12,18 +17,23 @@ export default abstract class AbstractLogicComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.componentDto) {
+      if (isOnInitComponent(this.componentDto)) {
+        this.handleFetchEvent().subscribe(() => {
+          this.hasLoaded.next(true);
+        });
+      }
       if (isOnBeforeSubmitComponent(this.componentDto)) {
         this.handleOnBeforeSubmitEvent();
       }
-      if (isOnInitComponent(this.componentDto)) {
-        this.handleOnInitEvent().subscribe(() => {
-          this.hasLoaded.next(true);
-        });
+      if (isOnBeforeRejectComponent(this.componentDto)) {
+        this.handleOnBeforeRejectEvent();
       }
     }
   }
 
+  protected abstract handleFetchEvent(): Observable<{}>;
+
   protected abstract handleOnBeforeSubmitEvent(): void;
 
-  protected abstract handleOnInitEvent(): Observable<{}>;
+  protected abstract handleOnBeforeRejectEvent(): void;
 }
