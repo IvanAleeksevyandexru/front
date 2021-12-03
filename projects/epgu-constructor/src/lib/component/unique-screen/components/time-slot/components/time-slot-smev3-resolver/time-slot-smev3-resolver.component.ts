@@ -57,6 +57,7 @@ export class TimeSlotSmev3ResolverComponent implements AfterViewInit {
     const componentFactory: ComponentFactory<TimeSlotComponentTypes> = this.componentFactoryResolver.resolveComponentFactory(
       component,
     );
+
     this.componentRef = this.componentContainer.createComponent(componentFactory);
   }
 

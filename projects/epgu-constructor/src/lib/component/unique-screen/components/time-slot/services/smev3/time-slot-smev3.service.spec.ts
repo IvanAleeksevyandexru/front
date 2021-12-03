@@ -475,9 +475,9 @@ const mockComponent = ({
   },
 } as unknown) as ComponentDto;
 
-const createMockSlot = (date: string) => {
+const createMockSlot = (date: string, id = 'e3758564-bf72-4bc3-be55-b6c4e3195427') => {
   return {
-    slotId: 'e3758564-bf72-4bc3-be55-b6c4e3195427',
+    slotId: id,
     areaId: 'Дом музыки',
     slotTime: new Date(date),
     timezone: 'T08:00',
@@ -667,32 +667,33 @@ describe('TimeSlotSmev3Service', () => {
     });
     it('should be added to place', () => {
       expect(
-        service.addBookedTimeSlotToList(createMockSlot('2021-03-20T10:00:00.000Z'), [
-          createMockSlot('2021-03-20T08:00:00.000Z'),
-          createMockSlot('2021-03-20T11:00:00.000Z'),
+        service.addBookedTimeSlotToList(createMockSlot('2021-03-20T10:00:00.000Z', '1'), [
+          createMockSlot('2021-03-20T08:00:00.000Z', '2'),
+          createMockSlot('2021-03-20T11:00:00.000Z', '3'),
         ]),
       ).toEqual([
-        createMockSlot('2021-03-20T08:00:00.000Z'),
-        createMockSlot('2021-03-20T10:00:00.000Z'),
-        createMockSlot('2021-03-20T11:00:00.000Z'),
+        createMockSlot('2021-03-20T08:00:00.000Z', '2'),
+        createMockSlot('2021-03-20T10:00:00.000Z', '1'),
+        createMockSlot('2021-03-20T11:00:00.000Z', '3'),
       ]);
     });
     it('should be added to end', () => {
       expect(
-        service.addBookedTimeSlotToList(createMockSlot('2021-03-20T13:00:00.000Z'), [
-          createMockSlot('2021-03-20T11:00:00.000Z'),
-          createMockSlot('2021-03-20T12:00:00.000Z'),
+        service.addBookedTimeSlotToList(createMockSlot('2021-03-20T13:00:00.000Z', '1'), [
+          createMockSlot('2021-03-20T11:00:00.000Z', '2'),
+          createMockSlot('2021-03-20T12:00:00.000Z', '3'),
         ]),
       ).toEqual([
-        createMockSlot('2021-03-20T11:00:00.000Z'),
-        createMockSlot('2021-03-20T12:00:00.000Z'),
-        createMockSlot('2021-03-20T13:00:00.000Z'),
+        createMockSlot('2021-03-20T11:00:00.000Z', '2'),
+        createMockSlot('2021-03-20T12:00:00.000Z', '3'),
+        createMockSlot('2021-03-20T13:00:00.000Z', '1'),
       ]);
     });
   });
 
   describe('book', () => {
     it('should be book', (done) => {
+      service.requestBookParams$$.next(null);
       const sub = service.book$.subscribe();
       const testCase = ({ test: true } as unknown) as SmevBookResponseInterface;
       jest.spyOn(apiService, 'book').mockReturnValue(of(testCase));

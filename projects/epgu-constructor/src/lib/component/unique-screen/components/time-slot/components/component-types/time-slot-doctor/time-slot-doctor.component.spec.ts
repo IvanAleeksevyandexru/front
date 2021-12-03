@@ -18,6 +18,7 @@ import { ScreenServiceStub } from '../../../../../../../screen/screen.service.st
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { doctorHandlers } from '../../../handlers/doctor-handlers';
 import { TimeSlotValueInterface } from '../../../typings';
+import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
 
 describe('TimeSlotDoctorComponent', () => {
   let component: TimeSlotDoctorComponent;
@@ -25,7 +26,11 @@ describe('TimeSlotDoctorComponent', () => {
   let errorService: TimeSlotErrorService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TimeSlotDoctorComponent, MockComponent(TimeSlotSmev3Component)],
+      declarations: [
+        TimeSlotDoctorComponent,
+        MockComponent(TimeSlotSmev3Component),
+        MockComponent(TimeSlotErrorComponent),
+      ],
       imports: [],
       providers: [
         { provide: TimeSlotSmev3Service, useClass: TimeSlotSmev3ServiceStub },

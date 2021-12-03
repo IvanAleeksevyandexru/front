@@ -1,5 +1,7 @@
-<ng-container *ngIf="items$ | async as items"
-  ><div *ngIf="items.length > 0" class="dropdown-list">
-    <lib-dropdown [items]="items" [(ngModel)]="current"></lib-dropdown>
-  </div>
+<ng-container *ngIf="isVisibleDays$ | async">
+  <ng-container *ngIf="items$ | async as items"
+    ><div *ngIf="items.length > 0" class="dropdown-list">
+      <lib-dropdown [items]="items" [(ngModel)]="current"></lib-dropdown>
+    </div>
+  </ng-container>
 </ng-container>

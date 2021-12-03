@@ -13,6 +13,7 @@ import { DictionaryResponse } from '../../../../../../../shared/services/diction
 import { DictionaryApiService } from '../../../../../../../shared/services/dictionary/dictionary-api.service';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
 import { DepartmentInterface } from '../../../typings';
+import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
 
 @Component({
   selector: 'epgu-constructor-time-slot-area',
@@ -27,6 +28,8 @@ export class TimeSlotAreaComponent {
   @Input() set attributes(attributes: DictionarySubFilter[]) {
     this.attributes$$.next(attributes);
   }
+
+  isVisibleDays$ = this.calendar.isVisibleDays$;
 
   department$$ = new BehaviorSubject<DepartmentInterface>(null);
   attributes$$ = new BehaviorSubject<DictionarySubFilter[]>([]);
@@ -47,7 +50,11 @@ export class TimeSlotAreaComponent {
     this.changedAction(item);
   }
 
-  constructor(private dictionaryApi: DictionaryApiService, private data: TimeSlotSmev3Service) {}
+  constructor(
+    private calendar: TimeSlotCalendarService,
+    private dictionaryApi: DictionaryApiService,
+    private data: TimeSlotSmev3Service,
+  ) {}
 
   presetValue(items: ListItem[]): void {
     this.current = items.length > 0 ? items[0] : null;

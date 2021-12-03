@@ -124,7 +124,7 @@ export class TimeSlotErrorService {
   }
 
   setError(type: TimeSlotRequestType, message: string, code: number = -1): void {
-    if (code === 101) {
+    if (code === 101 && type === TimeSlotRequestType.list) {
       message = `${code}: ${this.constants.error101ServiceUnavailable}`;
     }
     this.error$$.next({ type, message, code });

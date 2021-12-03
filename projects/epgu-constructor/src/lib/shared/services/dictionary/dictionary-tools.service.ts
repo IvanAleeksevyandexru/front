@@ -303,7 +303,6 @@ export class DictionaryToolsService {
       [key in DictionaryValueTypes]: (CalcFilterFuncArgs) => ValueForFilter;
     } = {
       [DictionaryValueTypes.value]: this.processTypeValue.bind(this),
-      [DictionaryValueTypes.queryparams]: this.processTypeValue.bind(this),
       [DictionaryValueTypes.preset]: this.processTypePreset.bind(this),
       [DictionaryValueTypes.serviceInfo]: this.processTypePreset.bind(this),
       [DictionaryValueTypes.root]: this.processTypeRoot.bind(this),

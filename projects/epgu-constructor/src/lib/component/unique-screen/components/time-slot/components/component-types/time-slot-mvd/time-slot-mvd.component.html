@@ -2,4 +2,8 @@
   [slotsForCancelFilterProvider]="cancelFilterProvider"
   [requestListParams]="requestListParams$ | async"
   [requestBookParams]="requestBookParams$ | async"
-></epgu-constructor-time-slot-smev3>
+>
+  <ng-container after-content>
+    <epgu-constructor-time-slot-error></epgu-constructor-time-slot-error>
+  </ng-container>
+</epgu-constructor-time-slot-smev3>

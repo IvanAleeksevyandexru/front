@@ -18,6 +18,7 @@ import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 import { TimeSlotValueInterface } from '../../../typings';
 import { doctorHandlers } from '../../../handlers/doctor-handlers';
+import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
 
 describe('TimeSlotVaccinationComponent', () => {
   let component: TimeSlotVaccinationComponent;
@@ -26,7 +27,11 @@ describe('TimeSlotVaccinationComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TimeSlotVaccinationComponent, MockComponent(TimeSlotSmev3Component)],
+      declarations: [
+        TimeSlotVaccinationComponent,
+        MockComponent(TimeSlotErrorComponent),
+        MockComponent(TimeSlotSmev3Component),
+      ],
       imports: [],
       providers: [
         { provide: TimeSlotSmev3Service, useClass: TimeSlotSmev3ServiceStub },

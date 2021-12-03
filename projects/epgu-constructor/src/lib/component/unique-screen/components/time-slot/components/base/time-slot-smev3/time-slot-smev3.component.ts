@@ -10,7 +10,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   catchError,
-  concatMapTo,
+  concatMap,
   distinctUntilChanged,
   filter,
   map,
@@ -20,7 +20,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest, EMPTY, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import { BaseTimeSlotComponent } from '../base-time-slot.component';
 
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
@@ -108,15 +108,15 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
   listSub = combineLatest([
     this.day$,
     this.data.store$.pipe(
+      tap(() => this.state.setSlot(null)),
       catchError(() => {
-        return of([]);
+        return of({});
       }),
     ),
     this.data.bookedSlot$,
     this.slotListFilter$$,
   ])
     .pipe(
-      tap(() => this.state.setSlot(null)),
       map(
         ([date, slotMap, bookedSlot, filterProvider]: [
           Date,
@@ -194,6 +194,7 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
       ),
     ),
   );
+  isVisibleDays$ = this.calendar.isVisibleDays$;
 
   constructor(
     public state: TimeSlotStateService,
@@ -268,14 +269,17 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
     bookingErrorHandling: IBookingErrorHandling[],
   ): Observable<SmevBookResponseInterface> {
     return this.data.cancel(slotsForCancel).pipe(
-      tap(() => {
-        if (this.error.hasError()) {
-          this.showCustomError(this.error.getError(), bookingErrorHandling);
-        }
-      }),
       tap(() => this.data.bookedSlot$$.next(null)),
       tap(() => this.data.bookId$$.next(null)),
-      concatMapTo(this.data.book(currentSlot)),
+      concatMap(() =>
+        this.data.book(currentSlot).pipe(
+          tap(() => {
+            if (this.error.hasError()) {
+              this.showCustomError(this.error.getError(), bookingErrorHandling);
+            }
+          }),
+        ),
+      ),
       tap(() =>
         this.state.setMonth(this.datesTools.format(currentSlot.slotTime, DATE_STRING_YEAR_MONTH)),
       ),
@@ -285,11 +289,11 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
           department,
         } as TimeSlotsAnswerInterface),
       ),
+      tap(() => this.finish(id)),
       catchError(() => {
         this.showCustomError(this.error.getError(), bookingErrorHandling);
-        return EMPTY;
+        return of(null);
       }),
-      tap(() => this.finish(id)),
     );
   }
 
@@ -312,13 +316,13 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
           switchMap((result) =>
             result === 'y'
               ? this.booking(id, department, currentSlot, slotsForCancel, bookingErrorHandling)
-              : EMPTY,
+              : of(null),
           ),
         );
     }
     this.setResult(cachedAnswer);
     this.finish(id);
-    return EMPTY;
+    return of(null);
   }
 
   findJsonParamsForErrorHandling(
@@ -338,6 +342,12 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
   }
 
   ngOnInit(): void {
+    if (this.data.requestListParams$$.getValue() === undefined) {
+      this.data.requestListParams$$.next(null);
+    }
+    if (this.data.requestBookParams$$.getValue() === undefined) {
+      this.data.requestBookParams$$.next(null);
+    }
     this.error.resetHandlers();
     this.error.addHandlers(baseHandlers);
     super.ngOnInit();
@@ -356,7 +366,7 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
 
     this.smev3.slotsNotFoundTemplate$
       .pipe(
-        tap((value) => this.state.setAdditionalDisplayingButton(!!value)),
+        tap((value) => this.state.setAdditionalDisplayingButton(!value?.button)),
         tap((template) =>
           this.error.setAllTemplates(
             template
@@ -419,6 +429,6 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
   }
 
   isCachedValueChanged(answer: TimeSlotsAnswerInterface, slot: Slot): boolean {
-    return answer?.timeSlot.slotId !== slot.slotId;
+    return answer?.timeSlot.slotId !== slot?.slotId;
   }
 }

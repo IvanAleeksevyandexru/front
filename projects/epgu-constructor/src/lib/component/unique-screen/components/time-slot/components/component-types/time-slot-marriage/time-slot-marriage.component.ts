@@ -9,6 +9,7 @@ import {
   TimeSlotRequest,
   DepartmentInterface,
   TimeSlotValueInterface,
+  TimeSlotBookRequest,
 } from '../../../typings';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
@@ -39,6 +40,11 @@ export class TimeSlotMarriageComponent {
       this.getPartialListRequestParams(value, department, slotsPeriod, solemn),
     ),
   );
+
+  requestBookParams$: Observable<Partial<TimeSlotBookRequest>> = combineLatest([
+    this.smev3.department$,
+    this.smev3.value$,
+  ]).pipe(map(([department, value]) => this.getPartialBookRequestParams(department, value)));
 
   attributes$ = combineLatest([this.solemn$]).pipe(
     map(([solemn]) => this.createAreaAttributes(solemn)),
@@ -76,11 +82,20 @@ export class TimeSlotMarriageComponent {
     solemn: boolean,
   ): Partial<TimeSlotRequest> {
     return {
-      organizationId: value.organizationId || (department.attributeValues.CODE as string),
+      organizationId: [value.organizationId || (department.attributeValues.CODE as string)],
       attributes: [
         { name: 'SolemnRegistration', value: solemn },
         { name: 'SlotsPeriod', value: slotsPeriod },
       ],
+    };
+  }
+
+  getPartialBookRequestParams(
+    department: DepartmentInterface,
+    value: TimeSlotValueInterface,
+  ): Partial<TimeSlotBookRequest> {
+    return {
+      organizationId: value.organizationId || (department.attributeValues.CODE as string),
     };
   }
 }

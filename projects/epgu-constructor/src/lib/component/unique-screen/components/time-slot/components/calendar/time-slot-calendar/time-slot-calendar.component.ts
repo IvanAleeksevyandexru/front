@@ -39,6 +39,7 @@ export class TimeSlotCalendarComponent {
   lockProvider$$ = new BehaviorSubject<LockProvider>(null);
   day$$ = new BehaviorSubject<Date>(null);
   month$$ = new BehaviorSubject<string>(null);
+  isVisibleDays$ = this.calendar.isVisibleDays$;
 
   constructor(private screenService: ScreenService, private calendar: TimeSlotCalendarService) {}
 
