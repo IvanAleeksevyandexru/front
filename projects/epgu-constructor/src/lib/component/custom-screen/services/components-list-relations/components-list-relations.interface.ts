@@ -1,7 +1,12 @@
-import { DictionaryFilters, RestAttrsDto } from '@epgu/epgu-constructor-types';
+import { CustomComponentRef, KeyValueMap, RestAttrsDto } from '@epgu/epgu-constructor-types';
 
-export interface ComponentDictionaryFilters {
-  [key: string]: DictionaryFilters['filter'] | null;
+export interface UpdateFilterEvent {
+  reference: CustomComponentRef;
+  value: KeyValueMap;
+}
+
+export interface UpdateFiltersEvents {
+  [key: string]: UpdateFilterEvent | null;
 }
 
 export interface ComponentValueChangeDto {
