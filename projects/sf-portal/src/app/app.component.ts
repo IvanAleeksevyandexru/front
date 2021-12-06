@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { MainPageService } from '@epgu/ui/services/main-page';
 import { IMainData } from '@epgu/ui/models/main-data';
 import { CatalogTabsService } from '@epgu/ui/services/catalog-tabs';
 import { CountersService } from '@epgu/ui/services/counters';
 import { PsoService } from '@epgu/ui/services/pso';
+import { DOCUMENT, isPlatformServer } from '@angular/common';
+import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
+import { MetaTagGeneratorService } from './services/meta-tag-generator/meta-tag-generator.service';
 
 @Component({
   selector: '[app-root]',
@@ -14,6 +17,7 @@ import { PsoService } from '@epgu/ui/services/pso';
 })
 export class AppComponent implements OnInit {
   public loaded = false;
+  public isServer = isPlatformServer(this.platformId);
 
   constructor(
     public router: Router,
@@ -22,17 +26,30 @@ export class AppComponent implements OnInit {
     private catalogTabsService: CatalogTabsService,
     private countersService: CountersService,
     private psoService: PsoService,
+    private metaTagGeneratorService: MetaTagGeneratorService,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
-  private static documentScrollTop(): void {
-    window.scrollTo(0, 0);
-  }
+  public ngOnInit() {
+    if (this.isServer) {
+      this.router.events.subscribe((route) => {
+        if (route instanceof RoutesRecognized) {
+          const context = route.url.split('?')[0].substring(1); // чтобы получить path вида '600109/1/form'
+          if (context) {
+            this.fetchAndAddMetaByContext(context);
+          }
+        }
+      });
 
-  ngOnInit() {
+      return;
+    }
+
     this.onRouteChange();
     this.getMainBlocksData();
     this.initCounters();
-    this.fadeOutEffect(document.getElementById('start-app-loader') as HTMLElement);
+    this.fadeOutEffect(this.document.getElementById('start-app-loader') as HTMLElement);
     this.setWindowParams();
   }
 
@@ -50,6 +67,12 @@ export class AppComponent implements OnInit {
         this.loaded = true;
       },
     );
+  }
+
+  private async fetchAndAddMetaByContext(context: string): Promise<void> {
+    const data = await this.metaTagGeneratorService.loadData();
+    const openGraphInfo = this.metaTagGeneratorService.getItemByContext(data, context);
+    this.metaTagGeneratorService.addInfoToMeta(openGraphInfo);
   }
 
   private initCounters(): void {
@@ -75,10 +98,16 @@ export class AppComponent implements OnInit {
     }, 50);
   }
 
+  private documentScrollTop(): void {
+    if ('scrollTo' in this.window) {
+      this.window.scrollTo(0, 0);
+    }
+  }
+
   private onRouteChange(): void {
     this.router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
-        AppComponent.documentScrollTop();
+        this.documentScrollTop();
       }
     });
   }

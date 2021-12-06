@@ -22,7 +22,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/epgu-form-frontend",
+            "outputPath": "dist/epgu-form-frontend/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -467,6 +467,70 @@
         },
         "test": {
           "builder": "@angular-builders/jest:run"
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/sf-portal/server",
+            "main": "projects/sf-portal/server.ts",
+            "tsConfig": "projects/sf-portal/tsconfig.server.json"
+          },
+          "configurations": {
+            "fast": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
+            },
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "projects/sf-portal/src/environments/environment.ts",
+                  "with": "projects/sf-portal/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "sourceMap": false,
+              "extractLicenses": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "sf-portal:build:development",
+              "serverTarget": "sf-portal:server:development"
+            },
+            "production": {
+              "browserTarget": "sf-portal:build:production",
+              "serverTarget": "sf-portal:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": ["/"]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "sf-portal:build:production",
+              "serverTarget": "sf-portal:server:production"
+            },
+            "development": {
+              "browserTarget": "sf-portal:build:development",
+              "serverTarget": "sf-portal:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

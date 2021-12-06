@@ -34,7 +34,6 @@
       "date-fns": "date-fns",
       "date-fns/locale": "locale",
       "lodash": "lodash",
-      "hammerjs": "hammerjs",
       "@nicky-lenaers/ngx-scroll-to": "@nicky-lenaers/ngx-scroll-to"
     },
     "styleIncludePaths": ["."]
