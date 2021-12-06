@@ -29,7 +29,7 @@ import { UniqueScreenService } from '../../unique-screen.service';
   selector: 'epgu-constructor-file-upload-screen',
   templateUrl: './file-upload-screen.component.html',
   styleUrls: ['./file-upload-screen.component.scss'],
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, UniqueScreenService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadScreenComponent implements OnInit {
