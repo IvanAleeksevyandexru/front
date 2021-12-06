@@ -6,7 +6,7 @@ for (let env in envObj) {
     replace({
       regex: 'https://gu-st.ru/sf-portal-st/',
       replacement: envObj[env],
-      paths: [`../dist/sf-portal-st/${env}`],
+      paths: [`./dist/sf-portal-st/${env}`],
       recursive: true,
       silent: true,
     });
@@ -14,21 +14,21 @@ for (let env in envObj) {
   replace({
     regex: '/lib-assets/fonts',
     replacement: `${envObj[env]}lib-assets/fonts`,
-    paths: [`../dist/sf-portal-st/${env}`],
+    paths: [`./dist/sf-portal-st/${env}`],
     recursive: true,
     silent: true,
   });
   replace({
     regex: '/assets/fonts',
     replacement: `${envObj[env]}assets/fonts`,
-    paths: [`../dist/sf-portal-st/${env}`],
+    paths: [`./dist/sf-portal-st/${env}`],
     recursive: true,
     silent: true,
   });
   replace({
     regex: '/assets/svg',
     replacement: `${envObj[env]}assets/svg`,
-    paths: [`../dist/sf-portal-st/${env}/index.html`],
+    paths: [`./dist/sf-portal-st/${env}/index.html`],
     recursive: true,
     silent: true,
   });
