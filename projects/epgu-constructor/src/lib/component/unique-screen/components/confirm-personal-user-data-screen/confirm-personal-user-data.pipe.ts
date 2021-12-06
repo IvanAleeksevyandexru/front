@@ -11,7 +11,7 @@ export class ConfirmPersonalUserDataPipe implements PipeTransform {
   public transform(componentDto: ComponentDto): ComponentDto {
     if (!componentDto?.attrs?.fieldGroups) return componentDto;
 
-    const { fieldGroups } = componentDto.attrs;
+    const { fieldGroups, keepVariables = true } = componentDto.attrs;
     const { value, presetValue } = componentDto;
     const parsedValue = (presetValue
       ? JSON.parse(presetValue)
@@ -20,6 +20,7 @@ export class ConfirmPersonalUserDataPipe implements PipeTransform {
       fieldGroups,
       parsedValue.storedValues,
       ConfirmPersonalUserDataPipe.EMPTY_VALUE,
+      keepVariables
     ) as FieldGroup[]);
 
     return { ...componentDto, presetValue: JSON.stringify({ ...parsedValue, states }) };
