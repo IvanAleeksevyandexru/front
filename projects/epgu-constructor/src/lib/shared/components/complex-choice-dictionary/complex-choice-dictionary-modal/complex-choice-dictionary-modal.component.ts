@@ -93,8 +93,13 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
           originalItem: item.originalItem,
           text: item.text,
         }));
-        this.items = [...this.items, ...listItems];
-        this.initializeForm(this.items);
+        this.items = [...new Map([...this.items, ...listItems].map((v) => [v.id, v])).values()];
+        listItems.forEach((item) => {
+          const control = new FormControl(
+            this.selectedItems.some((selectItem) => selectItem.id === item.id),
+          );
+          (this.form.get(this.formField.checkboxGroup) as FormGroup).addControl(item.id, control);
+        });
       });
   }
 
