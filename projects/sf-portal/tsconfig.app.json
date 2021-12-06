@@ -15,8 +15,9 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@angular/*": ["node_modules/@angular/*"],
+      "@epgu/epgu-constructor": ["node_modules/@epgu/epgu-constructor"],
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
-      "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"]
+      "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],

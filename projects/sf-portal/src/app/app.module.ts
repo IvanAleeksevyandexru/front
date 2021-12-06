@@ -14,7 +14,7 @@ import { FocusManager } from '@epgu/ui/services/focus';
 import { BaseModule } from '@epgu/ui/base';
 import { HeaderModule } from '@epgu/ui/components/header';
 import { SmallFooterModule } from '@epgu/ui/components/small-footer';
-
+import { CookieModule } from 'ngx-cookie';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from '../environments/environment';
@@ -31,7 +31,7 @@ export function initializeApp(appConfig: AppConfig) {
 }
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient, `${AppConfig.settings.staticDomainLibAssetsPath}i18n/`,
+  return new TranslateHttpLoader(httpClient, `${AppConfig.settings?.staticDomainLibAssetsPath}i18n/`,
     `.json?v=${environment.appVersion}`);
 }
 
@@ -51,7 +51,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       }
     }),
     CommonModule,
-    BrowserModule,
+    CookieModule.forRoot(),
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
     AppRoutingModule,
     BaseModule,
