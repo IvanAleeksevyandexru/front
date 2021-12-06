@@ -21,7 +21,7 @@ import { PrevButtonNavigationService } from '../core/services/prev-button-naviga
 import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { NotifierModule } from '@epgu/ui/components/notifier';
-import 'hammerjs';
+import '@squadette/hammerjs';
 
 registerLocaleData(localeRu);
 
