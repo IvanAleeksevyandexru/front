@@ -56,4 +56,10 @@ export class ChildrenClubsFilterPanelComponent implements OnInit {
       groupFiltersMode: mode,
     });
   }
+
+  public expand(): void {
+    this.programListService.isFilterPanelExpanded$.next(
+      !this.programListService.isFilterPanelExpanded$.getValue(),
+    );
+  }
 }
