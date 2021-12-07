@@ -39,6 +39,7 @@ describe('KindergartenContentComponent', () => {
     component = fixture.componentInstance;
     component.selectObject = (item) => (item.isSelected = !item.isSelected);
     component.mapObject = mockKindergartenMapObject;
+    component.objectClick = () => null;
     fixture.detectChanges();
   });
 
