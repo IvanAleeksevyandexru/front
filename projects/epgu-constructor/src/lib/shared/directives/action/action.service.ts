@@ -79,6 +79,7 @@ export class ActionService {
         this.actionToolsService.openDropdownListModal(action, componentId);
         break;
       case ActionType.download:
+      case ActionType.downloadSpAdapterPdf:
         this.actionToolsService.downloadAction(action);
         break;
       case ActionType.quizToOrder:
@@ -122,9 +123,6 @@ export class ActionService {
         break;
       case ActionType.copyToClipboard:
         this.actionToolsService.copyToClipboard(action);
-        break;
-      case ActionType.downloadSpAdapterPdf:
-        this.actionToolsService.downloadRawPdfAction(action);
         break;
     }
   }

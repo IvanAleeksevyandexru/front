@@ -151,7 +151,7 @@ describe('ActionService', () => {
   });
 
   it('should call switchAction download', () => {
-    const spy = jest.spyOn(downloadService, 'downloadFile');
+    const spy = jest.spyOn(downloadService, 'saveRawFile');
     actionService.switchAction(downloadAction, null);
     expect(spy).toBeCalledTimes(1);
   });
