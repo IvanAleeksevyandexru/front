@@ -43,7 +43,7 @@ export class ChildrenClubsFilterPanelComponent implements OnInit {
     }
     this.searchControl.valueChanges
       .pipe(
-        filter((value) => value.length > 3 || !value.length),
+        filter((value) => value.length >= 3 || !value.length),
         distinctUntilChanged(),
         debounceTime(2000),
       )
