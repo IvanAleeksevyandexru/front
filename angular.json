@@ -122,9 +122,6 @@
             },
             "production": {
               "browserTarget": "epgu-form-frontend:build:production"
-            },
-            "staging": {
-              "browserTarget": "epgu-form-frontend:build:staging"
             }
           }
         },
