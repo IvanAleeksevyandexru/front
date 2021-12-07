@@ -109,6 +109,7 @@ export interface ComponentAttrsDto {
   isMonthsRangeVisible?: boolean;
   isNeedToCheckGIBDDPayment?: boolean;
   isSelectButtonHidden?: boolean;
+  keepVariables?: boolean;
   label?: string;
   labelHint?: string;
   lastName?: string;
