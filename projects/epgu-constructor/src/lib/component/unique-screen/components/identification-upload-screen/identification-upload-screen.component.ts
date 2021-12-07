@@ -35,7 +35,7 @@ import { UniqueScreenService } from '../../unique-screen.service';
   selector: 'epgu-constructor-identification-upload-screen',
   templateUrl: './identification-upload-screen.component.html',
   styleUrls: ['./identification-upload-screen.component.scss'],
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, UniqueScreenService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IdentificationUploadScreenComponent implements OnInit {

@@ -6,16 +6,23 @@
   },
   "authProviderLoginUrl": "//pgu-dev-fed.test.gosuslugi.ru/auth-provider/oauth/v1/login?rUrl=",
   "authProviderLogoutUrl": "//pgu-dev-fed.test.gosuslugi.ru/auth-provider/oauth/v1/logout?rUrl=",
-  "authProviderUrl" : "//pgu-dev-fed.test.gosuslugi.ru/auth-provider/login?rUrl=",
+  "authProviderUrl": "//pgu-dev-fed.test.gosuslugi.ru/auth-provider/login?rUrl=",
   "baseUrl": "//job.test.gosuslugi.ru/",
   "betaUrl": "//pgu-dev-fed.test.gosuslugi.ru/",
+  "catalogApiService": "//pgu-dev-fed.test.gosuslugi.ru/api/catalog-service/v1/",
   "catalogApiUrl": "//pgu-dev-fed.test.gosuslugi.ru/api/catalog/v3/",
+  "cmsUrl": "//pgu-dev-fed.test.gosuslugi.ru/api/cms/v1/",
   "cookieDomain": ".test.gosuslugi.ru",
   "ipshApi": "//pgu-dev-fed.test.gosuslugi.ru/api/pay/v1/",
+  "isbotExtend": [
+    "Mozilla/5.0 (compatible; vkShare; +http://vk.com/dev/Share)",
+    "PostmanRuntime/7.28.4"
+  ],
   "lkApiUrl": "//pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/",
   "mainBlocksData": "//pgu-dev-fed.test.gosuslugi.ru/api/mainpage/v4",
   "newSfApiUrl": "https://dev-l11.pgu2-pub.test.gosuslugi.ru/api",
   "nsiApiUrl": "//pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/",
+  "openGraphApiUrl": "http://pgu-dev-fednlb.test.gosuslugi.ru/api/cms/v1/opengraph/PORTAL",
   "oplataUrl": "https://oplata.gosuslugi.ru",
   "paymentUrl": "//payment.gosuslugi.ru",
   "platform": "EPGU_V4",
@@ -33,5 +40,8 @@
   "timingApiUrl": "//pgu-dev-fed.test.gosuslugi.ru/health",
   "urlLk": "http://vbeta.test.gosuslugi.ru:8080/",
   "viewType": "PORTAL",
-  "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3"
+  "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3",
+  "psoOnlyRobomaxIco": true,
+  "showNewDesignPsoHel": true,
+  "excludePsoFromMain": false
 }

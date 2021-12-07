@@ -11,8 +11,9 @@ import AbstractLogicComponent from '../abstract-logic/abstract-logic.component';
 })
 export default class ValueCalculatorComponent extends AbstractLogicComponent {
   protected handleOnBeforeSubmitEvent(): void {}
+  protected handleOnBeforeRejectEvent(): void {}
 
-  protected handleOnInitEvent(): Observable<{}> {
+  protected handleFetchEvent(): Observable<{}> {
     return of(null);
   }
 }

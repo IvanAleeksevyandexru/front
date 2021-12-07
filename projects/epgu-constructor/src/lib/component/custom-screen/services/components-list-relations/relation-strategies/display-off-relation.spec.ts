@@ -190,4 +190,72 @@ describe('DisplayOffRelation', () => {
 
     expect(shownElements['rp1_3'].isShown).toEqual(false);
   });
+
+  it('should not be broken if one of the elements is not on form, but go from user answers', () => {
+    jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
+    const fb = new FormBuilder();
+    const form1 = fb.group({
+      ...createComponentMock(),
+      value: false,
+      id: 'rp1_1',
+    });
+    const form2 = fb.group({
+      ...createComponentMock(),
+      value: false,
+      id: 'rp1_2',
+    });
+    const form3 = fb.group({ ...createComponentMock(),
+      id: 'rp1_3', });
+    const mockForm = new FormArray([form1, form2, form3]);
+
+    const shownElements: CustomListStatusElements = {
+      rp1_1: {
+        isShown: true,
+        relation: CustomComponentRefRelation.displayOff,
+      },
+      rp1_2: {
+        isShown: true,
+        relation: CustomComponentRefRelation.displayOff,
+      },
+      rp1_3: {
+        isShown: true,
+        relation: CustomComponentRefRelation.displayOff,
+      }
+    };
+    const dependentComponent: CustomComponent = {
+      attrs: {
+        ref: [
+          {
+            relatedRel: 'rel_from_answers',
+            val: true,
+            relation: CustomComponentRefRelation.displayOff,
+          },
+          {
+            relatedRel: 'rp1_1',
+            val: true,
+            relation: CustomComponentRefRelation.displayOff,
+          }
+        ]
+      },
+      id: 'rp1_3',
+      type: CustomScreenComponentTypes.LabelSection
+    };
+    const reference: CustomComponentRef = {
+      relatedRel: 'rel_from_answers',
+      relation: CustomComponentRefRelation.displayOff,
+      val: true,
+    };
+
+    expect(shownElements['rp1_3'].isShown).toEqual(true);
+
+    relation.handleRelation(
+      shownElements,
+      dependentComponent,
+      reference,
+      {},
+      mockForm,
+    );
+
+    expect(shownElements['rp1_3'].isShown).toEqual(false);
+  });
 });

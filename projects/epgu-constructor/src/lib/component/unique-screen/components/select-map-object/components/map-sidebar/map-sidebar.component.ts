@@ -35,7 +35,7 @@ export class MapSidebarComponent implements OnInit {
   @Input() previouslyChoosenItem: DictionaryItem;
   @Output() selectObjectEvent = new EventEmitter<YMapItem<DictionaryItem>>();
 
-  public scrollConfig = { suppressScrollX: false, wheelPropagation: false };
+  public scrollConfig = { suppressScrollX: false, wheelPropagation: false, minScrollbarLength: 32 };
   public searchPanelType: string;
   public balloonContentType: string;
   public balloonDictionaryItems: DictionaryItem[] = [];

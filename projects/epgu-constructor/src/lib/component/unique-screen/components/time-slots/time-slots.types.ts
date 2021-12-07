@@ -121,7 +121,6 @@ export interface TimeSlotReq {
   serviceCode?: string;
 }
 
-// TODO разнести на brak/mvd etc
 export interface BookTimeSlotReq {
   preliminaryReservation?: string;
   address?: string;
@@ -130,7 +129,7 @@ export interface BookTimeSlotReq {
   serviceCode?: string;
   subject?: string;
   params?: { name: string; value: string | number }[];
-  eserviceId?: string; // TODO eserviceId?????
+  eserviceId?: string;
   bookId?: string;
   organizationId?: string[] | string;
   calendarName?: string;

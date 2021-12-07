@@ -13,7 +13,8 @@ import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-stat
 import { of } from 'rxjs';
 import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { DepartmentInterface, TimeSlotValueInterface } from '../../../typings';
-import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
+
+import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
 
 describe('TimeSlotMarriageComponent', () => {
   let component: TimeSlotMarriageComponent;
@@ -24,6 +25,7 @@ describe('TimeSlotMarriageComponent', () => {
       declarations: [
         TimeSlotMarriageComponent,
         MockComponent(TimeSlotSmev3Component),
+        MockComponent(TimeSlotErrorComponent),
         MockComponent(TimeSlotAreaComponent),
       ],
       imports: [],
@@ -75,7 +77,7 @@ describe('TimeSlotMarriageComponent', () => {
           { name: 'SolemnRegistration', value: true },
           { name: 'SlotsPeriod', value: '2012-12' },
         ],
-        organizationId: 'test',
+        organizationId: ['test'],
       });
     });
   });

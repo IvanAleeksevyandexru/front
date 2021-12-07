@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { delay, filter, map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
+import { delay, filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
 import {
   ComponentAttrsDto,
   DisclaimerDto,
@@ -58,6 +58,12 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   cacheRepeatableFieldsAnswersLocally: boolean;
   disclaimer: DisclaimerDto;
 
+  isRecording$$ = new BehaviorSubject<boolean>(true);
+
+  get isRecording(): boolean {
+    return this.isRecording$$.getValue();
+  }
+
   /**
    * Словарь для хранения массива компонентов
    */
@@ -70,6 +76,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   init$: Observable<DisplayDto> = this.screenService.display$.pipe(
     takeUntil(this.ngUnsubscribe$),
     filter((data) => data.type === ScreenTypes.REPEATABLE || data.type === ScreenTypes.UNIQUE), // TODO: убрать UNIQUE при переезде на REPEATABLE
+    tap(() => this.startRecording()),
     tap((data: DisplayDto) => {
       this.propData = data;
       this.initVariable();
@@ -117,6 +124,14 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     private uniquenessErrorsService: UniquenessErrorsService,
   ) {}
 
+  startRecording(): void {
+    this.isRecording$$.next(true);
+  }
+
+  stopRecording(): void {
+    this.isRecording$$.next(false);
+  }
+
   ngOnInit(): void {
     this.init$.subscribe();
     this.uniquenessErrorsService.init();
@@ -126,12 +141,12 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
       .subscribe(() => this.createScreen(this.propData.components[0].attrs, true, true));
   }
 
-  // TODO решение в рамках https://jira.egovdev.ru/browse/EPGUCORE-57741
-  // временный фикс
-  // нужно переделать работу сохранения в localStorage для циклических компонентов т.k нет обнуления при выходе из цикла
   ngAfterViewInit(): void {
-    combineLatest([this.cmpList.changes.pipe(startWith('')), this.navigationService.nextStep$])
-      .pipe(takeUntil(this.ngUnsubscribe$))
+    this.navigationService.nextStep$
+      .pipe(
+        tap(() => this.stopRecording()),
+        takeUntil(this.ngUnsubscribe$),
+      )
       .subscribe(() => {
         this.cachedAnswersService.removeValueFromLocalStorage(this.parentComponentId);
       });
@@ -195,7 +210,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   saveState(state: Record<string, string>[]): void {
     this.state$.next(state);
     this.currentAnswersService.state = JSON.stringify(state);
-    if (this.cacheRepeatableFieldsAnswersLocally) {
+    if (this.cacheRepeatableFieldsAnswersLocally && this.isRecording) {
       this.cachedAnswersService.setValueToLocalStorage(this.parentComponentId, state);
     }
   }

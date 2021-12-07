@@ -37,6 +37,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import LookupInputModelAttrs from './LookupInputModelAttrs';
 import LookupInputModel from './LookupInputModel';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -83,6 +84,7 @@ describe('LookupInputComponent', () => {
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
         MockProvider(JsonHelperService),
+        MockProvider(ComponentsListToolsService),
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         MockProvider(SuggestHandlerService),
         MockProvider(EventBusService),

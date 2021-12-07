@@ -3,7 +3,6 @@ import { DeviceDetectorService } from './device-detector.service';
 import { LoadServiceStub } from '../config/load-service-stub';
 import { System } from './device-detector.types';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
-import { CookieService } from '@epgu/ui/services/cookie';
 import { LoadService } from '@epgu/ui/services/load';
 import { WINDOW } from '../../providers/window.provider';
 
@@ -12,7 +11,6 @@ describe('DeviceDetectorService', () => {
   let injectableWindow: Window;
   let smuEventsService: SmuEventsService;
   let userAgent: jest.SpyInstance;
-  let cookieService: CookieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,8 +18,6 @@ describe('DeviceDetectorService', () => {
         DeviceDetectorService,
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: WINDOW, useValue: { navigator: {}}},
-        CookieService,
-        CookieService,
         SmuEventsService,
       ],
     }).compileComponents();
@@ -31,7 +27,6 @@ describe('DeviceDetectorService', () => {
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     injectableWindow = TestBed.inject(WINDOW) as Window;
     smuEventsService = TestBed.inject(SmuEventsService);
-    cookieService = TestBed.inject(CookieService);
     userAgent = jest.spyOn(window.navigator, 'userAgent', 'get');
   });
 
@@ -63,6 +58,11 @@ describe('DeviceDetectorService', () => {
     smuEventsService.smuInit = true;
     deviceDetectorService.initState();
     expect(deviceDetectorService.isWebView).toBe(true);
+  });
+
+  it('is IOS', () => {
+    userAgent.mockReturnValue('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
+    expect(deviceDetectorService.isIOS()).toBe(true);
   });
 
   it('is ChromeIOS', () => {

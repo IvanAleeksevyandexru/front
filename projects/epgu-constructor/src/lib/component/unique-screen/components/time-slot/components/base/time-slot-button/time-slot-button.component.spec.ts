@@ -7,7 +7,7 @@ import { ScreenServiceStub } from '../../../../../../../screen/screen.service.st
 import { CurrentAnswersService } from '../../../../../../../screen/current-answers.service';
 import { CurrentAnswersServiceStub } from '../../../../../../../screen/current-answers-service.stub';
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
-import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-state.service.stub';
+
 import {
   DatesToolsService,
   DatesToolsServiceStub,
@@ -22,6 +22,7 @@ import { EVENT_TIMESLOT_BOOK, EVENT_TIMESLOT_BOOK_RESULT } from '../../../typing
 import { of } from 'rxjs';
 import { ScreenButton } from '@epgu/epgu-constructor-types';
 import { By } from '@angular/platform-browser';
+import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
 
 const testId = 'testId';
 const testButton = 'textButton';
@@ -43,6 +44,7 @@ describe('TimeSlotButtonComponent', () => {
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        TimeSlotCalendarService,
         EventBusService,
         TimeSlotStateService,
         UnsubscribeService,
@@ -62,6 +64,9 @@ describe('TimeSlotButtonComponent', () => {
 
     fixture = TestBed.createComponent(TimeSlotButtonComponent);
     component = fixture.componentInstance;
+    component.additionalDisplayingButton$ = of(true);
+    component.loaded$ = of(true);
+    component.haveUnlockedDays$ = of(false);
     component.id = testId;
   });
 
@@ -108,7 +113,7 @@ describe('TimeSlotButtonComponent', () => {
       expect(fixture.debugElement.query(By.css('.submit-button'))).not.toBeNull();
     });
     it('should be additionalDisplayingButton = false', () => {
-      stateService.additionalDisplayingButton = false;
+      component.additionalDisplayingButton$ = of(false);
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css('.submit-button'))).toBeNull();
     });

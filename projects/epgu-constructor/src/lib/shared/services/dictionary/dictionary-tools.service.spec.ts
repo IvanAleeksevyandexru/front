@@ -1,14 +1,12 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FormArray } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { cloneDeep } from 'lodash';
 import {
   ScenarioDto,
   DictionaryConditions,
   DictionaryValueTypes,
   AttributeTypes,
-  DictionaryFilters,
 } from '@epgu/epgu-constructor-types';
 import {
   ConfigService,
@@ -26,7 +24,6 @@ import { DateRestrictionsService } from '../date-restrictions/date-restrictions.
 import { getDictKeyByComp } from './dictionary-helper';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
-import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -297,61 +294,6 @@ describe('DictionaryToolsService', () => {
       expect(getDictKeyByComp({ attrs: { dictionaryType: 'testType' }, id: 1 } as any)).toBe(
         'testType1',
       );
-    });
-  });
-
-  describe('filters$ property', () => {
-    it('should be observable', (done) => {
-      service.filters$.subscribe((result) => {
-        expect(result).toEqual({});
-        done();
-      });
-      expect(service.filters$).toBeInstanceOf(Observable);
-    });
-
-    it('should be emitted if set filters property', (done) => {
-      const filters: ComponentDictionaryFilters = {
-        a: null,
-      };
-
-      service.filters = filters;
-
-      service.filters$.subscribe((result) => {
-        expect(result).toBe(filters);
-        done();
-      });
-    });
-  });
-
-  describe('filters property', () => {
-    it('should be {} by default', () => {
-      expect(service.filters).toEqual({});
-    });
-  });
-
-  describe('applyFilter()', () => {
-    it('should apply passed filter for dependent component', () => {
-      const dependentComponentId = 'rf1';
-      // eslint-disable-next-line max-len
-      const filter: DictionaryFilters['filter'] = {
-        pageNum: 0,
-        simple: {
-          value: { asString: 'value' },
-          condition: DictionaryConditions.CONTAINS,
-          attributeName: 'value',
-        },
-      };
-      service.applyFilter(dependentComponentId, filter);
-      expect(service.filters[dependentComponentId]).toEqual(filter);
-    });
-  });
-
-  describe('clearFilter()', () => {
-    it('should clear filter for passped dependent component', () => {
-      const dependentComponentId = 'rf1';
-      service.filters[dependentComponentId] = { pageNum: 0 };
-      service.clearFilter(dependentComponentId);
-      expect(service.filters[dependentComponentId]).toBeNull();
     });
   });
 

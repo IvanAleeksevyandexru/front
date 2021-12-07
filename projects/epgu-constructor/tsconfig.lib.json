@@ -7,7 +7,7 @@
     "declaration": true,
     "inlineSources": true,
     "typeRoots": ["node_modules/@types"],
-    "types": ["node"],
+    "types": ["node", "offscreencanvas"],
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],

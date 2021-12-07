@@ -142,20 +142,20 @@ export class ActionToolsService {
   }
 
   public navigate(action: ComponentActionDto, componentId: string, stepType: string): void {
-    const navMethod = navActionToNavMethodMap[stepType];
-
-    if (this.hookService.hasHooks(HookTypes.ON_BEFORE_SUBMIT)) {
+    if (this.hookService.hasHooks(HookTypes.ON_BEFORE_REJECT) && action.action === 'reject') {
+      forkJoin(this.hookService.getHooks(HookTypes.ON_BEFORE_REJECT))
+        .pipe(catchError(() => of([])))
+        .subscribe(() => {
+          this.defaultNavigation(action, componentId, stepType);
+        });
+    } else if (this.hookService.hasHooks(HookTypes.ON_BEFORE_SUBMIT)) {
       forkJoin(this.hookService.getHooks(HookTypes.ON_BEFORE_SUBMIT))
         .pipe(catchError(() => of([])))
         .subscribe(() => {
-          const navigation = this.prepareNavigationData(action, componentId);
-
-          this.navService[navMethod](navigation);
+          this.defaultNavigation(action, componentId, stepType);
         });
     } else {
-      const navigation = this.prepareNavigationData(action, componentId);
-
-      this.navService[navMethod](navigation);
+      this.defaultNavigation(action, componentId, stepType);
     }
   }
 
@@ -331,5 +331,12 @@ export class ActionToolsService {
       (component) =>
         component.id === componentId && component.type === CustomScreenComponentTypes.Timer,
     );
+  }
+
+  private defaultNavigation(action: ComponentActionDto, componentId: string, stepType: string): void {
+    const navMethod = navActionToNavMethodMap[stepType];
+    const navigation = this.prepareNavigationData(action, componentId);
+
+    this.navService[navMethod](navigation);
   }
 }

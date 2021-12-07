@@ -8,6 +8,7 @@ import { ScreenService } from '../../../../../../../screen/screen.service';
 import { NEXT_STEP_ACTION } from '../../../../../../../shared/constants/actions';
 import { EVENT_TIMESLOT_BOOK, EVENT_TIMESLOT_BOOK_RESULT } from '../../../typings';
 import { ActionService } from '../../../../../../../shared/directives/action/action.service';
+import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
 
 @Component({
   selector: 'epgu-constructor-time-slot-button',
@@ -31,8 +32,13 @@ export class TimeSlotButtonComponent implements OnInit {
   componentId = this.screenService.component.id;
 
   additionalDisplayingButton$ = this.state.additionalDisplayingButton$;
+  haveUnlockedDays$ = this.calendarService.haveUnlockedDays$;
+
+  loaded$ = this.state.loaded$;
+  progress$ = this.state.progress$;
 
   constructor(
+    private calendarService: TimeSlotCalendarService,
     private screenService: ScreenService,
     private currentAnswers: CurrentAnswersService,
     private state: TimeSlotStateService,

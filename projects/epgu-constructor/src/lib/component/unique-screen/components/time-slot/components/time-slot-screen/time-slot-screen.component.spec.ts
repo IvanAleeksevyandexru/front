@@ -2,7 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimeSlotScreenComponent } from './time-slot-screen.component';
 import { FormsModule } from '@angular/forms';
 import { BaseModule } from '../../../../../../shared/base.module';
-import { ScreenContainerModule, ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  DatesToolsServiceStub,
+  ScreenContainerModule,
+  ScreenPadModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { TimeSlotBaseScreenComponent } from '../base/time-slot-base-screen/time-slot-base-screen.component';
 import { MockComponent } from 'ng-mocks';
@@ -14,6 +19,7 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { TimeSlotCalendarService } from '../../services/calendar/time-slot-calendar.service';
 
 describe('TimeSlotScreenComponent', () => {
   let component: TimeSlotScreenComponent;
@@ -36,7 +42,11 @@ describe('TimeSlotScreenComponent', () => {
         BaseComponentsModule,
         ScreenPadModule,
       ],
-      providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
+      providers: [
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        TimeSlotCalendarService,
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+      ],
     }).compileComponents();
   });
 

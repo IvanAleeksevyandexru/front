@@ -3,6 +3,7 @@ import {
   ActionType,
   Clarifications,
   ConfirmUserDataStyle,
+  DisclaimerDto,
   DTOActionAction,
 } from '@epgu/epgu-constructor-types';
 
@@ -12,6 +13,7 @@ export interface ConfirmUserData extends ComponentBase {
 
 export interface ConfirmUserLegalData extends ComponentBase {
   attrs: ConfirmUserLegalDataAttrs;
+  errors: ConfirmUserDataError[];
 }
 
 export interface ConfirmUserDataAttrs {
@@ -24,6 +26,7 @@ export interface ConfirmUserLegalDataAttrs {
   fields: ConfirmUserDataField[];
   clarifications: Clarifications;
   hint: string;
+  disclaimer?: DisclaimerDto;
 }
 
 export interface ConfirmUserDataActions {

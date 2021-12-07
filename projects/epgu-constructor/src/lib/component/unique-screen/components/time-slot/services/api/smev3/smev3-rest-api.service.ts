@@ -23,13 +23,16 @@ export interface SmevSlotsResponseInterface {
 @Injectable()
 export class Smev3RestApiService {
   baseOptions = { withCredentials: true };
-  urlPrefix = this.config.mocks?.includes('timeSlot')
-    ? `${this.config.mockUrl}/lk/v1/equeue/agg`
-    : this.config.timeSlotApiUrl;
 
   listPath = 'slots';
   bookPath = 'book';
   cancelPath = 'cancel';
+
+  get urlPrefix(): string {
+    return this.config.mocks?.includes('timeSlot')
+      ? `${this.config.mockUrl}/lk/v1/equeue/agg`
+      : this.config.timeSlotApiUrl;
+  }
 
   constructor(private http: HttpClient, private config: ConfigService) {}
 
@@ -46,7 +49,7 @@ export class Smev3RestApiService {
   }
 
   hasError(error: ErrorInterface): boolean {
-    return error?.errorDetail?.errorCode !== 0;
+    return (error?.errorDetail?.errorCode || 0) !== 0;
   }
 
   getList(requestBody: TimeSlotRequest): Observable<TimeSlot[]> {

@@ -1,18 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { MainPageService } from '@epgu/ui/services/main-page';
 import { IMainData } from '@epgu/ui/models/main-data';
 import { CatalogTabsService } from '@epgu/ui/services/catalog-tabs';
 import { CountersService } from '@epgu/ui/services/counters';
+import { PsoService } from '@epgu/ui/services/pso';
+import { DOCUMENT, isPlatformServer } from '@angular/common';
+import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
+import { MetaTagGeneratorService } from './services/meta-tag-generator/meta-tag-generator.service';
 
 @Component({
   selector: '[app-root]',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public loaded = false;
+  public isServer = isPlatformServer(this.platformId);
 
   constructor(
     public router: Router,
@@ -20,17 +25,32 @@ export class AppComponent {
     private mainPageService: MainPageService,
     private catalogTabsService: CatalogTabsService,
     private countersService: CountersService,
+    private psoService: PsoService,
+    private metaTagGeneratorService: MetaTagGeneratorService,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window,
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
-  private static documentScrollTop(): void {
-    window.scrollTo(0, 0);
-  }
-
   public ngOnInit() {
+    if (this.isServer) {
+      this.router.events.subscribe((route) => {
+        if (route instanceof RoutesRecognized) {
+          const context = route.url.split('?')[0].substring(1); // чтобы получить path вида '600109/1/form'
+          if (context) {
+            this.fetchAndAddMetaByContext(context);
+          }
+        }
+      });
+
+      return;
+    }
+
     this.onRouteChange();
     this.getMainBlocksData();
     this.initCounters();
-    this.fadeOutEffect(document.getElementById('start-app-loader') as HTMLElement);
+    this.fadeOutEffect(this.document.getElementById('start-app-loader') as HTMLElement);
+    this.setWindowParams();
   }
 
   public getMainBlocksData(): void {
@@ -49,6 +69,12 @@ export class AppComponent {
     );
   }
 
+  private async fetchAndAddMetaByContext(context: string): Promise<void> {
+    const data = await this.metaTagGeneratorService.loadData();
+    const openGraphInfo = this.metaTagGeneratorService.getItemByContext(data, context);
+    this.metaTagGeneratorService.addInfoToMeta(openGraphInfo);
+  }
+
   private initCounters(): void {
     this.countersService.loadCounters();
   }
@@ -56,10 +82,12 @@ export class AppComponent {
   private fadeOutEffect(elem: HTMLElement) {
     const fadeEffect = setInterval(() => {
       if (!elem.style.opacity) {
+        // eslint-disable-next-line no-param-reassign
         elem.style.opacity = '1';
       }
       if (parseFloat(elem.style.opacity) > 0) {
         const magicNumber = 0.2;
+        // eslint-disable-next-line no-param-reassign
         elem.style.opacity = `${parseFloat(elem.style.opacity) - magicNumber}`;
       } else {
         clearInterval(fadeEffect);
@@ -70,11 +98,25 @@ export class AppComponent {
     }, 50);
   }
 
+  private documentScrollTop(): void {
+    if ('scrollTo' in this.window) {
+      this.window.scrollTo(0, 0);
+    }
+  }
+
   private onRouteChange(): void {
     this.router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
-        AppComponent.documentScrollTop();
+        this.documentScrollTop();
       }
     });
+  }
+
+  private setWindowParams() {
+    if (this.psoService.isPsoRequired()) {
+      window.psoOnlyRobomaxIcon = this.loadService.config.psoOnlyRobomaxIcon;
+      window.showNewDesignPsoHelp = this.loadService.config.showNewDesignPsoHelp;
+      window.betaUrl = this.loadService.config.betaUrl;
+    }
   }
 }

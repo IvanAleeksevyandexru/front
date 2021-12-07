@@ -15,14 +15,18 @@ export class DisplayOffRelation extends BaseRelation {
       (control: AbstractControl) => control.value.id === dependentComponent.id,
     );
     const element = shownElements[dependentComponent.id];
-    const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
     const refs = dependentComponent.attrs.ref;
-    const isShown = !refs.some((ref) => {
-      return this.refRelationService.isDisplayOffRelation(ref.relation) &&
-        this.refRelationService.isValueEquals(reference.val, this.getControlValueById(ref.relatedRel, form)) &&
-        shownElements[ref.relatedRel]?.isShown;
-    });
+    const isShown = !refs
+      .filter((ref) =>
+        this.refRelationService.isDisplayOffRelation(ref.relation) &&
+        this.hasControlWithIdOnForm(ref.relatedRel, form)
+      )
+      .some((ref) => {
+        return this.refRelationService.isValueEquals(reference.val, this.getControlValueById(ref.relatedRel, form)) &&
+          shownElements[ref.relatedRel]?.isShown;
+      });
 
+    const isDisplayOn = this.refRelationService.isDisplayOnRelation(element.relation);
     if (element.isShown === true || !isDisplayOn) {
       shownElements[dependentComponent.id] = {
         relation: CustomComponentRefRelation.displayOff,

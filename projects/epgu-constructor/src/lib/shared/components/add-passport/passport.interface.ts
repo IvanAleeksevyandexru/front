@@ -1,6 +1,7 @@
 export interface PassportAttr {
   participant: { role: string; mode: string };
   fields: PassportField[];
+  title?: string;
   titleHide?: boolean;
 }
 

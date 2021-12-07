@@ -14,6 +14,7 @@ export interface CustomComponentRef {
   defaultValue?: string | boolean;
   valueFromCache?: string;
   dictionaryFilter?: ComponentDictionaryFilterDto[];
+  isHierarchical?: boolean;
   relatedRelValues?: KeyValueMap;
 }
 

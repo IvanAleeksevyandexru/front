@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-constructor-ui-kit",
-  "version": "42.0.0",
+  "version": "43.7.0",
   "scripts": {
     "build": "cd ../../ && ng build epgu-constructor-ui-kit --prod",
     "watch": "cd ../../ && ng build epgu-constructor-ui-kit --watch",
@@ -13,12 +13,12 @@
     "@angular/cdk": "^12.2.5",
     "@angular/forms": "^12.2.5",
     "@datorama/akita": "6.2.0",
-    "@epgu/ui": "3.0.392-2-frontv4",
-    "rxjs": "6.6.6",
+    "@epgu/ui": "0.1.13-ssr",
+    "rxjs": "6.6.7",
     "ngx-perfect-scrollbar": "8.0.0"
   },
   "dependencies": {
-    "@epgu/epgu-constructor-types": "42.0.0",
+    "@epgu/epgu-constructor-types": "43.7.0",
     "@epgu/zipkin": "0.0.3",
     "tslib": "^2.0.0",
     "ismobilejs": "^1.1.1",

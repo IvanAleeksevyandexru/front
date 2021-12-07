@@ -7,14 +7,20 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { combineLatest, of, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
+
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { LogicComponents } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../screen/screen.service';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
 import { LogicComponentResolverComponent } from '../component-list-resolver/logic-component-resolver.component';
-import { isOnBeforeSubmitComponent, isOnInitComponent } from '../components/helpers';
+import {
+  isOnBeforeSubmitComponent,
+  isOnInitComponent,
+  isOnBeforeRejectComponent,
+} from '../components/helpers';
 
 @Component({
   selector: 'epgu-constructor-logic-container',
@@ -28,51 +34,57 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
   isLoading$ = this.screenService.isLogicComponentLoading$;
   logicComponents$ = this.screenService.logicComponents$;
   loadSubscription: Subscription;
-  onBeforeSubmitComponents$ = this.logicComponents$.pipe(
-    map((components) => {
-      return components.filter(isOnBeforeSubmitComponent);
-    }),
-  );
-  onInitComponents$ = this.logicComponents$.pipe(
-    map((components) => components.filter(isOnInitComponent)),
-  );
 
   constructor(
     private screenService: ScreenService,
     private hookService: HookService,
+    private ngUnsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.onBeforeSubmitComponents$.subscribe((components) => {
-      if (!components.length) {
-        this.hookService.clearHook(HookTypes.ON_BEFORE_SUBMIT);
-      }
-    });
-    this.onInitComponents$.subscribe((components) => {
-      if (components.length) {
-        this.screenService.isLogicComponentLoading = true;
-      }
-    });
+    this.logicComponents$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((components: LogicComponents[]) => {
+        if (!components.filter(isOnBeforeSubmitComponent).length) {
+          this.hookService.clearHook(HookTypes.ON_BEFORE_SUBMIT);
+        }
+        if (!components.filter(isOnBeforeRejectComponent).length) {
+          this.hookService.clearHook(HookTypes.ON_BEFORE_REJECT);
+        }
+        if (components.filter(isOnInitComponent).length) {
+          this.screenService.isLogicComponentLoading = true;
+
+          // Необходимо для корректного обновления экрана при подстановке значений из suggestions
+          if (this.viewComponents) this.resetInitSubscribe();
+        }
+      });
   }
 
   ngAfterViewInit(): void {
     this.subscribeToInitHooks();
     this.viewComponents.changes.subscribe(() => {
-      this.loadSubscription.unsubscribe();
-      this.subscribeToInitHooks();
+      this.resetInitSubscribe();
     });
+  }
+
+  private resetInitSubscribe(): void {
+    if (this.loadSubscription) this.loadSubscription.unsubscribe();
+    this.subscribeToInitHooks();
   }
 
   private subscribeToInitHooks(): void {
     const hasLoadedSubjects = this.viewComponents
       .filter((component) => isOnInitComponent(component.componentDto))
       .map((component) => component.componentRef?.instance.hasLoaded ?? of(true));
-    this.loadSubscription = combineLatest(hasLoadedSubjects).subscribe((hasLoadedResult) => {
-      if (hasLoadedResult.every((element) => !!element)) {
-        this.screenService.isLogicComponentLoading = false;
-        this.cdr.detectChanges();
-      }
-    });
+
+    this.loadSubscription = combineLatest(hasLoadedSubjects)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((hasLoadedResult) => {
+        if (hasLoadedResult.every((element) => !!element)) {
+          this.screenService.isLogicComponentLoading = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 }

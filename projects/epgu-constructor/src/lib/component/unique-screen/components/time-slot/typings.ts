@@ -15,10 +15,12 @@ export type CancelFilterProvider = (
 ) => boolean;
 
 export interface CancelOperation {
+  status: boolean;
   slotList: TimeSlotsAnswerInterface[];
   result: BehaviorSubject<CancelSlotResponseInterface[]>;
 }
 export interface BookOperation {
+  status: boolean;
   book: Slot;
   result: BehaviorSubject<SmevBookResponseInterface>;
 }
