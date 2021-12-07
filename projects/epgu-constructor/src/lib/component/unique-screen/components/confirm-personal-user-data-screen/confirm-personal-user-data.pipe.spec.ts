@@ -170,7 +170,29 @@ describe('ConfirmPersonalUserDataPipe', () => {
       expect(service.interpolateRecursive).toHaveBeenCalledWith(
         fieldGroups,
         componentValue.storedValues,
-        '-'
+        '-',
+        true
+      );
+    });
+
+    it('should return the empty value if fieldGroup attrs and keepVariables is false', () => {
+      const data = setup(fieldGroups);
+      data.attrs.keepVariables = false;
+      const expected = {
+        ...data,
+        presetValue: JSON.stringify({
+          ...JSON.parse(data.value),
+          states: resultOfInterpolation,
+        }),
+      };
+
+      expect(pipe.transform(data)).toStrictEqual(expected);
+      expect(service.interpolateRecursive).toHaveBeenCalledTimes(1);
+      expect(service.interpolateRecursive).toHaveBeenCalledWith(
+        fieldGroups,
+        componentValue.storedValues,
+        '-',
+        false
       );
     });
 
@@ -213,7 +235,8 @@ describe('ConfirmPersonalUserDataPipe', () => {
         expect(interpolationSpy).toHaveBeenCalledWith(
           fieldGroupsWithEmptyGroup,
           componentValue.storedValues,
-          '-'
+          '-',
+          true
         );
       });
     });
