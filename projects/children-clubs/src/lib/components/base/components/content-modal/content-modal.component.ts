@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  HostListener,
   Injector,
   Input,
   OnInit,
@@ -13,9 +14,10 @@ import {
   ConfirmationModalBaseButton,
   EventBusService,
   ModalBaseComponent,
+  ModalService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { Clarifications, ConfirmationModal } from '@epgu/epgu-constructor-types';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { NotifierService } from '@epgu/ui/services/notifier';
 
@@ -35,6 +37,7 @@ export class ContentModalComponent extends ModalBaseComponent implements OnInit,
   @Input() preview?: ConfirmationModal['preview'];
   @Input() buttons: ConfirmationModalBaseButton[] = [];
   @Input() traceId?: ConfirmationModal['traceId'];
+  @Input() clarifications: Clarifications;
 
   constructor(
     public injector: Injector,
@@ -44,9 +47,19 @@ export class ContentModalComponent extends ModalBaseComponent implements OnInit,
     private clipboard: Clipboard,
     private notifierService: NotifierService,
     private cdr: ChangeDetectorRef,
+    private modalService: ModalService,
   ) {
     super(injector);
   }
+
+  @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
+    const targetElement = event.target as HTMLElement;
+    const targetElementModalData = this.clarifications && this.clarifications[targetElement.id];
+    if (targetElementModalData) {
+      this.showInnerModal(targetElementModalData);
+    }
+  }
+
   ngOnInit(): void {
     // TODO Добавить динамическое значение в enum BusEventType после обновления typescript
     this.eventBusService
@@ -82,5 +95,13 @@ export class ContentModalComponent extends ModalBaseComponent implements OnInit,
   copy(traceId: string): void {
     this.clipboard.copy(traceId);
     this.notifierService.success({ message: 'Код ошибки скопирован' });
+  }
+
+  private showInnerModal(targetClarification: { text?: string }): void {
+    this.modalService.openModal(ContentModalComponent, {
+      ...targetClarification,
+      clarifications: this.clarifications,
+      componentId: this.modalId,
+    });
   }
 }
