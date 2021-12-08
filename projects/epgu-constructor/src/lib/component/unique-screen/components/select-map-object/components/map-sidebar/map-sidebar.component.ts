@@ -38,7 +38,7 @@ export class MapSidebarComponent implements OnInit {
   public scrollConfig = { suppressScrollX: false, wheelPropagation: false, minScrollbarLength: 32 };
   public searchPanelType: string;
   public balloonContentType: string;
-  public balloonDictionaryItems: DictionaryItem[];
+  public balloonDictionaryItems: DictionaryItem[] = [];
   public activeItem: DictionaryItem;
   public originalValue: DictionaryItem[] = [];
   public MapTypes = MapTypes;
@@ -88,13 +88,23 @@ export class MapSidebarComponent implements OnInit {
     this.yandexMapService.selectedValue$
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: DictionaryItem[]) => {
-        if (this.activeItem) {
-          this.activeItem.expanded = false;
-        }
         if (this.previouslyChoosenItem) {
           this.previouslyChoosenItem.expanded = false;
         }
         if (value) {
+          // при автоскролле с одного открытого элемента списка на другой,
+          // необходимо мгновенно закрыть ранее выбранный элемент,
+          // для этого у него блокируется скролл с помощью этого костыля
+          let activeBalloonRef;
+          if (this.activeItem) {
+            this.activeItem.expanded = false;
+            activeBalloonRef = this.balloonComponents.find((item) =>
+              arePointsEqual(item.mapObject, this.activeItem),
+            );
+            if (activeBalloonRef) {
+              activeBalloonRef.balloonContentComponentRef.instance.lockAnimation = true;
+            }
+          }
           this.originalValue = value;
           [this.activeItem] = value;
           if (value.length === 1 || this.sidebarData.attrs.mapType !== MapTypes.electionsMap) {
@@ -107,6 +117,9 @@ export class MapSidebarComponent implements OnInit {
           if (matchingBalloon) {
             setTimeout(() => {
               matchingBalloon.balloonContentComponentRef.location.nativeElement.scrollIntoView();
+              if (activeBalloonRef) {
+                activeBalloonRef.balloonContentComponentRef.instance.lockAnimation = false;
+              }
             }, 0);
           }
         } else {
@@ -119,7 +132,7 @@ export class MapSidebarComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value) => {
         if (value) {
-          this.balloonDictionaryItems = this.getBalloonItems();
+          this.getBalloonItems();
           this.cdr.detectChanges();
         }
       });
@@ -127,15 +140,18 @@ export class MapSidebarComponent implements OnInit {
     this.selectMapObjectService.isSelectedView
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
-        this.balloonDictionaryItems = this.getBalloonItems();
+        this.getBalloonItems();
         this.cdr.detectChanges();
       });
   }
 
-  private getBalloonItems(): DictionaryItem[] {
-    return this.selectMapObjectService.isSelectedView.getValue()
+  private getBalloonItems(): void {
+    this.balloonDictionaryItems = [];
+    const items = this.selectMapObjectService.isSelectedView.getValue()
       ? this.selectMapObjectService.selectedViewItems$.getValue()
       : this.selectMapObjectService.filteredDictionaryItems;
+    // пушим для анимации
+    items.forEach((item) => this.balloonDictionaryItems.push(item));
   }
 }
 
