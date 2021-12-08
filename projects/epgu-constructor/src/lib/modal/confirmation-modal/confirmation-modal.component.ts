@@ -108,6 +108,9 @@ export class ConfirmationModalComponent extends ModalBaseComponent
         this.buttons.push({
           label: defaultCloseLabel,
           closeModal: true,
+          handler: (): void => {
+            this.eventBusService.emit(`closeModalEvent_${this.text}`);
+          },
         });
       }
     }
