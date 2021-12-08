@@ -174,7 +174,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
       } else {
-        this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then((value) =>
+        this.showModal(COMMON_ERROR_MODAL_PARAMS(traceId), traceId).then((value) =>
           this.handleModalAction(value),
         );
       }

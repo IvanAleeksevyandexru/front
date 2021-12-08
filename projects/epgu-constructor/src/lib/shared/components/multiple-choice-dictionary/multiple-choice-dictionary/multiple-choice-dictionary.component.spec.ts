@@ -112,7 +112,7 @@ describe('MultipleChoiceDictionaryComponent', () => {
       jest.spyOn(modalService, 'openModal');
       expect(modalService.openModal).toHaveBeenCalledWith(
         ConfirmationModalComponent,
-        COMMON_ERROR_MODAL_PARAMS,
+        COMMON_ERROR_MODAL_PARAMS(),
       );
     });
   });
