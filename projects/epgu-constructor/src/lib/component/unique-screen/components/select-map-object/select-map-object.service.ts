@@ -70,6 +70,7 @@ export class SelectMapObjectService implements OnDestroy {
   public isMapLoaded = new BehaviorSubject<boolean>(false);
   public isSelectedView = new BehaviorSubject<boolean>(false);
   public userAddress: string;
+  public searchString = new BehaviorSubject<string>(''); // Строка из панели поиска
   private _viewType = new BehaviorSubject(SidebarViewType.Map);
   private objectManager;
   private __mapStateCenter: number[];
@@ -179,6 +180,7 @@ export class SelectMapObjectService implements OnDestroy {
    */
   public searchMapObject(searchString: string): DictionaryYMapItem[] {
     const searchStringLower = searchString.toLowerCase();
+    this.searchString.next(searchStringLower);
     const searchSource = this.isSelectedView.getValue() ?
       this.selectedViewItems$.getValue() :
       this.dictionary.items;

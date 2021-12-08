@@ -47,6 +47,7 @@ import { CommonBalloonContentComponent } from '../balloon-content-resolver/compo
 import { BaseModule } from '../../../../../../shared/base.module';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { SwipeableWrapperComponent } from '../swipeable-wrapper/swipeable-wrapper.component';
+import { HighlightPipe } from '@epgu/ui/pipes';
 
 describe('MapSidebarComponent', () => {
   let component: MapSidebarComponent;
@@ -64,6 +65,7 @@ describe('MapSidebarComponent', () => {
         CommonBalloonContentComponent,
         CommonSearchPanelComponent,
         SwipeableWrapperComponent,
+        HighlightPipe,
       ],
       imports: [
         BaseModule,

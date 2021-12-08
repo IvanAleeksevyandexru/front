@@ -37,6 +37,7 @@ import { JusticeSearchPanelComponent } from './components/search-panel-resolver/
 import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
 import { MapSidebarComponent } from './components/map-sidebar/map-sidebar.component';
 import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipeable-wrapper.component';
+import { HighlightModule } from '@epgu/ui/pipes';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipea
     ElectionsBalloonContentComponent,
     KindergartenContentComponent,
     MapSidebarComponent,
-    SwipeableWrapperComponent
+    SwipeableWrapperComponent,
   ],
   providers: [
     Icons,
@@ -84,6 +85,7 @@ import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipea
     FormsModule,
     ClickableLabelModule,
     YandexMapModule,
+    HighlightModule,
   ],
   entryComponents: [
     SelectMapObjectComponent,
