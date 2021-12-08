@@ -11,7 +11,8 @@ import {
   YMapItem,
   IFeatureItem,
   YandexMapModule,
-  WINDOW, SmoothHeightAnimationDirective,
+  WINDOW,
+  SmoothHeightAnimationDirective,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
@@ -290,7 +291,7 @@ describe('SelectMapObjectComponent', () => {
 
   it('initMap should not call fillCoords if there is attrs.LOMurlTemplate', () => {
     const spy = jest.spyOn<any, any>(component, 'fillCoords');
-    jest.spyOn<any, any>(component.yandexMapService, 'placeObjectsOnMap').mockImplementation(() => null);
+    jest.spyOn<any, any>(component.yandexMapService, 'placeObjectsOnMap').mockReturnValue(null);
     component.data.attrs.LOMurlTemplate = 'temp';
     component['initMap']();
     expect(spy).not.toHaveBeenCalled();
