@@ -11,6 +11,7 @@ import {
   LocationService,
   ErrorHandlerAbstractService,
   ConfigService,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import {
@@ -31,9 +32,8 @@ import {
   RESOURCE_NOT_AVAILABLE,
   NO_DOCTORS,
 } from './error-handler';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
-import EXPIRE_ORDER_ERROR_DISPLAY from '../../display-presets/410-error';
 import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ScreenService } from '../../../screen/screen.service';
@@ -47,6 +47,7 @@ import {
   NO_AVAILABLE_DATA,
 } from './error-handler.inteface';
 import { DictionaryResponseError } from '../../../shared/services/dictionary/dictionary-api.types';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -57,6 +58,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private configService: ConfigService,
     private formPlayer: FormPlayerService,
     private screenService: ScreenService,
+    private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
   public handleResponse(
@@ -167,7 +169,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY, errors: error });
     } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
-      this.navigationService.patchOnCli({ display: EXPIRE_ORDER_ERROR_DISPLAY, errors: error });
+      this.waitingOrderCreate();
     } else if (status !== 404) {
       if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
@@ -372,5 +374,20 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         this.locationService.reload();
         break;
     }
+  }
+
+  private waitingOrderCreate(refreshTime = 10000): void {
+    this.screenService.updateLoading(true);
+    of().pipe(
+      takeUntil(this.ngUnsubscribe$),
+      debounceTime(refreshTime),
+      tap(() => this.navigationService.next()),
+      switchMap(() => this.navigationService.nextStep$),
+      tap({
+        next: () => {
+          this.screenService.updateLoading(false);
+        }
+      })
+    ).subscribe();
   }
 }
