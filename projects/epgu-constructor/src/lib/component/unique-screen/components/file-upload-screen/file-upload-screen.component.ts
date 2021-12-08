@@ -135,20 +135,6 @@ export class FileUploadScreenComponent implements OnInit {
   }
 
   /**
-   * Возвращает true если все документы загружены
-   * @param uploaders - массив загрузчиков с файлами
-   * @private
-   */
-  isAllFilesUploaded(uploaders: FileUploadEmitValue[]): boolean {
-    for (let uploaderIndex = 0; uploaderIndex < uploaders.length; uploaderIndex += 1) {
-      if (!uploaders[uploaderIndex].value.every((file: UploadedFile) => file.uploaded)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
    * Принимает новое значение от компонентов и проверяет доступность кнопки далее
    * @param $eventData - данные из компонента
    */
@@ -158,38 +144,53 @@ export class FileUploadScreenComponent implements OnInit {
     this.value.totalCount = this.uploaderScreenService.getCurrentFilesCount();
     this.value.totalSize = this.uploaderScreenService.getCurrentFilesSize();
 
-    /**
-     * Блокируем кнопку если:
-     * 1. Есть ошибки
-     * 2. Не в каждом загрузчике есть файл
-     * 3. Не все файлы загрузились на терабайт
-     */
-    this.disabled$$.next(
-      !(
-        $eventData.errors.length === 0 &&
-        this.isEveryUploaderHasFile(this.value.uploads) &&
-        this.isAllFilesUploaded(this.value.uploads)
-      ),
-    );
+    this.disabled$$.next(this.isNextStepDisabled($eventData));
   }
 
   /**
-   * Возвращает true если у каждого загрузчика есть хотя бы один загруженный файл
+   * Блокируем кнопку если:
+   * 1. Есть ошибки
+   * 2. Не в каждом обязательном загрузчике есть файл
+   * 3. Не все файлы загрузились на терабайт
+   */
+  private isNextStepDisabled($eventData: FileResponseToBackendUploadsItem): boolean {
+    return !(
+      $eventData.errors.length === 0 &&
+      this.isEveryRequiredUploaderHasFile(this.value.uploads) &&
+      this.isAllFilesUploaded(this.value.uploads)
+    );
+  }
+
+  private getRequiredUploaders(uploaders: FileUploadEmitValue[]): FileUploadEmitValue[] {
+    return uploaders.filter((uploader) => uploader?.required);
+  }
+
+  /**
+   * Возвращает true если у каждого обязательного загрузчика есть хотя бы один загруженный файл
    * @param uploaders - массив загрузчиков с файлами
    * @private
    */
-  private isEveryUploaderHasFile(uploaders: FileUploadEmitValue[]): boolean {
-    const requiredUploaders = uploaders.filter((uploader) => uploader?.required);
-    const totalUploaders = requiredUploaders?.length;
-
-    if (totalUploaders === 0) {
-      return false;
-    }
+  private isEveryRequiredUploaderHasFile(uploaders: FileUploadEmitValue[]): boolean {
+    const requiredUploaders = this.getRequiredUploaders(uploaders);
 
     const uploadersWithFiles = requiredUploaders.filter((fileUploaderInfo: FileUploadEmitValue) => {
       return fileUploaderInfo?.value.filter((file: UploadedFile) => file.uploaded).length > 0;
     }).length;
 
-    return totalUploaders === uploadersWithFiles;
+    return requiredUploaders.length === uploadersWithFiles;
+  }
+
+  /**
+   * Возвращает true если все документы загружены
+   * @param uploaders - массив загрузчиков с файлами
+   * @private
+   */
+  private isAllFilesUploaded(uploaders: FileUploadEmitValue[]): boolean {
+    for (let uploaderIndex = 0; uploaderIndex < uploaders.length; uploaderIndex += 1) {
+      if (!uploaders[uploaderIndex].value.every((file: UploadedFile) => file.uploaded)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
