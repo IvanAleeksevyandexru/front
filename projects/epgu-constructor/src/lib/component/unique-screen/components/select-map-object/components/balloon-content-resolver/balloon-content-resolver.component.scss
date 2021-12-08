@@ -24,6 +24,10 @@
         font-weight: $fw-bold;
         max-width: 280px;
       }
+
+      .highlighted {
+        background: $color-tagline-hit;
+      }
     }
 
     &__attr {
@@ -39,8 +43,8 @@
     }
 
     &__label {
-      padding-top: 16px;
-      font-weight: $fw-bold;
+      padding-top: 20px;
+      color: $color-text-helper;
     }
 
     &:not(.expanded) {

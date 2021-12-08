@@ -5,13 +5,13 @@
     [ngClass]="{
       'map-object__header__bold': mapObject.expanded
     }"
+    [innerHTML]="mapObject.title | highlight: (selectMapObjectService.searchString | async)"
     class="map-object__header"
   >
-    {{ mapObject.title }}
   </h6>
   <ng-container *ngIf="mapObject.expanded">
     <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
-      <div class="map-object__label">{{ itemContent.label }}: </div>
+      <div class="map-object__label">{{ itemContent.label }}</div>
       <epgu-constructor-output-html
       [html]="itemContent.value"
       >
