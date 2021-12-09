@@ -40,6 +40,7 @@ describe('TimeSlotBookedInfoComponent', () => {
     jest.spyOn(dateService, 'utcOffset').mockReturnValue(mockSlot.slotTime);
     smev3 = TestBed.inject(TimeSlotSmev3Service);
     smev3.bookedSlot$ = of(mockSlot);
+    smev3.isBookedDepartment$ = of(true);
     fixture = TestBed.createComponent(TimeSlotBookedInfoComponent);
     component = fixture.componentInstance;
 

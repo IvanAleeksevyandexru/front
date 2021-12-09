@@ -9,7 +9,10 @@ import {
   CommonModalComponent,
   ConfigService,
   ModalService,
+  rotateAndDiminish,
+  smoothHeight,
   YMapItem,
+  DeviceDetectorService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
@@ -22,11 +25,13 @@ import { IBalloonContent } from '../../balloon-content-resolver.interface';
   templateUrl: './common-balloon-content.component.html',
   styleUrls: ['./common-balloon-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [rotateAndDiminish, smoothHeight],
 })
 export class CommonBalloonContentComponent implements IBalloonContent {
   @Input() isSelectButtonHidden = false;
   @Input() showLoader: Observable<boolean>;
   @Input() mapObject;
+  @Input() lockAnimation = false;
   @Input() attrs: KeyValueMap = {};
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
@@ -38,6 +43,7 @@ export class CommonBalloonContentComponent implements IBalloonContent {
     public selectMapObjectService: SelectMapObjectService,
     public cdr: ChangeDetectorRef,
     public config: ConfigService,
+    public deviceDetector: DeviceDetectorService,
     private modalService: ModalService,
   ) {}
 

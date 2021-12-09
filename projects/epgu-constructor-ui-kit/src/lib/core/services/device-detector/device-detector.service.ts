@@ -37,6 +37,15 @@ export class DeviceDetectorService {
     this.isWebView = this.smuEventsService.smuInit;
   }
 
+  isIOS(): boolean {
+    return (
+      ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
+        navigator.platform,
+      ) ||
+      (navigator.userAgent.includes('Mac'))
+    );
+  }
+
   /**
    * Возвращает IOS в браузере Chrome это или нет
    */

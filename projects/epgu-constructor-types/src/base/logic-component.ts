@@ -13,7 +13,7 @@ export interface ComponentValue {
 export interface LogicComponents {
   id: string;
   value: string | ComponentValue;
-  linkedValues: unknown[];
+  linkedValues?: unknown[];
   type: string;
   attrs: LogicComponentAttrsDto;
 }
@@ -27,6 +27,7 @@ export enum LogicComponentMethods {
 export enum LogicComponentEventTypes {
   ON_INIT = 'ON_INIT',
   ON_BEFORE_SUBMIT = 'ON_BEFORE_SUBMIT',
+  ON_BEFORE_REJECT = 'ON_BEFORE_REJECT',
 }
 
 export interface LogicComponentHeaders {
@@ -34,12 +35,12 @@ export interface LogicComponentHeaders {
 }
 
 export interface RestAttrsDto {
-  url: string;
-  body: string;
-  method: LogicComponentMethods;
-  path: string;
+  url?: string;
+  body?: string;
+  method?: LogicComponentMethods;
+  path?: string;
   timeout?: string;
-  headers: LogicComponentHeaders;
+  headers?: LogicComponentHeaders;
   events?: LogicComponentEventTypes[];
 }
 

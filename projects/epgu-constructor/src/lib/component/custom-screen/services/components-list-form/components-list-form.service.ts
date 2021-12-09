@@ -128,11 +128,6 @@ export class ComponentsListFormService {
     return this._form;
   }
 
-  public onAfterFilterOnRel(component: BaseModel<DictionarySharedAttrs>): void {
-    component.value = this.componentsListToolsService.convertedValue(component) as string;
-    this.componentsListRelationsService.onAfterFilterOnRel(component, this.form);
-  }
-
   public patch(component: BaseModel<DictionarySharedAttrs>): void {
     const control = this._form.controls.find((ctrl) => ctrl.value.id === component.id);
     const patched =
@@ -297,7 +292,7 @@ export class ComponentsListFormService {
     const accessKey = !!(component as Fields)?.fieldName
       ? (component as Fields).fieldName
       : component.id;
-    
+
     if (!result) {
       if (this.cachedAttrsComponents[accessKey]) {
         this.resetRelation(component, accessKey, refControl);

@@ -7,6 +7,24 @@
   @include flex-container();
   height: 100%;
 }
+@keyframes show-map-object {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes map-object-to-active {
+  50% {
+    transform: scale(1.3);
+    top: -50px;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 
 ::ng-deep #map {
   @include tablets-up() {
@@ -70,12 +88,17 @@
   }
 
   .pin {
+    transform-origin: bottom center;
     position: absolute;
     width: 32px;
     height: 44px;
     background-image: escape-svg($pins-icon);
     top: -44px;
     left: -16px;
+  }
+
+  .pin.hidden {
+    display: none;
   }
 
   .pin-blue {
@@ -117,6 +140,10 @@
       @include typ-plain-small;
       font-weight: $fw-bold;
     }
+  }
+
+  .cluster.hidden {
+    display: none;
   }
 
   .cluster-blue {

@@ -34,6 +34,7 @@ import { DictionaryToolsService } from '@epgu/epgu-constructor/src/lib/shared/se
 import { DictionaryToolsServiceStub } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service.stub';
 import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
 import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
+import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -55,6 +56,8 @@ describe('ErrorsInterceptor', () => {
       providers: [
         FormPlayerApiService,
         SessionService,
+        ErrorHandlerService,
+        UnsubscribeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
@@ -184,7 +187,6 @@ describe('ErrorsInterceptor', () => {
   }));
 
   it('should switch screen to expire order display error when get 410 status code on getOrderStatus request', fakeAsync(() => {
-    const spy = jest.spyOn(navigationService, 'patchOnCli');
     const orderId = '42';
     formPlayerApi.getOrderStatus(Number(orderId)).subscribe(
       () => fail('should have failed with the 410 error'),
@@ -206,13 +208,6 @@ describe('ErrorsInterceptor', () => {
       },
       body,
     );
-    expect(spy).toHaveBeenCalledWith({
-      display: EXPIRE_ORDER_ERROR_DISPLAY,
-      errors: {
-        description: 'Ссылка уже не актуальна',
-        name: 'Gone',
-      },
-    });
     tick();
   }));
 });

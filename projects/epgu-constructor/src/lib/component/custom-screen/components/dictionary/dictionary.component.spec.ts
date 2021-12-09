@@ -28,6 +28,7 @@ import DictionaryModelAttrs from './DictionaryModelAttrs';
 import DictionaryModel from './DictionaryModel';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 import { defer } from 'lodash';
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -53,6 +54,7 @@ describe('DictionaryComponent', () => {
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         MockProvider(DatesToolsService),
+        MockProvider(ComponentsListToolsService),
         JsonHelperService,
         MockProvider(UnsubscribeService),
         MockProvider(ConfigService),
@@ -203,7 +205,7 @@ describe('DictionaryComponent', () => {
         excludedParams: [],
       };
 
-      const screenStoreSpy = jest.spyOn(component['screenService'], 'getStore')
+      jest.spyOn(component['screenService'], 'getStore')
         .mockReturnValue(   { applicantAnswers: { dogovor_number: { value: 'val' }}} as any);
 
       const res = component['prepareOptions']();
@@ -254,7 +256,7 @@ describe('DictionaryComponent', () => {
 
 
 
-      const screenStoreSpy = jest.spyOn(component['screenService'], 'getStore')
+      jest.spyOn(component['screenService'], 'getStore')
         .mockReturnValue(   { applicantAnswers: { dogovor_number: { value: 'val' }}} as any);
 
       const res = component['prepareOptions']();

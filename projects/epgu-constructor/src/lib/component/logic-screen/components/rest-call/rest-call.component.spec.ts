@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ObservableInput, of } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+import { MockProvider, MockProviders } from 'ng-mocks';
+
 import {
   DatesToolsService,
   ObjectHelperService,
@@ -10,14 +13,19 @@ import {
   LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { ApplicantAnswersDto, NavigationPayload } from '@epgu/epgu-constructor-types';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  ApplicantAnswersDto,
+  NavigationPayload,
+  LogicComponentEventTypes,
+  LogicComponentMethods,
+  AttributeTypes,
+  DictionaryConditions
+} from '@epgu/epgu-constructor-types';
 import RestCallComponent from './rest-call.component';
 import { LogicComponentsContainerComponent } from '../../component/logic-components-container.component';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { HookServiceStub } from '../../../../core/services/hook/hook.service.stub';
-import { MockProvider, MockProviders } from 'ng-mocks';
 import { ComponentsListFormServiceStub } from '../../../custom-screen/services/components-list-form/components-list-form.service.stub';
 import { ScreenService } from '../../../../screen/screen.service';
 import { LogicService } from '../../service/logic.service';
@@ -43,7 +51,11 @@ describe('RestCallComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LogicComponentsContainerComponent, LogicComponentResolverComponent, RestCallComponent],
+      declarations: [
+        LogicComponentsContainerComponent,
+        LogicComponentResolverComponent,
+        RestCallComponent,
+      ],
       imports: [BaseModule, HttpClientModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
@@ -95,24 +107,40 @@ describe('RestCallComponent', () => {
         type: 'RestCall',
         attrs: {
           url: 'https://pgu-uat-fed.test.gosuslugi.ru',
-          method: 'POST',
+          method: LogicComponentMethods.POST,
           path: '/api/nsi/v1/dictionary/CONC_COMPETENT_ORG',
           headers: {
             Accept: 'application/json, text/plain, */*',
             'Content-Type': 'application/json',
           },
           body: '',
-          events: ['ON_BEFORE_SUBMIT'],
+          events: [LogicComponentEventTypes.ON_BEFORE_SUBMIT],
           dictionaryType: 'CONC_COMPETENT_ORG',
           dictionaryFilter: [
             {
               attributeName: 'LIC_TYPE',
-              attributeType: 'asDecimal',
-              condition: 'EQUALS',
+              attributeType: AttributeTypes.asDecimal,
+              condition: DictionaryConditions.EQUALS,
               value: 's6lookup.value.originalItem.attributeValues.CODE',
               valueType: 'ref',
             },
           ],
+        },
+        value: '{}',
+      },
+      {
+        id: 's7restcall',
+        type: 'RestCall',
+        attrs: {
+          url: 'https://pgu-uat-fed.test.gosuslugi.ru',
+          method: LogicComponentMethods.POST,
+          path: '/api/nsi/v1/dictionary/CONC_COMPETENT_ORG',
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json',
+          },
+          body: '',
+          events: [LogicComponentEventTypes.ON_BEFORE_REJECT],
         },
         value: '{}',
       },
@@ -137,7 +165,7 @@ describe('RestCallComponent', () => {
       .filter(
         (logicComponent) =>
           !Array.isArray(logicComponent.attrs.events) ||
-          logicComponent.attrs.events.indexOf('INIT') !== -1,
+          logicComponent.attrs.events.indexOf(LogicComponentEventTypes.ON_INIT) !== -1,
       )
       .map(prepareDataAfterFetch);
 
@@ -149,7 +177,7 @@ describe('RestCallComponent', () => {
     expect(screenService.logicAnswers).toEqual(applicantAnswersDto);
   });
 
-  it('should add hook for non init events', () => {
+  it('should add hook for events', () => {
     component.componentDto = screenService.logicComponents[1];
     jest.spyOn(logicService, 'fetch').mockReturnValue([of({})]);
     const addHookSpy = jest.spyOn(hookService, 'addHook');
@@ -159,7 +187,7 @@ describe('RestCallComponent', () => {
     expect(addHookSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should run hooks for non init events', () => {
+  it('should run hooks for BEFORE_SUBMIT', () => {
     component.componentDto = screenService.logicComponents[1];
     const applicantAnswersDto: ApplicantAnswersDto = {
       rest: {
@@ -182,12 +210,46 @@ describe('RestCallComponent', () => {
       .filter(
         (logicComponent) =>
           Array.isArray(logicComponent.attrs.events) &&
-          logicComponent.attrs.events.indexOf('ON_BEFORE_SUBMIT') !== -1,
+          logicComponent.attrs.events.indexOf(LogicComponentEventTypes.ON_BEFORE_SUBMIT) !== -1,
       )
       .map(prepareDataAfterFetch);
 
     component.ngOnInit();
     hooks['ON_BEFORE_SUBMIT'][0].subscribe();
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenNthCalledWith(1, expectedValue2);
+  });
+
+  it('should run hooks for BEFORE_REJECT', () => {
+    component.componentDto = screenService.logicComponents[2];
+    const applicantAnswersDto: ApplicantAnswersDto = {
+      rest: {
+        visited: true,
+        value: 'value',
+      },
+    };
+    const hooks = {};
+    const fetchSpy = jest.spyOn(logicService, 'fetch').mockReturnValue([of(applicantAnswersDto)]);
+    jest
+      .spyOn(hookService, 'addHook')
+      .mockImplementation((type: HookTypes, observable: ObservableInput<NavigationPayload>) => {
+        if (!Array.isArray(hooks[type])) {
+          hooks[type] = [observable];
+        } else {
+          hooks[type].push(observable);
+        }
+      });
+    const expectedValue2 = screenService.logicComponents
+      .filter(
+        (logicComponent) =>
+          Array.isArray(logicComponent.attrs.events) &&
+          logicComponent.attrs.events.indexOf(LogicComponentEventTypes.ON_BEFORE_REJECT) !== -1,
+      )
+      .map(prepareDataAfterFetch);
+
+    component.ngOnInit();
+    hooks['ON_BEFORE_REJECT'][0].subscribe();
 
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenNthCalledWith(1, expectedValue2);

@@ -1,3 +1,5 @@
+import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,7 +44,11 @@ describe('PassportComponent', () => {
           HealthService,
           EventBusService,
         ],
-      }).compileComponents();
+      })
+        .overrideComponent(PassportComponent, {
+          set: { changeDetection: ChangeDetectionStrategy.Default },
+        })
+        .compileComponents();
     }),
   );
 
@@ -58,5 +64,29 @@ describe('PassportComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('render', () => {
+    const selector = '.form__name';
+
+    it('should render default title if attrs does not have "title" or it is empty', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl.nativeElement.textContent).toContain(component.DEFAULT_TITLE);
+
+      component.attrs.title = '';
+      fixture.detectChanges();
+
+      expect(debugEl.nativeElement.textContent).toContain(component.DEFAULT_TITLE);
+    });
+
+    it('should render custom title if attrs have "title"', () => {
+      const customTitle = 'Custom title';
+      component.attrs.title = customTitle;
+      fixture.detectChanges();
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      expect(debugEl.nativeElement.textContent).toContain(customTitle);
+    });
   });
 });

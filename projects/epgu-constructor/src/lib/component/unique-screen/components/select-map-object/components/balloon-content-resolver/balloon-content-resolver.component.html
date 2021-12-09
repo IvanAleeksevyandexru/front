@@ -1,3 +1,6 @@
-<div [ngClass]="{ expanded: mapObject.expanded }" class="map-object">
+<div [ngClass]="{ expanded: mapObject.expanded }" class="map-object" [@flyInOut] *ngIf="deviceDetector.isDesktop" >
+  <ng-template #content></ng-template>
+</div>
+<div [ngClass]="{ expanded: mapObject.expanded }" class="map-object" *ngIf="!deviceDetector.isDesktop" >
   <ng-template #content></ng-template>
 </div>

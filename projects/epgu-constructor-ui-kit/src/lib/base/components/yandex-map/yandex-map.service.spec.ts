@@ -13,8 +13,9 @@ import { mockBrakCluster, mockExpandedPoint, mockPointWithoutCoords } from './mo
 import { electionSinglePoint } from './mocks/mock-select-map-elections';
 import { IClusterItem, IFeatureItem } from './yandex-map.interface';
 import { YandexMapService } from './yandex-map.service';
+import { MapAnimationService } from './yandex-map-animation/map-animation.service';
 
-describe('SelectMapObjectComponent', () => {
+describe('YandexMapService', () => {
   let yandexMapService: YandexMapService;
   let icons: Icons;
 
@@ -28,6 +29,7 @@ describe('SelectMapObjectComponent', () => {
         UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        MapAnimationService
       ],
     }).compileComponents();
   });
@@ -61,6 +63,31 @@ describe('SelectMapObjectComponent', () => {
       (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
     );
     expect(spy).toBeCalledTimes(1);
+  });
+
+  it('centeredPlaceMark should stop checking placemark if ids are equal', () => {
+    yandexMapService.selectedValue$.next(null);
+    yandexMapService['activePlacemarkId'] = '4504034394378_50';
+
+    yandexMapService.centeredPlaceMark(
+      (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
+    );
+
+    expect(yandexMapService.selectedValue$.getValue()).toBeNull();
+  });
+
+  it('centeredPlaceMark should proceed checking placemark if ids are equal and default logic is faklse', () => {
+    yandexMapService.selectedValue$.next(null);
+    yandexMapService['activePlacemarkId'] = '4504034394378_50';
+
+    yandexMapService.centeredPlaceMark(
+      (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
+      undefined,
+      undefined,
+      false
+    );
+
+    expect(yandexMapService.selectedValue$.getValue()).toBeTruthy();
   });
 
   it('closeBalloon should set expanded = false', () => {

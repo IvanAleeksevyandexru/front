@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { MockComponents, MockModule, MockProviders } from 'ng-mocks';
+import { MockComponents, MockModule, MockProvider, MockProviders } from 'ng-mocks';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { DatesToolsService, UnsubscribeService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { DropDownDeptsModule } from '../../../../shared/components/drop-down-depts/drop-down-depts.module';
@@ -19,13 +19,12 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { CustomComponent, CustomListDictionary, CustomScreenComponentTypes } from '../../components-list.types';
-import DepartmentLookupModelAttrs from './DepartmentLookupModelAttrs';
 import DepartmentLookupModel from './DepartmentLookupModel';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 import { of } from 'rxjs';
 import { DictionaryConditions, DictionaryOptions } from '@epgu/epgu-constructor-types';
 import { ScreenStore } from '../../../../screen/screen.types';
-
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 
 const mockPatchedBase: CustomComponent = new DepartmentLookupModel({
   id: 'dict2',
@@ -141,12 +140,6 @@ const getDictionary = (count = 0) => {
   };
 };
 const screenStore: ScreenStore = {};
-const mockComponent = {
-  id: 'SomeId',
-  attrs: new DepartmentLookupModelAttrs({ dictionaryType: 'someDictionaryType' }),
-  value: 'some value',
-  required: false,
-};
 
 describe('DepartmentLookupComponent', () => {
   let component: DepartmentLookupComponent;
@@ -163,6 +156,7 @@ describe('DepartmentLookupComponent', () => {
         DictionaryToolsService,
         JsonHelperService,
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        MockProvider(ComponentsListToolsService),
         MockProviders(DatesToolsService, SuggestHandlerService),
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },

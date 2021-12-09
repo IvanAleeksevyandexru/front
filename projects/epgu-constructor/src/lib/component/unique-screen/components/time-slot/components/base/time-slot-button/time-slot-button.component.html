@@ -1,13 +1,38 @@
-<ng-container *ngIf="button$ | async as button">
+<ng-container
+  *ngTemplateOutlet="
+    templateContent;
+    context: {
+      button: button$ | async,
+      isLoading: isLoading$ | async,
+      disabled: disabled$ | async,
+      additionalDisplayingButton: additionalDisplayingButton$ | async,
+      haveUnlockedDays: haveUnlockedDays$ | async,
+      loaded: loaded$ | async,
+      progress: progress$ | async
+    }
+  "
+>
+</ng-container>
+
+<ng-template
+  #templateContent
+  let-button="button"
+  let-isLoading="isLoading"
+  let-disabled="disabled"
+  let-additionalDisplayingButton="additionalDisplayingButton"
+  let-haveUnlockedDays="haveUnlockedDays"
+  let-loaded="loaded"
+  let-progress="progress"
+>
   <lib-button
-    [showLoader]="isLoading$ | async"
+    [showLoader]="isLoading || progress"
     (click)="bookAction()"
     class="submit-button"
-    [disabled]="disabled$ | async"
-    *ngIf="additionalDisplayingButton$ | async"
+    [disabled]="isLoading || disabled"
+    *ngIf="loaded && (haveUnlockedDays || additionalDisplayingButton)"
   >
     <div class="secondary-font">
       {{ button?.label || 'Продолжить' }}
     </div>
   </lib-button>
-</ng-container>
+</ng-template>

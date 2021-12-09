@@ -29,12 +29,13 @@ import {
   simplifyQualityTransform,
 } from '../../shared/identification-api/identification-api.types';
 import { ActionService } from '../../../../shared/directives/action/action.service';
+import { UniqueScreenService } from '../../unique-screen.service';
 
 @Component({
   selector: 'epgu-constructor-identification-upload-screen',
   templateUrl: './identification-upload-screen.component.html',
   styleUrls: ['./identification-upload-screen.component.scss'],
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, UniqueScreenService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IdentificationUploadScreenComponent implements OnInit {
@@ -85,6 +86,7 @@ export class IdentificationUploadScreenComponent implements OnInit {
 
   constructor(
     public screenService: ScreenService,
+    private uniqueScreenService: UniqueScreenService,
     private identification: IdentificationApiService,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -154,20 +156,8 @@ export class IdentificationUploadScreenComponent implements OnInit {
       .on(BusEventType.UploaderProcessingStatus)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: { uploadId: string; status: boolean }) =>
-        this.setProcessingStatus(payload),
+        this.uniqueScreenService.setProcessingStatus(payload, this.uploaderProcessing),
       );
-  }
-
-  setProcessingStatus({ uploadId, status }: { uploadId: string; status: boolean }): void {
-    const statusList = this.uploaderProcessing.getValue();
-    const index = statusList.lastIndexOf(uploadId);
-    if (status && index === -1) {
-      statusList.push(uploadId);
-      this.uploaderProcessing.next(statusList);
-    } else if (!status && index !== -1) {
-      statusList.splice(index, 1);
-      this.uploaderProcessing.next(statusList);
-    }
   }
 
   /**

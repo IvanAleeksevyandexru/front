@@ -1,81 +1,101 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { mergeMap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { LoadService } from '@epgu/ui/services/load';
-import { Observable, of } from 'rxjs';
-import { CookieService } from '@epgu/ui/services/cookie';
+import { CookieService } from 'ngx-cookie-service';
 import isMobile from 'ismobilejs';
+import { Inject } from '@angular/core';
+import { LocationService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
+import { isPlatformServer } from '@angular/common';
+import { HOST_URL } from './tokens/host-url.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppConfig {
   public static settings: any;
+  private isServer = isPlatformServer(this.platformId);
 
   constructor(
     private http: HttpClient,
     private loadService: LoadService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private locationService: LocationService,
+    @Inject(WINDOW) private window: any,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Optional() @Inject(HOST_URL) private hostUrl: string,
   ) {
   }
 
-  public load() {
+  public load(): Promise<void> {
     return new Promise<void>((resolve) => {
-      this.loadConfig().pipe(
-        mergeMap((response: any) => {
-          AppConfig.settings = response;
-          (window as any).serverData = {
-            config: AppConfig.settings,
-            data: {
-              user: {}
-            },
-            attrs: {}
-          };
+      this.fetchConfig().then((response: any) => {
+        AppConfig.settings = response;
+        this.setWindowServerData(AppConfig.settings);
+        if (this.cookieService.get('acc_t')) {
+          return this.fetchUser();
+        }
 
-          if (this.cookieService.get('acc_t')) {
-            return this.loadUser();
-          }
+        return null;
+      })
+      .then((response: any) => {
+        this.window.serverData.data.user = response || {};
+      })
+      .finally(() => {
+        if (this.isServer) {
+          this.loadService.load('', false, false, '', this.window.serverData);
+        } else {
+          this.loadService.load('', false, true);
+        }
 
-          return of();
-        })
-      ).toPromise().then((response: any) => {
-        (window as any).serverData.data.user = response || {};
-      }).finally(() => {
-        this.loadService.load('', !AppConfig.settings, true).then();
         switch (true) {
-          case isMobile(window.navigator).phone: {
+          case isMobile(this.window.navigator).phone:
             this.loadService.attributes.deviceType = 'mob';
             break;
-          }
-          case isMobile(window.navigator).tablet: {
+          case isMobile(this.window.navigator).tablet:
             this.loadService.attributes.deviceType = 'tablet';
             break;
-          }
-          default: {
+          default:
             this.loadService.attributes.deviceType = 'desk';
             break;
-          }
         }
+
         resolve();
       });
     });
+  }
+
+  private setWindowServerData(config: any): void {
+    this.window.serverData = {
+      config,
+      data: {
+        user: {}
+      },
+      attrs: {}
+    };
   }
 
   public get config() {
     return AppConfig.settings;
   }
 
-  public loadConfig(): Observable<any> {
+  private fetchConfig(): Promise<any> {
     const envName = environment.name;
-    const jsonFile = envName === 'local' ? 'assets/config/config.json?_' + Math.random() : 'sf-portal/config.json?_' + Math.random();
-    return this.http.get(jsonFile);
+    const jsonFilePath = this.getJsonFileByEnv(envName);
+    return this.http.get(jsonFilePath).toPromise();
   }
 
-  public loadUser(): Observable<any> {
+  private fetchUser(): Promise<any> {
     return this.http.get(`${AppConfig.settings.lkApiUrl}users/data?_=${Math.random()}`, {
       withCredentials: true
-    });
+    }).toPromise();
+  }
+
+  private getJsonFileByEnv(envName: string): string {
+    const host = this.isServer ? this.hostUrl : this.locationService.getOrigin();
+    // NOTICE: нужно отличать dev и prod пути до конфига
+    const path = envName === 'local' ? 'assets/config/config.json?_' + Math.random() : 'sf-portal/config.json?_' + Math.random();
+    return `${host}/${path}`;
   }
 }

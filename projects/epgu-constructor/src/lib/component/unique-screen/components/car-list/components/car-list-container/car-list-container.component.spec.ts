@@ -17,6 +17,10 @@ import {
   PrevButtonModule,
   PREV_BUTTON_NAVIGATION,
   ObjectHelperService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { BaseModule } from '../../../../../../shared/base.module';
@@ -36,10 +40,12 @@ import { CarList } from '../../models/car-list.interface';
 import { ScreenButtonsModule } from '../../../../../../shared/components/screen-buttons/screen-buttons.module';
 import { MockModule } from 'ng-mocks';
 import { PrevButtonNavigationService } from '../../../../../../core/services/prev-button-navigation/prev-button-navigation.service';
+import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
 
 describe('CarListContainerComponent', () => {
   let component: CarListContainerComponent;
   let screenService: ScreenService;
+  let cachedAnswersService: CachedAnswersService;
   let fixture: ComponentFixture<CarListContainerComponent>;
   const mockDisplay: DisplayDto = {
     components: [],
@@ -80,6 +86,9 @@ describe('CarListContainerComponent', () => {
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: PREV_BUTTON_NAVIGATION, useClass: PrevButtonNavigationService },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
+        CachedAnswersService,
         CurrentAnswersService,
         DownloadService,
         ObjectHelperService,
@@ -102,6 +111,7 @@ describe('CarListContainerComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CarListContainerComponent);
+    cachedAnswersService = TestBed.inject(CachedAnswersService);
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
     screenService.buttons = [];
@@ -114,6 +124,37 @@ describe('CarListContainerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('getInitialItem()', () => {
+    it('should return undefined if there is no data to set', () => {
+      jest.spyOn(cachedAnswersService, 'getCachedValueById').mockReturnValueOnce('{}');
+      component.carFixedItems = null;
+
+      component.getInitialItem('', {});
+
+      expect(component.getInitialItem('', {})).toEqual(undefined);
+    });
+
+    it('should return cached value if there is data to set', () => {
+      jest.spyOn(cachedAnswersService, 'getCachedValueById').mockReturnValueOnce(JSON.stringify({
+        vehicleInfo: {
+          govRegNumber: 'M 005 CX'
+        }
+      }));
+      component.carFixedItems = component.getCarFixedItems(mockCarList as unknown as CarList);
+
+      expect(component.getInitialItem('', {})).toEqual(component.carFixedItems[1]);
+    });
+
+    it('should return first item as initial item', () => {
+      jest.spyOn(cachedAnswersService, 'getCachedValueById').mockReturnValueOnce('{}');
+      component.carFixedItems = component.getCarFixedItems(mockCarList as unknown as CarList);
+
+      component.getInitialItem('', {});
+
+      expect(component.getInitialItem('', {})).toEqual(component.carFixedItems[0]);
+    });
   });
 
   describe('handleErrors()', () => {

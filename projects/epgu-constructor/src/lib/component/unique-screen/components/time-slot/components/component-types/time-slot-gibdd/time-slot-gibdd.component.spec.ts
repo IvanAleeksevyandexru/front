@@ -7,6 +7,7 @@ import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-sl
 import { TimeSlotSmev3StateServiceStub } from '../../../services/smev3-state/time-slot-smev3-state.service.stub';
 import { DepartmentInterface, TimeSlotValueInterface } from '../../../typings';
 import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
+import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
 
 describe('TimeSlotGibddComponent', () => {
   let component: TimeSlotGibddComponent;
@@ -14,7 +15,11 @@ describe('TimeSlotGibddComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TimeSlotGibddComponent, MockComponent(TimeSlotSmev3Component)],
+      declarations: [
+        TimeSlotGibddComponent,
+        MockComponent(TimeSlotErrorComponent),
+        MockComponent(TimeSlotSmev3Component),
+      ],
       imports: [],
       providers: [{ provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub }],
     }).compileComponents();
@@ -35,7 +40,7 @@ describe('TimeSlotGibddComponent', () => {
           { serviceId: 'test4' } as TimeSlotsApiItem,
         ),
       ).toEqual({
-        organizationId: 'test',
+        organizationId: ['test'],
         attributes: [
           { name: 'organizationId', value: 'test3' },
           { name: 'serviceId', value: 'test2' },
@@ -49,7 +54,7 @@ describe('TimeSlotGibddComponent', () => {
           { serviceId: 'test4' } as TimeSlotsApiItem,
         ),
       ).toEqual({
-        organizationId: 'test3',
+        organizationId: ['test3'],
         attributes: [
           { name: 'organizationId', value: 'test3' },
           { name: 'serviceId', value: 'test2' },
@@ -63,7 +68,7 @@ describe('TimeSlotGibddComponent', () => {
           { serviceId: 'test4' } as TimeSlotsApiItem,
         ),
       ).toEqual({
-        organizationId: 'test3',
+        organizationId: ['test3'],
         attributes: [
           { name: 'organizationId', value: 'test3' },
           { name: 'serviceId', value: 'test4' },

@@ -21,6 +21,7 @@ import {
   WINDOW,
   YandexMapService,
   JsonHelperService,
+  MapAnimationService, DeviceDetectorServiceStub
 } from '@epgu/epgu-constructor-ui-kit';
 import { KindergartenService } from '../component/unique-screen/components/kindergarten/kindergarten.service';
 import { KindergartenSearchPanelService } from '../component/unique-screen/components/select-map-object/components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
@@ -45,17 +46,21 @@ import { InitDataService } from './services/init-data/init-data.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { NavigationServiceStub } from './services/navigation/navigation.service.stub';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HtmlSelectService } from './services/html-select/html-select.service';
+import { JusticeSearchPanelService } from '../component/unique-screen/components/select-map-object/components/search-panel-resolver/components/justice-search-panel/justice-search-panel.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
  */
 @NgModule({
-  imports: [HttpClientModule],
+  imports: [HttpClientModule, BrowserAnimationsModule],
   providers: [
     { provide: ConfigService, useClass: ConfigServiceStub },
     { provide: LocationService, useClass: LocationServiceStub },
     { provide: NavigationService, useClass: NavigationServiceStub },
     { provide: ScreenService, useClass: ScreenServiceStub },
+    { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
     { provide: WINDOW, useValue: window },
     AddressesToolsService,
     AddressHelperService,
@@ -64,7 +69,6 @@ import { NavigationServiceStub } from './services/navigation/navigation.service.
     CurrentAnswersService,
     DateRefService,
     DatesToolsService,
-    DeviceDetectorService,
     DictionaryApiService,
     DictionaryToolsService,
     DownloadService,
@@ -90,6 +94,9 @@ import { NavigationServiceStub } from './services/navigation/navigation.service.
     SessionStorageService,
     UnsubscribeService,
     YandexMapService,
+    MapAnimationService,
+    HtmlSelectService,
+    JusticeSearchPanelService
   ]
 })
 export class ForTestsOnlyModule {}

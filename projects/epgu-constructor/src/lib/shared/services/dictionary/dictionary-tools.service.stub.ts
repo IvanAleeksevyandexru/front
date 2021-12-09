@@ -1,23 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { ComponentDictionaryFilters } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.interface';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class DictionaryToolsServiceStub {
-  private readonly _filters$: BehaviorSubject<ComponentDictionaryFilters> = new BehaviorSubject({});
-
-  public get filters(): ComponentDictionaryFilters {
-    return this._filters$.getValue();
-  }
-
-  public set filters(val: ComponentDictionaryFilters) {
-    this._filters$.next(val);
-  }
-
-  public get filters$(): Observable<ComponentDictionaryFilters> {
-    return this._filters$.asObservable();
-  }
-
   public getDictionaries$() {
     return of({});
   }

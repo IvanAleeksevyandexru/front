@@ -14,7 +14,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { YMapItem } from '@epgu/epgu-constructor-ui-kit';
+import { flyInOut, YMapItem, DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 import { CommonBalloonContentComponent } from './components/common-balloon-content/common-balloon-content.component';
 import { ElectionsBalloonContentComponent } from './components/elections-balloon-content/elections-balloon-content.component';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
@@ -39,6 +39,7 @@ export const ContentTypes = {
   templateUrl: './balloon-content-resolver.component.html',
   styleUrls: ['./balloon-content-resolver.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [flyInOut],
 })
 export class BalloonContentResolverComponent implements AfterViewInit, OnChanges {
   @ViewChild('content', { read: ViewContainerRef }) content: ViewContainerRef;
@@ -64,14 +65,18 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
     private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef,
     private screenService: ScreenService,
+    public deviceDetector: DeviceDetectorService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.mapObject !== this.mapObject && this.content) {
+    if (changes.mapObject && changes.mapObject !== this.mapObject && this.content) {
       this.balloonContentComponentRef.destroy();
       this.balloonContentComponentRef = null;
       this.addContent();
       this.cdr.detectChanges();
+    }
+    if ('redraw' in changes && this.balloonContentComponentRef) {
+      this.balloonContentComponentRef.instance.cdr.detectChanges();
     }
   }
 

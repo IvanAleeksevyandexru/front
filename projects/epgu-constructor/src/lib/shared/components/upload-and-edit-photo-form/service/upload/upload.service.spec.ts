@@ -6,8 +6,12 @@ import { UploadService } from './upload.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { CompressionService } from '../compression/compression.service';
 import { ObjectHelperService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 
 describe('UploadService', () => {
@@ -54,6 +58,7 @@ describe('UploadService', () => {
         WordTransformService,
         ObjectHelperService,
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });
   });

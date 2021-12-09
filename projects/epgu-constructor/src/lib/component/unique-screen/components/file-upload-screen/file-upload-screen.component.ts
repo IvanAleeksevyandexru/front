@@ -23,12 +23,13 @@ import {
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
+import { UniqueScreenService } from '../../unique-screen.service';
 
 @Component({
   selector: 'epgu-constructor-file-upload-screen',
   templateUrl: './file-upload-screen.component.html',
   styleUrls: ['./file-upload-screen.component.scss'],
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, UniqueScreenService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileUploadScreenComponent implements OnInit {
@@ -89,6 +90,7 @@ export class FileUploadScreenComponent implements OnInit {
 
   constructor(
     public screenService: ScreenService,
+    private uniqueScreenService: UniqueScreenService,
     public uploaderScreenService: UploaderScreenService,
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -120,20 +122,8 @@ export class FileUploadScreenComponent implements OnInit {
       .on(BusEventType.UploaderProcessingStatus)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: { uploadId: string; status: boolean }) =>
-        this.setProcessingStatus(payload),
+        this.uniqueScreenService.setProcessingStatus(payload, this.uploaderProcessing),
       );
-  }
-
-  setProcessingStatus({ uploadId, status }: { uploadId: string; status: boolean }): void {
-    const statusList = this.uploaderProcessing.getValue();
-    const index = statusList.lastIndexOf(uploadId);
-    if (status && index === -1) {
-      statusList.push(uploadId);
-      this.uploaderProcessing.next(statusList);
-    } else if (!status && index !== -1) {
-      statusList.splice(index, 1);
-      this.uploaderProcessing.next(statusList);
-    }
   }
 
   /**
@@ -142,20 +132,6 @@ export class FileUploadScreenComponent implements OnInit {
    */
   getUploadComponentPrefixForMnemonic(componentData: ComponentBase): string {
     return [componentData.id, 'FileUploadComponent'].join('.');
-  }
-
-  /**
-   * Возвращает true если все документы загружены
-   * @param uploaders - массив загрузчиков с файлами
-   * @private
-   */
-  isAllFilesUploaded(uploaders: FileUploadEmitValue[]): boolean {
-    for (let uploaderIndex = 0; uploaderIndex < uploaders.length; uploaderIndex += 1) {
-      if (!uploaders[uploaderIndex].value.every((file: UploadedFile) => file.uploaded)) {
-        return false;
-      }
-    }
-    return true;
   }
 
   /**
@@ -168,38 +144,53 @@ export class FileUploadScreenComponent implements OnInit {
     this.value.totalCount = this.uploaderScreenService.getCurrentFilesCount();
     this.value.totalSize = this.uploaderScreenService.getCurrentFilesSize();
 
-    /**
-     * Блокируем кнопку если:
-     * 1. Есть ошибки
-     * 2. Не в каждом загрузчике есть файл
-     * 3. Не все файлы загрузились на терабайт
-     */
-    this.disabled$$.next(
-      !(
-        $eventData.errors.length === 0 &&
-        this.isEveryUploaderHasFile(this.value.uploads) &&
-        this.isAllFilesUploaded(this.value.uploads)
-      ),
-    );
+    this.disabled$$.next(this.isNextStepDisabled($eventData));
   }
 
   /**
-   * Возвращает true если у каждого загрузчика есть хотя бы один загруженный файл
+   * Блокируем кнопку если:
+   * 1. Есть ошибки
+   * 2. Не в каждом обязательном загрузчике есть файл
+   * 3. Не все файлы загрузились на терабайт
+   */
+  private isNextStepDisabled($eventData: FileResponseToBackendUploadsItem): boolean {
+    return !(
+      $eventData.errors.length === 0 &&
+      this.isEveryRequiredUploaderHasFile(this.value.uploads) &&
+      this.isAllFilesUploaded(this.value.uploads)
+    );
+  }
+
+  private getRequiredUploaders(uploaders: FileUploadEmitValue[]): FileUploadEmitValue[] {
+    return uploaders.filter((uploader) => uploader?.required);
+  }
+
+  /**
+   * Возвращает true если у каждого обязательного загрузчика есть хотя бы один загруженный файл
    * @param uploaders - массив загрузчиков с файлами
    * @private
    */
-  private isEveryUploaderHasFile(uploaders: FileUploadEmitValue[]): boolean {
-    const requiredUploaders = uploaders.filter((uploader) => uploader?.required);
-    const totalUploaders = requiredUploaders?.length;
-
-    if (totalUploaders === 0) {
-      return false;
-    }
+  private isEveryRequiredUploaderHasFile(uploaders: FileUploadEmitValue[]): boolean {
+    const requiredUploaders = this.getRequiredUploaders(uploaders);
 
     const uploadersWithFiles = requiredUploaders.filter((fileUploaderInfo: FileUploadEmitValue) => {
       return fileUploaderInfo?.value.filter((file: UploadedFile) => file.uploaded).length > 0;
     }).length;
 
-    return totalUploaders === uploadersWithFiles;
+    return requiredUploaders.length === uploadersWithFiles;
+  }
+
+  /**
+   * Возвращает true если все документы загружены
+   * @param uploaders - массив загрузчиков с файлами
+   * @private
+   */
+  private isAllFilesUploaded(uploaders: FileUploadEmitValue[]): boolean {
+    for (let uploaderIndex = 0; uploaderIndex < uploaders.length; uploaderIndex += 1) {
+      if (!uploaders[uploaderIndex].value.every((file: UploadedFile) => file.uploaded)) {
+        return false;
+      }
+    }
+    return true;
   }
 }

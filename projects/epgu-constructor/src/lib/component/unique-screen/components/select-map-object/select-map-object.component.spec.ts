@@ -12,6 +12,7 @@ import {
   IFeatureItem,
   YandexMapModule,
   WINDOW,
+  SmoothHeightAnimationDirective,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
@@ -69,6 +70,7 @@ describe('SelectMapObjectComponent', () => {
         CommonBalloonContentComponent,
         CommonSearchPanelComponent,
         SwipeableWrapperComponent,
+        SmoothHeightAnimationDirective
       ],
       imports: [
         BaseModule,
@@ -246,14 +248,6 @@ describe('SelectMapObjectComponent', () => {
     expect(isMapObjectExisted).toBeFalsy();
   });
 
-  it('initSelectedValue should call centerAllPoints when needToAutoCenterAllPoints is true', () => {
-    component['isMultiSelect'] = false;
-    const spy = jest.spyOn<any, any>(component, 'centerAllPoints');
-    component['needToAutoCenterAllPoints'] = true;
-    component['initSelectedValue']();
-    expect(spy).toHaveBeenCalled();
-  });
-
   it('initSelectedValue should call selectClosestMapObject when needToAutoFocus is true', () => {
     component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(component, 'selectClosestMapObject');
@@ -297,6 +291,7 @@ describe('SelectMapObjectComponent', () => {
 
   it('initMap should not call fillCoords if there is attrs.LOMurlTemplate', () => {
     const spy = jest.spyOn<any, any>(component, 'fillCoords');
+    jest.spyOn<any, any>(component.yandexMapService, 'placeObjectsOnMap').mockReturnValue(null);
     component.data.attrs.LOMurlTemplate = 'temp';
     component['initMap']();
     expect(spy).not.toHaveBeenCalled();

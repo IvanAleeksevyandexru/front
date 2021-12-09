@@ -1,6 +1,7 @@
 <epgu-cf-ui-constructor-screen-pad *ngIf="loaded$ | async; else loadingTemplate">
   <ng-content select="[before-content]"></ng-content>
   <epgu-constructor-time-slot-month
+    *ngIf="isVisibleDays$ | async"
     [months]="months$ | async"
     [current]="month$ | async"
     (choose)="changeMonthAction($event)"
