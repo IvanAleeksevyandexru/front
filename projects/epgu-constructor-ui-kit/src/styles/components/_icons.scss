@@ -27,6 +27,10 @@
   &--left {
     transform: rotate(180deg);
   }
+  &--up {
+    transform: rotate(-90deg);
+    mask-position: 50% 0;
+  }
   &.disabled {
     background-color: $color-telegrey-scuro;
   }
@@ -43,4 +47,10 @@
     height: 16px;
     background-image: escape-svg($close-icon-small);
   }
+}
+
+.icon-magnifying-glass {
+  background-image: escape-svg($blue-magnifying-glass-icon);
+  width: 20px;
+  height: 20px;
 }

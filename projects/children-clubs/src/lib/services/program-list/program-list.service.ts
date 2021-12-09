@@ -54,6 +54,7 @@ export class ProgramListService {
   data$ = this.data$$.pipe(filter((val) => !!val.length));
   paginatedData$ = new BehaviorSubject<BaseProgram[]>([]);
   programFilters$ = new BehaviorSubject<Filters>({});
+  isFilterPanelExpanded$ = new BehaviorSubject<boolean>(true);
 
   public groupFiltersMode$: Observable<{
     isMap: boolean;

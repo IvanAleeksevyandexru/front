@@ -1,37 +1,58 @@
 <div>
   <epgu-cf-ui-constructor-screen-pad>
-    <button
-      *ngIf="showNav"
-      class="back-button link-btn"
-      name="prev"
-      (click)="setGroupFiltersMode(GroupFiltersModes.list)"
-    >
-      <span class="icon-arrow icon-arrow--left icon-arrow--back"></span>
-      <span>Назад</span>
-    </button>
-    <div class="subtitle">
-      {{ title }}
+    <div class="buttons-row">
+      <button
+        *ngIf="showNav"
+        class="back-button link-btn"
+        name="prev"
+        (click)="setGroupFiltersMode(GroupFiltersModes.list)"
+      >
+        <span class="icon-arrow icon-arrow--left icon-arrow--back"></span>
+        <span>Назад</span>
+      </button>
+      <span *ngIf="showNav" class="delimiter"></span>
+      <button
+        *ngIf="programListService.isFilterPanelExpanded$ | async"
+        class="back-button link-btn"
+        (click)="expand()"
+      >
+        <span class="icon-arrow icon-arrow--up icon-arrow--back"></span>
+        <span>Свернуть</span>
+      </button>
+      <button
+        *ngIf="(programListService.isFilterPanelExpanded$ | async) === false"
+        class="back-button link-btn"
+        (click)="expand()"
+      >
+        <span class="magnifying-glass icon-magnifying-glass"></span>
+        <span>Показать поиск</span>
+      </button>
     </div>
-    <lib-search-bar [formControl]="searchControl"></lib-search-bar>
-
-    <div class="filter-panel">
-      <a class="filter-btn" (click)="openFilters.next()">
-        <span class="filter-icon" [class.active]="filtersCount">
-          <img src="{{ config.staticDomainAssetsPath }}/assets/icons/filter.svg" />
-        </span>
-        Фильтры&nbsp;
-        <span *ngIf="filtersCount">({{ filtersCount }})</span>
-      </a>
-      <div *ngIf="isShowMenu" class="nav-bar">
-        <div class="nav-item"
-          [ngClass]="{ active: (programListService.groupFiltersMode$ | async).isMap }"
-          (click)="setGroupFiltersMode(GroupFiltersModes.map)"
-        >Карта</div>
-        <div class="nav-item"
-          [ngClass]="{ active: (programListService.groupFiltersMode$ | async).isList }"
-          (click)="setGroupFiltersMode(GroupFiltersModes.list)"
-        >Список</div>
+    <ng-container *ngIf="programListService.isFilterPanelExpanded$ | async">
+      <div class="subtitle">
+        {{ title }}
       </div>
-    </div>
+      <lib-search-bar [formControl]="searchControl"></lib-search-bar>
+
+      <div class="filter-panel">
+        <a class="filter-btn" (click)="openFilters.next()">
+          <span class="filter-icon" [class.active]="filtersCount">
+            <img src="{{ config.staticDomainAssetsPath }}/assets/icons/filter.svg" />
+          </span>
+          Фильтры&nbsp;
+          <span *ngIf="filtersCount">({{ filtersCount }})</span>
+        </a>
+        <div *ngIf="isShowMenu" class="nav-bar">
+          <div class="nav-item"
+            [ngClass]="{ active: (programListService.groupFiltersMode$ | async).isMap }"
+            (click)="setGroupFiltersMode(GroupFiltersModes.map)"
+          >Карта</div>
+          <div class="nav-item"
+            [ngClass]="{ active: (programListService.groupFiltersMode$ | async).isList }"
+            (click)="setGroupFiltersMode(GroupFiltersModes.list)"
+          >Список</div>
+        </div>
+      </div>
+    </ng-container>
   </epgu-cf-ui-constructor-screen-pad>
 </div>
