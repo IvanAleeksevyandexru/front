@@ -3,12 +3,10 @@ import { FormControl, Validators } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { CustomComponent } from '../../../custom-screen/components-list.types';
 import { InvitationService } from '../../invitation.service';
 import { InvitationTypes } from '../../invitation.types';
-
 import { InvitationType } from './invitation-type';
 import { InvitationErrorData, LkInvitationInputData } from './invitation-data';
 import InvitationAttrs from './invitation-attrs';
@@ -41,7 +39,7 @@ export class InvitationComponent implements OnInit {
     this.email.setValidators([
       Validators.required,
       this.validationService.customValidator((this.data as unknown) as CustomComponent),
-    ]); // TODO fix ComponentDto and ComponentBase
+    ]);
 
     this.urlPrefix = this.config.mocks.includes('payment')
       ? `${this.config.mockUrl}/lk/v1`
@@ -75,7 +73,7 @@ export class InvitationComponent implements OnInit {
       };
     }
 
-    const ref = this.data.attrs?.ref as string; // TODO: выяснить почему ref может быть массивом либо строкой
+    const ref = this.data.attrs?.ref as string;
     const value = this.applicantAnswers[ref]?.value;
 
     if (!value) {

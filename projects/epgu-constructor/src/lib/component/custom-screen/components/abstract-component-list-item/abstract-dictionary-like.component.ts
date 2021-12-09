@@ -75,7 +75,11 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
 
   protected getDictionary(options): Observable<CustomListDictionary> {
     return this.model.loadReferenceData$(
-      this.dictionaryToolsService.getDictionaries$(this.attrs.dictionaryType, this.model, options),
+      this.dictionaryToolsService.getDictionaries$(
+        this.attrs.dictionaryType as string,
+        this.model,
+        options,
+      ),
     );
   }
 
@@ -108,7 +112,11 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
         this.model
           .getDictionariesByFilter(
             hasFilterReference,
-            this.dictionaryToolsService.getDictionaries$(dictionaryType, this.model, options),
+            this.dictionaryToolsService.getDictionaries$(
+              dictionaryType as string,
+              this.model,
+              options,
+            ),
           )
           .subscribe(() => {
             this.model.value = this.componentsListToolsService.convertedValue(this.model) as string;

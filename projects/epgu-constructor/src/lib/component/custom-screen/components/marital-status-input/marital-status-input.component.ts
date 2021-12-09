@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 import { ListElement } from '@epgu/ui/models/dropdown';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-
 import {
   MaritalStatusInputField,
   MaritalStatusInputFields,
@@ -252,7 +251,7 @@ export class MaritalStatusInputComponent
       );
 
       return this.dictionaryToolsService
-        .getDictionaries$(regComponent.attrs.dictionaryType, regComponent, {
+        .getDictionaries$(regComponent.attrs.dictionaryType as string, regComponent, {
           ...(regComponent.attrs.searchProvider.dictionaryOptions || {}),
           ...dictionaryOptions,
         })
