@@ -62,7 +62,7 @@ export class MedicalReferralsListContainerComponent {
 
   getModalParams(errorMessage: string): ConfirmationModal {
     return {
-      ...COMMON_ERROR_MODAL_PARAMS,
+      ...COMMON_ERROR_MODAL_PARAMS(),
       text: `<div class="text_modal_error">
         <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
         <h4>Не удалось загрузить список направлений</h4>

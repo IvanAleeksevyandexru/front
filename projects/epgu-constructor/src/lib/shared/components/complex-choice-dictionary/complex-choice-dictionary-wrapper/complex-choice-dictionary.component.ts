@@ -119,7 +119,7 @@ export class ComplexChoiceDictionaryComponent implements ControlValueAccessor, O
 
   private openErrorModal(): Observable<ListElement[]> {
     return this.modalService
-      .openModal(ConfirmationModalComponent, COMMON_ERROR_MODAL_PARAMS)
+      .openModal(ConfirmationModalComponent, COMMON_ERROR_MODAL_PARAMS())
       .pipe(mapTo(this.selectedItems.list));
   }
 }

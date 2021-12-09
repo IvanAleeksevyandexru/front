@@ -210,7 +210,7 @@ describe('SelectMapObjectComponent', () => {
     const spy = jest.spyOn<any, any>(modalService, 'openModal');
     component['initMap']();
     expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, {
-      ...COMMON_ERROR_MODAL_PARAMS,
+      ...COMMON_ERROR_MODAL_PARAMS(),
       backdropDismiss: false,
       showCrossButton: false,
       buttons: [
