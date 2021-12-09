@@ -1,25 +1,35 @@
-import { ComponentPresetDto, ComponentRelationFieldDto, KeyValueMap, TextTransform } from '@epgu/epgu-constructor-types';
+import {
+  ComponentPresetDto,
+  ComponentRelationFieldDto,
+  DefaultValue,
+  Disabled,
+  KeyValueMap,
+  TextTransform,
+} from '@epgu/epgu-constructor-types';
 import { DateRangeRef } from '../../../shared/services/date-range/date-range.models';
 import {
   CustomComponentAttr,
   CustomComponentAttrField,
   CustomComponentAttrValidation,
-  CustomComponentRef
+  CustomComponentRef,
+  Grid,
+  OnlyFirstScreen,
+  Placeholder,
 } from '../components-list.types';
 
 export default class GenericAttrs {
   readonly preset: ComponentPresetDto;
-  readonly defaultValue: string;
+  readonly defaultValue: DefaultValue;
   readonly fstuc: TextTransform;
   readonly ref: (CustomComponentRef | DateRangeRef)[];
   readonly refs?: KeyValueMap;
   readonly fields: CustomComponentAttrField;
   readonly validation: CustomComponentAttrValidation[];
   readonly relationField: ComponentRelationFieldDto;
-  readonly placeholder: string;
-  readonly onlyFirstScreen: boolean;
-  readonly grid: string;
-  readonly disabled: boolean;
+  readonly placeholder: Placeholder;
+  readonly onlyFirstScreen: OnlyFirstScreen;
+  readonly grid: Grid;
+  readonly disabled: Disabled;
 
   constructor(attrs: CustomComponentAttr) {
     this.preset = attrs.preset;
