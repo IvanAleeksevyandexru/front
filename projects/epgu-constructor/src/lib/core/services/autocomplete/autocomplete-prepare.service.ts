@@ -199,12 +199,12 @@ export class AutocompletePrepareService {
       fields,
       componentMnemonic,
     );
-    const field =
-             fields.find((field: ISuggestionApiValueField) => field.mnemonic === componentMnemonic)
-          || fields.find((field: ISuggestionApiValueField) => componentMnemonic?.includes(field.mnemonic));
-
-    if (field) {
-      let { value, mnemonic } = field;
+    const requiredField = fields.find(field => {
+      const mnemonics = this.splitParentMnemonic(field.mnemonic);
+      return mnemonics.includes(componentMnemonic);
+    });
+    if (requiredField) {
+      let { value, mnemonic } = requiredField;
       let originalItem = value;
 
       value = this.prepareValue(repeatableComponents, componentsSuggestionsList, value, mnemonic);

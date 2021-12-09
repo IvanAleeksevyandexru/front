@@ -88,6 +88,9 @@ export * from './lib/base/directives/currency/currency-transform.directive';
 export * from './lib/base/directives/rank/rank.module';
 export * from './lib/base/directives/rank/rank-transform.directive';
 
+export * from './lib/base/directives/smooth-height/smooth-height.module';
+export * from './lib/base/directives/smooth-height/smooth-height.directive';
+
 // Pipes
 
 export * from './lib/base/pipes/mask-handle/mask-handle.module';
@@ -213,10 +216,12 @@ export * from './lib/base/constants/redirect-event';
 export * from './lib/base/constants/dates';
 export * from './lib/base/constants/regions';
 
+export * from './lib/base/components/yandex-map/yandex-map-animation/map-animation.service';
+
 // Interfaces
 export * from './lib/base/components/yandex-map/yandex-map.interface';
 export * from './lib/core/services/addresses-tools/addresses-tools.service.interface';
-
+export * from './lib/base/components/yandex-map/yandex-map-animation/MAP_ANIMATION_CONSTANTS';
 // Mocks
 export * from './lib/core/services/select-map-object/mocks/mock-select-map-object';
 

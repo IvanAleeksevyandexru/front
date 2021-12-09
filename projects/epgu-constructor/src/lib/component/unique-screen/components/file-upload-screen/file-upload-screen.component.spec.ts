@@ -416,6 +416,24 @@ describe('FileUploadScreenComponent', () => {
       });
     });
 
+    it('should be FALSE if there are no errors AND no required uploaders', () => {
+      const debugEl = fixture.debugElement.query(By.css(selector));
+
+      eventBusService.emit(BusEventType.FileUploadValueChangedEvent, {
+        files: [
+          {
+            uploadId: '1',
+            required: false,
+            value: [],
+          }
+        ],
+        errors: [],
+      });
+      fixture.detectChanges();
+
+      expect(debugEl.componentInstance.disabled).toBeFalsy();
+    });
+
     it('action property', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
       expect(debugEl.injector.get(ActionDirective).action).toEqual(button);

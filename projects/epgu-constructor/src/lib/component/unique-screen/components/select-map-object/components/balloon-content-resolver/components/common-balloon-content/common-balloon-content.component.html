@@ -1,4 +1,4 @@
-<div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded"></div>
+<div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded" [@rotateAndDiminish]></div>
 <div class="balloon-content-wrapper">
   <h6
     (click)="objectClick(mapObject)"
@@ -9,7 +9,11 @@
     class="map-object__header"
   >
   </h6>
-  <ng-container *ngIf="mapObject.expanded">
+  <div epgu-cf-ui-smooth-height
+       [smoothHeight]="mapObject.expanded"
+       [@.disabled]="lockAnimation || this.deviceDetector.isDesktop"
+  >
+    <ng-container *ngIf="mapObject.expanded">
     <div class="map-object__attr" *ngFor="let itemContent of mapObject.baloonContent">
       <div class="map-object__label">{{ itemContent.label }}</div>
       <epgu-constructor-output-html
@@ -47,7 +51,8 @@
         </div>
       </ng-template>
     </ng-container>
-  </ng-container>
+    </ng-container>
+  </div>
 
   <!--В данное модальное окно информацию должен предоставлять сервис который пока что не работает / не существует-->
   <ng-template #detailsTemplate>

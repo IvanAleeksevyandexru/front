@@ -6,6 +6,7 @@ import {
   ConstructorCheckboxModule,
   Icons,
   YandexMapModule,
+  SmoothHeightAnimationDirectiveModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { PrevButtonModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
@@ -86,6 +87,7 @@ import { HighlightModule } from '@epgu/ui/pipes';
     ClickableLabelModule,
     YandexMapModule,
     HighlightModule,
+    SmoothHeightAnimationDirectiveModule
   ],
   entryComponents: [
     SelectMapObjectComponent,

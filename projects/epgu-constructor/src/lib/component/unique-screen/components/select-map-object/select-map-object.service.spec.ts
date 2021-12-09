@@ -25,25 +25,17 @@ import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary
 import { IDirectProblemSolution } from '@epgu/epgu-constructor-ui-kit/src/lib/base/components/yandex-map/yandex-map.interface';
 import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { mockMapDictionary } from './mocks/mock-select-map-dictionary';
+import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 
-describe('SelectMapObjectComponent', () => {
+describe('SelectMapObjectService', () => {
   let selectMapObjectService: SelectMapObjectService;
   let kindergartenSearchPanelService: KindergartenSearchPanelService;
   let screenService: ScreenServiceStub;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, ForTestsOnlyModule],
       providers: [
-        SelectMapObjectService,
-        Icons,
-        YandexMapService,
-        UnsubscribeService,
-        KindergartenSearchPanelService,
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
       ],
     }).compileComponents();
   });
