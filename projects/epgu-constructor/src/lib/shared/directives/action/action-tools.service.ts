@@ -149,6 +149,7 @@ export class ActionToolsService {
           this.defaultNavigation(action, componentId, stepType);
         });
     } else if (this.hookService.hasHooks(HookTypes.ON_BEFORE_SUBMIT)) {
+      this.screenService.updateLoading(true);
       forkJoin(this.hookService.getHooks(HookTypes.ON_BEFORE_SUBMIT))
         .pipe(catchError(() => of([])))
         .subscribe(() => {
