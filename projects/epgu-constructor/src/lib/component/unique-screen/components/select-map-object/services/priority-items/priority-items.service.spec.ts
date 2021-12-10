@@ -119,7 +119,7 @@ describe('PriorityItemsService', () => {
       expect(service.remove(mockCreateItem('3'))).toEqual({
         index: -1,
         isAdded: true,
-        item: test1,
+        item: { ...test1, isSelected: false },
       });
       jest.spyOn(service, 'moreBySize');
       jest.spyOn(service, 'updateItems');
@@ -127,7 +127,7 @@ describe('PriorityItemsService', () => {
       expect(service.remove(mockCreateItem('2'))).toEqual({
         index: 1,
         isAdded: true,
-        item: test2,
+        item: { ...test2, isSelected: false },
       });
       expect(service.updateItems).toHaveBeenCalledWith(test3);
       expect(service.updateScreenItems).toHaveBeenCalledWith(test3);

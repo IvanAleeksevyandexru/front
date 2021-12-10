@@ -374,6 +374,17 @@ export class YandexMapService implements OnDestroy {
     );
   }
 
+  public recalcPinStyles(): void {
+    this.objectManager?.objects.getAll().forEach((mapObject) => {
+      this.objectManager.objects.setObjectProperties(mapObject.id, { pinStyle: this.getPinStyle(mapObject) });
+    });
+  }
+
+  private getPinStyle(mapObject): string {
+    if (mapObject.properties.isActive) return 'pin-red';
+    return mapObject.properties.res.isSelected ? 'pin-red-checked' : 'pin-blue';
+  }
+
   private prepareMapObjectsForAnimation(): void {
     if (this.mapAnimationService.firstLoading) {
       const clusters = this.objectManager.clusters.getAll();
