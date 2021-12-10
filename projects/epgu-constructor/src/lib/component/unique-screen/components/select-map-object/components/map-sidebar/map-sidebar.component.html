@@ -64,6 +64,7 @@
           [mapObject]="mapObject"
           [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
           [attrs]="sidebarData.attrs.balloonAttrs"
+          [showCrossButton]="sidebarData.attrs.mapType !== MapTypes.justiceMap"
           (selectObject)="selectObject($event)"
           (handleObjectClickEvent)="handleMapObjectClick(activeItem)"
           (collapseObjectEvent)="collapseObject(activeItem)"
@@ -75,7 +76,7 @@
 
 <epgu-constructor-swipeable-wrapper *ngIf="activeItem && selectMapObjectService.isMapViewType" class="swipeable-mode">
   <div
-    *ngIf="originalValue.length && (sidebarData.attrs.mapType === 'justiceMap' || sidebarData.attrs.mapType === 'electionsMap')"
+    *ngIf="originalValue.length"
     class="cross-btn"
     (click)="collapseObject(activeItem)"
   >
@@ -87,9 +88,9 @@
         [mapObject]="mapObject"
         [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
         [attrs]="sidebarData.attrs.balloonAttrs"
+        [showCrossButton]="false"
         (selectObject)="selectObject($event)"
         (handleObjectClickEvent)="$event.expanded = true"
-        (collapseObjectEvent)="activeItem = null"
       >
       </epgu-constructor-balloon-content-resolver>
     </ng-container>

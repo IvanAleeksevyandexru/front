@@ -9,8 +9,11 @@
   box-shadow: 0px -24px 48px 0px $color-shadow;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  transition: top .5s ease-in-out;
+  transition: top 0.5s ease-in-out;
   z-index: 6;
+  .swipeable-content-body {
+    height: calc(100vh - 40px);
+  }
 }
 
 .swipeable-marker-wrapper {
