@@ -6,10 +6,16 @@ export const STATUS_ICON_MAP = {
   error:
     '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/image-error.svg">',
   stop:
-    '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/stop.svg">'
+    '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/stop.svg">',
 };
 
 const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>Не сработало</h4>
+<span>Попробуйте снова или зайдите позже. Если ничего не изменится — напишите в
+<a target="_blank" href="https://www.gosuslugi.ru/feedback">службу поддержки</a></span></div>`;
+
+const COMMON_ERROR_MODAL_PARAMS_TEXT_WITH_TRACEID = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Не сработало</h4>
 <span>Попробуйте снова или зайдите позже. Если ничего не изменится — напишите в
@@ -143,24 +149,26 @@ export const NO_DOCTORS_AVAILABLE: ConfirmationModal = {
   isShortModal: true,
 };
 
-export const COMMON_ERROR_MODAL_PARAMS: ConfirmationModal = {
-  text: COMMON_ERROR_MODAL_PARAMS_TEXT,
-  title: '',
-  showCloseButton: false,
-  showCrossButton: true,
-  buttons: [
-    {
-      label: 'На предыдущий шаг',
-      color: 'white',
-      closeModal: true,
-      value: 'prevStep',
-    },
-    {
-      label: 'Попробовать ещё раз',
-      closeModal: true,
-    },
-  ],
-  isShortModal: true,
+export const COMMON_ERROR_MODAL_PARAMS = (traceId?: string): ConfirmationModal => {
+  return {
+    text: traceId ? COMMON_ERROR_MODAL_PARAMS_TEXT_WITH_TRACEID : COMMON_ERROR_MODAL_PARAMS_TEXT,
+    title: '',
+    showCloseButton: false,
+    showCrossButton: true,
+    buttons: [
+      {
+        label: 'На предыдущий шаг',
+        color: 'white',
+        closeModal: true,
+        value: 'prevStep',
+      },
+      {
+        label: 'Попробовать ещё раз',
+        closeModal: true,
+      },
+    ],
+    isShortModal: true,
+  };
 };
 
 export const REGIONS_MODAL: ConfirmationModal = {

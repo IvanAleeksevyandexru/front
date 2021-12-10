@@ -1,13 +1,14 @@
+import { Body, Path, Timeout, Url } from './component-attrs';
 import { KeyValueMap } from './core.types';
 import { ComponentDictionaryFilterDto, DictionaryUrlTypes } from './dictionary';
 
 export interface ComponentValue {
-  url: string;
-  path: string;
-  body?: string;
+  url: Url;
+  path: Path;
+  body?: Body;
   headers: KeyValueMap;
-  method: string;
-  timeout?: string;
+  method: LogicComponentMethods;
+  timeout?: Timeout;
 }
 
 export interface LogicComponents {

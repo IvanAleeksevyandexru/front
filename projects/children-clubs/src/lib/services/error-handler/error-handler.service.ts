@@ -41,7 +41,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         result === 'login' ? this.locationService.reload() : this.locationService.href('/');
       });
     } else {
-      this.showModal(COMMON_ERROR_MODAL_PARAMS, traceId).then();
+      this.showModal(COMMON_ERROR_MODAL_PARAMS(traceId), traceId).then();
     }
     this.logger.log(['ErrorHandlerService handleResponse']);
 

@@ -60,7 +60,7 @@ export class DepartmentLookupComponent
         dataSource = this.dictionaryFiltersLoader(
           this.model,
           screenStore,
-          dictionaryType,
+          dictionaryType as string,
           dictionaryFilters,
         );
         return this.model.loadReferenceData$(dataSource);
@@ -70,7 +70,7 @@ export class DepartmentLookupComponent
         : { pageNum: 0 };
 
       return this.dictionaryToolsService
-        .getDictionaries$(dictionaryType, this.model, firstQueryOptions)
+        .getDictionaries$(dictionaryType as string, this.model, firstQueryOptions)
         .pipe(
           concatMap((value) => {
             if (value.data.items.length === 0 && repeatWithNoFilters) {
@@ -81,7 +81,7 @@ export class DepartmentLookupComponent
                 secondaryDictionaryFilter,
               );
               dataSource = this.dictionaryToolsService
-                .getDictionaries$(dictionaryType, this.model, secondQueryOptions)
+                .getDictionaries$(dictionaryType as string, this.model, secondQueryOptions)
                 .pipe(
                   map((response: CustomListGenericData<DictionaryResponse>) => ({
                     ...response,

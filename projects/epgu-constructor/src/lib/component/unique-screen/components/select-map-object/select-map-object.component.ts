@@ -360,7 +360,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     ) {
       this.modalService
         .openModal(ConfirmationModalComponent, {
-          ...COMMON_ERROR_MODAL_PARAMS,
+          ...COMMON_ERROR_MODAL_PARAMS(),
           backdropDismiss: false,
           showCrossButton: false,
           buttons: [

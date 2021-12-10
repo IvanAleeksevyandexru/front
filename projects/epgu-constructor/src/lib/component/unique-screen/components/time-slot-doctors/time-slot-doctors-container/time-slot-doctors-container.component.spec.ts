@@ -570,7 +570,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   describe('showError()', () => {
     it('show error and load timeslots by click on retry', () => {
       const confirmationModalParams = {
-        ...COMMON_ERROR_MODAL_PARAMS,
+        ...COMMON_ERROR_MODAL_PARAMS(),
         buttons: [
           {
             label: 'Попробовать ещё раз',
@@ -589,7 +589,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     it('show error and not load timeslots by click on close', () => {
       const confirmationModalParams = {
-        ...COMMON_ERROR_MODAL_PARAMS,
+        ...COMMON_ERROR_MODAL_PARAMS(),
         buttons: [
           {
             label: 'Попробовать ещё раз',
@@ -610,11 +610,11 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   it('showModal()', () => {
     jest.spyOn(modalService, 'openModal');
 
-    component.showModal(COMMON_ERROR_MODAL_PARAMS);
+    component.showModal(COMMON_ERROR_MODAL_PARAMS());
 
     expect(modalService.openModal).toHaveBeenLastCalledWith(
       ConfirmationModalComponent,
-      COMMON_ERROR_MODAL_PARAMS,
+      COMMON_ERROR_MODAL_PARAMS(),
     );
   });
 
@@ -861,7 +861,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     it('when error is null', () => {
       jest.spyOn(component, 'showModal');
       component.showCustomError(null);
-      expect(component.showModal).toHaveBeenLastCalledWith(COMMON_ERROR_MODAL_PARAMS);
+      expect(component.showModal).toHaveBeenLastCalledWith(COMMON_ERROR_MODAL_PARAMS());
     });
 
     it('when error is session timeout', () => {

@@ -1,5 +1,5 @@
 <children-clubs-select-map-object *ngIf="(listService.groupFiltersMode$ | async).isMap">
-  <div class="filter-panel">
+  <div class="filter-panel" [ngClass]="{ expanded: listService.isFilterPanelExpanded$ | async }">
     <children-clubs-filter-panel
       (openFilters)="openFilter()"
       (search)="search($event)"

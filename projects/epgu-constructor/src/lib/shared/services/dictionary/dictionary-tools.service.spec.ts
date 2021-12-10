@@ -24,6 +24,7 @@ import { DateRestrictionsService } from '../date-restrictions/date-restrictions.
 import { getDictKeyByComp } from './dictionary-helper';
 import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
+import { DictionaryItem } from './dictionary-api.types';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -67,6 +68,18 @@ const form = {
       value: '',
     },
   ],
+};
+
+const dictionaryItem = {
+  attributes: [
+    { name: 'MO_Id', value: '221' }, {
+      name: 'Resource_Id',
+      value: '00011101623'
+    },
+    { name: 'Resource_Name', value: 'Крылова Анна Сергеевна' }, {
+      name: 'Availability_Date',
+      value: '2021-12-03#2021-12-04#2021-12-05#2021-12-06'
+    }]
 };
 
 describe('DictionaryToolsService', () => {
@@ -394,6 +407,44 @@ describe('DictionaryToolsService', () => {
       const filter = service.getFilterOptions({ value: 42 }, {}, undefined);
 
       expect(filter).toEqual({ filter: null });
+    });
+  });
+
+  describe('parsePath()', () => {
+    it('should return path without parsing', () => {
+      const path = 'attributes[3].value';
+      const item = dictionaryItem as unknown as DictionaryItem;
+
+      expect(service.parsePath(path, item)).toBe(
+        path,
+      );
+    });
+
+    it('should return path if there is no object array by path', () => {
+      const path =  'attributes1[?(@.name==AttributeName)].value';
+      const item = dictionaryItem as unknown as DictionaryItem;
+
+      expect(service.parsePath(path, item)).toBe(
+        path,
+      );
+    });
+
+    it('should return path if there is no index in object array by expression', () => {
+      const path =  'attributes[?(@.name1==AttributeName)].value';
+      const item = dictionaryItem as unknown as DictionaryItem;
+
+      expect(service.parsePath(path, item)).toBe(
+        path,
+      );
+    });
+
+    it('should return parsed path', () => {
+      const path =  'attributes[?(@.name==Resource_Name)].value';
+      const item = dictionaryItem as unknown as DictionaryItem;
+
+      expect(service.parsePath(path, item)).toBe(
+        'attributes[2].value',
+      );
     });
   });
 });
