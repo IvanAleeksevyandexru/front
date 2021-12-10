@@ -191,7 +191,7 @@ describe('ProgramFiltersComponent', () => {
 
   describe('placeSearch', () => {
 
-    it('should return all items if serachString is empty', () => {
+    it('should return all items if searchString is empty', () => {
       component['dictionary'].municipalitiesList$ = of([{ id: 1, text: 'a' }]);
       const search = component.placeSearch();
 
