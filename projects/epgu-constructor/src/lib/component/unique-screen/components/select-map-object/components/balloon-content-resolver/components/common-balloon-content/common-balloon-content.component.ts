@@ -33,6 +33,7 @@ export class CommonBalloonContentComponent implements IBalloonContent {
   @Input() mapObject;
   @Input() lockAnimation = false;
   @Input() attrs: KeyValueMap = {};
+  @Input() showCrossButton = true;
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
   public selectObject: Function;

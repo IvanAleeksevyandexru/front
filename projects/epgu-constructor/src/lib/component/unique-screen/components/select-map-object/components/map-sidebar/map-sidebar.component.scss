@@ -69,22 +69,10 @@
   .cross-btn {
     display: block;
     position: absolute;
-    top: 0;
+    top: 20px;
   }
   .balloon-content-wrapper {
     display: flex !important;
     flex-direction: column;
-  }
-  .submit-button {
-    margin-top: auto !important;
-    margin-bottom: 24px !important;
-  }
-}
-::ng-deep.swipeable-mode .map-object {
-  position: static !important;
-  &__header {
-    &__bold {
-      max-width: none !important;
-    }
   }
 }
