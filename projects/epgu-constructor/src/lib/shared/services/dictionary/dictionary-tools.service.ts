@@ -48,6 +48,17 @@ interface CalcFilterFuncArgs {
   attributeType: AttributeTypes;
 }
 
+/**
+ * attributes[?(@.name==AttributeName)].value
+ * Groups:
+ * attributes[?(@.name==AttributeName)].value
+ * attributes
+ * ?(@.name==AttributeName)
+ * name
+ * AttributeName
+ */
+const FIND_INDEX_IN_OBJECT_ARRAY_REGEXP = '^(.*)\\[([?]\\(@\\.(.*)==(.*)\\))\\].*$';
+
 @Injectable()
 export class DictionaryToolsService {
   constructor(
@@ -200,16 +211,41 @@ export class DictionaryToolsService {
     mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
     isRoot?: boolean,
   ): ListElement[] {
+    const idPath = this.parsePath(mappingParams.idPath, items[0]);
+    const textPath = this.parsePath(mappingParams.textPath, items[0]);
+
     return items.map((item) => ({
       originalItem: item,
       id:
-        (isRoot ? get(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) ||
+        (isRoot ? get(item, idPath, undefined) : item[idPath]) ||
         item.value,
       text: `${
-        (isRoot ? get(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) ||
+        (isRoot ? get(item, textPath, undefined) : item[textPath]) ||
         item.title
       }`,
     }));
+  }
+
+  public parsePath(
+    path: string,
+    dictionaryItem: DictionaryItem | KeyValueMap
+  ): string {
+
+    if (path.search(FIND_INDEX_IN_OBJECT_ARRAY_REGEXP) == -1) {
+      return path;
+    }
+
+    const [, objectPath, indexExpression, key, value] = path.match(FIND_INDEX_IN_OBJECT_ARRAY_REGEXP);
+
+    const objectArray = get(dictionaryItem, objectPath, undefined);
+
+    if (!Array.isArray(objectArray)) {
+      return path;
+    }
+
+    const index = objectArray.findIndex((object) => object[key] == value);
+
+    return index != -1 ? path.replace(indexExpression, `${index}`) : path;
   }
 
   public clearTemporaryFilter(rawFilter: DictionarySubFilter): DictionarySubFilter {
@@ -221,6 +257,7 @@ export class DictionaryToolsService {
     }
     return filter;
   }
+
   public clearTemporaryOptions(options: DictionaryOptions): DictionaryOptions {
     const filter = this.clearTemporaryFilter(
       options.filter as DictionarySubFilter,
@@ -318,7 +355,7 @@ export class DictionaryToolsService {
     return calcFunc({ dFilter, attributeType, componentValue, screenStore, index });
   }
 
-  private processTypeValue({ dFilter }: CalcFilterFuncArgs): ValueForFilter  {
+  private processTypeValue({ dFilter }: CalcFilterFuncArgs): ValueForFilter {
     const rawValue = JSON.parse(dFilter.value);
 
     return { rawValue, value: rawValue };
