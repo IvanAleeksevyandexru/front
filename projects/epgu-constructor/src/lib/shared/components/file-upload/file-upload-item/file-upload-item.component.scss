@@ -196,4 +196,7 @@ input[type='file'] {
   }
 }
 
+.info__text::ng-deep > .text ul{
+  margin: 0 !important;
+}
 @include rubles('.info__text');
