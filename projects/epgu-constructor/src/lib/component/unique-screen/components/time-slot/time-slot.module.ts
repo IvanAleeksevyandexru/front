@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
-import { BaseModule } from '../../../../shared/base.module';
 import {
   ConstructorCheckboxModule,
   ScreenContainerModule,
   ScreenPadModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { FormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BaseModule } from '../../../../shared/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { CalendarModule } from '../../../../shared/components/calendar/calendar.module';
 
@@ -41,7 +42,6 @@ import { TimeSlotSmev2Service } from './services/smev2/time-slot-smev2.service';
 import { TimeSlotSmev3Service } from './services/smev3/time-slot-smev3.service';
 import { TimeSlotSmev3StateService } from './services/smev3-state/time-slot-smev3-state.service';
 import { TimeSlotBaseScreenComponent } from './components/base/time-slot-base-screen/time-slot-base-screen.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Smev2RestApiInterceptor } from './services/api/smev2/smev2-rest-api.interceptor';
 import { Smev3RestApiInterceptor } from './services/api/smev3/smev3-rest-api.interceptor';
 // eslint-disable-next-line max-len

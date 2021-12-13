@@ -9,7 +9,9 @@ describe('GetValueRelation', () => {
   let relation: GetValueRelation;
   let componentVal = 'some value';
   let components: CustomComponent[] = [];
-  const refRelationService: RefRelationService = MockService(RefRelationService) as unknown as RefRelationService;
+  const refRelationService: RefRelationService = (MockService(
+    RefRelationService,
+  ) as unknown) as RefRelationService;
 
   beforeEach(() => {
     relation = new GetValueRelation(refRelationService);
@@ -39,7 +41,7 @@ describe('GetValueRelation', () => {
       dependentControlValue: {
         firstControl: 'first value',
         secondControl: 'second value',
-      }
+      },
     });
     components = [createComponentMock({ id: 'someSourceId' })];
 

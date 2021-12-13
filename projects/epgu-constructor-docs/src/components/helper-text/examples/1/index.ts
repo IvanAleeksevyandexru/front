@@ -9,5 +9,6 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 })
 export class Example1EpguHelperTextComponent {
   sizes = ['', 'lg'];
+
   content = ['Текст подсказки', 'Текст увеличенной подсказки'];
 }

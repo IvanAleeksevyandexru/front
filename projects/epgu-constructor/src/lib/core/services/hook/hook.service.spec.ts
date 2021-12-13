@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
+import { of } from 'rxjs';
 import { HookService } from './hook.service';
 import { HookTypes } from './hook.constants';
-import { of } from 'rxjs';
 
 describe('HookServiceService', () => {
   let service: HookService;

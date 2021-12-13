@@ -1,21 +1,28 @@
-import {
-  Clarifications,
-  TextTransform
-} from '@epgu/epgu-constructor-types';
+import { Clarifications, TextTransform } from '@epgu/epgu-constructor-types';
 import { CustomComponentAttr } from '../../components-list.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
   readonly customUnrecLabel: string;
+
   readonly hidden: boolean;
+
   readonly mask: string[];
+
   readonly price: number;
+
   readonly fstuc: TextTransform;
+
   readonly readonly: boolean;
+
   readonly maskOptions: unknown;
+
   readonly showMaskSymbols: boolean;
+
   readonly showPlaceholderOnFocus: boolean;
+
   readonly hint: string;
+
   readonly clarifications: Clarifications;
 
   constructor(attrs: CustomComponentAttr) {
@@ -32,5 +39,4 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
     this.hint = attrs.hint;
     this.clarifications = attrs.clarifications;
   }
-
 }

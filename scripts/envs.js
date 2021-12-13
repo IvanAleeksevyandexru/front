@@ -9,5 +9,5 @@ module.exports = {
   rcod: 'https://gu-st.ru/sf-portal-st/',
   svcdev: 'https://gu-st.ru/sf-portal-st/',
   prod: 'https://gu-st.ru/sf-portal-st/',
-  'epgu2-dev': '/sf-portal-st/'
+  'epgu2-dev': '/sf-portal-st/',
 };

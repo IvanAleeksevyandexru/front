@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ActionType } from '@epgu/epgu-constructor-types';
+import { ActionType, ScreenButton } from '@epgu/epgu-constructor-types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { takeUntil } from 'rxjs/operators';
 import {
   EaisdoFinancialSourceTypes,
   EaisdoResponseTypes,
@@ -9,8 +10,7 @@ import {
   EaisdoTypeOfBudgetTypes,
 } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
 import { CertificateEaisdoService } from '../certificate-eaisdo/certificate-eaisdo.service';
-import { takeUntil } from 'rxjs/operators';
-import { ScreenButton } from '@epgu/epgu-constructor-types';
+
 import { ScreenService } from '../../../screen/screen.service';
 
 @Injectable()
@@ -18,27 +18,34 @@ export class EaisdoGroupCostService {
   get currentState$(): Observable<EaisdoStateTypes> {
     return this._currentState.asObservable();
   }
+
   get currentState(): EaisdoStateTypes {
     return this._currentState.getValue();
   }
+
   set currentState(value: EaisdoStateTypes) {
     this._currentState.next(value);
   }
+
   private _currentState = new BehaviorSubject<EaisdoStateTypes>(null);
 
   get currentButtonsState$(): Observable<string[]> {
     return this._currentButtonsState.asObservable();
   }
+
   get currentButtonsState(): string[] {
     return this._currentButtonsState.getValue();
   }
+
   set currentButtonsState(value: string[]) {
     this._currentButtonsState.next(value);
   }
+
   private _currentButtonsState = new BehaviorSubject<string[]>([
     ActionType.nextStep,
     ActionType.quizToOrder,
   ]);
+
   private isInformerScreen = false;
 
   constructor(

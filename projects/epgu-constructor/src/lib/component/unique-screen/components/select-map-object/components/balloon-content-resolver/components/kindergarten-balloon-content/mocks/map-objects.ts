@@ -1,7 +1,7 @@
 export const mockKindergartenMapObject = {
   value: '478',
   parentValue: null,
-  title: 'МБДОУ \'Детский сад №14 р.п. Александро-Невский\'',
+  title: "МБДОУ 'Детский сад №14 р.п. Александро-Невский'",
   isLeaf: true,
   children: [],
   attributes: [
@@ -24,16 +24,16 @@ export const mockKindergartenMapObject = {
       name: 'TITLE',
       type: 'STRING',
       value: {
-        asString: 'МБДОУ \'Детский сад №14 р.п. Александро-Невский\'',
+        asString: "МБДОУ 'Детский сад №14 р.п. Александро-Невский'",
         asLong: null,
         asDecimal: null,
         asDateTime: null,
         asDate: null,
         asBoolean: null,
         typeOfValue: 'STRING',
-        value: 'МБДОУ \'Детский сад №14 р.п. Александро-Невский\'',
+        value: "МБДОУ 'Детский сад №14 р.п. Александро-Невский'",
       },
-      valueAsOfType: 'МБДОУ \'Детский сад №14 р.п. Александро-Невский\'',
+      valueAsOfType: "МБДОУ 'Детский сад №14 р.п. Александро-Невский'",
     },
     {
       name: 'REGOKATO',
@@ -183,7 +183,7 @@ export const mockKindergartenMapObject = {
     ADDRESS:
       '391240, Рязанская обл, р-н Александро-Невский, рп Александро-Невский, ул. Солнечная, д.25',
     PHONE: '4915822007',
-    TITLE: 'МБДОУ \'Детский сад №14 р.п. Александро-Невский\'',
+    TITLE: "МБДОУ 'Детский сад №14 р.п. Александро-Невский'",
     SCHEDULE: '07.00-19.00',
     EMAIL: 'zakharova-vera2014@mail.ru',
     REGOKATO: '6100',

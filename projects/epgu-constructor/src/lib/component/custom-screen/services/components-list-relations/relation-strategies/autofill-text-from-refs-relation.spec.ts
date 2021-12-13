@@ -13,8 +13,10 @@ describe('AutofillTextFromRefsRelation', () => {
   let dependentControl;
   let form;
   let shownElements = {};
-  let componentVal: KeyValueMap =  { title: 'some title', address: 'some address' };
-  const refRelationService: RefRelationService = MockService(RefRelationService) as unknown as RefRelationService;
+  let componentVal: KeyValueMap = { title: 'some title', address: 'some address' };
+  const refRelationService: RefRelationService = (MockService(
+    RefRelationService,
+  ) as unknown) as RefRelationService;
 
   beforeEach(() => {
     relation = new AutofillTextFromRefsRelation(refRelationService);
@@ -45,13 +47,7 @@ describe('AutofillTextFromRefsRelation', () => {
   });
 
   it('should patch dependentControl value', () => {
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     expect(dependentControl.value).toEqual({
       id: 'rf2',

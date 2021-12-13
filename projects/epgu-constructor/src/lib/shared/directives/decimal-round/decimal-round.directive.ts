@@ -8,6 +8,7 @@ import { MaskTransformService } from '../../services/mask-transform/mask-transfo
 })
 export class DecimalRoundDirective {
   @Input('epgu-constructor-decimal-round') mask: string | string[];
+
   @Input() maskOptions?: Partial<NumberMaskOptions>;
 
   constructor(private ngControl: NgControl, private maskTransformService: MaskTransformService) {}
@@ -23,10 +24,7 @@ export class DecimalRoundDirective {
     const target = $event.target as HTMLInputElement;
     const pastedData = $event.clipboardData.getData('text');
 
-    target.value = this.maskTransformService.transformNumberMaskInput(
-      pastedData,
-      this.maskOptions,
-    );
+    target.value = this.maskTransformService.transformNumberMaskInput(pastedData, this.maskOptions);
     this.ngControl.control.patchValue(target.value, { emitEvent: false });
     this.ngControl.control.updateValueAndValidity();
   }

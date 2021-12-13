@@ -3,7 +3,9 @@ import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class RadioInputModelAttrs extends GenericAttrs {
   readonly hidden: boolean;
+
   readonly isHorizontal: boolean;
+
   readonly supportedValues: SupportedValue[];
 
   constructor(attrs: CustomComponentAttr) {
@@ -12,5 +14,4 @@ export default class RadioInputModelAttrs extends GenericAttrs {
     this.isHorizontal = attrs.isHorizontal;
     this.supportedValues = attrs.supportedValues;
   }
-
 }

@@ -1,9 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { RestToolsService } from './rest-tools.service';
-import { LocalStorageService, LocalStorageServiceStub, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { RestService } from '../rest/rest.service';
+import {
+  LocalStorageService,
+  LocalStorageServiceStub,
+  JsonHelperService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { MockProvider } from 'ng-mocks';
+import { RestToolsService } from './rest-tools.service';
+import { RestService } from '../rest/rest.service';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { InterpolationService } from '../interpolation/interpolation.service';
 import { DateRangeService } from '../date-range/date-range.service';

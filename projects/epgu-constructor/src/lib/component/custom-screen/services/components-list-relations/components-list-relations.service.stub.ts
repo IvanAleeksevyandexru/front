@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable()
 export class ComponentsListRelationsServiceStub {
   private readonly _filters$: BehaviorSubject<UpdateFiltersEvents> = new BehaviorSubject({});
+
   private readonly _restUpdates$: BehaviorSubject<ComponentRestUpdates> = new BehaviorSubject({});
 
   public get filters$(): Observable<UpdateFiltersEvents> {

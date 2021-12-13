@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { LocalStorageService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswers } from '../../../screen/screen.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import { LocalStorageService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 
 // TODO нужно утащить на backend (HARDCODE from backend)
 export const componentsNoCache: string[] = [

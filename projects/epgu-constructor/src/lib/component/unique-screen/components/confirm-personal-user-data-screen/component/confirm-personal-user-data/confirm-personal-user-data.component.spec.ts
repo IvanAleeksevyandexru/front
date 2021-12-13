@@ -13,8 +13,18 @@ import {
   SessionStorageService,
   SessionStorageServiceStub,
   JsonHelperService,
+  ConfigServiceStub,
+  ScreenPadModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
+import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+  ScreenTypes,
+} from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 import { ConfirmUserDataErrorType } from '../../confirm-personal-user-data-screen.types';
@@ -26,16 +36,8 @@ import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-uni
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { FieldListModule } from '../../../../../../shared/components/field-list/field-list.module';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
-import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
+
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
-import {
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-  ScreenTypes,
-} from '@epgu/epgu-constructor-types';
 import { DisclaimerModule } from '../../../../../../shared/components/disclaimer/disclaimer.module';
 import { ComponentBase, ScreenStoreComponentDtoI } from '../../../../../../screen/screen.types';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
@@ -56,7 +58,7 @@ const componentMock: ComponentBase = {
         label: '',
         value: '',
         action: DTOActionAction.getNextStep,
-        type: ActionType.nextStep
+        type: ActionType.nextStep,
       },
     ],
     fields: [
@@ -209,7 +211,7 @@ xdescribe('ConfirmPersonalUserDataComponent', () => {
     expect(sessionStorageService.getRaw('childId')).toBe('1');
   });
 
-  it('should proccessed custom validation (required) for \'firstName\' and rendered correctly', () => {
+  it("should proccessed custom validation (required) for 'firstName' and rendered correctly", () => {
     screenService.getStore().display = {
       components: [componentMock as ScreenStoreComponentDtoI],
       id: '',
@@ -242,7 +244,7 @@ xdescribe('ConfirmPersonalUserDataComponent', () => {
     expect(debugEl).toBeTruthy();
   });
 
-  it('should proccessed custom validation (maxLength) for \'firstName\' and rendered correctly', () => {
+  it("should proccessed custom validation (maxLength) for 'firstName' and rendered correctly", () => {
     screenService.getStore().display = {
       components: [componentMock as ScreenStoreComponentDtoI],
       id: '',
@@ -345,7 +347,7 @@ xdescribe('ConfirmPersonalUserDataComponent', () => {
     expect(debugEl.componentInstance.isValid).toBeFalsy();
 
     screenService.header = 'some header';
-    screenService['isLoadingSubject'].next(true);
+    screenService.isLoadingSubject.next(true);
     screenService.buttons = [
       {
         label: 'some screen action label',

@@ -258,7 +258,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       vin: '100',
     },
     value:
-    // eslint-disable-next-line max-len
+      // eslint-disable-next-line max-len
       '{"orderId":764189425,"eserviceId":"10000104378","serviceId":"-10000006633","serviceCode":"-10000006633","department":"{\\"value\\":\\"987\\",\\"parentValue\\":null,\\"title\\":\\"Поликлиника 7\\",\\"isLeaf\\":true,\\"children\\":null,\\"attributes\\":[{\\"name\\":\\"MO_Oid\\",\\"type\\":\\"STRING\\",\\"value\\":{\\"asString\\":\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\",\\"asLong\\":null,\\"asDecimal\\":null,\\"asDateTime\\":null,\\"asDate\\":null,\\"asBoolean\\":null,\\"typeOfValue\\":\\"STRING\\",\\"value\\":\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\"},\\"valueAsOfType\\":\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\"},{\\"name\\":\\"Address_MO\\",\\"type\\":\\"STRING\\",\\"value\\":{\\"asString\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\",\\"asLong\\":null,\\"asDecimal\\":null,\\"asDateTime\\":null,\\"asDate\\":null,\\"asBoolean\\":null,\\"typeOfValue\\":\\"STRING\\",\\"value\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\"},\\"valueAsOfType\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\"},{\\"name\\":\\"Reg_Phone\\",\\"type\\":\\"STRING\\",\\"value\\":{\\"asString\\":\\"(867) 550-80-91\\",\\"asLong\\":null,\\"asDecimal\\":null,\\"asDateTime\\":null,\\"asDate\\":null,\\"asBoolean\\":null,\\"typeOfValue\\":\\"STRING\\",\\"value\\":\\"(867) 550-80-91\\"},\\"valueAsOfType\\":\\"(867) 550-80-91\\"}],\\"source\\":null,\\"attributeValues\\":{\\"Address_MO\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\",\\"MO_Oid\\":\\"1.2.643.5.1.13.13.12.2.15.1058.0.103000\\",\\"Reg_Phone\\":\\"(867) 550-80-91\\"},\\"objectId\\":3,\\"center\\":[44.633343,43.040624],\\"baloonContent\\":[{\\"value\\":\\"Республика Северная Осетия - Алания, г Владикавказ, ул Весенняя, д 14\\",\\"label\\":\\"Адрес\\"},{\\"value\\":\\"(867) 550-80-91\\",\\"label\\":\\"Телефон\\"}],\\"agreement\\":true,\\"idForMap\\":3,\\"expanded\\":true,\\"okato\\":\\"55000000000\\"}","timeSlotRequestAttrs":[{"name":"Startdate","value":"06.10.2021"},{"name":"Starttime","value":"00:00"},{"name":"Enddate","value":"20.10.2021"},{"name":"Endtime","value":"23:59"},{"name":"Session_Id","value":"f022067e-a026-4ee4-9160-0ab0d09ea569"},{"name":"Service_Id","value":"109::B04.014.004"},{"name":"ServiceSpec_Id","value":""},{"name":"MO_Id","value":"987"}],"bookingRequestAttrs":[{"name":"doctor","value":"врач-терапевт (Вакцинация)"},{"name":"anotherperson","value":"Y"},{"name":"genderperson","value":"Мужской"},{"name":"ageperson","value":"31"},{"name":"pacientname","value":"Ыть Ыть Ыть"}],"organizationId":"987","bookAttributes":"[{\\"name\\":\\"Session_Id\\",\\"value\\":\\"f022067e-a026-4ee4-9160-0ab0d09ea569\\"}]","userSelectedRegion":"55000000000"}',
     required: true,
   };
@@ -412,13 +412,13 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       docLookup: {
         setFocus: () => {
           return;
-        }
+        },
       } as ConstructorLookupComponent,
       specLookup: {
         setFocus: () => {
           return;
-        }
-      } as ConstructorLookupComponent
+        },
+      } as ConstructorLookupComponent,
     } as TimeSlotDoctorsComponent;
 
     timeSlotDoctorService.department = mockDepartment;
@@ -520,8 +520,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       component.selectDate(new Date('2020-01-01T00:00:00Z'));
 
-      expect(component['clearDateSelection']).not.toHaveBeenCalled();
-      expect(component['recalcDaysStyles']).not.toHaveBeenCalled();
+      expect(component.clearDateSelection).not.toHaveBeenCalled();
+      expect(component.recalcDaysStyles).not.toHaveBeenCalled();
     });
 
     it('if the date was chosen and we click again', () => {
@@ -530,8 +530,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       component.selectDate(new Date('2020-01-01T00:00:00Z'));
 
-      expect(component['clearDateSelection']).toHaveBeenCalled();
-      expect(component['recalcDaysStyles']).not.toHaveBeenCalled();
+      expect(component.clearDateSelection).toHaveBeenCalled();
+      expect(component.recalcDaysStyles).not.toHaveBeenCalled();
     });
 
     it('if the date was changed', () => {
@@ -540,8 +540,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       component.selectDate(new Date('2020-01-01T00:00:00Z'));
 
-      expect(component['clearDateSelection']).not.toHaveBeenCalled();
-      expect(component['recalcDaysStyles']).toHaveBeenCalled();
+      expect(component.clearDateSelection).not.toHaveBeenCalled();
+      expect(component.recalcDaysStyles).toHaveBeenCalled();
     });
   });
 
@@ -584,7 +584,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       component.showError('Обычная ошибка');
 
       expect(component.showModal).toHaveBeenLastCalledWith(confirmationModalParams);
-      expect(component['loadTimeSlots']).toHaveBeenCalled();
+      expect(component.loadTimeSlots).toHaveBeenCalled();
     });
 
     it('show error and not load timeslots by click on close', () => {
@@ -603,7 +603,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       component.showError('Обычная ошибка');
 
       expect(component.showModal).toHaveBeenLastCalledWith(confirmationModalParams);
-      expect(component['loadTimeSlots']).not.toHaveBeenCalled();
+      expect(component.loadTimeSlots).not.toHaveBeenCalled();
     });
   });
 
@@ -647,11 +647,13 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       docLookup: mockDocLookup,
     });
     expect(component.doctorWasChosen$$.value).toEqual(true);
-    expect(component['loadTimeSlots']).toHaveBeenCalled();
+    expect(component.loadTimeSlots).toHaveBeenCalled();
   });
 
   it('ngOnInit()', () => {
-    jest.spyOn(datesHelperService, 'getToday').mockReturnValue(Promise.resolve(new Date('2020-01-01T00:00:00.000Z')));
+    jest
+      .spyOn(datesHelperService, 'getToday')
+      .mockReturnValue(Promise.resolve(new Date('2020-01-01T00:00:00.000Z')));
 
     component.ngOnInit();
 
@@ -717,7 +719,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         areaId: '',
         slotId: '',
       };
-      component['cachedAnswer'] = ({ bookId: '123' } as unknown) as TimeSlotsAnswerInterface;
+      component.cachedAnswer = ({ bookId: '123' } as unknown) as TimeSlotsAnswerInterface;
 
       jest.spyOn(actionService, 'switchAction').mockReturnValue(null);
       jest.spyOn(component as any, 'isCachedValueChanged').mockImplementation(() => false);
@@ -1077,7 +1079,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   });
 
   describe('handleLookupProviderErrorMessage()', () => {
-    it('don\'t need to handle and show template', () => {
+    it("don't need to handle and show template", () => {
       component.handleLookupProviderErrorMessage(null, null);
       expect(component.isDoctorNotAvailable).toBeFalsy();
 
@@ -1099,7 +1101,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
       expect(component.doctorsNotFoundTemplate).toEqual({
-        header: '<h6 class=\'yellow-line mt-24\'>Врачи не найдены</h6>',
+        header: "<h6 class='yellow-line mt-24'>Врачи не найдены</h6>",
         description: `<div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
       Ошибка
     </div>`,
@@ -1114,7 +1116,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
       expect(component.doctorsNotFoundTemplate).toEqual({
-        header: '<h6 class=\'yellow-line mt-24\'>Врачи не найдены</h6>',
+        header: "<h6 class='yellow-line mt-24'>Врачи не найдены</h6>",
         description: `<div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
       Выберите другую специальность врача или <a data-action-type='prevStep'>другую медицинскую организацию</a>
     </div>`,
@@ -1126,7 +1128,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
       expect(component.doctorsNotFoundTemplate).toEqual({
-        header: '<h6 class=\'yellow-line mt-24\'>Врачи не найдены</h6>',
+        header: "<h6 class='yellow-line mt-24'>Врачи не найдены</h6>",
         description: `<div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
       Ошибка
     </div>`,
@@ -1138,7 +1140,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
       expect(component.doctorsNotFoundTemplate).toEqual({
-        header: '<h6 class=\'yellow-line mt-24\'>Врачи не найдены</h6>',
+        header: "<h6 class='yellow-line mt-24'>Врачи не найдены</h6>",
         description: `<div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
       Ошибка
     </div>`,
@@ -1150,7 +1152,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       expect(component.isDoctorNotAvailable).toBeTruthy();
       expect(component.doctorsNotFoundTemplate).toEqual({
-        header: '<h6 class=\'yellow-line mt-24\'>Врачи не найдены</h6>',
+        header: "<h6 class='yellow-line mt-24'>Врачи не найдены</h6>",
         description: `<div class='mt-6 text-color--text-helper' style='font-size: 14px; margin-top: 6px;'>
       Ошибка
     </div>`,
@@ -1161,7 +1163,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   describe('filterByAttributeName()', () => {
     it('should return all items after filtration without search string', () => {
       const filteredItems = component.filterByAttributeName(
-        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items } } as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         'Service_Name',
         '',
       );
@@ -1171,7 +1175,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     it('should return filtered items after filtration with search string', () => {
       const filteredItems = component.filterByAttributeName(
-        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items } } as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         'Service_Name',
         'врач-тер',
       );
@@ -1181,7 +1187,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     it('should return filtered items after filtration with search string. Case insensitive check', () => {
       const filteredItems = component.filterByAttributeName(
-        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items } } as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         'Service_Name',
         'ВрАЧ',
       );
@@ -1191,7 +1199,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     it('should return empty array if there is no attribute name', () => {
       const filteredItems = component.filterByAttributeName(
-        ({ data: { items: mockLkApiItems.items }} as unknown) as CustomListGenericData<DictionaryResponse>,
+        ({ data: { items: mockLkApiItems.items } } as unknown) as CustomListGenericData<
+          DictionaryResponse
+        >,
         null,
         'ВрАЧ',
       );
@@ -1200,8 +1210,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
     });
   });
 
-  it('checkDateRestrictions with mock\'s restrictions', () => {
-    const checkDateRestrictions = component['checkDateRestrictions'].bind(component);
+  it("checkDateRestrictions with mock's restrictions", () => {
+    const checkDateRestrictions = component.checkDateRestrictions.bind(component);
     let date = new Date('2020-01-01T10:00:00.000Z');
     let check = checkDateRestrictions(date);
     expect(check).toBeTruthy();
@@ -1220,7 +1230,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   });
 
   it('getMonthsListItem()', () => {
-    const getMonthsListItem = component['getMonthsListItem'].bind(component);
+    const getMonthsListItem = component.getMonthsListItem.bind(component);
 
     const listItem = getMonthsListItem('2010-01');
 

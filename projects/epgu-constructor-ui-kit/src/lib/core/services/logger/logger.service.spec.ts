@@ -65,13 +65,13 @@ describe('LoggerService', () => {
       expect(spy).toBeCalled();
     });
 
-    it('shouldn\'t call openGroup', () => {
+    it("shouldn't call openGroup", () => {
       const spy = jest.spyOn<any, string>(service, 'openGroup');
       service.log(message);
       expect(spy).not.toBeCalled();
     });
 
-    it('shouldn\'t call closeGroup', () => {
+    it("shouldn't call closeGroup", () => {
       const spy = jest.spyOn<any, string>(service, 'closeGroup');
       service.log(message);
       expect(spy).not.toBeCalled();
@@ -91,7 +91,7 @@ describe('LoggerService', () => {
   });
 
   describe('error()', () => {
-    it('shouldn\'t call isShowLog', () => {
+    it("shouldn't call isShowLog", () => {
       const spy = jest.spyOn<any, string>(service, 'isShowLog');
       service.error(message, groupName);
       expect(spy).not.toBeCalled();
@@ -109,13 +109,13 @@ describe('LoggerService', () => {
       expect(spy).toBeCalled();
     });
 
-    it('shouldn\'t call openGroup', () => {
+    it("shouldn't call openGroup", () => {
       const spy = jest.spyOn<any, string>(service, 'openGroup');
       service.error(message);
       expect(spy).not.toBeCalled();
     });
 
-    it('shouldn\'t call closeGroup', () => {
+    it("shouldn't call closeGroup", () => {
       const spy = jest.spyOn<any, string>(service, 'closeGroup');
       service.error(message);
       expect(spy).not.toBeCalled();
@@ -137,55 +137,55 @@ describe('LoggerService', () => {
   describe('isShowLog()', () => {
     it('should call isDevMode', () => {
       const spy = jest.spyOn<any, string>(AngularCoreModule, 'isDevMode');
-      service['isShowLog']();
+      service.isShowLog();
       expect(spy).toBeCalled();
     });
 
     it('should return true when isDevMode', () => {
       jest.spyOn<any, string>(AngularCoreModule, 'isDevMode').mockReturnValue(true);
-      const isShowLog = service['isShowLog']();
+      const isShowLog = service.isShowLog();
       expect(isShowLog).toBeTruthy();
     });
 
     it('should return true when lib not in isDevMode and localStorage has KEY_SHOW_LOG item', () => {
       jest.spyOn<any, string>(AngularCoreModule, 'isDevMode').mockReturnValue(false);
       localStorage.setItem(KEY_SHOW_LOG, '{}');
-      const isShowLog = service['isShowLog']();
+      const isShowLog = service.isShowLog();
       expect(isShowLog).toBeTruthy();
       localStorage.removeItem(KEY_SHOW_LOG);
     });
 
-    it('should return false when lib not in isDevMode and localStorage hasn\'t KEY_SHOW_LOG item', () => {
+    it("should return false when lib not in isDevMode and localStorage hasn't KEY_SHOW_LOG item", () => {
       jest.spyOn<any, string>(AngularCoreModule, 'isDevMode').mockReturnValue(false);
-      const isShowLog = service['isShowLog']();
+      const isShowLog = service.isShowLog();
       expect(isShowLog).toBeFalsy();
     });
   });
 
   describe('showMessage()', () => {
     it('should call console.log', () => {
-      service['showMessage'](message[0]);
+      service.showMessage(message[0]);
       expect(console.log).toBeCalledWith(message[0]);
     });
   });
 
   describe('openGroup()', () => {
     it('should call console.group', () => {
-      service['openGroup'](groupName);
+      service.openGroup(groupName);
       expect(console.group).toBeCalledWith(groupName);
     });
   });
 
   describe('closeGroup()', () => {
     it('should call console.groupEnd', () => {
-      service['closeGroup']();
+      service.closeGroup();
       expect(console.groupEnd).toBeCalled();
     });
   });
 
   describe('showError()', () => {
     it('should call console.error', () => {
-      service['showError'](message[0]);
+      service.showError(message[0]);
       expect(console.error).toBeCalledWith(message[0]);
     });
   });

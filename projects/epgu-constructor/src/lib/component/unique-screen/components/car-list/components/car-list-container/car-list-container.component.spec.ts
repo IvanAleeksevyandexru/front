@@ -49,7 +49,7 @@ describe('CarListContainerComponent', () => {
   let fixture: ComponentFixture<CarListContainerComponent>;
   const mockDisplay: DisplayDto = {
     components: [],
-    subHeader: { text: '', clarifications: {}},
+    subHeader: { text: '', clarifications: {} },
     header: '',
     label: '',
     id: '',
@@ -137,19 +137,21 @@ describe('CarListContainerComponent', () => {
     });
 
     it('should return cached value if there is data to set', () => {
-      jest.spyOn(cachedAnswersService, 'getCachedValueById').mockReturnValueOnce(JSON.stringify({
-        vehicleInfo: {
-          govRegNumber: 'M 005 CX'
-        }
-      }));
-      component.carFixedItems = component.getCarFixedItems(mockCarList as unknown as CarList);
+      jest.spyOn(cachedAnswersService, 'getCachedValueById').mockReturnValueOnce(
+        JSON.stringify({
+          vehicleInfo: {
+            govRegNumber: 'M 005 CX',
+          },
+        }),
+      );
+      component.carFixedItems = component.getCarFixedItems((mockCarList as unknown) as CarList);
 
       expect(component.getInitialItem('', {})).toEqual(component.carFixedItems[1]);
     });
 
     it('should return first item as initial item', () => {
       jest.spyOn(cachedAnswersService, 'getCachedValueById').mockReturnValueOnce('{}');
-      component.carFixedItems = component.getCarFixedItems(mockCarList as unknown as CarList);
+      component.carFixedItems = component.getCarFixedItems((mockCarList as unknown) as CarList);
 
       component.getInitialItem('', {});
 

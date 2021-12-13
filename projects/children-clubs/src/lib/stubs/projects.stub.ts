@@ -10,7 +10,7 @@ import {
 } from '../typings';
 
 export const baseProgramStub: BaseProgram = {
-  uuid: 'qwe' + Math.random(),
+  uuid: `qwe${Math.random()}`,
   name: 'Ритмика, основы танцевального искусства',
   partnerName: 'МАУ ДО "Центр Гармония',
   address: '141080, Московская область, г. Королёв, проезд Макаренко, дом 4',
@@ -25,7 +25,7 @@ export const baseProgramStub: BaseProgram = {
 };
 
 export const baseProgramStub2: BaseProgram = {
-  uuid: 'asd' + Math.random(),
+  uuid: `asd${Math.random()}`,
   name: 'Ритмика, основы танцевального искусства',
   partnerName: 'МАУ ДО "Центр Гармония',
   address: '141080, Московская область, г. Королёв, проезд Макаренко, дом 6А',

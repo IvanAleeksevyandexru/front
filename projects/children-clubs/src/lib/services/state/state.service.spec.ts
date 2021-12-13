@@ -11,9 +11,9 @@ import { FindOptionsGroup, PfdoPaymentFilters, VendorType } from '../../typings'
 interface TestState {
   nextSchoolYear: string;
   programFilters: {
-    age: number,
-  },
-  groupFilters: FindOptionsGroup,
+    age: number;
+  };
+  groupFilters: FindOptionsGroup;
 }
 
 const testState: TestState = {
@@ -31,8 +31,8 @@ const testState: TestState = {
       free: true,
       certificate: false,
       personalFunds: false,
-    }
-  }
+    },
+  },
 };
 
 describe('StateService', () => {
@@ -44,7 +44,7 @@ describe('StateService', () => {
       providers: [
         StateService,
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
-        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub }
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
       ],
     });
   });
@@ -65,7 +65,7 @@ describe('StateService', () => {
 
       service.clearGroupFilters();
 
-      expect(spy).toHaveBeenCalledWith({ groupFilters: {}});
+      expect(spy).toHaveBeenCalledWith({ groupFilters: {} });
     });
   });
 
@@ -83,7 +83,7 @@ describe('StateService', () => {
     });
 
     it('should return existing group filters if object is not empty', () => {
-      const testStateCopy = Object.assign({}, testState);
+      const testStateCopy = { ...testState };
       testStateCopy.groupFilters.pfdoPayments = ({} as unknown) as PfdoPaymentFilters;
       jest.spyOn(stateQuery, 'state', 'get').mockReturnValue(testStateCopy);
 

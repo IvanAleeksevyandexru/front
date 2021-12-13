@@ -3,21 +3,21 @@ import { MockComponent } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { Clarifications, DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
-import { FileUploadFormComponent } from './file-upload-form.component';
 import { ChangeDetectionStrategy, Injector } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
+import { PluralizeModule } from '@epgu/ui/pipes';
+import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import { FileUploadFormComponent } from './file-upload-form.component';
 import { FileUploadItemComponent } from '../../../../shared/components/file-upload/file-upload-item/file-upload-item.component';
 import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
 import { CustomComponent } from '../../components-list.types';
 import { UploaderLimitsService } from '../../../../shared/components/file-upload/services/limits/uploader-limits.service';
 import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
-import { PluralizeModule } from '@epgu/ui/pipes';
 import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
@@ -29,7 +29,7 @@ describe('FileUploadComponent', () => {
   let eventService: EventBusService;
   let formService: ComponentsListFormService;
   let form: FormArray;
-  let mockId = 'test';
+  const mockId = 'test';
   let control: AbstractControl;
   let controlValue: AbstractControl;
 

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ProgramFiltersFormComponent } from './program-filters-form.component';
 import {
   MicroAppStateQuery,
   MicroAppStateQueryStub,
@@ -13,17 +12,18 @@ import {
   ModalServiceStub,
   SharedModalModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ApiService } from '../../../../services/api/api.service';
-import { ApiServiceStub } from '../../../../services/api/api.service.stub';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockComponent } from 'ng-mocks';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ProgramFiltersFormComponent } from './program-filters-form.component';
+import { ApiService } from '../../../../services/api/api.service';
+import { ApiServiceStub } from '../../../../services/api/api.service.stub';
 import { StateService } from '../../../../services/state/state.service';
 import { StateServiceStub } from '../../../../services/state/state.service.stub';
 import { PaymentSelectorComponent } from '../payment-selector/payment-selector.component';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 import { BaseModule } from '../../base.module';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('ProgramFiltersComponent', () => {
   let component: ProgramFiltersFormComponent;

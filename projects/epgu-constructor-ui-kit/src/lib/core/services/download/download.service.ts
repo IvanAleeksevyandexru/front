@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 @Injectable()
-export class DownloadService {  /**
+export class DownloadService {
+  /**
    * Скачивание файла
    */
   public downloadFile(value: string, type: string, fileName?: string): void {
@@ -11,7 +12,7 @@ export class DownloadService {  /**
     // на мобилке не работает, если не обрезать тип
     const fileType = isBase64 ? type.replace(';base64', '') : type;
     const blob = new Blob([data], { type: fileType });
-    
+
     saveAs(blob, fileName);
   }
 

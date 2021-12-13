@@ -1,6 +1,10 @@
 import { BaseRelation } from './base-relation';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { CustomComponent, CustomComponentRef, CustomListStatusElements } from '../../../components-list.types';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomListStatusElements,
+} from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { isEmpty } from 'lodash';
 import DictionaryLikeModel from '../../../component-list-resolver/DictionaryLikeModel';
@@ -31,7 +35,7 @@ export class AutofillFromDictionaryRelation extends BaseRelation {
         attributeName,
         componentId,
         components,
-        componentVal
+        componentVal,
       );
 
       if (dictionaryAttributeValue === undefined) {
@@ -64,7 +68,9 @@ export class AutofillFromDictionaryRelation extends BaseRelation {
     components: CustomComponent[],
     componentVal: KeyValueMap | '',
   ): unknown {
-    const relatedComponent = components.find((item) => item.id === componentId) as DictionaryLikeModel;
+    const relatedComponent = components.find(
+      (item) => item.id === componentId,
+    ) as DictionaryLikeModel;
     if (relatedComponent) {
       return relatedComponent.getAttributeValue(componentVal, dictionaryAttributeName);
     }

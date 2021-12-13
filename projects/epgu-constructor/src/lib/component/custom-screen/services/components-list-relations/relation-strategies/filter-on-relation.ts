@@ -1,6 +1,10 @@
 import { BaseRelation } from './base-relation';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { CustomComponent, CustomComponentRef, CustomListStatusElements } from '../../../components-list.types';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomListStatusElements,
+} from '../../../components-list.types';
 import { FormArray } from '@angular/forms';
 import { UpdateFiltersEvents, UpdateFilterEvent } from '../components-list-relations.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -38,10 +42,7 @@ export class FilterOnRelation extends BaseRelation {
     return this.afterHandleRelation(shownElements, dependentComponent, form);
   }
 
-  private applyFilter(
-    dependentComponentId: CustomComponent['id'],
-    data: UpdateFilterEvent,
-  ): void {
+  private applyFilter(dependentComponentId: CustomComponent['id'], data: UpdateFilterEvent): void {
     this.filters = { [dependentComponentId]: data };
   }
 

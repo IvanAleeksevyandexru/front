@@ -61,6 +61,7 @@ import { TimeSlotCalendarService } from '../calendar/time-slot-calendar.service'
 @Injectable()
 export class TimeSlotSmev3Service {
   requestListParams$$ = new BehaviorSubject<Partial<TimeSlotRequest>>(undefined);
+
   requestBookParams$$ = new BehaviorSubject<Partial<TimeSlotBookRequest>>(undefined);
 
   reloadStore$$ = new Subject<null>();
@@ -100,9 +101,11 @@ export class TimeSlotSmev3Service {
   );
 
   bookId$$ = new BehaviorSubject<string>(this.smev3.cachedAnswer$$.getValue()?.bookId || null);
+
   bookId$ = this.bookId$$.asObservable();
 
   isBookedDepartment$$ = new BehaviorSubject<boolean>(null);
+
   isBookedDepartment$: Observable<boolean> = combineLatest([
     this.isBookedDepartment$$,
     this.smev3.cachedAnswer$,
@@ -116,6 +119,7 @@ export class TimeSlotSmev3Service {
   );
 
   bookedSlot$$ = new BehaviorSubject<Slot>(null);
+
   bookedSlot$ = combineLatest([
     this.smev3.waitingTimeExpired$,
     this.smev3.cachedAnswer$.pipe(pluck('timeSlot')),
@@ -137,9 +141,11 @@ export class TimeSlotSmev3Service {
   get area$(): Observable<string> {
     return this.area$$.pipe(distinctUntilChanged());
   }
+
   set area(area: string) {
     this.area$$.next(area);
   }
+
   get area(): string {
     return this.area$$.getValue();
   }
@@ -212,6 +218,7 @@ export class TimeSlotSmev3Service {
   );
 
   book$$ = new Subject<BookOperation>();
+
   book$ = this.book$$.pipe(
     tap(() => this.state.progressStart()),
     concatMap(({ book, result }: BookOperation) =>
@@ -275,7 +282,7 @@ export class TimeSlotSmev3Service {
                 }),
                 tap((response) => result.next(response)),
                 tap(() => this.bookedSlot$$.next(book)),
-                tap((book) => this.bookId$$.next(book.bookId)),
+                tap((bookItem) => this.bookId$$.next(bookItem.bookId)),
               ),
         ),
       ),
@@ -297,6 +304,7 @@ export class TimeSlotSmev3Service {
   reloadStore(): void {
     this.reloadStore$$.next();
   }
+
   getBookRequest(
     slot: Slot,
     bookId: string,

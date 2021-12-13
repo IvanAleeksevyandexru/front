@@ -16,6 +16,7 @@ import { TimeSlotRequestType } from '../../../typings';
 @Injectable()
 export class Smev2RestApiService {
   additionalPath = this.screenService.component?.attrs?.dictionaryType || 'getAppointment2_mvdr01';
+
   path = `${this.urlPrefix}/${this.additionalPath}`;
 
   get urlPrefix(): string {

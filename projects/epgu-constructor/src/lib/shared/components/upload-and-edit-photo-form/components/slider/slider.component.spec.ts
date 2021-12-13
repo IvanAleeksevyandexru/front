@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SliderComponent } from './slider.component';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { SliderComponent } from './slider.component';
 
 describe('SliderComponent', () => {
   let component: SliderComponent;

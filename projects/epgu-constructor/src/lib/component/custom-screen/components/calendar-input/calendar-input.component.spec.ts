@@ -54,8 +54,8 @@ describe('CalendarInputComponent', () => {
       type: 'CalendarInput',
       attrs: {
         components: [
-          { id: 'firstDate', attrs: {}},
-          { id: 'secondDate', attrs: {}},
+          { id: 'firstDate', attrs: {} },
+          { id: 'secondDate', attrs: {} },
         ],
         dateRestrictions: {
           type: 'const',
@@ -77,7 +77,7 @@ describe('CalendarInputComponent', () => {
       required: new FormControl(mockComponent.required),
       type: new FormControl(mockComponent.type),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(CalendarInputComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;

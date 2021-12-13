@@ -10,6 +10,7 @@ export class TreeNodePaddingDirective<T> extends CdkTreeNodePadding<T> {
   get level(): number {
     return this._level;
   }
+
   set level(value: number) {
     this._setLevelInput(value);
   }

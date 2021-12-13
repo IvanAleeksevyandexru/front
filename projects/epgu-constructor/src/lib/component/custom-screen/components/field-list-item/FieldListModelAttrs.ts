@@ -3,9 +3,11 @@ import { CustomComponentAttr } from '../../components-list.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 
-export default class FieldListModelAttrs extends GenericAttrs  {
+export default class FieldListModelAttrs extends GenericAttrs {
   readonly fieldGroups: FieldGroup[];
+
   readonly style: ConfirmUserDataStyle;
+
   readonly clarifications?: Clarifications;
 
   constructor(attrs: CustomComponentAttr) {

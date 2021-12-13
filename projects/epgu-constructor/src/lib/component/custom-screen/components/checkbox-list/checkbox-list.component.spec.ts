@@ -2,8 +2,8 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockProvider } from 'ng-mocks';
-import { CheckboxListComponent } from './checkbox-list.component';
 import { ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
+import { CheckboxListComponent } from './checkbox-list.component';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
@@ -72,7 +72,7 @@ describe('CheckboxListComponent', () => {
     fixture = TestBed.createComponent(CheckboxListComponent);
     component = fixture.componentInstance;
     control = new FormControl(mockComponent);
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     component.componentIndex = 0;
     fixture.detectChanges();
   });
@@ -166,7 +166,7 @@ describe('CheckboxListComponent', () => {
         { id: 'checkbox1', label: 'label1', showOn: true, hidden: false },
         { id: 'checkbox2', label: 'label2', showOn: false, hidden: true },
       ]);
-      let hideShowEl = fixture.debugElement.nativeElement.querySelector('button');
+      const hideShowEl = fixture.debugElement.nativeElement.querySelector('button');
       hideShowEl.click();
       expect(component.toggle).toHaveBeenCalled();
       expect(component.checkboxes).toEqual([
@@ -176,7 +176,7 @@ describe('CheckboxListComponent', () => {
     });
 
     it('show checkboxes', fakeAsync(() => {
-      let hideShowEl = fixture.debugElement.nativeElement.querySelector('button');
+      const hideShowEl = fixture.debugElement.nativeElement.querySelector('button');
       hideShowEl.click();
       expect(component.toggle).toHaveBeenCalled();
       hideShowEl.click();

@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { TerraByteApiService } from './terra-byte-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { of } from 'rxjs';
+import * as FileSaver from 'file-saver';
 import {
   Chunk,
   ChunkPacket,
   TerabyteListItem,
   TerraUploadFileOptions,
 } from './terra-byte-api.types';
-import * as FileSaver from 'file-saver';
+import { TerraByteApiService } from './terra-byte-api.service';
 import { TerraUploadedFile } from '../../../shared/components/file-upload/data';
 
 const createMockBlob = (size: number): Blob => {
@@ -181,13 +181,13 @@ describe('TerraByteApiService', () => {
   it('accumuleChunkPacket() method', () => {
     const form = {} as FormData;
     service.chunkPacketMaxSize = 2;
-    //Проверяем запрет на добавление в 1 часть
+    // Проверяем запрет на добавление в 1 часть
     expect(
       service.accumuleChunkPacket([[form]] as ChunkPacket[], { chunk: 1, form } as Chunk).length,
     ).toBe(2);
     service.chunkPacketMaxSize = 1;
 
-    //Проверяем максимум в пакете
+    // Проверяем максимум в пакете
     expect(
       service.accumuleChunkPacket([[form], [form]] as ChunkPacket[], { chunk: 2, form } as Chunk)
         .length,
@@ -205,7 +205,7 @@ describe('TerraByteApiService', () => {
       const options = {} as TerraUploadFileOptions;
       const mockBlob = createMockBlob(10001);
 
-      let result = service.uploadFile(options, mockBlob);
+      const result = service.uploadFile(options, mockBlob);
       expect(result).toBe(uploadByChunkFileObservable);
       expect(service.uploadByChunkFile).toHaveBeenCalledWith(options, mockBlob);
     });

@@ -1,5 +1,5 @@
-import { ValidationTypeModule } from './../../directives/validation-type/validation-type.module';
 import { NgModule } from '@angular/core';
+import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 
 import { ConstructorDatePickerComponent } from './constructor-date-picker.component';
 import { BaseModule } from '../../base.module';

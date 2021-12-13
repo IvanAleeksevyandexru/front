@@ -6,4 +6,4 @@ import { Directive } from '@angular/core';
     class: 'tree-switcher tree-switcher-noop',
   },
 })
-export class TreeNodeToggleActiveIconDirective  {}
+export class TreeNodeToggleActiveIconDirective {}

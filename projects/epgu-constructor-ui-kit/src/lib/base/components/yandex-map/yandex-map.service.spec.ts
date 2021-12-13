@@ -29,7 +29,7 @@ describe('YandexMapService', () => {
         UnsubscribeService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        MapAnimationService
+        MapAnimationService,
       ],
     }).compileComponents();
   });
@@ -37,7 +37,7 @@ describe('YandexMapService', () => {
   beforeEach(() => {
     yandexMapService = TestBed.inject(YandexMapService);
     icons = TestBed.inject(Icons);
-    yandexMapService['objectManager'] = {
+    yandexMapService.objectManager = {
       objects: {
         balloon: {
           close: () => ({}),
@@ -67,7 +67,7 @@ describe('YandexMapService', () => {
 
   it('centeredPlaceMark should stop checking placemark if ids are equal', () => {
     yandexMapService.selectedValue$.next(null);
-    yandexMapService['activePlacemarkId'] = '4504034394378_50';
+    yandexMapService.activePlacemarkId = '4504034394378_50';
 
     yandexMapService.centeredPlaceMark(
       (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
@@ -78,13 +78,13 @@ describe('YandexMapService', () => {
 
   it('centeredPlaceMark should proceed checking placemark if ids are equal and default logic is faklse', () => {
     yandexMapService.selectedValue$.next(null);
-    yandexMapService['activePlacemarkId'] = '4504034394378_50';
+    yandexMapService.activePlacemarkId = '4504034394378_50';
 
     yandexMapService.centeredPlaceMark(
       (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
       undefined,
       undefined,
-      false
+      false,
     );
 
     expect(yandexMapService.selectedValue$.getValue()).toBeTruthy();
@@ -101,7 +101,7 @@ describe('YandexMapService', () => {
     yandexMapService.selectedValue$
       .pipe(filter((_value, index) => index > 0))
       .subscribe((value) => {
-        expect(value[0]['balloonContentHeader']).toBe('Участковая избирательная комиссия №3936');
+        expect(value[0].balloonContentHeader).toBe('Участковая избирательная комиссия №3936');
         done();
       });
     yandexMapService.centeredPlaceMark(
@@ -111,7 +111,7 @@ describe('YandexMapService', () => {
 
   it('prepareFeatureCollection should ignore null coords', () => {
     const window = TestBed.inject(WINDOW) as Window;
-    window['ymaps'] = {
+    window.ymaps = {
       templateLayoutFactory: {
         createClass: () => '',
       },
@@ -132,7 +132,7 @@ describe('YandexMapService', () => {
 
   it('centeredPlaceMark should call paintActiveCluster with red cluster', () => {
     yandexMapService.ymaps = {};
-    yandexMapService.ymaps.util = { math: {}};
+    yandexMapService.ymaps.util = { math: {} };
     yandexMapService.ymaps.util.math.areEqual = () => false;
     const spy = jest.spyOn<any, any>(yandexMapService, 'paintActiveCluster');
     yandexMapService.centeredPlaceMark((mockBrakCluster as unknown) as IClusterItem<unknown>);
@@ -140,72 +140,73 @@ describe('YandexMapService', () => {
   });
 
   describe('mapPaint()', () => {
-
     let cluster;
     let setClusterPropertiesSpy;
     beforeEach(() => {
-      const feature1 = { properties: { res: {}}};
-      const feature2 = { properties: { res: {}}};
+      const feature1 = { properties: { res: {} } };
+      const feature2 = { properties: { res: {} } };
       cluster = { id: 1, features: [feature1, feature2] };
-      yandexMapService['objectManager'].clusters.getAll = () => [cluster];
-      yandexMapService['objectManager'].clusters.getById = () => { return { options: { clusterStyle: 'test' }}; };
-      yandexMapService['objectManager'].clusters.setClusterOptions = () => null;
-      setClusterPropertiesSpy = jest.spyOn(yandexMapService['objectManager'].clusters, 'setClusterProperties').mockImplementation(() => null);
+      yandexMapService.objectManager.clusters.getAll = () => [cluster];
+      yandexMapService.objectManager.clusters.getById = () => {
+        return { options: { clusterStyle: 'test' } };
+      };
+      yandexMapService.objectManager.clusters.setClusterOptions = () => null;
+      setClusterPropertiesSpy = jest
+        .spyOn(yandexMapService.objectManager.clusters, 'setClusterProperties')
+        .mockImplementation(() => null);
     });
 
     it('should paint cluster with blue', () => {
       yandexMapService.mapPaint();
 
       expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1, { clusterStyle: 'cluster-blue' });
-      });
+    });
 
     it('should paint to bluered', () => {
-      yandexMapService['activePlacemarkId'] = 24;
+      yandexMapService.activePlacemarkId = 24;
       cluster.features[0].id = 24;
 
       yandexMapService.mapPaint();
 
-      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-blue-red' });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1, { clusterStyle: 'cluster-blue-red' });
     });
 
     it('should paint to bluered', () => {
-      yandexMapService['activePlacemarkId'] = 24;
+      yandexMapService.activePlacemarkId = 24;
       cluster.features[0].properties.res.objectId = 24;
 
       yandexMapService.mapPaint();
 
-      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-blue-red' });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1, { clusterStyle: 'cluster-blue-red' });
     });
 
     it('should paint to bluered', () => {
-      yandexMapService['activeClusterHash'] = '112$24';
+      yandexMapService.activeClusterHash = '112$24';
       cluster.features[0].id = 24;
 
       yandexMapService.mapPaint();
 
-      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-blue-red' });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1, { clusterStyle: 'cluster-blue-red' });
     });
 
     it('should paint to red', () => {
-      yandexMapService['activePlacemarkId'] = 24;
+      yandexMapService.activePlacemarkId = 24;
       cluster.features[0].properties.res.isSelected = false;
       cluster.features[1].properties.res.isSelected = true;
 
       yandexMapService.mapPaint();
 
-      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-blue-red' });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1, { clusterStyle: 'cluster-blue-red' });
     });
 
     it('should paint to red', () => {
-      yandexMapService['activePlacemarkId'] = 24;
+      yandexMapService.activePlacemarkId = 24;
       cluster.features[0].properties.res.isSelected = true;
       cluster.features[1].properties.res.isSelected = true;
 
       yandexMapService.mapPaint();
 
-      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1,  { clusterStyle: 'cluster-red' });
+      expect(setClusterPropertiesSpy).toHaveBeenCalledWith(1, { clusterStyle: 'cluster-red' });
     });
-
-
   });
 });

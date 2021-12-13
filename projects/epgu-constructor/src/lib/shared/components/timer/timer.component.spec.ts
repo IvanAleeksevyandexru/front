@@ -1,9 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  DatesToolsService,
+  DatesToolsServiceStub,
+  CoreUiModule,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { CoreModule } from '../../../core/core.module';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { BaseModule } from '../../base.module';
@@ -13,8 +19,6 @@ import { TimerPipe } from './pipes/timer.pipe';
 import { TimerComponent } from './timer.component';
 import { TimerComponentBase } from './timer.interface';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
-import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 const someDate = '2020-01-01T00:00:00.000Z';
 const millisecondsOfSomeDate = new Date(someDate).getTime();
@@ -23,9 +27,9 @@ Date.now = jest.fn().mockReturnValue(millisecondsOfSomeDate);
 describe('TimerComponent', () => {
   let component: TimerComponent;
   let fixture: ComponentFixture<TimerComponent>;
-  let startTime = millisecondsOfSomeDate;
+  const startTime = millisecondsOfSomeDate;
   let currentTime = millisecondsOfSomeDate + 2000;
-  let expirationTime = millisecondsOfSomeDate + 10000;
+  const expirationTime = millisecondsOfSomeDate + 10000;
   const attrsFromTimeAsc = {
     attrs: {
       timerRules: {
@@ -276,7 +280,7 @@ describe('TimerComponent', () => {
   describe('sortLabelsByTime', () => {
     it('should sort labels by asc', () => {
       component.data = attrsFromTimeDesc;
-      let labels = component.data.attrs.timerRules.labels;
+      let { labels } = component.data.attrs.timerRules;
       expect(labels[0].label).toEqual('a');
       component.data = attrsFromTimeEqual;
       labels = component.data.attrs.timerRules.labels;
@@ -285,7 +289,7 @@ describe('TimerComponent', () => {
 
     it('should sort labels by desc', () => {
       component.data = attrsFromTimeAsc;
-      const labels = component.data.attrs.timerRules.labels;
+      const { labels } = component.data.attrs.timerRules;
       expect(labels[1].label).toEqual('a');
     });
   });

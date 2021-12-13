@@ -35,7 +35,9 @@
                   <img
                     *ngIf="file.isImage && !file.error"
                     class="img"
-                    [src]="file?.urlToFile(file.item.previewType || file.item.objectTypeId) | safe : 'url'"
+                    [src]="
+                      file?.urlToFile(file.item.previewType || file.item.objectTypeId) | safe: 'url'
+                    "
                     [alt]="file.item.fileName"
                   />
                   <div *ngIf="file.error">

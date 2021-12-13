@@ -86,7 +86,7 @@ describe('DictionaryComponent', () => {
       value: valueControl,
       required: new FormControl(mockComponent.required),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
 
     fixture = TestBed.createComponent(DictionaryComponent);
 
@@ -117,9 +117,9 @@ describe('DictionaryComponent', () => {
     const selector = 'lib-dropdown';
 
     beforeEach(() => {
-      component.model['_dictionary$'].next({
-          list: [{ id: 1, text: 'some-text' }],
-        } as unknown as CustomListDictionary);
+      component.model._dictionary$.next(({
+        list: [{ id: 1, text: 'some-text' }],
+      } as unknown) as CustomListDictionary);
     });
 
     it('Should render Lib DropDown', () => {
@@ -130,12 +130,12 @@ describe('DictionaryComponent', () => {
     it('Should render Lib DropDown', () => {
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector)).componentInstance.disabled).toBeTruthy();
-      component.model['_dictionary$'].next({
+      component.model._dictionary$.next(({
         list: [
           { id: 1, text: 'some-text' },
           { id: 2, text: 'some-text2' },
         ],
-      } as unknown as CustomListDictionary);
+      } as unknown) as CustomListDictionary);
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector)).componentInstance.disabled).toBeFalsy();
     });
@@ -146,9 +146,9 @@ describe('DictionaryComponent', () => {
         text: 'some-text',
       };
 
-      component.model['_dictionary$'].next(mockItem as unknown as CustomListDictionary);
+      component.model._dictionary$.next((mockItem as unknown) as CustomListDictionary);
       fixture.detectChanges();
-      defer(() => expect(formService['_form'].value[0].value).toEqual(mockItem));
+      defer(() => expect(formService._form.value[0].value).toEqual(mockItem));
     });
   });
 
@@ -169,14 +169,12 @@ describe('DictionaryComponent', () => {
         },
       });
 
-
-      const res = component['prepareOptions']();
+      const res = component.prepareOptions();
 
       expect(res).toEqual({
-          ...control.value.attrs.dictionaryOptions,
-          pageNum: 0
-        }
-      );
+        ...control.value.attrs.dictionaryOptions,
+        pageNum: 0,
+      });
     });
 
     it('should use dictionaryFilter if it exists', () => {
@@ -205,18 +203,17 @@ describe('DictionaryComponent', () => {
         excludedParams: [],
       };
 
-      jest.spyOn(component['screenService'], 'getStore')
-        .mockReturnValue(   { applicantAnswers: { dogovor_number: { value: 'val' }}} as any);
+      jest
+        .spyOn(component.screenService, 'getStore')
+        .mockReturnValue({ applicantAnswers: { dogovor_number: { value: 'val' } } } as any);
 
-      const res = component['prepareOptions']();
+      const res = component.prepareOptions();
 
-      expect(res).toEqual(
-        dictionaryOptions,
-      );
+      expect(res).toEqual(dictionaryOptions);
     });
 
     it('should combine dictionaryFilter and params from dictionaryOptions', () => {
-      control.value.attrs =  new DictionaryModelAttrs({
+      control.value.attrs = new DictionaryModelAttrs({
         dictionaryFilter: [
           {
             attributeName: 'ID',
@@ -254,16 +251,13 @@ describe('DictionaryComponent', () => {
         excludedParams: [],
       };
 
+      jest
+        .spyOn(component.screenService, 'getStore')
+        .mockReturnValue({ applicantAnswers: { dogovor_number: { value: 'val' } } } as any);
 
+      const res = component.prepareOptions();
 
-      jest.spyOn(component['screenService'], 'getStore')
-        .mockReturnValue(   { applicantAnswers: { dogovor_number: { value: 'val' }}} as any);
-
-      const res = component['prepareOptions']();
-
-      expect(res).toEqual(
-        dictionaryOptions,
-      );
+      expect(res).toEqual(dictionaryOptions);
     });
   });
 });

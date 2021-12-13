@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { SuggestMonitorService } from '../suggest-monitor/suggest-monitor.service';
-import { ScreenService } from '../../../screen/screen.service';
 import { HealthServiceStub, HealthService } from '@epgu/epgu-constructor-ui-kit';
+import { SuggestMonitorService } from './suggest-monitor.service';
+import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { SuggestActions } from '../../constants/suggest';
 

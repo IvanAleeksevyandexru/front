@@ -8,5 +8,4 @@ export default class AddressInputModel extends BaseModel<AddressInputModelAttrs>
   getAttrs(attrs: CustomComponentAttr): AddressInputModelAttrs {
     return new AddressInputModelAttrs(attrs);
   }
-
 }

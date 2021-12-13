@@ -1,14 +1,12 @@
 module.exports = {
+  root: true,
   extends: [
-    // AirBnB Styleguide rules
+    'plugin:@angular-eslint/recommended',
     'airbnb-typescript/base',
-    // Settings for Prettier
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
   ],
-
   overrides: [
-    // Add this rules, if you use inline templates inside *.component.ts files
     {
       files: ['*.ts'],
       parser: '@typescript-eslint/parser',
@@ -17,7 +15,6 @@ module.exports = {
         sourceType: 'module',
         project: './tsconfig.json',
       },
-      // Custom rules
       rules: {
         'no-shadow': 'off',
         'import/no-unresolved': 'off',

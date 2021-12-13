@@ -5,6 +5,7 @@ import { Directive, HostListener, Input } from '@angular/core';
 })
 export class TrimDirective {
   @Input() isTrim = true;
+
   @Input() isMultiline = false;
 
   @HostListener('focusout', ['$event.target'])

@@ -206,7 +206,7 @@ describe('RepeatableScreenComponent', () => {
       });
     });
 
-    it('should return default label when component hasn\'t label', (done) => {
+    it("should return default label when component hasn't label", (done) => {
       const label = 'Добавить данные';
       component.addSectionLabel$.subscribe((resultLabel) => {
         expect(resultLabel).toBe(label);
@@ -265,7 +265,9 @@ describe('RepeatableScreenComponent', () => {
     const displayMockWithMinOccures = { ...displayMock };
     displayMockWithMinOccures.components[0].attrs.minOccures = 2;
     screenService.display = displayMockWithMinOccures;
-    const createScreenSpy = jest.spyOn<any, string>(component, 'createScreen').mockImplementation(jest.fn());
+    const createScreenSpy = jest
+      .spyOn<any, string>(component, 'createScreen')
+      .mockImplementation(jest.fn());
 
     component.init$.subscribe();
     expect(createScreenSpy).toBeCalledTimes(2);

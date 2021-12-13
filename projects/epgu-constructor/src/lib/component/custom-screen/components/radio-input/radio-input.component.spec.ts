@@ -1,10 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RadioInputComponent } from './radio-input.component';
 import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
-import { ComponentItemComponent } from '../component-item/component-item.component';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
-import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { ChangeDetectionStrategy } from '@angular/core';
 import {
   FormArray,
@@ -13,9 +8,14 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { By } from '@angular/platform-browser';
 import { BaseUiModule } from '@epgu/epgu-constructor-ui-kit';
+import { RadioInputComponent } from './radio-input.component';
+import { ComponentItemComponent } from '../component-item/component-item.component';
+import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 
 const mockRadioComponent = {
   id: 'rb12',
@@ -56,7 +56,7 @@ describe('RadioInputComponent', () => {
       id: new FormControl('id'),
       value: new FormControl(mockRadioComponent, [Validators.requiredTrue]),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(RadioInputComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -87,7 +87,7 @@ describe('RadioInputComponent', () => {
     expect(fixture.debugElement.query(By.css('.form__radio--block'))).toBeTruthy();
     expect(fixture.debugElement.query(By.css('.form__radio--inline'))).toBeNull();
 
-    component.control = new FormControl({ ...mockRadioComponent, attrs: { isHorizontal: true }});
+    component.control = new FormControl({ ...mockRadioComponent, attrs: { isHorizontal: true } });
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('.form__radio--block'))).toBeNull();

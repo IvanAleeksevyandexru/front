@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
+import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { take } from 'rxjs/operators';
 import { TimeSlotCalendarService } from './time-slot-calendar.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DateTypeTypes } from '../../time-slot.const';
-import { take } from 'rxjs/operators';
 
 describe('TimeSlotCalendarService', () => {
   let service: TimeSlotCalendarService;

@@ -40,9 +40,9 @@ describe('MicroAppRoutingService', () => {
 
   describe('initRouting()', () => {
     it('should set appRoutingComponentMap', () => {
-      expect(service['appRoutingComponentMap']).toBeUndefined();
+      expect(service.appRoutingComponentMap).toBeUndefined();
       service.initRouting(routing);
-      expect(service['appRoutingComponentMap']).toBe(routing);
+      expect(service.appRoutingComponentMap).toBe(routing);
     });
   });
 
@@ -53,7 +53,7 @@ describe('MicroAppRoutingService', () => {
 
     it('should return component', (done) => {
       const currentComponent = 'test2';
-      service['currentComponent$'] = (from([currentComponent]) as unknown) as Observable<string>;
+      service.currentComponent$ = (from([currentComponent]) as unknown) as Observable<string>;
       service.component$.subscribe((component) => {
         expect(component).toBe(Test2Component);
         done();
@@ -62,17 +62,17 @@ describe('MicroAppRoutingService', () => {
 
     it('should return undefined component', (done) => {
       const currentComponent = 'test3';
-      service['currentComponent$'] = (from([currentComponent]) as unknown) as Observable<string>;
+      service.currentComponent$ = (from([currentComponent]) as unknown) as Observable<string>;
       service.component$.subscribe((component) => {
         expect(component).toBeUndefined();
         done();
       });
     });
 
-    it('shouldn\'t trigger twice if have the same currentComponent', (done) => {
+    it("shouldn't trigger twice if have the same currentComponent", (done) => {
       const currentComponent = 'test2';
       const mockFunc = jest.fn(() => true);
-      service['currentComponent$'] = (from([
+      service.currentComponent$ = (from([
         currentComponent,
         currentComponent,
         'test1',

@@ -1,4 +1,3 @@
-import { MapSidebarComponent, SidebarData } from './map-sidebar.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ConfigService,
@@ -16,18 +15,24 @@ import {
   PrevButtonModule,
   UnsubscribeService,
   YandexMapService,
-  YMapItem
+  YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormsModule } from '@angular/forms';
+import { MockModule, MockProvider } from 'ng-mocks';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { YaMapService } from '@epgu/ui/services/ya-map';
+import { MapSidebarComponent, SidebarData } from './map-sidebar.component';
 import { MapTypes, SelectMapObjectService } from '../../select-map-object.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
-import { MockModule, MockProvider } from 'ng-mocks';
 import { KindergartenSearchPanelService } from '../search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CommonSearchPanelComponent } from '../search-panel-resolver/components/common-search-panel/common-search-panel.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DictionaryItem, DictionaryYMapItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
+import {
+  DictionaryItem,
+  DictionaryYMapItem,
+} from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { NavigationServiceStub } from '../../../../../../core/services/navigation/navigation.service.stub';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { ActionToolsService } from '../../../../../../shared/directives/action/action-tools.service';
@@ -38,8 +43,6 @@ import { NavigationModalService } from '../../../../../../core/services/navigati
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { SearchPanelResolverComponent } from '../search-panel-resolver/search-panel-resolver.component';
 import { NavigationModalServiceStub } from '../../../../../../core/services/navigation-modal/navigation-modal.service.stub';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { YaMapService } from '@epgu/ui/services/ya-map';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { DisclaimerModule } from '../../../../../../shared/components/disclaimer/disclaimer.module';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -73,11 +76,9 @@ describe('MapSidebarComponent', () => {
         HttpClientTestingModule,
         DisclaimerModule,
         FormsModule,
-        ForTestsOnlyModule
+        ForTestsOnlyModule,
       ],
-      providers: [
-
-      ],
+      providers: [],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: { entryComponents: [CommonBalloonContentComponent, CommonSearchPanelComponent] },
@@ -89,15 +90,14 @@ describe('MapSidebarComponent', () => {
     yaMapService = TestBed.inject(YaMapService);
 
     fixture = TestBed.createComponent(MapSidebarComponent);
-    yandexMapService =  TestBed.inject(YandexMapService);
-    selectMapObjectService =  TestBed.inject(SelectMapObjectService);
+    yandexMapService = TestBed.inject(YandexMapService);
+    selectMapObjectService = TestBed.inject(SelectMapObjectService);
 
     component = fixture.componentInstance;
-    component.sidebarData = { attrs: { mapType: MapTypes.commonMap }} as unknown as SidebarData;
+    component.sidebarData = ({ attrs: { mapType: MapTypes.commonMap } } as unknown) as SidebarData;
     const item = { center: [1, 2] } as DictionaryYMapItem;
 
-    component['selectMapObjectService'].filteredDictionaryItems = [item];
-
+    component.selectMapObjectService.filteredDictionaryItems = [item];
 
     fixture.detectChanges();
   });
@@ -108,16 +108,15 @@ describe('MapSidebarComponent', () => {
 
   describe('collapseObject', function () {
     it('should collapse previously choosen object', () => {
-      const testObject: any = { center: [1,2], title: 'test' };
-      const testObject1: any = { center: [1,2], title: 'test' };
-      jest.spyOn(component['yandexMapService'], 'closeBalloon').mockImplementation(() => null);
+      const testObject: any = { center: [1, 2], title: 'test' };
+      const testObject1: any = { center: [1, 2], title: 'test' };
+      jest.spyOn(component.yandexMapService, 'closeBalloon').mockImplementation(() => null);
       component.previouslyChoosenItem = testObject1;
 
       component.collapseObject(testObject);
 
       expect(component.previouslyChoosenItem.expanded).toBeFalsy();
     });
-
   });
 
   describe('handleSubscriptions', function () {
@@ -150,7 +149,5 @@ describe('MapSidebarComponent', () => {
 
       expect(component.balloonDictionaryItems).toEqual(testArray);
     });
-
   });
 });
-

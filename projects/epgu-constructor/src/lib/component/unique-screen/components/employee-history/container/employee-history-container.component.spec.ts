@@ -3,11 +3,12 @@ import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
+import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { Gender } from '@epgu/epgu-constructor-types';
 import { EmployeeHistoryContainerComponent } from './employee-history-container.component';
 import { EmployeeHistoryDescriptionComponent } from '../components/employee-history-desription/employee-history-description.component';
 import { EmployeeHistoryFormComponent } from '../components/employee-history-form/employee-history-form.component';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { EmployeeHistoryDataSourceService } from '../services/employee-history.data-source.service';
@@ -15,7 +16,6 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { EmployeeHistoryFormData } from '../employee-history.types';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { Gender } from '@epgu/epgu-constructor-types';
 
 describe('EmployeeHistoryContainerComponent', () => {
   let component: EmployeeHistoryContainerComponent;

@@ -35,12 +35,17 @@ export const getPaymentRequestOptionGIBDD = (id: string): DictionaryOptions => {
   };
 };
 
-export const arePointsEqual = (point1: {center: number[], title: string}, point2: {center: number[], title: string}): boolean => {
-  return point2
-    && point1
-    && point1.center
-    && point2.center
-    && point1.center[0] === point2.center[0]
-    && point1.center[1] == point2.center[1]
-    && point1.title === point2.title;
+export const arePointsEqual = (
+  point1: { center: number[]; title: string },
+  point2: { center: number[]; title: string },
+): boolean => {
+  return (
+    point2 &&
+    point1 &&
+    point1.center &&
+    point2.center &&
+    point1.center[0] === point2.center[0] &&
+    point1.center[1] == point2.center[1] &&
+    point1.title === point2.title
+  );
 };

@@ -3,19 +3,22 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { MockModule, MockProvider } from 'ng-mocks';
 
-import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
-import { CoreModule } from '../../../../../core/core.module';
-import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import {
+  CoreUiModule,
+  DatesToolsService,
   ConfigService,
   ConfigServiceStub,
   EventBusService,
   LoggerService,
   LoggerServiceStub,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
+import { CoreModule } from '../../../../../core/core.module';
+
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';

@@ -1,4 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent, MockDirective } from 'ng-mocks';
+import { By } from '@angular/platform-browser';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { ActionType, DTOActionAction, ComponentDto } from '@epgu/epgu-constructor-types';
+import { EventBusService, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ButtonComponent } from '@epgu/ui/base';
 import { InfoComponentModalComponent } from './info-component-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
@@ -6,21 +12,15 @@ import { NavigationModalService } from '../../../../core/services/navigation-mod
 import { ScreenModalService } from '../../screen-modal.service';
 import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
-import { MockComponent, MockDirective } from 'ng-mocks';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { InfoScreenBodyComponent } from '../../../../screen/info-screen/info-screen-body/info-screen-body.component';
-import { By } from '@angular/platform-browser';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { ActionType, DTOActionAction, ComponentDto } from '@epgu/epgu-constructor-types';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
-import { EventBusService, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ButtonComponent } from '@epgu/ui/base';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -80,7 +80,7 @@ describe('InfoComponentModalComponent', () => {
 
     expect(containerEl.style.minHeight).toBe('0px');
 
-    screenModalService['minContentHeightSubject'].next(80);
+    screenModalService.minContentHeightSubject.next(80);
     fixture.detectChanges();
 
     expect(containerEl.style.minHeight).toBe('80px');
@@ -122,7 +122,7 @@ describe('InfoComponentModalComponent', () => {
 
     expect(button.componentInstance.disabled).toBeFalsy();
 
-    screenService['isLoadingSubject'].next(true);
+    screenService.isLoadingSubject.next(true);
     fixture.detectChanges();
 
     expect(button.componentInstance.disabled).toBeTruthy();

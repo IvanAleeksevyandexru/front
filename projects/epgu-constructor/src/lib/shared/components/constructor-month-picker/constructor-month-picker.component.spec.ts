@@ -5,10 +5,10 @@ import { FormControl } from '@angular/forms';
 import { MockModule } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { ConstructorMonthPickerComponent } from './constructor-month-picker.component';
-import { BaseModule } from '../../base.module';
 import { MonthYear } from '@epgu/ui/models/date-time';
 import { Align, ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { ConstructorMonthPickerComponent } from './constructor-month-picker.component';
+import { BaseModule } from '../../base.module';
 
 describe('ConstructorMonthPickerComponent', () => {
   let component: ConstructorMonthPickerComponent;

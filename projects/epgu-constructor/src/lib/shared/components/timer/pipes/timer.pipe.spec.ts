@@ -1,6 +1,6 @@
-import { TimerPipe } from './timer.pipe';
 import { TestBed } from '@angular/core/testing';
 import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { TimerPipe } from './timer.pipe';
 
 describe('TimerPipe', () => {
   const pipe: TimerPipe = new TimerPipe(new DatesToolsService());

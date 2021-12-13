@@ -15,6 +15,7 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { ListItem } from '@epgu/ui/models/dropdown';
+import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../screen/screen.types';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {
@@ -22,7 +23,6 @@ import {
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
 import { CheckboxListElement } from './components/checkbox-list/checkbox-list.types';
-import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { AppLink } from './components/sign-app-link/sign-app-link.types';
 
 export enum CustomScreenComponentTypes {
@@ -187,7 +187,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   needUnfilteredDictionaryToo?: boolean;
   emptyWhenNoFilter?: boolean;
   onlyFirstScreen?: boolean;
-  ref?: (CustomComponentRef | DateRangeRef)[]; //TODO разобраться с типами
+  ref?: (CustomComponentRef | DateRangeRef)[]; // TODO разобраться с типами
   refs?: KeyValueMap;
   relation?: { ref: string; conditions: RelationCondition[] };
   relationField?: ComponentRelationFieldDto;

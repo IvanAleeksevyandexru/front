@@ -9,15 +9,23 @@ const helperTextMock = 'Awesome useful helper text.';
 
 @Component({
   template: `
-    <epgu-cf-ui-long-button [isLoading]="isLoading" [disabled]="disabled" [showShadow]="showShadow" [color]="color">
+    <epgu-cf-ui-long-button
+      [isLoading]="isLoading"
+      [disabled]="disabled"
+      [showShadow]="showShadow"
+      [color]="color"
+    >
       ${helperTextMock}
     </epgu-cf-ui-long-button>
   `,
 })
 class WrapperTestComponent {
   @Input() disabled: boolean;
+
   @Input() isLoading: boolean;
+
   @Input() showShadow = true;
+
   @Input() color: LongButtonColor = LongButtonColor.WHITE;
 }
 

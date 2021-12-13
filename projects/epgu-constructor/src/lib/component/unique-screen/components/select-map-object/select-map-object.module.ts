@@ -55,7 +55,7 @@ import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipea
     ElectionsBalloonContentComponent,
     KindergartenContentComponent,
     MapSidebarComponent,
-    SwipeableWrapperComponent
+    SwipeableWrapperComponent,
   ],
   providers: [
     Icons,
@@ -85,7 +85,7 @@ import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipea
     FormsModule,
     ClickableLabelModule,
     YandexMapModule,
-    SmoothHeightAnimationDirectiveModule
+    SmoothHeightAnimationDirectiveModule,
   ],
   entryComponents: [
     SelectMapObjectComponent,

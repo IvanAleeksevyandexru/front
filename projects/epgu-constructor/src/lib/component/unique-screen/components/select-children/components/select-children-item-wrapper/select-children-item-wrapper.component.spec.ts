@@ -1,26 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
-import { SelectChildrenItemWrapperComponent } from './select-children-item-wrapper.component';
-import { BaseModule } from '../../../../../../shared/base.module';
-import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import {
   ConfigService,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   JsonHelperService,
   JsonHelperServiceStub,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { HealthService } from '@epgu/ui/services/health';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { SelectChildrenItemWrapperComponent } from './select-children-item-wrapper.component';
+import { BaseModule } from '../../../../../../shared/base.module';
+import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
+
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
-import { HealthService } from '@epgu/ui/services/health';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('SelectChildrenItemWrapperComponent', () => {
   let component: SelectChildrenItemWrapperComponent;

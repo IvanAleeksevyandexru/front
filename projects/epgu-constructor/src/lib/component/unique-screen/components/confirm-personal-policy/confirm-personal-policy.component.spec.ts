@@ -8,12 +8,12 @@ import {
   JsonHelperService,
   JsonHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { By } from '@angular/platform-browser';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { By } from '@angular/platform-browser';
 import { ConfirmPersonalPolicyComponent } from './confirm-personal-policy.component';
 import { ConfirmPolicyError, PersonalPolicyWithErrors } from './confirm-personal-policy.types';
 

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/internal/Observable';
 @Injectable({ providedIn: 'root' })
 export class MicroAppRoutingService {
   private appRoutingComponentMap: MicroAppRoutingComponentMap;
+
   private currentComponent$ = this.appStateQuery.currentComponent$;
 
   constructor(private appStateQuery: MicroAppStateQuery<unknown, unknown>) {}

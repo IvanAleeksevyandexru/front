@@ -8,5 +8,4 @@ export default class CertificateEaisdoModel extends BaseModel<CertificateEaisdoM
   getAttrs(attrs: CustomComponentAttr): CertificateEaisdoModelAttrs {
     return new CertificateEaisdoModelAttrs(attrs);
   }
-
 }

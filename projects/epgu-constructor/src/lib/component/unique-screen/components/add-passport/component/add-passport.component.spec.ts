@@ -17,6 +17,10 @@ import {
   JsonHelperServiceStub,
   DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockProvider } from 'ng-mocks';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { HealthService } from '@epgu/ui/services/health';
+import { HttpClientModule } from '@angular/common/http';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { PassportModule } from '../../../../../shared/components/add-passport/passport.module';
@@ -31,10 +35,6 @@ import { SuggestHandlerService } from '../../../../../shared/services/suggest-ha
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { SuggestMonitorService } from '../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { HtmlSelectService } from '../../../../../core/services/html-select/html-select.service';
-import { MockProvider } from 'ng-mocks';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
-import { HealthService } from '@epgu/ui/services/health';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('AddPassportComponent', () => {
   let component: AddPassportComponent;

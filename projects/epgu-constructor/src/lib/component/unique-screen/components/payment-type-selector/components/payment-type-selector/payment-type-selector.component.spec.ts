@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CoreModule } from '../../../../../../core/core.module';
 import {
   ConfigService,
   HealthService,
@@ -11,7 +10,14 @@ import {
   CoreUiModule,
   LocationService,
   WINDOW_PROVIDERS,
+  ScreenContainerModule,
+  ScreenPadModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MockModule } from 'ng-mocks';
+import { CoreModule } from '../../../../../../core/core.module';
 import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ModalModule } from '../../../../../../modal/modal.module';
@@ -21,20 +27,15 @@ import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub'
 import { BaseModule } from '../../../../../../shared/base.module';
 import { AnswerButtonModule } from '../../../../../../shared/components/answer-button/answer-button.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { ActionModule } from '../../../../../../shared/directives/action/action.module';
 import { HtmlRemoverService } from '../../../../../../shared/services/html-remover/html-remover.service';
 import { PaymentTypeSelectorComponent } from './payment-type-selector.component';
 import { PaymentTypeSelectorInterface } from '../../payment-type-selector.types';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { PaymentTypeSelectorButtonComponent } from '../payment-type-selector-button/payment-type-selector-button.component';
 import { AutocompleteApiService } from '../../../../../../core/services/autocomplete/autocomplete-api.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
-import { MockModule } from 'ng-mocks';
 import { EaisdoGroupCostService } from '../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 
@@ -48,7 +49,7 @@ describe('PaymentTypeSelectorComponent', () => {
     subHeader: 'success',
     srcImg: 'asset.jpg',
     body: 'test',
-    clarifications: { registration: { title: '', text: '<p>Регистрации подлежат:</p>' }},
+    clarifications: { registration: { title: '', text: '<p>Регистрации подлежат:</p>' } },
     actions: [
       {
         label: 'На портале со скидкой 30%',

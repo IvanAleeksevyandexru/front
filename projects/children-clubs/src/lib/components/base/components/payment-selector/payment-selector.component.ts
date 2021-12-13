@@ -14,7 +14,6 @@ import {
   ModalService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { takeUntil } from 'rxjs/operators';
 import { InlernoPaymentFilters, PfdoPaymentFilters, VendorType } from '../../../../typings';
 import { StateService } from '../../../../services/state/state.service';

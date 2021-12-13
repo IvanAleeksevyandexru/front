@@ -11,5 +11,6 @@ export class UploaderValidationServiceStub {
   compressImage() {}
 
   validateSize() {}
+
   checkAndSetMaxCountByTypes() {}
 }

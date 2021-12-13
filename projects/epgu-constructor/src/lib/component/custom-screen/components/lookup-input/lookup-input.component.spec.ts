@@ -1,12 +1,5 @@
-import { DictionaryComponent } from '../dictionary/dictionary.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
-import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
-import { ComponentItemComponent } from '../component-item/component-item.component';
-import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ActivatedRoute } from '@angular/router';
 import {
   ConfigService,
@@ -21,19 +14,26 @@ import {
   UnsubscribeServiceStub,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DictionaryComponent } from '../dictionary/dictionary.component';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { ComponentItemComponent } from '../component-item/component-item.component';
+import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { LookupInputComponent } from './lookup-input.component';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import LookupInputModelAttrs from './LookupInputModelAttrs';
 import LookupInputModel from './LookupInputModel';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
@@ -117,7 +117,7 @@ describe('LookupInputComponent', () => {
       attrs: new FormControl(mockComponent.attrs),
       value: valueControl,
       required: new FormControl(mockComponent.required),
-      model: new FormControl(new LookupInputModel({ attrs: mockComponent.attrs } as any))
+      model: new FormControl(new LookupInputModel({ attrs: mockComponent.attrs } as any)),
     });
     formService.form = new FormArray([control]);
     fixture = TestBed.createComponent(LookupInputComponent);
@@ -155,7 +155,7 @@ describe('LookupInputComponent', () => {
     const reRenderSpy = jest.spyOn<any, string>(component, 'reRenderChildLookup');
     component.ngOnInit();
 
-    component.model['_dictionary$'].next({ list: [{ id: 1, text: 'text' } ] }  as any );
+    component.model._dictionary$.next({ list: [{ id: 1, text: 'text' }] } as any);
 
     expect(reRenderSpy).toHaveBeenCalled();
   });
@@ -164,7 +164,7 @@ describe('LookupInputComponent', () => {
     const setFocusSpy = jest.spyOn<any, string>(component, 'setFocusIfNeeded');
 
     jest.useFakeTimers();
-    component['reRenderChildLookup']();
+    component.reRenderChildLookup();
     jest.runAllTimers();
     jest.useRealTimers();
 

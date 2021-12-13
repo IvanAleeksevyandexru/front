@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
-import { Slot, TIMEZONE_STR_OFFSET } from '../../typings';
 import { Observable, of } from 'rxjs';
 import { catchError, finalize, map, pluck, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { Smev2RestApiService } from '../api/smev2/smev2-rest-api.service';
-import {
-  ComponentValue,
-  DictionaryToolsService,
-} from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   DictionaryConditions,
   DictionaryOptions,
@@ -21,6 +14,13 @@ import {
   SessionService,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { Smev2RestApiService } from '../api/smev2/smev2-rest-api.service';
+import {
+  ComponentValue,
+  DictionaryToolsService,
+} from '../../../../../../shared/services/dictionary/dictionary-tools.service';
+import { Slot, TIMEZONE_STR_OFFSET } from '../../typings';
+import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { TimeSlotStateService } from '../state/time-slot-state.service';
 

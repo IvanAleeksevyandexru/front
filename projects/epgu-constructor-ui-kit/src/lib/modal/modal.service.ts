@@ -15,6 +15,7 @@ import { take } from 'rxjs/operators';
 @Injectable()
 export class ModalService {
   private injector: Injector;
+
   private renderer: Renderer2 = this.rendererFactory.createRenderer(null, null);
 
   constructor(
@@ -28,7 +29,7 @@ export class ModalService {
     const componentRef = this.createModal(modalComponent, modalParameters);
     const modalResult = new Subject<T>();
 
-    componentRef.instance['detachView'] = (data): void => {
+    componentRef.instance.detachView = (data): void => {
       this.appRef.detachView(componentRef.hostView);
       componentRef.destroy();
       modalResult.next(data);

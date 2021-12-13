@@ -4,9 +4,13 @@ import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class ComplexChoiceDictionaryModelAttrs extends GenericAttrs {
   readonly dictionaryList: CustomComponentDropDownItemList;
+
   readonly dictionaryType: string;
+
   readonly subLabel: string;
+
   readonly modalHeader: string;
+
   readonly dictionaryFilter: ComponentDictionaryFilterDto[];
 
   constructor(attrs: CustomComponentAttr) {

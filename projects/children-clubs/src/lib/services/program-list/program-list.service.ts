@@ -25,34 +25,49 @@ import { ListElement } from '@epgu/ui/models/dropdown';
 @Injectable()
 export class ProgramListService {
   fullLoading$$ = new BehaviorSubject<boolean>(true);
+
   fullLoading$ = this.fullLoading$$.asObservable();
+
   get fullLoading(): boolean {
     return this.fullLoading$$.getValue();
   }
+
   loading$$ = new BehaviorSubject<boolean>(false);
+
   loading$ = this.loading$$.asObservable();
+
   get loading(): boolean {
     return this.loading$$.getValue();
   }
+
   page$$ = new BehaviorSubject<number>(0);
+
   isFinish$$ = new BehaviorSubject<boolean>(false);
+
   isFinish$ = this.isFinish$$.asObservable();
+
   get isFinish(): boolean {
     return this.isFinish$$.getValue();
   }
+
   pageSize: number;
 
   autoScroll$$ = new BehaviorSubject<boolean>(false);
+
   get autoScroll(): boolean {
     return this.autoScroll$$.getValue();
   }
+
   set autoScroll(auto: boolean) {
     this.autoScroll$$.next(auto);
   }
 
   data$$ = new BehaviorSubject<BaseProgram[]>([]);
+
   data$ = this.data$$.pipe(filter((val) => !!val.length));
+
   paginatedData$ = new BehaviorSubject<BaseProgram[]>([]);
+
   programFilters$ = new BehaviorSubject<Filters>({});
 
   public groupFiltersMode$: Observable<{
@@ -168,7 +183,7 @@ export class ProgramListService {
       filters.municipality = place?.id as string;
     }
     const direction = filters?.direction as ListElement;
-    if (direction && direction?.id  && direction.id !== 'empty-item') {
+    if (direction && direction?.id && direction.id !== 'empty-item') {
       filters.direction = direction?.id as string;
     } else {
       delete filters.direction;

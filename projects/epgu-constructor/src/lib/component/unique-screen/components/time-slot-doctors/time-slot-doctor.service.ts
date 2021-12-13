@@ -2,11 +2,17 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DatesToolsService,
+  LoggerService,
+  DATE_STRING_YEAR_MONTH,
+  SlotInterface,
+  JsonHelperService,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { get } from 'lodash';
-import { DATE_STRING_YEAR_MONTH, SlotInterface } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenService } from '../../../../screen/screen.service';
 import { Smev3TimeSlotsRestService } from '../time-slots/smev3-time-slots-rest.service';
 import {
@@ -24,12 +30,11 @@ import {
   TimeSlotDoctorState,
   TimeSlotValueInterface,
 } from './time-slot-doctors.interface';
-import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 
-type attributesMapType = { name: string; value: string }[];
+type AttributesMapType = { name: string; value: string }[];
 
-type configType = {
-  [key: string]: string | attributesMapType;
+type ConfigType = {
+  [key: string]: string | AttributesMapType;
 };
 
 const TIMEZONE_STR_OFFSET = -6;
@@ -45,20 +50,31 @@ export class TimeSlotDoctorService {
   });
 
   public activeMonthNumber: number; // 0..11
+
   public activeYearNumber: number;
+
   public bookId;
+
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
+
   public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
+
   public timeSlotsType: string;
+
   public cancelReservation: string[];
 
   public department: DepartmentInterface;
 
   private slotsMap: SmevSlotsMapInterface;
+
   private bookedSlot: SlotInterface;
+
   private errorMessage;
+
   private availableMonths: string[];
-  private config: configType = {};
+
+  private config: ConfigType = {};
+
   private timeSlotRequestAttrs: { name: string; value: string }[];
 
   constructor(
@@ -183,7 +199,7 @@ export class TimeSlotDoctorService {
   changed(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): boolean {
     let changed = false;
 
-    let department = data.department ? JSON.parse(data.department) : {};
+    const department = data.department ? JSON.parse(data.department) : {};
     this.isBookedDepartment = data.department
       ? this.getBookedDepartment(cachedAnswer, department)
       : false;
@@ -193,7 +209,7 @@ export class TimeSlotDoctorService {
       this.department = department;
     }
 
-    const config: configType = {
+    const config: ConfigType = {
       orderId: data.orderId,
       parentOrderId: data.parentOrderId,
       serviceId: data.serviceId,
@@ -253,7 +269,7 @@ export class TimeSlotDoctorService {
     return this.smev3TimeSlotsRestService
       .cancelSlot({
         eserviceId: (this.config.eserviceId as string) || eserviceId,
-        bookId: bookId,
+        bookId,
       })
       .pipe(
         tap((response) => {
@@ -333,18 +349,17 @@ export class TimeSlotDoctorService {
 
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
-      address:
-        (this.department?.attributeValues?.[this.config.attributeNameWithAddress as string] ||
-        this.state$$.getValue().bookingRequestAttrs.Address_MO) as string,
-      orgName:
-        (this.department.attributeValues?.FULLNAME ||
+      address: (this.department?.attributeValues?.[
+        this.config.attributeNameWithAddress as string
+      ] || this.state$$.getValue().bookingRequestAttrs.Address_MO) as string,
+      orgName: (this.department.attributeValues?.FULLNAME ||
         this.department?.title ||
         this.state$$.getValue().bookingRequestAttrs.Organization_Name) as string,
       routeNumber,
       subject: (this.config.subject as string) || subject,
       userSelectedRegion: this.config.userSelectedRegion as string,
       params: [
-        ...(this.config.bookParams as attributesMapType),
+        ...(this.config.bookParams as AttributesMapType),
         ...[
           {
             name: 'doctorname',
@@ -366,11 +381,12 @@ export class TimeSlotDoctorService {
       organizationId: this.config.organizationId as string,
       calendarName: (this.config.calendarName as string) || calendarName,
       areaId: [selectedSlot.areaId || ''],
-      selectedHallTitle: (this.department.attributeValues?.AREA_NAME || selectedSlot.slotId) as string,
+      selectedHallTitle: (this.department.attributeValues?.AREA_NAME ||
+        selectedSlot.slotId) as string,
       parentOrderId: this.config.parentOrderId ? (this.config.parentOrderId as string) : '',
       caseNumber: this.config.orderId ? (this.config.orderId as string) : '',
       preliminaryReservationPeriod,
-      attributes: (this.config.bookAttributes as attributesMapType) || [],
+      attributes: (this.config.bookAttributes as AttributesMapType) || [],
       slotId: [selectedSlot.slotId],
       serviceId: [(this.config.serviceId as string) || serviceId],
     };
@@ -385,14 +401,14 @@ export class TimeSlotDoctorService {
         this.slotsMap[slotDate.getFullYear()] = {};
       }
 
-      let monthSlots = this.slotsMap[slotDate.getFullYear()];
+      const monthSlots = this.slotsMap[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
         const month = this.datesToolsService.format(slotDate, DATE_STRING_YEAR_MONTH);
         this.availableMonths.push(month);
       }
 
-      let daySlots = monthSlots[slotDate.getMonth()];
+      const daySlots = monthSlots[slotDate.getMonth()];
       if (!daySlots[slotDate.getDate()]) {
         daySlots[slotDate.getDate()] = [];
       }

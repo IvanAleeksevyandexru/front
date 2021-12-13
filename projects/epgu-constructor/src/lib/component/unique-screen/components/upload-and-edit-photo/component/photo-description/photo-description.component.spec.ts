@@ -9,7 +9,7 @@ import { ClickableLabelDirective } from '../../../../../../shared/directives/cli
 describe('PhotoDescriptionComponent', () => {
   let component: PhotoDescriptionComponent;
   let fixture: ComponentFixture<PhotoDescriptionComponent>;
-  let mockData: ComponentDto = {
+  const mockData: ComponentDto = {
     id: 'pd5',
     type: 'PhotoUploadComponent',
     label:

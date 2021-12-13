@@ -33,4 +33,3 @@ for (let env in envObj) {
     silent: true,
   });
 }
-

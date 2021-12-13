@@ -13,70 +13,87 @@ import { UploaderLimitsService } from '../limits/uploader-limits.service';
 @Injectable()
 export class UploaderManagerService {
   data$$ = new BehaviorSubject<FileUploadItem>(null);
+
   data$ = this.data$$.pipe(
     filter((data) => !!data),
     tap((data) => this.init(data)),
     shareReplay(1),
   );
+
   get data(): FileUploadItem {
     return this.data$$.getValue();
   }
+
   set data(data) {
     this.data$$.next(data);
   }
 
   readonly$$ = new BehaviorSubject<boolean>(false);
+
   get readonly(): boolean {
     return this.readonly$$.getValue();
   }
+
   set readonly(readonly: boolean) {
     this.readonly$$.next(readonly);
   }
 
   maxTotalSize$$ = new BehaviorSubject<number>(0);
+
   get maxTotalSize(): number {
     return this.maxTotalSize$$.getValue();
   }
+
   set maxTotalSize(maxTotalSize: number) {
     this.maxTotalSize$$.next(maxTotalSize);
   }
 
   maxTotalAmount$$ = new BehaviorSubject<number>(0);
+
   get maxTotalAmount(): number {
     return this.maxTotalAmount$$.getValue();
   }
+
   set maxTotalAmount(maxTotalAmount: number) {
     this.maxTotalAmount$$.next(maxTotalAmount);
   }
 
   maxAmount$$ = new BehaviorSubject<number>(0);
+
   get maxAmount(): number {
     return this.maxAmount$$.getValue();
   }
+
   set maxAmount(maxAmount: number) {
     this.maxAmount$$.next(maxAmount);
   }
 
   maxSize$$ = new BehaviorSubject<number>(0);
+
   get maxSize(): number {
     return this.maxAmount$$.getValue();
   }
+
   set maxSize(maxSize: number) {
     this.maxSize$$.next(maxSize);
   }
 
   prefixForMnemonic$$ = new BehaviorSubject<string>('');
+
   get prefixForMnemonic(): string {
     return this.prefixForMnemonic$$.getValue();
   }
+
   set prefixForMnemonic(prefixForMnemonic: string) {
     this.prefixForMnemonic$$.next(prefixForMnemonic);
   }
 
   objectId$$ = new BehaviorSubject<string>('');
+
   get objectId(): string {
     return this.objectId$$.getValue();
   }
+
   set objectId(objectId: string) {
     this.objectId$$.next(objectId);
   }
@@ -144,6 +161,7 @@ export class UploaderManagerService {
       types.indexOf('.bmp') !== -1
     );
   }
+
   updateMaxFileNumber(file: UploadedFile): void {
     const index = Number(file.mnemonic.split('.').pop());
     this.maxFileNumber = index > this.maxFileNumber ? index : this.maxFileNumber;

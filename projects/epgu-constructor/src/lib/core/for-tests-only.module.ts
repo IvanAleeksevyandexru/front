@@ -21,7 +21,8 @@ import {
   WINDOW,
   YandexMapService,
   JsonHelperService,
-  MapAnimationService, DeviceDetectorServiceStub
+  MapAnimationService,
+  DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { KindergartenService } from '../component/unique-screen/components/kindergarten/kindergarten.service';
 import { KindergartenSearchPanelService } from '../component/unique-screen/components/select-map-object/components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
@@ -96,7 +97,7 @@ import { JusticeSearchPanelService } from '../component/unique-screen/components
     YandexMapService,
     MapAnimationService,
     HtmlSelectService,
-    JusticeSearchPanelService
-  ]
+    JusticeSearchPanelService,
+  ],
 })
 export class ForTestsOnlyModule {}

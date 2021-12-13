@@ -1,6 +1,6 @@
 import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
-import { ComponentValue } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ListElement } from '@epgu/ui/models/dropdown';
+import { ComponentValue } from '../../../../shared/services/dictionary/dictionary-tools.service';
 
 export interface TimeSlotDoctorsComponentDto extends ComponentDto {
   attrs: TimeSlotDoctorsAttrs;
@@ -56,7 +56,7 @@ export interface TimeSlotValueInterface {
   userSelectedRegion?: string;
 }
 
-export interface lkApiItemAttributes {
+export interface LkApiItemAttributes {
   name: string;
   value: string;
 }

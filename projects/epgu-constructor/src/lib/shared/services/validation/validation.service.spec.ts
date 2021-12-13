@@ -1,6 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { AbstractControl, FormArray, FormControl } from '@angular/forms';
 import {
+  ConfigService,
+  DatesToolsService,
+  LoggerService,
+  HealthServiceStub,
+  HealthService,
+} from '@epgu/epgu-constructor-ui-kit';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MockProvider } from 'ng-mocks';
+import {
   CustomComponent,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
@@ -9,16 +18,7 @@ import { ValidationService, CARD_VALIDATION_EVENT } from './validation.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import {
-  ConfigService,
-  DatesToolsService,
-  LoggerService,
-  HealthServiceStub,
-  HealthService,
-} from '@epgu/epgu-constructor-ui-kit';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
-import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
@@ -29,7 +29,7 @@ describe('ValidationService', () => {
   let restrictionService: DateRestrictionsService;
   let currentAnswersService: CurrentAnswersService;
   let health: HealthService;
-  let dateInputComponent = ({
+  const dateInputComponent = ({
     id: 'pd8',
     type: CustomScreenComponentTypes.DateInput,
     label: 'по',
@@ -65,7 +65,7 @@ describe('ValidationService', () => {
     presetValue: '',
   } as unknown) as CustomComponent;
 
-  let mockComponent: CustomComponent = {
+  const mockComponent: CustomComponent = {
     id: 'rf1',
     type: CustomScreenComponentTypes.StringInput,
     label: 'Прежняя фамилия',
@@ -190,7 +190,7 @@ describe('ValidationService', () => {
   });
 
   describe('calculateStringPredicate()', () => {
-    let mockCalcStringComponent: CustomComponent = {
+    const mockCalcStringComponent: CustomComponent = {
       id: 'rf2',
       type: CustomScreenComponentTypes.StringInput,
       label: 'Сумма',
@@ -219,7 +219,7 @@ describe('ValidationService', () => {
           value: 12,
         },
       };
-      const customValidator = service['calculateStringPredicate'](mockCalcStringComponent, '10');
+      const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
       expect(customValidator).toBeFalsy();
     });
 
@@ -229,7 +229,7 @@ describe('ValidationService', () => {
           value: 8,
         },
       };
-      const customValidator = service['calculateStringPredicate'](mockCalcStringComponent, '10');
+      const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
       expect(customValidator).toBeTruthy();
     });
 
@@ -240,7 +240,7 @@ describe('ValidationService', () => {
           value: 'throw new Error("Evil code"); 12',
         },
       };
-      expect(() => service['calculateStringPredicate'](mockCalcStringComponent, '10')).toThrowError(
+      expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError(
         'Ошибка в выражении CalculatedPredicate. Component ID: rf2',
       );
     });
@@ -252,7 +252,7 @@ describe('ValidationService', () => {
           value: '12; throw new Error("Evil code")',
         },
       };
-      expect(() => service['calculateStringPredicate'](mockCalcStringComponent, '10')).toThrowError(
+      expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError(
         'Ошибка в выражении CalculatedPredicate. Component ID: rf2',
       );
     });
@@ -320,7 +320,7 @@ describe('ValidationService', () => {
     it('for customAsyncValidator', (done) => {
       control.markAsTouched();
       components.forEach((component) => {
-        component.attrs.validation[0]['updateOn'] = 'blur';
+        component.attrs.validation[0].updateOn = 'blur';
         const customAsyncValidator = service.customAsyncValidator(component as any, 'blur');
         // @ts-ignore
         customAsyncValidator(control).subscribe((obj) => {
@@ -347,24 +347,35 @@ describe('ValidationService', () => {
   });
 
   describe('isCompoundComponentValid', () => {
-
-    const mockData = { attrs: { components: [{ id: 'q1', required: true }, { id: 'q2', required:false }] }};
+    const mockData = {
+      attrs: {
+        components: [
+          { id: 'q1', required: true },
+          { id: 'q2', required: false },
+        ],
+      },
+    };
     const mockValue = { q1: 'true', q2: '' };
 
     it('should be valid', () => {
-      expect(service['isCompoundComponentValid'](mockData as unknown as CustomComponent, mockValue)).toBeTruthy();
+      expect(
+        service.isCompoundComponentValid((mockData as unknown) as CustomComponent, mockValue),
+      ).toBeTruthy();
     });
 
     it('should be invalid', () => {
       mockData.attrs.components[1].required = true;
-      expect(service['isCompoundComponentValid'](mockData as unknown as CustomComponent, mockValue)).toBeFalsy();
+      expect(
+        service.isCompoundComponentValid((mockData as unknown) as CustomComponent, mockValue),
+      ).toBeFalsy();
     });
 
     it('should be valid', () => {
       mockValue.q2 = '1';
-      expect(service['isCompoundComponentValid'](mockData as unknown as CustomComponent, mockValue)).toBeTruthy();
+      expect(
+        service.isCompoundComponentValid((mockData as unknown) as CustomComponent, mockValue),
+      ).toBeTruthy();
     });
-
   });
   describe('checkRS', () => {
     it('should return true', () => {

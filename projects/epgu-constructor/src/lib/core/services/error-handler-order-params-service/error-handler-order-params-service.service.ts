@@ -19,7 +19,7 @@ export class ErrorHandlerOrderParamsServiceService
 
   public getParams(): ErrorHandlerOrderParams {
     const store = this.screenService.getStore();
-    let orderId = undefined;
+    let orderId;
 
     if (this.hasOrderId(store)) {
       orderId = this.objectHelperService.isDefined(store.orderId)

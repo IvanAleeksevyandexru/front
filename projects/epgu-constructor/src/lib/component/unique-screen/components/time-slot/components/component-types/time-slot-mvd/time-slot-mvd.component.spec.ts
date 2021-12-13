@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotMvdComponent } from './time-slot-mvd.component';
 import { MockComponent } from 'ng-mocks';
+import { TimeSlotMvdComponent } from './time-slot-mvd.component';
 import { TimeSlotSmev3Component } from '../../base/time-slot-smev3/time-slot-smev3.component';
 import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
 import { TimeSlotSmev3StateServiceStub } from '../../../services/smev3-state/time-slot-smev3-state.service.stub';

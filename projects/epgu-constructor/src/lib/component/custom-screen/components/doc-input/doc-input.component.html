@@ -402,16 +402,16 @@
   </epgu-cf-ui-constructor-helper-text>
   <div
     class="doc-input__emmiter"
-    *ngIf="fields[docInputFieldsTypes.issueId] && !fields[docInputFieldsTypes.issueId]?.attrs.hidden"
+    *ngIf="
+      fields[docInputFieldsTypes.issueId] && !fields[docInputFieldsTypes.issueId]?.attrs.hidden
+    "
   >
     <epgu-constructor-label
       [tips]="fields[docInputFieldsTypes.issueId]?.attrs?.labelHint"
       [label]="fields[docInputFieldsTypes.issueId]?.label"
       [for]="docInputFieldsTypes.issueId"
     ></epgu-constructor-label>
-    <epgu-cf-ui-constructor-input-error
-      *ngIf="formIssueId.invalid && formIssueId.touched"
-    >
+    <epgu-cf-ui-constructor-input-error *ngIf="formIssueId.invalid && formIssueId.touched">
       {{ formIssueId.errors.msg }}
     </epgu-cf-ui-constructor-input-error>
     <epgu-constructor-masked-input

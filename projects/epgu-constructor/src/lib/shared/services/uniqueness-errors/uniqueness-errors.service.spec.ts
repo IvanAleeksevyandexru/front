@@ -11,12 +11,12 @@ import {
   LoggerService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { CachedAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../prepare-components/prepare-components.service';
 import { UniquenessErrorsService } from './uniqueness-errors.service';
-import { CachedAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 
 describe('UniquenessErrorsService', () => {
   let service: UniquenessErrorsService;
@@ -51,7 +51,7 @@ describe('UniquenessErrorsService', () => {
         CachedAnswersService,
         LocalStorageService,
         JsonHelperService,
-        { provide: WINDOW, useValue: { navigator: {}}},
+        { provide: WINDOW, useValue: { navigator: {} } },
       ],
     });
     service = TestBed.inject(UniquenessErrorsService);
@@ -76,16 +76,16 @@ describe('UniquenessErrorsService', () => {
       );
     service.init();
 
-    expect(service['_initErrors'].length).toBeGreaterThan(0);
-    expect(Object.keys(service['_initValues']).length).toBeGreaterThan(0);
-    expect(Object.keys(service['_componendIdErrorsMap']).length).toBeGreaterThan(0);
+    expect(service._initErrors.length).toBeGreaterThan(0);
+    expect(Object.keys(service._initValues).length).toBeGreaterThan(0);
+    expect(Object.keys(service._componendIdErrorsMap).length).toBeGreaterThan(0);
     expect(service.preparedUniquenessErrors).toBeTruthy();
   });
 
   it('should calculate prepared uniqueness errors', fakeAsync(() => {
-    service['_initErrors'] = [[{ 1: 'error', 2: 'error2' }]];
-    service['_initValues'] = [{ 1: 'value' }];
-    service['_componendIdErrorsMap'] = { 1.2: [[0, 0]] };
+    service._initErrors = [[{ 1: 'error', 2: 'error2' }]];
+    service._initValues = [{ 1: 'value' }];
+    service._componendIdErrorsMap = { 1.2: [[0, 0]] };
     const spy = jest.spyOn<any, string>(service, 'triggerComponentErrorsUpdate');
 
     service.calculatePreparedUniqErrors([{ 1: 'error' }], 0);
@@ -96,19 +96,19 @@ describe('UniquenessErrorsService', () => {
   }));
 
   it('should set _componendIdErrorsMap', () => {
-    service['_initErrors'] = [[{ 1: 'error', 2: 'error2' }], [{ 3: 'error3', 4: 'error4' }]];
+    service._initErrors = [[{ 1: 'error', 2: 'error2' }], [{ 3: 'error3', 4: 'error4' }]];
 
-    expect(service['getComponentIdErrorsMap']()).toEqual({ 1.2: [[0, 0]], 3.4: [[1, 0]] });
+    expect(service.getComponentIdErrorsMap()).toEqual({ 1.2: [[0, 0]], 3.4: [[1, 0]] });
   });
 
   it('should get state', () => {
-    expect(service['getState']()).toEqual({ control1: 'value' });
+    expect(service.getState()).toEqual({ control1: 'value' });
   });
 
   it('should prepare uniquenessErrors', () => {
-    service['_initErrors'] = [[{ 1: 'error', 2: 'error2' }], [{ 3: 'error3', 4: 'error4' }]];
+    service._initErrors = [[{ 1: 'error', 2: 'error2' }], [{ 3: 'error3', 4: 'error4' }]];
 
-    expect(service['prepareUniquenessErrors'](service['_initErrors'])).toEqual([
+    expect(service.prepareUniquenessErrors(service._initErrors)).toEqual([
       { 1: 'error', 2: 'error2' },
       { 3: 'error3', 4: 'error4' },
     ]);
@@ -116,17 +116,17 @@ describe('UniquenessErrorsService', () => {
 
   it('should update screenService.componentErrors on triggerComponentErrorsUpdate', () => {
     expect(screenService.componentErrors).toBeFalsy();
-    service['triggerComponentErrorsUpdate']();
+    service.triggerComponentErrorsUpdate();
 
     expect(screenService.componentErrors).toBeTruthy();
   });
 
   it('should remove last duplicated error', () => {
-    service['_initErrors'] = [[{ 1: 'error', 2: 'error2' }], [{ 3: 'error3', 4: 'error4' }]];
-    service['_componendIdErrorsMap'] = { 1.2: [[0, 0]], 3.4: [[1, 0]] };
+    service._initErrors = [[{ 1: 'error', 2: 'error2' }], [{ 3: 'error3', 4: 'error4' }]];
+    service._componendIdErrorsMap = { 1.2: [[0, 0]], 3.4: [[1, 0]] };
 
-    service['removeLastDuplicateError']('1.2');
+    service.removeLastDuplicateError('1.2');
 
-    expect(service['_initErrors']).toEqual([[null], [{ 3: 'error3', 4: 'error4' }]]);
+    expect(service._initErrors).toEqual([[null], [{ 3: 'error3', 4: 'error4' }]]);
   });
 });

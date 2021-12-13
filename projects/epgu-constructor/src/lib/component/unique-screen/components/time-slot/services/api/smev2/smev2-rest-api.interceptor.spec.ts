@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { HttpErrorResponse, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { Smev2RestApiInterceptor } from './smev2-rest-api.interceptor';
 import { TimeSlotErrorService } from '../../error/time-slot-error.service';
 import { Smev2RestApiService } from './smev2-rest-api.service';
 import { Smev2RestApiServiceStub } from './smev2-rest-api.service.stub';
 import { TimeSlotSmev3StateServiceStub } from '../../smev3-state/time-slot-smev3-state.service.stub';
 import { TimeSlotSmev3StateService } from '../../smev3-state/time-slot-smev3-state.service';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
 import { TimeSlotRequestType } from '../../../typings';
-import { HttpErrorResponse, HttpRequest, HttpResponse } from '@angular/common/http';
 import { DictionaryResponse } from '../../../../../../../shared/services/dictionary/dictionary-api.types';
-import { HttpTestingController } from '@angular/common/http/testing';
 
 describe('Smev2RestApiInterceptor', () => {
   let service: Smev2RestApiInterceptor;

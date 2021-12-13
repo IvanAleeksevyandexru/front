@@ -53,7 +53,7 @@ describe('FormOutputHtmlComponent', () => {
     ) as unknown) as ComponentsListFormServiceStub;
     interpolationService = TestBed.inject(InterpolationService);
     control = fb.group(mockFormOutputHtmlComponent);
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(FormOutputHtmlComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;

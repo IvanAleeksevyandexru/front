@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotTimeComponent } from './time-slot-time.component';
 import { MockModule } from 'ng-mocks';
+import { ListItem } from '@epgu/ui/models/dropdown';
+import { TimeSlotTimeComponent } from './time-slot-time.component';
 import { CalendarModule } from '../../../../../../../shared/components/calendar/calendar.module';
 import { Slot } from '../../../typings';
-import { ListItem } from '@epgu/ui/models/dropdown';
 
 const createMockSlot = (id: string, date: string) =>
   ({

@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
-import { InformationCenterContainerComponent } from './information-center-container.component';
-import { ScreenService } from '../../../../../screen/screen.service';
 import {
   UnsubscribeService,
   ConstructorDropdownModule,
@@ -12,6 +10,10 @@ import {
   LoggerService,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { HttpClientModule } from '@angular/common/http';
+import { InformationCenterContainerComponent } from './information-center-container.component';
+import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
@@ -29,9 +31,7 @@ import { ComponentsListRelationsService } from '../../../../custom-screen/servic
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../../../../../shared/services/date-restrictions/date-restrictions.service';
-import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { DateRefService } from '../../../../../core/services/date-ref/date-ref.service';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('InformationCenterContainerComponent', () => {
   let component: InformationCenterContainerComponent;

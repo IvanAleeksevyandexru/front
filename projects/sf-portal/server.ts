@@ -16,9 +16,12 @@ export function app(): Express {
 
   isbot.extend(config.isbotExtend || []);
 
-  server.engine('html', ngExpressEngine({
-    bootstrap: AppServerModule,
-  }));
+  server.engine(
+    'html',
+    ngExpressEngine({
+      bootstrap: AppServerModule,
+    }),
+  );
 
   server.set('view engine', 'html');
   server.set('views', distFolder);
@@ -36,7 +39,7 @@ export function app(): Express {
           providers: [
             { provide: APP_BASE_HREF, useValue: req.baseUrl },
             { provide: HOST_URL, useValue: hostUrl },
-          ]
+          ],
         },
         (err, html) => {
           if (!err) {
@@ -45,7 +48,8 @@ export function app(): Express {
           }
 
           console.error('Error while SSR:', err);
-        });
+        },
+      );
     } else {
       res.sendFile(indexHtml);
     }
@@ -65,7 +69,7 @@ function run(): void {
 
 declare const __non_webpack_require__: NodeRequire;
 const mainModule = __non_webpack_require__.main;
-const moduleFilename = mainModule && mainModule.filename || '';
+const moduleFilename = (mainModule && mainModule.filename) || '';
 if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run();
 }

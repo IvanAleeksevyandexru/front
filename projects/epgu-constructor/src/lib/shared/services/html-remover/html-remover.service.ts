@@ -5,8 +5,6 @@ import { DisplayDto } from '@epgu/epgu-constructor-types';
 export class HtmlRemoverService {
   public hasHtmlRegExp = /(<([^>]+)>)/gi;
 
-  constructor() {}
-
   public delete(display: DisplayDto): DisplayDto {
     if (!display) {
       return;
@@ -16,12 +14,10 @@ export class HtmlRemoverService {
       for (const property in obj) {
         if (obj.hasOwnProperty(property)) {
           const objProperty = obj[property];
-          if (typeof objProperty == 'object') {
+          if (typeof objProperty === 'object') {
             recursiveDeleteNodesWithHtml(objProperty);
-          } else {
-            if (typeof objProperty === 'string' && this.hasHtmlRegExp.test(objProperty)) {
-              delete obj[property];
-            }
+          } else if (typeof objProperty === 'string' && this.hasHtmlRegExp.test(objProperty)) {
+            delete obj[property];
           }
         }
       }

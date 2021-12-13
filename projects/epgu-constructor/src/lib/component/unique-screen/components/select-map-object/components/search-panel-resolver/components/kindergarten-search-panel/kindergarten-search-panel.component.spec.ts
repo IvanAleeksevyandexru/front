@@ -11,6 +11,7 @@ import {
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockProvider } from 'ng-mocks';
+import { Observable, of } from 'rxjs';
 import { KindergartenSearchPanelComponent } from './kindergarten-search-panel.component';
 import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
@@ -29,7 +30,6 @@ import {
   DictionaryYMapItem,
 } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { KindergartenSearchPanelService } from './kindergarten-search-panel.service';
-import { Observable, of } from 'rxjs';
 import { BaseComponentsModule } from '../../../../../../../../shared/components/base-components/base-components.module';
 
 const componentMock = { arguments: { municipalOktmo: 1 }, attrs: {}, id: 'test', type: '1' };
@@ -69,7 +69,11 @@ describe('KindergartenSearchPanelComponent', () => {
     searchPanelService = TestBed.inject(KindergartenSearchPanelService);
     fixture = TestBed.createComponent(KindergartenSearchPanelComponent);
     component = fixture.componentInstance;
-    component.libLookup = { clearInput: () => {return null;} } as any;
+    component.libLookup = {
+      clearInput: () => {
+        return null;
+      },
+    } as any;
     component.handleFiltering = () => null;
     component.isNoDepartmentErrorVisible = true;
   });
@@ -86,7 +90,7 @@ describe('KindergartenSearchPanelComponent', () => {
     } as unknown) as ConstructorLookupComponent;
     it('should do nothing if no mapObject provided', () => {
       const setBoundsSpy = jest
-        .spyOn(component['yandexMapService'], 'setBounds')
+        .spyOn(component.yandexMapService, 'setBounds')
         .mockImplementation((...args) => null);
 
       component.lookupChanged(null, lookup);
@@ -96,10 +100,10 @@ describe('KindergartenSearchPanelComponent', () => {
 
     it('should invoke yandex methods on call ', () => {
       const getObjSpy = jest
-        .spyOn(component['yandexMapService'], 'getObjectById')
+        .spyOn(component.yandexMapService, 'getObjectById')
         .mockImplementation((...args) => null);
       jest
-        .spyOn<any, any>(component['kindergartenSearchPanelService'], 'getChildHomeCoordinates')
+        .spyOn<any, any>(component.kindergartenSearchPanelService, 'getChildHomeCoordinates')
         .mockImplementation((...args) => [10, 10]);
 
       component.lookupChanged(
@@ -123,7 +127,7 @@ describe('KindergartenSearchPanelComponent', () => {
         ],
       };
       const getMaxStub = jest
-        .spyOn(component['kindergartenSearchPanelService'], 'getEDUORGMAX')
+        .spyOn(component.kindergartenSearchPanelService, 'getEDUORGMAX')
         .mockImplementation(
           (...args) => (of(returnValue) as unknown) as Observable<DictionaryResponse>,
         );
@@ -144,7 +148,7 @@ describe('KindergartenSearchPanelComponent', () => {
         ],
       };
       const getMaxStub = jest
-        .spyOn(component['kindergartenSearchPanelService'], 'getEDUORGMAX')
+        .spyOn(component.kindergartenSearchPanelService, 'getEDUORGMAX')
         .mockImplementation(
           (...args) => (of(returnValue) as unknown) as Observable<DictionaryResponse>,
         );
@@ -166,7 +170,7 @@ describe('KindergartenSearchPanelComponent', () => {
         ],
       };
       const getMaxStub = jest
-        .spyOn(component['kindergartenSearchPanelService'], 'getEDUORGMAX')
+        .spyOn(component.kindergartenSearchPanelService, 'getEDUORGMAX')
         .mockImplementation(
           (...args) => (of(returnValue) as unknown) as Observable<DictionaryResponse>,
         );
@@ -188,7 +192,7 @@ describe('KindergartenSearchPanelComponent', () => {
         ],
       };
       const getMaxStub = jest
-        .spyOn(component['kindergartenSearchPanelService'], 'getEDUORGMAX')
+        .spyOn(component.kindergartenSearchPanelService, 'getEDUORGMAX')
         .mockImplementation(
           (...args) => (of(returnValue) as unknown) as Observable<DictionaryResponse>,
         );
@@ -200,13 +204,13 @@ describe('KindergartenSearchPanelComponent', () => {
 
     it('should draw kids home on map loading', () => {
       const placeSpy = jest
-        .spyOn(component['selectMapObjectService'], 'placeChildsHomeOnMap')
+        .spyOn(component.selectMapObjectService, 'placeChildsHomeOnMap')
         .mockImplementation((...args) => null);
       component.ngOnInit();
 
       expect(placeSpy).toHaveBeenCalledTimes(0);
 
-      component['selectMapObjectService'].isMapLoaded.next(true);
+      component.selectMapObjectService.isMapLoaded.next(true);
 
       expect(placeSpy).toHaveBeenCalledTimes(1);
     });
@@ -214,15 +218,15 @@ describe('KindergartenSearchPanelComponent', () => {
 
   describe('toggleSelectedKindergartensView()', () => {
     it('should reset selected view', () => {
-      component['selectMapObjectService'].isSelectedView.next(true);
+      component.selectMapObjectService.isSelectedView.next(true);
       const resetSelectedViewSpy = jest
-        .spyOn(component['selectMapObjectService'], 'resetSelectedView')
+        .spyOn(component.selectMapObjectService, 'resetSelectedView')
         .mockImplementation((...args) => null);
       const handleSpy = jest
-        .spyOn(component['selectMapObjectService'], 'handleKindergartenSelection')
+        .spyOn(component.selectMapObjectService, 'handleKindergartenSelection')
         .mockImplementation((...args) => null);
       const placeSpy = jest
-        .spyOn(component['selectMapObjectService'], 'placeChildsHomeOnMap')
+        .spyOn(component.selectMapObjectService, 'placeChildsHomeOnMap')
         .mockImplementation((...args) => null);
 
       component.toggleSelectedKindergartensView();
@@ -232,15 +236,15 @@ describe('KindergartenSearchPanelComponent', () => {
     });
 
     it('should enable selected view', () => {
-      component['selectMapObjectService'].isSelectedView.next(false);
+      component.selectMapObjectService.isSelectedView.next(false);
       const resetSelectedViewSpy = jest
-        .spyOn(component['selectMapObjectService'], 'resetSelectedView')
+        .spyOn(component.selectMapObjectService, 'resetSelectedView')
         .mockImplementation((...args) => null);
       const handleSpy = jest
-        .spyOn(component['selectMapObjectService'], 'handleKindergartenSelection')
+        .spyOn(component.selectMapObjectService, 'handleKindergartenSelection')
         .mockImplementation((...args) => null);
       const placeSpy = jest
-        .spyOn(component['selectMapObjectService'], 'placeChildsHomeOnMap')
+        .spyOn(component.selectMapObjectService, 'placeChildsHomeOnMap')
         .mockImplementation((...args) => null);
 
       component.toggleSelectedKindergartensView();

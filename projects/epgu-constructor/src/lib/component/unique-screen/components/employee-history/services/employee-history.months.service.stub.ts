@@ -10,11 +10,16 @@ import {
 @Injectable()
 export class EmployeeHistoryMonthsServiceStub {
   years = 10;
+
   maxDate: MonthYear;
+
   minDateTo: MonthYear;
+
   isMonthComplete$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  async initSettings(): Promise<void> {}
+  async initSettings(): Promise<void> {
+    return new Promise(undefined);
+  }
 
   getUncheckedPeriods(
     availableMonths: EmployeeHistoryAvailableDates[],
@@ -22,7 +27,7 @@ export class EmployeeHistoryMonthsServiceStub {
     if (!availableMonths.length) return [];
 
     const periods: EmployeeHistoryAvailableDates[][] = [];
-    let periodIndex = 0;
+    const periodIndex = 0;
 
     periods[periodIndex] = [{ date: '', checked: true }];
 

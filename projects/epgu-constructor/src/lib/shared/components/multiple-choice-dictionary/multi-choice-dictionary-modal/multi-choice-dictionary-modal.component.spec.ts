@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { ListElement } from '@epgu/ui/models/dropdown';
 import { FormBuilder } from '@angular/forms';
-import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
 import {
   ConfigService,
   LoggerService,
@@ -12,6 +11,8 @@ import {
   JsonHelperService,
   EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClientModule } from '@angular/common/http';
+import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
 import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../services/dictionary/dictionary-api.service.stub';
 import { BaseModule } from '../../../base.module';
@@ -22,7 +23,6 @@ import { RefRelationService } from '../../../services/ref-relation/ref-relation.
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;

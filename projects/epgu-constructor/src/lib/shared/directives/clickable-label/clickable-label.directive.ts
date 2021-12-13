@@ -12,12 +12,12 @@ import {
   createOpenBrowserEvent,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { SmuEvent } from '@epgu/ui/models';
 import { ScreenService } from '../../../screen/screen.service';
 import { ActionService } from '../action/action.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
-import { SmuEvent } from '@epgu/ui/models';
 
 const excludedTypesForState = [ActionType.deleteSuggest];
 
@@ -26,6 +26,7 @@ const excludedTypesForState = [ActionType.deleteSuggest];
 })
 export class ClickableLabelDirective {
   @Input() public clarifications: Clarifications;
+
   @Input() public componentId: string;
 
   constructor(
@@ -120,7 +121,9 @@ export class ClickableLabelDirective {
     attrs?: string,
   ): void {
     let actionDTO: DTOActionAction;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     let _attrs: ComponentActionDto['attrs'];
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const _multipleAnswers = (multipleAnswers as unknown) as ActionAnswerDto[];
     if (action) {
       actionDTO = action;

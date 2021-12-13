@@ -2,25 +2,26 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { DateRangeService } from '../../services/date-range/date-range.service';
-import { CoreModule } from '../../../core/core.module';
 import {
   CoreUiModule,
   DatesToolsService,
   ObjectHelperService,
   WordTransformService,
-} from '@epgu/epgu-constructor-ui-kit';
-import {
   ConfigService,
   ConfigServiceStub,
   EventBusService,
   LoggerService,
   LoggerServiceStub,
+  TextTransformModule,
+  TrimModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { DateRangeService } from '../../services/date-range/date-range.service';
+import { CoreModule } from '../../../core/core.module';
+
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
-import { TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ConstructorMultilineInputComponent } from './constructor-multiline-input.component';
