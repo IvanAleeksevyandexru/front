@@ -123,22 +123,29 @@ export class ActionToolsService {
   }
 
   public downloadAction(action: ComponentActionDto): void {
-    this.sendAction<string>(action)
-      .pipe(filter((response) => !response.errorList.length))
+    const getOptions = (): Object => {
+      return action.type === ActionType.download ? {} : { responseType: 'blob' };
+    };
+
+    this.sendAction<string | Blob>(action, getOptions())
+      .pipe(filter((response) => !response?.errorList?.length))
       .subscribe(
-        ({ responseData }) =>
-          this.downloadService.downloadFile(responseData.value, responseData.type),
+        (response) => {
+          let value: string;
+          let type: string;
+
+          if (action.type === ActionType.download) {
+            value = response.responseData.value as string;
+            type = response.responseData.type;
+          } else {
+            value = (response as unknown) as string;
+            type = ((response as unknown) as Blob).type;
+          }
+
+          this.downloadService.saveRawFile(value, type, 'document.pdf');
+        },
         (error) => console.log(error),
       );
-  }
-
-  public downloadRawPdfAction(action: ComponentActionDto): void {
-    const options = { responseType: 'blob' };
-    this.sendAction<Blob>(action, options).subscribe((payload: ActionApiResponse<Blob>) => {
-      const type = ((payload as unknown) as Blob).type;
-      const file = (payload as unknown) as string;
-      this.downloadService.downloadFile(file, type, 'document.pdf');
-    });
   }
 
   public navigate(action: ComponentActionDto, componentId: string, stepType: string): void {

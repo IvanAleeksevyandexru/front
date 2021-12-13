@@ -200,7 +200,7 @@ describe('ActionDirective', () => {
   it('test directive - download action', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.download')).nativeElement;
     fixture.detectChanges();
-    const spy = jest.spyOn(downloadService, 'downloadFile');
+    const spy = jest.spyOn(downloadService, 'saveRawFile');
     button.click();
 
     expect(spy).toHaveBeenCalled();

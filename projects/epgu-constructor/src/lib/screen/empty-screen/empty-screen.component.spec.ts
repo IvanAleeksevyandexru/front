@@ -11,11 +11,10 @@ import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-sc
 import { RedirectComponent } from '../../component/empty-screen/components/redirect.component';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
-import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DownloadService, DownloadServiceStub, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
-import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 
@@ -26,7 +25,7 @@ describe('EmptyScreenComponent', () => {
   let screenService: ScreenService;
   let locationService: LocationService;
   let loggerService: LoggerService;
-  let fileDownloaderService: FileDownloaderService;
+  let downloadService: DownloadService;
   let actionService: ActionService;
 
   beforeEach(() => {
@@ -37,7 +36,7 @@ describe('EmptyScreenComponent', () => {
         { provide: InitDataService, useClass: InitDataServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
-        MockProvider(FileDownloaderService),
+        { provide: DownloadService, useClass: DownloadServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
       ],
     }).overrideComponent(EmptyScreenComponent, {
@@ -49,7 +48,7 @@ describe('EmptyScreenComponent', () => {
     screenService = TestBed.inject(ScreenService);
     locationService = TestBed.inject(LocationService);
     loggerService = TestBed.inject(LoggerService);
-    fileDownloaderService = TestBed.inject(FileDownloaderService);
+    downloadService = TestBed.inject(DownloadService);
     actionService = TestBed.inject(ActionService);
     fixture = TestBed.createComponent(EmptyScreenComponent);
     component = fixture.componentInstance;
@@ -138,7 +137,7 @@ describe('EmptyScreenComponent', () => {
   });
 
   describe('download', () => {
-    it('should be call fileDownloaderService.download', () => {
+    it('should be call downloadService.downloadFile', () => {
       const mockComponent = {
         attrs: {
           downloadLink: 'test',
@@ -148,13 +147,13 @@ describe('EmptyScreenComponent', () => {
       };
       screenService.component = mockComponent;
       fixture.detectChanges();
-      const spy = jest.spyOn(fileDownloaderService, 'download');
+      const spy = jest.spyOn(downloadService, 'downloadFile');
       component.redirectLink$.subscribe();
 
       expect(spy).toBeCalledWith('test');
     });
 
-    it('should be not call fileDownloaderService.download', () => {
+    it('should be not call downloadService.downloadFile', () => {
       const mockComponent = {
         attrs: {},
         id: 'id1',
@@ -162,7 +161,7 @@ describe('EmptyScreenComponent', () => {
       };
       screenService.component = mockComponent;
       fixture.detectChanges();
-      const spy = jest.spyOn(fileDownloaderService, 'download');
+      const spy = jest.spyOn(downloadService, 'downloadFile');
       component.redirectLink$.subscribe();
 
       expect(spy).not.toHaveBeenCalled();

@@ -155,8 +155,8 @@ describe('ActionToolsService', () => {
       service['downloadAction'](downloadAction);
       expect(spy).toBeCalled();
     });
-    it('should call downloadService.downloadFile()', () => {
-      const spy = jest.spyOn(downloadService, 'downloadFile');
+    it('should call downloadService.saveRawFile()', () => {
+      const spy = jest.spyOn(downloadService, 'saveRawFile');
       service['downloadAction'](downloadAction);
       expect(spy).toBeCalled();
     });

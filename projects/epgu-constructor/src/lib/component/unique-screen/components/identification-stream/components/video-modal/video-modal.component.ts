@@ -51,7 +51,7 @@ export class VideoModalComponent extends ModalBaseComponent implements AfterView
   onSuccess(result: LunaPassSuccess): void {
     try {
       const frameResult: LunaPassFrameResult = JSON.parse(
-        atob(result.jwt.replace('/"/', '').split('.')[1]),
+        window.atob(result.jwt.replace('/"/', '').split('.')[1]),
       );
       if (frameResult.bestshot) {
         this.modalResult.next({
