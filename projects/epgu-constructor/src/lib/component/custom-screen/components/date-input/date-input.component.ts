@@ -18,7 +18,7 @@ export class DateInputComponent extends AbstractComponentListItemComponent<DateI
   maxDateDefault = '+50y';
   clearable = true;
   align = 'left';
-  strategy = BrokenDateFixStrategy.NONE;
+  strategy = BrokenDateFixStrategy.RESET;
 
   constructor(public injector: Injector, private dateRangeService: DateRangeService) {
     super(injector);
