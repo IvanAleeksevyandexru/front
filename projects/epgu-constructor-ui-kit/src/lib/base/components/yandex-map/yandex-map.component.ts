@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { ConfigService } from '../../../core/services/config/config.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { ConfigService } from '../../../core/services/config/config.service';
   styleUrls: ['./yandex-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class YandexMapComponent implements OnInit {
+export class YandexMapComponent {
   @Input() mapControls = [];
   @Input() mapCenter: number[];
   @Input() mapIsLoaded = false;
@@ -16,6 +16,4 @@ export class YandexMapComponent implements OnInit {
   @Input() isListViewType: boolean;
 
   constructor(public config: ConfigService) {}
-
-  ngOnInit(): void {}
 }

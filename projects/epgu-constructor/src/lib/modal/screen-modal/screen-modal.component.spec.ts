@@ -1,37 +1,39 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
-import { ScreenModalComponent } from './screen-modal.component';
-import { ComponentListModalComponent } from './components/component-list-modal/component-list-modal.component';
-import { BaseModule } from '../../shared/base.module';
-import { UniqueComponentModalModule } from './components/unique-component-modal/unique-component-modal.module';
-import { InfoComponentModalModule } from './components/info-component-modal/info-component-modal.module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NavigationModalService } from '../../core/services/navigation-modal/navigation-modal.service';
-import { ScreenService } from '../../screen/screen.service';
-import { ScreenModalService } from './screen-modal.service';
-import { CustomScreenService } from '../../screen/custom-screen/custom-screen.service';
 import {
   DatesToolsService,
   ERROR_HANDLER_ORDER_PARAMS_SERVICES,
   ObjectHelperService,
   WordTransformService,
+  UnsubscribeService,
+  CoreUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import { ScreenModalComponent } from './screen-modal.component';
+import { ComponentListModalComponent } from './components/component-list-modal/component-list-modal.component';
+import { BaseModule } from '../../shared/base.module';
+import { UniqueComponentModalModule } from './components/unique-component-modal/unique-component-modal.module';
+import { InfoComponentModalModule } from './components/info-component-modal/info-component-modal.module';
+import { NavigationModalService } from '../../core/services/navigation-modal/navigation-modal.service';
+import { ScreenService } from '../../screen/screen.service';
+import { ScreenModalService } from './screen-modal.service';
+import { CustomScreenService } from '../../screen/custom-screen/custom-screen.service';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { HtmlRemoverService } from '../../shared/services/html-remover/html-remover.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { PrepareComponentsService } from '../../shared/services/prepare-components/prepare-components.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListModule } from '../../component/custom-screen/components-list.module';
 import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
 import { FormPlayerServiceStub } from '../../form-player/services/form-player/form-player.service.stub';
 import { ScreenModalServiceStub } from './screen-modal.service.stub';
 import { ScreenModalResolverComponent } from './screen-modal-resolver/screen-modal-resolver.component';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
-import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -130,7 +132,7 @@ describe('ScreenModalComponent', () => {
       const navigation = {
         options: { isInternalScenarioFinish: true },
       };
-      component['navModalService'].next(navigation);
+      component.navModalService.next(navigation);
       expect(nextStepSpy).toHaveBeenCalled();
     });
     it('should call prevStep on prevStep$ event ', () => {
@@ -138,7 +140,7 @@ describe('ScreenModalComponent', () => {
       const navigation = {
         options: { isInternalScenarioFinish: true },
       };
-      component['navModalService'].prev(navigation);
+      component.navModalService.prev(navigation);
       expect(prevStepSpy).toHaveBeenCalled();
     });
   });
@@ -183,7 +185,10 @@ describe('ScreenModalComponent', () => {
 
   describe('closeModal', () => {
     it('sould call switchNavigationToFormPlayer()', () => {
-      const switchNavigationToFormPlayerSpy = jest.spyOn<any, string>(component, 'switchNavigationToFormPlayer');
+      const switchNavigationToFormPlayerSpy = jest.spyOn<any, string>(
+        component,
+        'switchNavigationToFormPlayer',
+      );
       component.showModal = true;
       component.closeModal();
       expect(switchNavigationToFormPlayerSpy).toHaveBeenCalled();
@@ -195,7 +200,10 @@ describe('ScreenModalComponent', () => {
       expect(resetStoreSpy).toHaveBeenCalled();
     });
     it('sould not call any, if showModal is false', () => {
-      const switchNavigationToFormPlayerSpy = jest.spyOn<any, string>(component, 'switchNavigationToFormPlayer');
+      const switchNavigationToFormPlayerSpy = jest.spyOn<any, string>(
+        component,
+        'switchNavigationToFormPlayer',
+      );
       const resetStoreSpy = jest.spyOn(component.screenModalService, 'resetStore');
       component.showModal = false;
       component.closeModal();

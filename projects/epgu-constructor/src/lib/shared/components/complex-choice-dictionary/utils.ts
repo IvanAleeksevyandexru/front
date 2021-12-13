@@ -1,24 +1,25 @@
-import { TreeNode, FilteredTreeResult, FlatNode } from './complex-choice-dictionary.models';
 import { BehaviorSubject, merge, Observable, of, combineLatest, Subscription } from 'rxjs';
 import { map, tap, delay, catchError } from 'rxjs/operators';
 import { CollectionViewer, DataSource, SelectionChange } from '@angular/cdk/collections';
 import { TreeControl } from '@angular/cdk/tree';
-import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
-import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 
 import { ListElement } from '@epgu/ui/models/dropdown';
 import {
   DictionaryFilters,
   AttributeTypes,
   DictionaryUnionKind,
+  DictionaryConditions,
+  DictionarySubFilter,
 } from '@epgu/epgu-constructor-types';
 
-import { DictionaryConditions, DictionarySubFilter } from '@epgu/epgu-constructor-types';
 import { FormControl } from '@angular/forms';
+import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
+import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
+import { TreeNode, FilteredTreeResult, FlatNode } from './complex-choice-dictionary.models';
 
 export function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
   const filterUniq = (arr: TreeNode[]): TreeNode[] => {
-    return [...new Map(arr.map((item) => [item['id'], item])).values()];
+    return [...new Map(arr.map((item) => [item.id, item])).values()];
   };
   const filter = (node: TreeNode, result: TreeNode[]): TreeNode[] => {
     if (node.text.search(value) !== -1) {
@@ -28,7 +29,7 @@ export function filterTreeData(data: TreeNode[], value: string): FilteredTreeRes
     return result;
   };
   const treeData = data.reduce((a, b) => filter(b, a), [] as TreeNode[]);
-  const flattenData = filterUniq(treeData).map(el => ({ ...el, level: 0 }));
+  const flattenData = filterUniq(treeData).map((el) => ({ ...el, level: 0 }));
   return new FilteredTreeResult(flattenData);
 }
 
@@ -45,11 +46,15 @@ export function dataMapping(data: ListElement[], level = null): FlatNode[] {
 
 export class DynamicDatasource implements DataSource<FlatNode> {
   flattenedData: BehaviorSubject<FlatNode[]>;
+
   searchValue = '';
+
   private originalData: BehaviorSubject<FlatNode[]>;
+
   private subscription: Subscription;
 
   private childrenLoadedSet = new Set<FlatNode>();
+
   private expandedNodes: TreeNode[] = [];
 
   constructor(
@@ -104,7 +109,7 @@ export class DynamicDatasource implements DataSource<FlatNode> {
   }
 
   expandFlattenedNodes(nodes: FlatNode[]): FlatNode[] {
-    const treeControl = this.treeControl;
+    const { treeControl } = this;
     const results: FlatNode[] = [];
     const currentExpand: boolean[] = [];
     currentExpand[0] = true;

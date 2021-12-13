@@ -6,12 +6,12 @@ import {
   TuiDocMainModule,
   TuiDocPageModule,
 } from '@taiga-ui/addon-doc';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BaseUiModule } from '@epgu/epgu-constructor-ui-kit';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExampleEpguChipModule } from '../components/chip/chip.module';
 import { APP_PROVIDERS } from './app.providers';
-import { BaseUiModule } from '@epgu/epgu-constructor-ui-kit';
 
 @NgModule({
   declarations: [AppComponent],

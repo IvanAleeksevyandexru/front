@@ -67,6 +67,5 @@ export const doctorHandlers: TimeSlotErrorHandler[] = [
       header: 'Нет свободного времени для приёма',
       description: message,
     });
-    return;
   }) as TimeSlotErrorHandler,
 ];

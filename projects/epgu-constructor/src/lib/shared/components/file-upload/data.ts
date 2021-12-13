@@ -1,13 +1,13 @@
+import { BehaviorSubject } from 'rxjs';
+import { v4 } from 'uuid';
+import { Observable } from 'rxjs/internal/Observable';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 import {
   FileUploadItem,
   TerraFileOptions,
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../core/services/terra-byte-api/terra-byte-api.types';
-import { BehaviorSubject } from 'rxjs';
-import { v4 } from 'uuid';
-import { Observable } from 'rxjs/internal/Observable';
-import { Clarifications } from '@epgu/epgu-constructor-types';
 
 export enum ErrorActions {
   clear = 'clear',
@@ -71,12 +71,19 @@ export const extToLowerCase: (name: string) => string = (name: string) => {
 
 export class FileItem {
   id = v4();
+
   error: FileItemError;
+
   isImage: boolean;
+
   isArchive: boolean;
+
   limited = false;
+
   isRawMock = false;
+
   attached = false;
+
   constructor(
     public status: FileItemStatus,
     public fileUploadApiUrl: string,
@@ -125,19 +132,23 @@ export class FileItem {
     this.setStatus(FileItemStatus.error);
     return this;
   }
+
   clearError(): FileItem {
     this.error = null;
     return this;
   }
+
   setStatus(status: FileItemStatus): FileItem {
     this.status = status;
     return this;
   }
+
   setRaw(raw: File): FileItem {
     this.raw = raw;
     this.isRawMock = false;
     return this;
   }
+
   setItem(item: UploadedFile): FileItem {
     this.item = item;
     this.item.uploaded = true;
@@ -173,9 +184,9 @@ export class FileItem {
     return {
       name: this.raw.name,
       mimeType: this.getMimeType(),
-      objectId: objectId,
-      objectType: objectType,
-      mnemonic: mnemonic,
+      objectId,
+      objectType,
+      mnemonic,
     } as TerraUploadFileOptions;
   }
 

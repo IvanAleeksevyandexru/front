@@ -4,13 +4,14 @@ import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 
 import { Observable } from 'rxjs';
 
-import { DictionaryResponse } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryOptions } from '@epgu/epgu-constructor-types';
+import { DictionaryResponse } from '../../../../shared/services/dictionary/dictionary-api.types';
 import { ScreenService } from '../../../../screen/screen.service';
 
 @Injectable()
 export class Smev2TimeSlotsRestService {
   private urlPrefix = this.config.dictionaryUrl;
+
   private additionalPath =
     this.screenSerivce.component?.attrs?.dictionaryType || 'getAppointment2_mvdr01';
 

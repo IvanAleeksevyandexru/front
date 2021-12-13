@@ -4,7 +4,13 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockModule, MockProvider, MockProviders } from 'ng-mocks';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { DatesToolsService, UnsubscribeService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  UnsubscribeService,
+  JsonHelperService,
+} from '@epgu/epgu-constructor-ui-kit';
+import { of } from 'rxjs';
+import { DictionaryConditions, DictionaryOptions } from '@epgu/epgu-constructor-types';
 import { DropDownDeptsModule } from '../../../../shared/components/drop-down-depts/drop-down-depts.module';
 import { DepartmentLookupComponent } from './department-lookup.component';
 import { ComponentItemComponent } from '../component-item/component-item.component';
@@ -18,11 +24,13 @@ import { ComponentsListFormServiceStub } from '../../services/components-list-fo
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { CustomComponent, CustomListDictionary, CustomScreenComponentTypes } from '../../components-list.types';
+import {
+  CustomComponent,
+  CustomListDictionary,
+  CustomScreenComponentTypes,
+} from '../../components-list.types';
 import DepartmentLookupModel from './DepartmentLookupModel';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
-import { of } from 'rxjs';
-import { DictionaryConditions, DictionaryOptions } from '@epgu/epgu-constructor-types';
 import { ScreenStore } from '../../../../screen/screen.types';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 
@@ -76,7 +84,6 @@ const mockPatchedBase: CustomComponent = new DepartmentLookupModel({
   required: false,
 });
 
-
 const patchedComponent = new DepartmentLookupModel({
   ...mockPatchedBase,
   arguments: {
@@ -120,7 +127,6 @@ const patchedComponent = new DepartmentLookupModel({
     ],
   },
 });
-
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -189,7 +195,7 @@ describe('DepartmentLookupComponent', () => {
       model: new FormControl(new DepartmentLookupModel({ attrs: patchedComponent.attrs } as any)),
     });
 
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(DepartmentLookupComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -221,8 +227,10 @@ describe('DepartmentLookupComponent', () => {
     const selector = 'epgu-constructor-drop-down-depts';
 
     beforeEach(() => {
-      component.model['_dictionary$'].next(
-       { id: 1, text: 'some-text' } as unknown as CustomListDictionary);
+      component.model._dictionary$.next(({
+        id: 1,
+        text: 'some-text',
+      } as unknown) as CustomListDictionary);
     });
 
     it('should be rendered if dropDowns is TRUTHY', () => {
@@ -234,7 +242,7 @@ describe('DepartmentLookupComponent', () => {
       fixture.detectChanges();
 
       const debugEl = fixture.debugElement.query(By.css(selector));
-      const invalid = debugEl.componentInstance.invalid;
+      const { invalid } = debugEl.componentInstance;
 
       expect(invalid).toBeFalsy();
 
@@ -261,7 +269,6 @@ describe('DepartmentLookupComponent', () => {
   });
 
   describe('dictionaryFiltersLoader', () => {
-
     it('filter getDictionaries$', (done) => {
       const items = [
         {
@@ -314,7 +321,8 @@ describe('DepartmentLookupComponent', () => {
         } as any),
       );
       const { dictionaryType } = patchedComponent.attrs;
-      component['dictionaryFiltersLoader'](
+      component
+        .dictionaryFiltersLoader(
           patchedComponent as any,
           screenStore,
           dictionaryType,
@@ -334,7 +342,8 @@ describe('DepartmentLookupComponent', () => {
       );
       const { dictionaryType } = patchedComponent.attrs;
 
-      component['dictionaryFiltersLoader'](
+      component
+        .dictionaryFiltersLoader(
           patchedComponent as any,
           screenStore,
           dictionaryType,
@@ -349,8 +358,7 @@ describe('DepartmentLookupComponent', () => {
 
   describe('getDropDownDepts$()', () => {
     it('should dictionaryFilters', (done) => {
-
-     const spy = jest.spyOn(component, 'dictionaryFiltersLoader');
+      const spy = jest.spyOn(component, 'dictionaryFiltersLoader');
 
       component.loadReferenceData$().subscribe(() => {
         expect(spy).toHaveBeenCalled();
@@ -359,7 +367,6 @@ describe('DepartmentLookupComponent', () => {
     });
 
     describe('when repeatWithNoFilters is false and there is no items', () => {
-
       const data = {
         component: patchedComponent,
         data: getDictionary(0),
@@ -367,19 +374,17 @@ describe('DepartmentLookupComponent', () => {
 
       it('should NOT re-fetch data from nsi dictionary', fakeAsync(() => {
         jest.spyOn(dictionaryToolsService, 'getDictionaries$').mockReturnValue(of(data) as any);
-        control.value.attrs['repeatWithNoFilters'] = false;
-        control.value.attrs['dictionaryFilters'] = [];
+        control.value.attrs.repeatWithNoFilters = false;
+        control.value.attrs.dictionaryFilters = [];
 
-        component.loadReferenceData$().subscribe((response) =>
-          expect(response.repeatedWithNoFilters).toBeFalsy()
-        );
+        component
+          .loadReferenceData$()
+          .subscribe((response) => expect(response.repeatedWithNoFilters).toBeFalsy());
         tick();
       }));
     });
 
     describe('when repeatWithNoFilters is true', () => {
-
-
       describe('when there is no items for filtered fetch', () => {
         const data = {
           component: patchedComponent,
@@ -387,16 +392,14 @@ describe('DepartmentLookupComponent', () => {
         };
 
         it('should re-fetch data from nsi dictionary', fakeAsync(() => {
-          control.value.attrs['repeatWithNoFilters'] = true;
-          control.value.attrs['dictionaryFilters'] = [];
+          control.value.attrs.repeatWithNoFilters = true;
+          control.value.attrs.dictionaryFilters = [];
           jest.spyOn(dictionaryToolsService, 'getDictionaries$').mockReturnValue(of(data) as any);
 
           component.loadReferenceData$().subscribe((response) => {
-              expect(response.repeatedWithNoFilters).toEqual(true);
-              expect(response.list.length).toBe(0);
-          }
-
-          );
+            expect(response.repeatedWithNoFilters).toEqual(true);
+            expect(response.list.length).toBe(0);
+          });
           tick();
         }));
       });
@@ -410,13 +413,12 @@ describe('DepartmentLookupComponent', () => {
         it('should re-fetch data from nsi dictionary', fakeAsync(() => {
           jest.spyOn(dictionaryToolsService, 'getDictionaries$').mockReturnValue(of(data) as any);
 
-          component.loadReferenceData$().subscribe((response) =>
-            expect(response.repeatedWithNoFilters).toBeFalsy()
-          );
+          component
+            .loadReferenceData$()
+            .subscribe((response) => expect(response.repeatedWithNoFilters).toBeFalsy());
           tick();
         }));
       });
     });
   });
-
 });

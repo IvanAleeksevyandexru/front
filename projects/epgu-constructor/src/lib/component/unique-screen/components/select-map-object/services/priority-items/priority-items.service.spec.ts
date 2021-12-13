@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
+import { take, takeLast } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 
 import { PriorityItemsService } from './priority-items.service';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
-import { take, takeLast } from 'rxjs/operators';
 
 const mockCreateItem = (CODE: string) => {
   const attributeValues = { CODE };

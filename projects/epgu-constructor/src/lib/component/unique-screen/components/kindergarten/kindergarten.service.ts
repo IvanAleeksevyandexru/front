@@ -11,6 +11,7 @@ export class KindergartenService {
   public get state$(): Observable<KindergartenStates> {
     return this.kindergartenState.asObservable();
   }
+
   private kindergartenState = new BehaviorSubject<KindergartenStates>(KindergartenStates.map);
 
   public setState(state: KindergartenStates): void {

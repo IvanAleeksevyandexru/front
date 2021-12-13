@@ -22,12 +22,13 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, filter } from 'rxjs/operators';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { NotifierService } from '@epgu/ui/services/notifier';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ComponentStateForNavigate } from './action.interface';
-import { Clipboard } from '@angular/cdk/clipboard';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
@@ -35,7 +36,6 @@ import { NavigationModalService } from '../../../core/services/navigation-modal/
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
-import { NotifierService } from '@epgu/ui/services/notifier';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -46,8 +46,8 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionToolsService {
-
   bufferData = '';
+
   constructor(
     private formPlayerApiService: FormPlayerApiService,
     private autocompleteApiService: AutocompleteApiService,
@@ -91,11 +91,11 @@ export class ActionToolsService {
             {
               label: 'Отправить заявление',
               closeModal: true,
-              handler: handler
-                ? handler
-                : (): void => {
-                    this.navigate(action, componentId, 'nextStep');
-                  },
+              handler:
+                handler ||
+                ((): void => {
+                  this.navigate(action, componentId, 'nextStep');
+                }),
             },
           ],
       actionButtons: confirmation.actionButtons || [],
@@ -225,9 +225,7 @@ export class ActionToolsService {
           ({ responseData }) => {
             const { value: queryParams } = responseData || {};
             const [currentUrl] = this.locationService.getHref().split('?'); // принудительно избавляемся от queryParams в текущем URL
-            const str = `${value ? value : ''} ${currentUrl ? currentUrl : ''}${
-              queryParams ? queryParams : ''
-            }`;
+            const str = `${value || ''} ${currentUrl || ''}${queryParams || ''}`;
             this.bufferData = str;
           },
           (error) => console.log(error),
@@ -239,7 +237,11 @@ export class ActionToolsService {
 
   public copyToClipboard(action: ComponentActionDto): void {
     // Для того чтобы не было проблем с копированием в буффер обмена на IOS подгружаем данные для буффера заранее
-    this.bufferData ? this.copyAndNotify(this.bufferData) : this.loadClipboardData(action);
+    if (this.bufferData) {
+      this.copyAndNotify(this.bufferData);
+    } else {
+      this.loadClipboardData(action);
+    }
   }
 
   private copyAndNotify(value: string): void {
@@ -264,7 +266,8 @@ export class ActionToolsService {
 
     if (isService) {
       return { url: dtoAction };
-    } else if (isLastPageInInternalScenario) {
+    }
+    if (isLastPageInInternalScenario) {
       return { isInternalScenarioFinish: true };
     }
 
@@ -328,7 +331,7 @@ export class ActionToolsService {
   ): Observable<ActionApiResponse<T>> {
     const data = this.getActionDTO(action);
     const queryParams = action.value;
-    const path = `${action.action}${queryParams ? '?' + queryParams : ''}`;
+    const path = `${action.action}${queryParams ? `?${queryParams}` : ''}`;
     const payload = JSON.parse(JSON.stringify(data));
     payload.scenarioDto.display = this.htmlRemoverService.delete(payload.scenarioDto.display);
     return this.formPlayerApiService.sendAction<T>(path, payload, options);
@@ -341,7 +344,11 @@ export class ActionToolsService {
     );
   }
 
-  private defaultNavigation(action: ComponentActionDto, componentId: string, stepType: string): void {
+  private defaultNavigation(
+    action: ComponentActionDto,
+    componentId: string,
+    stepType: string,
+  ): void {
     const navMethod = navActionToNavMethodMap[stepType];
     const navigation = this.prepareNavigationData(action, componentId);
 

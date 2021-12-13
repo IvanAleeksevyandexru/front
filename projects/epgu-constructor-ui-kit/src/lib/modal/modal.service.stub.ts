@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 @Injectable()
 export class ModalServiceStub {
   public createModal() {}
+
   public openModal(): Observable<{}> {
     return of({});
   }

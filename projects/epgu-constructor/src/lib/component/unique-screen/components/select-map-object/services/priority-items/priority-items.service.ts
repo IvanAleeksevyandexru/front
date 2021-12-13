@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { filter, map } from 'rxjs/operators';
+import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 
 export interface CancelContext {
@@ -13,13 +13,19 @@ export interface CancelContext {
 @Injectable()
 export class PriorityItemsService {
   status = new BehaviorSubject<boolean>(false);
+
   items = new BehaviorSubject<DictionaryItem[]>([]);
+
   screenItems = new BehaviorSubject<(DictionaryItem | null)[]>([]);
+
   maxKindergarten$$ = new BehaviorSubject<number>(null);
+
   maxKindergarten$ = this.maxKindergarten$$.pipe(filter((status) => !!status));
+
   disabled$$ = combineLatest([this.maxKindergarten$, this.items]).pipe(
     map(([max, items]) => items.length > max),
   );
+
   leftItems$ = combineLatest([this.maxKindergarten$, this.screenItems]).pipe(
     map(() => this.getStep()),
   );
@@ -29,14 +35,17 @@ export class PriorityItemsService {
   get listMaxLength(): number {
     return this.listMaxLength$$.getValue();
   }
+
   set listMaxLength(length: number) {
     this.listMaxLength$$.next(length);
   }
 
   nextStepLength$$ = new BehaviorSubject<number>(10);
+
   get nextStepLength(): number {
     return this.nextStepLength$$.getValue();
   }
+
   set nextStepLength(length: number) {
     this.nextStepLength$$.next(length);
   }
@@ -44,6 +53,7 @@ export class PriorityItemsService {
   set maxKindergarten(max: number) {
     this.maxKindergarten$$.next(max);
   }
+
   get maxKindergarten(): number {
     return this.maxKindergarten$$.getValue();
   }

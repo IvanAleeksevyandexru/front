@@ -1,14 +1,23 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BaseComponentsModule, BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  BaseComponentsModule,
+  BusEventType,
+  EventBusService,
+  ModalService,
+  ModalServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+import { MockDirective, MockProvider } from 'ng-mocks';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { MockDirective, MockProvider } from 'ng-mocks';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
 import { IdentificationApiServiceStub } from '../../shared/identification-api/identification-api.service.stub';
@@ -18,14 +27,11 @@ import {
   FileUploadItem,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { of } from 'rxjs';
 import { PassportIdentificationResponse } from '../../shared/identification-api/identification-api.types';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UniqueScreenService } from '../../unique-screen.service';
 
 const componentMock = {
@@ -75,8 +81,8 @@ describe('IdentificationUploadScreenComponent', () => {
   describe('getRequest()', () => {
     const uploadedFile = {} as UploadedFile;
     it('should call selfieIdentification api', () => {
-      const spy = jest.spyOn(component['identification'], 'selfieIdentification');
-      screenService.component = ({ arguments: { faceId: '1' }} as unknown) as ComponentDto;
+      const spy = jest.spyOn(component.identification, 'selfieIdentification');
+      screenService.component = ({ arguments: { faceId: '1' } } as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile);
 
@@ -84,8 +90,8 @@ describe('IdentificationUploadScreenComponent', () => {
     });
 
     it('should call selfie passportIdentification api', () => {
-      const spy = jest.spyOn(component['identification'], 'passportIdentification');
-      screenService.component = ({ arguments: { faceId: '' }} as unknown) as ComponentDto;
+      const spy = jest.spyOn(component.identification, 'passportIdentification');
+      screenService.component = ({ arguments: { faceId: '' } } as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile);
 
@@ -97,12 +103,12 @@ describe('IdentificationUploadScreenComponent', () => {
         quality: { test: 1.211 },
       } as unknown) as PassportIdentificationResponse;
       const spy = jest
-        .spyOn(component['identification'], 'passportIdentification')
+        .spyOn(component.identification, 'passportIdentification')
         .mockImplementation((...args) => of(mockQualityResponse));
-      screenService.component = ({ arguments: { faceId: '' }} as unknown) as ComponentDto;
+      screenService.component = ({ arguments: { faceId: '' } } as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile).subscribe((value) => {
-        const state: any = component['currentAnswersService'].state;
+        const { state } = component.currentAnswersService;
         expect(state.quality.test).toEqual(121);
         done();
       });
@@ -116,12 +122,12 @@ describe('IdentificationUploadScreenComponent', () => {
         similaritySelfieFaceId: 1.211,
       } as unknown) as PassportIdentificationResponse;
       jest
-        .spyOn(component['identification'], 'passportIdentification')
+        .spyOn(component.identification, 'passportIdentification')
         .mockImplementation((...args) => of(mockQualityResponse));
-      screenService.component = ({ arguments: { faceId: '' }} as unknown) as ComponentDto;
+      screenService.component = ({ arguments: { faceId: '' } } as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile).subscribe((value) => {
-        const state: any = component['currentAnswersService'].state;
+        const { state } = component.currentAnswersService;
         expect(state.similarity).toEqual(121);
         expect(state.similarityFaceId).toEqual(121);
         expect(state.similaritySelfieFaceId).toEqual(121);

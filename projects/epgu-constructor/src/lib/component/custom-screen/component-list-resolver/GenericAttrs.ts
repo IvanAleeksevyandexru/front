@@ -19,16 +19,27 @@ import {
 
 export default class GenericAttrs {
   readonly preset: ComponentPresetDto;
+
   readonly defaultValue: DefaultValue;
+
   readonly fstuc: TextTransform;
+
   readonly ref: (CustomComponentRef | DateRangeRef)[];
+
   readonly refs?: KeyValueMap;
+
   readonly fields: CustomComponentAttrField;
+
   readonly validation: CustomComponentAttrValidation[];
+
   readonly relationField: ComponentRelationFieldDto;
+
   readonly placeholder: Placeholder;
+
   readonly onlyFirstScreen: OnlyFirstScreen;
+
   readonly grid: Grid;
+
   readonly disabled: Disabled;
 
   constructor(attrs: CustomComponentAttr) {

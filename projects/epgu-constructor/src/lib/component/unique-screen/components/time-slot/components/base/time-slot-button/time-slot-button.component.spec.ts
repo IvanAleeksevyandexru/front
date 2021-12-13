@@ -1,13 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotButtonComponent } from './time-slot-button.component';
-import { BaseModule } from '../../../../../../../shared/base.module';
 import { FormsModule } from '@angular/forms';
-import { ScreenService } from '../../../../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
-import { CurrentAnswersService } from '../../../../../../../screen/current-answers.service';
-import { CurrentAnswersServiceStub } from '../../../../../../../screen/current-answers-service.stub';
-import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
-
 import {
   DatesToolsService,
   DatesToolsServiceStub,
@@ -16,12 +8,20 @@ import {
   ModalServiceStub,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ActionService } from '../../../../../../../shared/directives/action/action.service';
-import { ActionServiceStub } from '../../../../../../../shared/directives/action/action.service.stub';
-import { EVENT_TIMESLOT_BOOK, EVENT_TIMESLOT_BOOK_RESULT } from '../../../typings';
 import { of } from 'rxjs';
 import { ScreenButton } from '@epgu/epgu-constructor-types';
 import { By } from '@angular/platform-browser';
+import { TimeSlotButtonComponent } from './time-slot-button.component';
+import { BaseModule } from '../../../../../../../shared/base.module';
+import { ScreenService } from '../../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
+import { CurrentAnswersService } from '../../../../../../../screen/current-answers.service';
+import { CurrentAnswersServiceStub } from '../../../../../../../screen/current-answers-service.stub';
+import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
+
+import { ActionService } from '../../../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../../../shared/directives/action/action.service.stub';
+import { EVENT_TIMESLOT_BOOK, EVENT_TIMESLOT_BOOK_RESULT } from '../../../typings';
 import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
 
 const testId = 'testId';

@@ -11,8 +11,8 @@ import {
   ModalServiceStub,
   ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { StateService } from '../../../../services/state/state.service';
 import { MockModule } from 'ng-mocks';
+import { StateService } from '../../../../services/state/state.service';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 import { GroupListService } from '../../../../services/group-list/group-list.service';
 import { GroupListContainerComponent } from './group-list-container.component';
@@ -52,8 +52,8 @@ describe('GroupListContainerComponent', () => {
 
   describe('OnInit', () => {
     it('should call prev if no selected program uuid is present', () => {
-      component['state'].changeState({ state: {}});
-      const spy = jest.spyOn(component['appNavigationService'], 'prev');
+      component.state.changeState({ state: {} });
+      const spy = jest.spyOn(component.appNavigationService, 'prev');
 
       component.ngOnInit();
 
@@ -102,11 +102,11 @@ describe('GroupListContainerComponent', () => {
 
   describe('search', () => {
     it('should append searchText to filters', () => {
-      component['state'].changeState({ state: {}});
+      component.state.changeState({ state: {} });
 
       component.search('тестик');
 
-      expect(component['state'].groupFilters.query).toBe('тестик');
+      expect(component.state.groupFilters.query).toBe('тестик');
     });
   });
 });

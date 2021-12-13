@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DaySelectorComponent } from './day-selector.component';
 import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DayComponent } from '../day/day.component';
 import { MockComponent } from 'ng-mocks';
 import { SectionType } from '@epgu/epgu-constructor-types';
 import { addDays } from 'date-fns';
 import { By } from '@angular/platform-browser';
 import { take } from 'rxjs/operators';
+import { DayComponent } from '../day/day.component';
+import { DaySelectorComponent } from './day-selector.component';
 
 describe('DaySelectorComponent', () => {
   let component: DaySelectorComponent;

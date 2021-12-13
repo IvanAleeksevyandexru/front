@@ -10,7 +10,9 @@ import { EMPTY, Observable, of } from 'rxjs';
 @Injectable()
 export class ActionServiceStub {
   action: ComponentActionDto;
+
   componentId: string;
+
   public get actionType$(): Observable<ActionType | null> {
     return of(null);
   }

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProgramFiltersFormComponent } from './components/program-filters-form/program-filters-form.component';
 import {
   BaseUiModule,
   ConfigService,
@@ -12,6 +11,7 @@ import {
   ScreenPadModule,
   SharedModalModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ProgramFiltersFormComponent } from './components/program-filters-form/program-filters-form.component';
 import { ApiService } from '../../services/api/api.service';
 
 import { StateService } from '../../services/state/state.service';

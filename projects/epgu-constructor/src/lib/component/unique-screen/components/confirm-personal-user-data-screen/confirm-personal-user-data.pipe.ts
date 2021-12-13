@@ -6,6 +6,7 @@ import { InterpolationService } from '../../../../shared/services/interpolation/
 @Pipe({ name: 'confirmPersonalUserData' })
 export class ConfirmPersonalUserDataPipe implements PipeTransform {
   public static readonly EMPTY_VALUE = '-';
+
   public constructor(private interpolationService: InterpolationService) {}
 
   public transform(componentDto: ComponentDto): ComponentDto {
@@ -16,17 +17,21 @@ export class ConfirmPersonalUserDataPipe implements PipeTransform {
     const parsedValue = (presetValue
       ? JSON.parse(presetValue)
       : JSON.parse(value)) as ConfirmUserDataState;
-    const states: FieldGroup[] = this.removeGroupIfEmptyFields(this.interpolationService.interpolateRecursive(
-      fieldGroups,
-      parsedValue.storedValues,
-      ConfirmPersonalUserDataPipe.EMPTY_VALUE,
-      keepVariables
-    ) as FieldGroup[]);
+    const states: FieldGroup[] = this.removeGroupIfEmptyFields(
+      this.interpolationService.interpolateRecursive(
+        fieldGroups,
+        parsedValue.storedValues,
+        ConfirmPersonalUserDataPipe.EMPTY_VALUE,
+        keepVariables,
+      ) as FieldGroup[],
+    );
 
     return { ...componentDto, presetValue: JSON.stringify({ ...parsedValue, states }) };
   }
 
   private removeGroupIfEmptyFields(fieldGroups: FieldGroup[]): FieldGroup[] {
-    return fieldGroups.filter(group => group.fields.some(field => field.value != ConfirmPersonalUserDataPipe.EMPTY_VALUE));
+    return fieldGroups.filter((group) =>
+      group.fields.some((field) => field.value != ConfirmPersonalUserDataPipe.EMPTY_VALUE),
+    );
   }
 }

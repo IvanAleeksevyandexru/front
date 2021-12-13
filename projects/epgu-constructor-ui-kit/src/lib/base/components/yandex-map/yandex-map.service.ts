@@ -2,6 +2,10 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { YaMapService } from '@epgu/ui/services/ya-map';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import type * as ymaps from 'yandex-maps';
+import { get } from 'lodash';
+import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { HttpClient } from '@angular/common/http';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { Icons } from './constants';
@@ -13,13 +17,10 @@ import {
   IFeatureItem,
   IYMapPoint,
   YMapItem,
+  IDirectProblemSolution,
 } from './yandex-map.interface';
-import { IDirectProblemSolution } from './yandex-map.interface';
-import type * as ymaps from 'yandex-maps';
-import { get } from 'lodash';
-import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+
 import { ConfigService } from '../../../core/services/config/config.service';
-import { HttpClient } from '@angular/common/http';
 import { GeoCodeResponse } from './geo-code.interface';
 import { MapAnimationService } from './yandex-map-animation/map-animation.service';
 
@@ -28,16 +29,25 @@ const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на к�
 @Injectable()
 export class YandexMapService implements OnDestroy {
   public selectedValue$ = new BehaviorSubject(null);
+
   public ymaps;
+
   public mapOptions;
 
   public objectManager;
+
   public componentAttrs: ComponentAttrsDto;
+
   private activePlacemarkId: number | string;
+
   private activeClusterHash: string = null;
+
   private MIN_ZOOM = 4;
+
   private MAX_ZOOM = 18;
+
   private DEFAULT_ZOOM = 9;
+
   private hoverPinId: number;
 
   constructor(
@@ -47,7 +57,7 @@ export class YandexMapService implements OnDestroy {
     private deviceDetector: DeviceDetectorService,
     private configService: ConfigService,
     private http: HttpClient,
-    private mapAnimationService: MapAnimationService
+    private mapAnimationService: MapAnimationService,
   ) {
     this.yaMapService.mapSubject
       .pipe(
@@ -135,10 +145,12 @@ export class YandexMapService implements OnDestroy {
     feature: IFeatureItem<T> | IClusterItem<T>,
     zoomToObject = false,
     needSetCenter = true,
-    defaultUncheckLogic = true
+    defaultUncheckLogic = true,
   ): void {
-    if ((defaultUncheckLogic && this.activePlacemarkId === feature.id)
-      || this.activeClusterHash === this.getClusterHash(feature as IClusterItem<T>)) {
+    if (
+      (defaultUncheckLogic && this.activePlacemarkId === feature.id) ||
+      this.activeClusterHash === this.getClusterHash(feature as IClusterItem<T>)
+    ) {
       this.closeBalloon();
       return;
     }
@@ -171,9 +183,12 @@ export class YandexMapService implements OnDestroy {
     const object =
       feature.type === IFeatureTypes.Feature
         ? [(feature as IFeatureItem<T>).properties.res]
-        : (feature as IClusterItem<T>).properties.geoObjects.map((object) => object.properties.res);
+        : (feature as IClusterItem<T>).properties.geoObjects.map(
+            (featureItem) => featureItem.properties.res,
+          );
     if (object.length === 1) {
-      object[0]['expanded'] = true;
+      // TODO Исправить типизацию
+      object[0] = { ...object[0], expanded: true };
     }
     this.objectManager.objects.setObjectProperties(feature.id, { isActive: true });
     this.selectedValue$.next(object);
@@ -191,7 +206,8 @@ export class YandexMapService implements OnDestroy {
   public handleFeatureSelection<T>(feature: IFeatureItem<T>): void {
     this.objectManager.objects.setObjectProperties(feature.id, { pinStyle: 'pin-red' });
     const object = [(feature as IFeatureItem<T>).properties.res];
-    object[0]['expanded'] = true;
+    // TODO Исправить типизацию
+    object[0] = { ...object[0], expanded: true };
     this.selectedValue$.next(object);
   }
 
@@ -276,7 +292,11 @@ export class YandexMapService implements OnDestroy {
     }
   }
 
-  public selectMapObject<T>(mapObject: YMapItem<T>, zoomToObject = false, defaultUncheckLogic = true): void {
+  public selectMapObject<T>(
+    mapObject: YMapItem<T>,
+    zoomToObject = false,
+    defaultUncheckLogic = true,
+  ): void {
     if (!mapObject) return;
     let chosenMapObject = this.getObjectById(mapObject.idForMap);
     if (!chosenMapObject) {
@@ -341,10 +361,14 @@ export class YandexMapService implements OnDestroy {
     this.objectManager?.clusters.getAll().forEach((cluster) => {
       let isClusterWithActiveObject;
       let selectedFeatureCnt = 0;
-      const idsFromActiveCluster = this.activeClusterHash && this.activeClusterHash.split('$').map(id => +id);
-      for (let feature of cluster.features) {
-        if (this.activePlacemarkId &&
-          (this.activePlacemarkId === feature.properties.res.objectId || this.activePlacemarkId === feature.id)) {
+      const idsFromActiveCluster =
+        this.activeClusterHash && this.activeClusterHash.split('$').map((id) => +id);
+      for (const feature of cluster.features) {
+        if (
+          this.activePlacemarkId &&
+          (this.activePlacemarkId === feature.properties.res.objectId ||
+            this.activePlacemarkId === feature.id)
+        ) {
           isClusterWithActiveObject = true;
         }
         if (idsFromActiveCluster && idsFromActiveCluster.includes(feature.id)) {
@@ -358,11 +382,17 @@ export class YandexMapService implements OnDestroy {
         isClusterWithActiveObject ||
         (selectedFeatureCnt && cluster.features.length > selectedFeatureCnt)
       ) {
-        this.objectManager.clusters.setClusterProperties(cluster.id, { clusterStyle: 'cluster-blue-red' });
+        this.objectManager.clusters.setClusterProperties(cluster.id, {
+          clusterStyle: 'cluster-blue-red',
+        });
       } else if (cluster.features.length === selectedFeatureCnt) {
-        this.objectManager.clusters.setClusterProperties(cluster.id, { clusterStyle: 'cluster-red' });
+        this.objectManager.clusters.setClusterProperties(cluster.id, {
+          clusterStyle: 'cluster-red',
+        });
       } else {
-        this.objectManager.clusters.setClusterProperties(cluster.id, { clusterStyle: 'cluster-blue' });
+        this.objectManager.clusters.setClusterProperties(cluster.id, {
+          clusterStyle: 'cluster-blue',
+        });
       }
     });
     this.paintActiveCluster('cluster-red');
@@ -378,21 +408,19 @@ export class YandexMapService implements OnDestroy {
     if (this.mapAnimationService.firstLoading) {
       const clusters = this.objectManager.clusters.getAll();
       const plainObjects = this.objectManager.objects.getAll();
-      const objectsInClustersIds = clusters.map(cluster => cluster.features.map(feature => feature.id)).flat();
+      const objectsInClustersIds = clusters
+        .map((cluster) => cluster.features.map((feature) => feature.id))
+        .flat();
       const viewportBounds = this.yaMapService.map.getBounds();
       const filteredPlainObjects = plainObjects.filter((object) => {
         const coords = object.geometry.coordinates;
         const isNotInCluster = !objectsInClustersIds.includes(object.id);
-        const isInViewport = this.ymaps.util.bounds.containsPoint(
-          viewportBounds,
-          coords
-        );
+        const isInViewport = this.ymaps.util.bounds.containsPoint(viewportBounds, coords);
         return isNotInCluster && isInViewport;
       });
       this.mapAnimationService.setInitData([...filteredPlainObjects, ...clusters]);
     }
   }
-
 
   private getClusterHash<T>(cluster: IClusterItem<T>): string {
     return cluster.features?.map(({ id }) => id).join('$');
@@ -423,16 +451,16 @@ export class YandexMapService implements OnDestroy {
     objectManager.objects.events.add(
       'click',
       (evt) => {
-        let objectId = evt.get('objectId');
-        let obj = objectManager.objects.getById(objectId) as IFeatureItem<unknown>;
+        const objectId = evt.get('objectId');
+        const obj = objectManager.objects.getById(objectId) as IFeatureItem<unknown>;
         this.centeredPlaceMark(obj);
       },
       this,
     );
 
     objectManager.clusters.events.add('click', (evt) => {
-      let clustersId = evt.get('objectId');
-      let cluster = (objectManager.clusters.getById(clustersId) as unknown) as IClusterItem<
+      const clustersId = evt.get('objectId');
+      const cluster = (objectManager.clusters.getById(clustersId) as unknown) as IClusterItem<
         unknown
       >;
       this.centeredPlaceMark(cluster);
@@ -450,12 +478,12 @@ export class YandexMapService implements OnDestroy {
       }
     };
     this.objectManager.objects.events.add('mouseenter', (evt) => {
-      let objectId = evt.get('objectId');
+      const objectId = evt.get('objectId');
       if (objectId !== this.hoverPinId) {
         closeMiniBalloon(this.hoverPinId);
       }
       this.hoverPinId = objectId;
-      let object = this.objectManager.objects.getById(objectId) as IFeatureItem<unknown>;
+      const object = this.objectManager.objects.getById(objectId) as IFeatureItem<unknown>;
       this.objectManager.objects.setObjectProperties(objectId, { pinStyle: 'pin-hover' });
       // TODO смена pane вызывает повторный mouseenter. Стоит попробовать смену pane у всех остальных geoobject кроме этого
       // Кидаем пин на наш pane чтобы он был выше балуна
@@ -467,7 +495,7 @@ export class YandexMapService implements OnDestroy {
     });
 
     this.objectManager.objects.events.add('mouseleave', (evt) => {
-      let objectId = evt.get('objectId');
+      const objectId = evt.get('objectId');
       const activeTimeout = setTimeout(() => {
         closeMiniBalloon(objectId);
       }, 500);
@@ -475,12 +503,12 @@ export class YandexMapService implements OnDestroy {
     });
 
     this.objectManager.objects.balloon.events.add('mouseenter', (evt) => {
-      let object = evt.get('target').balloon.getData();
+      const object = evt.get('target').balloon.getData();
       clearTimeout(object.properties.activeTimeout);
     });
 
     this.objectManager.objects.balloon.events.add('mouseleave', (evt) => {
-      let object = evt.get('target').balloon.getData();
+      const object = evt.get('target').balloon.getData();
       const activeTimeout = setTimeout(() => {
         closeMiniBalloon(object.id);
       }, 500);
@@ -519,8 +547,8 @@ export class YandexMapService implements OnDestroy {
 
     // Маппинг ответа от бэка
     objectManager.objects.events.add('add', (evt) => {
-      let objectId = evt.get('objectId');
-      let obj = this.objectManager.objects.getById(objectId);
+      const objectId = evt.get('objectId');
+      const obj = this.objectManager.objects.getById(objectId);
       obj.properties = {
         res: {
           ...obj.properties,
@@ -548,11 +576,11 @@ export class YandexMapService implements OnDestroy {
   }
 
   private getCustomBalloonContentLayout(): unknown {
-    if (typeof this.ymaps.templateLayoutFactory == 'undefined') {
+    if (typeof this.ymaps.templateLayoutFactory === 'undefined') {
       return;
     }
     const headerClick = (): void => {
-      let obj = this.objectManager.objects.getById(this.hoverPinId) as IFeatureItem<unknown>;
+      const obj = this.objectManager.objects.getById(this.hoverPinId) as IFeatureItem<unknown>;
       this.objectManager.objects.balloon.close();
       this.centeredPlaceMark(obj);
     };
@@ -562,7 +590,7 @@ export class YandexMapService implements OnDestroy {
       '{% endfor %}';
 
     const customBalloonContentLayout = this.ymaps.templateLayoutFactory.createClass(finalText, {
-      build: function () {
+      build() {
         customBalloonContentLayout.superclass.build.call(this);
         this._$element = this.getParentElement();
         const header = this.getParentElement().querySelector('.balloon-text');
@@ -575,7 +603,7 @@ export class YandexMapService implements OnDestroy {
   }
 
   private getMiniBalloonText(item: IYMapPoint<unknown>): string[] {
-    const componentAttrs = this.componentAttrs;
+    const { componentAttrs } = this;
     return componentAttrs?.miniBalloonTexts?.map((textRef: string) => {
       const text = get(item.obj, textRef);
       return text;

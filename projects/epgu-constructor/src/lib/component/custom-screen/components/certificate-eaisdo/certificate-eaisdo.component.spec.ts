@@ -8,7 +8,6 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MockComponent, MockPipe, MockProvider } from 'ng-mocks';
-import { CertificateEaisdoComponent } from './certificate-eaisdo.component';
 import {
   BusEventType,
   EventBusService,
@@ -17,13 +16,6 @@ import {
   SafePipe,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { ActionService } from '../../../../shared/directives/action/action.service';
-import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
-import { ComponentItemComponent } from '../component-item/component-item.component';
-import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
@@ -33,6 +25,14 @@ import {
   DTOActionAction,
   EaisdoResponse,
 } from '@epgu/epgu-constructor-types';
+import { CertificateEaisdoComponent } from './certificate-eaisdo.component';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { ActionService } from '../../../../shared/directives/action/action.service';
+import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
+import { ComponentItemComponent } from '../component-item/component-item.component';
+import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 
 const mockComponent = {
   id: 'ecr1',

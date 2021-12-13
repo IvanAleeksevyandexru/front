@@ -1,17 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs';
-import { CoreModule } from '../../../../core/core.module';
 import {
   CoreUiModule,
   LocationService,
   ObjectHelperService,
   WINDOW_PROVIDERS,
   WordTransformService,
+  ConfigService,
+  HealthService,
+  EventBusService,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService, HealthService } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
+import { CoreModule } from '../../../../core/core.module';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
@@ -28,17 +30,20 @@ import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group
 
 class MockScreenService {
   header = '';
+
   display = {
     components: [],
   };
+
   isLoading = new Subject().asObservable();
+
   orderId = 1;
 }
 
 describe('UploadAndEditPhotoComponent', () => {
   let component: UploadAndEditPhotoContainerComponent;
   let fixture: ComponentFixture<UploadAndEditPhotoContainerComponent>;
-  let mockData: ComponentBase = {
+  const mockData: ComponentBase = {
     attrs: {
       uploadedFile: {
         mnemonic: '',

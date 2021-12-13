@@ -113,8 +113,9 @@ export class ComplexChoiceDictionaryComponent implements ControlValueAccessor, O
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line no-empty-function
   private onChange = (_: ListElement[]): void => {};
+  // eslint-disable-next-line no-empty-function
   private onTouched = (): void => {};
 
   private openErrorModal(): Observable<ListElement[]> {

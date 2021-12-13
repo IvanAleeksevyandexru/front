@@ -24,11 +24,7 @@ export class ErrorsInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((err) => this.errorHandleService.handleResponseError(err)),
       tap((res) => {
-        if (
-          res instanceof HttpResponse &&
-          res?.body &&
-          typeof res.body === 'object'
-        ) {
+        if (res instanceof HttpResponse && res?.body && typeof res.body === 'object') {
           this.errorHandleService.handleResponse(req, res);
         }
       }),

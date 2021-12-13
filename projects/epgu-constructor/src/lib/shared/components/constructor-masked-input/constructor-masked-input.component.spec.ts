@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConstructorMaskedInputComponent } from './constructor-masked-input.component';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { EventBusService, MaskHandleModule } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
-import { MaskModule } from '../../directives/mask/mask.module';
 import { FormControl, NgControl } from '@angular/forms';
 import { RemoveMaskSymbols } from '@epgu/ui/models/common-enums';
+import { MaskModule } from '../../directives/mask/mask.module';
+import { ConstructorMaskedInputComponent } from './constructor-masked-input.component';
 
 describe('ConstructorMaskedInputComponent', () => {
   let component: ConstructorMaskedInputComponent;
@@ -51,9 +51,9 @@ describe('ConstructorMaskedInputComponent', () => {
 
     describe('when removeMaskSymbols is default', () => {
       it('should mask symbols here as it was before', () => {
-        const { component, setValueSpy } = setup();
+        const { component: testComponent, setValueSpy } = setup();
 
-        component.onChange({ target: { value: '__' }} as unknown as Event);
+        testComponent.onChange(({ target: { value: '__' } } as unknown) as Event);
 
         expect(setValueSpy).toHaveBeenCalledTimes(1);
         expect(setValueSpy).toHaveBeenCalledWith('__');
@@ -62,9 +62,9 @@ describe('ConstructorMaskedInputComponent', () => {
 
     describe('when removeMaskSymbols === RemoveMaskSymbols.PLACEHOLDERS', () => {
       it('should remove mask symbols', () => {
-        const { component, setValueSpy } = setup(RemoveMaskSymbols.PLACEHOLDERS);
+        const { component: testComponent, setValueSpy } = setup(RemoveMaskSymbols.PLACEHOLDERS);
 
-        component.onChange({ target: { value: '__' }} as unknown as Event);
+        testComponent.onChange(({ target: { value: '__' } } as unknown) as Event);
 
         expect(setValueSpy).toHaveBeenCalledTimes(1);
         expect(setValueSpy).toHaveBeenCalledWith('');

@@ -1,9 +1,9 @@
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { CookieService } from 'ngx-cookie-service';
 import { Inject, Injectable } from '@angular/core';
+import isMobile from 'ismobilejs';
 import { System } from './device-detector.types';
 import { WINDOW } from '../../providers/window.provider';
-import isMobile from 'ismobilejs';
 
 export const MOBILE_VIEW_COOKIE_NAME = 'mobVersion';
 
@@ -13,8 +13,11 @@ export class DeviceDetectorService {
   // для локальной работы и для наших стендов используется angular пакет device-detector
 
   isMobile: boolean;
+
   isTablet: boolean;
+
   isDesktop: boolean;
+
   isWebView: boolean;
 
   constructor(
@@ -41,8 +44,7 @@ export class DeviceDetectorService {
     return (
       ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
         navigator.platform,
-      ) ||
-      (navigator.userAgent.includes('Mac'))
+      ) || navigator.userAgent.includes('Mac')
     );
   }
 
@@ -80,9 +82,11 @@ export class DeviceDetectorService {
 
     if (/android/i.test(userAgent)) {
       return System.Android;
-    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    }
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
       return System.iOS;
-    } else if (/Harmony|harmony/.test(userAgent)) {
+    }
+    if (/Harmony|harmony/.test(userAgent)) {
       return System.Harmony;
     }
 

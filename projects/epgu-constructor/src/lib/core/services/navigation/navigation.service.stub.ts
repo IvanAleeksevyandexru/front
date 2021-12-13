@@ -5,16 +5,27 @@ import { Navigation } from '@epgu/epgu-constructor-types';
 @Injectable()
 export class NavigationServiceStub {
   private nextStep = new Subject<Navigation>();
+
   nextStep$ = this.nextStep.asObservable();
+
   private prevStep = new Subject<Navigation>();
+
   prevStep$ = this.prevStep.asObservable();
+
   private skipStep = new Subject<Navigation>();
+
   skipStep$ = this.skipStep.asObservable();
+
   private saveCacheToDraft = new Subject<Navigation>();
+
   saveCacheToDraft$ = this.saveCacheToDraft.asObservable();
+
   private restart = new Subject<Navigation>();
+
   restartOrder$ = this.restart.asObservable();
+
   private patchStepOnCli = new Subject<Navigation>();
+
   patchStepOnCli$ = this.patchStepOnCli.asObservable();
 
   next(navigation?: Navigation): void {

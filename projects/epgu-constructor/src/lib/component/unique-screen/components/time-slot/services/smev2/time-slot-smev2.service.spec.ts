@@ -1,9 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { TimeSlotSmev2Service } from './time-slot-smev2.service';
-import { TimeSlotStateService } from '../state/time-slot-state.service';
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
-import { Smev2RestApiService } from '../api/smev2/smev2-rest-api.service';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -12,14 +7,19 @@ import {
   SessionService,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TimeSlotSmev2Service } from './time-slot-smev2.service';
+import { TimeSlotStateService } from '../state/time-slot-state.service';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
+import { Smev2RestApiService } from '../api/smev2/smev2-rest-api.service';
 import { TimeSlotStateServiceStub } from '../state/time-slot-state.service.stub';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { DictionaryToolsServiceStub } from '../../../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { Smev2RestApiServiceStub } from '../api/smev2/smev2-rest-api.service.stub';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { Slot } from '../../typings';
-import { DictionaryConditions } from '@epgu/epgu-constructor-types';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const createMockSlot = (id: string, date: string) =>
   ({
@@ -59,7 +59,7 @@ describe('TimeSlotSmev2Service', () => {
 
     it('should be addToCache', () => {
       service.addToCache('id', cacheItem);
-      expect(service['cache']['id']).toBe(cacheItem);
+      expect(service.cache.id).toBe(cacheItem);
     });
 
     it('should be createSlot', () => {
@@ -71,7 +71,7 @@ describe('TimeSlotSmev2Service', () => {
     it('should be resetCache', () => {
       service.addToCache('id', cacheItem);
       service.resetCache();
-      expect(service['cache']).toEqual({});
+      expect(service.cache).toEqual({});
     });
 
     it('should be getCacheBySlot', () => {

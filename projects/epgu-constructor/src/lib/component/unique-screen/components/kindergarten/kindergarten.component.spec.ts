@@ -24,6 +24,8 @@ import {
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockProvider } from 'ng-mocks';
+import { AnimationBuilder } from '@angular/animations';
+import { HttpClientModule } from '@angular/common/http';
 import { AutocompleteApiService } from '../../../../core/services/autocomplete/autocomplete-api.service';
 import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
@@ -50,11 +52,9 @@ import { RefRelationService } from '../../../../shared/services/ref-relation/ref
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { PrevButtonNavigationService } from '../../../../core/services/prev-button-navigation/prev-button-navigation.service';
-import { AnimationBuilder } from '@angular/animations';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('KindergartenComponent', () => {
   let component: KindergartenComponent;

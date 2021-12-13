@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MicroAppState } from '@epgu/epgu-constructor-types';
-import { MicroAppStateStore } from './micro-app-state.store';
 import { cloneDeep } from 'lodash';
+import { MicroAppStateStore } from './micro-app-state.store';
 
 @Injectable({ providedIn: 'root' })
 export class MicroAppStateService<T, U> {

@@ -1,7 +1,11 @@
-import { BaseRelation } from './base-relation';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { CustomComponent, CustomComponentRef, CustomListStatusElements } from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
+import { BaseRelation } from './base-relation';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomListStatusElements,
+} from '../../../components-list.types';
 
 export class ValidateDependentRelation extends BaseRelation {
   public handleRelation(
@@ -15,7 +19,9 @@ export class ValidateDependentRelation extends BaseRelation {
       (control: AbstractControl) => control.value.id === dependentComponent.id,
     );
     const control = dependentControl.get('value');
-    const refControl = form.controls.find((control) => control.value.id === reference.relatedRel);
+    const refControl = form.controls.find(
+      (abstractControl) => abstractControl.value.id === reference.relatedRel,
+    );
     if (control.value || (refControl.touched && refControl.value.value && control.value)) {
       control.markAllAsTouched();
       control.updateValueAndValidity();

@@ -7,6 +7,8 @@ import {
   ComponentActionDto,
   DTOActionAction,
   EaisdoResponse,
+  ActionAnswerDto,
+  ApplicantAnswersDto,
 } from '@epgu/epgu-constructor-types';
 import {
   LocalStorageService,
@@ -18,7 +20,7 @@ import {
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ActionAnswerDto, ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+
 import { ORDER_TO_ORDER_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { ScreenStore } from '../../../screen/screen.types';
@@ -132,9 +134,9 @@ export class ActionService {
     componentId?: string,
   ): Observable<ActionApiResponse<EaisdoResponse>> {
     const component = (this.screenService.display.components.find(
-      (component) =>
-        component.id === componentId ||
-        component.type === CustomScreenComponentTypes.EaisdoGroupCost,
+      (componentDto) =>
+        componentDto.id === componentId ||
+        componentDto.type === CustomScreenComponentTypes.EaisdoGroupCost,
     ) as unknown) as ActionRequestPayload;
     return this.formPlayerApiService.sendAction<EaisdoResponse>(action.action, component);
   }

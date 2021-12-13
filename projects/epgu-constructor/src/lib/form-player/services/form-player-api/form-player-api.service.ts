@@ -1,9 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
-import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { LocationService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, SessionService, LocationService } from '@epgu/epgu-constructor-ui-kit';
+
 import {
   ActionApiResponse,
   ActionRequestPayload,
@@ -17,6 +16,7 @@ import {
   NavigationParams,
 } from '@epgu/epgu-constructor-types';
 import { map } from 'rxjs/operators';
+import { InitDataService } from '../../../core/services/init-data/init-data.service';
 
 @Injectable()
 export class FormPlayerApiService {
@@ -49,15 +49,19 @@ export class FormPlayerApiService {
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId };
 
+    // TODO Добавить типизацию
     if (orderId) {
+      // eslint-disable-next-line
       body['orderId'] = orderId;
     }
-
+    // TODO Добавить типизацию
     if (serviceInfo) {
+      // eslint-disable-next-line
       body['serviceInfo'] = serviceInfo;
     }
-
+    // TODO Добавить типизацию
     if (gepsId) {
+      // eslint-disable-next-line
       body['gepsId'] = gepsId;
     }
 
@@ -83,7 +87,7 @@ export class FormPlayerApiService {
     options: NavigationOptions = {},
     formPlayerNavigation: FormPlayerNavigation,
   ): Observable<FormPlayerApiResponse> {
-    let path = this.getNavigatePath(data, options, formPlayerNavigation);
+    const path = this.getNavigatePath(data, options, formPlayerNavigation);
     data.scenarioDto.currentUrl = this.locationService.getHref();
 
     if (options.deliriumAction) {
@@ -139,7 +143,7 @@ export class FormPlayerApiService {
   }
 
   public getQuizData(): Observable<QuizDataDtoResponse> {
-    const userId = this.sessionService.userId;
+    const { userId } = this.sessionService;
     const path = `${this.configService.quizDataApiUrl}?userId=${userId}`;
 
     return this.get<QuizDataDtoResponse>(path);

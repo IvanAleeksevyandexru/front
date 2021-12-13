@@ -141,6 +141,7 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
       });
   }
 
+  // eslint-disable-next-line no-empty-function
   public onTouched: Function = () => {};
 
   writeValue(val: PassportFormFields): void {

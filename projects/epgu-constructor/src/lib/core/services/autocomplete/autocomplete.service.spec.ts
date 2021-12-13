@@ -1,6 +1,5 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import {
   BusEventType,
   DownloadService,
@@ -17,9 +16,12 @@ import {
   LocalStorageService,
   LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenTypes, ScenarioDto, Gender } from '@epgu/epgu-constructor-types';
+import { cloneDeep as _cloneDeep } from 'lodash';
+import { MockProvider } from 'ng-mocks';
+import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { AutocompleteApiService } from './autocomplete-api.service';
@@ -29,14 +31,12 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../../../shared/services/date-range/date-range.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { cloneDeep as _cloneDeep } from 'lodash';
 import { getSuggestionGroupId } from './autocomplete.const';
-import { ScenarioDto, Gender } from '@epgu/epgu-constructor-types';
+
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { TerraByteApiService } from '../terra-byte-api/terra-byte-api.service';
-import { MockProvider } from 'ng-mocks';
 
 describe('AutocompleteService', () => {
   let service: AutocompleteService;
@@ -47,7 +47,7 @@ describe('AutocompleteService', () => {
   let deviceDetectorService: DeviceDetectorService;
   let autocompleteApiService: AutocompleteApiService;
   // @ts-ignore
-  let mockData: ScenarioDto = {
+  const mockData: ScenarioDto = {
     applicantAnswers: {},
     currentScenarioId: null,
     cachedAnswers: {},
@@ -92,7 +92,7 @@ describe('AutocompleteService', () => {
           required: true,
         },
       ],
-      subHeader: { text: '', clarifications: {}},
+      subHeader: { text: '', clarifications: {} },
       header: '',
       label: '',
       id: '',
@@ -110,7 +110,7 @@ describe('AutocompleteService', () => {
     serviceId: '487545987',
     currentUrl: '487545987',
   };
-  let mockSuggestionItemList: ISuggestionItemList = {
+  const mockSuggestionItemList: ISuggestionItemList = {
     mnemonic: 'prev_region',
     value: 'value',
     id: 123,
@@ -170,9 +170,7 @@ describe('AutocompleteService', () => {
 
     it('should collect componentsSuggestionsFieldsIds after inited, if any', () => {
       service.init();
-      expect(service['getComponentsSuggestionsFieldsIds'](mockData.display).length).toBeGreaterThan(
-        0,
-      );
+      expect(service.getComponentsSuggestionsFieldsIds(mockData.display).length).toBeGreaterThan(0);
     });
 
     it('should collect repeatableComponents after inited, if any', () => {
@@ -181,8 +179,14 @@ describe('AutocompleteService', () => {
     });
 
     it('should only call groupSuggestionsApiCall() after inited, if groupId is presented', () => {
-      const serviceGroupSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'groupSuggestionsApiCall');
-      const serviceFieldsSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'fieldsSuggestionsApiCall');
+      const serviceGroupSuggestionsApiCallSpy = jest.spyOn<any, string>(
+        service,
+        'groupSuggestionsApiCall',
+      );
+      const serviceFieldsSuggestionsApiCallSpy = jest.spyOn<any, string>(
+        service,
+        'fieldsSuggestionsApiCall',
+      );
       service.init();
       expect(serviceGroupSuggestionsApiCallSpy).toBeCalled();
       expect(serviceFieldsSuggestionsApiCallSpy).toBeCalledTimes(0);
@@ -190,8 +194,14 @@ describe('AutocompleteService', () => {
 
     it(`should only call fieldsSuggestionsApiCall() after inited,
       if groupId is not presented and componentsSuggestionsFieldsIds is not empty`, () => {
-      const serviceGroupSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'groupSuggestionsApiCall');
-      const serviceFieldsSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'fieldsSuggestionsApiCall');
+      const serviceGroupSuggestionsApiCallSpy = jest.spyOn<any, string>(
+        service,
+        'groupSuggestionsApiCall',
+      );
+      const serviceFieldsSuggestionsApiCallSpy = jest.spyOn<any, string>(
+        service,
+        'fieldsSuggestionsApiCall',
+      );
       const display = _cloneDeep(mockData.display);
       delete display.suggestion;
       screenService.display = display;
@@ -239,7 +249,10 @@ describe('AutocompleteService', () => {
     });
 
     it('should call groupSuggestionsApiCall() on "suggestionDeleteEvent"', () => {
-      const serviceGroupSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'groupSuggestionsApiCall');
+      const serviceGroupSuggestionsApiCallSpy = jest.spyOn<any, string>(
+        service,
+        'groupSuggestionsApiCall',
+      );
       eventBusService.on(BusEventType.SuggestionDeleteEvent).subscribe(() => {
         expect(serviceGroupSuggestionsApiCallSpy).toBeCalled();
       });
@@ -247,7 +260,10 @@ describe('AutocompleteService', () => {
     });
 
     it('should call fieldsSuggestionsApiCall() on "suggestionDeleteEvent"', () => {
-      const serviceFieldsSuggestionsApiCallSpy = jest.spyOn<any, string>(service, 'fieldsSuggestionsApiCall');
+      const serviceFieldsSuggestionsApiCallSpy = jest.spyOn<any, string>(
+        service,
+        'fieldsSuggestionsApiCall',
+      );
       const display = _cloneDeep(mockData.display);
       delete display.suggestion;
       eventBusService.on(BusEventType.SuggestionDeleteEvent).subscribe(() => {
@@ -257,7 +273,10 @@ describe('AutocompleteService', () => {
     });
 
     it('should call autocompletePrepareService.deleteCachedValueItem() on "deleteCachedValueItem"', () => {
-      const prepareServiceDeleteCachedValueItemSpy = jest.spyOn(prepareService, 'deleteCachedValueItem');
+      const prepareServiceDeleteCachedValueItemSpy = jest.spyOn(
+        prepareService,
+        'deleteCachedValueItem',
+      );
       eventBusService.on(BusEventType.DeleteCachedValueItem).subscribe(() => {
         expect(prepareServiceDeleteCachedValueItemSpy).toBeCalled();
       });
@@ -292,7 +311,7 @@ describe('AutocompleteService', () => {
 
   describe('resetComponentsSuggestionsMap()', () => {
     it('should reset componentsSuggestionsMap and suggestionGroupId', () => {
-      service['resetComponentsSuggestionsMap']();
+      service.resetComponentsSuggestionsMap();
       expect(service.componentsSuggestionsSet).toEqual(new Set());
       expect(service.suggestionGroupId).toBeNull();
     });
@@ -312,17 +331,15 @@ describe('AutocompleteService', () => {
   describe('getComponentsSuggestionsFieldsIds()', () => {
     it('should return suggestions repeatable components ids, if RepeatableFields presented', () => {
       service.init();
-      expect(service['getComponentsSuggestionsFieldsIds'](mockData.display)).toEqual([
-        'prev_region',
-      ]);
+      expect(service.getComponentsSuggestionsFieldsIds(mockData.display)).toEqual(['prev_region']);
     });
     it('should return suggestions components ids, if RepeatableFields not presented', () => {
       const display = _cloneDeep(mockData.display);
       display.components[0].suggestionId = 'prev_region';
       service.init();
       service.repeatableComponents.length = 0;
-      service.componentsSuggestionsSet['prev_region'] = 'pd8';
-      expect(service['getComponentsSuggestionsFieldsIds'](display)).toEqual(['prev_region']);
+      service.componentsSuggestionsSet.prev_region = 'pd8';
+      expect(service.getComponentsSuggestionsFieldsIds(display)).toEqual(['prev_region']);
     });
   });
 });

@@ -4,16 +4,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';
 import { addDays, format } from 'date-fns';
-import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import {
   ConfigService,
   ConfigServiceStub,
   DatesToolsService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DatePeriodComponent } from './date-period.component';
 import { Hints } from '@epgu/epgu-constructor-types';
 import { HttpClientModule } from '@angular/common/http';
+import { DatePeriodComponent } from './date-period.component';
+import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 
 describe('DatePeriodComponent', () => {
   let component: DatePeriodComponent;
@@ -48,8 +48,8 @@ describe('DatePeriodComponent', () => {
     const startDate: Date = new Date();
     const endDate: Date = addDays(startDate, 30);
     component.initialState = {
-      startDate: startDate,
-      endDate: endDate,
+      startDate,
+      endDate,
     };
     fixture.detectChanges();
 
@@ -64,8 +64,8 @@ describe('DatePeriodComponent', () => {
     const startDate: Date = new Date();
     const endDate: Date = addDays(startDate, 30);
     component.initialState = {
-      startDate: startDate,
-      endDate: endDate,
+      startDate,
+      endDate,
     };
     fixture.detectChanges();
 
@@ -83,8 +83,8 @@ describe('DatePeriodComponent', () => {
     const endDate: Date = addDays(startDate, 30);
     const maxDate: Date = addDays(startDate, 90);
     component.initialState = {
-      startDate: startDate,
-      endDate: endDate,
+      startDate,
+      endDate,
     };
     component.attrs.hints = [
       {

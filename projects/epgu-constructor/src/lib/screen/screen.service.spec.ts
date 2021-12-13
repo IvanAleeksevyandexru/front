@@ -1,18 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { merge as _merge } from 'lodash';
-import { ScreenService } from './screen.service';
-import { CurrentAnswersService } from './current-answers.service';
-import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
-import { ScreenContent } from './screen-content';
 import { Observable } from 'rxjs';
-import { ScreenStore } from './screen.types';
-import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { DateRangeService } from '../shared/services/date-range/date-range.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentsListRelationsService } from '../component/custom-screen/services/components-list-relations/components-list-relations.service';
-import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
-import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
@@ -25,10 +15,20 @@ import {
   ObjectHelperService,
   DownloadService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
-import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { MockProvider } from 'ng-mocks';
+import { ScreenService } from './screen.service';
+import { CurrentAnswersService } from './current-answers.service';
+import { CachedAnswersService } from '../shared/services/cached-answers/cached-answers.service';
+import { ScreenContent } from './screen-content';
+import { ScreenStore } from './screen.types';
+import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
+import { DateRangeService } from '../shared/services/date-range/date-range.service';
+import { ComponentsListRelationsService } from '../component/custom-screen/services/components-list-relations/components-list-relations.service';
+import { DictionaryApiService } from '../shared/services/dictionary/dictionary-api.service';
+import { DictionaryToolsService } from '../shared/services/dictionary/dictionary-tools.service';
+import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
+import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
 import { DateRefService } from '../core/services/date-ref/date-ref.service';
 
 const makeScreenStoreSample = (): ScreenStore => ({
@@ -161,7 +161,7 @@ describe('ScreenService', () => {
 
     it('should clear logicAnswers after init', () => {
       const store = makeScreenStoreSample();
-      screenService.logicAnswers = { rest: { value: '', visited: true }};
+      screenService.logicAnswers = { rest: { value: '', visited: true } };
 
       screenService.initScreenStore(store);
 
@@ -175,7 +175,7 @@ describe('ScreenService', () => {
             cachedAnswers: {
               p1: {
                 visited: true,
-                value: JSON.stringify({ a: { b: { c: 3 }}}),
+                value: JSON.stringify({ a: { b: { c: 3 } } }),
               },
             },
             display: {

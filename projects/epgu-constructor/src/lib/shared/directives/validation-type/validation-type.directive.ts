@@ -1,7 +1,7 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 import { ValidationService } from '../../services/validation/validation.service';
 
 @Directive({

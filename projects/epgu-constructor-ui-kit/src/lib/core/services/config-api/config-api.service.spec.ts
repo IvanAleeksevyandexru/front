@@ -1,14 +1,14 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { ConfigApiService } from './config-api.service';
 import { DEFAULT_CONFIG_ID } from '@epgu/epgu-constructor-types';
+import { ConfigApiService } from './config-api.service';
 import { ConfigService } from '../config/config.service';
 import { ConfigServiceStub } from '../config/config.service.stub';
 
 describe('ConfigApiService', () => {
   let service: ConfigApiService;
   let http: HttpTestingController;
-  let responseMock = [42];
+  const responseMock = [42];
 
   beforeEach(() => {
     TestBed.configureTestingModule({

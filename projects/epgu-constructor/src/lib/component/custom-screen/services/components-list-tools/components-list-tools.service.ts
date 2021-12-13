@@ -28,19 +28,21 @@ export class ComponentsListToolsService {
 
     if (typeof component.value === 'string' && component.value.length) {
       return this.parseValue(component.value, isDateAndValue, component.type);
-    } else if (component.value) {
+    }
+    if (component.value) {
       return component.value;
-    } else if (typeof component.presetValue === 'string' && component.presetValue.length) {
+    }
+    if (typeof component.presetValue === 'string' && component.presetValue.length) {
       return this.parseValue(component.presetValue, isDateAndValue, component.type);
-    } else if (!isUndefined(component.attrs?.defaultValue)) {
+    }
+    if (!isUndefined(component.attrs?.defaultValue)) {
       return this.parseValue(
         (component.attrs.defaultValue as unknown) as string,
         isDateAndValue,
         component.type,
       );
-    } else {
-      return '';
     }
+    return '';
   }
 
   public isAddress(type: CustomScreenComponentTypes): boolean {
@@ -87,7 +89,8 @@ export class ComponentsListToolsService {
   ): CustomScreenComponentValueTypes {
     if (isDateAndValue) {
       return new Date(value);
-    } else if (this.isAddress(componentType)) {
+    }
+    if (this.isAddress(componentType)) {
       try {
         return JSON.parse(value).fullAddress;
       } catch (e) {

@@ -1,30 +1,40 @@
 import { TestBed } from '@angular/core/testing';
+import {
+  ConfigService,
+  ObjectHelperService,
+  SessionService,
+  JsonHelperService,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub,
+  LoggerService,
+  LoggerServiceStub,
+  EventBusService,
+  DatesToolsService,
+  DownloadService,
+} from '@epgu/epgu-constructor-ui-kit';
+
+import { cloneDeep } from 'lodash';
+import { of } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+import { MockProvider } from 'ng-mocks';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { ConfigService, ObjectHelperService, SessionService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { TimeSlotsConstants, TimeSlotsTypes } from './time-slots.constants';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ScreenStore } from '../../../../screen/screen.types';
-import { cloneDeep } from 'lodash';
 import { Smev3TimeSlotsRestServiceStub } from './stubs/smev3-time-slots-rest.service.stub';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+
 import { TimeSlotsService } from './time-slots.service';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { of } from 'rxjs';
+
 import { mockScreenDivorceWithCacheStore } from './mocks/mock-screen-divorce-with-cache-store';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
-import { HttpClientModule } from '@angular/common/http';
-import { MockProvider } from 'ng-mocks';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 
 describe('TimeSlotsComponent', () => {
@@ -78,7 +88,7 @@ describe('TimeSlotsComponent', () => {
     beforeEach(() => {
       const store: ScreenStore = cloneDeep(mockScreenMvdStore);
       screenService.initScreenStore((store as unknown) as ScreenStore);
-      const component = screenService.component;
+      const { component } = screenService;
       compValue = JSON.parse(component.value);
       cachedAnswer = screenService.getCompValueFromCachedAnswers();
       if (cachedAnswer) {
@@ -87,8 +97,8 @@ describe('TimeSlotsComponent', () => {
       timeSlotsService.changed(compValue, cachedAnswer);
     });
 
-    it('MVD should take organizationId from calculated organizationId component\'s value ', () => {
-      const organizationId = timeSlotsService['getSlotsRequestOrganizationId'](TimeSlotsTypes.MVD);
+    it("MVD should take organizationId from calculated organizationId component's value ", () => {
+      const organizationId = timeSlotsService.getSlotsRequestOrganizationId(TimeSlotsTypes.MVD);
       expect(organizationId).toBe('123');
     });
 
@@ -96,7 +106,7 @@ describe('TimeSlotsComponent', () => {
       const newCompValue = cloneDeep(compValue);
       delete newCompValue.organizationId;
       timeSlotsService.changed(newCompValue, cachedAnswer);
-      const organizationId = timeSlotsService['getSlotsRequestOrganizationId'](TimeSlotsTypes.MVD);
+      const organizationId = timeSlotsService.getSlotsRequestOrganizationId(TimeSlotsTypes.MVD);
       expect(organizationId).toBe('9277');
     });
   });
@@ -105,7 +115,7 @@ describe('TimeSlotsComponent', () => {
     beforeEach(() => {
       const store: ScreenStore = cloneDeep(mockScreenDivorceWithCacheStore);
       screenService.initScreenStore((store as unknown) as ScreenStore);
-      const component = screenService.component;
+      const { component } = screenService;
       timeSlotsService.timeSlotsType = TimeSlotsTypes.RAZBRAK;
       compValue = JSON.parse(component.value);
       cachedAnswer = screenService.getCompValueFromCachedAnswers();
@@ -218,7 +228,7 @@ describe('TimeSlotsComponent', () => {
 
     it('getAvailableAreaNames should call request for areas', () => {
       const areaNamesSpy = jest.spyOn<any, any>(dictionaryApiService, 'getSelectMapDictionary');
-      timeSlotsService['getAvailableAreaNames'](null);
+      timeSlotsService.getAvailableAreaNames(null);
       expect(areaNamesSpy).toHaveBeenCalledTimes(1);
     });
   });

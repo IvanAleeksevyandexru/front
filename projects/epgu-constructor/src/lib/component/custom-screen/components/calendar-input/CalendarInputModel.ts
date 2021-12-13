@@ -8,5 +8,4 @@ export default class CalendarInputModel extends BaseModel<CalendarInputModelAttr
   getAttrs(attrs: CustomComponentAttr): CalendarInputModelAttrs {
     return new CalendarInputModelAttrs(attrs);
   }
-
 }

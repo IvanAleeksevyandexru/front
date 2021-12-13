@@ -12,5 +12,6 @@ export class TracingServiceStub {
     return {};
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public set serviceCode(_: string) {}
 }

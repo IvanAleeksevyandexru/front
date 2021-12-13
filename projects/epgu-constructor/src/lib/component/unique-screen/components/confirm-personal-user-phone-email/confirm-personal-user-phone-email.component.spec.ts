@@ -1,21 +1,25 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  UnsubscribeService,
+  UnsubscribeServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+
+import { ActionType, ComponentActionDto, DisclaimerDtoType } from '@epgu/epgu-constructor-types';
+import { By } from '@angular/platform-browser';
+import { MockProvider } from 'ng-mocks';
+import { FormatPhonePipe } from '@epgu/ui/pipes';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ComponentBase } from '../../../../screen/screen.types';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
-import { By } from '@angular/platform-browser';
 import { ConfirmUserDataError } from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
-import { MockProvider } from 'ng-mocks';
-import { FormatPhonePipe } from '@epgu/ui/pipes';
-import { DisclaimerDtoType } from '@epgu/epgu-constructor-types';
 
 type PersonalUserPhoneEmailWithErrors = ComponentBase & {
   errors: ConfirmUserDataError[];
@@ -35,7 +39,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
         type: DisclaimerDtoType.warn,
         title: 'Нашли ошибку?',
         description:
-          'Измените данные <a href=\'https://lk.gosuslugi.ru/settings/account\'>в личном кабинете</a>',
+          "Измените данные <a href='https://lk.gosuslugi.ru/settings/account'>в личном кабинете</a>",
       },
       defaultHint: {
         type: 'warn',
@@ -91,7 +95,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
       expect(currentAnswersService.state).toEqual('test@gmail.com');
     });
 
-    it('shouldn\'t update value', () => {
+    it("shouldn't update value", () => {
       component.updateValue(null, []);
 
       expect(currentAnswersService.isValid).toEqual(false);
@@ -161,7 +165,7 @@ describe('ConfirmPersonalUserPhoneEmailComponent', () => {
     const debugEl: DebugElement = fixture.debugElement.query(By.css(selector));
     expect(debugEl.nativeElement.type).toEqual('warn');
     expect(debugEl.nativeElement.description).toEqual(
-      'Измените данные <a href=\'https://lk.gosuslugi.ru/settings/account\'>в личном кабинете</a>',
+      "Измените данные <a href='https://lk.gosuslugi.ru/settings/account'>в личном кабинете</a>",
     );
   });
 });

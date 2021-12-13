@@ -3,10 +3,10 @@ import { FormControl, FormControlDirective } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { LookupProvider } from '@epgu/ui/models/dropdown';
 import { of } from 'rxjs';
-import { ConstructorLookupComponent } from './constructor-lookup.component';
-import { BaseUiModule } from '../../base-ui.module';
 import { By } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { ConstructorLookupComponent } from './constructor-lookup.component';
+import { BaseUiModule } from '../../base-ui.module';
 
 describe('ConstructorLookupComponent', () => {
   let component: ConstructorLookupComponent;
@@ -119,5 +119,4 @@ describe('ConstructorLookupComponent', () => {
 
     expect(setFocusSpy).toBeCalledTimes(1);
   });
-
 });

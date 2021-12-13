@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ConfigService, ConfigServiceStub, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { By } from '@angular/platform-browser';
 import { TimeSlotBookedInfoComponent } from './time-slot-booked-info.component';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
 import { TimeSlotSmev3ServiceStub } from '../../../services/smev3/time-slot-smev3.service.stub';
-import { ConfigService, ConfigServiceStub, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../../../../shared/base.module';
-import { of } from 'rxjs';
 import { Slot } from '../../../typings';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { By } from '@angular/platform-browser';
 
 const mockSlot = {
   slotId: 'e3758564-bf72-4bc3-be55-b6c4e31954275456',

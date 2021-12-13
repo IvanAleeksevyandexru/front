@@ -1,7 +1,7 @@
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { CustomComponent } from '../../../components-list.types';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { MockService } from 'ng-mocks';
+import { CustomComponent } from '../../../components-list.types';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { AutofillFromDictionaryRelation } from './autofill-from-dictionary-relation';
 import DictionaryModel from '../../../components/dictionary/DictionaryModel';
@@ -18,15 +18,17 @@ describe('AutofillFromDictionaryRelation', () => {
     shownElements,
   } = setupForRelationStrategy({
     referenceExtra: { relation: CustomComponentRefRelation.autofillFromDictionary },
-    dependentControlValue: 'some value'
+    dependentControlValue: 'some value',
   });
-  let componentVal = {
+  const componentVal = {
     id: 'foo',
     regOkato: '450000',
   };
   let components: CustomComponent[] = [];
 
-  const refRelationService: RefRelationService = MockService(RefRelationService) as unknown as RefRelationService;
+  const refRelationService: RefRelationService = (MockService(
+    RefRelationService,
+  ) as unknown) as RefRelationService;
 
   beforeEach(() => {
     relation = new AutofillFromDictionaryRelation(refRelationService);
@@ -79,7 +81,7 @@ describe('AutofillFromDictionaryRelation', () => {
     dependentControl.markAsTouched();
     components[0] = new LookupInputModel(components[0]);
     components[0].id = 'rf1';
-    components[0]['_dictionary$'].next({
+    components[0]._dictionary$.next({
       list: [
         {
           id: 'foo',
@@ -138,28 +140,33 @@ describe('AutofillFromDictionaryRelation', () => {
 
       const componentId = 'comp1';
 
-      const components = [
-        new LookupInputModel(createComponentMock({
-          id: 'comp1',
-        })),
-        new LookupInputModel(createComponentMock({
-          id: 'comp2',
-        })),
+      const testComponents = [
+        new LookupInputModel(
+          createComponentMock({
+            id: 'comp1',
+          }),
+        ),
+        new LookupInputModel(
+          createComponentMock({
+            id: 'comp2',
+          }),
+        ),
       ];
 
-      const componentVal = { id: 'foo' };
+      const testComponentVal = { id: 'foo' };
 
       // undefined потому что в словаре нет нет значения для компонента comp1
       expect(
-        relation['getDictionaryAttributeValue'](
+        relation.getDictionaryAttributeValue(
           dictionaryAttributeName,
           componentId,
-          components,
-          componentVal,
+          testComponents,
+          testComponentVal,
         ),
       ).toBeUndefined();
 
-      components[0]['_dictionary$'].next({ list: [
+      testComponents[0]._dictionary$.next({
+        list: [
           {
             id: 'foo',
             originalItem: {
@@ -168,13 +175,14 @@ describe('AutofillFromDictionaryRelation', () => {
               },
             },
           },
-        ] } as any);
+        ],
+      } as any);
       expect(
-        relation['getDictionaryAttributeValue'](
+        relation.getDictionaryAttributeValue(
           dictionaryAttributeName,
           componentId,
-          components,
-          componentVal,
+          testComponents,
+          testComponentVal,
         ),
       ).toBe('some attribute value');
     });

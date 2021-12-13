@@ -6,7 +6,7 @@ import { MvdInfoCenterI } from '../../interface/information-center-mvd.interface
 describe('InformationCenterCardComponent', () => {
   let component: InformationCenterCardComponent;
   let fixture: ComponentFixture<InformationCenterCardComponent>;
-  let mockData: MvdInfoCenterI = {
+  const mockData: MvdInfoCenterI = {
     attributeValues: {
       CODE: '',
       ADDRESS: '',

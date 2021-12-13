@@ -70,7 +70,7 @@ describe('TrimDirective', () => {
       input.focus();
       input.blur();
       fixture.detectChanges();
-      const value = input.value;
+      const { value } = input;
       expect(value).toEqual('42Тыц 8тыц -тац тац-тац');
     });
   });

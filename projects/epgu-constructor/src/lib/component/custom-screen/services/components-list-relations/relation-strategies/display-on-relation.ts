@@ -1,7 +1,11 @@
-import { BaseRelation } from './base-relation';
 import { CustomComponentRefRelation, KeyValueMap } from '@epgu/epgu-constructor-types';
-import { CustomComponent, CustomComponentRef, CustomListStatusElements } from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
+import { BaseRelation } from './base-relation';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomListStatusElements,
+} from '../../../components-list.types';
 
 export class DisplayOnRelation extends BaseRelation {
   public handleRelation(

@@ -1,10 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotSmev3Component } from './time-slot-smev3.component';
 import { MockComponent } from 'ng-mocks';
-import { TimeSlotMonthComponent } from '../../calendar/time-slot-month/time-slot-month.component';
-import { TimeSlotCalendarComponent } from '../../calendar/time-slot-calendar/time-slot-calendar.component';
-import { TimeSlotTimeComponent } from '../../calendar/time-slot-time/time-slot-time.component';
-import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -18,6 +13,13 @@ import {
   UnsubscribeService,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { BehaviorSubject, of } from 'rxjs';
+import { IBookingErrorHandling, SlotsNotFoundTemplate } from '@epgu/epgu-constructor-types';
+import { TimeSlotSmev3Component } from './time-slot-smev3.component';
+import { TimeSlotMonthComponent } from '../../calendar/time-slot-month/time-slot-month.component';
+import { TimeSlotCalendarComponent } from '../../calendar/time-slot-calendar/time-slot-calendar.component';
+import { TimeSlotTimeComponent } from '../../calendar/time-slot-time/time-slot-time.component';
+import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../../shared/directives/action/action.service';
@@ -30,7 +32,6 @@ import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-sl
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
 import { FormPlayerService } from '../../../../../../../form-player/services/form-player/form-player.service';
 import { FormPlayerServiceStub } from '../../../../../../../form-player/services/form-player/form-player.service.stub';
-import { BehaviorSubject, of } from 'rxjs';
 import { BaseModule } from '../../../../../../../shared/base.module';
 import {
   ITEMS_FAILURE,
@@ -43,7 +44,6 @@ import {
   TimeSlotError,
   TimeSlotsAnswerInterface,
 } from '../../../typings';
-import { IBookingErrorHandling, SlotsNotFoundTemplate } from '@epgu/epgu-constructor-types';
 import { baseHandlers } from '../../../handlers/base-handlers';
 import { getConfirmChangeTimeModalParams, templateList } from './data';
 import { CurrentAnswersService } from '../../../../../../../screen/current-answers.service';

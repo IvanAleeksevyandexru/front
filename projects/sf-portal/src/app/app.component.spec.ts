@@ -5,12 +5,8 @@ import { AppComponent } from './app.component';
 xdescribe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
+      imports: [RouterTestingModule],
+      declarations: [AppComponent],
     }).compileComponents();
   });
 
@@ -20,7 +16,7 @@ xdescribe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should have as title \'job\'', () => {
+  it("should have as title 'job'", () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('job');

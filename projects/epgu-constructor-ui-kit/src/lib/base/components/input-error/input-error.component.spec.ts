@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputErrorComponent } from './input-error.component';
 import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
+import { InputErrorComponent } from './input-error.component';
 
 const helperTextMock = 'Awesome useful helper text.';
 

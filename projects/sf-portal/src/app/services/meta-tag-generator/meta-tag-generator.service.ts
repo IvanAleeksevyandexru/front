@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MetaTagGeneratorService {
   private openGraphApiUrl = this.loadService.config.openGraphApiUrl;
@@ -14,7 +14,7 @@ export class MetaTagGeneratorService {
     private loadService: LoadService,
     private httpClient: HttpClient,
     private metaService: Meta,
-  ) { }
+  ) {}
 
   public loadData(): Promise<Object> {
     if (this.openGraphApiUrl) {
@@ -29,7 +29,7 @@ export class MetaTagGeneratorService {
   public addInfoToMeta(info: KeyValueMap[]): void {
     if (!info) return;
 
-    const tags: MetaDefinition[] = info.map(item => {
+    const tags: MetaDefinition[] = info.map((item) => {
       for (const [key, value] of Object.entries(item)) {
         this.metaService.removeTag(`property='${key}'`);
         return { property: key, content: value } as MetaDefinition;

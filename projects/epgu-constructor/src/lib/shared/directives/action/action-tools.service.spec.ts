@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { ActionToolsService } from './action-tools.service';
 import { DTOActionAction, ScreenTypes } from '@epgu/epgu-constructor-types';
 import {
   ConfigService,
@@ -20,6 +19,10 @@ import {
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { cloneDeep } from 'lodash';
+import { NotifierService } from '@epgu/ui/services/notifier';
+import { ActionToolsService } from './action-tools.service';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
@@ -29,7 +32,6 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { ActionService } from './action.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
 import { NavigationServiceStub } from '../../../core/services/navigation/navigation.service.stub';
@@ -52,8 +54,6 @@ import {
   downloadSpAdapterPdfAction,
 } from './action.mock';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
-import { cloneDeep } from 'lodash';
-import { NotifierService } from '@epgu/ui/services/notifier';
 
 describe('ActionToolsService', () => {
   let service: ActionToolsService;
@@ -127,24 +127,24 @@ describe('ActionToolsService', () => {
 
   describe('openConfirmationModal()', () => {
     it('should throw error if no confirmations found', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
       const newAction = cloneDeep(profileEditAction);
       newAction.value = '123';
       expect(() => {
-        service['openConfirmationModal'](deliriumAction, 'componentId');
+        service.openConfirmationModal(deliriumAction, 'componentId');
       }).toThrow(Error);
     });
   });
 
   describe('deleteSuggestAction()', () => {
     it('should call formPlayerService.navigate()', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
       const spy = jest.spyOn(formPlayerService, 'navigate');
-      service['handleDeliriumAction'](deliriumAction, 'componentId');
+      service.handleDeliriumAction(deliriumAction, 'componentId');
       expect(spy).toBeCalled();
     });
   });
@@ -152,53 +152,53 @@ describe('ActionToolsService', () => {
   describe('downloadAction()', () => {
     it('should call sendAction()', () => {
       const spy = jest.spyOn<any, string>(service, 'sendAction');
-      service['downloadAction'](downloadAction);
+      service.downloadAction(downloadAction);
       expect(spy).toBeCalled();
     });
     it('should call downloadService.saveRawFile()', () => {
       const spy = jest.spyOn(downloadService, 'saveRawFile');
-      service['downloadAction'](downloadAction);
+      service.downloadAction(downloadAction);
       expect(spy).toBeCalled();
     });
   });
 
   describe('navigateModal()', () => {
     it('should call sendAction()', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
-      service['navigateModal'](nextStepModalAction, null, 'nextStep');
+      service.navigateModal(nextStepModalAction, null, 'nextStep');
       expect(modalNextStepSpy).toBeCalled();
     });
   });
 
   describe('handleDeliriumAction()', () => {
     it('should call formPlayerService.navigate()', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
       const formPlayerServiceNavigateSpy = jest.spyOn(formPlayerService, 'navigate');
-      service['handleDeliriumAction'](deliriumAction, 'componentId');
+      service.handleDeliriumAction(deliriumAction, 'componentId');
       expect(formPlayerServiceNavigateSpy).toBeCalled();
     });
   });
 
   describe('getActionDTO()', () => {
     it('should return ActionRequestPayload with currentUrl, if there is "addToCalendar" in action.action', () => {
-      const result = { additionalParams: {}, scenarioDto: { cachedAnswers: [], currentUrl: '' }};
+      const result = { additionalParams: {}, scenarioDto: { cachedAnswers: [], currentUrl: '' } };
       const newAction = cloneDeep(profileEditAction);
       newAction.action = DTOActionAction.addToCalendar;
-      expect(service['getActionDTO'](newAction)).toEqual(result);
+      expect(service.getActionDTO(newAction)).toEqual(result);
     });
     it('should return ActionRequestPayload with additionalParams, if there is non-empty additionalParams in action.attrs', () => {
-      const result = { additionalParams: { screenId: 's1' }, scenarioDto: { cachedAnswers: [] }};
+      const result = { additionalParams: { screenId: 's1' }, scenarioDto: { cachedAnswers: [] } };
       const newAction = cloneDeep(profileEditAction);
       newAction.attrs.additionalParams = { screenId: 's1' };
-      expect(service['getActionDTO'](newAction)).toEqual(result);
+      expect(service.getActionDTO(newAction)).toEqual(result);
     });
     it('should return NavigationOptions', () => {
-      const result = { additionalParams: {}, scenarioDto: { cachedAnswers: [] }};
-      expect(service['getActionDTO'](nextAction)).toEqual(result);
+      const result = { additionalParams: {}, scenarioDto: { cachedAnswers: [] } };
+      expect(service.getActionDTO(nextAction)).toEqual(result);
     });
   });
 
@@ -226,7 +226,7 @@ describe('ActionToolsService', () => {
     });
     it('should call copyAndNotify() within service.sendAction(), with value + host + response.value string without current url queryParams, if any', () => {
       const newAction = cloneDeep(copyToClipboardAction);
-      locationService['setHref']('https://host.com/600101/1/form?key=value');
+      locationService.setHref('https://host.com/600101/1/form?key=value');
       newAction.attrs.additionalParams = { screenId: 's1' };
       service.copyToClipboard(newAction);
       expect(service.bufferData).toEqual('Скопирована ссылка: https://host.com/600101/1/formvalue');
@@ -251,102 +251,102 @@ describe('ActionToolsService', () => {
   describe('getOptions()', () => {
     it('should return NavigationOptions with url, if there is "service" in action.action attr', () => {
       const result = { url: profileEditAction.action };
-      expect(service['getOptions'](profileEditAction)).toEqual(result);
+      expect(service.getOptions(profileEditAction)).toEqual(result);
     });
     it('should return NavigationOptions with isInternalScenarioFinish, if there is "goBackToMainScenario" in action.action attr', () => {
       const result = { isInternalScenarioFinish: true };
       const newAction = cloneDeep(profileEditAction);
       newAction.action = DTOActionAction.goBackToMainScenario;
-      expect(service['getOptions'](newAction)).toEqual(result);
+      expect(service.getOptions(newAction)).toEqual(result);
     });
     it('should return empty {} for rest cases', () => {
       const result = {};
-      expect(service['getParams'](nextAction)).toEqual(result);
+      expect(service.getParams(nextAction)).toEqual(result);
     });
   });
 
   describe('getParams()', () => {
     it('should return NavigationParams, if there is stepsBack attr in action', () => {
       const result = { stepsBack: 1 };
-      expect(service['getParams'](prevAction)).toEqual(result);
+      expect(service.getParams(prevAction)).toEqual(result);
     });
     it('should return empty {}, if there is no stepsBack attr in action', () => {
       const result = {};
-      expect(service['getParams'](nextAction)).toEqual(result);
+      expect(service.getParams(nextAction)).toEqual(result);
     });
   });
 
   describe('prepareNavigationData()', () => {
     it('should return Navigation', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       screenService.display = display;
       const result = {
         options: { params: {}, url: 'service/actions/editPhoneNumber' },
-        payload: { 123: { value: 'some value', visited: true }},
+        payload: { 123: { value: 'some value', visited: true } },
       };
-      expect(service['prepareNavigationData'](nextAction, '123')).toEqual(result);
+      expect(service.prepareNavigationData(nextAction, '123')).toEqual(result);
     });
   });
 
   describe('getComponentStateForNavigate()', () => {
     it('should return current value for custom screen', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
       jest.spyOn<any, string>(service, 'isTimerComponent').mockReturnValue(false);
-      const expectedValue = { 123: { value: 'some value', visited: true }};
+      const expectedValue = { 123: { value: 'some value', visited: true } };
       currentAnswersService.state = expectedValue;
-      const value = service['getComponentStateForNavigate'](nextAction, '123');
+      const value = service.getComponentStateForNavigate(nextAction, '123');
       expect(value).toEqual(expectedValue);
     });
 
     it('should return current value for timer case', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
       jest.spyOn<any, string>(service, 'isTimerComponent').mockReturnValue(true);
-      const expectedValue = { 123: { visited: true, value: nextAction.value }};
-      const value = service['getComponentStateForNavigate'](nextAction, '123');
+      const expectedValue = { 123: { visited: true, value: nextAction.value } };
+      const value = service.getComponentStateForNavigate(nextAction, '123');
       expect(value).toEqual(expectedValue);
     });
 
     it('should return current value for unique screen', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       screenService.display = display;
-      const expectedValue = { 123: { value: 'some value', visited: true }};
+      const expectedValue = { 123: { value: 'some value', visited: true } };
       currentAnswersService.state = 'some value';
-      const value = service['getComponentStateForNavigate'](nextAction, '123');
+      const value = service.getComponentStateForNavigate(nextAction, '123');
       expect(value).toEqual(expectedValue);
     });
 
     it('should return current value for unique screen with skipAction', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       screenService.display = display;
-      const expectedValue = { 123: { value: '', visited: true }};
+      const expectedValue = { 123: { value: '', visited: true } };
       currentAnswersService.state = 'some value';
-      const value = service['getComponentStateForNavigate'](skipAction, '123');
+      const value = service.getComponentStateForNavigate(skipAction, '123');
       expect(value).toEqual(expectedValue);
     });
   });
 
   describe('prepareDefaultComponentState()', () => {
     it('should return ComponentStateForNavigate', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       screenService.display = display;
-      const result = { 123: { value: 'value', visited: true }};
-      expect(service['prepareDefaultComponentState']('123', 'value', nextAction)).toEqual(result);
+      const result = { 123: { value: 'value', visited: true } };
+      expect(service.prepareDefaultComponentState('123', 'value', nextAction)).toEqual(result);
     });
   });
 
   describe('sendAction()', () => {
     it('should call htmlRemoverService.delete()', () => {
       const spy = jest.spyOn(htmlRemoverService, 'delete');
-      service['sendAction'](nextAction);
+      service.sendAction(nextAction);
       expect(spy).toBeCalled();
     });
     it('should call formPlayerApiService.sendAction()', () => {
       const spy = jest.spyOn(formPlayerApiService, 'sendAction');
-      service['sendAction'](nextAction);
+      service.sendAction(nextAction);
       expect(spy).toBeCalled();
     });
     it('should call formPlayerApiService.sendAction() with path and payload', () => {
@@ -355,33 +355,33 @@ describe('ActionToolsService', () => {
       const payload = {
         additionalParams: {},
         scenarioDto: {
-          applicantAnswers: { 12: { visited: true }},
+          applicantAnswers: { 12: { visited: true } },
           cachedAnswers: [],
-          currentValue: { 12: { visited: true }},
+          currentValue: { 12: { visited: true } },
           display: undefined,
         },
       };
-      service['sendAction'](downloadSpAdapterPdfAction);
+      service.sendAction(downloadSpAdapterPdfAction);
       expect(spy).toHaveBeenCalledWith(path, payload, undefined);
     });
   });
 
   describe('isTimerComponent()', () => {
     it('should return false, if component found via passed componentId and its type is not TimerComponent', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       screenService.display = display;
-      expect(service['isTimerComponent']('123')).toBeFalsy();
+      expect(service.isTimerComponent('123')).toBeFalsy();
     });
     it('should return false, if component not found via passed componentId', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       screenService.display = display;
-      expect(service['isTimerComponent']('nonExistingId')).toBeFalsy();
+      expect(service.isTimerComponent('nonExistingId')).toBeFalsy();
     });
     it('should return true, if component found via passed componentId and its type is TimerComponent', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       display.components[0].type = CustomScreenComponentTypes.Timer;
       screenService.display = display;
-      expect(service['isTimerComponent']('123')).toBeTruthy();
+      expect(service.isTimerComponent('123')).toBeTruthy();
     });
   });
 });

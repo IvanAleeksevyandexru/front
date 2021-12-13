@@ -1,24 +1,18 @@
-
-import {
-  CustomComponent,
-  CustomListGenericData,
-
-} from '../../../component/custom-screen/components-list.types';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {
-  RestAttrsDto,
-} from '@epgu/epgu-constructor-types';
-import { DictionaryItem, DictionaryResponse } from '../dictionary/dictionary-api.types';
-import { RestService } from '../rest/rest.service';
+import { RestAttrsDto } from '@epgu/epgu-constructor-types';
 import { HttpResponse } from '@angular/common/http';
+import { RestService } from '../rest/rest.service';
+import {
+  CustomComponent,
+  CustomListGenericData,
+} from '../../../component/custom-screen/components-list.types';
+import { DictionaryItem, DictionaryResponse } from '../dictionary/dictionary-api.types';
 
 @Injectable()
 export class RestToolsService {
-  constructor(
-    private restService: RestService,
-  ) {}
+  constructor(private restService: RestService) {}
 
   public getDictionariesByRest$(
     component: CustomComponent,
@@ -36,5 +30,4 @@ export class RestToolsService {
       })),
     );
   }
-
 }

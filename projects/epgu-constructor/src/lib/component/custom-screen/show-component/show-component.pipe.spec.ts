@@ -9,7 +9,7 @@ describe('ShowComponentPipe', () => {
   let formService: ComponentsListFormService;
 
   const setShownElements = (shownElements: CustomListStatusElements) => {
-    formService['_shownElements'] = shownElements;
+    formService._shownElements = shownElements;
   };
 
   beforeEach(() => {

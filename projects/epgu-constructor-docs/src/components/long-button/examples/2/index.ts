@@ -15,10 +15,15 @@ import {
 })
 export class Example2EpguLongButtonComponent {
   @Input() selectedValue: string;
+
   @Input() label: string;
+
   @Input() description: string;
+
   @Input() value: string;
+
   @Input() isLoading: boolean;
+
   @Input() disabled: boolean;
 
   constructor(private cdr: ChangeDetectorRef) {}

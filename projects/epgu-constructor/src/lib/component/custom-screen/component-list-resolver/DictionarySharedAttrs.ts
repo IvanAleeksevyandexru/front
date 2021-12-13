@@ -1,6 +1,8 @@
 import {
   Add,
-  ComponentDictionaryFilterDto, ComponentFilterDto, CustomComponentRefRelation,
+  ComponentDictionaryFilterDto,
+  ComponentFilterDto,
+  CustomComponentRefRelation,
   DefaultIndex,
   DictionaryOptions,
   DictionaryType,
@@ -20,24 +22,40 @@ import GenericAttrs from './GenericAttrs';
 
 export default class DictionarySharedAttrs extends GenericAttrs {
   readonly dictionaryType: DictionaryType;
+
   readonly lockedValue?: LockedValue;
+
   readonly repeatWithNoFilters?: RepeatWithNoFilters;
+
   readonly dictionaryFilter?: ComponentDictionaryFilterDto[];
+
   readonly dictionaryFilters?: ComponentDictionaryFilterDto[][];
+
   readonly secondaryDictionaryFilter?: ComponentDictionaryFilterDto[];
+
   readonly defaultIndex?: DefaultIndex;
+
   readonly searchProvider: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
   };
+
   readonly lookupDefaultValue?: LookupDefaultValue;
+
   readonly needUnfilteredDictionaryToo: NeedUnfilteredDictionaryToo;
+
   readonly dictionaryOptions?: DictionaryOptions;
+
   readonly dictionaryUrlType?: DictionaryUrlTypes;
+
   readonly filter?: ComponentFilterDto;
+
   readonly add?: Add;
+
   readonly dictionaryList?: CustomComponentDropDownItemList;
+
   readonly mappingParams: MappingParamsDto;
+
   readonly lookupFilterPath: LookupFilterPath;
 
   constructor(attrs: CustomComponentAttr) {

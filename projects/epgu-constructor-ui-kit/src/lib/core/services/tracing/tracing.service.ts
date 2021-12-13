@@ -1,17 +1,21 @@
 import { Inject, Injectable } from '@angular/core';
 import { Tracer, BatchRecorder, jsonEncoder, ExplicitContext } from '@epgu/zipkin';
 import { HttpLogger } from 'zipkin-transport-http';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
 import { AllowedRemoteServices, TRACE_ALLOWED_REMOTE_SERVICES } from './tracing.token';
 import { ConfigService } from '../config/config.service';
 import { SessionService } from '../session/session.service';
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class TracingService {
   private localServiceName = 'form-frontend';
+
   private _tracer: Tracer;
+
   private ctxImpl: ExplicitContext = new ExplicitContext();
+
   private recorder: BatchRecorder;
+
   private defaultTags: KeyValueMap = {
     serviceCode: '',
   };

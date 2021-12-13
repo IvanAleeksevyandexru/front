@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainContainerComponent } from './main-container.component';
 import { Component } from '@angular/core';
-import { BaseUiModule } from '../../base-ui.module';
 import { By } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { MainContainerComponent } from './main-container.component';
+import { BaseUiModule } from '../../base-ui.module';
 import { SharedModalModule } from '../../../modal/shared/shared-modal.module';
 import { ModalService } from '../../../modal/modal.service';
-import { HttpClientModule } from '@angular/common/http';
 
 const textMock = 'Opa gangnam style!!!';
 

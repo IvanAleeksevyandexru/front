@@ -9,8 +9,15 @@ import {
 } from '@angular/forms';
 import { MockComponents, MockProviders } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
-import { EaisdoGroupCostComponent } from './eaisdo-group-cost.component';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ActionApiResponse,
+  ActionType,
+  DTOActionAction,
+  EaisdoResponse,
+  KeyValueMap,
+} from '@epgu/epgu-constructor-types';
+import { EaisdoGroupCostComponent } from './eaisdo-group-cost.component';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
@@ -23,13 +30,6 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
-import {
-  ActionApiResponse,
-  ActionType,
-  DTOActionAction,
-  EaisdoResponse,
-  KeyValueMap,
-} from '@epgu/epgu-constructor-types';
 import { EaisdoStateTypes } from './eaisdo.interface';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
@@ -88,7 +88,7 @@ describe('EaisdoGroupCostComponent', () => {
       value: valueControl,
       attrs: new FormControl('fake attrs'),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(EaisdoGroupCostComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -99,7 +99,7 @@ describe('EaisdoGroupCostComponent', () => {
     expect(component).toBeInstanceOf(EaisdoGroupCostComponent);
   });
 
-  it('should not render, as it\'s logical component', () => {
+  it("should not render, as it's logical component", () => {
     const debugEl = fixture.debugElement.query(By.css('epgu-constructor-component-item'));
     expect(debugEl).toBeFalsy();
   });
@@ -108,7 +108,7 @@ describe('EaisdoGroupCostComponent', () => {
     it('should set component as control value', () => {
       expect(component.component).toBe(component.control.value);
     });
-    it('should set eaisdoGroupCostService.currentState to \'wait\'', () => {
+    it("should set eaisdoGroupCostService.currentState to 'wait'", () => {
       expect(eaisdoGroupCostService.currentState).toBe(EaisdoStateTypes.wait);
     });
     it('should call actionService.handleExternalIntegrationAction()', () => {
@@ -128,7 +128,7 @@ describe('EaisdoGroupCostComponent', () => {
           type: null,
         },
       };
-      component['handleResponse'](response);
+      component.handleResponse(response);
       expect(spy).toHaveBeenCalled();
     });
   });
@@ -141,26 +141,21 @@ describe('EaisdoGroupCostComponent', () => {
     const responseData: ActionApiResponse<EaisdoResponse>['responseData'] = null;
     it('should set eaisdoGroupCostService.currentState()', () => {
       const result = EaisdoStateTypes.wait;
-      component['setState'](error, responseType, financialSource, typeOfBudget, responseData);
+      component.setState(error, responseType, financialSource, typeOfBudget, responseData);
       expect(eaisdoGroupCostService.currentState).toBe(result);
     });
     it('should call eaisdoGroupCostService.calculateState()', () => {
       const spy = jest.spyOn(eaisdoGroupCostService, 'calculateState');
-      component['setState'](error, responseType, financialSource, typeOfBudget, responseData);
+      component.setState(error, responseType, financialSource, typeOfBudget, responseData);
       expect(spy).toHaveBeenCalled();
     });
     it('should set currentAnswersService.state()', () => {
-      const error: KeyValueMap = null;
-      const responseType: string = null;
-      const financialSource: string | unknown = null;
-      const typeOfBudget: string | unknown = null;
-      const responseData: ActionApiResponse<EaisdoResponse>['responseData'] = null;
       const result = {
         disabled: false,
         value: 'null',
         visited: true,
       };
-      component['setState'](error, responseType, financialSource, typeOfBudget, responseData);
+      component.setState(error, responseType, financialSource, typeOfBudget, responseData);
       expect(currentAnswersService.state[component.component.id]).toEqual(result);
     });
   });
@@ -175,7 +170,7 @@ describe('EaisdoGroupCostComponent', () => {
           type: null,
         },
       };
-      component['handleResponse'](response);
+      component.handleResponse(response);
       expect(spy).toHaveBeenCalled();
     });
   });

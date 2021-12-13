@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CtaModalComponent } from './cta-modal.component';
 import { A11yModule } from '@angular/cdk/a11y';
+import { By } from '@angular/platform-browser';
+import { CtaModalComponent } from './cta-modal.component';
 import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
 import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
 import { EventBusService } from '../../../core/services/event-bus/event-bus.service';
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { BaseUiModule } from '../../../base/base-ui.module';
-import { By } from '@angular/platform-browser';
 
 describe('ConfirmationModalBaseComponent', () => {
   let component: CtaModalComponent;

@@ -9,14 +9,23 @@ import {
 @Injectable()
 export class InitDataServiceStub implements ServiceEntity, FormPlayerContext {
   private _serviceId: string;
+
   private _orderId: number;
+
   private _targetId: string;
+
   private _invited: boolean;
+
   private _serviceInfo: ServiceInfo;
+
   private _canStartNew: boolean;
+
   private _initState: string;
+
   private _configId: string;
+
   private _queryParams: QueryParams;
+
   private _gepsId: number;
 
   get serviceId(): string {

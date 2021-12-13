@@ -12,8 +12,11 @@ export class TimeSlotsConstants {
   };
 
   errorLoadingTimeSlots = 'Не удалось загрузить доступные слоты времени';
+
   errorFailBookTimeSlot = 'Не удалось забронировать время';
+
   errorInitialiseService = 'Ошибка инициализации сервиса';
+
   error101ServiceUnavailable = 'сервис недоступен. Повторите запрос позже.';
 }
 

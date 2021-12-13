@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotCheckboxErrorComponent } from './time-slot-checkbox-error.component';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -11,18 +10,19 @@ import {
   ModalServiceStub,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenButton } from '@epgu/epgu-constructor-types';
+import { By } from '@angular/platform-browser';
+import { TimeSlotCheckboxErrorComponent } from './time-slot-checkbox-error.component';
 import { ScreenButtonsModule } from '../../../../../../../../shared/components/screen-buttons/screen-buttons.module';
 import { BaseComponentsModule } from '../../../../../../../../shared/components/base-components/base-components.module';
 import { BaseModule } from '../../../../../../../../shared/base.module';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 import { ErrorTemplate } from '../../../../typings';
-import { ScreenButton } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { CurrentAnswersServiceStub } from '../../../../../../../../screen/current-answers-service.stub';
 import { HtmlSelectService } from '../../../../../../../../core/services/html-select/html-select.service';
 import { HtmlSelectServiceStub } from '../../../../../../../../core/services/html-select/html-select.service.stub';
-import { By } from '@angular/platform-browser';
 import { ActionServiceStub } from '../../../../../../../../shared/directives/action/action.service.stub';
 import { ActionService } from '../../../../../../../../shared/directives/action/action.service';
 

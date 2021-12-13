@@ -1,52 +1,92 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { AppPathMap, Config, MockApi, TimeSlotsApi } from './config.types';
 import { DEFAULT_CONFIG_ID } from '@epgu/epgu-constructor-types';
+import { AppPathMap, Config, MockApi, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigServiceStub implements Config {
   _apiUrl = '/api';
+
   _configApiUrl = '/api';
+
   _configId = DEFAULT_CONFIG_ID;
+
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
+
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
+
   _timeSlotApiUrl = '';
+
   _listPaymentsApiUrl = '';
+
   _lkUrl = '';
+
   _childrenClubsApi = '';
+
   _paymentUrl = 'https://oplata.gosuslugi.ru';
+
   _fileUploadApiUrl = '';
+
   _galleryApiUrl = '';
+
   _quizDataApiUrl = '/api/v1/quizdata';
+
   _uinApiUrl = '';
+
   _billsApiUrl = '';
+
   _invitationUrl = '';
+
   _yandexMapsApiKey = '';
+
   _staticDomainAssetsPath = '';
+
   _staticDomainContentPath = '';
+
   _mocks = [];
+
   _mockUrl = '';
+
   _timeSlots = {};
+
   _disableUnderConstructionMode = false;
+
   _isSocialShareDisabled = false;
+
   _isAutocompleteServiceDisabled = false;
+
   _addToCalendarUrl = '';
+
   _zipkinGenerationEnabled: boolean;
+
   _zipkinSendTraceIdToHealth: boolean;
+
   _zipkinSpanSendEnabled: boolean;
+
   _zipkinUrl = '';
+
   _zipkinMaxPayloadSize: number;
+
   _zipkinEnv = '';
+
   _isZipkinCascadeMode = false;
+
   _showTraceIdOnError = false;
+
   _oplataUrl = 'oplataUrl';
+
   _lkApi = '';
+
   _lookupQueryTimeoutMs = 42;
+
   _nsiSuggestDictionaryUrl = '';
+
   _suggestionsApiUrl = '';
+
   _identificationApiUrl = 'http://localhost:8097/v1/identification';
 
   _isLoaded$ = of(false);
+
   _appPathMap = {};
 
   constructor() {

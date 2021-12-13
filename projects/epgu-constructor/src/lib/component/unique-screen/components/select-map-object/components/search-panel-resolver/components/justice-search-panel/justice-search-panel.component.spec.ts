@@ -17,6 +17,7 @@ import {
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockModule, MockProvider } from 'ng-mocks';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CurrentAnswersService } from '../../../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { BaseModule } from '../../../../../../../../shared/base.module';
@@ -27,7 +28,6 @@ import { PrepareComponentsService } from '../../../../../../../../shared/service
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { JusticeSearchPanelComponent } from './justice-search-panel.component';
 import { CachedAnswersService } from '../../../../../../../../shared/services/cached-answers/cached-answers.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../../../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { RefRelationService } from '../../../../../../../../shared/services/ref-relation/ref-relation.service';
 import { DateRefService } from '../../../../../../../../core/services/date-ref/date-ref.service';
@@ -40,9 +40,7 @@ describe('JusticeSearchPanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        JusticeSearchPanelComponent,
-      ],
+      declarations: [JusticeSearchPanelComponent],
       imports: [
         HttpClientTestingModule,
         MockModule(BaseModule),
@@ -68,8 +66,7 @@ describe('JusticeSearchPanelComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -84,5 +81,4 @@ describe('JusticeSearchPanelComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

@@ -1,12 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { SignAppLinkComponent } from './sign-app-link.component';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { MockComponents, MockProvider } from 'ng-mocks';
-import { ComponentItemComponent } from '../component-item/component-item.component';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
-import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
@@ -15,8 +9,14 @@ import {
   EventBusService,
   System,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ErrorType } from './sign-app-link.types';
 import { HttpClient, HttpHandler } from '@angular/common/http';
+import { SignAppLinkComponent } from './sign-app-link.component';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { ComponentItemComponent } from '../component-item/component-item.component';
+import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { ErrorType } from './sign-app-link.types';
 
 const appLinks = [
   {
@@ -89,7 +89,7 @@ describe('SignAppLinkComponent', () => {
       value: new FormControl(SignAppLinkComponent),
       attrs: new FormControl(mockComponent.attrs),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(SignAppLinkComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -112,7 +112,7 @@ describe('SignAppLinkComponent', () => {
 
   it('should be emit change for formService', () => {
     const spy = jest.spyOn(formService, 'emitChanges');
-    component['emitToParentForm'](payloadMock);
+    component.emitToParentForm(payloadMock);
 
     expect(spy).toHaveBeenCalled();
   });
@@ -149,7 +149,7 @@ describe('SignAppLinkComponent', () => {
           appLinks: [appLinks[0], appLinks[2]],
         }),
       });
-      formService['_form'] = new FormArray([control]);
+      formService._form = new FormArray([control]);
 
       const spy = jest.spyOn<SignAppLinkComponent, any>(component, 'emitToParentForm');
       jest

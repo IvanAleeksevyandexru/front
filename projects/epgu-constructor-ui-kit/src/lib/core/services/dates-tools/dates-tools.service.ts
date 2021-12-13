@@ -37,6 +37,7 @@ import {
   addDays as _addDays,
 } from 'date-fns';
 import { ru as _ruLocale } from 'date-fns/locale';
+import { ComponentRestrictionsDto } from '@epgu/epgu-constructor-types';
 import { replaceArguments } from '../../decorators/replace-arguments';
 import { ConfigService } from '../config/config.service';
 import {
@@ -44,7 +45,6 @@ import {
   DurationTimeTypes,
   StartOfTypes,
 } from '../../../base/constants/dates';
-import { ComponentRestrictionsDto } from '@epgu/epgu-constructor-types';
 
 interface Duration {
   years?: number;
@@ -117,7 +117,7 @@ export class DatesToolsService {
    * @returns Возвращает сегодняшнюю дату
    */
   public async getToday(resetTime = false): Promise<Date> {
-    const path = this.configService.apiUrl + '/service/actions/currentDateTime';
+    const path = `${this.configService.apiUrl}/service/actions/currentDateTime`;
     const timeString = await this.http
       .get(path, { responseType: 'text', withCredentials: true })
       .toPromise();
@@ -487,7 +487,7 @@ export class DatesToolsService {
    * @param {Date | Number} date исходная дата
    */
   public endOfMonth(date: Date | number): Date {
-    let newDate = _endOfMonth(date);
+    const newDate = _endOfMonth(date);
     // Для избежания смещения дня делается установка года/месяца/дня по UTC
     newDate.setUTCFullYear(newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
     return newDate;
@@ -498,7 +498,7 @@ export class DatesToolsService {
    * @param {Date} date исходная дата
    */
   public getDaysInMonth(date: Date): number {
-    let newDate = new Date(date);
+    const newDate = new Date(date);
     const zoneOffset = newDate.getTimezoneOffset();
     // Если временная зона меньше UTC 00:00 то для избежания смещения дня делается установка года/месяца/дня по UTC
     const needToOffsetZone = Math.sign(zoneOffset) === 1;

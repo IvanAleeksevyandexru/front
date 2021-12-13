@@ -10,12 +10,12 @@
       *ngFor="let field of (data$ | async)?.attrs?.fields"
       [ngSwitch]="field?.fieldName"
     >
-      <ng-container *ngSwitchCase="isAddr(field.fieldName)"  >
+      <ng-container *ngSwitchCase="isAddr(field.fieldName)">
         <div *ngIf="getAddress(valueParsed[field.fieldName])" class="item">
           <div class="label-helper" [innerHTML]="field.label | imgPrefixer | safe: 'html'"></div>
           <div class="value-text">
             {{ getAddress(valueParsed[field.fieldName]) }}
-          </div>  
+          </div>
         </div>
       </ng-container>
 
@@ -71,10 +71,7 @@
     </div>
   </epgu-cf-ui-constructor-screen-pad>
   <div
-    *ngIf="
-      !(currentAnswersService.isValid$ | async) &&
-      (data$ | async)?.attrs?.emptyFieldsErrorMsg
-    "
+    *ngIf="!(currentAnswersService.isValid$ | async) && (data$ | async)?.attrs?.emptyFieldsErrorMsg"
     class="empty-fields"
   >
     {{ (data$ | async)?.attrs?.emptyFieldsErrorMsg }}

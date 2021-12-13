@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { ActionService } from './action.service';
 import {
   ConfigService,
   DeviceDetectorService,
@@ -18,6 +17,16 @@ import {
   SessionStorageServiceStub,
   EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import {
+  ScreenTypes,
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+} from '@epgu/epgu-constructor-types';
+import { of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { ActionService } from './action.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerApiServiceStub } from '../../../form-player/services/form-player-api/form-player-api.service.stub';
 import { ScreenService } from '../../../screen/screen.service';
@@ -29,11 +38,9 @@ import { HtmlRemoverService } from '../../services/html-remover/html-remover.ser
 import { ORDER_TO_ORDER_SCENARIO_KEY, QUIZ_SCENARIO_KEY } from '../../constants/form-player';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
-import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
@@ -61,8 +68,6 @@ import {
   saveCacheAction,
 } from './action.mock';
 import { ActionToolsService } from './action-tools.service';
-import { of } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { HookTypes } from '../../../core/services/hook/hook.constants';
 
 describe('ActionService', () => {
@@ -194,7 +199,7 @@ describe('ActionService', () => {
   it('should call switchAction quiz', () => {
     const spySet = jest.spyOn(localStorageService, 'set');
     const spyRedirectTo = jest.spyOn(navigationService, 'redirectTo');
-    jest.spyOn(screenService, 'getStore').mockReturnValue({ applicantAnswers: {}});
+    jest.spyOn(screenService, 'getStore').mockReturnValue({ applicantAnswers: {} });
     actionService.switchAction(quizToOrderAction, null);
 
     const applicantAnswers = {
@@ -211,7 +216,7 @@ describe('ActionService', () => {
   it('should call switchAction orderToOrder', () => {
     const spySet = jest.spyOn(localStorageService, 'set');
     const spyRedirectTo = jest.spyOn(navigationService, 'redirectTo');
-    jest.spyOn(screenService, 'getStore').mockReturnValue({ applicantAnswers: {}});
+    jest.spyOn(screenService, 'getStore').mockReturnValue({ applicantAnswers: {} });
     actionService.switchAction(orderToOrderAction, null);
 
     const applicantAnswers = {
@@ -295,41 +300,41 @@ describe('ActionService', () => {
 
   describe('getComponentStateForNavigate()', () => {
     it('should return current value for custom screen', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
       jest.spyOn<any, string>(actionToolsService, 'isTimerComponent').mockReturnValue(false);
-      const expectedValue = { 123: { value: 'some value', visited: true }};
+      const expectedValue = { 123: { value: 'some value', visited: true } };
       currentAnswersService.state = expectedValue;
-      const value = actionToolsService['getComponentStateForNavigate'](nextAction, '123');
+      const value = actionToolsService.getComponentStateForNavigate(nextAction, '123');
       expect(value).toEqual(expectedValue);
     });
 
     it('should return current value for timer case', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       display.type = ScreenTypes.CUSTOM;
       screenService.display = display;
       jest.spyOn<any, string>(actionToolsService, 'isTimerComponent').mockReturnValue(true);
-      const expectedValue = { 123: { visited: true, value: nextAction.value }};
-      const value = actionToolsService['getComponentStateForNavigate'](nextAction, '123');
+      const expectedValue = { 123: { visited: true, value: nextAction.value } };
+      const value = actionToolsService.getComponentStateForNavigate(nextAction, '123');
       expect(value).toEqual(expectedValue);
     });
 
     it('should return current value for unique screen', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       screenService.display = display;
-      const expectedValue = { 123: { value: 'some value', visited: true }};
+      const expectedValue = { 123: { value: 'some value', visited: true } };
       currentAnswersService.state = 'some value';
-      const value = actionToolsService['getComponentStateForNavigate'](nextAction, '123');
+      const value = actionToolsService.getComponentStateForNavigate(nextAction, '123');
       expect(value).toEqual(expectedValue);
     });
 
     it('should return current value for unique screen with skipAction', () => {
-      const display = new FormPlayerServiceStub()._store.scenarioDto.display;
+      const { display } = new FormPlayerServiceStub()._store.scenarioDto;
       screenService.display = display;
-      const expectedValue = { 123: { value: '', visited: true }};
+      const expectedValue = { 123: { value: '', visited: true } };
       currentAnswersService.state = 'some value';
-      const value = actionToolsService['getComponentStateForNavigate'](skipAction, '123');
+      const value = actionToolsService.getComponentStateForNavigate(skipAction, '123');
       expect(value).toEqual(expectedValue);
     });
   });
@@ -349,7 +354,7 @@ describe('ActionService', () => {
   });
 
   describe('redirectToEdit()', () => {
-    const action = (action) => ({ ...profileEditAction, action });
+    const action = (actionParam) => ({ ...profileEditAction, action: actionParam });
 
     it('editChildData', () => {
       jest.spyOn(navigationService, 'redirectTo');
@@ -386,7 +391,7 @@ describe('ActionService', () => {
 
   describe('navigate with hooks', () => {
     it('should do navigate after hooks', () => {
-      const restCallObserver = of({ someComponent: { value: 'some data', visited: true }}).pipe(
+      const restCallObserver = of({ someComponent: { value: 'some data', visited: true } }).pipe(
         tap((data) => {
           screenService.logicAnswers = data;
         }),
@@ -424,7 +429,7 @@ describe('ActionService', () => {
         action: DTOActionAction.getNextStep,
         multipleAnswers: '[{"test": "test"}]',
       } as unknown) as ComponentActionDto;
-      const result = actionService['prepareActionMultipleAnswers'](action);
+      const result = actionService.prepareActionMultipleAnswers(action);
       expect(typeof result.multipleAnswers === 'object').toBe(true);
     });
     it('should return action.mulipleAnswers as is, if they passed non JSON-string', () => {
@@ -433,7 +438,7 @@ describe('ActionService', () => {
         action: DTOActionAction.getNextStep,
         multipleAnswers: [{ test: 'test' }],
       } as unknown) as ComponentActionDto;
-      const result = actionService['prepareActionMultipleAnswers'](action);
+      const result = actionService.prepareActionMultipleAnswers(action);
       expect(typeof result.multipleAnswers === 'object').toBe(true);
     });
   });

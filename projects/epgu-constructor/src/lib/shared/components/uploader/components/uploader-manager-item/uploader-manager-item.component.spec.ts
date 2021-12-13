@@ -3,14 +3,19 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';
 
+import {
+  ConfigService,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+import { FileSizePipe } from '@epgu/ui/pipes';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { UploaderManagerItemComponent } from './uploader-manager-item.component';
 import { BaseModule } from '../../../../base.module';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import {
   TerraUploadFileOptions,
   UploadedFile,
@@ -22,8 +27,6 @@ import {
   FileItemStatus,
   OperationType,
 } from '../../../file-upload/data';
-import { FileSizePipe } from '@epgu/ui/pipes';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {

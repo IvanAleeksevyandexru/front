@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TimeSlotStateService } from './time-slot-state.service';
-import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 import {
   DatesToolsService,
   DatesToolsServiceStub,
   ModalService,
   ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { TimeSlotStateService } from './time-slot-state.service';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 import { Slot } from '../../typings';
 
 const createMockSlot = (id: string, date: string) =>
@@ -95,10 +95,10 @@ describe('TimeSlotStateService', () => {
     it('should be progress', (done) => {
       service.progressStart();
       service.progressStart();
-      expect(service['progressCounter$$'].getValue()).toBe(2);
+      expect(service.progressCounter$$.getValue()).toBe(2);
       service.progressEnd();
       service.progressEnd();
-      expect(service['progressCounter$$'].getValue()).toBe(0);
+      expect(service.progressCounter$$.getValue()).toBe(0);
       service.progress$.subscribe((result) => {
         expect(result).toBeFalsy();
         done();

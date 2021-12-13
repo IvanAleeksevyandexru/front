@@ -13,14 +13,23 @@ import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 @Injectable()
 export class InitDataService implements ServiceEntity, FormPlayerContext {
   private _serviceId: string;
+
   private _orderId: number;
+
   private _targetId: string;
+
   private _serviceInfo: ServiceInfo;
+
   private _invited: boolean;
+
   private _canStartNew: boolean;
+
   private _initState: string;
+
   private _configId: string;
+
   private _gepsId: number;
+
   private _queryParams: QueryParams;
 
   constructor(private loggerService: LoggerService) {}

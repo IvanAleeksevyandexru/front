@@ -10,6 +10,7 @@ import {
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
+import { IDirectProblemSolution } from '@epgu/epgu-constructor-ui-kit/src/lib/base/components/yandex-map/yandex-map.interface';
 import {
   DictionaryItem,
   DictionaryResponseForYMap,
@@ -22,7 +23,6 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { IDirectProblemSolution } from '@epgu/epgu-constructor-ui-kit/src/lib/base/components/yandex-map/yandex-map.interface';
 import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { mockMapDictionary } from './mocks/mock-select-map-dictionary';
 import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
@@ -35,8 +35,7 @@ describe('SelectMapObjectService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, ForTestsOnlyModule],
-      providers: [
-      ],
+      providers: [],
     }).compileComponents();
   });
 
@@ -57,7 +56,7 @@ describe('SelectMapObjectService', () => {
   it('centeredPlaceMark should set object value with null coords', (done) => {
     jest.spyOn(selectMapObjectService, 'closeBalloon').mockReturnValue();
     selectMapObjectService.selectedValue.subscribe((value) => {
-      expect(value['title']).toBe('Участковая избирательная комиссия №3496');
+      expect(value.title).toBe('Участковая избирательная комиссия №3496');
       done();
     });
     selectMapObjectService.centeredPlaceMark(
@@ -71,18 +70,15 @@ describe('SelectMapObjectService', () => {
       const selected = ({ isSelected: true, center: [12, 15] } as unknown) as DictionaryYMapItem;
       const selected1 = ({ isSelected: true, center: [11, 11] } as unknown) as DictionaryYMapItem;
       const setBoundsSpy = jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'setBounds')
+        .spyOn(selectMapObjectService.yandexMapService, 'setBounds')
         .mockImplementation((...args) => null);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'getDistance')
+        .spyOn(selectMapObjectService.yandexMapService, 'getDistance')
         .mockReturnValueOnce(2)
         .mockReturnValueOnce(1);
       selectMapObjectService.filteredDictionaryItems = [selected, selected1];
       jest
-        .spyOn<any, any>(
-          selectMapObjectService['kindergartenSearchPanel'],
-          'getChildHomeCoordinates',
-        )
+        .spyOn<any, any>(selectMapObjectService.kindergartenSearchPanel, 'getChildHomeCoordinates')
         .mockImplementation((...args) => [10, 10]);
 
       selectMapObjectService.handleMultiSelectCentering();
@@ -97,18 +93,15 @@ describe('SelectMapObjectService', () => {
       const selected = ({ isSelected: true, center: [7, 4] } as unknown) as DictionaryYMapItem;
       const selected1 = ({ isSelected: true, center: [11, 11] } as unknown) as DictionaryYMapItem;
       const setBoundsSpy = jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'setBounds')
+        .spyOn(selectMapObjectService.yandexMapService, 'setBounds')
         .mockImplementation((...args) => null);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'getDistance')
+        .spyOn(selectMapObjectService.yandexMapService, 'getDistance')
         .mockReturnValueOnce(2)
         .mockReturnValueOnce(1);
       selectMapObjectService.filteredDictionaryItems = [selected, selected1];
       jest
-        .spyOn<any, any>(
-          selectMapObjectService['kindergartenSearchPanel'],
-          'getChildHomeCoordinates',
-        )
+        .spyOn<any, any>(selectMapObjectService.kindergartenSearchPanel, 'getChildHomeCoordinates')
         .mockImplementation((...args) => [10, 10]);
 
       selectMapObjectService.handleMultiSelectCentering();
@@ -122,18 +115,15 @@ describe('SelectMapObjectService', () => {
     it('should calculate bounds if there is kindergarten in 5km around', () => {
       const selected = ({ isSelected: false, center: [9, 9] } as unknown) as DictionaryYMapItem;
       const setBoundsSpy = jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'setBounds')
+        .spyOn(selectMapObjectService.yandexMapService, 'setBounds')
         .mockImplementation((...args) => null);
-      jest.spyOn(selectMapObjectService['yandexMapService'], 'getDistance').mockReturnValue(4999);
+      jest.spyOn(selectMapObjectService.yandexMapService, 'getDistance').mockReturnValue(4999);
       selectMapObjectService.filteredDictionaryItems = [selected];
       jest
-        .spyOn<any, any>(
-          selectMapObjectService['kindergartenSearchPanel'],
-          'getChildHomeCoordinates',
-        )
+        .spyOn<any, any>(selectMapObjectService.kindergartenSearchPanel, 'getChildHomeCoordinates')
         .mockImplementation((...args) => [10, 10]);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'solveDirectProblem')
+        .spyOn(selectMapObjectService.yandexMapService, 'solveDirectProblem')
         .mockReturnValue(({ endPoint: [15, 20] } as unknown) as IDirectProblemSolution);
 
       selectMapObjectService.handleMultiSelectCentering();
@@ -147,18 +137,15 @@ describe('SelectMapObjectService', () => {
     it('should calculate bounds if there is kindergarten in 5km around', () => {
       const selected = ({ isSelected: false, center: [9, 9] } as unknown) as DictionaryYMapItem;
       const setBoundsSpy = jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'setBounds')
+        .spyOn(selectMapObjectService.yandexMapService, 'setBounds')
         .mockImplementation((...args) => null);
-      jest.spyOn(selectMapObjectService['yandexMapService'], 'getDistance').mockReturnValue(4999);
+      jest.spyOn(selectMapObjectService.yandexMapService, 'getDistance').mockReturnValue(4999);
       selectMapObjectService.filteredDictionaryItems = [selected];
       jest
-        .spyOn<any, any>(
-          selectMapObjectService['kindergartenSearchPanel'],
-          'getChildHomeCoordinates',
-        )
+        .spyOn<any, any>(selectMapObjectService.kindergartenSearchPanel, 'getChildHomeCoordinates')
         .mockImplementation((...args) => [40, 60]);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'solveDirectProblem')
+        .spyOn(selectMapObjectService.yandexMapService, 'solveDirectProblem')
         .mockReturnValue(({ endPoint: [20, 80] } as unknown) as IDirectProblemSolution);
 
       selectMapObjectService.handleMultiSelectCentering();
@@ -176,20 +163,17 @@ describe('SelectMapObjectService', () => {
         center: [115, 112],
       } as unknown) as DictionaryYMapItem;
       const setBoundsSpy = jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'setBounds')
+        .spyOn(selectMapObjectService.yandexMapService, 'setBounds')
         .mockImplementation((...args) => null);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'getDistance')
+        .spyOn(selectMapObjectService.yandexMapService, 'getDistance')
         .mockReturnValueOnce(5001)
         .mockReturnValueOnce(5001)
         .mockReturnValueOnce(1)
         .mockReturnValueOnce(2);
       selectMapObjectService.filteredDictionaryItems = [selected, selected1];
       jest
-        .spyOn<any, any>(
-          selectMapObjectService['kindergartenSearchPanel'],
-          'getChildHomeCoordinates',
-        )
+        .spyOn<any, any>(selectMapObjectService.kindergartenSearchPanel, 'getChildHomeCoordinates')
         .mockImplementation((...args) => [10, 10]);
       selectMapObjectService.handleMultiSelectCentering();
 
@@ -201,20 +185,17 @@ describe('SelectMapObjectService', () => {
   });
 
   describe('searchMapObject()', () => {
-
-
     beforeEach(() => {
-    selectMapObjectService.componentAttrs = {} as unknown as SelectMapComponentAttrs;
-    selectMapObjectService.componentAttrs.attributeNameWithAddress = 'zags_address';
+      selectMapObjectService.componentAttrs = ({} as unknown) as SelectMapComponentAttrs;
+      selectMapObjectService.componentAttrs.attributeNameWithAddress = 'zags_address';
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'placeObjectsOnMap')
+        .spyOn(selectMapObjectService.yandexMapService, 'placeObjectsOnMap')
         .mockImplementation((...args) => null);
     });
 
-
     it('should search in dictionary Items when selected view is disabled', () => {
-      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
-      selectMapObjectService.dictionary.items = mockMapDictionary.items as unknown as DictionaryYMapItem[];
+      selectMapObjectService.dictionary = ({} as unknown) as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = (mockMapDictionary.items as unknown) as DictionaryYMapItem[];
 
       const res = selectMapObjectService.searchMapObject('');
 
@@ -222,8 +203,9 @@ describe('SelectMapObjectService', () => {
     });
 
     it('should search in selectedItems when selected view is enabled', () => {
-
-      selectMapObjectService.selectedViewItems$.next(mockMapDictionary.items as unknown as DictionaryYMapItem[]);
+      selectMapObjectService.selectedViewItems$.next(
+        (mockMapDictionary.items as unknown) as DictionaryYMapItem[],
+      );
       selectMapObjectService.isSelectedView.next(true);
 
       const res = selectMapObjectService.searchMapObject('');
@@ -232,9 +214,8 @@ describe('SelectMapObjectService', () => {
     });
 
     it('should set filtered items to search res if selected view is disabled', () => {
-
-      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
-      selectMapObjectService.dictionary.items = mockMapDictionary.items as unknown as DictionaryYMapItem[];
+      selectMapObjectService.dictionary = ({} as unknown) as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = (mockMapDictionary.items as unknown) as DictionaryYMapItem[];
 
       const res = selectMapObjectService.searchMapObject('');
 
@@ -242,35 +223,40 @@ describe('SelectMapObjectService', () => {
     });
 
     it('should search via title', () => {
+      selectMapObjectService.dictionary = ({} as unknown) as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = (mockMapDictionary.items as unknown) as DictionaryYMapItem[];
 
-      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
-      selectMapObjectService.dictionary.items = mockMapDictionary.items as unknown as DictionaryYMapItem[];
-
-      const res = selectMapObjectService.searchMapObject('4 мая 2019 г. Выездные площадки, Чертановский отдел ЗАГС Управления ЗАГС Москвы');
+      const res = selectMapObjectService.searchMapObject(
+        '4 мая 2019 г. Выездные площадки, Чертановский отдел ЗАГС Управления ЗАГС Москвы',
+      );
 
       expect(res.length).toBe(1);
     });
 
     it('should search via address attibute', () => {
+      selectMapObjectService.dictionary = ({} as unknown) as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = (mockMapDictionary.items as unknown) as DictionaryYMapItem[];
 
-      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
-      selectMapObjectService.dictionary.items = mockMapDictionary.items as unknown as DictionaryYMapItem[];
-
-      const res = selectMapObjectService.searchMapObject('Российская Федерация, г. Москва, наб. Нагатинская, д. 34');
+      const res = selectMapObjectService.searchMapObject(
+        'Российская Федерация, г. Москва, наб. Нагатинская, д. 34',
+      );
 
       expect(res.length).toBe(2);
     });
 
     it('should highlight selected feature if search result includes it', () => {
-      const testItem = { title: 'abc', center: [1, 2], attributeValues: {}};
-      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
-      selectMapObjectService.dictionary.items = [testItem, testItem] as unknown as DictionaryYMapItem[];
-      selectMapObjectService['yandexMapService'].selectedValue$.next([testItem, testItem]);
+      const testItem = { title: 'abc', center: [1, 2], attributeValues: {} };
+      selectMapObjectService.dictionary = ({} as unknown) as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = ([
+        testItem,
+        testItem,
+      ] as unknown) as DictionaryYMapItem[];
+      selectMapObjectService.yandexMapService.selectedValue$.next([testItem, testItem]);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'getObjectById')
+        .spyOn(selectMapObjectService.yandexMapService, 'getObjectById')
         .mockReturnValue({} as any);
       const spy = jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'markPointAsActive')
+        .spyOn(selectMapObjectService.yandexMapService, 'markPointAsActive')
         .mockReturnValue(null);
 
       selectMapObjectService.searchMapObject('abc');
@@ -279,40 +265,36 @@ describe('SelectMapObjectService', () => {
     });
 
     it('should not highlight anything if result does not include selected value', () => {
-      const testItem = { title: 'abc', center: [1, 2], attributeValues: {}};
-      selectMapObjectService.dictionary = {} as unknown as DictionaryResponseForYMap;
-      selectMapObjectService.dictionary.items = [testItem] as unknown as DictionaryYMapItem[];
-      selectMapObjectService['yandexMapService'].selectedValue$.next([{ title: 'aaa', center: [1, 2], attributeValues: {}}]);
+      const testItem = { title: 'abc', center: [1, 2], attributeValues: {} };
+      selectMapObjectService.dictionary = ({} as unknown) as DictionaryResponseForYMap;
+      selectMapObjectService.dictionary.items = ([testItem] as unknown) as DictionaryYMapItem[];
+      selectMapObjectService.yandexMapService.selectedValue$.next([
+        { title: 'aaa', center: [1, 2], attributeValues: {} },
+      ]);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'getObjectById')
+        .spyOn(selectMapObjectService.yandexMapService, 'getObjectById')
         .mockReturnValue({} as any);
-      const spy = jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'markPointAsActive');
+      const spy = jest.spyOn(selectMapObjectService.yandexMapService, 'markPointAsActive');
 
       selectMapObjectService.searchMapObject('abc');
 
       expect(spy).toHaveBeenCalledTimes(0);
     });
-
-
   });
 
   describe('handleKindergartenSelection()', () => {
     it('should reset selected view', () => {
       jest
-        .spyOn<any, any>(
-          selectMapObjectService['kindergartenSearchPanel'],
-          'getChildHomeCoordinates',
-        )
+        .spyOn<any, any>(selectMapObjectService.kindergartenSearchPanel, 'getChildHomeCoordinates')
         .mockImplementation((...args) => [10, 10]);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'placeObjectsOnMap')
+        .spyOn(selectMapObjectService.yandexMapService, 'placeObjectsOnMap')
         .mockImplementation((...args) => null);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'createPlacemark')
+        .spyOn(selectMapObjectService.yandexMapService, 'createPlacemark')
         .mockImplementation((...args) => null);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'addObjectsOnMap')
+        .spyOn(selectMapObjectService.yandexMapService, 'addObjectsOnMap')
         .mockImplementation((...args) => null);
 
       selectMapObjectService.filteredDictionaryItems = [];
@@ -324,19 +306,16 @@ describe('SelectMapObjectService', () => {
 
     it('should enable selected view', () => {
       jest
-        .spyOn<any, any>(
-          selectMapObjectService['kindergartenSearchPanel'],
-          'getChildHomeCoordinates',
-        )
+        .spyOn<any, any>(selectMapObjectService.kindergartenSearchPanel, 'getChildHomeCoordinates')
         .mockImplementation((...args) => [10, 10]);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'placeObjectsOnMap')
+        .spyOn(selectMapObjectService.yandexMapService, 'placeObjectsOnMap')
         .mockImplementation((...args) => null);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'createPlacemark')
+        .spyOn(selectMapObjectService.yandexMapService, 'createPlacemark')
         .mockImplementation((...args) => null);
       jest
-        .spyOn(selectMapObjectService['yandexMapService'], 'addObjectsOnMap')
+        .spyOn(selectMapObjectService.yandexMapService, 'addObjectsOnMap')
         .mockImplementation((...args) => null);
       const testItems = ([
         { isSelected: true, expanded: false },

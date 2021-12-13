@@ -3,25 +3,32 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockDirective } from 'ng-mocks';
+import {
+  ScreenContainerComponent,
+  UnsubscribeService,
+  ScreenPadComponent,
+  LoggerService,
+  LoggerServiceStub,
+  ModalService,
+  ModalServiceStub,
+  EventBusService,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { DefaultUniqueScreenWrapperComponent } from './default-unique-screen-wrapper.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { ScreenContainerComponent, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ScreenPadComponent } from '@epgu/epgu-constructor-ui-kit';
+
 import { UserInfoLoaderModule } from '../../../../shared/components/user-info-loader/user-info-loader.module';
 import { AnswerButtonComponent } from '../../../../shared/components/answer-button/answer-button.component';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { BaseModule } from '../../../../shared/base.module';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 

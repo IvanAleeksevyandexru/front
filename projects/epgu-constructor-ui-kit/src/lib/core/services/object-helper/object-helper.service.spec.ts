@@ -39,8 +39,8 @@ describe('ObjectHelperService', () => {
       ).toEqual({ total: 4 });
     });
 
-    it('shouldn\'t filter fields in all nested objects', () => {
-      expect(service.filterIncorrectObjectFields({ nestedObject: { property: null }})).toEqual({
+    it("shouldn't filter fields in all nested objects", () => {
+      expect(service.filterIncorrectObjectFields({ nestedObject: { property: null } })).toEqual({
         nestedObject: { property: null },
       });
     });

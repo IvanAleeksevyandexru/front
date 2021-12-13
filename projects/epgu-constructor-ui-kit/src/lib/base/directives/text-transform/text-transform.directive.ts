@@ -8,12 +8,15 @@ import { TextTransformService } from '../../../core/services/text-transform/text
 })
 export class TextTransformDirective {
   @Input() textTransformType: TextTransform;
+
   private transforms = {
     [TextTransform.ALL]: this.firstLetterOfEachWordToUpperCase,
     [TextTransform.FIRST]: this.firstLetterToUpperCase,
     [TextTransform.UPPERCASE]: this.allToUpperCase,
   };
+
   private prevValue: string;
+
   private prevSelection: [number, number];
 
   constructor(private control: NgControl, private textTransform: TextTransformService) {}

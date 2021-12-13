@@ -13,10 +13,11 @@ import { PrepareComponentsService } from '@epgu/epgu-constructor/src/lib/shared/
 import { RefRelationService } from '@epgu/epgu-constructor/src/lib/shared/services/ref-relation/ref-relation.service';
 import { InitDataService } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service';
 import { InitDataServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
-import { TracingService } from '../../services/tracing/tracing.service';
-import { TracingHttpInterceptor } from './tracing.interceptor';
 import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '@epgu/epgu-constructor/src/lib/shared/services/date-restrictions/date-restrictions.service';
+import { MockProvider } from 'ng-mocks';
+import { TracingService } from '../../services/tracing/tracing.service';
+import { TracingHttpInterceptor } from './tracing.interceptor';
 import { ConfigService } from '../../services/config/config.service';
 import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
@@ -30,7 +31,6 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 import { TRACE_ALLOWED_REMOTE_SERVICES } from '../../services/tracing/tracing.token';
 import { ObjectHelperService } from '../../services/object-helper/object-helper.service';
-import { MockProvider } from 'ng-mocks';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -40,8 +40,8 @@ describe('TracingHttpInterceptor', () => {
   let tracingService: TracingService;
   let httpMock: HttpTestingController;
 
-  let serviceId = 'local';
-  let orderId = 12345;
+  const serviceId = 'local';
+  const orderId = 12345;
   const someUrl1 = '/some/url/1';
   const someUrl2 = '/some/url/2';
 

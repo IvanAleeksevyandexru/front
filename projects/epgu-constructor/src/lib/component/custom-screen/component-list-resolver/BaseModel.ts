@@ -1,20 +1,31 @@
-import { CustomComponent, CustomScreenComponentTypes } from '../components-list.types';
 import { ILinkedValue, KeyValueMap } from '@epgu/epgu-constructor-types';
-import { ScreenStore } from '../../../screen/screen.types';
 import { AbstractControl } from '@angular/forms';
+import { CustomComponent, CustomScreenComponentTypes } from '../components-list.types';
+import { ScreenStore } from '../../../screen/screen.types';
 
 export default abstract class BaseModel<T> {
   readonly id: string;
+
   readonly type: CustomScreenComponentTypes;
+
   readonly label: string;
+
   readonly attrs: T;
+
   readonly required: boolean;
+
   readonly visited: boolean;
+
   readonly presetValue?: string;
+
   readonly valueFromCache?: boolean;
+
   readonly suggestionId?: string;
+
   readonly arguments?: KeyValueMap;
+
   readonly linkedValues?: ILinkedValue[];
+
   value: string;
 
   constructor(componentDto: CustomComponent) {
@@ -40,5 +51,4 @@ export default abstract class BaseModel<T> {
   }
 
   abstract getAttrs(attrs: unknown): T;
-
 }

@@ -29,8 +29,13 @@ import {
   HttpCancelService,
   ObjectHelperService,
   JsonHelperService,
+  DownloadService,
+  HealthService,
+  HealthServiceStub,
+  DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
 
+import { DecimalPipe } from '@angular/common';
 import { AddressHelperService } from '../../shared/services/address-helper/address-helper.service';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { ComponentItemComponent } from './components/component-item/component-item.component';
@@ -47,11 +52,9 @@ import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { DateRangeService } from '../../shared/services/date-range/date-range.service';
 import { DateRefService } from '../../core/services/date-ref/date-ref.service';
 import { DateRestrictionsService } from '../../shared/services/date-restrictions/date-restrictions.service';
-import { DecimalPipe } from '@angular/common';
 import { DictionaryToolsService } from '../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '../../shared/services/dictionary/dictionary-tools.service.stub';
-import { DownloadService, HealthService, HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+
 import { DictionaryApiService } from '../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../shared/services/dictionary/dictionary-api.service.stub';
 import { DocInputComponent } from './components/doc-input/doc-input.component';
@@ -258,7 +261,6 @@ describe('ComponentsListComponent', () => {
     });
   });
 
-
   describe('subscribeOnFormStatusChanging()', () => {
     it('should emit form status changes when has observers', () => {
       const spy = jest.spyOn(component.emitFormStatus, 'emit');
@@ -271,7 +273,7 @@ describe('ComponentsListComponent', () => {
         // eslint-disable-next-line no-empty-function
         next(value: any): void {},
       });
-      component['subscribeOnFormStatusChanging']();
+      component.subscribeOnFormStatusChanging();
 
       expect(spy).toHaveBeenCalled();
     });
@@ -279,7 +281,7 @@ describe('ComponentsListComponent', () => {
     it('should not emit form status changes when has not observers', () => {
       const spy = jest.spyOn(component.emitFormStatus, 'emit');
 
-      component['subscribeOnFormStatusChanging']();
+      component.subscribeOnFormStatusChanging();
 
       expect(spy).not.toHaveBeenCalled();
     });
@@ -287,7 +289,7 @@ describe('ComponentsListComponent', () => {
     it('should not listen for form status changes when has not observers', () => {
       const spy = jest.spyOn(component.emitFormStatus, 'emit');
 
-      component['subscribeOnFormStatusChanging']();
+      component.subscribeOnFormStatusChanging();
 
       expect(spy).not.toHaveBeenCalled();
     });
@@ -298,7 +300,7 @@ describe('ComponentsListComponent', () => {
       const nextSpy = jest.spyOn(unsubscribeService.ngUnsubscribe$, 'next');
       const completeSpy = jest.spyOn(unsubscribeService.ngUnsubscribe$, 'complete');
 
-      component['unsubscribe']();
+      component.unsubscribe();
 
       expect(nextSpy).toHaveBeenCalledWith();
       expect(completeSpy).toHaveBeenCalledWith();

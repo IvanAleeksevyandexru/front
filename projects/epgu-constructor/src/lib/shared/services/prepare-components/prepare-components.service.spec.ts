@@ -16,6 +16,7 @@ import {
   ComponentDto,
   CustomComponentRefRelation,
 } from '@epgu/epgu-constructor-types';
+import { MockProvider } from 'ng-mocks';
 import { PrepareComponentsService } from './prepare-components.service';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers } from '../../../screen/screen.types';
@@ -27,7 +28,6 @@ import { CustomComponentRef } from '../../../component/custom-screen/components-
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
-import { MockProvider } from 'ng-mocks';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
@@ -63,8 +63,8 @@ describe('PrepareComponentsService', () => {
   beforeEach(() => {
     service = TestBed.inject(PrepareComponentsService);
     components = [
-      { id: 'a1', type: 'HtmlString', attrs: {}},
-      { id: 'a2', type: 'HtmlString', attrs: {}},
+      { id: 'a1', type: 'HtmlString', attrs: {} },
+      { id: 'a2', type: 'HtmlString', attrs: {} },
     ];
     cachedAnswers = {};
   });
@@ -78,24 +78,25 @@ describe('PrepareComponentsService', () => {
 
     it('should call hideComponents with component returned from loadValueFromCachedAnswer method', () => {
       const loadedValueComponents = [
-        { id: 'a1', type: 'HtmlString', attrs: {}},
+        { id: 'a1', type: 'HtmlString', attrs: {} },
         { id: 'a2', type: 'HtmlString', attrs: {}, value: '' },
       ];
-      jest.spyOn<any, string>(service, 'loadValueFromCachedAnswer').mockReturnValue(loadedValueComponents);
+      jest
+        .spyOn<any, string>(service, 'loadValueFromCachedAnswer')
+        .mockReturnValue(loadedValueComponents);
       const spy = jest.spyOn<any, string>(service, 'handleRelatedRelComponents');
       service.prepareComponents(components, cachedAnswers);
-      expect(spy).toBeCalledWith(
-        loadedValueComponents,
-        cachedAnswers,
-      );
+      expect(spy).toBeCalledWith(loadedValueComponents, cachedAnswers);
     });
 
     it('should return components that was returned from handleRelatedRelComponents method', () => {
       const relatedRelComponents = [
-        { id: 'a1', type: 'HtmlString', attrs: { hidden: true }},
+        { id: 'a1', type: 'HtmlString', attrs: { hidden: true } },
         { id: 'a2', type: 'HtmlString', attrs: {}, value: '' },
       ];
-      jest.spyOn<any, string>(service, 'handleRelatedRelComponents').mockReturnValue(relatedRelComponents);
+      jest
+        .spyOn<any, string>(service, 'handleRelatedRelComponents')
+        .mockReturnValue(relatedRelComponents);
       const result = service.prepareComponents(components, cachedAnswers);
       expect(result).toBe(relatedRelComponents);
     });
@@ -103,7 +104,7 @@ describe('PrepareComponentsService', () => {
 
   describe('loadValueFromCachedAnswer()', () => {
     it('should be return Array<ScreenStoreComponentDtoI>', () => {
-      const cachedAnswers: CachedAnswers = {
+      const testCachedAnswers: CachedAnswers = {
         ai4: {
           visited: true,
           value: 'Ываыавыва',
@@ -132,15 +133,15 @@ describe('PrepareComponentsService', () => {
         valueFromCache: true,
       };
 
-      const components = { ...componentMock, value: 'Ываыавыва', presetValue: '' };
-      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
-      expect(componentDtoIS).toEqual([components]);
+      const testComponents = { ...componentMock, value: 'Ываыавыва', presetValue: '' };
+      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], testCachedAnswers);
+      expect(componentDtoIS).toEqual([testComponents]);
     });
   });
 
   describe('loadValueFromCachedAnswer() for RepeatableFields', () => {
     it('should be return Array<ScreenStoreComponentDtoI>', () => {
-      const cachedAnswers: CachedAnswers = {
+      const testCachedAnswers: CachedAnswers = {
         ai4: {
           visited: true,
           value:
@@ -201,12 +202,12 @@ describe('PrepareComponentsService', () => {
         ],
       ];
 
-      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
+      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], testCachedAnswers);
       expect(componentDtoIS).toEqual([repeatableComponents]);
     });
 
     it('should be return Array<ScreenStoreComponentDtoI> if cache empty', () => {
-      const cachedAnswers: CachedAnswers = {};
+      const testCachedAnswers: CachedAnswers = {};
       const componentMock: ComponentDto = {
         id: 'ai4',
         type: 'RepeatableFields',
@@ -243,17 +244,17 @@ describe('PrepareComponentsService', () => {
         ],
       ];
 
-      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
+      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], testCachedAnswers);
       expect(componentDtoIS).toEqual([repeatableComponents]);
     });
   });
 
   describe('loadValueFromCachedAnswer() for RepeatableFields from localStorage', () => {
     it('should return local value if cacheRepeatableFieldsAnswersLocally is TRUE', () => {
-      const cachedAnswers = {
+      const testCachedAnswers = {
         ai4: [{ rf1: 'Ываыавыва' }],
       };
-      localStorage.setItem('cachedAnswers', JSON.stringify(cachedAnswers));
+      localStorage.setItem('cachedAnswers', JSON.stringify(testCachedAnswers));
 
       const componentMock: ComponentDto = {
         id: 'ai4',
@@ -315,16 +316,16 @@ describe('PrepareComponentsService', () => {
         valueFromCache: false,
       };
 
-      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], {});
+      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], {});
       expect(componentDtoIS).toEqual([repeatableComponents]);
       localStorage.removeItem('cachedAnswers');
     });
 
     it('should not return local value if cacheRepeatableFieldsAnswersLocally is FALSE', () => {
-      const cachedAnswers = {
+      const testCachedAnswers = {
         ai4: [{ rf1: 'Ываыавыва' }],
       };
-      localStorage.setItem('cachedAnswers', JSON.stringify(cachedAnswers));
+      localStorage.setItem('cachedAnswers', JSON.stringify(testCachedAnswers));
 
       const componentMock: ComponentDto = {
         id: 'ai4',
@@ -386,14 +387,14 @@ describe('PrepareComponentsService', () => {
         valueFromCache: false,
       };
 
-      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], {});
+      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], {});
       expect(componentDtoIS).toEqual([repeatableComponents]);
       localStorage.removeItem('cachedAnswers');
     });
   });
 
   describe('loadValueFromCachedAnswer() for refDate', () => {
-    const cachedAnswers: CachedAnswers = {
+    const testCachedAnswers: CachedAnswers = {
       pd1: {
         visited: true,
         disabled: false,
@@ -438,7 +439,7 @@ describe('PrepareComponentsService', () => {
       component.attrs.maxDate = '15.12.2020';
       component.attrs.minDate = '12.12.2020';
 
-      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
+      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], testCachedAnswers);
       expect(componentDtoIS).toEqual([component]);
     });
 
@@ -469,7 +470,7 @@ describe('PrepareComponentsService', () => {
       component.attrs.fields.date.attrs.maxDate = '15.12.2020';
       component.attrs.fields.date.attrs.minDate = '12.12.2020';
 
-      const componentDtoIS = service['loadValueFromCachedAnswer']([componentMock], cachedAnswers);
+      const componentDtoIS = service.loadValueFromCachedAnswer([componentMock], testCachedAnswers);
       expect(componentDtoIS).toEqual([component]);
     });
   });
@@ -504,13 +505,13 @@ describe('PrepareComponentsService', () => {
         },
       };
 
-      const actualAttrs = service['putValueToFilters']('testVal', 'Some value', attrs);
+      const actualAttrs = service.putValueToFilters('testVal', 'Some value', attrs);
 
       expect(actualAttrs).toEqual(expectedAttrs);
     });
 
     it('should set filter in attrs', () => {
-      const cachedAnswers = ({
+      const testCachedAnswers = ({
         pd1: { value: '{"storedValues":{"middleName": "Middle"} }' },
       } as any) as CachedAnswers;
 
@@ -548,7 +549,7 @@ describe('PrepareComponentsService', () => {
         },
       };
 
-      const actualAttrs = service['setAttrsFilters'](attrs, cachedAnswers);
+      const actualAttrs = service.setAttrsFilters(attrs, testCachedAnswers);
 
       expect(actualAttrs).toEqual(expectedAttrs);
     });
@@ -571,7 +572,7 @@ describe('PrepareComponentsService', () => {
     };
 
     it('should return components that passed in to params', () => {
-      const result = service['handleRelatedRelComponents'](components, cachedAnswers);
+      const result = service.handleRelatedRelComponents(components, cachedAnswers);
       expect(result).toEqual(components);
     });
 
@@ -582,7 +583,7 @@ describe('PrepareComponentsService', () => {
         type: 'HtmlString',
         attrs: { ref: [relation], hidden: true },
       });
-      const result = service['handleRelatedRelComponents'](components, cachedAnswers);
+      const result = service.handleRelatedRelComponents(components, cachedAnswers);
       components[0].attrs.hidden = true;
       expect(result).toEqual(components);
     });
@@ -590,26 +591,21 @@ describe('PrepareComponentsService', () => {
     it('should call once handleRelatedRelComponents', () => {
       prepareRef();
       const spy = jest.spyOn<any, string>(service, 'handleCustomComponentRef');
-      service['handleRelatedRelComponents'](components, cachedAnswers);
+      service.handleRelatedRelComponents(components, cachedAnswers);
       expect(spy).toBeCalledTimes(1);
     });
 
-    it('shouldn\'t call handleRelatedRelComponents', () => {
+    it("shouldn't call handleRelatedRelComponents", () => {
       const spy = jest.spyOn<any, string>(service, 'handleCustomComponentRef');
-      service['handleRelatedRelComponents'](components, cachedAnswers);
+      service.handleRelatedRelComponents(components, cachedAnswers);
       expect(spy).toBeCalledTimes(0);
     });
 
     it('should call handleRelatedRelComponents with params', () => {
       prepareRef();
       const spy = jest.spyOn<any, string>(service, 'handleCustomComponentRef');
-      service['handleRelatedRelComponents'](components, cachedAnswers);
-      expect(spy).toBeCalledWith(
-        components[0],
-        components[0].attrs.ref,
-        components,
-        cachedAnswers,
-      );
+      service.handleRelatedRelComponents(components, cachedAnswers);
+      expect(spy).toBeCalledWith(components[0], components[0].attrs.ref, components, cachedAnswers);
     });
   });
 
@@ -631,7 +627,7 @@ describe('PrepareComponentsService', () => {
 
     it('should return component that passed in to params', () => {
       components[0].attrs.ref = [];
-      const result = service['handleCustomComponentRef'](
+      const result = service.handleCustomComponentRef(
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
@@ -642,7 +638,7 @@ describe('PrepareComponentsService', () => {
 
     it('should return component with changed component with hidden', () => {
       prepareRef();
-      const result = service['handleCustomComponentRef'](
+      const result = service.handleCustomComponentRef(
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
@@ -655,7 +651,7 @@ describe('PrepareComponentsService', () => {
     it('should call handleDisplayOff with params', () => {
       prepareRef();
       const spy = jest.spyOn<any, string>(service, 'handleDisplayOff');
-      service['handleCustomComponentRef'](
+      service.handleCustomComponentRef(
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
@@ -668,10 +664,10 @@ describe('PrepareComponentsService', () => {
       );
     });
 
-    it('shouldn\'t call handleDisplayOff', () => {
+    it("shouldn't call handleDisplayOff", () => {
       const spy = jest.spyOn<any, string>(service, 'handleDisplayOff');
       components[0].attrs.ref = [];
-      service['handleCustomComponentRef'](
+      service.handleCustomComponentRef(
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
@@ -684,7 +680,7 @@ describe('PrepareComponentsService', () => {
       prepareRef();
       const spy = jest.spyOn<any, string>(service, 'handleDisplayOn');
       components[0].attrs.ref[0].relation = CustomComponentRefRelation.displayOn;
-      service['handleCustomComponentRef'](
+      service.handleCustomComponentRef(
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
@@ -697,10 +693,10 @@ describe('PrepareComponentsService', () => {
       );
     });
 
-    it('shouldn\'t call handleDisplayOn', () => {
+    it("shouldn't call handleDisplayOn", () => {
       const spy = jest.spyOn<any, string>(service, 'handleDisplayOn');
       components[0].attrs.ref = [];
-      service['handleCustomComponentRef'](
+      service.handleCustomComponentRef(
         components[0],
         components[0].attrs.ref as CustomComponentRef[],
         components,
@@ -726,16 +722,16 @@ describe('PrepareComponentsService', () => {
       };
     };
 
-    it('shouldn\'t set hidden if value in cachedAnswers not equal', () => {
+    it("shouldn't set hidden if value in cachedAnswers not equal", () => {
       prepareRef();
       cachedAnswers.s2.value = 'v42';
-      service['handleDisplayOff'](components[0], relation, cachedAnswers.s2.value);
+      service.handleDisplayOff(components[0], relation, cachedAnswers.s2.value);
       expect(components[0].attrs.hidden).toBeFalsy();
     });
 
     it('should set hidden if value in cachedAnswers is equal', () => {
       prepareRef();
-      service['handleDisplayOff'](components[0], relation, cachedAnswers.s2.value);
+      service.handleDisplayOff(components[0], relation, cachedAnswers.s2.value);
       expect(components[0].attrs.hidden).toBeTruthy();
     });
   });

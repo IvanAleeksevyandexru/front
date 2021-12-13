@@ -36,10 +36,13 @@ export interface EquipmentChoiceUpdateEvent {
 
 export class EquipmentChoiceRequestResult {
   categories: { [key: string]: EquipmentChoiceCategory } = {};
+
   attrs?: { [key: string]: unknown };
 
   constructor(data: object) {
-    data && this.deserialize(data);
+    if (data) {
+      this.deserialize(data);
+    }
   }
 
   private deserialize(data: object): void {
@@ -87,7 +90,9 @@ export class EquipmentChoiceRequestResult {
 
 export class EquipmentChoiceFormValue {
   constructor(data: string) {
-    data && this.deserialize(data);
+    if (data) {
+      this.deserialize(data);
+    }
   }
 
   /**
@@ -117,10 +122,13 @@ interface EquipmentChoiceSaveValueCategory extends MultipleSelectedItems {
 
 export class EquipmentChoiceSaveValue {
   categories: EquipmentChoiceSaveValueCategory[] = [];
+
   amount: number;
 
   constructor(data: EquipmentFormValue) {
-    data && this.serialize(data);
+    if (data) {
+      this.serialize(data);
+    }
   }
 
   /**

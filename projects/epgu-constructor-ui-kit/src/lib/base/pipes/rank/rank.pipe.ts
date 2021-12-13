@@ -9,8 +9,7 @@ export class RankPipe implements PipeTransform {
         return formatNumber(+substring, locale, digitsInfo);
       };
       return value.replace(/\d{4,}/g, replacer);
-    } else {
-      return value;
     }
+    return value;
   }
 }

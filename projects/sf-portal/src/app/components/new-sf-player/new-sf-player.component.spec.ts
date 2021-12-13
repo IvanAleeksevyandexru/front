@@ -8,10 +8,9 @@ xdescribe('NewSfPlayerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewSfPlayerComponent ],
-      providers: [ ActivatedRoute ],
-    })
-    .compileComponents();
+      declarations: [NewSfPlayerComponent],
+      providers: [ActivatedRoute],
+    }).compileComponents();
   });
 
   beforeEach(() => {

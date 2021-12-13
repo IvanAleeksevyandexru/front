@@ -513,6 +513,7 @@ export interface ComponentValidationDto {
   dataType: string;
   condition: string;
   errorMsg: string;
+  forChild?: string;
 }
 
 export interface ComponentRefDto {

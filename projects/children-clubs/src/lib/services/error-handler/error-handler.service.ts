@@ -38,7 +38,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       this.navigationService.toDisplay('projectList');
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
-        result === 'login' ? this.locationService.reload() : this.locationService.href('/');
+        if (result === 'login') {
+          this.locationService.reload();
+        } else {
+          this.locationService.href('/');
+        }
       });
     } else {
       this.showModal(COMMON_ERROR_MODAL_PARAMS(traceId), traceId).then();

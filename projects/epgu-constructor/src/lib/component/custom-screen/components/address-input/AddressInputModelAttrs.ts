@@ -3,9 +3,13 @@ import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class AddressInputModelAttrs extends GenericAttrs {
   readonly hideHouseCheckbox: boolean;
+
   readonly hideApartmentCheckbox: boolean;
+
   readonly selectHouseCheckbox: boolean;
+
   readonly selectApartmentCheckbox: boolean;
+
   readonly hideLevels: string[];
 
   constructor(attrs: CustomComponentAttr) {

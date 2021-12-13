@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
 import {
   ScreenPadComponent,
   HelperTextComponent,
@@ -10,39 +9,50 @@ import {
   BaseUiModule,
   ConstructorCheckboxModule,
   IDay,
+  ScreenContainerComponent,
+  ConfigService,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub,
+  LoggerService,
+  LoggerServiceStub,
+  DatesToolsService,
+  DownloadService,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { TimeSlotsComponent } from './time-slots.component';
 import { MockComponents, MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
-import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
+import { cloneDeep } from 'lodash';
+import { of, throwError } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
+import { ListItem } from '@epgu/ui/models/dropdown';
+import { FormsModule } from '@angular/forms';
+import { IBookingErrorHandling } from '@epgu/epgu-constructor-types';
+import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
+import { TimeSlotsComponent } from './time-slots.component';
+
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { TimeSlotsConstants } from './time-slots.constants';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { mockScreenDivorceStore } from './mocks/mock-screen-divorce-store';
 import { ScreenStore } from '../../../../screen/screen.types';
-import { cloneDeep } from 'lodash';
 import { Smev3TimeSlotsRestServiceStub } from './stubs/smev3-time-slots-rest.service.stub';
-import { of, throwError } from 'rxjs';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+
 import { TimeSlotsService } from './time-slots.service';
-import { DownloadService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { EMPTY_SLOT, mockEmptySlots, mockSlots } from './mocks/mock-time-slots';
+
+import { EMPTY_SLOT, mockEmptySlots, mockSlots, slotsError } from './mocks/mock-time-slots';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { SmevSlotsResponseInterface } from './time-slots.types';
-import { slotsError } from './mocks/mock-time-slots';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 import { mockWeeks } from './mocks/mock-weeks';
-import { HttpClient } from '@angular/common/http';
 import { mockScreenMvdStore } from './mocks/mock-screen-mvd-store';
 import { mockScreenDoctorStore } from './mocks/mock-screen-doctor-store';
 import { mockSlotsDoctor202106 } from './mocks/mock-time-slots_doctors';
@@ -51,15 +61,12 @@ import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.ser
 import { FormPlayerServiceStub } from '../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../form-player/services/form-player/form-player.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { ListItem } from '@epgu/ui/models/dropdown';
-import { FormsModule } from '@angular/forms';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
 import {
   ITEMS_FAILURE,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
 } from '../../../../core/services/error-handler/error-handler';
-import { IBookingErrorHandling } from '@epgu/epgu-constructor-types';
 
 describe('TimeSlotsComponent', () => {
   let component: TimeSlotsComponent;
@@ -142,9 +149,8 @@ describe('TimeSlotsComponent', () => {
     jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
       if (url === '/api/service/actions/currentDateTime') {
         return of('2021-01-01T00:00:00.000Z');
-      } else {
-        return httpClient.get(url, options);
       }
+      return httpClient.get(url, options);
     });
   });
 
@@ -167,7 +173,6 @@ describe('TimeSlotsComponent', () => {
     const selectDateSpy = jest.spyOn<any, any>(component, 'selectDate');
     const chooseTimeSlotSpy = jest.spyOn<any, any>(component, 'chooseTimeSlot');
 
-
     component.clickSubmit();
 
     expect(clearDateSelectionSpy).toHaveBeenCalled();
@@ -177,7 +182,7 @@ describe('TimeSlotsComponent', () => {
 
   it('set bookingErrorHandlingParams as empty array if there in no bookingErrorHandlingParams in component attrs ', () => {
     component.ngOnInit();
-    expect(component['bookingErrorHandlingParams']).toEqual([]);
+    expect(component.bookingErrorHandlingParams).toEqual([]);
   });
 
   it('setting bookingErrorHandlingParams ', () => {
@@ -191,7 +196,7 @@ describe('TimeSlotsComponent', () => {
 
     component.ngOnInit();
 
-    expect(component['bookingErrorHandlingParams']).toEqual(mockBookingErrorHandling);
+    expect(component.bookingErrorHandlingParams).toEqual(mockBookingErrorHandling);
   });
 
   it('should show loader while slots loading', () => {
@@ -226,13 +231,13 @@ describe('TimeSlotsComponent', () => {
       slotTime: new Date('2021-03-20T10:00:00.000Z'),
       timezone: '00:00Z',
     };
-    component['setBookedTimeStr'](slot);
+    component.setBookedTimeStr(slot);
     expect(component.chosenTimeStr).toBe('20 марта 2021 года в 10:00, суббота');
   });
 
   it('cachedAnswer is not empty', () => {
     fixture.detectChanges();
-    const cachedAnswer = component['cachedAnswer'];
+    const { cachedAnswer } = component;
     expect(cachedAnswer?.department?.value).toBe('R7700028');
   });
 
@@ -272,10 +277,10 @@ describe('TimeSlotsComponent', () => {
     expect(currentAnswersService.state).toEqual(null);
   });
 
-  it('checkDateRestrictions with mock\'s restrictions', () => {
+  it("checkDateRestrictions with mock's restrictions", () => {
     component.today = new Date('2020-12-31T21:00:00.000Z');
 
-    const checkDateRestrictions = component['checkDateRestrictions'].bind(component);
+    const checkDateRestrictions = component.checkDateRestrictions.bind(component);
     let date = new Date('2020-01-01T10:00:00.000Z');
     let check = checkDateRestrictions(date);
 
@@ -297,7 +302,7 @@ describe('TimeSlotsComponent', () => {
   it('calcing of isBookedDepartment as true', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
-    let isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
+    const { isBookedDepartment } = component.timeSlotsService;
     expect(isBookedDepartment).toBeTruthy();
   });
 
@@ -308,7 +313,7 @@ describe('TimeSlotsComponent', () => {
     compValue.department = JSON.stringify(department);
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
-    let isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
+    const { isBookedDepartment } = component.timeSlotsService;
     expect(isBookedDepartment).toBeFalsy();
   });
 
@@ -320,7 +325,7 @@ describe('TimeSlotsComponent', () => {
     compValue.department = JSON.stringify(department);
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
-    let isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
+    const { isBookedDepartment } = component.timeSlotsService;
     expect(isBookedDepartment).toBeFalsy();
   });
 
@@ -330,22 +335,22 @@ describe('TimeSlotsComponent', () => {
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
     await fixture.whenStable();
-    const oldBookid = component['timeSlotsService'].bookId;
-    component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
-    const newBookid = component['timeSlotsService'].bookId;
+    const oldBookid = component.timeSlotsService.bookId;
+    component.timeSlotsService.getBookRequest(EMPTY_SLOT);
+    const newBookid = component.timeSlotsService.bookId;
     expect(oldBookid).not.toMatch(newBookid);
   });
 
   it('not generate new uuid in case of not waitingTimeExpired', async () => {
     const compValue = JSON.parse(screenService.component.value);
     const department = JSON.parse(compValue.department);
-    let isBookedDepartment = component['timeSlotsService']?.isBookedDepartment;
+    let isBookedDepartment = component.timeSlotsService?.isBookedDepartment;
     fixture.detectChanges();
     await fixture.whenStable();
-    isBookedDepartment = component['timeSlotsService'].isBookedDepartment;
-    const oldBookid = component['timeSlotsService'].bookId;
-    component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
-    const newBookid = component['timeSlotsService'].bookId;
+    isBookedDepartment = component.timeSlotsService.isBookedDepartment;
+    const oldBookid = component.timeSlotsService.bookId;
+    component.timeSlotsService.getBookRequest(EMPTY_SLOT);
+    const newBookid = component.timeSlotsService.bookId;
     expect(oldBookid).toMatch(newBookid);
   });
 
@@ -356,8 +361,8 @@ describe('TimeSlotsComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     // @ts-ignore
-    const cancelRequestSpy = jest.spyOn(component['timeSlotsService'], 'cancelSlot');
-    component['timeSlotsService']['checkBooking'](EMPTY_SLOT);
+    const cancelRequestSpy = jest.spyOn(component.timeSlotsService, 'cancelSlot');
+    component.timeSlotsService.checkBooking(EMPTY_SLOT);
     expect(cancelRequestSpy).toBeCalledTimes(1);
   });
 
@@ -365,9 +370,9 @@ describe('TimeSlotsComponent', () => {
     const compValue = JSON.parse(screenService.component.value);
     compValue.waitingTimeExpired = true;
     screenService.component.value = JSON.stringify(compValue);
-    component['loadTimeSlots']();
+    component.loadTimeSlots();
     fixture.detectChanges();
-    const bookedSlot = component.bookedSlot;
+    const { bookedSlot } = component;
     expect(bookedSlot).toBeNull();
   });
 
@@ -380,7 +385,7 @@ describe('TimeSlotsComponent', () => {
     screenService.component.value = JSON.stringify(compValue);
     fixture.detectChanges();
     await fixture.whenStable();
-    const reqBody = component['timeSlotsService']['getBookRequest'](EMPTY_SLOT);
+    const reqBody = component.timeSlotsService.getBookRequest(EMPTY_SLOT);
     expect(reqBody.caseNumber).toBeTruthy();
     expect(reqBody.parentOrderId).toEqual('');
   });
@@ -432,16 +437,15 @@ describe('TimeSlotsComponent', () => {
       jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
         if (url === '/api/service/actions/currentDateTime') {
           return of(todayStr);
-        } else {
-          return httpClient.get(url, options);
         }
+        return httpClient.get(url, options);
       });
       screenService.component.attrs.dateType = 'today';
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
     });
 
     it('should allow book date in 30+3 days after today', async () => {
-      component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
+      component.isDateLocked = jest.fn((date: Date) => component.checkDateRestrictions(date));
 
       fixture.detectChanges();
       await fixture.whenStable();
@@ -460,7 +464,7 @@ describe('TimeSlotsComponent', () => {
       await fixture.detectChanges();
       await fixture.whenStable();
 
-      let lockedDays = fixture.debugElement.queryAll(By.css('.calendar-day.locked'));
+      const lockedDays = fixture.debugElement.queryAll(By.css('.calendar-day.locked'));
       expect(lockedDays.length).toEqual(31);
 
       fixture.componentInstance.currentArea = {
@@ -480,7 +484,7 @@ describe('TimeSlotsComponent', () => {
     });
 
     it('should draw days equal to daysToShow extended to weeks length', async () => {
-      component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
+      component.isDateLocked = jest.fn((date: Date) => component.checkDateRestrictions(date));
       screenService.component.attrs.daysToShow = 15;
       await fixture.detectChanges();
       await fixture.whenStable();
@@ -498,12 +502,11 @@ describe('TimeSlotsComponent', () => {
       jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
         if (url === '/api/service/actions/currentDateTime') {
           return of(todayStr);
-        } else {
-          return httpClient.get(url, options);
         }
+        return httpClient.get(url, options);
       });
       screenService.component.attrs.restrictions = { minDate: [30 + 3, 'd'], maxDate: [1, 'y'] };
-      component.isDateLocked = jest.fn((date: Date) => component['checkDateRestrictions'](date));
+      component.isDateLocked = jest.fn((date: Date) => component.checkDateRestrictions(date));
       fixture.detectChanges();
     });
 
@@ -531,7 +534,7 @@ describe('TimeSlotsComponent', () => {
 
   it('should not call modal for no slots case and without options', () => {
     const modalSpy = jest.spyOn(component, 'showModal');
-    timeSlotsService['slotsMap'] = [];
+    timeSlotsService.slotsMap = [];
     fixture.detectChanges();
     expect(modalSpy).not.toBeCalled();
   });
@@ -560,16 +563,15 @@ describe('TimeSlotsComponent', () => {
       jest.spyOn(httpClient, 'get').mockImplementationOnce((url, options) => {
         if (url === '/api/service/actions/currentDateTime') {
           return of(todayStr);
-        } else {
-          return httpClient.get(url, options);
         }
+        return httpClient.get(url, options);
       });
     });
 
     function checks(allowedMap) {
       component.weeks.forEach((week) => {
         week.forEach((day) => {
-          const key = '' + day.date.getFullYear() + day.date.getMonth() + day.date.getDate();
+          const key = `${day.date.getFullYear()}${day.date.getMonth()}${day.date.getDate()}`;
           component.selectDate(day.date);
           expect(component.date).toEqual(allowedMap[key] ? component.date : null);
           component.date = null;
@@ -753,13 +755,13 @@ describe('TimeSlotsComponent', () => {
           },
         ],
       };
-      component['bookingErrorHandlingParams'] = [
+      component.bookingErrorHandlingParams = [
         {
           errorCode: '2',
           modalAttributes: testModalParams as any,
         },
       ];
-      timeSlotsService['errorMessage'] = 'i am error';
+      timeSlotsService.errorMessage = 'i am error';
       errorResponseMock.error.errorDetail.errorCode = 2;
       jest
         .spyOn(timeSlotsService, 'checkBooking')
@@ -788,14 +790,14 @@ describe('TimeSlotsComponent', () => {
           },
         ],
       };
-      component['bookingErrorHandlingParams'] = [
+      component.bookingErrorHandlingParams = [
         {
           errorCode: '2',
           errorMessageRegExp: 'test123',
           modalAttributes: testModalParams as any,
         },
       ];
-      timeSlotsService['errorMessage'] = 'i am error';
+      timeSlotsService.errorMessage = 'i am error';
       errorResponseMock.error.errorDetail.errorCode = 2;
       errorResponseMock.error.errorDetail.errorMessage = 'test123';
       jest
@@ -823,7 +825,7 @@ describe('TimeSlotsComponent', () => {
           },
         ],
       };
-      component['bookingErrorHandlingParams'] = [
+      component.bookingErrorHandlingParams = [
         {
           errorCode: '2',
           errorMessageRegExp: 'test123',
@@ -842,7 +844,7 @@ describe('TimeSlotsComponent', () => {
     });
 
     it('should not show any modals if no errors thrown ', () => {
-      timeSlotsService['errorMessage'] = null;
+      timeSlotsService.errorMessage = null;
       jest
         .spyOn(timeSlotsService, 'checkBooking')
         .mockImplementation((...args) => throwError(errorResponseMock as any));

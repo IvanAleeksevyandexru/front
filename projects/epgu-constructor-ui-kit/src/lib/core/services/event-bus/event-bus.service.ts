@@ -4,14 +4,13 @@ import { filter, map } from 'rxjs/operators';
 
 abstract class BusEvent<T = unknown> {
   type: string;
+
   payload?: T;
 }
 
 @Injectable()
 export class EventBusService {
   private subject$ = new Subject<BusEvent>();
-
-  constructor() {}
 
   public emit(type: string, payload?: unknown): void {
     this.subject$.next({ type, payload });

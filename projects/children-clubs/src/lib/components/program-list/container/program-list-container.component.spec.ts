@@ -1,9 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { ProgramListContainerComponent } from './program-list-container.component';
-import { ProgramListService } from '../../../services/program-list/program-list.service';
-import { ListComponent } from '../components/list/list.component';
-import { ItemComponent } from '../components/item/item.component';
 import {
   AddressesToolsService,
   MicroAppNavigationService,
@@ -23,6 +19,10 @@ import {
   ScreenContainerModule,
   ScreenPadModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ProgramListContainerComponent } from './program-list-container.component';
+import { ProgramListService } from '../../../services/program-list/program-list.service';
+import { ListComponent } from '../components/list/list.component';
+import { ItemComponent } from '../components/item/item.component';
 import { ApiService } from '../../../services/api/api.service';
 import { ApiServiceStub } from '../../../services/api/api.service.stub';
 import { StateService } from '../../../services/state/state.service';

@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { ListElement } from '@epgu/ui/models/dropdown';
@@ -15,7 +8,7 @@ import { ListElement } from '@epgu/ui/models/dropdown';
   templateUrl: './constructor-dropdown.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConstructorDropdownComponent implements OnInit {
+export class ConstructorDropdownComponent {
   @Input() id: string | number;
   @Input() control: AbstractControl;
   @Input() invalid: boolean;
@@ -31,6 +24,4 @@ export class ConstructorDropdownComponent implements OnInit {
   public onChanged(item: ListElement): void {
     this.changed.emit(item);
   }
-
-  ngOnInit(): void {}
 }

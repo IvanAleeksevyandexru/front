@@ -39,7 +39,7 @@ describe('ModalBaseComponent', () => {
   describe('onClickComponent', () => {
     it('should be call closeModal', () => {
       const spy = jest.spyOn(component, 'closeModal');
-      jest.spyOn(component['elemRef'].nativeElement, 'contains').mockReturnValue(true);
+      jest.spyOn(component.elemRef.nativeElement, 'contains').mockReturnValue(true);
       const event = {
         target: {
           className: 'modal-overlay',

@@ -5,8 +5,15 @@ import {
   ConfigService,
   ConfigServiceStub,
   UnsubscribeServiceStub,
+  LocationService,
+  LocationServiceStub,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  DatesToolsService,
+  DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 
+import { MockProvider } from 'ng-mocks';
 import { AbstractPaymentComponent } from './abstract-payment.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
@@ -16,15 +23,12 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { PaymentService } from './payment.service';
 import { PaymentServiceStub } from './payment.service.stub';
-import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { billsInfoMock, billsInfoMockPaid, billsInfoMockPaidWithError } from './payment-data.stub';
 import { NEXT_STEP_ACTION } from '../../../../shared/constants/actions';
 import { LAST_SCENARIO_KEY } from '../../../../shared/constants/form-player';
-import { MockProvider } from 'ng-mocks';
 
 describe('AbstractPaymentComponent', () => {
   let component: AbstractPaymentComponent;

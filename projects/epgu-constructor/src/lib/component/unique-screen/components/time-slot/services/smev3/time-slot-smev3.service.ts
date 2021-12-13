@@ -10,6 +10,28 @@ import {
   Subject,
 } from 'rxjs';
 import {
+  catchError,
+  concatMap,
+  distinctUntilChanged,
+  filter,
+  finalize,
+  map,
+  pluck,
+  shareReplay,
+  startWith,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
+import {
+  DATE_STRING_YEAR_MONTH,
+  DatesToolsService,
+  TimeSlotsApiItem,
+} from '@epgu/epgu-constructor-ui-kit';
+import { get } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import {
   BookOperation,
   CancelFilterProvider,
   CancelOperation,
@@ -27,40 +49,18 @@ import {
   TimeSlotValueInterface,
   TIMEZONE_STR_OFFSET,
 } from '../../typings';
-import {
-  catchError,
-  concatMap,
-  distinctUntilChanged,
-  filter,
-  finalize,
-  map,
-  pluck,
-  shareReplay,
-  startWith,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs/operators';
 
-import {
-  DATE_STRING_YEAR_MONTH,
-  DatesToolsService,
-  TimeSlotsApiItem,
-} from '@epgu/epgu-constructor-ui-kit';
-
-import { get } from 'lodash';
 import { Smev3RestApiService } from '../api/smev3/smev3-rest-api.service';
 import { TimeSlotStateService } from '../state/time-slot-state.service';
 import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.service';
 
-import { v4 as uuidv4 } from 'uuid';
 import { TimeSlotErrorService } from '../error/time-slot-error.service';
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
 import { TimeSlotCalendarService } from '../calendar/time-slot-calendar.service';
 
 @Injectable()
 export class TimeSlotSmev3Service {
   requestListParams$$ = new BehaviorSubject<Partial<TimeSlotRequest>>(undefined);
+
   requestBookParams$$ = new BehaviorSubject<Partial<TimeSlotBookRequest>>(undefined);
 
   reloadStore$$ = new Subject<null>();
@@ -100,9 +100,11 @@ export class TimeSlotSmev3Service {
   );
 
   bookId$$ = new BehaviorSubject<string>(this.smev3.cachedAnswer$$.getValue()?.bookId || null);
+
   bookId$ = this.bookId$$.asObservable();
 
   isBookedDepartment$$ = new BehaviorSubject<boolean>(null);
+
   isBookedDepartment$: Observable<boolean> = combineLatest([
     this.isBookedDepartment$$,
     this.smev3.cachedAnswer$,
@@ -116,6 +118,7 @@ export class TimeSlotSmev3Service {
   );
 
   bookedSlot$$ = new BehaviorSubject<Slot>(null);
+
   bookedSlot$ = combineLatest([
     this.smev3.waitingTimeExpired$,
     this.smev3.cachedAnswer$.pipe(pluck('timeSlot')),
@@ -137,9 +140,11 @@ export class TimeSlotSmev3Service {
   get area$(): Observable<string> {
     return this.area$$.pipe(distinctUntilChanged());
   }
+
   set area(area: string) {
     this.area$$.next(area);
   }
+
   get area(): string {
     return this.area$$.getValue();
   }
@@ -212,6 +217,7 @@ export class TimeSlotSmev3Service {
   );
 
   book$$ = new Subject<BookOperation>();
+
   book$ = this.book$$.pipe(
     tap(() => this.state.progressStart()),
     concatMap(({ book, result }: BookOperation) =>
@@ -275,7 +281,7 @@ export class TimeSlotSmev3Service {
                 }),
                 tap((response) => result.next(response)),
                 tap(() => this.bookedSlot$$.next(book)),
-                tap((book) => this.bookId$$.next(book.bookId)),
+                tap((bookItem) => this.bookId$$.next(bookItem.bookId)),
               ),
         ),
       ),
@@ -297,6 +303,7 @@ export class TimeSlotSmev3Service {
   reloadStore(): void {
     this.reloadStore$$.next();
   }
+
   getBookRequest(
     slot: Slot,
     bookId: string,
@@ -425,7 +432,7 @@ export class TimeSlotSmev3Service {
 
   createMap(slots: TimeSlot[]): SlotMap {
     const result: SlotMap = {};
-    let availableMonths: string[] = [];
+    const availableMonths: string[] = [];
 
     slots.forEach((slot) => {
       const slotDate = new Date(slot.visitTimeStr);
@@ -433,14 +440,14 @@ export class TimeSlotSmev3Service {
         result[slotDate.getFullYear()] = {};
       }
 
-      let monthSlots = result[slotDate.getFullYear()];
+      const monthSlots = result[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
         const month = this.datesTools.format(slotDate, DATE_STRING_YEAR_MONTH);
         availableMonths.push(month);
       }
 
-      let daySlots = monthSlots[slotDate.getMonth()];
+      const daySlots = monthSlots[slotDate.getMonth()];
       if (!daySlots[slotDate.getDate()]) {
         daySlots[slotDate.getDate()] = [];
       }

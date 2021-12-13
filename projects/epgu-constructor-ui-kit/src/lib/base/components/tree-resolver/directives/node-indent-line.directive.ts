@@ -22,10 +22,15 @@ const BUILD_INDENTS_SCHEDULER =
 })
 export class TreeNodeIndentLineDirective<T> implements OnDestroy {
   isLast: boolean | 'unset' = 'unset';
+
   isLeaf = false;
+
   private preNodeRef: T | null = null;
+
   private nextNodeRef: T | null = null;
+
   private currentIndents = '';
+
   private changeSubscription: Subscription;
 
   constructor(
@@ -54,11 +59,11 @@ export class TreeNodeIndentLineDirective<T> implements OnDestroy {
   private getIndents(): boolean[] {
     const indents = [];
     const nodes = this.tree.treeControl.dataNodes;
-    const getLevel = this.tree.treeControl.getLevel;
+    const { getLevel } = this.tree.treeControl;
     let parent = getParent(nodes, this.treeNode.data, getLevel);
     while (parent) {
       const parentNextSibling = getNextSibling(nodes, parent, getLevel);
-      parentNextSibling ? indents.unshift(true) : indents.unshift(false);
+      indents.unshift(!!parentNextSibling);
       parent = getParent(nodes, parent, getLevel);
     }
     return indents;

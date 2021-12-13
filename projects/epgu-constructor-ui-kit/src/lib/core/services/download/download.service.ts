@@ -3,9 +3,9 @@ import { saveAs } from 'file-saver';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
+
 @Injectable()
 export class DownloadService {
-
   constructor(private http: HttpClient) {}
 
   public downloadFile(url: string, filename?: string): Observable<HttpResponse<Blob>> {
@@ -38,7 +38,8 @@ export class DownloadService {
 
   private convertBase64(value: string): Uint8Array {
     return new Uint8Array(
-      window.atob(value)
+      window
+        .atob(value)
         .split('')
         .map((char) => char.charCodeAt(0)),
     );

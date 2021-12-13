@@ -8,28 +8,35 @@ import {
   ConfigService,
   DatesToolsServiceStub,
   HttpCancelService,
+  ConfigServiceStub,
+  DatesToolsService,
+  EventBusService,
+  ScreenPadModule,
+  TextTransformDirective,
+  HelperTextComponent,
+  HealthServiceStub,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
+import { DadataWidgetComponent, PlainInputComponent } from '@epgu/ui/controls';
+import { of } from 'rxjs';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';
+
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
 import { AddressItemComponent } from '../address-item/address-item.component';
 import { LabelComponent } from '../../../../../../shared/components/base-components/label/label.component';
-import { HelperTextComponent } from '@epgu/epgu-constructor-ui-kit';
+
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
-import { HealthServiceStub, HealthService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
-import { DadataWidgetComponent, PlainInputComponent } from '@epgu/ui/controls';
-import { of } from 'rxjs';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
 import { ValidationServiceStub } from '../../../../../../shared/services/validation/validation.service.stub';
 

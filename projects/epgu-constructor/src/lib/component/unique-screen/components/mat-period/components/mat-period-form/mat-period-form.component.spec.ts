@@ -3,7 +3,6 @@ import { MockModule, MockProvider } from 'ng-mocks';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { MatPeriodFormComponent } from './mat-period-form.component';
 import {
   ConstructorDropdownModule,
   ErrorModule,
@@ -13,6 +12,8 @@ import {
   ActivatedRouteStub,
   DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClientModule } from '@angular/common/http';
+import { MatPeriodFormComponent } from './mat-period-form.component';
 import { ConstructorDatePickerModule } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
@@ -26,7 +27,6 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { LabelPipe } from '../../pipe/label.pipe';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('MatPeriodFormComponent', () => {
   let component: MatPeriodFormComponent;

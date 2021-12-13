@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import epguDocsPackages from '../../../package.json';
 
 @Component({
@@ -7,13 +7,11 @@ import epguDocsPackages from '../../../package.json';
   styleUrls: ['./versions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VersionsComponent implements OnInit {
+export class VersionsComponent {
   readonly header = 'Versions';
   readonly type = 'about';
 
   readonly ui = epguDocsPackages.dependencies['@epgu/ui'];
   readonly uiKit = epguDocsPackages.dependencies['@epgu/epgu-constructor-ui-kit'];
   readonly epguDocs = epguDocsPackages.version;
-
-  ngOnInit(): void {}
 }

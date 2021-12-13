@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { MockComponents } from 'ng-mocks';
+import { PluralizeModule } from '@epgu/ui/pipes';
+import { BaseUiModule } from '@epgu/epgu-constructor-ui-kit';
 import { PaymentWayComponent } from './payment-way.component';
 import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
 import { PaymentTypes, ProgramType } from '../../payment-way.types';
-import { PluralizeModule } from '@epgu/ui/pipes';
-import { BaseUiModule } from '@epgu/epgu-constructor-ui-kit';
 
 const mockComponents = {
   label: '',
@@ -47,7 +47,7 @@ describe('PaymentWayComponent', () => {
   it('set paymentWays with label', () => {
     const setPaymentWaysWithType = (...types) => {
       const paymentWays = types.map((paymentType) => ({ paymentType }));
-      component.component = { ...mockComponents, attrs: { paymentWays }} as any;
+      component.component = { ...mockComponents, attrs: { paymentWays } } as any;
       component.ngOnChanges();
       fixture.detectChanges();
       return component.paymentWays;

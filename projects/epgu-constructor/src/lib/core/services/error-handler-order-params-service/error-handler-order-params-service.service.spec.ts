@@ -44,7 +44,7 @@ describe('ErrorHandlerOrderParamsServiceService', () => {
   it('should return params with id and name', () => {
     const id = 'w42';
     const name = 'Какая та компанента';
-    jest.spyOn(screenService, 'getStore').mockReturnValue({ display: { id, name }});
+    jest.spyOn(screenService, 'getStore').mockReturnValue({ display: { id, name } });
     expect(service.getParams().id).toBe(id);
     expect(service.getParams().name).toBe('Kakaia ta kompanenta');
   });

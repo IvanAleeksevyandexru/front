@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 
+import { SafeModule, ImgPrefixerModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { HintComponent } from './hint.component';
-import { SafeModule } from '@epgu/epgu-constructor-ui-kit';
-import { ImgPrefixerModule } from '@epgu/epgu-constructor-ui-kit';
 import { ClickableLabelModule } from '../../../directives/clickable-label/clickable-label.module';
 
 describe('HintComponent', () => {

@@ -7,24 +7,26 @@ import { ScreenService } from '../../../screen/screen.service';
 const isSameValue = (compValue, value): boolean => {
   if (typeof compValue === 'string') {
     return compValue === value;
-  } else {
-    return Object.keys(compValue).every((fieldId: string) => {
-      if (typeof compValue[fieldId] !== undefined) {
-        return compValue[fieldId] === value[fieldId];
-      }
-      return true;
-    });
   }
+  return Object.keys(compValue).every((fieldId: string) => {
+    if (typeof compValue[fieldId] !== undefined) {
+      return compValue[fieldId] === value[fieldId];
+    }
+    return true;
+  });
 };
 @Injectable()
 export class UniquenessErrorsService {
   private _preparedUniquenessErrors: ScenarioErrorsDto[];
+
   get preparedUniquenessErrors(): ScenarioErrorsDto[] {
     return this._preparedUniquenessErrors;
   }
 
   private _initErrors: ScenarioErrorsDto[][] = [];
+
   private _initValues: Record<string, string>[] = [];
+
   private _componendIdErrorsMap: Record<string, number[][]> = {};
 
   constructor(

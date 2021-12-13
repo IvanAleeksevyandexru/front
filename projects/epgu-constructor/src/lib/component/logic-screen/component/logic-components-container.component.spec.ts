@@ -4,14 +4,18 @@ import { ChangeDetectionStrategy, QueryList } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MockComponent } from 'ng-mocks';
 
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  AttributeTypes,
+  DictionaryConditions,
+  LogicComponentEventTypes,
+  LogicComponentMethods,
+  LogicComponents,
+} from '@epgu/epgu-constructor-types';
 import { LogicComponentsContainerComponent } from './logic-components-container.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import {
-  UnsubscribeService,
-} from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../shared/base.module';
-import { AttributeTypes, DictionaryConditions, LogicComponentEventTypes, LogicComponentMethods, LogicComponents } from '@epgu/epgu-constructor-types';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
 import { LogicComponentResolverComponent } from '../component-list-resolver/logic-component-resolver.component';
@@ -99,7 +103,7 @@ describe('LogicComponentsContainerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         LogicComponentsContainerComponent,
-        MockComponent(LogicComponentResolverComponent)
+        MockComponent(LogicComponentResolverComponent),
       ],
       imports: [BaseModule, HttpClientModule],
       providers: [
@@ -122,7 +126,6 @@ describe('LogicComponentsContainerComponent', () => {
     screenService = TestBed.inject(ScreenService);
     hookService = TestBed.inject(HookService);
   });
-
 
   it('should clear hooks if no before submit components are present', () => {
     const clearSpy = jest.spyOn(hookService, 'clearHook');
@@ -164,11 +167,13 @@ describe('LogicComponentsContainerComponent', () => {
     mockViewComponents[0].componentDto = componentsMock[0];
     mockViewComponents[0].componentRef = {};
     mockViewComponents[0].componentRef.instance = {};
-    const testSubject = mockViewComponents[0].componentRef.instance.hasLoaded = new BehaviorSubject(false);
+    const testSubject = (mockViewComponents[0].componentRef.instance.hasLoaded = new BehaviorSubject(
+      false,
+    ));
     component.viewComponents = mockViewComponents as any;
     screenService.isLogicComponentLoading = true;
 
-    component['subscribeToInitHooks']();
+    component.subscribeToInitHooks();
 
     expect(screenService.isLogicComponentLoading).toBeTruthy();
     testSubject.next(true);

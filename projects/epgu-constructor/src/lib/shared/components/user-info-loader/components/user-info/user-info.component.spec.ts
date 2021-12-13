@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserInfoComponent } from './user-info.component';
-import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ObjectHelperService,
+  ConfigServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { AgeType, Gender, UserInfo } from '@epgu/epgu-constructor-types';
+import { UserInfoComponent } from './user-info.component';
 
 describe('UserInfoComponent', () => {
   let component: UserInfoComponent;

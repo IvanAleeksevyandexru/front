@@ -15,7 +15,9 @@ export class UploaderStatService {
     totalAmount: { count: 0, isMax: false },
     amount: { count: 0, isMax: false },
   });
+
   message = new BehaviorSubject<UploaderMessage | null>(null);
+
   get config(): FileUploadItem {
     return this.uploader.data;
   }
@@ -26,6 +28,7 @@ export class UploaderStatService {
     private store: UploaderStoreService,
     private validation: UploaderValidationService,
   ) {}
+
   reset(): void {
     this.stats.next({
       totalSize: { count: 0, isMax: false },

@@ -10,6 +10,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   ObjectHelperService,
+  DownloadService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { CarInfoContainerComponent } from './car-info-container.component';
@@ -19,7 +20,7 @@ import { CarInfo, ServiceResult } from '../../models/car-info.interface';
 import { CarInfoComponent } from '../../components/car-info/car-info.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
@@ -132,7 +133,7 @@ describe('CarInfoContainerComponent', () => {
       });
     });
 
-    it('should map errors if there aren\'t values', () => {
+    it("should map errors if there aren't values", () => {
       const res = component.mapCarInfoErrors(errors, {
         vehicleServiceCallResult: ServiceResult.SUCCESS,
         notaryServiceCallResult: ServiceResult.SUCCESS,

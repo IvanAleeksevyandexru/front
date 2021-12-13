@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { OutputHtmlComponent } from './output-html.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import {
@@ -14,6 +13,8 @@ import {
   DeviceDetectorServiceStub,
   ImgPrefixerPipe,
 } from '@epgu/epgu-constructor-ui-kit';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { OutputHtmlComponent } from './output-html.component';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ActionService } from '../../directives/action/action.service';
@@ -21,7 +22,6 @@ import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ClickableLabelDirective } from '../../directives/clickable-label/clickable-label.directive';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
@@ -54,7 +54,7 @@ describe('OutputHtmlComponent', () => {
 
   it('should open modal if clarifications are set', () => {
     component.html = '<p><a id="test">Ссылка</a></p>';
-    component.clarifications = { test: { text: '', title: '' }};
+    component.clarifications = { test: { text: '', title: '' } };
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
     const spy = jest.spyOn(modalService, 'openModal');

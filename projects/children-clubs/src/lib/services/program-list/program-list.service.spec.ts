@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ProgramListService } from './program-list.service';
 import {
   MicroAppStateQuery,
   MicroAppStateQueryStub,
   MicroAppStateService,
   MicroAppStateServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ProgramListService } from './program-list.service';
 import { ApiService } from '../api/api.service';
 import { ApiServiceStub } from '../api/api.service.stub';
 import { StateService } from '../state/state.service';
@@ -135,17 +135,17 @@ describe('ProgramListService', () => {
     });
 
     it('should set isFinish to true', () => {
-      const programsArray = new Array(3).fill(baseProgramStub);
+      const baseProgramsArray = new Array(3).fill(baseProgramStub);
 
-      service.add(programsArray);
+      service.add(baseProgramsArray);
 
       expect(service.isFinish$$.getValue()).toBeTruthy();
     });
 
     it('should not set isFinish to true', () => {
-      const programsArray = new Array(4).fill(baseProgramStub);
+      const baseProgramsArray = new Array(4).fill(baseProgramStub);
 
-      service.add(programsArray);
+      service.add(baseProgramsArray);
 
       expect(service.isFinish$$.getValue()).toBeFalsy();
     });
@@ -154,7 +154,7 @@ describe('ProgramListService', () => {
   describe('processFilters()', () => {
     it('should add focus as FocusFilter', () => {
       const state = {
-        programFilters: { focus: { id: 'hudozhestvennoe' }},
+        programFilters: { focus: { id: 'hudozhestvennoe' } },
       };
 
       const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
@@ -164,7 +164,7 @@ describe('ProgramListService', () => {
 
     it('should delete focus field if id is null', () => {
       const state = {
-        programFilters: { focus: { id: null }},
+        programFilters: { focus: { id: null } },
       };
 
       const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
@@ -174,7 +174,7 @@ describe('ProgramListService', () => {
 
     it('should add municipality as string', () => {
       const state = {
-        programFilters: { municipality: { id: '15' }},
+        programFilters: { municipality: { id: '15' } },
       };
 
       const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
@@ -184,7 +184,7 @@ describe('ProgramListService', () => {
 
     it('should delete direction field if id is null', () => {
       const state = {
-        programFilters: { direction: { id: null }},
+        programFilters: { direction: { id: null } },
       };
 
       const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
@@ -194,7 +194,7 @@ describe('ProgramListService', () => {
 
     it('should add direction as string', () => {
       const state = {
-        programFilters: { direction: { id: '3' }},
+        programFilters: { direction: { id: '3' } },
       };
 
       const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);

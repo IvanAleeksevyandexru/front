@@ -1,5 +1,11 @@
 module.exports = {
-  extends: ['plugin:@angular-eslint/recommended'],
+  root: true,
+  extends: [
+    'plugin:@angular-eslint/recommended',
+    'airbnb-typescript/base',
+    'prettier/@typescript-eslint',
+    'plugin:prettier/recommended',
+  ],
   rules: {
     '@angular-eslint/directive-selector': [
       'error',
@@ -10,9 +16,15 @@ module.exports = {
       { type: 'element', prefix: 'example', style: 'kebab-case' },
     ],
     semi: 'off',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'import/extensions': 'off',
     '@typescript-eslint/semi': ['error'],
     'no-empty-function': ['error', { allow: ['constructors'] }],
-    'object-curly-spacing': ['error', 'always', { objectsInObjects: false }],
+    'object-curly-spacing': ['error', 'always'],
+    'default-param-last': 'off',
+    '@typescript-eslint/default-param-last': 'off',
     '@typescript-eslint/no-explicit-any': ['error', { ignoreRestArgs: false }],
     '@typescript-eslint/typedef': [
       'error',
@@ -78,18 +90,13 @@ module.exports = {
     ],
   },
   overrides: [
-    // Add this rules, if you use inline templates inside *.component.ts files
     {
       files: ['*.component.ts'],
-      extends: [
-        'airbnb-typescript/base',
-        'prettier/@typescript-eslint',
-        'plugin:prettier/recommended',
-      ],
       parser: '@typescript-eslint/parser',
       parserOptions: {
         ecmaVersion: 2020,
         sourceType: 'module',
+        projects: ['./tsconfig.json'],
       },
       rules: {
         'no-underscore-dangle': 'off',

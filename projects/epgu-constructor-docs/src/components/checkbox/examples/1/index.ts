@@ -10,10 +10,15 @@ import { FormControl } from '@angular/forms';
 })
 export class Example1EpguCheckboxComponent {
   readonly checkboxId = 'id1';
+
   readonly labelText = 'Сопроводительный текст-лейбл';
+
   readonly control = new FormControl();
+
   readonly isLoading = false;
+
   readonly required = true;
+
   readonly hidden = false;
 
   handleClick(event): void {

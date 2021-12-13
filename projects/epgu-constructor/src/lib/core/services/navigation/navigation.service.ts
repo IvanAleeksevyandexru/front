@@ -7,10 +7,12 @@ import {
   OPTIONS_FEED_EXIT,
   OPTIONS_FEED_MV,
   OPTIONS_PROFILE_MV,
+  ConfigService,
+  DeviceDetectorService,
+  LocationService,
+  WINDOW,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenService } from '../../../screen/screen.service';
 
 /**
@@ -19,30 +21,41 @@ import { ScreenService } from '../../../screen/screen.service';
 @Injectable()
 export class NavigationService {
   isWebView: boolean;
+
   get nextStep$(): Observable<Navigation> {
     return this.nextStep.asObservable();
   }
+
   get prevStep$(): Observable<Navigation> {
     return this.prevStep.asObservable();
   }
+
   get skipStep$(): Observable<Navigation> {
     return this.skipStep.asObservable();
   }
+
   get saveCacheToDraft$(): Observable<Navigation> {
     return this.saveCacheToDraft.asObservable();
   }
+
   get restartOrder$(): Observable<Navigation> {
     return this.restart.asObservable();
   }
+
   get patchStepOnCli$(): Observable<Partial<ScenarioDto>> {
     return this.patchStepOnCli.asObservable();
   }
 
   private nextStep = new Subject<Navigation>();
+
   private prevStep = new Subject<Navigation>();
+
   private skipStep = new Subject<Navigation>();
+
   private saveCacheToDraft = new Subject<Navigation>();
+
   private restart = new Subject<Navigation>();
+
   private patchStepOnCli = new Subject<Partial<ScenarioDto>>();
 
   constructor(
@@ -90,12 +103,16 @@ export class NavigationService {
 
   redirectToLK(isLegal?: boolean, action?: ComponentActionDto): void {
     const queryParams = action?.queryParams;
-    const preparedQueryParams = queryParams ? `?${new URLSearchParams(queryParams as Record<string, string>).toString()}` : '';
+    const preparedQueryParams = queryParams
+      ? `?${new URLSearchParams(queryParams as Record<string, string>).toString()}`
+      : '';
 
     if (this.isWebView || isLegal) {
       this.locationService.href(`${this.configService.lkUrl}/notifications${preparedQueryParams}`);
     } else {
-      this.locationService.href(`${this.configService.lkUrl}/orders${preparedQueryParams ? preparedQueryParams : '/all'}`);
+      this.locationService.href(
+        `${this.configService.lkUrl}/orders${preparedQueryParams || '/all'}`,
+      );
     }
   }
 

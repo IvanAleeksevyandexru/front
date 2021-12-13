@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotDivorceComponent } from './time-slot-divorce.component';
 import { MockComponent } from 'ng-mocks';
+import { DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
+import { TimeSlotDivorceComponent } from './time-slot-divorce.component';
 import { TimeSlotSmev3Component } from '../../base/time-slot-smev3/time-slot-smev3.component';
 import { TimeSlotAreaComponent } from '../../base/time-slot-area/time-slot-area.component';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
@@ -9,9 +11,7 @@ import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-sl
 import { TimeSlotSmev3StateServiceStub } from '../../../services/smev3-state/time-slot-smev3-state.service.stub';
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
 import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-state.service.stub';
-import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { DepartmentInterface, TimeSlotValueInterface } from '../../../typings';
-import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
 
 describe('TimeSlotDivorceComponent', () => {
@@ -75,7 +75,7 @@ describe('TimeSlotDivorceComponent', () => {
       });
     });
     it('should be getPartialBookRequestParams', () => {
-      let attributeValues = { CODE: '1' };
+      const attributeValues = { CODE: '1' };
       expect(
         component.getPartialBookRequestParams(
           ({ attributeValues } as unknown) as DepartmentInterface,

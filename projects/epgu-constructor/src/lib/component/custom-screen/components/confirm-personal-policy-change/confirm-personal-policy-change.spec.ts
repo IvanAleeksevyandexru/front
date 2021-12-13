@@ -2,11 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ConfirmPersonalPolicyChangeComponent } from './confirm-personal-policy-change.component';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { BaseModule } from '../../../../shared/base.module';
 import {
   ConfigService,
   LoggerService,
@@ -15,6 +10,12 @@ import {
   EventBusService,
   ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClientModule } from '@angular/common/http';
+import { ConfirmPersonalPolicyChangeComponent } from './confirm-personal-policy-change.component';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
@@ -25,7 +26,6 @@ import { ConstructorPlainInputModule } from '../../../../shared/components/const
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
-import { HttpClientModule } from '@angular/common/http';
 
 const mockComponent = {
   id: 'pd6',
@@ -116,7 +116,7 @@ describe('ConfirmPersonalPolicyChangeComponent', () => {
       value: valueControl,
       required: new FormControl(mockComponent.required),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
 
     fixture.detectChanges();
   });
@@ -141,7 +141,7 @@ describe('ConfirmPersonalPolicyChangeComponent', () => {
 
       component.ngOnInit();
 
-      expect(component['addFormGroupControls']).toHaveBeenCalled();
+      expect(component.addFormGroupControls).toHaveBeenCalled();
       expect(component.form).toBeDefined();
     });
 
