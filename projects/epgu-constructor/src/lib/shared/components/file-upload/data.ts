@@ -71,12 +71,19 @@ export const extToLowerCase: (name: string) => string = (name: string) => {
 
 export class FileItem {
   id = v4();
+
   error: FileItemError;
+
   isImage: boolean;
+
   isArchive: boolean;
+
   limited = false;
+
   isRawMock = false;
+
   attached = false;
+
   constructor(
     public status: FileItemStatus,
     public fileUploadApiUrl: string,
@@ -125,19 +132,23 @@ export class FileItem {
     this.setStatus(FileItemStatus.error);
     return this;
   }
+
   clearError(): FileItem {
     this.error = null;
     return this;
   }
+
   setStatus(status: FileItemStatus): FileItem {
     this.status = status;
     return this;
   }
+
   setRaw(raw: File): FileItem {
     this.raw = raw;
     this.isRawMock = false;
     return this;
   }
+
   setItem(item: UploadedFile): FileItem {
     this.item = item;
     this.item.uploaded = true;

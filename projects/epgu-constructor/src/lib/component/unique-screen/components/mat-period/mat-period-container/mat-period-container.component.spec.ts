@@ -3,6 +3,8 @@ import { MockComponent, MockModule } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { of } from 'rxjs';
 
+import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
 import { MatPeriodContainerComponent } from './mat-period-container.component';
 import { MatPeriodFormComponent } from '../components/mat-period-form/mat-period-form.component';
 import { MatPeriodDescriptionComponent } from '../components/mat-period-description/mat-period-description.component';
@@ -10,10 +12,8 @@ import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { FormValue, MatPeriod } from '../mat-period.models';
-import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
 
 describe('MatPeriodContainerComponent', () => {
   let component: MatPeriodContainerComponent;

@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { HttpErrorResponse, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Smev3RestApiInterceptor } from './smev3-rest-api.interceptor';
 import { TimeSlotErrorService } from '../../error/time-slot-error.service';
 import { Smev3RestApiService } from './smev3-rest-api.service';
@@ -7,9 +9,7 @@ import { Smev3RestApiServiceStub } from './smev3-rest-api.service.stub';
 import { SmevSlotsResponseInterface, TimeSlotRequestType } from '../../../typings';
 import { TimeSlotSmev3StateService } from '../../smev3-state/time-slot-smev3-state.service';
 import { TimeSlotSmev3StateServiceStub } from '../../smev3-state/time-slot-smev3-state.service.stub';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
-import { HttpErrorResponse, HttpRequest, HttpResponse } from '@angular/common/http';
 
 describe('Smev3RestApiInterceptor', () => {
   let service: Smev3RestApiInterceptor;

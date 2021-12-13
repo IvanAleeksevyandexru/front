@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { LoggerService, LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { InitDataService } from './init-data.service';
 import { FormPlayerContext, ServiceEntity } from '@epgu/epgu-constructor-types';
 
@@ -92,32 +92,32 @@ describe('InitDataService', () => {
     it('canStartNew should set true if set undefined', () => {
       jest.spyOn<any, string>(service, 'checkProps');
       service.canStartNew = undefined;
-      expect(service['_canStartNew']).toBe(true);
+      expect(service._canStartNew).toBe(true);
     });
 
     it('canStartNew should set false if set false', () => {
       jest.spyOn<any, string>(service, 'checkProps');
       service.canStartNew = false;
-      expect(service['_canStartNew']).toBe(false);
+      expect(service._canStartNew).toBe(false);
     });
 
     it('canStartNew should set true if set true', () => {
       jest.spyOn<any, string>(service, 'checkProps');
       service.canStartNew = true;
-      expect(service['_canStartNew']).toBe(true);
+      expect(service._canStartNew).toBe(true);
     });
   });
 
   describe('getters', () => {
     it('serviceId', () => {
       const serviceId = '12345';
-      service['_serviceId'] = serviceId;
+      service._serviceId = serviceId;
       expect(service.serviceId).toBe(serviceId);
     });
 
     it('targetId', () => {
       const targetId = '-12345';
-      service['_targetId'] = targetId;
+      service._targetId = targetId;
       expect(service.targetId).toBe(targetId);
     });
 
@@ -135,49 +135,49 @@ describe('InitDataService', () => {
         },
         queryParams: {},
       };
-      service['_serviceInfo'] = serviceInfo;
+      service._serviceInfo = serviceInfo;
       expect(service.serviceInfo).toBe(serviceInfo);
     });
 
     it('orderId', () => {
       const orderId = 12345;
-      service['_orderId'] = orderId;
+      service._orderId = orderId;
       expect(service.orderId).toBe(orderId);
     });
 
     it('gepsId', () => {
       const gepsId = 12345;
-      service['_gepsId'] = gepsId;
+      service._gepsId = gepsId;
       expect(service.gepsId).toBe(gepsId);
     });
 
     it('invited', () => {
       const invited = true;
-      service['_invited'] = invited;
+      service._invited = invited;
       expect(service.invited).toBe(invited);
     });
 
     it('initState', () => {
       const initState = '{}';
-      service['_initState'] = initState;
+      service._initState = initState;
       expect(service.initState).toBe(initState);
     });
 
     it('canStartNew', () => {
       const canStartNew = true;
-      service['_canStartNew'] = canStartNew;
+      service._canStartNew = canStartNew;
       expect(service.canStartNew).toBe(canStartNew);
     });
 
     it('configId', () => {
       const configId = 'default';
-      service['_configId'] = configId;
+      service._configId = configId;
       expect(service.configId).toBe(configId);
     });
 
     it('queryParams', () => {
       const queryParams = {};
-      service['_queryParams'] = queryParams;
+      service._queryParams = queryParams;
       expect(service.queryParams).toBe(queryParams);
     });
   });
@@ -185,17 +185,17 @@ describe('InitDataService', () => {
   describe('checkProps()', () => {
     it('should call loggerService log', () => {
       const spy = jest.spyOn<any, string>(loggerService, 'log');
-      service['checkProps'](serviceEntity);
+      service.checkProps(serviceEntity);
       expect(spy).toBeCalled();
     });
 
     it('should throw error when empty error', () => {
-      expect(() => service['checkProps'](null)).toThrow('Need to set Service for epgu form player');
+      expect(() => service.checkProps(null)).toThrow('Need to set Service for epgu form player');
     });
 
     it('should throw error when empty error', () => {
       serviceEntity = { ...serviceEntity, invited: true };
-      expect(() => service['checkProps'](serviceEntity)).toThrow('Should set orderId when invited');
+      expect(() => service.checkProps(serviceEntity)).toThrow('Should set orderId when invited');
     });
   });
 });

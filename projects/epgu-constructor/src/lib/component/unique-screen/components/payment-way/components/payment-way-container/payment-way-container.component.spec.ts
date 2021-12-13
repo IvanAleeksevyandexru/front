@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadModule, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { PaymentWayContainerComponent } from './payment-way-container.component';
 import { PaymentWayComponent } from '../payment-way/payment-way.component';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
@@ -76,7 +76,7 @@ describe('PaymentWayContainerComponent', () => {
     it('should set selected', () => {
       expect(component.paymentWayControl.value).toBe('');
 
-      screenService.component = { attrs: { paymentWays }} as any;
+      screenService.component = { attrs: { paymentWays } } as any;
       fixture.detectChanges();
       expect(component.paymentWayControl.value).toEqual(PaymentTypes.budget);
 
@@ -123,7 +123,6 @@ describe('PaymentWayContainerComponent', () => {
       },
     };
     const reFixture = TestBed.createComponent(PaymentWayContainerComponent);
-    const screenService = TestBed.inject(ScreenService);
     const currentAnswersService = TestBed.inject(CurrentAnswersService);
     const setStateMock = jest.spyOn(currentAnswersService, 'state', 'set');
     screenService.component = specificMockComponent as any;

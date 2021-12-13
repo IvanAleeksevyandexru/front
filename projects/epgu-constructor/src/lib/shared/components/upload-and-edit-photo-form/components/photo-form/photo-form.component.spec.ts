@@ -6,24 +6,28 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { PhotoFormComponent } from './photo-form.component';
 import {
   ObjectHelperService,
   UnsubscribeService,
   WINDOW,
   WordTransformService,
+  DeviceDetectorService,
+  ModalService,
+  ModalServiceStub,
+  DownloadService,
+  EventBusService,
+  ConfigService,
+  ConfigServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../../../../core/services/webcam/webcam.service';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ValidationService } from '../../service/validation/validation.service';
 import { UploadService } from '../../service/upload/upload.service';
 import { PhotoFormViewComponent } from '../photo-form-view/photo-form-view.component';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
+import { PhotoFormComponent } from './photo-form.component';
 import { CompressionService } from '../../service/compression/compression.service';
 
 describe('PhotoFormComponent', () => {
@@ -45,7 +49,7 @@ describe('PhotoFormComponent', () => {
         ObjectHelperService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
-        { provide: WINDOW, useValue: { navigator: {}}},
+        { provide: WINDOW, useValue: { navigator: {} } },
         TerraByteApiService,
         WebcamService,
         DownloadService,

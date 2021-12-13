@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable()
 export class CurrentAnswersServiceStub {
   _isValid = new BehaviorSubject<boolean>(null);
+
   _state: string | object;
 
   get state(): string | object {

@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../api/api.service';
-import { StateService } from '../state/state.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { Group } from '../../typings';
 import { catchError, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { isEqual } from 'lodash';
+import { ApiService } from '../api/api.service';
+import { StateService } from '../state/state.service';
+import { Group } from '../../typings';
 import { ChildrenClubsState } from '../../children-clubs.types';
 
 @Injectable()
 export class GroupListService {
   loading$$ = new BehaviorSubject<boolean>(true);
+
   loading$ = this.loading$$.asObservable();
 
   page$$ = new BehaviorSubject<number>(0);
+
   isFinish$$ = new BehaviorSubject<boolean>(false);
+
   isFinish$ = this.isFinish$$.asObservable();
+
   pageSize = 10;
 
   allData$$ = new BehaviorSubject<Group[]>([]);
 
   data$$ = new BehaviorSubject<Group[]>([]);
+
   data$ = this.data$$.asObservable();
 
   get data(): Group[] {
@@ -59,7 +64,7 @@ export class GroupListService {
     const page = this.page$$.getValue() + 1;
     const data = this.allData$$.getValue();
     const size = page * this.pageSize;
-    const length = data.length;
+    const { length } = data;
     let result: Group[] = [];
     if (size > length) {
       if (size - length > 0) {

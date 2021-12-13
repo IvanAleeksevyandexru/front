@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class MapLayouts {
-
   // Создание макета балуна на основе Twitter Bootstrap.
   public static getJusticeBalloonLayout(): ymaps.IClassConstructor<ymaps.ILayout> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,21 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MaritalStatusInputComponent } from './marital-status-input.component';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { BaseModule } from '../../../../shared/base.module';
 import {
   DatesToolsService,
   ErrorModule,
   InputErrorModule,
   ConstructorLookupComponent,
 } from '@epgu/epgu-constructor-ui-kit';
-import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { DateRestrictionsService } from 'projects/epgu-constructor/src/lib/shared/services/date-restrictions/date-restrictions.service';
 import { ConstructorDatePickerModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-date-picker/constructor-date-picker.module';
 import { ConstructorPlainInputModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-plain-input/constructor-plain-input.module';
@@ -23,10 +14,19 @@ import { ConstructorMaskedInputModule } from 'projects/epgu-constructor/src/lib/
 import { ValidationTypeModule } from 'projects/epgu-constructor/src/lib/shared/directives/validation-type/validation-type.module';
 import { SuggestHandlerService } from 'projects/epgu-constructor/src/lib/shared/services/suggest-handler/suggest-handler.service';
 import { By } from '@angular/platform-browser';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MaritalStatusInputComponent } from './marital-status-input.component';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { BaseModule } from '../../../../shared/base.module';
+import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
+import { ValidationService } from '../../../../shared/services/validation/validation.service';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ActDateInputComponent } from './components/act-date-input/act-date-input.component';
 import { ActNumberInputComponent } from './components/act-number-input/act-number-input.component';
 import { ActRegistratorInputComponent } from './components/act-registrator-input/act-registrator-input.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
 
@@ -93,13 +93,13 @@ const mockComponent = {
         fieldName: 'series',
         label: 'Серия',
         type: 'input',
-        attrs: {}
+        attrs: {},
       },
       {
         fieldName: 'number',
         label: 'Номер',
         type: 'input',
-        attrs: {}
+        attrs: {},
       },
       {
         fieldName: 'issueDate',
@@ -114,22 +114,22 @@ const mockComponent = {
               value: '.*',
               ref: '',
               condition: '',
-              errorMsg: 'Поле должно быть заполнено'
+              errorMsg: 'Поле должно быть заполнено',
             },
             {
               type: 'Date',
               condition: '<',
-              errorMsg: 'Дата не может быть меньше, чем дата рождения заявителя + 14 лет'
+              errorMsg: 'Дата не может быть меньше, чем дата рождения заявителя + 14 лет',
             },
             {
               type: 'maxDate',
               ref: '',
               value: 'TODAY',
-              add: {}
-            }
-          ]
-        }
-      }
+              add: {},
+            },
+          ],
+        },
+      },
     ],
   },
   value: '',
@@ -192,7 +192,7 @@ describe('MaritalStatusInputComponent', () => {
       value: valueControl,
       required: new FormControl(mockComponent.required),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
 
     fixture.detectChanges();
   });
@@ -219,7 +219,7 @@ describe('MaritalStatusInputComponent', () => {
         required: new FormControl(mockComponent.required),
         label: new FormControl('Свидетельство о браке'),
       });
-      formService['_form'] = new FormArray([control]);
+      formService._form = new FormArray([control]);
 
       fixture.detectChanges();
 
@@ -247,7 +247,10 @@ describe('MaritalStatusInputComponent', () => {
     });
 
     it('should create the form', () => {
-      const addFormSpy = jest.spyOn<MaritalStatusInputComponent, any>(component, 'addFormGroupControls');
+      const addFormSpy = jest.spyOn<MaritalStatusInputComponent, any>(
+        component,
+        'addFormGroupControls',
+      );
 
       component.ngOnInit();
 

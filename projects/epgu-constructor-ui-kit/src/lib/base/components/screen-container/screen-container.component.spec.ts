@@ -17,15 +17,9 @@ describe('ScreenContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [
-          MockModule(CoreUiModule),
-          CoreModule,
-          PrevButtonModule,
-        ],
+        imports: [MockModule(CoreUiModule), CoreModule, PrevButtonModule],
         declarations: [ScreenContainerComponent],
-        providers: [
-          { provide: ScreenService, useClass: ScreenServiceStub }
-        ],
+        providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
       })
         .overrideComponent(ScreenContainerComponent, {
           set: { changeDetection: ChangeDetectionStrategy.Default },

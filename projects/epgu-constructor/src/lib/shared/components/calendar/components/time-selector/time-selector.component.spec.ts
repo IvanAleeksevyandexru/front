@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSelectorComponent } from './time-selector.component';
 import { ListItem } from '@epgu/ui/models/dropdown';
 import { By } from '@angular/platform-browser';
+import { TimeSelectorComponent } from './time-selector.component';
 
 describe('TimeSelectorComponent', () => {
   let component: TimeSelectorComponent;

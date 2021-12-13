@@ -97,5 +97,5 @@ export interface GeoObjectCollection {
 export interface GeoCodeResponse {
   response: {
     GeoObjectCollection: GeoObjectCollection;
-  }
+  };
 }

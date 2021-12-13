@@ -15,11 +15,15 @@ export class ScreenService extends ScreenContent {
   }
 
   public confirmationModalComponent;
+
   public dropdownListModalComponent;
+
   public isLoaderVisible = new BehaviorSubject<boolean>(false);
 
   private screenStore: ScreenStore = {};
+
   private isLoading = false;
+
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
 
   constructor(
@@ -108,7 +112,7 @@ export class ScreenService extends ScreenContent {
     if (!disclaimers.length) return;
     const disclaimerMnemonicTypes = this.getDisclaimerMnemonics();
     disclaimers.forEach((disclaimer) => {
-      if(disclaimerMnemonicTypes.includes(disclaimer.mnemonic)) {
+      if (disclaimerMnemonicTypes.includes(disclaimer.mnemonic)) {
         const { level, title, message, id: notifierId } = disclaimer;
         const type = level.toLocaleLowerCase();
         setTimeout(() => {
@@ -128,17 +132,17 @@ export class ScreenService extends ScreenContent {
       return [
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET_DESKTOP,
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET,
-        DisclaimerMnemonic.SERVICE_TARGET
+        DisclaimerMnemonic.SERVICE_TARGET,
       ];
     }
-    if(this.deviceDetectorService.isWebView) {
+    if (this.deviceDetectorService.isWebView) {
       return [DisclaimerMnemonic.SMU_SERVICE_TARGET, DisclaimerMnemonic.SERVICE_TARGET];
     }
     if (this.deviceDetectorService.isMobile || this.deviceDetectorService.isTablet) {
       return [
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET_MOBILE,
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET,
-        DisclaimerMnemonic.SERVICE_TARGET
+        DisclaimerMnemonic.SERVICE_TARGET,
       ];
     }
     return [DisclaimerMnemonic.SERVICE_TARGET];

@@ -4,8 +4,11 @@ import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class PassportLookupModelAttrs extends GenericAttrs {
   readonly participant: { role: string; mode: string };
+
   readonly fields: PassportField[];
+
   readonly title?: string;
+
   readonly titleHide?: boolean;
 
   constructor(attrs: CustomComponentAttr) {
@@ -15,5 +18,4 @@ export default class PassportLookupModelAttrs extends GenericAttrs {
     this.title = attrs.title;
     this.titleHide = attrs.titleHide;
   }
-
 }

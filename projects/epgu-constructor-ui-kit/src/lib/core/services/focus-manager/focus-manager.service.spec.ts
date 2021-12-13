@@ -16,6 +16,7 @@ import { BaseUiModule } from '../../../base/base-ui.module';
 })
 class TestPlainInputComponent {
   id = 'testId';
+
   name = 'test';
 }
 

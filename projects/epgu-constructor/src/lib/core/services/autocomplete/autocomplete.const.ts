@@ -1,8 +1,9 @@
+import { ComponentDto, DisplayDto } from '@epgu/epgu-constructor-types';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { CustomScreenComponentTypes } from '../../../component/custom-screen/components-list.types';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { ISuggestionItem } from './autocomplete.inteface';
-import { ComponentDto, DisplayDto } from '@epgu/epgu-constructor-types';
-import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+
 const jsonHelperService = new JsonHelperService();
 
 export const prepareClassifiedSuggestionItems = (
@@ -11,12 +12,12 @@ export const prepareClassifiedSuggestionItems = (
   fieldNames?: string[],
   componentsSuggestionsList?: [string, string][],
 ): { [key: string]: ISuggestionItem } => {
-  let result: { [key: string]: ISuggestionItem } = {};
-  const setItem = (item, fieldName, result) => {
-    if (result[fieldName]) {
-      result[fieldName].list.push(item);
+  const result: { [key: string]: ISuggestionItem } = {};
+  const setItem = (item, fieldName, total) => {
+    if (total[fieldName]) {
+      total[fieldName].list.push(item);
     } else {
-      result[fieldName] = {
+      total[fieldName] = {
         mnemonic: fieldName,
         list: [item],
       };
@@ -27,6 +28,7 @@ export const prepareClassifiedSuggestionItems = (
     const { mnemonic } = suggestions;
     suggestions.list.forEach((item) => {
       if (fieldNames?.length) {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         const fieldName = getFieldNameFromCompositeMnemonic(
           componentsSuggestionsList,
           item.mnemonic,
@@ -38,15 +40,15 @@ export const prepareClassifiedSuggestionItems = (
         const parsedOriginalItem = jsonHelperService.tryToParse(originalItem, value);
 
         Object.keys(parsedOriginalItem).forEach((fieldName) => {
-          const item = {
+          const parsedItem = {
             value: isDadataAddress
-              ? parsedOriginalItem[fieldName]['fullAddress']
+              ? parsedOriginalItem[fieldName].fullAddress
               : parsedOriginalItem[fieldName],
             mnemonic: `${mnemonic}`,
             id,
           };
 
-          setItem(item, fieldName, result);
+          setItem(parsedItem, fieldName, result);
         });
       }
     });
@@ -73,9 +75,9 @@ export const autofillComponentsList: [UniqueScreenComponentTypes | CustomScreenC
 export const getSuggestionGroupId = (display: DisplayDto): string => display.suggestion?.groupId;
 
 export const isChildrenListType = (component): boolean => {
-  return [
-    UniqueScreenComponentTypes.childrenList,
-  ].includes(component.type as UniqueScreenComponentTypes);
+  return [UniqueScreenComponentTypes.childrenList].includes(
+    component.type as UniqueScreenComponentTypes,
+  );
 };
 
 export const SUGGEST_SEPARATOR_DEFAULT = ', ';

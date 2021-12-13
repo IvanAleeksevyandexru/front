@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
-import { EventBusService, MemoModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  EventBusService,
+  MemoModule,
+  ConstructorDropdownModule,
+  ScreenPadModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../shared/components/clone-button/clone-button.module';
-import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import { ComponentsListModule } from '../../../custom-screen/components-list.module';
 import { SelectChildrenScreenContainerComponent } from './container/select-children-screen-container.component';

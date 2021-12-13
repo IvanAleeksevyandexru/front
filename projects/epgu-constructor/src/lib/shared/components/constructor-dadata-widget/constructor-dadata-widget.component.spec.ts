@@ -2,14 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { CoreModule } from '../../../core/core.module';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ConstructorDadataWidgetComponent } from './constructor-dadata-widget.component';
-import { BaseModule } from '../../base.module';
 import {
+  DownloadService,
+  DownloadServiceStub,
   ConfigService,
   ConfigServiceStub,
   LoggerService,
@@ -17,6 +12,12 @@ import {
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientModule } from '@angular/common/http';
+import { CoreModule } from '../../../core/core.module';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+
+import { ConstructorDadataWidgetComponent } from './constructor-dadata-widget.component';
+import { BaseModule } from '../../base.module';
 
 describe('ConstructorDadataWidgetComponent', () => {
   let component: ConstructorDadataWidgetComponent;

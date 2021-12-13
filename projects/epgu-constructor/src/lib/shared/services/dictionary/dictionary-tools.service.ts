@@ -221,6 +221,7 @@ export class DictionaryToolsService {
     }
     return filter;
   }
+
   public clearTemporaryOptions(options: DictionaryOptions): DictionaryOptions {
     const filter = this.clearTemporaryFilter(
       options.filter as DictionarySubFilter,
@@ -313,18 +314,22 @@ export class DictionaryToolsService {
     };
     const calcFunc = filterTypes[dFilter.valueType];
     if (!calcFunc) {
-      throw `Неверный valueType для фильтров - ${dFilter.valueType}`;
+      throw new Error(`Неверный valueType для фильтров - ${dFilter.valueType}`);
     }
     return calcFunc({ dFilter, attributeType, componentValue, screenStore, index });
   }
 
-  private processTypeValue({ dFilter }: CalcFilterFuncArgs): ValueForFilter  {
+  private processTypeValue({ dFilter }: CalcFilterFuncArgs): ValueForFilter {
     const rawValue = JSON.parse(dFilter.value);
 
     return { rawValue, value: rawValue };
   }
 
-  private processTypePreset({ dFilter, attributeType, componentValue }: CalcFilterFuncArgs): ValueForFilter {
+  private processTypePreset({
+    dFilter,
+    attributeType,
+    componentValue,
+  }: CalcFilterFuncArgs): ValueForFilter {
     const rawValue = get(componentValue, dFilter.value, undefined);
     const filters = this.formatValue(rawValue, dFilter.formatValue);
     const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
@@ -332,14 +337,22 @@ export class DictionaryToolsService {
     return { rawValue, value };
   }
 
-  private processTypeRoot({ dFilter, attributeType, screenStore }: CalcFilterFuncArgs): ValueForFilter {
+  private processTypeRoot({
+    dFilter,
+    attributeType,
+    screenStore,
+  }: CalcFilterFuncArgs): ValueForFilter {
     const rawValue = get(screenStore, dFilter.value, undefined);
     const value = { [attributeType]: this.formatValue(rawValue, dFilter.formatValue) };
 
     return { rawValue, value };
   }
 
-  private processTypeRef({ dFilter, attributeType, screenStore }: CalcFilterFuncArgs): ValueForFilter  {
+  private processTypeRef({
+    dFilter,
+    attributeType,
+    screenStore,
+  }: CalcFilterFuncArgs): ValueForFilter {
     const rawValue = this.getValueViaRef(screenStore.applicantAnswers, dFilter.value);
     const filters = this.formatValue(rawValue, dFilter.formatValue);
     const value = dFilter?.excludeWrapper ? filters : { [attributeType]: filters };
@@ -354,15 +367,26 @@ export class DictionaryToolsService {
     return { rawValue, value };
   }
 
-  private processTypeFormValue({ dFilter, attributeType, componentValue }: CalcFilterFuncArgs): ValueForFilter  {
-    const rawValue = this.getValueFromForm( componentValue as FormArray, dFilter );
+  private processTypeFormValue({
+    dFilter,
+    attributeType,
+    componentValue,
+  }: CalcFilterFuncArgs): ValueForFilter {
+    const rawValue = this.getValueFromForm(componentValue as FormArray, dFilter);
     const value = { [attributeType]: rawValue };
 
     return { rawValue, value };
   }
 
-  private processTypeCalc({ dFilter, attributeType, componentValue, index }: CalcFilterFuncArgs): ValueForFilter  {
-    const rawValue = (componentValue as ComponentValue)?.dictionaryFilters[index][dFilter.attributeName];
+  private processTypeCalc({
+    dFilter,
+    attributeType,
+    componentValue,
+    index,
+  }: CalcFilterFuncArgs): ValueForFilter {
+    const rawValue = (componentValue as ComponentValue)?.dictionaryFilters[index][
+      dFilter.attributeName
+    ];
     const value = { [attributeType]: rawValue };
 
     return { rawValue, value };

@@ -30,7 +30,7 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import {
   BookingRequestAttrs,
-  lkApiItemAttributes,
+  LkApiItemAttributes,
   TimeSlotDoctorsAttrs,
   TimeSlotDoctorsComponentDto,
 } from '../time-slot-doctors.interface';
@@ -480,7 +480,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
     searchString: string,
   ): DictionaryItem[] {
     return reference.data.items.filter((item) => {
-      const attributes = (item.attributes as unknown) as lkApiItemAttributes[];
+      const attributes = (item.attributes as unknown) as LkApiItemAttributes[];
       return attributes.some((attribute) => {
         return (
           attribute.name === filterByAttributeName &&

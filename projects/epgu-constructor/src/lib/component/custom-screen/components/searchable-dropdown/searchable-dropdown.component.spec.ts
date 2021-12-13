@@ -1,18 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockProvider } from 'ng-mocks';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { ComponentItemComponent } from '../component-item/component-item.component';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { By } from '@angular/platform-browser';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { CustomListDropDowns } from '../../components-list.types';
-import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import {
   DatesToolsService,
   ConfigService,
@@ -20,8 +11,17 @@ import {
   BaseUiModule,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { SearchableDropdownComponent } from './searchable-dropdown.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ComponentItemComponent } from '../component-item/component-item.component';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
+import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { CustomListDropDowns } from '../../components-list.types';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
+import { SearchableDropdownComponent } from './searchable-dropdown.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import SearchableDropdownModelAttrs from './SearchableDropdownModelAttrs';
@@ -72,9 +72,9 @@ describe('SearchableDropdownComponent', () => {
       id: new FormControl('someId'),
       value: valueControl,
       attrs: new FormControl(attrs),
-      model: new FormControl(new SearchableDropdownModel({ attrs } as any))
+      model: new FormControl(new SearchableDropdownModel({ attrs } as any)),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
 
     fixture = TestBed.createComponent(SearchableDropdownComponent);
     component = fixture.componentInstance;
@@ -114,7 +114,7 @@ describe('SearchableDropdownComponent', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
       // по умолчанию dropDowns пустой массив, соответственно TRUTHY
       expect(debugEl).toBeTruthy();
-      component.model['_dropDown$'].next(null);
+      component.model._dropDown$.next(null);
       fixture.detectChanges();
 
       debugEl = fixture.debugElement.query(By.css(selector));
@@ -142,11 +142,11 @@ describe('SearchableDropdownComponent', () => {
     it('fixedItems property', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
 
-      component.model['_dropDown$'].next([
-          {
-            text: 'some text',
-          },
-        ] as unknown as CustomListDropDowns);
+      component.model._dropDown$.next(([
+        {
+          text: 'some text',
+        },
+      ] as unknown) as CustomListDropDowns);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.fixedItems).toEqual([
@@ -161,11 +161,11 @@ describe('SearchableDropdownComponent', () => {
 
       expect(debugEl.componentInstance.disabled).toBeFalsy();
 
-      component.model['_dropDown$'].next([
-          {
-            text: 'some text',
-          },
-        ] as unknown as CustomListDropDowns);
+      component.model._dropDown$.next(([
+        {
+          text: 'some text',
+        },
+      ] as unknown) as CustomListDropDowns);
       fixture.detectChanges();
 
       expect(debugEl.componentInstance.disabled).toBeTruthy();

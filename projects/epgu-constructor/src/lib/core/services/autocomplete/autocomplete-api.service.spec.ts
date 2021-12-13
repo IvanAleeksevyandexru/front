@@ -1,8 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+
 import { AutocompleteApiService } from './autocomplete-api.service';
 
 describe('AutocompleteApiService', () => {
@@ -10,12 +9,12 @@ describe('AutocompleteApiService', () => {
   let http: HttpTestingController;
   let config: ConfigService;
   let apiUrl: string;
-  let fields = ['CHILD_SNILS'];
-  let fieldId = 123456;
-  let mnemonic = 'mnemonic';
-  let newValue = 'newValue';
-  let groupId = 'PASSPORT_DATA';
-  let responseMock = [42];
+  const fields = ['CHILD_SNILS'];
+  const fieldId = 123456;
+  const mnemonic = 'mnemonic';
+  const newValue = 'newValue';
+  const groupId = 'PASSPORT_DATA';
+  const responseMock = [42];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -61,7 +60,7 @@ describe('AutocompleteApiService', () => {
     }));
 
     it('should call http get with withCredentials equals false', fakeAsync(() => {
-      const withCredentials = req.request.withCredentials;
+      const { withCredentials } = req.request;
       expect(withCredentials).toBe(true);
     }));
   });
@@ -90,7 +89,7 @@ describe('AutocompleteApiService', () => {
     }));
 
     it('should call http get with withCredentials equals true', fakeAsync(() => {
-      const withCredentials = req.request.withCredentials;
+      const { withCredentials } = req.request;
       expect(withCredentials).toBe(true);
     }));
   });
@@ -114,12 +113,12 @@ describe('AutocompleteApiService', () => {
     }));
 
     it('should call with body [fieldId]', fakeAsync(() => {
-      const body = req.request.body;
+      const { body } = req.request;
       expect(body).toEqual([fieldId]);
     }));
 
     it('should call http delete with withCredentials equals true', fakeAsync(() => {
-      const withCredentials = req.request.withCredentials;
+      const { withCredentials } = req.request;
       expect(withCredentials).toBe(true);
     }));
   });
@@ -148,7 +147,7 @@ describe('AutocompleteApiService', () => {
     }));
 
     it('should call http post with withCredentials equals true', fakeAsync(() => {
-      const withCredentials = req.request.withCredentials;
+      const { withCredentials } = req.request;
       expect(withCredentials).toBe(true);
     }));
   });

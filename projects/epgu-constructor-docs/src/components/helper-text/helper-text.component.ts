@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 
 import exampleImportModule from '!!raw-loader!./examples/import/import-module.txt';
 import exampleInsertTemplate from '!!raw-loader!./examples/import/insert-template.html';
@@ -13,7 +13,7 @@ import example1Html from '!!raw-loader!./examples/1/index.html';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExampleEpguHelperTextComponent implements OnInit {
+export class ExampleEpguHelperTextComponent {
   readonly exampleImportModule = exampleImportModule;
   readonly exampleInsertTemplate = exampleInsertTemplate;
 
@@ -29,6 +29,4 @@ export class ExampleEpguHelperTextComponent implements OnInit {
   readonly size = 'lg';
   readonly sizeVariants = [null, 'lg'];
   readonly content = 'Некоторый текст подсказки';
-
-  ngOnInit(): void {}
 }

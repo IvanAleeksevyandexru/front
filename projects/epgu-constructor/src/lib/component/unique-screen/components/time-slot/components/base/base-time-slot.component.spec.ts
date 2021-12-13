@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BaseTimeSlotComponent } from './base-time-slot.component';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   EventBusService,
@@ -8,6 +7,7 @@ import {
   ModalServiceStub,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { BaseTimeSlotComponent } from './base-time-slot.component';
 import { EVENT_TIMESLOT_BOOK, EVENT_TIMESLOT_BOOK_RESULT, Slot } from '../../typings';
 import { TimeSlotStateService } from '../../services/state/time-slot-state.service';
 import { TimeSlotStateServiceStub } from '../../services/state/time-slot-state.service.stub';

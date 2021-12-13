@@ -4,9 +4,12 @@ import { OBJECT_APPEAR_DURATION, TOTAL_OBJECTS_APPEAR_DURATION } from './MAP_ANI
 
 @Injectable()
 export class MapAnimationService {
-  private animatedIds: (string|number)[] = [];
+  private animatedIds: (string | number)[] = [];
+
   private animationStep: number;
+
   private currentStep = 0;
+
   private _firstLoading = true;
 
   get firstLoading(): boolean {
@@ -18,8 +21,8 @@ export class MapAnimationService {
   }
 
   public setInitData(mapObjects: IFeatureItem<unknown>[]): void {
-    this.animatedIds = mapObjects.map(point => point.id);
-    this.animationStep = TOTAL_OBJECTS_APPEAR_DURATION/mapObjects.length;
+    this.animatedIds = mapObjects.map((point) => point.id);
+    this.animationStep = TOTAL_OBJECTS_APPEAR_DURATION / mapObjects.length;
   }
 
   public handleElementAppearAnimation(element: HTMLElement, objectId: number): void {
@@ -36,7 +39,7 @@ export class MapAnimationService {
 
   private getDelay(): number {
     this.currentStep++;
-    return this.animationStep*this.currentStep;
+    return this.animationStep * this.currentStep;
   }
 
   private shouldAnimate(pointId: number): boolean {

@@ -119,5 +119,4 @@ describe('ConstructorLookupComponent', () => {
 
     expect(setFocusSpy).toBeCalledTimes(1);
   });
-
 });

@@ -3,6 +3,7 @@ import { LyImageCropperModule } from '@alyle/ui/image-cropper';
 import { LyTheme2, StyleRenderer, LY_THEME, LY_THEME_NAME } from '@alyle/ui';
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { AngularResizedEventModule } from 'angular-resize-event';
+import { FormsModule } from '@angular/forms';
 import { PhotoErrorModalComponent } from './components/photo-error-modal/photo-error-modal.component';
 import { PhotoEditorModalComponent } from './components/photo-editor-modal/photo-editor-modal.component';
 import { SliderComponent } from './components/slider/slider.component';
@@ -15,7 +16,6 @@ import { CompressionService } from './service/compression/compression.service';
 import { ValidationService } from './service/validation/validation.service';
 import { UploadService } from './service/upload/upload.service';
 import { BaseModule } from '../../base.module';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   entryComponents: [PhotoErrorModalComponent, PhotoEditorModalComponent],

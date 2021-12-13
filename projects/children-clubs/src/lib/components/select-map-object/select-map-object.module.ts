@@ -18,7 +18,14 @@ import { PluralizeModule } from '@epgu/ui/pipes';
     },
   ],
   exports: [SelectMapObjectComponent],
-  imports: [CommonModule, NotifierModule, BaseUiModule, PerfectScrollbarModule, YandexMapModule, PluralizeModule],
+  imports: [
+    CommonModule,
+    NotifierModule,
+    BaseUiModule,
+    PerfectScrollbarModule,
+    YandexMapModule,
+    PluralizeModule,
+  ],
   entryComponents: [SelectMapObjectComponent],
 })
 export class SelectMapObjectModule {}

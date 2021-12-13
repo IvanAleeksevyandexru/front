@@ -61,15 +61,14 @@
     }
 
     &:last-child {
-      padding-left: 12px
+      padding-left: 12px;
     }
 
     &.active {
       color: $color-black;
       font-weight: $fw-bold;
     }
-
-    }
+  }
 }
 .back-button {
   display: flex;

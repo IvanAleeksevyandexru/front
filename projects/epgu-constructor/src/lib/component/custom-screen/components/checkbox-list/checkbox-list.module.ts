@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CheckboxListComponent } from './checkbox-list.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConstructorCheckboxModule } from '@epgu/epgu-constructor-ui-kit';
+import { CheckboxListComponent } from './checkbox-list.component';
 
 @NgModule({
   declarations: [CheckboxListComponent],

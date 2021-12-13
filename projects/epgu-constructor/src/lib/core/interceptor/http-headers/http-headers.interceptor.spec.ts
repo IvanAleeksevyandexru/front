@@ -2,10 +2,10 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
+import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { HttpHeadersInterceptor } from './http-headers.interceptor';
 import { InitDataService } from '../../services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
-import { LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
 describe('HttpHeadersInterceptor', () => {
   let initDataService: InitDataService;

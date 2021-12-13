@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { from, Observable, of } from 'rxjs';
+import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import {
   CompressionOptions,
   CompressionService,
@@ -6,8 +8,6 @@ import {
 
 import { ErrorActions, FileItem, FileItemStatus, getAcceptTypes, getSizeInMB } from '../../data';
 import { MaxCountByType } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { from, Observable, of } from 'rxjs';
-import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { UploaderStoreService } from '../store/uploader-store.service';
 import { UploaderLimitsService } from '../limits/uploader-limits.service';
 import { UploaderManagerService } from '../manager/uploader-manager.service';
@@ -27,21 +27,21 @@ export class UploaderValidationService {
 
   prepare(file: FileItem): Observable<FileItem> {
     return of(file).pipe(
-      tap((file: FileItem) => this.checkAndSetMaxCountByTypes(file)),
-      map((file: FileItem) =>
-        file.status !== FileItemStatus.error ? this.checkServerError(file) : file,
+      tap((fileItem: FileItem) => this.checkAndSetMaxCountByTypes(fileItem)),
+      map((fileItem: FileItem) =>
+        fileItem.status !== FileItemStatus.error ? this.checkServerError(fileItem) : fileItem,
       ), // Проверка ошибок сервера
-      map((file: FileItem) => this.validateFileName(file)),
-      map((file: FileItem) => this.validateType(file)), // Проверка типа
-      map((file: FileItem) =>
-        file.status !== FileItemStatus.error ? this.validateAmount(file) : file,
+      map((fileItem: FileItem) => this.validateFileName(fileItem)),
+      map((fileItem: FileItem) => this.validateType(fileItem)), // Проверка типа
+      map((fileItem: FileItem) =>
+        fileItem.status !== FileItemStatus.error ? this.validateAmount(fileItem) : fileItem,
       ), // Проверка кол-ва
-      concatMap((file: FileItem) =>
-        file.status !== FileItemStatus.error ? this.compressImage(file) : of(file),
+      concatMap((fileItem: FileItem) =>
+        fileItem.status !== FileItemStatus.error ? this.compressImage(fileItem) : of(fileItem),
       ), // Компрессия
-      map((file: FileItem) => this.validateMinSize(file)), //Проверка min размера файла
-      map((file: FileItem) =>
-        file.status !== FileItemStatus.error ? this.validateSize(file) : file,
+      map((fileItem: FileItem) => this.validateMinSize(fileItem)), // Проверка min размера файла
+      map((fileItem: FileItem) =>
+        fileItem.status !== FileItemStatus.error ? this.validateSize(fileItem) : fileItem,
       ), // Проверка размера
     );
   }
@@ -143,6 +143,7 @@ export class UploaderValidationService {
     }
     return file;
   }
+
   validateMinSize(file: FileItem): FileItem {
     const minSize = this.uploader.data?.minSize || 1;
     if (file.raw.size < minSize) {

@@ -12,7 +12,9 @@ export const FAILURE_MESSAGE = 'Ваше приглашение не было о
 @Injectable()
 export class InvitationService {
   private requestOptions = { withCredentials: true };
+
   private successCode = 0;
+
   private muchTriesCode = 4;
 
   constructor(

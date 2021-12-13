@@ -3,8 +3,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { of } from 'rxjs';
 
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigServiceStub, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
 import { AddressHelperService, DadataSuggestionsAddressForLookup } from './address-helper.service';
 import { DadataSuggestionsResponse } from '../dictionary/dictionary-api.types';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
@@ -68,11 +68,13 @@ describe('AddressHelperService', () => {
 
   describe('normalizeAddress method', () => {
     beforeEach(() => {
-      jest.spyOn(
-        dictionaryApiService,
-        'getDadataNormalize',
-        // @ts-ignore
-      ).mockImplementation((address: DadataSuggestionsAddressForLookup) => of());
+      jest
+        .spyOn(
+          dictionaryApiService,
+          'getDadataNormalize',
+          // @ts-ignore
+        )
+        .mockImplementation((suggestAddress: DadataSuggestionsAddressForLookup) => of());
     });
 
     it('calls getDadataNormalize if address is not normalized', () => {
@@ -81,7 +83,7 @@ describe('AddressHelperService', () => {
     });
 
     it('does not call getDadataNormalize if address is normalized', () => {
-      const normalizedAddress = { ...address, address: {}};
+      const normalizedAddress = { ...address, address: {} };
       service.normalizeAddress(normalizedAddress as DadataSuggestionsAddressForLookup);
       expect(dictionaryApiService.getDadataNormalize).not.toHaveBeenCalled();
     });

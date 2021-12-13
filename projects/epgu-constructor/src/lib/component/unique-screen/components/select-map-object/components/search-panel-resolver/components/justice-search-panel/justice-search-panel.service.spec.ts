@@ -1,8 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  WINDOW,
-  YandexMapService,
-} from '@epgu/epgu-constructor-ui-kit';
+import { WINDOW, YandexMapService } from '@epgu/epgu-constructor-ui-kit';
 import { YaMapService } from '@epgu/ui/services/ya-map';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
@@ -58,7 +55,7 @@ describe('JusticeSearchPanelService', () => {
     yaMapService = TestBed.inject(YaMapService);
     yandexMapService = TestBed.inject(YandexMapService);
     yandexMapService.componentAttrs = {};
-    yandexMapService['objectManager'] = {
+    yandexMapService.objectManager = {
       objects: {
         balloon: {
           close: () => ({}),
@@ -85,9 +82,9 @@ describe('JusticeSearchPanelService', () => {
       templateLayoutFactory: {
         createClass: () => ({}),
       },
-      geocode: () => Promise.resolve({ geoObjects: { get: () => ({ getAddressLine: () => '' }) }}),
+      geocode: () => Promise.resolve({ geoObjects: { get: () => ({ getAddressLine: () => '' }) } }),
     };
-    yaMapService['map'] = {
+    yaMapService.map = {
       setBounds: () => null,
       geoObjects: {
         add: () => null,
@@ -96,9 +93,9 @@ describe('JusticeSearchPanelService', () => {
   });
 
   it('setBounds should call yandex map.setBounds with params', () => {
-    justiceSearchPanelService['myPlacemark'] = placemark;
+    justiceSearchPanelService.myPlacemark = placemark;
     const spy = jest.spyOn(yaMapService.map, 'setBounds');
-    justiceSearchPanelService['setBounds']();
+    justiceSearchPanelService.setBounds();
     expect(spy).toHaveBeenCalledWith(
       [
         [55.056529885894676, 51.76148232448543],
@@ -109,15 +106,14 @@ describe('JusticeSearchPanelService', () => {
   });
 
   it('preparePolygons should call getDictionary', () => {
-
     const spy = jest.spyOn(dictionaryApiService, 'getDictionary');
-    justiceSearchPanelService['preparePolygons']();
+    justiceSearchPanelService.preparePolygons();
     expect(spy).toHaveBeenCalledWith('SDRF_Courts', requestOptions);
   });
 
   it('mapClick should create Placemark', () => {
     const window = TestBed.inject(WINDOW) as Window;
-    window['ymaps'] = {
+    window.ymaps = {
       templateLayoutFactory: {
         createClass: () => '',
       },
@@ -127,19 +123,19 @@ describe('JusticeSearchPanelService', () => {
         add: () => null,
       },
     });
-    justiceSearchPanelService['mapClick'](coords);
+    justiceSearchPanelService.mapClick(coords);
     expect(spy).toHaveBeenCalled();
   });
 
   it('highlightResult should call setBounds if there is polygon', () => {
-    justiceSearchPanelService['myPlacemark'] = placemark;
+    justiceSearchPanelService.myPlacemark = placemark;
     selectMapObjectService.componentAttrs = {
       attributeNameWithAddress: '',
       baloonContent: [],
       dictionaryType: '',
       dictionaryFilter: [],
     };
-    justiceSearchPanelService['courtZones'] = {
+    justiceSearchPanelService.courtZones = {
       searchContaining: () => ({
         get: () => ({
           properties: {
@@ -156,19 +152,19 @@ describe('JusticeSearchPanelService', () => {
       setOptions: () => null,
     };
     const spy = jest.spyOn<any, any>(justiceSearchPanelService, 'setBounds');
-    justiceSearchPanelService['highlightResult'](placemark);
+    justiceSearchPanelService.highlightResult(placemark);
     expect(spy).toHaveBeenCalled();
   });
 
   it('highlightResult should call closeBalloon if there is no polygon', () => {
-    justiceSearchPanelService['myPlacemark'] = placemark;
+    justiceSearchPanelService.myPlacemark = placemark;
     selectMapObjectService.componentAttrs = {
       attributeNameWithAddress: '',
       baloonContent: [],
       dictionaryType: '',
       dictionaryFilter: [],
     };
-    justiceSearchPanelService['courtZones'] = {
+    justiceSearchPanelService.courtZones = {
       searchContaining: () => ({
         get: () => null,
       }),
@@ -177,7 +173,7 @@ describe('JusticeSearchPanelService', () => {
     };
     jest.spyOn(yandexMapService, 'setCenter').mockImplementation(() => null);
     const spy = jest.spyOn(yandexMapService, 'closeBalloon');
-    justiceSearchPanelService['highlightResult'](placemark);
+    justiceSearchPanelService.highlightResult(placemark);
     expect(spy).toHaveBeenCalled();
   });
 });

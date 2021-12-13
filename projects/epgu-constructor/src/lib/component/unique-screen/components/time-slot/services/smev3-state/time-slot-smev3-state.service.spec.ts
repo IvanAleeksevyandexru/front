@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { TimeSlotSmev3StateService } from './time-slot-smev3-state.service';
 import { ConfigService, ConfigServiceStub, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { of } from 'rxjs';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { TimeSlotSmev3StateService } from './time-slot-smev3-state.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { TimeSlotsTypes } from '../../time-slot.const';
-import { of } from 'rxjs';
 import { TimeSlotsAnswerInterface, TimeSlotValueInterface } from '../../typings';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 const mockBookAttributes = [{ name: 'test', value: 1 }];
 

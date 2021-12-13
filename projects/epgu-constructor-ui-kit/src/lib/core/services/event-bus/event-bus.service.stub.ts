@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 
 abstract class BusEvent<T = unknown> {
   type: 'string';
+
   payload?: T;
 }
 

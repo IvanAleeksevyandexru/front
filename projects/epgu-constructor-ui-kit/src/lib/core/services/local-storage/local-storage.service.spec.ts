@@ -32,7 +32,7 @@ describe('LocalStorageService', () => {
     });
 
     it('should throw error when get not object', () => {
-      const item = 'I\'m going to blow';
+      const item = "I'm going to blow";
       localStorage.setItem(TEST_KEY, item);
       expect(() => service.get(TEST_KEY)).toThrow('Unexpected token I in JSON at position');
     });

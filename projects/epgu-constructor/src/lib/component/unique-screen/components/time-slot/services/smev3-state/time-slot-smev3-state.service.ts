@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { distinctUntilChanged, map, pluck, shareReplay } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ConfigService, TimeSlotsApiItem, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { IBookingErrorHandling, SlotsNotFoundTemplate } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import {
   TimeSlotAttribute,
@@ -11,7 +12,6 @@ import {
   SlotsPeriodType,
 } from '../../typings';
 import { TimeSlotsTypes } from '../../time-slot.const';
-import { IBookingErrorHandling, SlotsNotFoundTemplate } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class TimeSlotSmev3StateService {
@@ -25,6 +25,7 @@ export class TimeSlotSmev3StateService {
     pluck('attrs', 'bookingErrorHandling'),
     map((value) => value ?? []),
   );
+
   slotsNotFoundTemplate$: Observable<SlotsNotFoundTemplate> = this.screenService.component$.pipe(
     pluck('attrs'),
     pluck('slotsNotFoundTemplate'),
@@ -54,7 +55,9 @@ export class TimeSlotSmev3StateService {
       this.screenService.getCompValueFromCachedAnswers(),
     ) as TimeSlotsAnswerInterface) || null,
   );
+
   cachedAnswer$: Observable<TimeSlotsAnswerInterface> = this.cachedAnswer$$.asObservable();
+
   waitingTimeExpired$: Observable<boolean> = this.value$.pipe(pluck('waitingTimeExpired'));
 
   slotsPeriod$: Observable<string> = this.value$.pipe(
@@ -66,6 +69,7 @@ export class TimeSlotSmev3StateService {
       ),
     ),
   );
+
   solemn$: Observable<boolean> = this.value$.pipe(
     pluck('solemn'),
     map((solemn) => solemn === 'Да'),
@@ -73,7 +77,7 @@ export class TimeSlotSmev3StateService {
   );
 
   cancelReservation$: Observable<string[]> = this.screenService.component$.pipe(
-    map(({ id, attrs: { cancelReservation }}) => (id ? [id, ...(cancelReservation || [])] : [])),
+    map(({ id, attrs: { cancelReservation } }) => (id ? [id, ...(cancelReservation || [])] : [])),
   );
 
   cancelList$: Observable<TimeSlotsAnswerInterface[]> = this.cancelReservation$.pipe(

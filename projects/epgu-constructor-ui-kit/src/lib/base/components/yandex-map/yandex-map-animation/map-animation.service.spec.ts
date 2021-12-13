@@ -8,9 +8,7 @@ describe('MapAnimationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
-      providers: [
-        MapAnimationService
-      ],
+      providers: [MapAnimationService],
     }).compileComponents();
   });
 
@@ -19,7 +17,6 @@ describe('MapAnimationService', () => {
   });
 
   describe('get firstLoading()', () => {
-
     it('should return true on first call and false on next calls', () => {
       const res = service.firstLoading;
       const res1 = service.firstLoading;
@@ -30,20 +27,16 @@ describe('MapAnimationService', () => {
   });
 
   describe('setInitData()', () => {
-
     it('should set object ids to inner property', () => {
       service.setInitData([{ id: 1 } as any]);
 
-      expect(service['animatedIds']).toEqual([1]);
-
+      expect(service.animatedIds).toEqual([1]);
     });
-
 
     it('should correctly calculate animation step', () => {
       service.setInitData([{ id: 1 } as any]);
 
-      expect(service['animationStep']).toEqual(1000);
-
+      expect(service.animationStep).toEqual(1000);
     });
   });
 
@@ -53,17 +46,16 @@ describe('MapAnimationService', () => {
     it('should do nothing if ids array does not include passed id', () => {
       jest.spyOn(global, 'setTimeout');
       service.setInitData([{ id: 1 } as any]);
-      const element = {} as unknown as HTMLElement;
+      const element = ({} as unknown) as HTMLElement;
       service.handleElementAppearAnimation(element, 2);
 
       expect(setTimeout).toHaveBeenCalledTimes(0);
-
     });
 
     it('should remove ids from inner property on pass', () => {
       jest.spyOn(global, 'setTimeout');
       service.setInitData([{ id: 1 }, { id: 2 }] as any);
-      const element = { classList: { add: () => null }, style: {}} as unknown as HTMLElement;
+      const element = ({ classList: { add: () => null }, style: {} } as unknown) as HTMLElement;
 
       service.handleElementAppearAnimation(element, 2);
       service.handleElementAppearAnimation(element, 2);
@@ -74,18 +66,13 @@ describe('MapAnimationService', () => {
     it('should call set timeout with increasing interval', () => {
       jest.spyOn(global, 'setTimeout');
       service.setInitData([{ id: 1 }, { id: 2 }] as any);
-      const element = { classList: { add: () => null }, style: {}} as unknown as HTMLElement;
+      const element = ({ classList: { add: () => null }, style: {} } as unknown) as HTMLElement;
 
       service.handleElementAppearAnimation(element, 2);
       service.handleElementAppearAnimation(element, 1);
 
       expect(setTimeout).toHaveBeenCalledTimes(3);
       expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
-
     });
-
-
   });
-
-
 });

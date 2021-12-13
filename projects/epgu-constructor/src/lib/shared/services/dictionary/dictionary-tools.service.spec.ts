@@ -15,6 +15,7 @@ import {
   JsonHelperService,
   DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockProvider } from 'ng-mocks';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { DictionaryApiService } from './dictionary-api.service';
@@ -22,7 +23,6 @@ import { DictionaryToolsService } from './dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { getDictKeyByComp } from './dictionary-helper';
-import { MockProvider } from 'ng-mocks';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 
 const getDictionary = (count = 0) => {
@@ -107,7 +107,7 @@ describe('DictionaryToolsService', () => {
         value: '{"asString":"true"}',
         valueType: DictionaryValueTypes.value,
       };
-      const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
+      const valueForFilter = service.getValueForFilter(compValue, MapStore, dFilter);
       const result = { asString: 'true' };
       expect(valueForFilter).toEqual({
         rawValue: result,
@@ -122,10 +122,10 @@ describe('DictionaryToolsService', () => {
         value: 'regCode',
         valueType: DictionaryValueTypes.preset,
       };
-      const compValue = JSON.parse(MapStore.display.components[0].value);
-      const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
+      const testCompValue = JSON.parse(MapStore.display.components[0].value);
+      const valueForFilter = service.getValueForFilter(testCompValue, MapStore, dFilter);
 
-      expect(valueForFilter).toEqual({ rawValue: 'R77', value: { asString: 'R77' }});
+      expect(valueForFilter).toEqual({ rawValue: 'R77', value: { asString: 'R77' } });
     });
 
     it('should calc valueType preset and value originalItem.title', () => {
@@ -135,13 +135,13 @@ describe('DictionaryToolsService', () => {
         value: 'originalItem.title',
         valueType: DictionaryValueTypes.preset,
       };
-      const compValue = JSON.parse(MapStore.display.components[0].value);
-      compValue.originalItem = {
+      const testCompValue = JSON.parse(MapStore.display.components[0].value);
+      testCompValue.originalItem = {
         title: 'title77',
       };
-      const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
+      const valueForFilter = service.getValueForFilter(testCompValue, MapStore, dFilter);
 
-      expect(valueForFilter).toEqual({ rawValue: 'title77', value: { asString: 'title77' }});
+      expect(valueForFilter).toEqual({ rawValue: 'title77', value: { asString: 'title77' } });
     });
 
     it('should calc valueType root', () => {
@@ -151,8 +151,8 @@ describe('DictionaryToolsService', () => {
         value: 'orderId',
         valueType: DictionaryValueTypes.root,
       };
-      const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ rawValue: 763712529, value: { asString: 763712529 }});
+      const valueForFilter = service.getValueForFilter(compValue, MapStore, dFilter);
+      expect(valueForFilter).toEqual({ rawValue: 763712529, value: { asString: 763712529 } });
     });
 
     it('should calc valueType ref', () => {
@@ -162,7 +162,7 @@ describe('DictionaryToolsService', () => {
         value: 'pd4.value.regAddr.kladrCode',
         valueType: DictionaryValueTypes.ref,
       };
-      const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
+      const valueForFilter = service.getValueForFilter(compValue, MapStore, dFilter);
       expect(valueForFilter).toEqual({
         rawValue: '77000000000358800',
         value: { asString: '77000000000358800' },
@@ -171,7 +171,7 @@ describe('DictionaryToolsService', () => {
 
     it('should calc valueType ref and patch items == 1', () => {
       expect(
-        service['getValueForFilter'](compValue, MapStore, {
+        service.getValueForFilter(compValue, MapStore, {
           attributeName: 'CODE',
           condition: DictionaryConditions.CONTAINS,
           value: 'pd4',
@@ -185,7 +185,7 @@ describe('DictionaryToolsService', () => {
 
     it('should calc valueType ref and patch items == 0', () => {
       expect(
-        service['getValueForFilter'](compValue, MapStore, {
+        service.getValueForFilter(compValue, MapStore, {
           attributeName: 'CODE',
           condition: DictionaryConditions.CONTAINS,
           value: '',
@@ -199,7 +199,7 @@ describe('DictionaryToolsService', () => {
 
     it('should calc valueType ref and patch string type', () => {
       expect(
-        service['getValueForFilter'](compValue, MapStore, {
+        service.getValueForFilter(compValue, MapStore, {
           attributeName: 'CODE',
           condition: DictionaryConditions.CONTAINS,
           value: 'sn2a.value',
@@ -213,7 +213,7 @@ describe('DictionaryToolsService', () => {
 
     it('should calc valueType ref and patch by array', () => {
       expect(
-        service['getValueForFilter'](compValue, MapStore, {
+        service.getValueForFilter(compValue, MapStore, {
           attributeName: 'CODE',
           condition: DictionaryConditions.CONTAINS,
           value: 'pd1.value.states[1].fields[2].value',
@@ -227,7 +227,7 @@ describe('DictionaryToolsService', () => {
 
     it('should calc valueType ref and patch undefiend', () => {
       expect(
-        service['getValueForFilter'](compValue, MapStore, {
+        service.getValueForFilter(compValue, MapStore, {
           attributeName: 'CODE',
           condition: DictionaryConditions.CONTAINS,
           value: 'pd1.value.st123',
@@ -246,7 +246,7 @@ describe('DictionaryToolsService', () => {
         value: 'searchString',
         valueType: DictionaryValueTypes.rawFilter,
       };
-      const valueForFilter = service['getValueForFilter'](compValue, MapStore, dFilter);
+      const valueForFilter = service.getValueForFilter(compValue, MapStore, dFilter);
       expect(valueForFilter).toEqual({
         rawValue: 'searchString',
         value: { asString: 'searchString' },
@@ -261,8 +261,8 @@ describe('DictionaryToolsService', () => {
         valueType: DictionaryValueTypes.formValue,
         dateFormat: 'yyyy-MM-dd',
       };
-      const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ rawValue: '2021-04-08', value: { asString: '2021-04-08' }});
+      const valueForFilter = service.getValueForFilter(form as FormArray, MapStore, dFilter);
+      expect(valueForFilter).toEqual({ rawValue: '2021-04-08', value: { asString: '2021-04-08' } });
     });
 
     it('should calc valueType formValue with string', () => {
@@ -272,8 +272,8 @@ describe('DictionaryToolsService', () => {
         value: 'act2',
         valueType: DictionaryValueTypes.formValue,
       };
-      const valueForFilter = service['getValueForFilter'](form as FormArray, MapStore, dFilter);
-      expect(valueForFilter).toEqual({ rawValue: 'test', value: { asString: 'test' }});
+      const valueForFilter = service.getValueForFilter(form as FormArray, MapStore, dFilter);
+      expect(valueForFilter).toEqual({ rawValue: 'test', value: { asString: 'test' } });
     });
 
     it('should calc valueType INVALID_VALUE_TYPE', () => {
@@ -284,7 +284,7 @@ describe('DictionaryToolsService', () => {
         valueType: 'INVALID_VALUE_TYPE',
       };
       expect(() => {
-        service['getValueForFilter'](compValue, MapStore, dFilter);
+        service.getValueForFilter(compValue, MapStore, dFilter);
       }).toThrowError(`Неверный valueType для фильтров - ${dFilter.valueType}`);
     });
   });
@@ -299,7 +299,7 @@ describe('DictionaryToolsService', () => {
 
   describe('adaptDictionaryToListItem()', () => {
     it('should return ListElement with default mapping', () => {
-      const items = getDictionary(2).items;
+      const { items } = getDictionary(2);
       const actualListItems = service.adaptDictionaryToListItem(items);
       const expectedListItems = [
         {
@@ -338,7 +338,6 @@ describe('DictionaryToolsService', () => {
       expect(expectedListItems).toEqual(actualListItems);
     });
   });
-
 
   describe('prepareSimpleFilter', () => {
     it('should pass asString by default', () => {

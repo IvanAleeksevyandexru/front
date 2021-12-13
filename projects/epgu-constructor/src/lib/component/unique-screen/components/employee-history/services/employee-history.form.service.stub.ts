@@ -36,7 +36,7 @@ export class EmployeeHistoryFormServiceStub {
 
     if (generationData) {
       for (const [key, value] of Object.entries(generationData)) {
-        let convertedValue = value;
+        const convertedValue = value;
         form.get(key).patchValue(convertedValue);
       }
     }

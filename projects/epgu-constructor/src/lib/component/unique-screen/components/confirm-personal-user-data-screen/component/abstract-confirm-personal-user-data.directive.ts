@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Directive, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ComponentBase } from '../../../../../screen/screen.types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';

@@ -18,8 +18,11 @@ import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/co
 @Injectable()
 export class AutocompleteService {
   componentsSuggestionsSet: Set<[string, string]> = new Set();
+
   suggestionGroupId: string = null;
+
   repeatableComponents: ComponentDto[][] = [];
+
   parentComponent: ComponentDto = null;
 
   constructor(
@@ -54,7 +57,6 @@ export class AutocompleteService {
         }
         if (componentsSuggestionsFieldsIds.length) {
           this.fieldsSuggestionsApiCall(componentsSuggestionsFieldsIds);
-          return;
         }
       });
 
@@ -122,10 +124,8 @@ export class AutocompleteService {
           const html = `
           <div class="suggest-item">
             <div>${value}</div>
-            ${hints ? '<div class="suggest-hint">' + hints + '</div>' : ''}
-            <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${
-              mnemonic + ':' + value + ':' + id
-            }">
+            ${hints ? `<div class="suggest-hint">${hints}</div>` : ''}
+            <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${`${mnemonic}:${value}:${id}`}">
             </button>
           </div>
           `;
@@ -166,11 +166,11 @@ export class AutocompleteService {
   public getRepeatableComponents(display): ComponentDto[][] {
     if (display.components[0]?.attrs?.repeatableComponents) {
       return display.components[0]?.attrs.repeatableComponents;
-    } else if (display.components[0]?.attrs?.components) {
-      return [display.components[0]?.attrs.components];
-    } else {
-      return [];
     }
+    if (display.components[0]?.attrs?.components) {
+      return [display.components[0]?.attrs.components];
+    }
+    return [];
   }
 
   private groupSuggestionsApiCall(): void {
@@ -210,7 +210,7 @@ export class AutocompleteService {
 
   private getComponentsSuggestionsFieldsIds(display: DisplayDto): string[] {
     const getSuggestionsIds = (components: ComponentDto[]): string[] => {
-      let fieldSuggestionIdsSet: Set<string> = new Set();
+      const fieldSuggestionIdsSet: Set<string> = new Set();
       const result = components
         .filter((component) => component.suggestionId)
         .map((component) => {
@@ -256,9 +256,8 @@ export class AutocompleteService {
 
     if (this.repeatableComponents.length) {
       return getSuggestionsIds(this.repeatableComponents[0]);
-    } else {
-      return getSuggestionsIds(display.components);
     }
+    return getSuggestionsIds(display.components);
   }
 
   private setFieldsAndComponentsSuggestionIds(

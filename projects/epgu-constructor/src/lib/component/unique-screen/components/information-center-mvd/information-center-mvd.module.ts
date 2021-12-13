@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
+import { ConstructorDropdownModule, ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { InformationCenterMvdContainerComponent } from './container/information-center-mvd-container.component';
-import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
 import { InformationCenterCardComponent } from './components/information-center-card/information-center-card.component';
 import { BaseModule } from '../../../../shared/base.module';

@@ -1,14 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormControl } from '@angular/forms';
-import { DropDownDeptsComponent } from './drop-down-depts.component';
-import { CoreModule } from '../../../core/core.module';
-import { BaseModule } from '../../base.module';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { DownloadServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
+  DownloadService,
+  DownloadServiceStub,
   ConfigService,
   ConfigServiceStub,
   LoggerService,
@@ -16,12 +11,18 @@ import {
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { MockModule, MockProvider } from 'ng-mocks';
+import { HttpClientModule } from '@angular/common/http';
+import { DropDownDeptsComponent } from './drop-down-depts.component';
+import { CoreModule } from '../../../core/core.module';
+import { BaseModule } from '../../base.module';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+
 import { CustomListDictionary } from '../../../component/custom-screen/components-list.types';
 import { ISuggestionItem } from '../../../core/services/autocomplete/autocomplete.inteface';
 import IDropDownDeptsAttrs from './IDropDownDeptsAttrs';
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
-import { MockModule, MockProvider } from 'ng-mocks';
-import { HttpClientModule } from '@angular/common/http';
 
 const getDictionary = (count = 0, repeatedWithNoFilters = false): CustomListDictionary => {
   const list = [];

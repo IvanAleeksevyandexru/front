@@ -1,15 +1,15 @@
-import DictionarySharedAttrs from './DictionarySharedAttrs';
-import BaseModel from './BaseModel';
-import {
-  CustomComponentAttr,
-  CustomComponentDropDownItem,
-  CustomComponentDropDownItemList,
-} from '../components-list.types';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
 import { ListItem } from '@epgu/ui/models/dropdown';
 import { AbstractControl } from '@angular/forms';
 import { isUndefined } from 'lodash';
+import {
+  CustomComponentAttr,
+  CustomComponentDropDownItem,
+  CustomComponentDropDownItemList,
+} from '../components-list.types';
+import BaseModel from './BaseModel';
+import DictionarySharedAttrs from './DictionarySharedAttrs';
 
 export default class DropDownLikeModel extends BaseModel<DictionarySharedAttrs> {
   protected _dropDown$: BehaviorSubject<Partial<ListItem>[]> = new BehaviorSubject<

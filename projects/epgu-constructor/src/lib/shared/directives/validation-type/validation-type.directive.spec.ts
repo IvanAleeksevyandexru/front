@@ -5,20 +5,22 @@ import { FormBuilder, FormControl, FormGroup, NgControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
-  CustomComponent,
-  CustomScreenComponentTypes,
-} from '../../../component/custom-screen/components-list.types';
-import { DateRangeService } from '../../services/date-range/date-range.service';
-import { CoreModule } from '../../../core/core.module';
-import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import {
+  CoreUiModule,
+  DatesToolsService,
   ConfigService,
   ConfigServiceStub,
   EventBusService,
   LoggerService,
   LoggerServiceStub,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CustomComponent,
+  CustomScreenComponentTypes,
+} from '../../../component/custom-screen/components-list.types';
+import { DateRangeService } from '../../services/date-range/date-range.service';
+import { CoreModule } from '../../../core/core.module';
+
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
@@ -61,7 +63,9 @@ const componentMockData: CustomComponent = {
 })
 class MockComponent {
   @Input() componentMockData: CustomComponent;
+
   form: FormGroup;
+
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       value: new FormControl({ value: '' }),

@@ -93,8 +93,7 @@ describe('HealthHandlerService', () => {
       flush();
     }));
 
-    it('shouldn\'t call healthService measureStart and measureEnd if it\'s not valid request for health', fakeAsync((
-    ) => {
+    it("shouldn't call healthService measureStart and measureEnd if it's not valid request for health", fakeAsync(() => {
       const api = 'https://pgu-uat-fed.test.gosuslugi.ru/api/v1/some-wrong-endpoint';
       jest.spyOn(healthService, 'measureStart');
       jest.spyOn(healthService, 'measureEnd');

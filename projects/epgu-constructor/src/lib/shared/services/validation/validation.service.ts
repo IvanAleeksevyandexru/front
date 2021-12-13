@@ -46,11 +46,14 @@ type DateValidationCondition = '<' | '<=' | '>' | '>=';
 @Injectable()
 export class ValidationService {
   public form?: FormArray;
+
   private readonly typesWithoutValidation: CustomScreenComponentTypes[] = [
     CustomScreenComponentTypes.LabelSection,
     CustomScreenComponentTypes.HtmlString,
   ];
+
   private readonly personInnLength = 12;
+
   private readonly legalInnLength = 10;
 
   constructor(
@@ -258,8 +261,8 @@ export class ValidationService {
   }
 
   public checkRS(rs: string, refs: KeyValueMap): boolean {
-    const check = (rs: string, bik: string | null,): boolean => {
-      const bikRs = `${bik?.slice(-3)}${rs}`;
+    const check = (checkRs: string, bik: string | null): boolean => {
+      const bikRs = `${bik?.slice(-3)}${checkRs}`;
       const coefficients = [7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1, 3, 7, 1];
       const checkSum = coefficients.reduce(
         (sum, coefficient, index) => sum + coefficient * (parseFloat(bikRs[index]) % 10),
@@ -275,9 +278,7 @@ export class ValidationService {
       .map(({ value }) => value.value?.id || value.value);
     const [bik, manualBik] = values;
 
-    return manualBik !== null && manualBik !== undefined
-      ? check(rs, manualBik)
-      : check(rs, bik);
+    return manualBik !== null && manualBik !== undefined ? check(rs, manualBik) : check(rs, bik);
   }
 
   public checkCardNumber(cardNumber: string): boolean {
@@ -316,7 +317,7 @@ export class ValidationService {
       case CustomScreenComponentTypes.LegalInnInput:
         return value.length === this.legalInnLength && checkINN(value);
       case CustomScreenComponentTypes.CalendarInput:
-        return this.isCompoundComponentValid(component, value as unknown as KeyValueMap);
+        return this.isCompoundComponentValid(component, (value as unknown) as KeyValueMap);
       case CustomScreenComponentTypes.CardNumberInput:
         return this.checkCardNumber(value);
       case CustomScreenComponentTypes.StringInput:
@@ -328,9 +329,11 @@ export class ValidationService {
 
   private isCompoundComponentValid(component: CustomComponent, controlValue: KeyValueMap): boolean {
     const requiredIds = component.attrs.components
-      .filter((component) => component.required)
-      .map((component) => component.id);
-    return Object.entries(controlValue).every(([key, value]) => !requiredIds.includes(key) || !!value);
+      .filter((componentDto) => componentDto.required)
+      .map((componentDto) => componentDto.id);
+    return Object.entries(controlValue).every(
+      ([key, value]) => !requiredIds.includes(key) || !!value,
+    );
   }
 
   private calculateStringPredicate(component: CustomComponent, value: string): boolean {
@@ -407,10 +410,10 @@ export class ValidationService {
     let validations: CustomComponentAttrValidation[] = [];
     if (component.type === CustomScreenComponentTypes.CalendarInput) {
       const components = component.attrs.components;
-      for (const component of components) {
-        for (const validation of component.attrs.validation) {
+      for (const componentDto of components) {
+        for (const validation of componentDto.attrs.validation) {
           if (validation.type === ValidationType.date) {
-            validation['forChild'] = component.id;
+            validation.forChild = componentDto.id;
             validations.push(validation);
           }
         }

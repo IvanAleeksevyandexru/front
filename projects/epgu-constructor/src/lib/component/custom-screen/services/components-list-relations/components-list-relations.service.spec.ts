@@ -1,7 +1,12 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ConfigService, DatesToolsService, LoggerService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DatesToolsService,
+  LoggerService,
+  JsonHelperService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import {
@@ -79,9 +84,11 @@ describe('ComponentsListRelationsService', () => {
 
     it('should do nothing if there is no dependent components', () => {
       jest.spyOn(dateRangeService, 'updateLimitDate');
-      const getStrategySpy = jest.spyOn<any, any>(relationResolverService, 'getStrategy').mockReturnValue({
-        handleRelation: jest.fn()
-      });
+      const getStrategySpy = jest
+        .spyOn<any, any>(relationResolverService, 'getStrategy')
+        .mockReturnValue({
+          handleRelation: jest.fn(),
+        });
 
       let result = service.getUpdatedShownElements(
         [],
@@ -144,14 +151,16 @@ describe('ComponentsListRelationsService', () => {
 
     it('should update shown elements for dependent components if el.relatedRel === component.id', () => {
       jest.spyOn(dateRangeService, 'updateLimitDate').mockImplementation(() => undefined);
-      const getStrategySpy = jest.spyOn<any, any>(relationResolverService, 'getStrategy').mockReturnValue({
-        handleRelation: jest.fn().mockReturnValue({
-          bar: {
-            isShown: false,
-            relation: CustomComponentRefRelation.calc,
-          },
-        })
-      });
+      const getStrategySpy = jest
+        .spyOn<any, any>(relationResolverService, 'getStrategy')
+        .mockReturnValue({
+          handleRelation: jest.fn().mockReturnValue({
+            bar: {
+              isShown: false,
+              relation: CustomComponentRefRelation.calc,
+            },
+          }),
+        });
 
       const reference: CustomComponentRef = {
         relatedRel: 'rf1',
@@ -196,7 +205,7 @@ describe('ComponentsListRelationsService', () => {
             isShown: false,
             relation: CustomComponentRefRelation.calc,
           },
-        })
+        }),
       });
 
       const dependentComponent = createComponentMock({
@@ -252,7 +261,7 @@ describe('ComponentsListRelationsService', () => {
 
       jest.spyOn(dateRangeService, 'updateLimitDate');
       jest.spyOn<any, any>(relationResolverService, 'getStrategy').mockReturnValue({
-        handleRelation: jest.fn()
+        handleRelation: jest.fn(),
       });
       jest.spyOn<any, any>(service, 'getDependentComponents').mockReturnValue(components);
 
@@ -403,8 +412,8 @@ describe('ComponentsListRelationsService', () => {
           {
             relatedRel: 'rf1',
             val: 'fake data',
-            relation: 'displayOff'
-          }
+            relation: 'displayOff',
+          },
         ],
       },
     } as CustomComponent;
@@ -414,22 +423,30 @@ describe('ComponentsListRelationsService', () => {
     });
 
     it('should return true by default, if component has no identical relation', () => {
-      const component = { ...componentMock, attrs: { ref: [] }};
-      expect(service.isComponentShown(component, cachedAnswers, [],{})).toBe(true);
+      const testComponent = { ...componentMock, attrs: { ref: [] } };
+      expect(service.isComponentShown(testComponent, cachedAnswers, [], {})).toBe(true);
     });
 
     it('should be shown if related component is hidden', () => {
       const components = [{ id: 'rf1' } as CustomComponent, component];
-      const componentListStatus = { rf1: { isShown: false }} as unknown as CustomListStatusElements;
+      const componentListStatus = ({
+        rf1: { isShown: false },
+      } as unknown) as CustomListStatusElements;
 
-      expect(service.isComponentShown(component, cachedAnswers, components, componentListStatus)).toBe(true);
+      expect(
+        service.isComponentShown(component, cachedAnswers, components, componentListStatus),
+      ).toBe(true);
     });
 
     it('should be hidden if related component is shown', () => {
       const components = [{ id: 'rf1' } as CustomComponent, component];
-      const componentListStatus = { rf1: { isShown: true }} as unknown as CustomListStatusElements;
+      const componentListStatus = ({
+        rf1: { isShown: true },
+      } as unknown) as CustomListStatusElements;
 
-      expect(service.isComponentShown(component, cachedAnswers, components, componentListStatus)).toBe(false);
+      expect(
+        service.isComponentShown(component, cachedAnswers, components, componentListStatus),
+      ).toBe(false);
     });
 
     it('should be hidden if related component was on prev screen', () => {
@@ -484,9 +501,7 @@ describe('ComponentsListRelationsService', () => {
         attrs: { dateRestrictions },
       };
       const form = new FormArray([]);
-      const stub = jest
-        .spyOn(service as any, 'updateFormWithDateRange')
-        .mockReturnValue( null);
+      const stub = jest.spyOn(service as any, 'updateFormWithDateRange').mockReturnValue(null);
 
       await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
 
@@ -509,9 +524,7 @@ describe('ComponentsListRelationsService', () => {
         attrs: { dateRestrictions },
       };
       const form = new FormArray([]);
-      const stub = jest
-        .spyOn(service as any, 'updateFormWithDateRange')
-        .mockReturnValue(null);
+      const stub = jest.spyOn(service as any, 'updateFormWithDateRange').mockReturnValue(null);
 
       await service.updateLimitDatesByDateRestrictions([], component, form, {}, false);
 

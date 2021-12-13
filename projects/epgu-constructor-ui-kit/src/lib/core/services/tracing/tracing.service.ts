@@ -9,9 +9,13 @@ import { KeyValueMap } from '@epgu/epgu-constructor-types';
 @Injectable()
 export class TracingService {
   private localServiceName = 'form-frontend';
+
   private _tracer: Tracer;
+
   private ctxImpl: ExplicitContext = new ExplicitContext();
+
   private recorder: BatchRecorder;
+
   private defaultTags: KeyValueMap = {
     serviceCode: '',
   };

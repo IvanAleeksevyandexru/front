@@ -2,26 +2,33 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import {
-  EmployeeHistoryAvailableDates,
-  EmployeeHistoryModel,
-  EmployeeHistoryUncheckedPeriod,
-} from '../employee-history.types';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import {
+  DatesToolsService,
   DATE_MONTH_YEAR_FORMAT,
   DATE_STRING_LLLL_YYYY_FORMAT,
   DATE_STRING_SLASH_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
+
 import { MonthYear } from '@epgu/ui/models/date-time';
+import {
+  EmployeeHistoryAvailableDates,
+  EmployeeHistoryModel,
+  EmployeeHistoryUncheckedPeriod,
+} from '../employee-history.types';
 
 @Injectable()
 export class EmployeeHistoryMonthsService {
   years = 10;
+
   maxDate: MonthYear;
+
   minDateFrom: MonthYear;
+
   minDateTo: MonthYear;
+
   availableMonths: EmployeeHistoryAvailableDates[] = [];
+
   isNonStop: boolean;
+
   isMonthComplete$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private datesToolsService: DatesToolsService) {}
@@ -87,12 +94,14 @@ export class EmployeeHistoryMonthsService {
         const availableMonths: string[] = this.getAvailableMonths(
           this.datesToolsService.setCalendarDate(date, e.from.year, e.from.month, null),
           this.datesToolsService.setCalendarDate(date, e.to.year, e.to.month, null),
-        ).map((e: EmployeeHistoryAvailableDates) => e.date);
+        ).map((availableDate: EmployeeHistoryAvailableDates) => availableDate.date);
 
-        this.availableMonths = this.availableMonths.map((e: EmployeeHistoryAvailableDates) => ({
-          ...e,
-          checked: availableMonths.includes(e.date) || e.checked,
-        }));
+        this.availableMonths = this.availableMonths.map(
+          (availableMonth: EmployeeHistoryAvailableDates) => ({
+            ...availableMonth,
+            checked: availableMonths.includes(availableMonth.date) || availableMonth.checked,
+          }),
+        );
       }
     });
 

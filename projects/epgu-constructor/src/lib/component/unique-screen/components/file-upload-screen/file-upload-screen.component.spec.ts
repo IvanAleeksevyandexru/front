@@ -1,12 +1,22 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  BusEventType,
+  EventBusService,
+  ScreenContainerComponent,
+  ModalService,
+  ModalServiceStub,
+  LongButtonComponent,
+} from '@epgu/epgu-constructor-ui-kit';
+import { MockComponent, MockDirective } from 'ng-mocks';
+import { By } from '@angular/platform-browser';
+import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { PluralizeModule } from '@epgu/ui/pipes';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { FileUploadScreenComponent } from './file-upload-screen.component';
-import { MockComponent, MockDirective } from 'ng-mocks';
 import { PageNameComponent } from '../../../../shared/components/base-components/page-name/page-name.component';
-import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { FileUploadComponent } from '../../../../shared/components/file-upload/file-upload/file-upload.component';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
@@ -15,16 +25,12 @@ import {
   FileUploadAttributes,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { By } from '@angular/platform-browser';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentDto, ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
-import { LongButtonComponent } from '@epgu/epgu-constructor-ui-kit';
+
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
-import { PluralizeModule } from '@epgu/ui/pipes';
 import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
 import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
 import { UniqueScreenService } from '../../unique-screen.service';
@@ -164,7 +170,7 @@ describe('FileUploadScreenComponent', () => {
           },
         ],
         totalSize: 100,
-        totalCount: 1
+        totalCount: 1,
       });
     });
 
@@ -425,7 +431,7 @@ describe('FileUploadScreenComponent', () => {
             uploadId: '1',
             required: false,
             value: [],
-          }
+          },
         ],
         errors: [],
       });

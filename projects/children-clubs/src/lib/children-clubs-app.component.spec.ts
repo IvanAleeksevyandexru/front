@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import {
   CfAppStateService,
   CfAppStateServiceStub,
@@ -32,12 +31,13 @@ import {
   LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { AppTypes } from '@epgu/epgu-constructor-types';
-import { ProjectListComponent } from './components/project-list/project-list.component';
-import { ProgramListModule } from './components/program-list/program-list.module';
-import { BaseModule } from './components/base/base.module';
 import { LoadService } from '@epgu/ui/services/load';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotifierModule } from '@epgu/ui/components/notifier';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import { ProgramListModule } from './components/program-list/program-list.module';
+import { BaseModule } from './components/base/base.module';
+import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 
 describe('ChildrenClubsComponent', () => {
   let component: ChildrenClubsAppComponent;

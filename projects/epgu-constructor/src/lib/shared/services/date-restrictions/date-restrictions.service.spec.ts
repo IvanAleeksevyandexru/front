@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { DateRestrictionsService } from './date-restrictions.service';
 import { ConfigService, DatesToolsService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray, FormControl } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DateRestrictionsService } from './date-restrictions.service';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 import { DateRestriction } from '../../../component/custom-screen/components-list.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
@@ -60,7 +60,7 @@ describe('DateRestrictionsService', () => {
   describe('setDateRefs() method', () => {
     it('should correctly set refs for current screen components', () => {
       const refStub = jest
-        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+        .spyOn(service.dictionaryToolsService, 'getValueViaRef')
         .mockReturnValue('2001-04-24T00:00:00.000Z');
       const restrictions: DateRestriction[] = [
         {
@@ -75,7 +75,7 @@ describe('DateRestrictionsService', () => {
         {},
       );
       expect(refStub).toHaveBeenCalledWith(
-        { test: { value: '2001-04-24T00:00:00.000Z' }},
+        { test: { value: '2001-04-24T00:00:00.000Z' } },
         'test.value',
       );
       expect(restrictions[0].value).toEqual('24.04.2001');
@@ -83,7 +83,7 @@ describe('DateRestrictionsService', () => {
 
     it('should correctly set refs for current screen compound components', () => {
       const refStub = jest
-        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+        .spyOn(service.dictionaryToolsService, 'getValueViaRef')
         .mockReturnValue('2021-08-23T00:00:00.000Z');
       const restrictions: DateRestriction[] = [
         {
@@ -100,7 +100,7 @@ describe('DateRestrictionsService', () => {
         {},
       );
       expect(refStub).toHaveBeenCalledWith(
-        { test: { value: { firstDate: '2021-08-23T00:00:00.000Z' }}},
+        { test: { value: { firstDate: '2021-08-23T00:00:00.000Z' } } },
         'test.value.firstDate',
       );
       expect(restrictions[0].value).toEqual('23.08.2021');
@@ -108,7 +108,7 @@ describe('DateRestrictionsService', () => {
 
     it('should correctly set refs for applicant answers', () => {
       const refStub = jest
-        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+        .spyOn(service.dictionaryToolsService, 'getValueViaRef')
         .mockReturnValueOnce(null)
         .mockReturnValueOnce('05.07.1979');
       const restrictions: DateRestriction[] = [
@@ -122,7 +122,7 @@ describe('DateRestrictionsService', () => {
         test: { visited: true, value: '05.07.1979' },
       });
       expect(refStub).toHaveBeenCalledWith(
-        { test: { value: '05.07.1979', visited: true }},
+        { test: { value: '05.07.1979', visited: true } },
         'test.value',
       );
       expect(restrictions[0].value).toEqual('05.07.1979');
@@ -130,7 +130,7 @@ describe('DateRestrictionsService', () => {
 
     it('should correctly set refs for applicant answers', () => {
       jest
-        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+        .spyOn(service.dictionaryToolsService, 'getValueViaRef')
         .mockReturnValueOnce(null)
         .mockReturnValueOnce('05.07.1979');
       const restrictions: DateRestriction[] = [
@@ -148,7 +148,7 @@ describe('DateRestrictionsService', () => {
 
     it('should correctly set refs for applicant answers iso string', () => {
       const refStub = jest
-        .spyOn(service['dictionaryToolsService'], 'getValueViaRef')
+        .spyOn(service.dictionaryToolsService, 'getValueViaRef')
         .mockReturnValueOnce(null)
         .mockReturnValueOnce('1979-07-05T00:00:00.000Z');
       const restrictions: DateRestriction[] = [
@@ -163,7 +163,7 @@ describe('DateRestrictionsService', () => {
       });
       expect(refStub).toHaveBeenNthCalledWith(
         2,
-        { test: { value: '1979-07-05T00:00:00.000Z', visited: true }},
+        { test: { value: '1979-07-05T00:00:00.000Z', visited: true } },
         'test.value',
       );
       expect(restrictions[0].value).toEqual('05.07.1979');

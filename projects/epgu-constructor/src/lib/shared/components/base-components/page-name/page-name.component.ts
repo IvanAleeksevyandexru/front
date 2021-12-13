@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ScreenService } from '../../../../screen/screen.service';
 
 @Component({
@@ -7,7 +7,6 @@ import { ScreenService } from '../../../../screen/screen.service';
   styleUrls: ['./page-name.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PageNameComponent implements OnInit {
+export class PageNameComponent {
   constructor(public screenService: ScreenService) {}
-  ngOnInit(): void {}
 }

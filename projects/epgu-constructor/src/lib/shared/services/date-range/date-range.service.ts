@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { CustomComponent } from '../../../component/custom-screen/components-list.types';
-import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
-import { DateRangeAttrs, DateRange, Range, DateRangeRef } from './date-range.models';
+import { DatesToolsService, DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { CustomComponent } from '../../../component/custom-screen/components-list.types';
+
+import { DateRangeAttrs, DateRange, Range, DateRangeRef } from './date-range.models';
 
 @Injectable()
 export class DateRangeService {
@@ -39,7 +39,7 @@ export class DateRangeService {
    */
   public clearDate(id: string, attrs: DateRangeAttrs): void {
     if (!attrs?.limit) return;
-    let componentId = attrs.to ?? attrs.from;
+    const componentId = attrs.to ?? attrs.from;
     this.rangeMap.set(componentId, { max: null, min: null });
     this.rangeMap.set(id, { max: null, min: null });
   }
@@ -110,7 +110,7 @@ export class DateRangeService {
     relatedDate: Date,
     applicantAnswers: ApplicantAnswersDto,
   ): Promise<Range> {
-    let range = { max: null, min: null };
+    const range = { max: null, min: null };
     this.rangeMap.set(id, range);
 
     if (!ref) {

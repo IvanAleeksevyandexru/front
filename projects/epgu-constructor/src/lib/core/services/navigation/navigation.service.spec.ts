@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { NavigationService } from './navigation.service';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -8,12 +7,18 @@ import {
   LocationService,
   MobilViewEvents,
   SmuEventsServiceStub,
-  WINDOW_PROVIDERS
+  WINDOW_PROVIDERS,
 } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+  OrgType,
+} from '@epgu/epgu-constructor-types';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { NavigationService } from './navigation.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ActionType, ComponentActionDto, DTOActionAction, OrgType } from '@epgu/epgu-constructor-types';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('NavigationService', () => {
   let navigationService: NavigationService;
@@ -132,28 +137,38 @@ describe('NavigationService', () => {
     navigationService.redirectToLK();
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all`);
     navigationService.redirectToLK(false, mockActionWithQueryParams);
-    expect(locationService.getHref())
-      .toBe(`${configService.lkUrl}/orders?${Object.keys(mockActionWithQueryParams.queryParams)[0]}=${Object.values(mockActionWithQueryParams.queryParams)[0]}`);
+    expect(locationService.getHref()).toBe(
+      `${configService.lkUrl}/orders?${Object.keys(mockActionWithQueryParams.queryParams)[0]}=${
+        Object.values(mockActionWithQueryParams.queryParams)[0]
+      }`,
+    );
 
     navigationService.isWebView = true;
     jest.spyOn(smuEventsService, 'notify');
     navigationService.redirectToLK();
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/notifications`);
     navigationService.redirectToLK(false, mockActionWithQueryParams);
-    expect(locationService.getHref())
-      .toBe(`${configService.lkUrl}/notifications?${Object.keys(mockActionWithQueryParams.queryParams)[0]}=${Object.values(mockActionWithQueryParams.queryParams)[0]}`);
+    expect(locationService.getHref()).toBe(
+      `${configService.lkUrl}/notifications?${
+        Object.keys(mockActionWithQueryParams.queryParams)[0]
+      }=${Object.values(mockActionWithQueryParams.queryParams)[0]}`,
+    );
   });
   it('test redirectToLKByOrgType', () => {
     const spy = jest.spyOn(navigationService, 'redirectToLK');
-    screenService.initScreenStore({ additionalParameters: {}});
+    screenService.initScreenStore({ additionalParameters: {} });
     navigationService.redirectToLKByOrgType(mockAction);
     expect(spy).toHaveBeenCalledWith(false, mockAction);
     expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders/all`);
-    screenService.initScreenStore({ additionalParameters: {}});
+    screenService.initScreenStore({ additionalParameters: {} });
     navigationService.redirectToLKByOrgType({ ...mockAction, ...mockQueryParams });
     expect(navigationService.redirectToLK).toHaveBeenCalledWith(false, mockAction);
-    expect(locationService.getHref()).toBe(`${configService.lkUrl}/orders?${Object.keys(mockQueryParams.queryParams)[0]}=${Object.values(mockQueryParams.queryParams)[0]}`);
-    screenService.initScreenStore({ additionalParameters: { orgType: OrgType.Legal }});
+    expect(locationService.getHref()).toBe(
+      `${configService.lkUrl}/orders?${Object.keys(mockQueryParams.queryParams)[0]}=${
+        Object.values(mockQueryParams.queryParams)[0]
+      }`,
+    );
+    screenService.initScreenStore({ additionalParameters: { orgType: OrgType.Legal } });
     jest.spyOn(smuEventsService, 'notify');
     navigationService.redirectToLKByOrgType(mockAction);
     expect(navigationService.redirectToLK).toHaveBeenCalledWith(true, mockAction);
@@ -171,9 +186,9 @@ describe('NavigationService', () => {
   it('test redirectExternal', () => {
     const url = '#';
 
-    jest.spyOn(window, 'open').mockImplementation((url: string, target: string): Window => {
-      return;
-    });
+    // @ts-ignore
+    // eslint-disable-next-line no-empty-function
+    jest.spyOn(window, 'open').mockImplementation((urlParam: string, target: string): Window => {});
     navigationService.redirectExternal(url);
     expect(window.open).toHaveBeenCalledWith(url, '_blank');
   });

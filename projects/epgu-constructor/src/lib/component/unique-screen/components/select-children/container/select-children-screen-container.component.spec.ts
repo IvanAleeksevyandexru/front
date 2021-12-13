@@ -4,23 +4,28 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { MockComponent, MockModule } from 'ng-mocks';
+import {
+  EventBusService,
+  ConstructorDropdownModule,
+  CoreUiModule,
+  ScreenPadModule,
+} from '@epgu/epgu-constructor-ui-kit';
+import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { CoreModule } from '../../../../../core/core.module';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../../shared/components/clone-button/clone-button.module';
-import { ConstructorDropdownModule, CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
 import { ComponentsListModule } from '../../../../custom-screen/components-list.module';
 import { SelectChildrenScreenContainerComponent } from './select-children-screen-container.component';
 import { SelectChildrenComponent } from '../components/select-children/select-children.component';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
-import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
 import { UniquenessErrorsService } from '../../../../../shared/services/uniqueness-errors/uniqueness-errors.service';
@@ -32,7 +37,7 @@ describe('SelectChildrenScreenContainerComponent', () => {
   let uniquenessErrorsService: UniquenessErrorsService;
   let currentAnswersService: CurrentAnswersService;
   const selector = 'epgu-constructor-select-children';
-  let componentMock = {
+  const componentMock = {
     id: 'scrchld16',
     name: 'Подтверждение ПД ребенка',
     type: 'COMPONENT',
@@ -159,8 +164,8 @@ describe('SelectChildrenScreenContainerComponent', () => {
       };
       jest.spyOn(screenService, 'cachedAnswers', 'get').mockReturnValue(cachedAnswersMock);
       jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(componentMock) as any);
-      component.cachedValue$.subscribe((value) => {
-        expect(value).toBeNull();
+      component.cachedValue$.subscribe((cachedValue) => {
+        expect(cachedValue).toBeNull();
       });
     });
   });

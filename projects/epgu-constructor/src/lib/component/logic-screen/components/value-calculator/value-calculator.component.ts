@@ -10,7 +10,9 @@ import AbstractLogicComponent from '../abstract-logic/abstract-logic.component';
   providers: [UnsubscribeService],
 })
 export default class ValueCalculatorComponent extends AbstractLogicComponent {
+  // eslint-disable-next-line no-empty-function
   protected handleOnBeforeSubmitEvent(): void {}
+  // eslint-disable-next-line no-empty-function
   protected handleOnBeforeRejectEvent(): void {}
 
   protected handleFetchEvent(): Observable<{}> {

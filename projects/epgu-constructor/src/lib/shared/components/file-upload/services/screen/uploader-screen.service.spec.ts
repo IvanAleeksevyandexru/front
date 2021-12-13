@@ -39,23 +39,23 @@ describe('UploaderScreenService', () => {
   });
 
   it('should set service values from attr', () => {
-    expect(service['maxFileSize']).toBeUndefined();
-    expect(service['maxFileCount']).toBeUndefined();
-    expect(service['hideTotalAvailableSize']).toBeUndefined();
-    expect(service['hideTotalAvailableCount']).toBeUndefined();
+    expect(service.maxFileSize).toBeUndefined();
+    expect(service.maxFileCount).toBeUndefined();
+    expect(service.hideTotalAvailableSize).toBeUndefined();
+    expect(service.hideTotalAvailableCount).toBeUndefined();
 
     service.setValuesFromAttrs(mockAttrs);
 
-    expect(service['maxFileSize']).toBe(1000);
-    expect(service['maxFileCount']).toBe(10);
-    expect(service['hideTotalAvailableSize']).toBe(false);
-    expect(service['hideTotalAvailableCount']).toBe(false);
+    expect(service.maxFileSize).toBe(1000);
+    expect(service.maxFileCount).toBe(10);
+    expect(service.hideTotalAvailableSize).toBe(false);
+    expect(service.hideTotalAvailableCount).toBe(false);
   });
 
   it('should update limits', () => {
     service.setValuesFromAttrs(mockAttrs);
-    service['currentFilesSize'] = 400;
-    service['currentFilesCount'] = 6;
+    service.currentFilesSize = 400;
+    service.currentFilesCount = 6;
 
     service.updateLimits();
 

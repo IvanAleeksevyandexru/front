@@ -3,13 +3,13 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockProvider } from 'ng-mocks';
+import { ConstructorCheckboxComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { CheckboxInputComponent } from './checkbox-input.component';
-import { ConstructorCheckboxComponent } from '@epgu/epgu-constructor-ui-kit';
 
 const mockCheckboxComponent = {
   id: 'Is_markTS_no',
@@ -52,7 +52,7 @@ describe('CheckboxInputComponent', () => {
       id: new FormControl('id'),
       value: new FormControl(mockCheckboxComponent),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(CheckboxInputComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;

@@ -3,17 +3,20 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  DatesToolsService,
+  LocalStorageService,
+  LocationService,
+} from '@epgu/epgu-constructor-ui-kit';
+
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { PaymentService } from '../../payment.service';
 import { BillInfoComponent } from './billinfo.component';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { PriorPrefixModule } from '../../../../../../shared/pipes/prior-prefix/prior-prefix.module';
 

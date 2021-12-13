@@ -1,7 +1,7 @@
 import { ListElement } from '@epgu/ui/models/dropdown';
+import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
 import { DictionaryItem } from '../../../../shared/services/dictionary/dictionary-api.types';
-import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 
 export enum PfrAreaType {
   region = 'region',

@@ -38,7 +38,7 @@ module.exports = {
   },
   testEnvironmentOptions: {
     beforeParse(window) {
-      window.scroll = () => { };
+      window.scroll = () => {};
     },
   },
 };

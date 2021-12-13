@@ -107,7 +107,7 @@ export interface LunaPassFrameResult {
   details: LunaPassFrameResultDetails;
 }
 
-declare var LunaPass: LunaPassConstructor;
+declare let LunaPass: LunaPassConstructor;
 
 @Injectable()
 export class IdentificationStreamService {

@@ -6,7 +6,7 @@ export const STATUS_ICON_MAP = {
   error:
     '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/image-error.svg">',
   stop:
-    '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/stop.svg">'
+    '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/stop.svg">',
 };
 
 const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">

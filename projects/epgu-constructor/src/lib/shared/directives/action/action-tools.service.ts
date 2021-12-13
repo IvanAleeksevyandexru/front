@@ -46,8 +46,8 @@ const navActionToNavMethodMap = {
 
 @Injectable()
 export class ActionToolsService {
-
   bufferData = '';
+
   constructor(
     private formPlayerApiService: FormPlayerApiService,
     private autocompleteApiService: AutocompleteApiService,
@@ -232,7 +232,11 @@ export class ActionToolsService {
 
   public copyToClipboard(action: ComponentActionDto): void {
     // Для того чтобы не было проблем с копированием в буффер обмена на IOS подгружаем данные для буффера заранее
-    this.bufferData ? this.copyAndNotify(this.bufferData) : this.loadClipboardData(action);
+    if (this.bufferData) {
+      this.copyAndNotify(this.bufferData);
+    } else {
+      this.loadClipboardData(action);
+    }
   }
 
   private copyAndNotify(value: string): void {
@@ -334,7 +338,11 @@ export class ActionToolsService {
     );
   }
 
-  private defaultNavigation(action: ComponentActionDto, componentId: string, stepType: string): void {
+  private defaultNavigation(
+    action: ComponentActionDto,
+    componentId: string,
+    stepType: string,
+  ): void {
     const navMethod = navActionToNavMethodMap[stepType];
     const navigation = this.prepareNavigationData(action, componentId);
 

@@ -6,16 +6,22 @@ import { setupForRelationStrategy } from '../components-list-relations.mock';
 
 describe('DisplayOnRelation', () => {
   let relation: DisplayOnRelation;
-  let componentVal =  { foo: 'bar' };
-  const refRelationService: RefRelationService = MockService(RefRelationService, {
-    isDisplayOnRelation: jest.fn().mockImplementation(
-      (relation: CustomComponentRefRelation) => relation === CustomComponentRefRelation.displayOn
-    ),
-    isDisplayOffRelation: jest.fn().mockImplementation(
-      (relation: CustomComponentRefRelation) => relation === CustomComponentRefRelation.displayOff
-    ),
+  let componentVal = { foo: 'bar' };
+  const refRelationService: RefRelationService = (MockService(RefRelationService, {
+    isDisplayOnRelation: jest
+      .fn()
+      .mockImplementation(
+        (refRelation: CustomComponentRefRelation) =>
+          refRelation === CustomComponentRefRelation.displayOn,
+      ),
+    isDisplayOffRelation: jest
+      .fn()
+      .mockImplementation(
+        (refRelation: CustomComponentRefRelation) =>
+          refRelation === CustomComponentRefRelation.displayOff,
+      ),
     isValueEquals: jest.fn().mockReturnValue(false),
-  }) as unknown as RefRelationService;
+  }) as unknown) as RefRelationService;
 
   beforeEach(() => {
     relation = new DisplayOnRelation(refRelationService);
@@ -30,18 +36,12 @@ describe('DisplayOnRelation', () => {
       shownElements,
     } = setupForRelationStrategy({
       referenceExtra: { relation: CustomComponentRefRelation.displayOn },
-      dependentComponentStatusExtra: { relation: CustomComponentRefRelation.displayOff }
+      dependentComponentStatusExtra: { relation: CustomComponentRefRelation.displayOff },
     });
 
     dependentControl.markAsTouched();
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     // потому что isShown === false AND isDisplayOn
     expect(dependentControl.touched).toBeTruthy();
@@ -62,18 +62,12 @@ describe('DisplayOnRelation', () => {
       shownElements,
     } = setupForRelationStrategy({
       referenceExtra: { relation: CustomComponentRefRelation.displayOn },
-      dependentComponentStatusExtra: { isShown: true }
+      dependentComponentStatusExtra: { isShown: true },
     });
 
     dependentControl.markAsTouched();
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     // потому что isShown === true
     expect(dependentControl.touched).toBeFalsy();
@@ -94,18 +88,12 @@ describe('DisplayOnRelation', () => {
       shownElements,
     } = setupForRelationStrategy({
       referenceExtra: { relation: CustomComponentRefRelation.displayOn },
-      dependentComponentStatusExtra: { relation: CustomComponentRefRelation.getValue }
+      dependentComponentStatusExtra: { relation: CustomComponentRefRelation.getValue },
     });
 
     dependentControl.markAsTouched();
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     // потому что NOT isDisplayOn
     expect(dependentControl.touched).toBeFalsy();

@@ -1,22 +1,27 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+  ScreenPadModule,
+  ConfigService,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { of } from 'rxjs';
 import { MedicalReferralsListContainerComponent } from './medical-refferals-list-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { BaseModule } from '../../../../../shared/base.module';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { MedicalReferralsListComponent } from '../medical-referrals-list.component';
 import { AnswerButtonModule } from '../../../../../shared/components/answer-button/answer-button.module';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { ActionService } from '../../../../../shared/directives/action/action.service';
-import { ActionType, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../core/services/error-handler/error-handler';
-import { of } from 'rxjs';
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 describe('MedicalReferralsListContainerComponent', () => {

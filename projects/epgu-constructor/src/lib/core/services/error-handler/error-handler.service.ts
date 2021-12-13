@@ -70,6 +70,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     const { status, url, body } = httpResponse;
     const requestBody = httpRequest?.body;
     const refName =
+      // eslint-disable-next-line
       typeof requestBody === 'object' && requestBody != null ? requestBody['refName'] : undefined;
 
     if (status === 200) {
@@ -164,7 +165,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       this.showErrorModal({ ...error?.errorModalWindow, traceId });
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
-        result === 'login' ? this.locationService.reload() : this.locationService.href('/');
+        if (result === 'login') {
+          this.locationService.reload();
+        } else {
+          this.locationService.href('/');
+        }
       });
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY, errors: error });
@@ -199,11 +204,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         break;
 
       case ModalFailureType.BOOKING:
-        const modal = {
+        const modalBooking = {
           ...NEW_BOOKING_ERROR,
           text: NEW_BOOKING_ERROR.text.replace(/\{textAsset\}?/g, message),
         };
-        this.showModal(modal).then((value) => this.handleModalAction(value));
+        this.showModal(modalBooking).then((value) => this.handleModalAction(value));
         break;
     }
   }
@@ -378,16 +383,18 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
   private waitingOrderCreate(refreshTime = 10000): void {
     this.screenService.updateLoading(true);
-    of().pipe(
-      takeUntil(this.ngUnsubscribe$),
-      debounceTime(refreshTime),
-      tap(() => this.navigationService.next()),
-      switchMap(() => this.navigationService.nextStep$),
-      tap({
-        next: () => {
-          this.screenService.updateLoading(false);
-        }
-      })
-    ).subscribe();
+    of()
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        debounceTime(refreshTime),
+        tap(() => this.navigationService.next()),
+        switchMap(() => this.navigationService.nextStep$),
+        tap({
+          next: () => {
+            this.screenService.updateLoading(false);
+          },
+        }),
+      )
+      .subscribe();
   }
 }

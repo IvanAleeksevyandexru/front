@@ -13,9 +13,9 @@ import {
   MicroAppStateStore,
   MicroAppStateQuery,
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockModule } from 'ng-mocks';
 import { ViewComponent } from './view.component';
 import { StateService } from '../../../../services/state/state.service';
-import { MockModule } from 'ng-mocks';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 import { ProgramListModule } from '../../program-list.module';
 
@@ -51,7 +51,7 @@ describe('ViewComponent', () => {
 
   describe('ngOnInit()', () => {
     it('should call service methods if program is not selected', () => {
-      const spy = jest.spyOn(component['appNavigationService'], 'prev');
+      const spy = jest.spyOn(component.appNavigationService, 'prev');
 
       component.ngOnInit();
 
@@ -59,8 +59,8 @@ describe('ViewComponent', () => {
     });
 
     it('should not call service methods if program is selected', () => {
-      const spy = jest.spyOn(component['appNavigationService'], 'prev');
-      component['stateService'].changeState({ selectedProgramUUID: '22' });
+      const spy = jest.spyOn(component.appNavigationService, 'prev');
+      component.stateService.changeState({ selectedProgramUUID: '22' });
       component.ngOnInit();
 
       expect(spy).toHaveBeenCalledTimes(0);
@@ -69,8 +69,8 @@ describe('ViewComponent', () => {
 
   describe('next()', () => {
     it('should call service methods', () => {
-      const spy = jest.spyOn(component['stateService'], 'clearGroupFilters');
-      const spy2 = jest.spyOn(component['appNavigationService'], 'next');
+      const spy = jest.spyOn(component.stateService, 'clearGroupFilters');
+      const spy2 = jest.spyOn(component.appNavigationService, 'next');
 
       component.next();
 
@@ -81,8 +81,8 @@ describe('ViewComponent', () => {
 
   describe('prev()', () => {
     it('should call service methods', () => {
-      const spy = jest.spyOn(component['stateService'], 'clearGroupFilters');
-      const spy2 = jest.spyOn(component['appNavigationService'], 'prev');
+      const spy = jest.spyOn(component.stateService, 'clearGroupFilters');
+      const spy2 = jest.spyOn(component.appNavigationService, 'prev');
 
       component.prev();
 

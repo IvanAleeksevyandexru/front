@@ -45,23 +45,31 @@ import { MaritalStatusInputField } from '../../components/marital-status-input/m
 @Injectable()
 export class ComponentsListFormService {
   private _form = new FormArray([]);
+
   private _shownElements: CustomListStatusElements = {};
+
   private _changes = new EventEmitter<CustomComponentOutputData>();
+
   private mapRelationTypes = {
     RegExp: this.relationRegExp.bind(this),
     MinDate: this.relationMinDate.bind(this),
     MaxDate: this.relationMaxDate.bind(this),
   };
+
   private indexesByIds: Record<string, number> = {};
+
   private cachedAttrsComponents: Record<string, { base: CustomComponentAttr; last: string }> = {};
+
   private lastChangedComponent: [CustomListFormGroup, CustomListFormGroup];
 
   get shownElements(): CustomListStatusElements {
     return this._shownElements;
   }
+
   get form(): FormArray {
     return this._form;
   }
+
   get changes(): EventEmitter<CustomComponentOutputData> {
     return this._changes;
   }
@@ -171,8 +179,8 @@ export class ComponentsListFormService {
         return;
       }
       const { ref, conditions } = next.attrs?.relationField;
-      const refComponent = this.form.getRawValue()[this.indexesByIds[ref]];
-      this.updateRelationMap(conditions, value, refComponent);
+      const refComponentForm = this.form.getRawValue()[this.indexesByIds[ref]];
+      this.updateRelationMap(conditions, value, refComponentForm);
     } else {
       const { conditions } = relationField;
 
@@ -210,8 +218,8 @@ export class ComponentsListFormService {
           value = this.datesToolsService.format(value);
         } else if (type === CustomScreenComponentTypes.CalendarInput) {
           const keys = Object.keys(value);
-          keys.forEach((key: string) => {
-            value[key] = this.datesToolsService.format(value[key]);
+          keys.forEach((prop: string) => {
+            value[prop] = this.datesToolsService.format(value[prop]);
           });
         } else if (
           type === CustomScreenComponentTypes.StringInput &&
@@ -231,10 +239,12 @@ export class ComponentsListFormService {
   private relationRegExp(value: string, params: RegExp): string[] {
     return String(value).match(params);
   }
+
   private relationMinDate(value: string | Date, params: string): boolean {
     const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
     return this.datesToolsService.isSameOrAfter(dateLeft, dateRight);
   }
+
   private relationMaxDate(value: string | Date, params: string): boolean {
     const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
     return this.datesToolsService.isSameOrBefore(dateLeft, dateRight);
@@ -258,7 +268,7 @@ export class ComponentsListFormService {
     patch: object,
     refControl?: AbstractControl,
   ): void {
-    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
+    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch } };
 
     if (!refControl) {
       const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
@@ -355,6 +365,7 @@ export class ComponentsListFormService {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { type, attrs, id, label, required, arguments: _arguments } = component;
 
     const form: FormGroup = this.fb.group(

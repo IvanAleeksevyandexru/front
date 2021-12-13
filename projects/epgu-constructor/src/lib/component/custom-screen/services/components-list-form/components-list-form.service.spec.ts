@@ -24,7 +24,11 @@ import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
-import { CustomComponent, CustomListFormGroup, CustomScreenComponentTypes, } from '../../components-list.types';
+import {
+  CustomComponent,
+  CustomListFormGroup,
+  CustomScreenComponentTypes,
+} from '../../components-list.types';
 import { Observable, of } from 'rxjs';
 import { Component, Input } from '@angular/core';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
@@ -118,7 +122,9 @@ describe('ComponentsListFormService', () => {
   })
   class MockComponent {
     @Input() componentMockData: CustomComponent;
+
     form: FormGroup;
+
     constructor(private fb: FormBuilder) {
       this.form = this.fb.group({
         value: new FormControl({ value: '' }),
@@ -190,37 +196,33 @@ describe('ComponentsListFormService', () => {
   });
 
   describe('patch()', () => {
-    const setup = (
-      type,
-      attrs: any = { defaultIndex: 0 },
-      value = '',
-    ) => {
+    const setup = (type, attrs: any = { defaultIndex: 0 }, value = '') => {
       const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
-      const component = type ? new type({ id: 'testable', attrs, type: CustomScreenComponentTypes.DropDown }) :
-        new DropdownModel({ id: 'testable', attrs, type: CustomScreenComponentTypes.DropDown });
+      const testComponent = type
+        ? new type({ id: 'testable', attrs, type: CustomScreenComponentTypes.DropDown })
+        : new DropdownModel({ id: 'testable', attrs, type: CustomScreenComponentTypes.DropDown });
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
 
       extraComponent.id = 'someID';
-      component.value = value;
-      service.create([component, extraComponent], {});
+      testComponent.value = value;
+      service.create([testComponent, extraComponent], {});
 
-      const control = service.form.controls.find((ctrl) => ctrl.value.id === component.id);
+      const control = service.form.controls.find((ctrl) => ctrl.value.id === testComponent.id);
       const controlPatchSpy = jest.spyOn(control.get('value'), 'patchValue');
 
       return {
         convertedValueSpy,
-        component,
+        testComponent,
         control,
         controlPatchSpy,
       };
     };
 
-
     describe('when component has value', () => {
       it('should call convertedValue if value exists', () => {
         const convertedValueSpy = jest.spyOn(componentsListToolsService, 'convertedValue');
-        const { component } = setup(LookupInputModel, {}, 'val');
-        service.patch(component);
+        const { testComponent } = setup(LookupInputModel, {}, 'val');
+        service.patch(testComponent);
 
         expect(convertedValueSpy).toHaveBeenCalled();
       });
@@ -228,84 +230,84 @@ describe('ComponentsListFormService', () => {
 
     describe('when component has no value', () => {
       it('should call dictionaryToolsService.dropDowns$.getValue(), if component type isDropdownLike, has defaultIndex and no value', () => {
-        const { component } = setup(DropdownModel);
-        const spy = jest.spyOn(component, 'patchControlValue').mockImplementation((...args) => true);
-        service.patch(component);
+        const { testComponent } = setup(DropdownModel);
+        const spy = jest
+          .spyOn(testComponent, 'patchControlValue')
+          .mockImplementation((...args) => true);
+        service.patch(testComponent);
         expect(spy).toHaveBeenCalled();
       });
 
       it('should call componentsListToolsService.convertedValue(), if component type is something else', () => {
-        const { convertedValueSpy, component } = setup(StringInputModel);
-        service.patch(component);
+        const { convertedValueSpy, testComponent } = setup(StringInputModel);
+        service.patch(testComponent);
         expect(convertedValueSpy).toHaveBeenCalled();
       });
 
       it('should pass defaultIndex if it is provided', () => {
-        const { controlPatchSpy, component } = setup(
-          LookupInputModel,
-        );
-        component['_dictionary$'].next({ list: [1] } as any);
-        service.patch(component);
+        const { controlPatchSpy, testComponent } = setup(LookupInputModel);
+        testComponent._dictionary$.next({ list: [1] } as any);
+        service.patch(testComponent);
         expect(controlPatchSpy).toHaveBeenCalledWith(1);
       });
 
       it('should pass lookupDefaultValue if it is provided', () => {
-        const {
-          controlPatchSpy,
-          component,
-        } = setup(LookupInputModel, { lookupDefaultValue: 'index1' });
-        component['_dictionary$'].next({ list: [{ id: 'index1' }] } as any);
-        service.patch(component);
+        const { controlPatchSpy, testComponent } = setup(LookupInputModel, {
+          lookupDefaultValue: 'index1',
+        });
+        testComponent._dictionary$.next({ list: [{ id: 'index1' }] } as any);
+        service.patch(testComponent);
         expect(controlPatchSpy).toHaveBeenCalledWith({ id: 'index1' });
       });
 
       it('should pass lookupDefaultValue with lookupFilterPath if it is provided', () => {
-        const {  controlPatchSpy, component } = setup(
-         LookupInputModel,
-          {
-            lookupDefaultValue: '40000000000',
-            lookupFilterPath: 'originalItem.attributeValues.OKATO',
-          },
-        );
-        component['_dictionary$'].next({ list: [{ originalItem: { attributeValues: { OKATO: '40000000000' }}}] } as any);
-        service.patch(component);
-        expect(controlPatchSpy).toHaveBeenCalledWith({ originalItem: { attributeValues: { OKATO: '40000000000' }}});
+        const { controlPatchSpy, testComponent } = setup(LookupInputModel, {
+          lookupDefaultValue: '40000000000',
+          lookupFilterPath: 'originalItem.attributeValues.OKATO',
+        });
+        testComponent._dictionary$.next({
+          list: [{ originalItem: { attributeValues: { OKATO: '40000000000' } } }],
+        } as any);
+        service.patch(testComponent);
+        expect(controlPatchSpy).toHaveBeenCalledWith({
+          originalItem: { attributeValues: { OKATO: '40000000000' } },
+        });
       });
     });
 
     describe('when it is DropDownDepts and has defaultIndex', () => {
       it('should patchDropDownDeptsValue when lockedValue is true', () => {
-        const { controlPatchSpy, component } = setup(DepartmentLookupModel, {
+        const { controlPatchSpy, testComponent } = setup(DepartmentLookupModel, {
           defaultIndex: 0,
           lockedValue: true,
         });
-        component['_dictionary$'].next({ list: [1] } as any);
-        service.patch(component);
+        testComponent._dictionary$.next({ list: [1] } as any);
+        service.patch(testComponent);
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
         expect(controlPatchSpy).toHaveBeenCalledWith(1);
       });
 
       it('should patchDropDownDeptsValue when there is one element', () => {
-        const { controlPatchSpy, component } = setup(
+        const { controlPatchSpy, testComponent } = setup(
           DepartmentLookupModel,
           { defaultIndex: 0, lockedValue: false },
           '1',
         );
-        component['_dictionary$'].next({ list: [1] } as any);
-        service.patch(component);
+        testComponent._dictionary$.next({ list: [1] } as any);
+        service.patch(testComponent);
 
         expect(controlPatchSpy).toHaveBeenCalledTimes(1);
         expect(controlPatchSpy).toHaveBeenCalledWith(1);
       });
 
       it('should dont call patch when there is no value ', () => {
-        const { controlPatchSpy, component } = setup(
+        const { controlPatchSpy, testComponent } = setup(
           LookupInputModel,
           { lockedValue: false },
           '',
         );
-        service.patch(component);
+        service.patch(testComponent);
         expect(controlPatchSpy).toHaveBeenCalledTimes(0);
       });
     });
@@ -314,7 +316,7 @@ describe('ComponentsListFormService', () => {
   describe('emitChanges()', () => {
     it('should call getPreparedStateForSending() and emit() changes', () => {
       const getPreparedStateForSendingSpy = jest.spyOn(service, 'getPreparedStateForSending');
-      const emitSpy = jest.spyOn(service['_changes'], 'emit');
+      const emitSpy = jest.spyOn(service._changes, 'emit');
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       service.create([componentMockData, extraComponent], {});
       service.emitChanges();
@@ -333,19 +335,19 @@ describe('ComponentsListFormService', () => {
         allowDecimal: true,
       };
       componentStub.value = 'value';
-      let component = JSON.parse(JSON.stringify(componentStub));
-      service.create([componentStub, component], {});
+      let testComponent = JSON.parse(JSON.stringify(componentStub));
+      service.create([componentStub, testComponent], {});
 
       await service.emitChanges();
       expect(transformNumberMaskInput).toHaveBeenCalled();
-      expect(service['getPreparedStateForSending']()[componentStub.id]['value']).toEqual('0,00');
+      expect(service.getPreparedStateForSending()[componentStub.id].value).toEqual('0,00');
 
       componentStub.value = '123';
-      component = JSON.parse(JSON.stringify(componentStub));
-      service.create([componentStub, component], {});
+      testComponent = JSON.parse(JSON.stringify(componentStub));
+      service.create([componentStub, testComponent], {});
 
       await service.emitChanges();
-      expect(service['getPreparedStateForSending']()[componentStub.id]['value']).toEqual('123,00');
+      expect(service.getPreparedStateForSending()[componentStub.id].value).toEqual('123,00');
     });
   });
 
@@ -361,8 +363,8 @@ describe('ComponentsListFormService', () => {
     it('should mark form controls as touched, if there are non-empty values ', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       service.create([componentMockData, extraComponent], {});
-      service['markForFirstRoundValidation']([extraComponent]);
-      const result = service['_form'].controls.some((control) => control.touched);
+      service.markForFirstRoundValidation([extraComponent]);
+      const result = service._form.controls.some((control) => control.touched);
       expect(result).toBeTruthy();
     });
   });
@@ -374,8 +376,8 @@ describe('ComponentsListFormService', () => {
       const result = {
         rf1: { value: 'value', isValid: false, disabled: false, condition: null },
       };
-      service.shownElements['rf1'].isShown = true;
-      expect(service['getPreparedStateForSending']()).toEqual(result);
+      service.shownElements.rf1.isShown = true;
+      expect(service.getPreparedStateForSending()).toEqual(result);
     });
   });
 
@@ -383,7 +385,7 @@ describe('ComponentsListFormService', () => {
     it('should return array string', () => {
       const value = '2020.01.01';
       const params = /.*/;
-      expect(service['relationRegExp'](value, params)[0]).toEqual('2020.01.01');
+      expect(service.relationRegExp(value, params)[0]).toEqual('2020.01.01');
     });
   });
 
@@ -391,12 +393,12 @@ describe('ComponentsListFormService', () => {
     it('should return true', () => {
       const value = new Date('2020.01.01');
       const params = '01.01.2010';
-      expect(service['relationMinDate'](value, params)).toBeTruthy();
+      expect(service.relationMinDate(value, params)).toBeTruthy();
     });
     it('should return false', () => {
       const value = new Date('2010.01.01');
       const params = '01.01.2020';
-      expect(service['relationMinDate'](value, params)).toBeFalsy();
+      expect(service.relationMinDate(value, params)).toBeFalsy();
     });
   });
 
@@ -404,12 +406,12 @@ describe('ComponentsListFormService', () => {
     it('should return true', () => {
       const value = new Date('2010.01.01');
       const params = '01.01.2020';
-      expect(service['relationMaxDate'](value, params)).toBeTruthy();
+      expect(service.relationMaxDate(value, params)).toBeTruthy();
     });
     it('should return false', () => {
       const value = new Date('2020.01.01');
       const params = '01.01.2010';
-      expect(service['relationMaxDate'](value, params)).toBeFalsy();
+      expect(service.relationMaxDate(value, params)).toBeFalsy();
     });
   });
 
@@ -441,7 +443,7 @@ describe('ComponentsListFormService', () => {
         ],
       };
       service.create([componentMockData, extraComponent], {});
-      service['relationPatch'](componentMockData, {});
+      service.relationPatch(componentMockData, {});
       expect(changeValidatorsSpy).toHaveBeenCalled();
     });
   });
@@ -474,8 +476,8 @@ describe('ComponentsListFormService', () => {
         ],
       };
       service.create([componentMockData, extraComponent], {});
-      service['relationMapChanges'](next);
-      service['resetRelation'](componentMockData);
+      service.relationMapChanges(next);
+      service.resetRelation(componentMockData);
       expect(relationPatchSpy).toHaveBeenCalled();
     });
   });
@@ -508,8 +510,8 @@ describe('ComponentsListFormService', () => {
         ],
       };
       service.create([componentMockData, extraComponent], {});
-      service['relationMapChanges'](next);
-      service['setRelationResult'](componentMockData);
+      service.relationMapChanges(next);
+      service.setRelationResult(componentMockData);
       expect(resetRelationSpy).toHaveBeenCalled();
     });
     it('should call relationPatch, if result is passed', () => {
@@ -539,8 +541,8 @@ describe('ComponentsListFormService', () => {
         ],
       };
       service.create([componentMockData, extraComponent], {});
-      service['relationMapChanges'](next);
-      service['setRelationResult'](componentMockData);
+      service.relationMapChanges(next);
+      service.setRelationResult(componentMockData);
       expect(relationPatchSpy).toHaveBeenCalled();
     });
   });
@@ -573,7 +575,7 @@ describe('ComponentsListFormService', () => {
         ],
       };
       service.create([componentMockData, extraComponent], {});
-      service['relationMapChanges'](next);
+      service.relationMapChanges(next);
       expect(setRelationResultSpy).toHaveBeenCalled();
     });
     it('should not call setRelationResult(), if component value or relationField are empty', () => {
@@ -591,7 +593,7 @@ describe('ComponentsListFormService', () => {
         value,
       };
       service.create([componentMockData, extraComponent], {});
-      service['relationMapChanges'](next);
+      service.relationMapChanges(next);
       expect(setRelationResultSpy).not.toHaveBeenCalled();
     });
   });
@@ -600,21 +602,20 @@ describe('ComponentsListFormService', () => {
     it('should return FormGroup', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       expect(
-        service['createGroup'](componentMockData, [componentMockData, extraComponent], null),
+        service.createGroup(componentMockData, [componentMockData, extraComponent], null),
       ).toBeInstanceOf(FormGroup);
     });
     it('should return disabled form, if component attrs hidden', () => {
       const mockComponent = JSON.parse(JSON.stringify(componentMockData));
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       mockComponent.attrs.hidden = true;
-      const form = service['createGroup'](mockComponent, [mockComponent, extraComponent], null);
+      const form = service.createGroup(mockComponent, [mockComponent, extraComponent], null);
       expect(form.disabled).toBe(true);
     });
   });
 
   describe('checkAndFetchCarModel()', () => {
     it('should call dictionaryToolsService.getDictionaries$() and initDictionary(), if MARKI_TS has place', () => {
-
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       extraComponent.attrs.dictionaryType = 'MODEL_TS';
       extraComponent.id = 'rf2';
@@ -629,34 +630,41 @@ describe('ComponentsListFormService', () => {
       };
       const next: CustomListFormGroup = JSON.parse(JSON.stringify(prev));
       next.value = 'new_value';
-      service.create([new LookupInputModel(component.componentMockData), new LookupInputModel(extraComponent)], {});
-      const spyControl = service.form.controls.find(control => control.value.id === extraComponent.id);
-      const spyMethod = jest.spyOn(spyControl.value.model, 'loadReferenceData$').mockImplementation((...args) => of(null));
-      service['checkAndFetchCarModel'](next);
+      service.create(
+        [new LookupInputModel(component.componentMockData), new LookupInputModel(extraComponent)],
+        {},
+      );
+      const spyControl = service.form.controls.find(
+        (control) => control.value.id === extraComponent.id,
+      );
+      const spyMethod = jest
+        .spyOn(spyControl.value.model, 'loadReferenceData$')
+        .mockImplementation((...args) => of(null));
+      service.checkAndFetchCarModel(next);
       expect(spyMethod).toHaveBeenCalled();
     });
   });
 
   describe('watchFormGroup$()', () => {
     it('should return observable', () => {
-      expect(service['watchFormGroup$'](component.form)).toBeInstanceOf(Observable);
+      expect(service.watchFormGroup$(component.form)).toBeInstanceOf(Observable);
     });
   });
 
   describe('watchFormArray$()', () => {
     it('should return observable', () => {
-      expect(service['watchFormArray$']()).toBeInstanceOf(Observable);
+      expect(service.watchFormArray$()).toBeInstanceOf(Observable);
     });
   });
 
   describe('updateOnValidation()', () => {
     it('should return default "change" attribute of component, if updateOnValidation is not set', () => {
-      const component = JSON.parse(JSON.stringify(componentMockData));
-      delete component.attrs.updateOnValidation;
-      expect(service['updateOnValidation'](component)).toBe('change');
+      const testComponent = JSON.parse(JSON.stringify(componentMockData));
+      delete testComponent.attrs.updateOnValidation;
+      expect(service.updateOnValidation(testComponent)).toBe('change');
     });
     it('should return UpdateOn attribute of component', () => {
-      expect(service['updateOnValidation'](componentMockData)).toBe('change');
+      expect(service.updateOnValidation(componentMockData)).toBe('change');
     });
   });
 });

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { minSize, printImgPx, recommendedDPI } from '../../upload-and-edit-photo-form.constant';
 import { ComponentValidationDto } from '@epgu/epgu-constructor-types';
+import { minSize, printImgPx, recommendedDPI } from '../../upload-and-edit-photo-form.constant';
 
 @Injectable()
 export class ValidationService {
@@ -65,7 +65,7 @@ export class ValidationService {
     if (!isDPIValid) {
       imageErrors.push(['dpi']);
     }
-    if (!!fileNameErrorMsg) {
+    if (fileNameErrorMsg) {
       imageErrors.push(['fileName', fileNameErrorMsg]);
     }
     if (!imageErrors.length) {

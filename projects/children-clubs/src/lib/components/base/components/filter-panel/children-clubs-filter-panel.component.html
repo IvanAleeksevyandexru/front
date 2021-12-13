@@ -23,14 +23,20 @@
         <span *ngIf="filtersCount">({{ filtersCount }})</span>
       </a>
       <div *ngIf="isShowMenu" class="nav-bar">
-        <div class="nav-item"
+        <div
+          class="nav-item"
           [ngClass]="{ active: (programListService.groupFiltersMode$ | async).isMap }"
           (click)="setGroupFiltersMode(GroupFiltersModes.map)"
-        >Карта</div>
-        <div class="nav-item"
+        >
+          Карта
+        </div>
+        <div
+          class="nav-item"
           [ngClass]="{ active: (programListService.groupFiltersMode$ | async).isList }"
           (click)="setGroupFiltersMode(GroupFiltersModes.list)"
-        >Список</div>
+        >
+          Список
+        </div>
       </div>
     </div>
   </epgu-cf-ui-constructor-screen-pad>

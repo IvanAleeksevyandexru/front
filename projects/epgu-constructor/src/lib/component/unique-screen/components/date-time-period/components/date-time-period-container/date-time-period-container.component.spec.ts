@@ -1,15 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DateTimePeriodContainerComponent } from './date-time-period-container.component';
 import { MockComponent, MockModule } from 'ng-mocks';
+import {
+  LocalStorageService,
+  LocalStorageServiceStub,
+  JsonHelperService,
+} from '@epgu/epgu-constructor-ui-kit';
+import { By } from '@angular/platform-browser';
+import { ComponentAttrsDto, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { DateTimePeriodContainerComponent } from './date-time-period-container.component';
 import { DateTimePeriodComponent } from '../date-time-period/date-time-period.component';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../../../shared/services/cached-answers/cached-answers.service';
-import { LocalStorageService, LocalStorageServiceStub, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { By } from '@angular/platform-browser';
-import { ComponentAttrsDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 
 describe('DateTimePeriodContainerComponent', () => {
   let component: DateTimePeriodContainerComponent;
@@ -38,7 +42,7 @@ describe('DateTimePeriodContainerComponent', () => {
       id: 'w1',
       type: 'DateTimePeriod',
       label: '',
-      attrs: attrs,
+      attrs,
       value: '',
     };
     screenService.cachedAnswers = {

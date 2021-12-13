@@ -3,40 +3,49 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EmployeeHistoryFormComponent } from './employee-history-form.component';
-import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
-import { ConstructorMonthPickerModule } from '../../../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
-import { ConstructorCheckboxModule, MemoModule } from '@epgu/epgu-constructor-ui-kit';
-import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
-import { EmployeeHistoryFormServiceStub } from '../../services/employee-history.form.service.stub';
 import {
+  ConstructorCheckboxModule,
+  MemoModule,
   UnsubscribeService,
   ActivatedRouteStub,
   UnsubscribeServiceStub,
+  EventBusService,
+  EventBusServiceStub,
+  DatesToolsService,
+  DeviceDetectorService,
+  ConfigService,
+  LoggerService,
+  LocalStorageService,
+  LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { EmployeeHistoryFormComponent } from './employee-history-form.component';
+import { ConstructorPlainInputModule } from '../../../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConstructorMonthPickerModule } from '../../../../../../shared/components/constructor-month-picker/constructor-month-picker.module';
+import { EmployeeHistoryFormService } from '../../services/employee-history.form.service';
+import { EmployeeHistoryFormServiceStub } from '../../services/employee-history.form.service.stub';
+
 import { EmployeeHistoryMonthsService } from '../../services/employee-history.months.service';
 import { EmployeeHistoryMonthsServiceStub } from '../../services/employee-history.months.service.stub';
 import { EmployeeHistoryDataSourceService } from '../../services/employee-history.data-source.service';
 import { EmployeeHistoryDataSourceServiceStub } from '../../services/employee-history.data-source.service.stub';
-import { EventBusService, EventBusServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { EmployeeHistoryDescriptionComponent } from '../employee-history-desription/employee-history-description.component';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+
 import { EmployeeHistoryModel } from '../../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+
 import { PrepareComponentsService } from '../../../../../../shared/services/prepare-components/prepare-components.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { Gender, TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { EmployeeHistoryClarificationComponent } from '../employee-history-clarification/employee-history-clarification.component';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { RadioComponent } from '@epgu/ui/controls';
 import { MonthYear } from '@epgu/ui/models/date-time';

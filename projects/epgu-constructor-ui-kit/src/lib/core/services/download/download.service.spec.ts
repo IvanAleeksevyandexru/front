@@ -6,9 +6,7 @@ describe('DownloadService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        DownloadService,
-      ],
+      providers: [DownloadService],
     });
   });
 

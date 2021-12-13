@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotCalendarComponent } from './time-slot-calendar.component';
-import { CalendarModule } from '../../../../../../../shared/components/calendar/calendar.module';
 import { MockModule } from 'ng-mocks';
 import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { TimeSlotCalendarComponent } from './time-slot-calendar.component';
+import { CalendarModule } from '../../../../../../../shared/components/calendar/calendar.module';
 import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';

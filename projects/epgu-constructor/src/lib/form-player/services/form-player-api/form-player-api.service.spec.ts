@@ -240,7 +240,7 @@ describe('FormPlayerApiService', () => {
       tick();
     }));
 
-    it('shouldn\'t return scenarioDto with isPrevStepCase', fakeAsync(() => {
+    it("shouldn't return scenarioDto with isPrevStepCase", fakeAsync(() => {
       service
         .navigate(mockData, mockNavigationOptions, FormPlayerNavigation.NEXT)
         .subscribe((response) =>
@@ -282,11 +282,11 @@ describe('FormPlayerApiService', () => {
     }));
 
     it('should call http with params', fakeAsync(() => {
-      let mockNavigationOptions = {
+      let testMockNavigationOptions = {
         params: { stepsBack: 2 },
       };
       service
-        .navigate(mockData, mockNavigationOptions, FormPlayerNavigation.PREV)
+        .navigate(mockData, testMockNavigationOptions, FormPlayerNavigation.PREV)
         .subscribe((response) => expect(response).toBe(responseMock));
       const url = `${apiUrl}/service/${serviceId}/scenario/${FormPlayerNavigation.PREV}?stepsBack=2`;
       const req = http.expectOne(url);
@@ -339,11 +339,11 @@ describe('FormPlayerApiService', () => {
 
   describe('getQuizData()', () => {
     it('should call http with get method', fakeAsync(() => {
-      const apiUrl = configService.quizDataApiUrl;
+      const testApiUrl = configService.quizDataApiUrl;
       const responseMockData = {};
 
       service.getQuizData().subscribe((response) => expect(response).toBe(responseMockData));
-      const req = http.expectOne(`${apiUrl}?userId=`);
+      const req = http.expectOne(`${testApiUrl}?userId=`);
       expect(req.request.method).toBe('GET');
       req.flush(responseMockData);
       tick();
@@ -351,8 +351,8 @@ describe('FormPlayerApiService', () => {
 
     it('should call http with userId as params', fakeAsync(() => {
       service.getQuizData().subscribe((response) => expect(response).toBe(responseMock));
-      const apiUrl = configService.quizDataApiUrl;
-      const req = http.expectOne(`${apiUrl}?userId=`);
+      const testApiUrl = configService.quizDataApiUrl;
+      const req = http.expectOne(`${testApiUrl}?userId=`);
       expect(req.request.urlWithParams.includes('userId')).toBeTruthy();
       req.flush(responseMock);
       tick();
@@ -361,27 +361,27 @@ describe('FormPlayerApiService', () => {
 
   describe('getQuizDataByToken()', () => {
     it('should call http with get method', fakeAsync(() => {
-      const apiUrl = configService.quizDataApiUrl;
+      const testApiUrl = configService.quizDataApiUrl;
       const token = 'token';
       const responseMockData = {};
 
       service
         .getQuizDataByToken(token)
         .subscribe((response) => expect(response).toBe(responseMockData));
-      const req = http.expectOne(`${apiUrl}/${token}`);
+      const req = http.expectOne(`${testApiUrl}/${token}`);
       expect(req.request.method).toBe('GET');
       req.flush(responseMockData);
       tick();
     }));
 
     it('should call http with token passed', fakeAsync(() => {
-      const apiUrl = configService.quizDataApiUrl;
+      const testApiUrl = configService.quizDataApiUrl;
       const token = 'token';
 
       service
         .getQuizDataByToken(token)
         .subscribe((response) => expect(response).toBe(responseMock));
-      const req = http.expectOne(`${apiUrl}/${token}`);
+      const req = http.expectOne(`${testApiUrl}/${token}`);
       expect(req.request.urlWithParams.includes(token)).toBeTruthy();
       req.flush(responseMock);
       tick();

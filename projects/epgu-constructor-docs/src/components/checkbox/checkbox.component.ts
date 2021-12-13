@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import exampleImportModule from '!!raw-loader!./examples/import/import-module.txt';
@@ -14,7 +14,7 @@ import example1Html from '!!raw-loader!./examples/1/index.html';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExampleEpguCheckboxComponent implements OnInit {
+export class ExampleEpguCheckboxComponent {
   readonly exampleImportModule = exampleImportModule;
   readonly exampleInsertTemplate = exampleInsertTemplate;
 
@@ -40,8 +40,6 @@ export class ExampleEpguCheckboxComponent implements OnInit {
       this.control.enable();
     }
   }
-
-  ngOnInit(): void {}
 
   handleClick(event): void {
     if (event.target.id) {

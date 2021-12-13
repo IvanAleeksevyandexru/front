@@ -48,10 +48,7 @@ const routes: Routes = [
   },
   {
     path: 'about/versions',
-    loadChildren: () =>
-      import('../about/versions/versions.module').then(
-        (m) => m.VersionsModule,
-      ),
+    loadChildren: () => import('../about/versions/versions.module').then((m) => m.VersionsModule),
     data: {
       title: 'Versions',
     },

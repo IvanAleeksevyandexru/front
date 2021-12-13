@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimeSlotResolverComponent } from './time-slot-resolver.component';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
+import { TimeSlotResolverComponent } from './time-slot-resolver.component';
 
 import { TimeSlotSmev2Component } from '../base/time-slot-smev2/time-slot-smev2.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { TimeSlotSmev3ResolverComponent } from '../time-slot-smev3-resolver/time-slot-smev3-resolver.component';
-import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
 
 describe('TimeSlotResolverComponent', () => {
   let component: TimeSlotResolverComponent;

@@ -2,14 +2,14 @@
   class="swipeable-content"
   (panup)="expanded = true"
   (pandown)="expanded = false"
-  [ngClass]="{expanded: expanded}"
+  [ngClass]="{ expanded: expanded }"
 >
-  <div class="swipeable-marker-wrapper"
-       (click)="expanded = !expanded"
-  >
-    <img src="{{config.staticDomainAssetsPath}}/assets/icons/svg/swipeable-marker.svg"
-         class="swipeable-marker"
-         [ngClass]="{rotated: !expanded}">
+  <div class="swipeable-marker-wrapper" (click)="expanded = !expanded">
+    <img
+      src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/swipeable-marker.svg"
+      class="swipeable-marker"
+      [ngClass]="{ rotated: !expanded }"
+    />
   </div>
   <ng-content></ng-content>
 </div>

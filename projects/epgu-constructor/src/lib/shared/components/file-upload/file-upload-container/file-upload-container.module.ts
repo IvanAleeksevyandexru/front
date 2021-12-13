@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { PluralizeModule } from '@epgu/ui/pipes';
 import { BaseModule } from '../../../base.module';
 import { UserInfoLoaderModule } from '../../user-info-loader/user-info-loader.module';
 import { UploaderModule } from '../../uploader/uploader.module';
@@ -10,7 +11,6 @@ import { UploaderValidationService } from '../services/validation/uploader-valid
 import { UploaderManagerService } from '../services/manager/uploader-manager.service';
 import { UploaderProcessService } from '../services/process/uploader-process.service';
 import { UploaderStatService } from '../services/stat/uploader-stat.service';
-import { PluralizeModule } from '@epgu/ui/pipes';
 
 const COMPONENTS = [FileUploadItemComponent, FileUploadContainerComponent];
 

@@ -7,7 +7,12 @@ import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
 import { UniqueScreenComponent } from './unique-screen.component';
 import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
-import { ComponentDto, DisplayDto, ScreenTypes, NavigationPayload } from '@epgu/epgu-constructor-types';
+import {
+  ComponentDto,
+  DisplayDto,
+  ScreenTypes,
+  NavigationPayload,
+} from '@epgu/epgu-constructor-types';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},

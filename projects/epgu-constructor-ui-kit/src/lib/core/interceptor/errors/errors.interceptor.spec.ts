@@ -120,10 +120,7 @@ describe('ErrorsInterceptor', () => {
     );
     const body = new HttpErrorResponse({ status: 401, statusText: 'Unauthorized' });
     requestToError.flush('Unauthorized', body);
-    expect(spy).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      AUTH_ERROR_MODAL_PARAMS,
-    );
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, AUTH_ERROR_MODAL_PARAMS);
     tick();
   }));
 
@@ -146,10 +143,7 @@ describe('ErrorsInterceptor', () => {
     expect(req.request.method).toBe('POST');
 
     req.flush(data);
-    expect(spy).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      BOOKING_ONLINE_ERROR,
-    );
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, BOOKING_ONLINE_ERROR);
     tick();
   }));
 
@@ -181,14 +175,14 @@ describe('ErrorsInterceptor', () => {
       errors: {
         description: 'Заявление уже было подано',
         name: 'Conflict',
-       },
+      },
     });
     tick();
   }));
 
   it('should switch screen to expire order display error when get 410 status code on getOrderStatus request', fakeAsync(() => {
-    const orderId = '42';
-    formPlayerApi.getOrderStatus(Number(orderId)).subscribe(
+    const testOrderId = '42';
+    formPlayerApi.getOrderStatus(Number(testOrderId)).subscribe(
       () => fail('should have failed with the 410 error'),
       (error: HttpErrorResponse) => {
         expect(error.status).toEqual(410);

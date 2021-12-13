@@ -1,9 +1,9 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PageNameComponent } from './page-name.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('PageNameComponent', () => {
   let component: PageNameComponent;

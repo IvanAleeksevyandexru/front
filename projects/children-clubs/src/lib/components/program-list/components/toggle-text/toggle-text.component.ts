@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Inject,
-  Input,
-  OnChanges,
-  OnInit,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, Input, OnChanges } from '@angular/core';
 import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
@@ -14,7 +6,7 @@ import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
   templateUrl: './toggle-text.component.html',
   styleUrls: ['./toggle-text.component.scss'],
 })
-export class ToggleTextComponent implements OnInit, OnChanges {
+export class ToggleTextComponent implements OnChanges {
   @Input() text = '';
   @Input() linesQuantity = 1;
 
@@ -29,8 +21,6 @@ export class ToggleTextComponent implements OnInit, OnChanges {
   onResize(): void {
     this.truncatedText = this.truncateText(this.text, this.linesQuantity);
   }
-
-  ngOnInit(): void {}
 
   ngOnChanges(): void {
     this.truncatedText = this.truncateText(this.text, this.linesQuantity);

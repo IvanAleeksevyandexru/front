@@ -19,6 +19,14 @@ import {
   ScreenContainerComponent,
   ImgPrefixerPipe,
 } from '@epgu/epgu-constructor-ui-kit';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  ComponentDto,
+  ComponentAttrsDto,
+  ComponentActionDto,
+  DTOActionAction,
+} from '@epgu/epgu-constructor-types';
+import { ButtonComponent, LoaderComponent } from '@epgu/ui/base';
 import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -29,15 +37,7 @@ import { ActionServiceStub } from '../../../../../../shared/directives/action/ac
 import { SignatureApplicationComponent } from './signature-application.component';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentDto,
-  ComponentAttrsDto,
-  ComponentActionDto,
-  DTOActionAction,
-} from '@epgu/epgu-constructor-types';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
-import { ButtonComponent, LoaderComponent } from '@epgu/ui/base';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;

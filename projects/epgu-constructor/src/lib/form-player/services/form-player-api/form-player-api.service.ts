@@ -49,15 +49,19 @@ export class FormPlayerApiService {
     const path = `${this.configService.apiUrl}/service/${serviceId}/scenario/getService`;
     const body = { targetId };
 
+    //TODO Добавить типизацию
     if (orderId) {
+      // eslint-disable-next-line
       body['orderId'] = orderId;
     }
-
+    //TODO Добавить типизацию
     if (serviceInfo) {
+      // eslint-disable-next-line
       body['serviceInfo'] = serviceInfo;
     }
-
+    //TODO Добавить типизацию
     if (gepsId) {
+      // eslint-disable-next-line
       body['gepsId'] = gepsId;
     }
 

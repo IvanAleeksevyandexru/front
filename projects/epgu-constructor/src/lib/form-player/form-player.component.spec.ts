@@ -201,28 +201,28 @@ describe('FormPlayerComponent', () => {
 
   describe('initConfigDependentEntities()', () => {
     it('should call autocompleteService init with true', () => {
-      configService['_isAutocompleteServiceDisabled'] = true;
+      configService._isAutocompleteServiceDisabled = true;
       const spy = jest.spyOn(autocompleteService, 'init');
-      component['initConfigDependentEntities']();
+      component.initConfigDependentEntities();
       expect(spy).toBeCalledWith(true);
     });
 
     it('should call autocompleteService init with false', () => {
       const spy = jest.spyOn(autocompleteService, 'init');
-      component['initConfigDependentEntities']();
+      component.initConfigDependentEntities();
       expect(spy).toBeCalledWith(false);
     });
 
     it('should call tracingService init with true', () => {
-      configService['_zipkinGenerationEnabled'] = true;
+      configService._zipkinGenerationEnabled = true;
       const spy = jest.spyOn(tracingService, 'init');
-      component['initConfigDependentEntities']();
+      component.initConfigDependentEntities();
       expect(spy).toBeCalledWith(true);
     });
 
     it('should call tracingService init with false', () => {
       const spy = jest.spyOn(tracingService, 'init');
-      component['initConfigDependentEntities']();
+      component.initConfigDependentEntities();
       expect(spy).toBeCalledWith(false);
     });
 
@@ -230,38 +230,38 @@ describe('FormPlayerComponent', () => {
       const serviceCode = '42';
       const setSpy = jest.spyOn(tracingService, 'serviceCode', 'set');
       screenService.serviceCode = serviceCode;
-      component['initConfigDependentEntities']();
+      component.initConfigDependentEntities();
       fixture.detectChanges();
       expect(setSpy).toBeCalledWith(serviceCode);
     });
   });
 
   describe('initFormPlayerConfig()', () => {
-    it('shouldn\'t call getFormPlayerConfig method of formPlayerConfigApiService when loadService not loaded', () => {
+    it("shouldn't call getFormPlayerConfig method of formPlayerConfigApiService when loadService not loaded", () => {
       loadService.loaded.next(false);
       const spy = jest.spyOn(formPlayerConfigApiService, 'getFormPlayerConfig');
-      component['initFormPlayerConfig']();
+      component.initFormPlayerConfig();
       expect(spy).not.toBeCalled();
     });
 
-    it('shouldn\'t call initCore method of configService when loadService not loaded', () => {
+    it("shouldn't call initCore method of configService when loadService not loaded", () => {
       loadService.loaded.next(false);
       const spy = jest.spyOn(configService, 'initCore');
-      component['initFormPlayerConfig']();
+      component.initFormPlayerConfig();
       expect(spy).not.toBeCalled();
     });
 
     it('should call initCore method of configService when loadService has loaded', () => {
       loadService.loaded.next(true);
       const spy = jest.spyOn(configService, 'initCore');
-      component['initFormPlayerConfig']();
+      component.initFormPlayerConfig();
       expect(spy).toBeCalled();
     });
 
     it('should call getFormPlayerConfig method of formPlayerConfigApiService when loadService has loaded', () => {
       loadService.loaded.next(true);
       const spy = jest.spyOn(formPlayerConfigApiService, 'getFormPlayerConfig');
-      component['initFormPlayerConfig']();
+      component.initFormPlayerConfig();
       expect(spy).toBeCalled();
     });
 
@@ -271,7 +271,7 @@ describe('FormPlayerComponent', () => {
       // @ts-ignore
       jest.spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').mockReturnValue(of(config));
       const setterSpy = jest.spyOn(configService, 'config', 'set');
-      component['initFormPlayerConfig']();
+      component.initFormPlayerConfig();
       expect(setterSpy).toBeCalled();
     });
 
@@ -280,8 +280,8 @@ describe('FormPlayerComponent', () => {
       loadService.loaded.next(true);
       // @ts-ignore
       jest.spyOn(formPlayerConfigApiService, 'getFormPlayerConfig').mockReturnValue(of(config));
-      const spy = jest.spyOn<any, string>(component['isConfigReady$'], 'next');
-      component['initFormPlayerConfig']();
+      const spy = jest.spyOn<any, string>(component.isConfigReady$, 'next');
+      component.initFormPlayerConfig();
       expect(spy).toBeCalledWith(true);
     });
   });
@@ -291,7 +291,7 @@ describe('FormPlayerComponent', () => {
       const navigationParam = {};
       const spy = jest.spyOn<any, string>(component, 'nextStep');
       navService.next(navigationParam);
-      component['initNavigation']();
+      component.initNavigation();
       expect(spy).toBeCalledWith(navigationParam);
     });
 
@@ -299,7 +299,7 @@ describe('FormPlayerComponent', () => {
       const navigationParam = {};
       const spy = jest.spyOn<any, string>(component, 'prevStep');
       navService.prev(navigationParam);
-      component['initNavigation']();
+      component.initNavigation();
       expect(spy).toBeCalledWith(navigationParam);
     });
 
@@ -307,14 +307,14 @@ describe('FormPlayerComponent', () => {
       const navigationParam = {};
       const spy = jest.spyOn<any, string>(component, 'skipStep');
       navService.skip(navigationParam);
-      component['initNavigation']();
+      component.initNavigation();
       expect(spy).toBeCalledWith(navigationParam);
     });
 
     it('should call formPlayerService initData with param when push restartOrder', () => {
       const spy = jest.spyOn<any, string>(formPlayerService, 'initData');
       navService.restartOrder();
-      component['initNavigation']();
+      component.initNavigation();
       expect(spy).toBeCalledWith();
     });
 
@@ -322,7 +322,7 @@ describe('FormPlayerComponent', () => {
       const navigationParam = {};
       const spy = jest.spyOn<any, string>(component, 'patchStepOnCli');
       navService.patchOnCli(navigationParam);
-      component['initNavigation']();
+      component.initNavigation();
       expect(spy).toBeCalledWith(navigationParam);
     });
   });
@@ -339,13 +339,13 @@ describe('FormPlayerComponent', () => {
 
     it('should set screenId to component param', () => {
       screenService.display = display;
-      component['initSettingOfScreenIdToAttr']();
+      component.initSettingOfScreenIdToAttr();
       expect(component.screenId).toBe(display.id);
     });
 
     it('should attr.test-screen-id be screenId', () => {
       screenService.display = display;
-      component['initSettingOfScreenIdToAttr']();
+      component.initSettingOfScreenIdToAttr();
       fixture.detectChanges();
       expect(fixture.debugElement.attributes['test-screen-id']).toBe(display.id);
     });
@@ -355,7 +355,7 @@ describe('FormPlayerComponent', () => {
     it('should call navigate of formPlayerService with next param', () => {
       const navigation = {};
       const spy = jest.spyOn(formPlayerService, 'navigate');
-      component['nextStep'](navigation);
+      component.nextStep(navigation);
       expect(spy).toBeCalledWith(navigation, FormPlayerNavigation.NEXT);
     });
   });
@@ -364,7 +364,7 @@ describe('FormPlayerComponent', () => {
     it('should call navigate of formPlayerService with prev param', () => {
       const navigation = {};
       const spy = jest.spyOn(formPlayerService, 'navigate');
-      component['prevStep'](navigation);
+      component.prevStep(navigation);
       expect(spy).toBeCalledWith(navigation, FormPlayerNavigation.PREV);
     });
   });
@@ -373,7 +373,7 @@ describe('FormPlayerComponent', () => {
     it('should call navigate of formPlayerService with skip param', () => {
       const navigation = {};
       const spy = jest.spyOn(formPlayerService, 'navigate');
-      component['skipStep'](navigation);
+      component.skipStep(navigation);
       expect(spy).toBeCalledWith(navigation, FormPlayerNavigation.SKIP);
     });
   });
@@ -382,7 +382,7 @@ describe('FormPlayerComponent', () => {
     it('should call patchStore of formPlayerService with skip param', () => {
       const newScenarioDtoDiff = {};
       const spy = jest.spyOn(formPlayerService, 'patchStore');
-      component['patchStepOnCli'](newScenarioDtoDiff);
+      component.patchStepOnCli(newScenarioDtoDiff);
       expect(spy).toBeCalledWith(newScenarioDtoDiff);
     });
   });
@@ -412,24 +412,24 @@ describe('FormPlayerComponent', () => {
 
   describe('render screen resolver', () => {
     it('should not render screen resolver when player not loaded', () => {
-      formPlayerService['_playerLoaded$'] = of(false);
-      configService['_isLoaded$'] = of(true);
+      formPlayerService._playerLoaded$ = of(false);
+      configService._isLoaded$ = of(true);
       fixture.detectChanges();
       const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
       expect(screenResolver).toBeFalsy();
     });
 
     it('should not render screen resolver when config not loaded', () => {
-      formPlayerService['_playerLoaded$'] = of(true);
-      configService['_isLoaded$'] = of(false);
+      formPlayerService._playerLoaded$ = of(true);
+      configService._isLoaded$ = of(false);
       fixture.detectChanges();
       const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
       expect(screenResolver).toBeFalsy();
     });
 
     it('should render screen resolver when config loaded and player loaded', () => {
-      formPlayerService['_playerLoaded$'] = of(true);
-      configService['_isLoaded$'] = of(true);
+      formPlayerService._playerLoaded$ = of(true);
+      configService._isLoaded$ = of(true);
       fixture.detectChanges();
       const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
       expect(screenResolver).toBeTruthy();
@@ -439,8 +439,8 @@ describe('FormPlayerComponent', () => {
   describe('render modal', () => {
     it('should render screen modal', () => {
       component.isFirstLoading$ = of(false);
-      formPlayerService['_playerLoaded$'] = of(true);
-      configService['_isLoaded$'] = of(true);
+      formPlayerService._playerLoaded$ = of(true);
+      configService._isLoaded$ = of(true);
       fixture.detectChanges();
       const screenModal = fixture.debugElement.query(By.css('epgu-constructor-screen-modal'));
       expect(screenModal).toBeTruthy();
@@ -455,8 +455,8 @@ describe('FormPlayerComponent', () => {
   describe('render logic', () => {
     it('should render logic component', () => {
       component.isFirstLoading$ = of(false);
-      formPlayerService['_playerLoaded$'] = of(true);
-      configService['_isLoaded$'] = of(true);
+      formPlayerService._playerLoaded$ = of(true);
+      configService._isLoaded$ = of(true);
       fixture.detectChanges();
       const logicComponent = fixture.debugElement.query(By.css('epgu-constructor-logic-container'));
       expect(logicComponent).toBeTruthy();

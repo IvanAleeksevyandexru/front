@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { PersonUserInnComponent } from './person-user-inn.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
-import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentBase } from '../../../../screen/screen.types';
-import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 
 describe('PersonUserInnComponent', () => {
   let component: PersonUserInnComponent;
@@ -78,7 +78,7 @@ describe('PersonUserInnComponent', () => {
       expect(currentAnswersService.state).toEqual(validInnValue);
     });
 
-    it('shouldn\'t update value', () => {
+    it("shouldn't update value", () => {
       component.updateValue(null, []);
 
       expect(currentAnswersService.isValid).toEqual(false);
