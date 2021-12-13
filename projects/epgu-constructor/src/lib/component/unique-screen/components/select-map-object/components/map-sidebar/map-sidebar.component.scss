@@ -8,7 +8,7 @@
   &__title {
     margin-left: 24px;
     font-size: $font-sm;
-    color: $color-text-helper
+    color: $color-text-helper;
   }
 }
 
@@ -24,7 +24,7 @@
 
 .previously-choosen.hidden {
   @include tablets-down() {
-      display: none;
+    display: none;
   }
 }
 
@@ -43,7 +43,7 @@
 
 .perfect-scrollbar.hidden {
   @include tablets-down() {
-      visibility: hidden;
+    visibility: hidden;
   }
 }
 

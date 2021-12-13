@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DATE_STRING_DOT_FORMAT, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+
 import { isAfter, isBefore } from 'date-fns';
+import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { FormArray } from '@angular/forms';
+import { cloneDeep } from 'lodash';
+import { DatesHelperService } from '@epgu/ui/services/dates-helper';
+import { Range } from '../date-range/date-range.models';
+import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 import {
   DATE_RESTRICTION_GROUP_DEFAULT_KEY,
   DateRestriction,
   Searchable,
 } from '../../../component/custom-screen/components-list.types';
-import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
-import { FormArray } from '@angular/forms';
-import { cloneDeep } from 'lodash';
-import { Range } from '../date-range/date-range.models';
-import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
-import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 
 @Injectable()
@@ -20,7 +20,9 @@ export class DateRestrictionsService {
   today: Date;
 
   private dateRangeStore = new Map<string, Range>();
+
   private maxDateConditions = ['<', '<='];
+
   private minDateConditions = ['>', '>='];
 
   constructor(
@@ -177,7 +179,7 @@ export class DateRestrictionsService {
     const dateFromComponents = valueFromComponents ? new Date(valueFromComponents) : null;
     const dateFromApplicantAnswers = this.getDateFromApplicantAnswers(applicantAnswers, datePath);
 
-    let date = dateFromComponents || dateFromApplicantAnswers;
+    const date = dateFromComponents || dateFromApplicantAnswers;
     return date
       ? `${this.datesToolsService.format(date, DATE_STRING_DOT_FORMAT)}${dateExpression}`
       : null;
@@ -192,11 +194,10 @@ export class DateRestrictionsService {
       );
       if (this.datesToolsService.isValid(stringDotParsingResult)) {
         return stringDotParsingResult;
-      } else {
-        const isoStringParsingResult = this.datesToolsService.parse(valueFromApplicantAnswers);
-        if (this.datesToolsService.isValid(isoStringParsingResult)) {
-          return isoStringParsingResult;
-        }
+      }
+      const isoStringParsingResult = this.datesToolsService.parse(valueFromApplicantAnswers);
+      if (this.datesToolsService.isValid(isoStringParsingResult)) {
+        return isoStringParsingResult;
       }
     }
     return null;
@@ -205,7 +206,7 @@ export class DateRestrictionsService {
   private getValueViaRefWithProcessing(searchable: Searchable, path: string): string {
     let processedPath;
     const pathArray = path.split('.');
-    processedPath = pathArray.length === 1 ? path + '.value' : path;
+    processedPath = pathArray.length === 1 ? `${path}.value` : path;
     return this.dictionaryToolsService.getValueViaRef(searchable, processedPath);
   }
 }

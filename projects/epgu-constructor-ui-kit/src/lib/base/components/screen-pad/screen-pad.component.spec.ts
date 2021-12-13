@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ScreenPadComponent } from './screen-pad.component';
 import { Component } from '@angular/core';
+import { ScreenPadComponent } from './screen-pad.component';
 
 const helperTextMock = 'Awesome useful helper text.';
 

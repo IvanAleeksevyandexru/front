@@ -3,10 +3,10 @@ import { InterpolationService } from './interpolation.service';
 
 describe('InterpolationService', () => {
   let service: InterpolationService;
-  let componentAttrs = {
+  const componentAttrs = {
     label: 'Some label ${var1}, ${obj1.var2}',
     deep: { attrs: 'Some label ${obj1.var2}' },
-    value: { var1: 'one var', obj1: { var2: 'second var' }},
+    value: { var1: 'one var', obj1: { var2: 'second var' } },
   };
 
   beforeEach(() => {
@@ -44,7 +44,7 @@ describe('InterpolationService', () => {
     expect(result).toEqual({
       label: 'Some label one var, second var',
       deep: { attrs: 'Some label ${obj1.var2}' },
-      value: { var1: 'one var', obj1: { var2: 'second var' }},
+      value: { var1: 'one var', obj1: { var2: 'second var' } },
     });
   });
 
@@ -55,7 +55,7 @@ describe('InterpolationService', () => {
       {
         label: 'Some label one var, second var',
         deep: { attrs: 'Some label second var' },
-        value: { var1: 'one var', obj1: { var2: 'second var' }},
+        value: { var1: 'one var', obj1: { var2: 'second var' } },
       },
     ]);
   });

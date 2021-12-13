@@ -8,6 +8,7 @@ import {
   PREV_BUTTON_NAVIGATION,
   TRACE_ALLOWED_REMOTE_SERVICES,
 } from '@epgu/epgu-constructor-ui-kit';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { AutocompleteService } from './services/autocomplete/autocomplete.service';
 import { InitDataService } from './services/init-data/init-data.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
@@ -22,7 +23,6 @@ import { ErrorHandlerOrderParamsServiceService } from './services/error-handler-
 import { DateRefService } from './services/date-ref/date-ref.service';
 import { TypeCastService } from './services/type-cast/type-cast.service';
 import { HtmlSelectService } from './services/html-select/html-select.service';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.

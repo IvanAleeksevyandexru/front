@@ -6,6 +6,7 @@ export class TimeSlotStateServiceStub {
   get day$(): Observable<Date> {
     return of(new Date());
   }
+
   showModal() {}
 
   setMonth() {}

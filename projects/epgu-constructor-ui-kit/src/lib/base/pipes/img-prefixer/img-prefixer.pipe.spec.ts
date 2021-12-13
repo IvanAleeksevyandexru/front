@@ -23,8 +23,8 @@ describe('ImgPrefixerPipe', () => {
   });
 
   it('check inject link', () => {
-    configService['_staticDomainAssetsPath'] = 'test';
-    expect(pipe.transform('src=\'{staticDomainAssetsPath}\'')).toBe('src=\'test\'');
+    configService._staticDomainAssetsPath = 'test';
+    expect(pipe.transform("src='{staticDomainAssetsPath}'")).toBe("src='test'");
     expect(pipe.transform('src="{staticDomainAssetsPath}"')).toBe('src="test"');
     expect(pipe.transform('src="{staticDomainAssetsPath}/123"')).toBe('src="test/123"');
   });

@@ -1,8 +1,12 @@
-import { BaseRelation } from './base-relation';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { CustomComponent, CustomComponentRef, CustomListStatusElements } from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { get } from 'lodash';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomListStatusElements,
+} from '../../../components-list.types';
+import { BaseRelation } from './base-relation';
 
 export class AutofillTextFromRefsRelation extends BaseRelation {
   public handleRelation(

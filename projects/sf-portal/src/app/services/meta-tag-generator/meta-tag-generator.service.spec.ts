@@ -13,7 +13,7 @@ describe('MetaTagGeneratorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HttpClient, Meta]
+      providers: [HttpClient, Meta],
     });
     service = TestBed.inject(MetaTagGeneratorService);
     httpClient = TestBed.inject(HttpClient);
@@ -37,7 +37,7 @@ describe('MetaTagGeneratorService', () => {
     it('should call metaService.removeTag with property=${key} while processing info', () => {
       const spy = jest.spyOn(metaService, 'removeTag');
       const info = [{ key2: 'Foo bar' }];
-      const result = 'property=\'key2\'';
+      const result = "property='key2'";
       service.addInfoToMeta(info);
       expect(spy).toHaveBeenCalledWith(result);
     });
@@ -47,7 +47,7 @@ describe('MetaTagGeneratorService', () => {
       const info = [{ key2: 'Foo bar' }, { key1: 'BarFoo' }];
       const result = [
         { content: 'Foo bar', property: 'key2' },
-        { content: 'BarFoo', property: 'key1' }
+        { content: 'BarFoo', property: 'key1' },
       ];
       service.addInfoToMeta(info);
       expect(spy).toHaveBeenCalledWith(result, true);

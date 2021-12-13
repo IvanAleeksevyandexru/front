@@ -8,20 +8,24 @@ import {
   LoggerServiceStub,
   JsonHelperService,
   JsonHelperServiceStub,
+  EventBusService,
+  UnsubscribeService,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub,
+  CtaModalComponent,
 } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ModalService, ModalServiceStub, CtaModalComponent } from '@epgu/epgu-constructor-ui-kit';
+
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { VideoModalComponent } from './video-modal.component';
 import {
   IdentificationStreamService,
@@ -87,7 +91,7 @@ describe('VideoModalComponent', () => {
   describe('onReady()', () => {
     it('should call luna check liveness', () => {
       component.luna = lunaStub;
-      const spy = jest.spyOn(component['luna'], 'checkLiveness');
+      const spy = jest.spyOn(component.luna, 'checkLiveness');
       component.onReady();
 
       expect(spy).toHaveBeenCalledTimes(1);
@@ -97,7 +101,7 @@ describe('VideoModalComponent', () => {
   describe('close()', () => {
     it('should call ws.close', () => {
       component.luna = lunaStub;
-      const spy = jest.spyOn(component['luna'].ws, 'close');
+      const spy = jest.spyOn(component.luna.ws, 'close');
       jest.spyOn(component, 'closeModal').mockImplementation((...args) => null);
       component.close();
 

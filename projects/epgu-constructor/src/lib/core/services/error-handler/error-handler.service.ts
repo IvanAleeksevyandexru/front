@@ -13,6 +13,8 @@ import {
   ConfigService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { Observable, of, throwError } from 'rxjs';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 import {
   AUTH_ERROR_MODAL_PARAMS,
@@ -32,7 +34,6 @@ import {
   RESOURCE_NOT_AVAILABLE,
   NO_DOCTORS,
 } from './error-handler';
-import { Observable, of, throwError } from 'rxjs';
 import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
 import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
@@ -47,7 +48,6 @@ import {
   NO_AVAILABLE_DATA,
 } from './error-handler.inteface';
 import { DictionaryResponseError } from '../../../shared/services/dictionary/dictionary-api.types';
-import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -70,6 +70,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     const { status, url, body } = httpResponse;
     const requestBody = httpRequest?.body;
     const refName =
+      // eslint-disable-next-line
       typeof requestBody === 'object' && requestBody != null ? requestBody['refName'] : undefined;
 
     if (status === 200) {
@@ -160,11 +161,16 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
     if (statusText === 'logic component') {
       return throwError(httpErrorResponse);
-    } else if (error?.errorModalWindow) {
+    }
+    if (error?.errorModalWindow) {
       this.showErrorModal({ ...error?.errorModalWindow, traceId });
     } else if (status === 401) {
       this.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
-        result === 'login' ? this.locationService.reload() : this.locationService.href('/');
+        if (result === 'login') {
+          this.locationService.reload();
+        } else {
+          this.locationService.href('/');
+        }
       });
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY, errors: error });
@@ -173,11 +179,10 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     } else if (status !== 404) {
       if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
-      } else {
-        this.showModal(COMMON_ERROR_MODAL_PARAMS(traceId), traceId).then((value) =>
-          this.handleModalAction(value),
-        );
       }
+      this.showModal(COMMON_ERROR_MODAL_PARAMS(traceId), traceId).then((value) =>
+        this.handleModalAction(value),
+      );
     }
     return throwError(httpErrorResponse);
   }
@@ -199,11 +204,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         break;
 
       case ModalFailureType.BOOKING:
-        const modal = {
+        const modalBooking = {
           ...NEW_BOOKING_ERROR,
           text: NEW_BOOKING_ERROR.text.replace(/\{textAsset\}?/g, message),
         };
-        this.showModal(modal).then((value) => this.handleModalAction(value));
+        this.showModal(modalBooking).then((value) => this.handleModalAction(value));
         break;
     }
   }
@@ -378,16 +383,18 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
   private waitingOrderCreate(refreshTime = 10000): void {
     this.screenService.updateLoading(true);
-    of().pipe(
-      takeUntil(this.ngUnsubscribe$),
-      debounceTime(refreshTime),
-      tap(() => this.navigationService.next()),
-      switchMap(() => this.navigationService.nextStep$),
-      tap({
-        next: () => {
-          this.screenService.updateLoading(false);
-        }
-      })
-    ).subscribe();
+    of()
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        debounceTime(refreshTime),
+        tap(() => this.navigationService.next()),
+        switchMap(() => this.navigationService.nextStep$),
+        tap({
+          next: () => {
+            this.screenService.updateLoading(false);
+          },
+        }),
+      )
+      .subscribe();
   }
 }

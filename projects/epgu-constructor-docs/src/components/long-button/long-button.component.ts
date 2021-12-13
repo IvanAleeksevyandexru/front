@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 
 import exampleImportModule from '!!raw-loader!./examples/import/import-module.txt';
 import exampleInsertTemplate from '!!raw-loader!./examples/import/insert-template.html';
@@ -18,7 +18,7 @@ import example2Scss from '!!raw-loader!./examples/2/index.scss';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExampleEpguLongButtonComponent implements OnInit {
+export class ExampleEpguLongButtonComponent {
   readonly exampleImportModule = exampleImportModule;
   readonly exampleInsertTemplate = exampleInsertTemplate;
 
@@ -51,8 +51,6 @@ export class ExampleEpguLongButtonComponent implements OnInit {
   readonly descriptions = ['', 'Описание ко второй кнопке'];
   readonly disables = [false, false];
   readonly isLoadings = [false, false];
-
-  ngOnInit(): void {}
 
   isShown(value: string): boolean {
     return this.isLoading && value === this.selectedValue;

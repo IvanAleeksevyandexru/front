@@ -13,12 +13,12 @@ import {
   SafeModule,
   BaseUiModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DenyReason, FinancialSourceType, Group } from '../../../../typings';
-import { GroupItemComponent } from './group-item.component';
-import { DenyReasonTitleComponent } from '../../../base/components/deny-reason-title/deny-reason-title.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 import { HttpClientModule } from '@angular/common/http';
+import { DenyReason, FinancialSourceType, Group } from '../../../../typings';
+import { GroupItemComponent } from './group-item.component';
+import { DenyReasonTitleComponent } from '../../../base/components/deny-reason-title/deny-reason-title.component';
 
 const testGroup: Group = {
   uuid: '1234',
@@ -107,7 +107,7 @@ describe('GroupItemComponent', () => {
     it('should set isNextSchoolYear', () => {
       jest
         .spyOn(stateQuery, 'state', 'get')
-        .mockReturnValue({ testState, ...{ nextSchoolYear: 'true' }});
+        .mockReturnValue({ testState, ...{ nextSchoolYear: 'true' } });
       expect(component.isNextSchoolYear).toBeFalsy();
       component.ngOnInit();
       expect(component.isNextSchoolYear).toBeTruthy();
@@ -236,7 +236,7 @@ describe('GroupItemComponent', () => {
     });
 
     it('should be deny reason title for next year', () => {
-      const testStateCopy = Object.assign({}, testState);
+      const testStateCopy = { ...testState };
       testStateCopy.nextSchoolYear = 'true';
       jest.spyOn(stateQuery, 'state', 'get').mockReturnValue(testStateCopy);
 
@@ -246,7 +246,7 @@ describe('GroupItemComponent', () => {
     });
 
     it('should be deny reason text for next year', () => {
-      const testStateCopy = Object.assign({}, testState);
+      const testStateCopy = { ...testState };
       testStateCopy.nextSchoolYear = 'true';
       jest.spyOn(stateQuery, 'state', 'get').mockReturnValue(testStateCopy);
 
@@ -292,18 +292,18 @@ describe('GroupItemComponent', () => {
 
   it('getCost', () => {
     let item = { cost: 9600, monthlyCost: 1200, sourceCode: FinancialSourceType.pfdod_certificate };
-    expect(component['getCost'](item)).toEqual(1200);
+    expect(component.getCost(item)).toEqual(1200);
 
     item = { cost: 1200, monthlyCost: 0, sourceCode: FinancialSourceType.paid };
-    expect(component['getCost'](item)).toEqual(1200);
+    expect(component.getCost(item)).toEqual(1200);
 
     item = { cost: 0, monthlyCost: 0, sourceCode: FinancialSourceType.budget };
-    expect(component['getCost'](item)).toEqual(0);
+    expect(component.getCost(item)).toEqual(0);
 
     item = { cost: 800, monthlyCost: 0, sourceCode: FinancialSourceType.private };
-    expect(component['getCost'](item)).toEqual(800);
+    expect(component.getCost(item)).toEqual(800);
 
     item = { cost: 0, monthlyCost: 0, sourceCode: FinancialSourceType.none };
-    expect(component['getCost'](item)).toEqual(0);
+    expect(component.getCost(item)).toEqual(0);
   });
 });

@@ -22,9 +22,13 @@ export class UploaderLimitsService {
   changes = new Subject<null>();
 
   private totalMaxAmount = new BehaviorSubject<number>(0);
+
   private totalMaxSize = new BehaviorSubject<number>(0);
+
   private currentAllAmount = new BehaviorSubject<number>(0);
+
   private currentAllSize = new BehaviorSubject<number>(0);
+
   private uploaders = new BehaviorSubject<UploaderCounterStore>({});
 
   setTotalMaxAmount(amount: number): void {

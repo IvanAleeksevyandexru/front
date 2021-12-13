@@ -5,9 +5,7 @@ import ValueCalculatorComponent from '../components/value-calculator/value-calcu
 
 export type ComponentTypes = LogicScreenComponentTypes;
 
-export type LogicScreenComponent =
-  RestCallComponent |
-  ValueCalculatorComponent;
+export type LogicScreenComponent = RestCallComponent | ValueCalculatorComponent;
 
 export type ScreenComponentTypes = LogicScreenComponent;
 
@@ -17,5 +15,4 @@ export const LOGIC_SCREEN_COMPONENTS: Partial<Record<
 >> = {
   RestCall: RestCallComponent,
   ValueCalculator: ValueCalculatorComponent,
-
 };

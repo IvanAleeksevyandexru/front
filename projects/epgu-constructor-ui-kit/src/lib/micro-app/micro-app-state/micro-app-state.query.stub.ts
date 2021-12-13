@@ -4,8 +4,11 @@ import { of } from 'rxjs';
 @Injectable()
 export class MicroAppStateQueryStub {
   store$ = of({});
+
   value$ = of({});
+
   state$ = of({});
+
   currentComponent$ = of({});
 
   get value() {

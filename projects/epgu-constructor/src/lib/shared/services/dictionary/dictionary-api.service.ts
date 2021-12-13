@@ -1,10 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  DadataNormalizeResponse,
-  DadataSuggestionsResponse,
-  DictionaryResponse,
-} from './dictionary-api.types';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
@@ -14,6 +9,11 @@ import {
   DictionaryUrlTypes,
   KeyValueMap,
 } from '@epgu/epgu-constructor-types';
+import {
+  DadataNormalizeResponse,
+  DadataSuggestionsResponse,
+  DictionaryResponse,
+} from './dictionary-api.types';
 
 @Injectable()
 export class DictionaryApiService {
@@ -25,6 +25,7 @@ export class DictionaryApiService {
   };
 
   private dictionaryCache: Record<string, DictionaryResponse> = {};
+
   private processStatus: BehaviorSubject<Record<string, true>> = new BehaviorSubject<
     Record<string, true>
   >({});
@@ -50,24 +51,23 @@ export class DictionaryApiService {
       concatMap((id) => {
         if (this.dictionaryCache[id]) {
           return of(this.dictionaryCache[id]);
-        } else {
-          const status = this.processStatus.getValue();
-          status[id] = true;
-          this.processStatus.next(status);
-
-          return this.post<DictionaryResponse>(path, options).pipe(
-            tap((response) => {
-              if (!this.hasDictionaryResponseError(response)) {
-                this.dictionaryCache[id] = response;
-              }
-            }),
-            finalize(() => {
-              const status = this.processStatus.getValue();
-              delete status[id];
-              this.processStatus.next(status);
-            }),
-          );
         }
+        const status = this.processStatus.getValue();
+        status[id] = true;
+        this.processStatus.next(status);
+
+        return this.post<DictionaryResponse>(path, options).pipe(
+          tap((response) => {
+            if (!this.hasDictionaryResponseError(response)) {
+              this.dictionaryCache[id] = response;
+            }
+          }),
+          finalize(() => {
+            const processStatusValue = this.processStatus.getValue();
+            delete processStatusValue[id];
+            this.processStatus.next(processStatusValue);
+          }),
+        );
       }),
     );
   }
@@ -117,7 +117,7 @@ export class DictionaryApiService {
   }
 
   private hasDictionaryResponseError(response: DictionaryResponse): boolean {
-    const error = response.error;
+    const { error } = response;
     if (!error) {
       return false;
     }

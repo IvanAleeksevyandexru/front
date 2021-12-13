@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 
 import exampleImportModule from '!!raw-loader!./examples/import/import-module.txt';
 import exampleInsertTemplate from '!!raw-loader!./examples/import/insert-template.html';
@@ -13,7 +13,7 @@ import example1Html from '!!raw-loader!./examples/1/index.html';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExampleEpguChipComponent implements OnInit {
+export class ExampleEpguChipComponent {
   readonly exampleImportModule = exampleImportModule;
   readonly exampleInsertTemplate = exampleInsertTemplate;
 
@@ -34,6 +34,4 @@ export class ExampleEpguChipComponent implements OnInit {
     // eslint-disable-next-line no-console
     console.log(id);
   }
-
-  ngOnInit(): void {}
 }

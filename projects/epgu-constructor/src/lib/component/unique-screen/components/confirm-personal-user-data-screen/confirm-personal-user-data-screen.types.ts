@@ -1,4 +1,3 @@
-import { ComponentBase } from '../../../../screen/screen.types';
 import {
   ActionType,
   Clarifications,
@@ -6,6 +5,7 @@ import {
   DisclaimerDto,
   DTOActionAction,
 } from '@epgu/epgu-constructor-types';
+import { ComponentBase } from '../../../../screen/screen.types';
 
 export interface ConfirmUserData extends ComponentBase {
   attrs: ConfirmUserDataAttrs;

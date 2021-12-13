@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { InvitationService, SUCCESS_MESSAGE, FAILURE_MESSAGE } from './invitation.service';
 import {
   LoggerService,
   LoggerServiceStub,
   ModalService,
   ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { InvitationService, SUCCESS_MESSAGE, FAILURE_MESSAGE } from './invitation.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 
@@ -44,13 +44,13 @@ describe('InvitationService', () => {
     const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(of({ errorCode: 0 }));
     service.post(
       `/orders/${orderId}/invitations/inviteToSign/send`,
-      [{ email: email, id: snils, type: 'SNILS' }],
+      [{ email, id: snils, type: 'SNILS' }],
       { ref: 'testAnswerData', url: '' },
     );
 
     expect(httpPostSpy).toBeCalledWith(
       `/orders/${orderId}/invitations/inviteToSign/send`,
-      [{ email: email, id: snils, type: 'SNILS' }],
+      [{ email, id: snils, type: 'SNILS' }],
       { withCredentials: true },
     );
     expect(openModalSpy).toBeCalledWith(SUCCESS_MESSAGE, []);
@@ -66,13 +66,13 @@ describe('InvitationService', () => {
     const httpPostSpy = jest.spyOn(http, 'post').mockReturnValue(throwError(error));
     service.post(
       `/orders/${orderId}/invitations/inviteToSign/send`,
-      [{ email: email, id: snils, type: 'SNILS' }],
+      [{ email, id: snils, type: 'SNILS' }],
       { ref: 'testAnswerData', url: '' },
     );
 
     expect(httpPostSpy).toBeCalledWith(
       `/orders/${orderId}/invitations/inviteToSign/send`,
-      [{ email: email, id: snils, type: 'SNILS' }],
+      [{ email, id: snils, type: 'SNILS' }],
       { withCredentials: true },
     );
     expect(openModalSpy).toBeCalledWith(FAILURE_MESSAGE, []);

@@ -1,5 +1,5 @@
-import { ServiceResult } from '../../car-info/models/car-info.interface';
 import { ComponentActionDto, ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { ServiceResult } from '../../car-info/models/car-info.interface';
 
 export interface CarListComponentAttrsDto extends ComponentAttrsDto {
   errors: CarInfoErrorsDto;

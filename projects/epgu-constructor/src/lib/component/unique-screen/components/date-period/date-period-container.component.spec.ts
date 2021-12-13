@@ -1,11 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DatePeriodContainerComponent } from './date-period-container.component';
-import { ScreenService } from '../../../../screen/screen.service';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -14,9 +8,15 @@ import {
   LocalStorageServiceStub,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DatePeriodComponent } from './date-period/date-period.component';
 import { parseISO } from 'date-fns';
 import { HttpClientModule } from '@angular/common/http';
+import { DatePeriodContainerComponent } from './date-period-container.component';
+import { ScreenService } from '../../../../screen/screen.service';
+import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { CachedAnswersService } from '../../../../shared/services/cached-answers/cached-answers.service';
+import { DatePeriodComponent } from './date-period/date-period.component';
 
 describe('DatePeriodContainerComponent', () => {
   let component: DatePeriodContainerComponent;

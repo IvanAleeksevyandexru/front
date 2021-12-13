@@ -1,24 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotScreenComponent } from './time-slot-screen.component';
 import { FormsModule } from '@angular/forms';
-import { BaseModule } from '../../../../../../shared/base.module';
 import {
   DatesToolsService,
   DatesToolsServiceStub,
   ScreenContainerModule,
   ScreenPadModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
+import { TimeSlotScreenComponent } from './time-slot-screen.component';
+import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { TimeSlotBaseScreenComponent } from '../base/time-slot-base-screen/time-slot-base-screen.component';
-import { MockComponent } from 'ng-mocks';
 import { TimeSlotResolverComponent } from '../time-slot-resolver/time-slot-resolver.component';
 import { TimeSlotErrorComponent } from '../base/time-slot-error/time-slot-error.component';
 import { TimeSlotBookedInfoComponent } from '../base/time-slot-booked-info/time-slot-booked-info.component';
 import { TimeSlotButtonComponent } from '../base/time-slot-button/time-slot-button.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
 import { TimeSlotCalendarService } from '../../services/calendar/time-slot-calendar.service';
 
 describe('TimeSlotScreenComponent', () => {

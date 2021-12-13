@@ -1,35 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
+  ConfigService,
+  ObjectHelperService,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
   LocalStorageService,
   LocalStorageServiceStub,
   SafePipe,
   LocationService,
   LocationServiceStub,
   WINDOW_PROVIDERS,
+  DownloadService,
+  ModalService,
+  ModalServiceStub,
+  PrevButtonComponent,
+  ScreenContainerComponent,
+  ImgPrefixerPipe,
 } from '@epgu/epgu-constructor-ui-kit';
-import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenService } from '../../../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { PageNameComponent } from '../../../../../../shared/components/base-components/page-name/page-name.component';
-import { PrevButtonComponent } from '@epgu/epgu-constructor-ui-kit';
-import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
-import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
-import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
-import { SignatureApplicationData } from '../../models/application.interface';
-import { SignatureApplicationComponent } from '../signature-application/signature-application.component';
-import { SignatureApplicationContainerComponent } from './signature-application-container.component';
-import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
-import { ActionService } from '../../../../../../shared/directives/action/action.service';
-import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
-import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentDto,
@@ -40,6 +31,21 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { MockComponent } from 'ng-mocks';
 import { ButtonComponent, LoaderComponent } from '@epgu/ui/base';
+import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
+
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+import { PageNameComponent } from '../../../../../../shared/components/base-components/page-name/page-name.component';
+
+import { OutputHtmlComponent } from '../../../../../../shared/components/output-html/output-html.component';
+
+import { SignatureApplicationData } from '../../models/application.interface';
+import { SignatureApplicationComponent } from '../signature-application/signature-application.component';
+import { SignatureApplicationContainerComponent } from './signature-application-container.component';
+import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
+import { ActionService } from '../../../../../../shared/directives/action/action.service';
+import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 
 describe('SignatureApplicationContainerComponent', () => {
   let component: SignatureApplicationContainerComponent;

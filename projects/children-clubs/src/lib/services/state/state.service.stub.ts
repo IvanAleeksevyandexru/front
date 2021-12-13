@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { MicroAppStateQuery, MicroAppStateService } from '@epgu/epgu-constructor-ui-kit';
+import { cloneDeep } from 'lodash';
+import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import {
   ChildrenClubsState,
   ChildrenClubsValue,
   GroupFiltersModes,
 } from '../../children-clubs.types';
-import { cloneDeep } from 'lodash';
 
 @Injectable()
 export class StateServiceStub {
@@ -51,6 +51,7 @@ export class StateServiceStub {
       ? cloneDeep(this.stateQuery.state?.programFilters)
       : {};
   }
+
   set programFilters(programFilters: Filters) {
     this.changeState({ programFilters });
   }

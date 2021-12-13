@@ -3,6 +3,7 @@ import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class CalendarInputModelAttrs extends GenericAttrs {
   readonly components: CustomComponent[];
+
   readonly dateRestrictions: DateRestriction[];
 
   constructor(attrs: CustomComponentAttr) {

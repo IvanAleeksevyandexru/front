@@ -9,10 +9,15 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 })
 export class Example1EpguLongButtonComponent {
   label = 'Текст на кнопке';
+
   description = 'Дополнительное описание';
+
   disabled = false;
+
   isLoading = false;
+
   value = 'id1';
+
   selectedValue = 'id1';
 
   isShown(value: string): boolean {

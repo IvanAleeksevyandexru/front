@@ -10,8 +10,8 @@ import {
   MicroAppStateStore,
   MicroAppStateQuery,
 } from '@epgu/epgu-constructor-ui-kit';
-import { StateService } from '../../../../services/state/state.service';
 import { MockModule } from 'ng-mocks';
+import { StateService } from '../../../../services/state/state.service';
 import { ProgramListModule } from '../../program-list.module';
 import { ItemComponent } from './item.component';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
@@ -49,11 +49,11 @@ describe('ViewComponent', () => {
   describe('show()', () => {
     it('should call service methods', () => {
       component.data = baseProgramStub;
-      const spy = jest.spyOn(component['appNavigationService'], 'next');
+      const spy = jest.spyOn(component.appNavigationService, 'next');
 
       component.show();
 
-      expect(component['stateService'].selectedProgramUUID).toBe(baseProgramStub.uuid);
+      expect(component.stateService.selectedProgramUUID).toBe(baseProgramStub.uuid);
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });

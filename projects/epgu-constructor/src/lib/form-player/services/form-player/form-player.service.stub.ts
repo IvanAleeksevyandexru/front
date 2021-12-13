@@ -40,11 +40,15 @@ export class FormPlayerServiceStub {
       orderId: 1,
     },
   };
+
   componentId: string;
+
   componentType: string;
+
   isLoading = false;
 
   _isLoading$ = of(false);
+
   _playerLoaded$ = of(false);
 
   get isLoading$(): Observable<boolean> {

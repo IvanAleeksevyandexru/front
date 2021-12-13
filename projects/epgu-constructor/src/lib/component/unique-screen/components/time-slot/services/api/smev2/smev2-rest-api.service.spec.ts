@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { Smev2RestApiService } from './smev2-rest-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { Smev2RestApiService } from './smev2-rest-api.service';
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 import { TimeSlotRequestType } from '../../../typings';

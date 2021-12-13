@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimeSlotGibddComponent } from './time-slot-gibdd.component';
 import { MockComponent } from 'ng-mocks';
+import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
+import { TimeSlotGibddComponent } from './time-slot-gibdd.component';
 import { TimeSlotSmev3Component } from '../../base/time-slot-smev3/time-slot-smev3.component';
 import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
 import { TimeSlotSmev3StateServiceStub } from '../../../services/smev3-state/time-slot-smev3-state.service.stub';
 import { DepartmentInterface, TimeSlotValueInterface } from '../../../typings';
-import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
 
 describe('TimeSlotGibddComponent', () => {
@@ -32,7 +32,7 @@ describe('TimeSlotGibddComponent', () => {
 
   describe('base', () => {
     it('should be getPartialListRequestParams', () => {
-      let attributeValues = { code: 'test3' };
+      const attributeValues = { code: 'test3' };
       expect(
         component.getPartialListRequestParams(
           ({ organizationId: 'test', serviceId: 'test2' } as unknown) as TimeSlotValueInterface,

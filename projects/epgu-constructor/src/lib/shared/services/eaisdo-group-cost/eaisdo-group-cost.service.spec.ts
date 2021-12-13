@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { EaisdoGroupCostService } from './eaisdo-group-cost.service';
+import { ActionType, ScreenButton, DTOActionAction } from '@epgu/epgu-constructor-types';
+
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { cloneDeep } from 'lodash';
+import { CertificateEaisdoService } from '../certificate-eaisdo/certificate-eaisdo.service';
 import {
   EaisdoFinancialSourceTypes,
   EaisdoResponseTypes,
   EaisdoStateTypes,
   EaisdoTypeOfBudgetTypes,
 } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
-import { ActionType, ScreenButton } from '@epgu/epgu-constructor-types';
-import { DTOActionAction } from '@epgu/epgu-constructor-types';
-import { CertificateEaisdoService } from '../certificate-eaisdo/certificate-eaisdo.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { cloneDeep } from 'lodash';
+import { EaisdoGroupCostService } from './eaisdo-group-cost.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
@@ -74,9 +74,9 @@ describe('EaisdoGroupCostService', () => {
         hidden: false,
       };
       const result = cloneDeep(button);
-      service['isInformerScreen'] = true;
+      service.isInformerScreen = true;
       service.currentButtonsState = [ActionType.quizToOrder];
-      service['calculateVisibility'](button);
+      service.calculateVisibility(button);
       expect(button).not.toEqual(result);
     });
     it('should set button hidden attr to false, if currentButtonsState include that button', () => {
@@ -87,9 +87,9 @@ describe('EaisdoGroupCostService', () => {
         hidden: false,
       };
       const result = cloneDeep(button);
-      service['isInformerScreen'] = true;
+      service.isInformerScreen = true;
       service.currentButtonsState = [ActionType.nextStep];
-      service['calculateVisibility'](button);
+      service.calculateVisibility(button);
       expect(button).toEqual(result);
     });
   });

@@ -4,23 +4,24 @@ import { MockModule, MockProvider } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { MaskedAndPlainInputComponent } from './masked-and-plain-input.component';
 import {
   UnsubscribeService,
   ActivatedRouteStub,
   BaseUiModule,
+  EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClientModule } from '@angular/common/http';
+import { MaskedAndPlainInputComponent } from './masked-and-plain-input.component';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ComponentItemModule } from '../component-item/component-item.module';
 import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('MaskedAndPlainInputComponent', () => {
   let component: MaskedAndPlainInputComponent;
@@ -98,7 +99,7 @@ describe('MaskedAndPlainInputComponent', () => {
         value: new FormControl(mockPlainComponent),
         attrs: new FormControl(mockPlainComponent.attrs),
       });
-      formService['_form'] = new FormArray([control]);
+      formService._form = new FormArray([control]);
       fixture.detectChanges();
     });
 
@@ -116,7 +117,7 @@ describe('MaskedAndPlainInputComponent', () => {
         value: new FormControl(mockMaskedComponent),
         attrs: new FormControl(mockMaskedComponent.attrs),
       });
-      formService['_form'] = new FormArray([control]);
+      formService._form = new FormArray([control]);
       fixture.detectChanges();
     });
 

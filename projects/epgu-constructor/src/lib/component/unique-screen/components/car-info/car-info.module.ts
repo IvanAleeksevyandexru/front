@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  EventBusService,
+  ScreenContainerModule,
+  ScreenPadModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { CarInfoComponent } from './components/car-info/car-info.component';
 import { CarInfoContainerComponent } from './containers/car-info-screen/car-info-container.component';
 import { ExpansionLinkComponent } from './components/expansion-link/expansion-link.component';

@@ -33,7 +33,7 @@ describe('ServiceNameService', () => {
       );
     });
 
-    it('shouldn\'t return service name if path is incorrect ', () => {
+    it("shouldn't return service name if path is incorrect ", () => {
       expect(service.getServiceName('https://www.gosuslugi.ru/600101/form')).not.toBe(
         'FormService',
       );

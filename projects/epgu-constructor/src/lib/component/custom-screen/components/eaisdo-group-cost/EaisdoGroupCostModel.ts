@@ -4,7 +4,8 @@ import EaisdoGroupCostAttrs from './EaisdoGroupCostAttrs';
 
 export default class EaisdoGroupCostModel extends BaseModel<EaisdoGroupCostAttrs> {
   readonly type = CustomScreenComponentTypes.EaisdoGroupCost;
-  readonly arguments: {financialSource: string, typeOfBudget: string};
+
+  readonly arguments: { financialSource: string; typeOfBudget: string };
 
   getAttrs(attrs: CustomComponentAttr): EaisdoGroupCostAttrs {
     return new EaisdoGroupCostAttrs(attrs);

@@ -10,7 +10,9 @@ import {
 } from '@angular/forms';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+import { DeclinePipe } from '@epgu/ui/pipes';
+import { MonthYear } from '@epgu/ui/models/date-time';
 import {
   EmployeeType,
   EmployeeHistoryModel,
@@ -22,14 +24,13 @@ import {
   EmployeeHistoryErrors,
   EmployeeHistoryMaxLengthValidators,
 } from '../employee-history.enums';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DeclinePipe } from '@epgu/ui/pipes';
-import { MonthYear } from '@epgu/ui/models/date-time';
 
 @Injectable()
 export class EmployeeHistoryFormService {
   employeeHistoryForm: FormArray = this.fb.array([]);
+
   employeeHistory: EmployeeHistoryModel[] = [];
+
   generateForm: FormGroup;
 
   private readonly defaultType: EmployeeType;
@@ -160,9 +161,8 @@ export class EmployeeHistoryFormService {
         if (fromDateToDateDiff > 0) {
           form.get('error').setErrors({ error: EmployeeHistoryErrors.FailedDateTo });
           return;
-        } else {
-          form.get('error').setErrors(null);
         }
+        form.get('error').setErrors(null);
       }
       if (toDateMinDateDiff < 0) {
         form.get('error').setErrors({

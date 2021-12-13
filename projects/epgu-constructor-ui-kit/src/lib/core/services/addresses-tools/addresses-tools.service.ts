@@ -18,8 +18,7 @@ export class AddressesToolsService {
       return this.http.post<IGeoCoordsResponse>(path, {
         address: addresses,
       });
-    } else {
-      return of({ coords: [], error: '' });
     }
+    return of({ coords: [], error: '' });
   }
 }

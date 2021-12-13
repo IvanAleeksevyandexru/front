@@ -34,7 +34,7 @@ export class RankTransformDirective implements OnInit {
   @HostListener('change', ['$event.target'])
   onBlur(target: HTMLInputElement): void {
     if (this.rank) {
-      let value = target.value || '0';
+      const value = target.value || '0';
       if (!Number.isNaN(+value)) {
         this.renderer.setProperty(target, 'value', this.normalizeDecimal(value));
         this.ngControl.control.setValue(value.replace(/\s+/g, ''), {

@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
 
+import { HttpClientModule } from '@angular/common/http';
+import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 import { MatPeriodDescriptionComponent } from './mat-period-description.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { AddZeroPennyPipe } from '../../pipe/add-zero-penny.pipe';
-import { HttpClientModule } from '@angular/common/http';
-import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 
 describe('MatPeriodDescriptionComponent', () => {
   let component: MatPeriodDescriptionComponent;

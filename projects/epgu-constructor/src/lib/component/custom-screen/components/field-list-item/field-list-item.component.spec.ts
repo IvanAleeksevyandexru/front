@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockComponent, MockProvider } from 'ng-mocks';
+import { By } from '@angular/platform-browser';
+import { FormArray, FormControl } from '@angular/forms';
 import { FieldListItemComponent } from './field-list-item.component';
 import { BaseModule } from '../../../../shared/base.module';
-import { MockComponent, MockProvider } from 'ng-mocks';
 import { FieldListComponent } from '../../../../shared/components/field-list/field-list.component';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { By } from '@angular/platform-browser';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { FormArray, FormControl } from '@angular/forms';
 
 describe('ConstructorCheckboxComponent', () => {
   let component: FieldListItemComponent;

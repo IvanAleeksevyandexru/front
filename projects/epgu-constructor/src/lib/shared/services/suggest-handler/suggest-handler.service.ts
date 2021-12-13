@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import {
   ISuggestionItem,
   ISuggestionItemList,
 } from '../../../core/services/autocomplete/autocomplete.inteface';
-import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
 import { SuggestMonitorService } from '../suggest-monitor/suggest-monitor.service';
 import { FieldTypes, SuggestActions } from '../../constants/suggest';
 

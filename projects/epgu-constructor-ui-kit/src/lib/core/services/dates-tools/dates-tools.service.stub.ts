@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 export class DatesToolsServiceStub {
   isToday() {}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   async getToday() {}
 
   toDate() {}
@@ -77,9 +78,14 @@ export class DatesToolsServiceStub {
   }
 
   differenceInCalendarDays() {}
+
   isDateOutOfSection() {}
+
   startOfISOWeek() {}
+
   endOfISOWeek() {}
+
   utcOffset() {}
+
   addDays() {}
 }

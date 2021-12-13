@@ -1,28 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { ListItem } from '@epgu/ui/models/dropdown';
+import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
+import { of } from 'rxjs';
+import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotAreaComponent } from './time-slot-area.component';
 import { BaseModule } from '../../../../../../../shared/base.module';
-import { FormsModule } from '@angular/forms';
 import { TimeSlotSmev3ServiceStub } from '../../../services/smev3/time-slot-smev3.service.stub';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
 import { DictionaryApiService } from '../../../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
-import { ListItem } from '@epgu/ui/models/dropdown';
 import { DepartmentInterface } from '../../../typings';
-import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
-import { of } from 'rxjs';
 import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
-import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 
 const mockCreateItem = (text: string) =>
   new ListItem({
     id: text,
-    text: text,
+    text,
   });
 
 describe('TimeSlotAreaComponent', () => {

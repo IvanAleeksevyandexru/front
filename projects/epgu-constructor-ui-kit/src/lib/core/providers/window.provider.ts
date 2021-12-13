@@ -19,6 +19,7 @@ export abstract class WindowRef {
  * Define class that implements the abstract class and returns the native window object
  */
 export class BrowserWindowRef extends WindowRef {
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor() {
     super();
   }

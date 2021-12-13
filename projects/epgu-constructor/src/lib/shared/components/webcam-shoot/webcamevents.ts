@@ -11,6 +11,7 @@ export class WebcamEventFactory {
   static closeEvent(data?: string): WebcamEvent {
     return new WebcamEvent(WebcamEventAction.CLOSE, data);
   }
+
   /**
    * Close event of window
    * @param data - data to pass with event
@@ -34,6 +35,7 @@ export class WebcamEventFactory {
  */
 export class WebcamEventAction {
   public static readonly CLOSE: string = 'close';
+
   public static readonly CLOSE_AND_SAVE: string = 'close_and_save';
 }
 
@@ -42,6 +44,7 @@ export class WebcamEventAction {
  */
 export class WebcamEvents {
   private _events = new Subject<WebcamEvent>();
+
   private _events$ = this._events.asObservable();
 
   /**
@@ -59,6 +62,7 @@ export class WebcamEvents {
     this._events.next(WebcamEventFactory.closeEvent(data));
     this._events.complete();
   }
+
   /**
    * Вызывает событие закрытия окна и сохранения данных
    * @param data - данные для передачи
@@ -86,6 +90,7 @@ export class WebcamEvents {
  */
 export class WebcamEvent {
   private _action = '';
+
   private _data: string = null;
 
   constructor(action: string, data?: string) {

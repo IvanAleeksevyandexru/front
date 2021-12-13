@@ -1,17 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DateTimePeriodComponent } from './date-time-period.component';
 import { By } from '@angular/platform-browser';
 import { MockComponents, MockProvider } from 'ng-mocks';
-import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import {
-  AbstractControl,
-  FormGroup,
-  FormGroupDirective,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { ChangeDetectionStrategy } from '@angular/core';
-import {
+  DatesToolsServiceStub,
   ConfigService,
   ConfigServiceStub,
   ConstructorDropdownComponent,
@@ -20,6 +11,15 @@ import {
   ScreenPadComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
+  AbstractControl,
+  FormGroup,
+  FormGroupDirective,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ChangeDetectionStrategy } from '@angular/core';
+
+import {
   ComponentAttrsDto,
   ComponentDateTimeDto,
   ComponentDto,
@@ -27,25 +27,26 @@ import {
 import { ListElement } from '@epgu/ui/models/dropdown';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { addDays, addYears } from 'date-fns';
 import { DateRefService } from '../../../../../../core/services/date-ref/date-ref.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
-import { addDays, addYears } from 'date-fns';
+import { DateTimePeriodComponent } from './date-time-period.component';
 import { getDateTimeObject } from '../../utils/date-time-period.utils';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { LabelComponent } from '../../../../../../shared/components/base-components/label/label.component';
 import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 
 const timeDropdownItems: ListElement[] = [];
-for (var i = 0; i < 24; i++) {
-  const hour = i < 10 ? '0' + i : i;
+for (let i = 0; i < 24; i++) {
+  const hour = i < 10 ? `0${i}` : i;
   const objHour = [
-    { id: hour + ':00', text: hour + ':00' },
-    { id: hour + ':15', text: hour + ':15' },
-    { id: hour + ':30', text: hour + ':30' },
-    { id: hour + ':45', text: hour + ':45' },
+    { id: `${hour}:00`, text: `${hour}:00` },
+    { id: `${hour}:15`, text: `${hour}:15` },
+    { id: `${hour}:30`, text: `${hour}:30` },
+    { id: `${hour}:45`, text: `${hour}:45` },
   ];
   timeDropdownItems.push(...objHour);
 }
@@ -60,8 +61,8 @@ describe('DateTimePeriodComponent', () => {
   const initComponent = () => {
     fixture = TestBed.createComponent(DateTimePeriodComponent);
     component = fixture.componentInstance;
-    component.component = ({ attrs: {}} as unknown) as ComponentDto;
-    component.attrs = ({ beginDate: {}, endDate: {}} as unknown) as ComponentAttrsDto;
+    component.component = ({ attrs: {} } as unknown) as ComponentDto;
+    component.attrs = ({ beginDate: {}, endDate: {} } as unknown) as ComponentAttrsDto;
   };
 
   beforeEach(() => {
@@ -127,7 +128,7 @@ describe('DateTimePeriodComponent', () => {
 
     it('should be rendered if (startDate.invalid && startDate.touched)', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
-      //потому что не touched и valid
+      // потому что не touched и valid
       expect(debugEl).toBeNull();
 
       component.group.get('startDate').setValue('');
@@ -139,7 +140,7 @@ describe('DateTimePeriodComponent', () => {
 
     it('should be rendered if (startTime.invalid && startTime.touched)', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
-      //потому что не touched и valid
+      // потому что не touched и valid
       expect(debugEl).toBeNull();
 
       component.group.get('startTime').setValue('');
@@ -175,12 +176,12 @@ describe('DateTimePeriodComponent', () => {
 
   describe('epgu-constructor-label epgu-constructor-constructor-date-picker', () => {
     const label = 'epgu-constructor-label';
-    const date_picker = 'epgu-constructor-constructor-date-picker';
+    const datePicker = 'epgu-constructor-constructor-date-picker';
 
     it('attributes for (label) and id (date-picker) should be equal', () => {
-      const debugEl_label = fixture.debugElement.queryAll(By.css(label))[0];
-      const debugEl_date_picker = fixture.debugElement.queryAll(By.css(date_picker))[0];
-      expect(debugEl_date_picker.nativeElement.id).toBe(debugEl_label.componentInstance.for);
+      const debugElLabel = fixture.debugElement.queryAll(By.css(label))[0];
+      const debugElDatePicker = fixture.debugElement.queryAll(By.css(datePicker))[0];
+      expect(debugElDatePicker.nativeElement.id).toBe(debugElLabel.componentInstance.for);
     });
   });
 
@@ -268,9 +269,9 @@ describe('DateTimePeriodComponent', () => {
     const dropdown = 'epgu-cf-ui-constructor-constructor-dropdown';
 
     it('attributes for (label2) and id (dropdown) should be equal', () => {
-      const debugEl_label = fixture.debugElement.queryAll(By.css(label2))[1];
-      const debugEl_dropdown = fixture.debugElement.queryAll(By.css(dropdown))[0];
-      expect(debugEl_dropdown.componentInstance.id).toBe(debugEl_label.componentInstance.for);
+      const debugElLabel = fixture.debugElement.queryAll(By.css(label2))[1];
+      const debugElDropdown = fixture.debugElement.queryAll(By.css(dropdown))[0];
+      expect(debugElDropdown.componentInstance.id).toBe(debugElLabel.componentInstance.for);
     });
   });
 
@@ -386,7 +387,7 @@ describe('DateTimePeriodComponent', () => {
 
     it('should be rendered if (endDate.invalid && endDate.touched)', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
-      //потому что не touched и valid
+      // потому что не touched и valid
       expect(debugEl).toBeNull();
 
       component.group.get('endDate').setValue('');
@@ -398,7 +399,7 @@ describe('DateTimePeriodComponent', () => {
 
     it('should be rendered if (endTime.invalid && endTime.touched)', () => {
       let debugEl = fixture.debugElement.query(By.css(selector));
-      //потому что не touched и valid
+      // потому что не touched и valid
       expect(debugEl).toBeNull();
 
       component.group.get('endTime').setValue('');
@@ -435,12 +436,12 @@ describe('DateTimePeriodComponent', () => {
 
   describe('epgu-constructor-label3 epgu-constructor-constructor-date-picker', () => {
     const label3 = 'epgu-constructor-label';
-    const date_picker = 'epgu-constructor-constructor-date-picker';
+    const datePicker = 'epgu-constructor-constructor-date-picker';
 
     it('attributes for (label3) and id (date-picker2) should be equal', () => {
-      const debugEl_label = fixture.debugElement.queryAll(By.css(label3))[2];
-      const debugEl_date_picker = fixture.debugElement.queryAll(By.css(date_picker))[1];
-      expect(debugEl_date_picker.nativeElement.id).toBe(debugEl_label.componentInstance.for);
+      const debugElLabel = fixture.debugElement.queryAll(By.css(label3))[2];
+      const debugElDatePicker = fixture.debugElement.queryAll(By.css(datePicker))[1];
+      expect(debugElDatePicker.nativeElement.id).toBe(debugElLabel.componentInstance.for);
     });
   });
 
@@ -526,9 +527,9 @@ describe('DateTimePeriodComponent', () => {
     const dropdown = 'epgu-cf-ui-constructor-constructor-dropdown';
 
     it('attributes for (label4) and id (dropdown2) should be equal', () => {
-      const debugEl_label = fixture.debugElement.queryAll(By.css(label4))[3];
-      const debugEl_dropdown = fixture.debugElement.queryAll(By.css(dropdown))[1];
-      expect(debugEl_dropdown.componentInstance.id).toBe(debugEl_label.componentInstance.for);
+      const debugElLabel = fixture.debugElement.queryAll(By.css(label4))[3];
+      const debugElDropdown = fixture.debugElement.queryAll(By.css(dropdown))[1];
+      expect(debugElDropdown.componentInstance.id).toBe(debugElLabel.componentInstance.for);
     });
   });
 

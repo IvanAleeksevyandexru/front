@@ -1,4 +1,3 @@
-import { MapSidebarComponent, SidebarData } from './map-sidebar.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ConstructorLookupModule,
@@ -6,19 +5,20 @@ import {
   YandexMapService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormsModule } from '@angular/forms';
-import { MapTypes, SelectMapObjectService } from '../../select-map-object.service';
 import { MockModule } from 'ng-mocks';
-import { CommonSearchPanelComponent } from '../search-panel-resolver/components/common-search-panel/common-search-panel.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { HighlightPipe } from '@epgu/ui/pipes';
+import { MapSidebarComponent, SidebarData } from './map-sidebar.component';
+import { MapTypes, SelectMapObjectService } from '../../select-map-object.service';
+import { CommonSearchPanelComponent } from '../search-panel-resolver/components/common-search-panel/common-search-panel.component';
 import { DictionaryYMapItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { BalloonContentResolverComponent } from '../balloon-content-resolver/balloon-content-resolver.component';
 import { SearchPanelResolverComponent } from '../search-panel-resolver/search-panel-resolver.component';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DisclaimerModule } from '../../../../../../shared/components/disclaimer/disclaimer.module';
 import { CommonBalloonContentComponent } from '../balloon-content-resolver/components/common-balloon-content/common-balloon-content.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { SwipeableWrapperComponent } from '../swipeable-wrapper/swipeable-wrapper.component';
-import { HighlightPipe } from '@epgu/ui/pipes';
 import { ForTestsOnlyModule } from '../../../../../../core/for-tests-only.module';
 
 describe('MapSidebarComponent', () => {
@@ -45,11 +45,9 @@ describe('MapSidebarComponent', () => {
         HttpClientTestingModule,
         DisclaimerModule,
         FormsModule,
-        ForTestsOnlyModule
+        ForTestsOnlyModule,
       ],
-      providers: [
-
-      ],
+      providers: [],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: { entryComponents: [CommonBalloonContentComponent, CommonSearchPanelComponent] },
@@ -59,15 +57,14 @@ describe('MapSidebarComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MapSidebarComponent);
-    yandexMapService =  TestBed.inject(YandexMapService);
-    selectMapObjectService =  TestBed.inject(SelectMapObjectService);
+    yandexMapService = TestBed.inject(YandexMapService);
+    selectMapObjectService = TestBed.inject(SelectMapObjectService);
 
     component = fixture.componentInstance;
-    component.sidebarData = { attrs: { mapType: MapTypes.commonMap }} as unknown as SidebarData;
+    component.sidebarData = ({ attrs: { mapType: MapTypes.commonMap } } as unknown) as SidebarData;
     const item = { center: [1, 2] } as DictionaryYMapItem;
 
-    component['selectMapObjectService'].filteredDictionaryItems = [item];
-
+    component.selectMapObjectService.filteredDictionaryItems = [item];
 
     fixture.detectChanges();
   });
@@ -76,10 +73,10 @@ describe('MapSidebarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('collapseObject', function () {
+  describe('collapseObject', () => {
     it('should collapse previously choosen object', () => {
-      const testObject: any = { center: [1,2], title: 'test' };
-      const testObject1: any = { center: [1,2], title: 'test' };
+      const testObject: any = { center: [1, 2], title: 'test' };
+      const testObject1: any = { center: [1, 2], title: 'test' };
       jest.spyOn(yandexMapService, 'closeBalloon').mockImplementation(() => null);
       component.previouslyChoosenItem = testObject1;
 
@@ -87,10 +84,9 @@ describe('MapSidebarComponent', () => {
 
       expect(component.previouslyChoosenItem.expanded).toBeFalsy();
     });
-
   });
 
-  describe('handleSubscriptions', function () {
+  describe('handleSubscriptions', () => {
     it('should set balloon items to filtered objects on view change', () => {
       component.ngOnInit();
       const testArray = [];
@@ -120,7 +116,5 @@ describe('MapSidebarComponent', () => {
 
       expect(component.balloonDictionaryItems).toEqual(testArray);
     });
-
   });
 });
-

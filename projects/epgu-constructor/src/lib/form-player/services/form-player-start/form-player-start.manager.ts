@@ -1,17 +1,12 @@
 import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import {
-  LAST_SCENARIO_KEY,
-  NEXT_SCENARIO_KEY,
-  ORDER_TO_ORDER_SCENARIO_KEY,
-  QUIZ_SCENARIO_KEY,
-} from '../../../shared/constants/form-player';
-import { InitDataService } from '../../../core/services/init-data/init-data.service';
-import { ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LocalStorageService } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerService } from '../form-player/form-player.service';
-import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
-import { UnsubscribeService, LocationService } from '@epgu/epgu-constructor-ui-kit';
+  ConfigService,
+  LoggerService,
+  LocalStorageService,
+  UnsubscribeService,
+  LocationService,
+} from '@epgu/epgu-constructor-ui-kit';
 import {
   CheckOrderApiResponse,
   FormPlayerApiSuccessResponse,
@@ -22,6 +17,17 @@ import {
   OrderDto,
   FormPlayerNavigation,
 } from '@epgu/epgu-constructor-types';
+import {
+  LAST_SCENARIO_KEY,
+  NEXT_SCENARIO_KEY,
+  ORDER_TO_ORDER_SCENARIO_KEY,
+  QUIZ_SCENARIO_KEY,
+} from '../../../shared/constants/form-player';
+import { InitDataService } from '../../../core/services/init-data/init-data.service';
+
+import { FormPlayerService } from '../form-player/form-player.service';
+import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
+
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 
 /**

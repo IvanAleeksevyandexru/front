@@ -1,11 +1,6 @@
-import { DropdownComponent } from './dropdown.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockProviders } from 'ng-mocks';
-import { ComponentItemComponent } from '../component-item/component-item.component';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import {
   BaseUiModule,
   DatesToolsService,
@@ -14,19 +9,24 @@ import {
   UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { DropdownComponent } from './dropdown.component';
+import { ComponentItemComponent } from '../component-item/component-item.component';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
+import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DropDownUpdateTypes } from './dropdown.interface';
-import { HttpClientModule } from '@angular/common/http';
 import DropdownModelAttrs from './DropdownModelAttrs';
 import DropdownModel from './DropdownModel';
 
@@ -34,10 +34,10 @@ const mockComponentId = 'mockComponentID';
 
 const mockComponent = {
   id: mockComponentId,
-  attrs: new DropdownModelAttrs ({
+  attrs: new DropdownModelAttrs({
     dictionaryType: 'someDropdownType',
     isNotDuplicate: false,
-    dictionaryList: []
+    dictionaryList: [],
   }),
   value: 'dropdownValue',
   required: false,
@@ -45,10 +45,10 @@ const mockComponent = {
 
 const mockComponentWithNotDuplicate = {
   id: mockComponentId,
-  attrs: new DropdownModelAttrs ({
+  attrs: new DropdownModelAttrs({
     dictionaryType: 'someDropdownType',
     isNotDuplicate: true,
-    dictionaryList: []
+    dictionaryList: [],
   }),
   value: 'dropdownValue',
   required: false,
@@ -56,10 +56,10 @@ const mockComponentWithNotDuplicate = {
 
 const mockComponentWithEmptyPlaceholder = {
   id: mockComponentId,
-  attrs: new DropdownModelAttrs ({
+  attrs: new DropdownModelAttrs({
     dictionaryType: 'someDropdownType',
     placeholder: '',
-    dictionaryList: []
+    dictionaryList: [],
   }),
   value: 'dropdownValue',
   required: false,
@@ -67,10 +67,10 @@ const mockComponentWithEmptyPlaceholder = {
 
 const mockComponentWithFilledPlaceholder = {
   id: mockComponentId,
-  attrs: new DropdownModelAttrs ({
+  attrs: new DropdownModelAttrs({
     dictionaryType: 'someDropdownType',
     placeholder: 'Выбрать',
-    dictionaryList: []
+    dictionaryList: [],
   }),
   value: 'dropdownValue',
   required: false,
@@ -87,7 +87,7 @@ const mockDropDowns1 = [
   },
 ];
 
-const mockDropDowns2  = [
+const mockDropDowns2 = [
   {
     id: '3',
     text: 'Test dropdown 3',
@@ -150,7 +150,7 @@ describe('DropdownComponent', () => {
       required: new FormControl(mockComponent.required),
       model: new FormControl(new DropdownModel({ attrs: mockComponent.attrs } as any)),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
 
     fixture = TestBed.createComponent(DropdownComponent);
 
@@ -203,9 +203,11 @@ describe('DropdownComponent', () => {
         attrs: new FormControl(mockComponentWithEmptyPlaceholder.attrs),
         value: valueControl,
         required: new FormControl(mockComponent.required),
-        model: new FormControl(new DropdownModel({ attrs: mockComponentWithEmptyPlaceholder.attrs } as any)),
+        model: new FormControl(
+          new DropdownModel({ attrs: mockComponentWithEmptyPlaceholder.attrs } as any),
+        ),
       });
-      formService['_form'] = new FormArray([control]);
+      formService._form = new FormArray([control]);
 
       fixture = TestBed.createComponent(DropdownComponent);
 
@@ -225,9 +227,11 @@ describe('DropdownComponent', () => {
         attrs: new FormControl(mockComponentWithFilledPlaceholder.attrs),
         value: valueControl,
         required: new FormControl(mockComponent.required),
-        model: new FormControl(new DropdownModel({ attrs: mockComponentWithFilledPlaceholder.attrs } as any)),
+        model: new FormControl(
+          new DropdownModel({ attrs: mockComponentWithFilledPlaceholder.attrs } as any),
+        ),
       });
-      formService['_form'] = new FormArray([control]);
+      formService._form = new FormArray([control]);
 
       fixture = TestBed.createComponent(DropdownComponent);
 
@@ -245,56 +249,56 @@ describe('DropdownComponent', () => {
   });
 
   it('isNotDuplicate should be the same as component attrs field', () => {
-    expect(component['isNotDuplicate']).toEqual(mockComponent.attrs.isNotDuplicate);
+    expect(component.isNotDuplicate).toEqual(mockComponent.attrs.isNotDuplicate);
   });
 
   describe('ngOnInit', () => {
     it('should set valid source and active dropDowns', () => {
-      component['isNotDuplicate'] = true;
-      component.model['_dropDown$'].next(mockDropDowns1);
+      component.isNotDuplicate = true;
+      component.model._dropDown$.next(mockDropDowns1);
       expect(component.dropDowns).toEqual(mockDropDowns1);
-      expect(component['sourceDropDowns']).toEqual(mockDropDowns1);
-      component.model['_dropDown$'].next(mockDropDowns2);
+      expect(component.sourceDropDowns).toEqual(mockDropDowns1);
+      component.model._dropDown$.next(mockDropDowns2);
       expect(component.dropDowns).toEqual(mockDropDowns2);
-      expect(component['sourceDropDowns']).toEqual(mockDropDowns2);
+      expect(component.sourceDropDowns).toEqual(mockDropDowns2);
     });
   });
 
   describe('onChange', () => {
     it('should call updateDropDowns and set selectedDropDown event when have event with dropDown', () => {
       jest.spyOn<any, string>(component, 'updateDropDowns');
-      expect(component['selectedDropDown']).toBeUndefined();
-      component['isNotDuplicate'] = true;
+      expect(component.selectedDropDown).toBeUndefined();
+      component.isNotDuplicate = true;
       fixture.detectChanges();
       component.onChange(mockDropDowns1[0]);
-      expect(component['selectedDropDown']).not.toBeNull();
-      expect(component['updateDropDowns']).toHaveBeenCalledWith(DropDownUpdateTypes.delete);
+      expect(component.selectedDropDown).not.toBeNull();
+      expect(component.updateDropDowns).toHaveBeenCalledWith(DropDownUpdateTypes.delete);
     });
 
     it('should call updateDropDowns and set selectedDropDown null when have not event with dropDown', () => {
       jest.spyOn<any, string>(component, 'updateDropDowns');
-      expect(component['selectedDropDown']).not.toBeNull();
-      component['isNotDuplicate'] = true;
+      expect(component.selectedDropDown).not.toBeNull();
+      component.isNotDuplicate = true;
       fixture.detectChanges();
       component.onChange();
-      expect(component['selectedDropDown']).toBeNull();
-      expect(component['updateDropDowns']).toHaveBeenCalledWith(DropDownUpdateTypes.add);
+      expect(component.selectedDropDown).toBeNull();
+      expect(component.updateDropDowns).toHaveBeenCalledWith(DropDownUpdateTypes.add);
     });
   });
 
   describe('ngOnDestroy', () => {
     it('should set selectedDropDown null when component destroyed', () => {
-      expect(component['selectedDropDown']).not.toBeNull();
-      component['isNotDuplicate'] = true;
+      expect(component.selectedDropDown).not.toBeNull();
+      component.isNotDuplicate = true;
       fixture.detectChanges();
       component.ngOnDestroy();
-      expect(component['selectedDropDown']).toBeNull();
+      expect(component.selectedDropDown).toBeNull();
     });
   });
 
   xdescribe('getPreparedDropDowns', () => {
     it('should return valid array with prepared dropDowns', () => {
-      const preparedDropDowns = component['getPreparedDropDowns'](mockDropDowns1);
+      const preparedDropDowns = component.getPreparedDropDowns(mockDropDowns1);
       expect(JSON.stringify(preparedDropDowns)).toEqual(JSON.stringify('mockDropDowns1'));
     });
   });
@@ -307,9 +311,11 @@ describe('DropdownComponent', () => {
         attrs: new FormControl(mockComponentWithNotDuplicate.attrs),
         value: valueControl,
         required: new FormControl(mockComponentWithNotDuplicate.required),
-        model: new FormControl(new DropdownModel({ attrs: mockComponentWithNotDuplicate.attrs } as any)),
+        model: new FormControl(
+          new DropdownModel({ attrs: mockComponentWithNotDuplicate.attrs } as any),
+        ),
       });
-      formService['_form'] = new FormArray([control]);
+      formService._form = new FormArray([control]);
 
       fixture = TestBed.createComponent(DropdownComponent);
 
@@ -320,7 +326,7 @@ describe('DropdownComponent', () => {
       component.onChange(mockDropDowns1[1]);
       component.ngOnInit();
       const array = [mockDropDowns1[1]];
-      component.model['_dropDown$'].next(array);
+      component.model._dropDown$.next(array);
       expect(component.dropDowns).toContain(mockDropDowns1[1]);
     });
   });

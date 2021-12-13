@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpParams } from '@angular/common/http';
-import { isDevMode } from '@angular/core';
+
 import { LoadService } from '@epgu/ui/services/load';
 import { HelperService } from '@epgu/ui/services/helper';
 import { v4 as uuidv4 } from 'uuid';
+
 interface EventInfo {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
@@ -101,22 +102,11 @@ export class HealthService {
       eventInfoString = new HttpParams({ fromObject: eventInfo }).toString();
     }
 
-    const url =
-      api +
-      '?_=' +
-      Math.random() +
-      '&pageId=' +
-      (pageId ? pageId : '_') +
-      '&event=' +
-      event +
-      (utmSource ? '&utm_source=' + utmSource : '') +
-      '&timing=' +
-      time +
-      '&referrer=' +
-      document.referrer +
-      '&result=' +
-      result +
-      (eventInfoString ? (eventInfoString ? '&' + eventInfoString : '') : '');
+    const url = `${api}?_=${Math.random()}&pageId=${pageId || '_'}&event=${event}${
+      utmSource ? `&utm_source=${utmSource}` : ''
+    }&timing=${time}&referrer=${document.referrer}&result=${result}${
+      eventInfoString ? (eventInfoString ? `&${eventInfoString}` : '') : ''
+    }`;
     HealthService.request(url);
   }
 }

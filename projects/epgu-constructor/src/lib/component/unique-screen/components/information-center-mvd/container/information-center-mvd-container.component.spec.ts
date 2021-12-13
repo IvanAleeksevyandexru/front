@@ -3,9 +3,11 @@ import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { DTOActionAction } from '@epgu/epgu-constructor-types';
+import { HttpClientModule } from '@angular/common/http';
 import { InformationCenterMvdContainerComponent } from './information-center-mvd-container.component';
 import { ScreenService } from '../../../../../screen/screen.service';
-import { UnsubscribeService, UnsubscribeServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DictionaryApiServiceStub } from '../../../../../shared/services/dictionary/dictionary-api.service.stub';
@@ -17,8 +19,6 @@ import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
-import { DTOActionAction } from '@epgu/epgu-constructor-types';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('InformationCenterMvdContainerComponent', () => {
   let component: InformationCenterMvdContainerComponent;

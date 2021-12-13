@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormControlDirective } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { ConstructorCheckboxComponent } from './constructor-checkbox.component';
 import { BaseUiModule } from '../../base-ui.module';
-import { By } from '@angular/platform-browser';
 
 describe('ConstructorCheckboxComponent', () => {
   let component: ConstructorCheckboxComponent;

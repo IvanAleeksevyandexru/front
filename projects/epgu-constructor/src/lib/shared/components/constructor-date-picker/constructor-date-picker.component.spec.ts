@@ -1,4 +1,3 @@
-import { ValidationTypeModule } from './../../directives/validation-type/validation-type.module';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormControl } from '@angular/forms';
@@ -7,9 +6,10 @@ import { MockModule } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
+import { MonthYear } from '@epgu/ui/models/date-time';
 import { ConstructorDatePickerComponent } from './constructor-date-picker.component';
 import { BaseModule } from '../../base.module';
-import { MonthYear } from '@epgu/ui/models/date-time';
+import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 
 describe('ConstructorDatePickerComponent', () => {
   let component: ConstructorDatePickerComponent;
@@ -69,14 +69,14 @@ describe('ConstructorDatePickerComponent', () => {
   it('should be trigger change', () => {
     const date = new Date('01.01.2021');
     jest.spyOn(component.dateSelectedEvent, 'emit');
-    const event = { target: { value: '01.01.2021' }};
+    const event = { target: { value: '01.01.2021' } };
     debugEl.triggerEventHandler('change', event);
     expect(component.dateSelectedEvent.emit).toHaveBeenCalledWith(date);
   });
 
   describe('input event', () => {
     it('should call date selected event when input is correct', () => {
-      const event = { target: { value: '01.01.2021' }};
+      const event = { target: { value: '01.01.2021' } };
       const date = new Date('01.01.2021');
       jest.spyOn(component.dateSelectedEvent, 'emit');
       debugEl.triggerEventHandler('input', event);
@@ -84,7 +84,7 @@ describe('ConstructorDatePickerComponent', () => {
     });
 
     it('should do nothing if date isnt full', () => {
-      const event = { target: { value: '01.01.____' }};
+      const event = { target: { value: '01.01.____' } };
       jest.spyOn(component.dateSelectedEvent, 'emit');
       debugEl.triggerEventHandler('input', event);
       expect(component.dateSelectedEvent.emit).not.toHaveBeenCalled();

@@ -1,14 +1,15 @@
 import { ComponentRef, EventEmitter, Injectable } from '@angular/core';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
+import { filter, finalize, map, mergeMap, startWith, takeUntil, tap } from 'rxjs/operators';
 import { UploaderViewerComponent } from '../../components/uploader-viewer/uploader-viewer.component';
 import { FileItem } from '../../../file-upload/data';
 import { FilesCollection, SuggestAction, ViewerInfo } from '../../data';
-import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
-import { filter, finalize, map, mergeMap, startWith, takeUntil, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ViewerService {
   isOpen = new BehaviorSubject<boolean>(false);
+
   result = new Subject<null>();
 
   constructor(private modal: ModalService) {}
@@ -49,6 +50,7 @@ export class ViewerService {
       modal.instance.closeModal();
     }
   }
+
   updateFile<T extends UploaderViewerComponent>(item, modal: ComponentRef<T>): void {
     modal.instance.item = item;
   }

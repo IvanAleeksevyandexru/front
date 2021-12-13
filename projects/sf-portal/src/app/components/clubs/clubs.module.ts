@@ -6,11 +6,6 @@ import { ChildrenClubsModule } from '@epgu/children-clubs';
 
 @NgModule({
   declarations: [ClubsComponent],
-  imports: [
-    ChildrenClubsModule,
-    CommonModule,
-    ClubsRoutingModule
-  ]
+  imports: [ChildrenClubsModule, CommonModule, ClubsRoutingModule],
 })
-export class ClubsModule { }
-
+export class ClubsModule {}

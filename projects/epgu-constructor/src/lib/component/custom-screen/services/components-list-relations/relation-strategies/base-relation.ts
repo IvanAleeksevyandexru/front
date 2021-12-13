@@ -1,7 +1,11 @@
-import { CustomComponent, CustomComponentRef, CustomListStatusElements } from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomListStatusElements,
+} from '../../../components-list.types';
+import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 

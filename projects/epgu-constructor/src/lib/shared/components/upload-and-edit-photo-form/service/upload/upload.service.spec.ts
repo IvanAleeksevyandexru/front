@@ -2,30 +2,31 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 
-import { UploadService } from './upload.service';
-import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
-import { CompressionService } from '../compression/compression.service';
-import { ObjectHelperService, WordTransformService } from '@epgu/epgu-constructor-ui-kit';
 import {
+  ObjectHelperService,
+  WordTransformService,
   ConfigService,
   ConfigServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
+import { UploadService } from './upload.service';
+import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
+import { CompressionService } from '../compression/compression.service';
 
 describe('UploadService', () => {
   let service: UploadService;
   let terraByteApiService: TerraByteApiService;
   let compressionService: CompressionService;
-  let requestDataMock: ComponentUploadedFileDto = {
+  const requestDataMock: ComponentUploadedFileDto = {
     mnemonic: 'd33.PhotoUploadComponent.passport_photo.0',
     name: '',
     objectType: 2,
     objectId: '763643920',
     mimeType: 'image/jpeg',
   };
-  let responseDataMock = {
+  const responseDataMock = {
     mnemonic: 'd33.PhotoUploadComponent.passport_photo.0',
     name: 'photo_2020-10-26_12-03-43.jpg',
     objectType: 2,

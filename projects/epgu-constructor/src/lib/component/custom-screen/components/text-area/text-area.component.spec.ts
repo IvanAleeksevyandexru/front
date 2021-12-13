@@ -1,14 +1,14 @@
-import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TextAreaComponent } from './text-area.component';
 import { MockComponents, MockProvider } from 'ng-mocks';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { TextAreaComponent } from './text-area.component';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { ConstructorMultilineInputComponent } from '../../../../shared/components/constructor-multiline-input/constructor-multiline-input.component';
-import { By } from '@angular/platform-browser';
 
 describe('TextAreaComponent', () => {
   let component: TextAreaComponent;

@@ -13,7 +13,11 @@ export class LocationService extends Location {
   }
 
   href(url: string, isInner: boolean = false): void {
-    isInner ? this.go(url) : (this.window.location.href = url);
+    if (isInner) {
+      this.go(url);
+    } else {
+      this.window.location.href = url;
+    }
   }
 
   getHref(): string {

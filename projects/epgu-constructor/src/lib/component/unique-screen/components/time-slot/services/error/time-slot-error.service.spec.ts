@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { TimeSlotErrorService } from './time-slot-error.service';
-import { TimeSlotsConstants } from '../../../time-slots/time-slots.constants';
 import { Injector } from '@angular/core';
 import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { TimeSlotErrorService } from './time-slot-error.service';
+import { TimeSlotsConstants } from '../../../time-slots/time-slots.constants';
 import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.service';
 import { TimeSlotSmev3StateServiceStub } from '../smev3-state/time-slot-smev3-state.service.stub';
 import {
-  nextHandler,
+  NextHandler,
   TimeSlotError,
   TimeSlotErrorHandler,
   TimeSlotRequestType,
@@ -88,11 +88,11 @@ describe('TimeSlotErrorService', () => {
       const fn = jest.fn();
       const fn2 = jest.fn();
       const handlers = [
-        (error?: TimeSlotError, injector?: Injector, next?: nextHandler) => {
+        (error?: TimeSlotError, injector?: Injector, next?: NextHandler) => {
           fn();
           next(error);
         },
-        (error?: TimeSlotError, injector?: Injector, next?: nextHandler) => {
+        (error?: TimeSlotError, injector?: Injector, next?: NextHandler) => {
           fn2();
           next(error);
         },

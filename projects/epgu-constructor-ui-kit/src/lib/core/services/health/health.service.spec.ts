@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { HealthService } from './health.service';
 import { ActivatedRoute } from '@angular/router';
-import { ActivatedRouteStub } from './activated-route.stub';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HealthService } from './health.service';
+import { ActivatedRouteStub } from './activated-route.stub';
 
 describe('HealthService', () => {
   beforeEach(async () => {

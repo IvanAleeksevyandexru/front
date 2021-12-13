@@ -98,12 +98,12 @@ export interface Group {
   uuid: string;
   name: string;
   available: boolean;
-  ageFrom: number; //float
-  ageTo: number; //float
-  size: string; //byte
-  dateBegin: string | null; //date
-  dateEnd: string | null; //date
-  hoursYear: number; //float
+  ageFrom: number; // float
+  ageTo: number; // float
+  size: string; // byte
+  dateBegin: string | null; // date
+  dateEnd: string | null; // date
+  hoursYear: number; // float
   teachers: string;
   schedule: string;
   financingSources: FinancialSource[];
@@ -138,47 +138,47 @@ export type FocusFilter =
   | 'turistsko-kraevedcheskoe'
   | 'tekhnicheskoe';
 
-//Форма оплаты для Инлерно
+// Форма оплаты для Инлерно
 export interface InlernoPaymentFilters {
-  free: boolean; //Бесплатно
-  certificate: boolean; //Оплата сертификатом
-  personalFunds: boolean; //Оплата из личных средств
+  free: boolean; // Бесплатно
+  certificate: boolean; // Оплата сертификатом
+  personalFunds: boolean; // Оплата из личных средств
 }
 
 // Форма оплаты для ПФДО
 export interface PfdoPaymentFilters {
-  preprof: boolean; //Бесплатно (предпрофессиональные)
-  valued: boolean; //Бесплатно (значимые)
-  other: boolean; //Бесплатно (иные программы)
-  certificate: boolean; //Оплата сертификатом
-  personalFunds: boolean; //Оплата из наличных средств
+  preprof: boolean; // Бесплатно (предпрофессиональные)
+  valued: boolean; // Бесплатно (значимые)
+  other: boolean; // Бесплатно (иные программы)
+  certificate: boolean; // Оплата сертификатом
+  personalFunds: boolean; // Оплата из наличных средств
 }
 
 export interface Filters {
-  query?: string; //Поисковый запрос по параметрам: адрес проведения занятий, ФИО педагога, название группы
-  isRegistrationOpen?: boolean; //Показывать только программы с открытой записью
-  municipality?: ListElement | string; //Место проведения занятий
-  onlyDistanceProgram?: boolean; //Показывать только дистанционные программы
+  query?: string; // Поисковый запрос по параметрам: адрес проведения занятий, ФИО педагога, название группы
+  isRegistrationOpen?: boolean; // Показывать только программы с открытой записью
+  municipality?: ListElement | string; // Место проведения занятий
+  onlyDistanceProgram?: boolean; // Показывать только дистанционные программы
   inlearnoPayments?: InlernoPaymentFilters;
   pfdoPayments?: PfdoPaymentFilters;
-  maxPrice?: number; //Максимальная стоимость в месяц
-  focus?: ListElement | FocusFilter; //Направленность
-  direction?: ListElement | string; //Специализация
-  level?: LevelType; //Уровень подготовки
-  age?: number; //Возраст ребенка, лет
-  ovzType?: OvzType; //Ограничения здоровья
+  maxPrice?: number; // Максимальная стоимость в месяц
+  focus?: ListElement | FocusFilter; // Направленность
+  direction?: ListElement | string; // Специализация
+  level?: LevelType; // Уровень подготовки
+  age?: number; // Возраст ребенка, лет
+  ovzType?: OvzType; // Ограничения здоровья
 }
 
-//Параметры для фильтрации групп
+// Параметры для фильтрации групп
 export interface FindOptionsGroup {
   query?: string;
   nextSchoolYear?: boolean;
   vendor?: VendorType;
-  isRegistrationOpen?: boolean; //Показывать только группы с открытой записью
+  isRegistrationOpen?: boolean; // Показывать только группы с открытой записью
   inlearnoPayments?: InlernoPaymentFilters;
   pfdoPayments?: PfdoPaymentFilters;
-  maxPrice?: number; //int64 - Максимальная стоимость в месяц
-  age?: number; //int32 - Возраст ребенка, лет
+  maxPrice?: number; // int64 - Максимальная стоимость в месяц
+  age?: number; // int32 - Возраст ребенка, лет
 }
 
 // Ответ на запрос доступных групп программы
@@ -186,20 +186,20 @@ export interface FindResponseGroup {
   items: Group[];
 }
 
-//Параметры для фильтрации программ
+// Параметры для фильтрации программ
 export interface FindOptionsProgram {
   filters: Filters;
-  nextSchoolYear: boolean; //Следующий учебный год (с 1 сентября), выбирается после региона
-  vendor: VendorType; //Вендор выбранного региона, со значениями "inlearno" или "pfdo"
-  okato: string; //ОКАТО региона, в котором ищутся программы. Обязательное поле.
-  page: number; //Номера страницы, начиная с 0. По умолчанию 0
+  nextSchoolYear: boolean; // Следующий учебный год (с 1 сентября), выбирается после региона
+  vendor: VendorType; // Вендор выбранного региона, со значениями "inlearno" или "pfdo"
+  okato: string; // ОКАТО региона, в котором ищутся программы. Обязательное поле.
+  page: number; // Номера страницы, начиная с 0. По умолчанию 0
   pageSize: number; // Размер страницы
 }
 
-//Ответ на запрос программ
+// Ответ на запрос программ
 export interface FindResponseProgram {
-  page: number; //номер текущей страницы
-  pageSize: number; //размер страницы
+  page: number; // номер текущей страницы
+  pageSize: number; // размер страницы
   items: BaseProgram[];
 }
 

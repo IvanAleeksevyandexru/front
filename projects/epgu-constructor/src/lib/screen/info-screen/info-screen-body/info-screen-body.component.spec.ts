@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { InfoScreenBodyComponent } from './info-screen-body.component';
+import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { MockComponent } from 'ng-mocks';
-import { OutputHtmlComponent } from '../../../shared/components/output-html/output-html.component';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { OutputHtmlComponent } from '../../../shared/components/output-html/output-html.component';
+import { InfoScreenBodyComponent } from './info-screen-body.component';
 
 const mockDataWithAttrs: ComponentDto = {
   id: 'id1',

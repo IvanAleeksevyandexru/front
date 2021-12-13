@@ -10,9 +10,9 @@ const lineHeight = 24;
 class MockElementRef implements ElementRef {
   nativeElement = {
     get offsetHeight(): number {
-      let wordsQnt = this.innerText.split(' ').length;
-      //ширина строки равна 3м словам
-      let linesQnt = Math.ceil(wordsQnt / 3);
+      const wordsQnt = this.innerText.split(' ').length;
+      // ширина строки равна 3м словам
+      const linesQnt = Math.ceil(wordsQnt / 3);
       return linesQnt * lineHeight;
     },
     appendChild: () => null,
@@ -42,10 +42,10 @@ describe('ToggleTextComponent', () => {
     fixture.detectChanges();
 
     window = TestBed.inject(WINDOW) as Window;
-    component['elemRef'] = new MockElementRef();
+    component.elemRef = new MockElementRef();
 
     jest.spyOn(window, 'getComputedStyle').mockReturnValue(({
-      getPropertyValue: () => '' + lineHeight, // mock line-height
+      getPropertyValue: () => `${lineHeight}`, // mock line-height
     } as unknown) as CSSStyleDeclaration);
   });
 

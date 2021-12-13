@@ -3,11 +3,11 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export const smoothHeight = trigger('grow', [
   transition('void <=> *', []),
   transition('* <=> *', [style({ height: '{{startHeight}}px', opacity: 0 }), animate('.4s ease')], {
-    params: { startHeight: 0 }
-  })
+    params: { startHeight: 0 },
+  }),
 ]);
 
-export const flyInOut =  trigger('flyInOut', [
+export const flyInOut = trigger('flyInOut', [
   transition('void => *', [style({ opacity: 0, transform: 'translateY(100%)' }), animate(600)]),
   transition('* => void', [animate(600, style({ opacity: 0, transform: 'translateY(100%)' }))]),
 ]);

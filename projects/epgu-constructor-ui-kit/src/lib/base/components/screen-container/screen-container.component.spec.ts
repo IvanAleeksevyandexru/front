@@ -5,10 +5,10 @@ import { MockModule } from 'ng-mocks';
 
 import { CoreModule } from '@epgu/epgu-constructor/src/lib/core/core.module';
 import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
-import { PrevButtonModule } from '../prev-button/prev-button.module';
-import { ScreenContainerComponent } from './screen-container.component';
 import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
 import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
+import { PrevButtonModule } from '../prev-button/prev-button.module';
+import { ScreenContainerComponent } from './screen-container.component';
 
 describe('ScreenContainerComponent', () => {
   let component: ScreenContainerComponent;
@@ -17,15 +17,9 @@ describe('ScreenContainerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [
-          MockModule(CoreUiModule),
-          CoreModule,
-          PrevButtonModule,
-        ],
+        imports: [MockModule(CoreUiModule), CoreModule, PrevButtonModule],
         declarations: [ScreenContainerComponent],
-        providers: [
-          { provide: ScreenService, useClass: ScreenServiceStub }
-        ],
+        providers: [{ provide: ScreenService, useClass: ScreenServiceStub }],
       })
         .overrideComponent(ScreenContainerComponent, {
           set: { changeDetection: ChangeDetectionStrategy.Default },

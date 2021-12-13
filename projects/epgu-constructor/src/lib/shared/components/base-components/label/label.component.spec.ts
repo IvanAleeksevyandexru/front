@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LabelComponent } from './label.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   DeviceDetectorService,
@@ -13,15 +12,16 @@ import {
   ModalService,
   ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { By } from '@angular/platform-browser';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { LabelComponent } from './label.component';
 import { ClickableLabelDirective } from '../../../directives/clickable-label/clickable-label.directive';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ActionService } from '../../../directives/action/action.service';
 import { ActionServiceStub } from '../../../directives/action/action.service.stub';
-import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 describe('LabelComponent', () => {
   let component: LabelComponent;
@@ -54,7 +54,7 @@ describe('LabelComponent', () => {
 
   it('should open modal if clarifications are set', () => {
     component.label = '<p><a id="test">Ссылка</a></p>';
-    component.clarifications = { test: { text: '', title: '' }};
+    component.clarifications = { test: { text: '', title: '' } };
     fixture.detectChanges();
 
     const span: HTMLDivElement = fixture.debugElement.query(By.css('span')).nativeElement;

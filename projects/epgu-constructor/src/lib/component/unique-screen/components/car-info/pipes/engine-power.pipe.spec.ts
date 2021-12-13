@@ -11,7 +11,7 @@ describe('EnginePowerPipe', () => {
     expect(pipe.transform('100', '120')).toBe('100/120');
   });
 
-  it('shouldn\'t return a displayed value if one of them is missing', () => {
+  it("shouldn't return a displayed value if one of them is missing", () => {
     expect(pipe.transform('100', null)).toBe(null);
   });
 });

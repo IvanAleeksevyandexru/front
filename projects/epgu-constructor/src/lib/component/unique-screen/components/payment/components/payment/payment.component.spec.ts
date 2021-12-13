@@ -6,11 +6,14 @@ import {
   ConfigService,
   SessionStorageService,
   SessionStorageServiceStub,
+  ConfigServiceStub,
+  DatesToolsService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  LocationService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService } from '@epgu/epgu-constructor-ui-kit';
+
+import { ComponentDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -19,7 +22,6 @@ import { PaymentService } from '../../payment.service';
 import { PaymentComponent } from './payment.component';
 import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
-import { ComponentDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { PriorPrefixModule } from '../../../../../../shared/pipes/prior-prefix/prior-prefix.module';
 

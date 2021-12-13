@@ -22,7 +22,9 @@ import { MaskTransformService } from '../../services/mask-transform/mask-transfo
 })
 class DecimalRoundTestComponent {
   public mask = '';
+
   public maskOptions = {};
+
   control = new FormControl({ value: '' });
 }
 
@@ -34,11 +36,7 @@ describe('DecimalRoundDirective', () => {
     TestBed.configureTestingModule({
       declarations: [DecimalRoundDirective, DecimalRoundTestComponent],
       imports: [CoreModule, MockModule(CoreUiModule), BaseModule],
-      providers: [
-        DecimalPipe,
-        NgControl,
-        MaskTransformService,
-      ],
+      providers: [DecimalPipe, NgControl, MaskTransformService],
     }).compileComponents();
   });
 
@@ -65,7 +63,7 @@ describe('DecimalRoundDirective', () => {
         clipboardData: {
           getData: () => {
             return '1.149234';
-          }
+          },
         },
         // eslint-disable-next-line no-empty-function
         preventDefault: () => {},

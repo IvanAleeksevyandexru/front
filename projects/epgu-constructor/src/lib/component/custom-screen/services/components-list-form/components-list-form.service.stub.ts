@@ -6,7 +6,9 @@ import { CustomComponentOutputData, CustomListStatusElements } from '../../compo
 @Injectable()
 export class ComponentsListFormServiceStub {
   private _form = new FormArray([]);
+
   private _changes = new EventEmitter<CustomComponentOutputData>();
+
   private _shownElements: CustomListStatusElements = {};
 
   get form(): FormArray {

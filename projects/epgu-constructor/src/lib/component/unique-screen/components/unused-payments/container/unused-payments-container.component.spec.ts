@@ -1,6 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MockComponent, MockModule } from 'ng-mocks';
+import {
+  ObjectHelperService,
+  DownloadService,
+  JsonHelperService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ComponentDto, ComponentAttrsDto, CachedAnswersDto } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { RadioTaxComponent } from '../../../../../shared/components/radio-tax/radio-tax.component';
@@ -10,14 +18,6 @@ import { DefaultUniqueScreenWrapperModule } from '../../../shared/default-unique
 import { UnusedPaymentsComponent } from '../component/unused-payments.component';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { CachedAnswersService } from '../../../../../shared/services/cached-answers/cached-answers.service';
-import {
-  ObjectHelperService,
-  DownloadService,
-  JsonHelperService,
-  LocalStorageService,
-  LocalStorageServiceStub,
-} from '@epgu/epgu-constructor-ui-kit';
-import { ComponentDto, ComponentAttrsDto, CachedAnswersDto } from '@epgu/epgu-constructor-types';
 
 describe('UnusedPaymentsContainerComponent', () => {
   let component: UnusedPaymentsContainerComponent;

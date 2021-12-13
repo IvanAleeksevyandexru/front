@@ -1,9 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { of } from 'rxjs';
-import { MockProvider } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
-
+import {
+  LocationService,
+  LocationServiceStub,
+  LoggerService,
+  LoggerServiceStub,
+  DownloadService,
+  DownloadServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { EmptyScreenComponent } from './empty-screen.component';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -11,10 +18,6 @@ import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-sc
 import { RedirectComponent } from '../../component/empty-screen/components/redirect.component';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
 import { InitDataServiceStub } from '../../core/services/init-data/init-data.service.stub';
-import { DownloadService, DownloadServiceStub, LocationService, LocationServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 

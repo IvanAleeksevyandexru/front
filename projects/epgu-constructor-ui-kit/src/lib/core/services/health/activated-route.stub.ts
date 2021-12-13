@@ -3,17 +3,22 @@ import { BehaviorSubject } from 'rxjs';
 import { convertToParamMap, ParamMap, UrlSegment } from '@angular/router';
 
 export class MockParams {
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor,@typescript-eslint/no-empty-function
   constructor() {}
 }
 
 @Injectable()
 export class ActivatedRouteStub {
   private subject = new BehaviorSubject(convertToParamMap(this.testParamMap));
+
   public paramMap = this.subject.asObservable();
+
   public queryParamMap = this.subject.asObservable();
+
   public data = this.subject.asObservable();
 
   private _testParamMap: ParamMap;
+
   private _testUrl: UrlSegment[];
 
   get testParamMap() {
@@ -47,8 +52,10 @@ export class ActivatedRouteStub {
   }
 
   public params: BehaviorSubject<MockParams> = new BehaviorSubject<MockParams>(new MockParams());
+
   public queryParams: BehaviorSubject<MockParams> = new BehaviorSubject<MockParams>(
     new MockParams(),
   );
+
   public fragment: BehaviorSubject<MockParams> = new BehaviorSubject<MockParams>(new MockParams());
 }

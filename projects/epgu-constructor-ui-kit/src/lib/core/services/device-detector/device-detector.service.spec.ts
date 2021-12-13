@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { LoadService } from '@epgu/ui/services/load';
 import { DeviceDetectorService } from './device-detector.service';
 import { LoadServiceStub } from '../config/load-service-stub';
 import { System } from './device-detector.types';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
-import { LoadService } from '@epgu/ui/services/load';
 import { WINDOW } from '../../providers/window.provider';
 
 describe('DeviceDetectorService', () => {
@@ -17,7 +17,7 @@ describe('DeviceDetectorService', () => {
       providers: [
         DeviceDetectorService,
         { provide: LoadService, useClass: LoadServiceStub },
-        { provide: WINDOW, useValue: { navigator: {}}},
+        { provide: WINDOW, useValue: { navigator: {} } },
         SmuEventsService,
       ],
     }).compileComponents();
@@ -61,7 +61,9 @@ describe('DeviceDetectorService', () => {
   });
 
   it('is IOS', () => {
-    userAgent.mockReturnValue('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
+    userAgent.mockReturnValue(
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8',
+    );
     expect(deviceDetectorService.isIOS()).toBe(true);
   });
 

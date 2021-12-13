@@ -1,10 +1,15 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConfigService, SessionService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  SessionService,
+  ConfigServiceStub,
+  LocationService,
+  WINDOW_PROVIDERS,
+} from '@epgu/epgu-constructor-ui-kit';
+
+import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ApiService } from './api.service';
 import { FindOptionsGroup, FindOptionsProgram } from '../../typings';
-import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import {
   PROGRAM_DETAIL_SUB_URL,
   SEARCH_PROGRAM_SUB_URL,
@@ -19,7 +24,7 @@ describe('ApiService', () => {
   let http: HttpTestingController;
 
   const okato = 14;
-  let responseMock = { items: 42 };
+  const responseMock = { items: 42 };
   const uuid = '1';
 
   beforeEach(() => {
@@ -61,7 +66,7 @@ describe('ApiService', () => {
         .getProgramList(reqBody)
         .subscribe((response) => expect(response).toBe(responseMock.items));
       const req = http.expectOne(`${SEARCH_PROGRAM_SUB_URL}`);
-      const body = req.request.body;
+      const { body } = req.request;
       expect(body).toEqual(reqBody);
       req.flush(responseMock);
       tick();
@@ -100,7 +105,7 @@ describe('ApiService', () => {
         .getGroupList(uuid, reqBody)
         .subscribe((response) => expect(response).toBe(responseMock.items));
       const req = http.expectOne(`${PROGRAM_DETAIL_SUB_URL}${uuid}${SEARCH_GROUP_SUB_URL}`);
-      const body = req.request.body;
+      const { body } = req.request;
       expect(body).toEqual(reqBody);
       req.flush(responseMock);
       tick();

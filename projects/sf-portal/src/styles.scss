@@ -6,12 +6,12 @@
 @import '~@epgu/ui/assets/styles/forms';
 @import '~@epgu/ui/assets/styles/modal';
 
-
-body, .app-root {
+body,
+.app-root {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  background: #FAFCFF;
+  background: #fafcff;
 }
 
 body.web-view-mode {
@@ -24,7 +24,6 @@ body.web-view-mode {
   }
 }
 
-
 portal-new-sf-player,
 portal-clubs {
   width: 100%;
@@ -36,7 +35,6 @@ portal-new-sf-player {
   flex-direction: column;
   flex: 1 1 auto;
 }
-
 
 label {
   cursor: inherit;
@@ -51,7 +49,7 @@ label {
   flex-shrink: 0;
 }
 
-@media all and (max-width: 768px){
+@media all and (max-width: 768px) {
   .footer-wrapper {
     display: none;
   }

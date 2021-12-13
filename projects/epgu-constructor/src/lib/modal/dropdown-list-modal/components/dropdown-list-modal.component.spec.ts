@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { MockModule, MockProvider } from 'ng-mocks';
+import { HighlightModule } from '@epgu/ui/pipes';
 import { DropdownListModalComponent } from './dropdown-list-modal.component';
 import { DropdownListComponent } from './dropdown-list/dropdown-list.component';
 import { FilterPipe } from '../pipes/filter.pipe';
 import { BaseModule } from '../../../shared/base.module';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { MockModule, MockProvider } from 'ng-mocks';
 import { ActionService } from '../../../shared/directives/action/action.service';
 import { ConfirmationModalModule } from '../../confirmation-modal/confirmation-modal.module';
-import { HighlightModule } from '@epgu/ui/pipes';
 
 const dropdownData = {
   title: 'Категории граждан и условия для досрочного назначения пенсии',

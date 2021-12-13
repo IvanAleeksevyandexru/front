@@ -1,13 +1,14 @@
 ## Установка зависимостей
 
-```yarn install```
+`yarn install`
 
 ## Локальная разработка с hot-reload
 
-```yarn start:portal```
+`yarn start:portal`
 После открыть в браузере https://vbeta.test.gosuslugi.ru:8888/
 
 ## Локальная разработка с симлинком на @epgu/epgu-constructor (или другой локальной либой)
+
 1. В папке либы epgu2-form-frontend сделать сборку всех либ `yarn build:prod:libs`, после всех сборок остановить инстанс эмулятора (Ctrl + C) и после этого запустить отслеживание изменений в epgu-constructor: `yarn lib:cf:watch`.
 2. Далее в папке epgu2-form-frontend/dist/epgu-constructor в отдельном терминале выполнить последовательно `cp ../../.npmrc ./` и `npm link`.
 3. В папке проекта sf-portal (здесь) в терминале выполнить команду: `npm link @epgu/epgu-constructor` и запустить проект как обычно через `yarn start`.
@@ -16,9 +17,9 @@
 
 ## Продуктовая сборка
 
-```yarn build:portal```
+`yarn build:portal`
 Продуктовый бандл будет лежать в папке `dist/`.
 
 ## Запуск юнит-тестов
 
-```yarn test:portal```
+`yarn test:portal`

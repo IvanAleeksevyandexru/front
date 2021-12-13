@@ -4,32 +4,39 @@ import {
   ConfigService,
   DATE_STRING_DOT_FORMAT,
   HttpCancelService,
+  ConfigServiceStub,
+  UnsubscribeService,
+  DatesToolsService,
+  ScreenPadModule,
+  TextTransformDirective,
+  HelperTextComponent,
+  SafePipe,
+  ImgPrefixerPipe,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
+import { of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
+import { ActionType, ComponentActionDto, DisclaimerDtoType } from '@epgu/epgu-constructor-types';
+import { DadataWidgetComponent, PlainInputComponent } from '@epgu/ui/controls';
+import { By } from '@angular/platform-browser';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { ConfirmAddressInterface } from '../../interface/confirm-address.interface';
 import { ConfirmPersonalUserAddressReadonlyComponent } from './confirm-personal-user-address-readonly.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { of } from 'rxjs';
 import { UniqueScreenComponentTypes } from '../../../../unique-screen-components.types';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { MockComponent, MockDirective, MockModule } from 'ng-mocks';
-import { ScreenPadModule, TextTransformDirective } from '@epgu/epgu-constructor-ui-kit';
+
 import { ValidationTypeModule } from '../../../../../../shared/directives/validation-type/validation-type.module';
 import { LabelComponent } from '../../../../../../shared/components/base-components/label/label.component';
-import { HelperTextComponent, SafePipe } from '@epgu/epgu-constructor-ui-kit';
+
 import { DefaultUniqueScreenWrapperComponent } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { ActionDirective } from '../../../../../../shared/directives/action/action.directive';
-import { ActionType, ComponentActionDto, DisclaimerDtoType } from '@epgu/epgu-constructor-types';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
-import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
+
 import { DisclaimerComponent } from '../../../../../../shared/components/disclaimer/disclaimer.component';
 import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
-import { DadataWidgetComponent, PlainInputComponent } from '@epgu/ui/controls';
-import { By } from '@angular/platform-browser';
 
 describe('ConfirmPersonalUserAddressReadonlyComponent', () => {
   const mockData: ConfirmAddressInterface = {

@@ -1,21 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfirmationModalComponent } from './confirmation-modal.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
-import {
-  CtaModalComponent,
-  BaseUiModule,
-  LocationService,
-} from '@epgu/epgu-constructor-ui-kit';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { CtaModalComponent, BaseUiModule, LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { MockComponents, MockDirectives } from 'ng-mocks';
+import { By } from '@angular/platform-browser';
+import { NotifierService } from '@epgu/ui/services/notifier';
+import { ActionType, CloseHandlerCases, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { OutputHtmlComponent } from '../../shared/components/output-html/output-html.component';
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { ScreenButtonsComponent } from '../../shared/components/screen-buttons/screen-buttons.component';
-import { By } from '@angular/platform-browser';
-import { NotifierService } from '@epgu/ui/services/notifier';
 import { AnswerButtonModule } from '../../shared/components/answer-button/answer-button.module';
-import { ActionType, CloseHandlerCases, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ConfirmationModalComponent } from './confirmation-modal.component';
 import { ForTestsOnlyModule } from '../../core/for-tests-only.module';
 
 describe('ConfirmationModalComponent', () => {
@@ -53,7 +49,7 @@ describe('ConfirmationModalComponent', () => {
   beforeEach(() => {
     initComponent();
     // eslint-disable-next-line no-empty-function
-    component['detachView'] = () => {};
+    component.detachView = () => {};
     fixture.detectChanges();
     navigationService = TestBed.inject(NavigationService);
     locationService = TestBed.inject(LocationService);

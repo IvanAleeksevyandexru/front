@@ -1,9 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotErrorComponent } from './time-slot-error.component';
-import { TimeSlotEmptyErrorComponent } from '../time-slot-error-templates/time-slot-empty-error/time-slot-empty-error.component';
-import { TimeSlotCheckboxErrorComponent } from '../time-slot-error-templates/time-slot-checkbox-error/time-slot-checkbox-error.component';
-import { BaseComponentsModule } from '../../../../../../../shared/components/base-components/base-components.module';
-import { BaseModule } from '../../../../../../../shared/base.module';
 import {
   ConstructorCheckboxModule,
   DatesToolsService,
@@ -11,6 +6,13 @@ import {
   ModalService,
   ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockComponent } from 'ng-mocks';
+import { By } from '@angular/platform-browser';
+import { TimeSlotErrorComponent } from './time-slot-error.component';
+import { TimeSlotEmptyErrorComponent } from '../time-slot-error-templates/time-slot-empty-error/time-slot-empty-error.component';
+import { TimeSlotCheckboxErrorComponent } from '../time-slot-error-templates/time-slot-checkbox-error/time-slot-checkbox-error.component';
+import { BaseComponentsModule } from '../../../../../../../shared/components/base-components/base-components.module';
+import { BaseModule } from '../../../../../../../shared/base.module';
 import { ScreenButtonsModule } from '../../../../../../../shared/components/screen-buttons/screen-buttons.module';
 import { TimeSlotErrorService } from '../../../services/error/time-slot-error.service';
 
@@ -23,8 +25,6 @@ import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-sl
 import { TimeSlotSmev3StateServiceStub } from '../../../services/smev3-state/time-slot-smev3-state.service.stub';
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
 import { TimeSlotTemplateType } from '../../../typings';
-import { MockComponent } from 'ng-mocks';
-import { By } from '@angular/platform-browser';
 
 const mockTemplate = {
   header: 'test',

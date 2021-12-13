@@ -1,24 +1,24 @@
 import { Injectable, Injector } from '@angular/core';
+import { BehaviorSubject, EMPTY, Subject } from 'rxjs';
+import { catchError, exhaustMap, filter, tap } from 'rxjs/operators';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import {
   ErrorTemplate,
-  nextHandler,
+  NextHandler,
   TimeSlotError,
   TimeSlotErrorHandler,
   TimeSlotRequestType,
   TimeSlotTemplateType,
 } from '../../typings';
 
-import { BehaviorSubject, EMPTY, Subject } from 'rxjs';
-import { catchError, exhaustMap, filter, tap } from 'rxjs/operators';
-
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../../core/services/error-handler/error-handler';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotsConstants } from '../../../time-slots/time-slots.constants';
 
 @Injectable()
 export class TimeSlotErrorService {
   error$$ = new BehaviorSubject<TimeSlotError>(null);
+
   errorHandlers: TimeSlotErrorHandler[] = [];
 
   errorHandling$ = this.error$$.pipe(
@@ -68,8 +68,8 @@ export class TimeSlotErrorService {
       this.endHandler();
       return;
     }
-    const next: nextHandler = (error: TimeSlotError) => {
-      this.handling(error, index + 1);
+    const next: NextHandler = (timeSlotError: TimeSlotError) => {
+      this.handling(timeSlotError, index + 1);
     };
     handler(error, this.injector, next);
   }
@@ -77,6 +77,7 @@ export class TimeSlotErrorService {
   show(error: string): void {
     this.show$$.next(error);
   }
+
   resetHandlers(): void {
     this.errorHandlers = [];
   }

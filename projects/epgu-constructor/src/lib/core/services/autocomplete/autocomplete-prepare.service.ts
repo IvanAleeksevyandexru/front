@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import { get as _get, cloneDeep as _cloneDeep } from 'lodash';
 
 import { Answer, ComponentDto } from '@epgu/epgu-constructor-types';
+import {
+  DatesToolsService,
+  JsonHelperService,
+  DATE_STRING_DOT_FORMAT,
+} from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { UploadedFile } from '../terra-byte-api/terra-byte-api.types';
@@ -16,7 +21,6 @@ import {
   CustomComponentAttr,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { DatesToolsService, JsonHelperService, DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class AutocompletePrepareService {
@@ -33,7 +37,7 @@ export class AutocompletePrepareService {
     componentsSuggestionsList: [string, string][] = [],
     suggestions: ISuggestionApi[],
   ): void {
-    let result: { [key: string]: ISuggestionItem } = {};
+    const result: { [key: string]: ISuggestionItem } = {};
 
     suggestions.forEach((suggestion) => {
       const { values } = suggestion;
@@ -178,7 +182,7 @@ export class AutocompletePrepareService {
 
     if (cachedAnswer) {
       const { value } = cachedAnswer;
-      let parsedValue = JSON.parse(value);
+      const parsedValue = JSON.parse(value);
       delete parsedValue[index];
 
       cachedAnswer.value = JSON.stringify(parsedValue);
@@ -199,13 +203,13 @@ export class AutocompletePrepareService {
       fields,
       componentMnemonic,
     );
-    const requiredField = fields.find(field => {
+    const requiredField = fields.find((field) => {
       const mnemonics = this.splitParentMnemonic(field.mnemonic);
       return mnemonics.includes(componentMnemonic);
     });
     if (requiredField) {
       let { value, mnemonic } = requiredField;
-      let originalItem = value;
+      const originalItem = value;
 
       value = this.prepareValue(repeatableComponents, componentsSuggestionsList, value, mnemonic);
 
@@ -216,9 +220,8 @@ export class AutocompletePrepareService {
         id,
         hints,
       };
-    } else {
-      return null;
     }
+    return null;
   }
 
   private getFormattedHints(
@@ -273,11 +276,11 @@ export class AutocompletePrepareService {
       if (repeatableComponents.length && parsedValue.length) {
         parsedValue = Object.values(parsedValue[0])[0];
       }
-      value = parsedValue['text'];
+      value = parsedValue.text;
 
       // Кейс парсинга значения для SnilsInput
       if ('snils' in parsedValue) {
-        value = parsedValue['snils'];
+        value = parsedValue.snils;
       }
     }
 
@@ -314,13 +317,12 @@ export class AutocompletePrepareService {
         componentsSuggestionsList,
         parentMnemonic,
       );
-    } else {
-      return this.getComponentsDto(
-        this.screenService.display?.components,
-        componentsSuggestionsList,
-        parentMnemonic,
-      );
     }
+    return this.getComponentsDto(
+      this.screenService.display?.components,
+      componentsSuggestionsList,
+      parentMnemonic,
+    );
   }
 
   private getComponentsDto(
@@ -365,9 +367,9 @@ export class AutocompletePrepareService {
     componentsSuggestionsList: [string, string][],
   ): string {
     const isDocInput = component.type === CustomScreenComponentTypes.DocInput;
-    const prepareDocInputValue = (value, fieldName, suggestItemValue): string =>
+    const prepareDocInputValue = (docInputValue, fieldName, suggestItemValue): string =>
       JSON.stringify({
-        ...(this.jsonHelperService.tryToParse(value) as object),
+        ...(this.jsonHelperService.tryToParse(docInputValue) as object),
         [fieldName]: suggestItemValue,
       });
 
@@ -383,11 +385,11 @@ export class AutocompletePrepareService {
     const suggestItem = suggestions?.list.find((item) => {
       if (typeof id === 'number') {
         return item.id === id;
-      } else if (item.originalItem.includes(value)) {
-        return true;
-      } else {
-        return item.value === value;
       }
+      if (item.originalItem.includes(value)) {
+        return true;
+      }
+      return item.value === value;
     });
 
     return isDocInput
@@ -422,35 +424,34 @@ export class AutocompletePrepareService {
         return isFormattedReturn
           ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
           : dateValue;
-      } else {
-        dateValue = (this.datesToolsService.parse(value) as unknown) as string;
-
-        return isFormattedReturn && this.datesToolsService.isValid(dateValue)
-          ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
-          : dateValue;
       }
-    } else if (component.type === CustomScreenComponentTypes.DocInput) {
+      dateValue = (this.datesToolsService.parse(value) as unknown) as string;
+
+      return isFormattedReturn && this.datesToolsService.isValid(dateValue)
+        ? this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT)
+        : dateValue;
+    }
+    if (component.type === CustomScreenComponentTypes.DocInput) {
       const dateValue = this.datesToolsService.parse(value);
 
       if (this.datesToolsService.isValid(dateValue)) {
         return this.datesToolsService.format(dateValue, DATE_STRING_DOT_FORMAT);
-      } else {
-        return value;
       }
-    } else if (component.type === CustomScreenComponentTypes.RadioInput) {
+      return value;
+    }
+    if (component.type === CustomScreenComponentTypes.RadioInput) {
       const componentAttrs = component.attrs as CustomComponentAttr;
 
       return isFormattedReturn
         ? componentAttrs.supportedValues.find((item) => item.value === value)?.label || value
         : value;
-    } else if (
-      !!component.attrs?.suggestionPath &&
-      this.jsonHelperService.hasJsonStructure(value)
-    ) {
+    }
+    if (!!component.attrs?.suggestionPath && this.jsonHelperService.hasJsonStructure(value)) {
       const parsedValue = this.jsonHelperService.tryToParse(value);
 
       return _get(parsedValue, component.attrs.suggestionPath);
-    } else if (this.jsonHelperService.hasJsonStructure(value)) {
+    }
+    if (this.jsonHelperService.hasJsonStructure(value)) {
       const parsedValue = JSON.parse(value);
 
       if (Array.isArray(parsedValue)) {
@@ -458,8 +459,9 @@ export class AutocompletePrepareService {
         value = parsedItem[component.id];
 
         return typeof value === 'string' ? value : JSON.stringify(value);
-      } else if ('snils' in parsedValue) {
-        return parsedValue['snils'];
+      }
+      if ('snils' in parsedValue) {
+        return parsedValue.snils;
       }
     }
     return value;
@@ -508,15 +510,14 @@ export class AutocompletePrepareService {
       cachedAnswer.value = JSON.stringify(parsedValue);
 
       return cachedAnswer;
-    } else {
-      let newCachedAnswer = [...currentAnswerState];
-      newCachedAnswer[componentsGroupIndex] = { [component.id]: currentValue };
-
-      return {
-        value: JSON.stringify(newCachedAnswer),
-        visited: true,
-      };
     }
+    const newCachedAnswer = [...currentAnswerState];
+    newCachedAnswer[componentsGroupIndex] = { [component.id]: currentValue };
+
+    return {
+      value: JSON.stringify(newCachedAnswer),
+      visited: true,
+    };
   }
 
   private getCachedAnswer(componentId: string): Answer {

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DayComponent } from './day.component';
 import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
+import { DayComponent } from './day.component';
 
 const testDate = new Date('2012-12-12');
 

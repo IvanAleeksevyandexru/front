@@ -20,6 +20,7 @@ import { RestService } from '../../../shared/services/rest/rest.service';
 @Injectable()
 export class LogicService {
   readonly maxTimeout = 600000;
+
   constructor(
     private localStorageService: LocalStorageService,
     private dictionaryToolsService: DictionaryToolsService,

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs/internal/Observable';
 import {
   PassportIdentificationRequestBody,
   PassportIdentificationResponse,
@@ -8,8 +10,6 @@ import {
   VideoIdentificationRequestBody,
   VideoIdentificationResponse,
 } from './identification-api.types';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable()
 export class IdentificationApiService {

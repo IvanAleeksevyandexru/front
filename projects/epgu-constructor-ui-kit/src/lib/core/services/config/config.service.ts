@@ -1,57 +1,102 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { LoggerService } from '../logger/logger.service';
-import { Config, MockApi, AppPathMap, TimeSlotsApi } from './config.types';
 import { DEFAULT_CONFIG_ID } from '@epgu/epgu-constructor-types';
 import { LoadService } from '@epgu/ui/services/load';
+import { LoggerService } from '../logger/logger.service';
+import { Config, MockApi, AppPathMap, TimeSlotsApi } from './config.types';
 
 @Injectable()
 export class ConfigService implements Config {
   private isLoadedSubject = new BehaviorSubject(false);
+
   private _isLoaded$ = this.isLoadedSubject.asObservable();
+
   private _isLoaded = false;
+
   private _billsApiUrl: string;
+
   private _apiUrl: string;
+
   private _suggestionsApiUrl: string;
+
   private _configApiUrl: string;
+
   private _configId: string;
+
   private _dictionaryUrl: string;
+
   private _externalApiUrl: string;
+
   private _fileUploadApiUrl: string;
+
   private _galleryApiUrl: string;
+
   private _quizDataApiUrl: string;
+
   private _lkUrl: string;
+
   private _lkApi: string;
+
   private _childrenClubsApi: string;
+
   private _paymentUrl: string;
+
   private _timeSlotApiUrl: string;
+
   private _listPaymentsApiUrl: string;
+
   private _uinApiUrl: string;
+
   private _invitationUrl: string;
+
   private _yandexMapsApiKey: string;
+
   private _staticDomainAssetsPath: string;
+
   private _staticDomainContentPath: string;
+
   private _mocks: MockApi[];
+
   private _timeSlots?: TimeSlotsApi;
+
   private _mockUrl: string;
+
   private _disableUnderConstructionMode: boolean;
+
   private _isSocialShareDisabled: boolean;
+
   private _isAutocompleteServiceDisabled: boolean;
+
   private _addToCalendarUrl: string;
+
   private _zipkinGenerationEnabled: boolean;
+
   private _zipkinSendTraceIdToHealth: boolean;
+
   private _zipkinSpanSendEnabled: boolean;
+
   private _zipkinUrl: string;
+
   private _zipkinMaxPayloadSize: number;
+
   private _zipkinEnv: string;
+
   private _isZipkinCascadeMode: boolean;
+
   private _showTraceIdOnError: boolean;
+
   private _oplataUrl: string;
+
   private _lookupQueryTimeoutMs: number;
+
   private _nsiSuggestDictionaryUrl: string;
+
   private _appPathMap: AppPathMap;
+
   private _lkuipElection: string;
+
   private _identificationApiUrl: string;
+
   private _wsIdentificationUrl: string;
 
   constructor(private loadService: LoadService, private loggerService: LoggerService) {}

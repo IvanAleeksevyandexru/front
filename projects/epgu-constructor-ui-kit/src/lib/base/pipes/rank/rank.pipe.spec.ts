@@ -1,8 +1,8 @@
-import { RankPipe } from './rank.pipe';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { TestBed } from '@angular/core/testing';
+import { RankPipe } from './rank.pipe';
 
 registerLocaleData(localeRu, 'ru');
 

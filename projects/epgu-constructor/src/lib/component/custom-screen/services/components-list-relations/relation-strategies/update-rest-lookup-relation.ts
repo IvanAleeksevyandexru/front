@@ -1,9 +1,13 @@
-import { BaseRelation } from './base-relation';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { CustomComponent, CustomComponentRef, CustomListStatusElements } from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
-import { ComponentRestUpdates } from '../components-list-relations.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { BaseRelation } from './base-relation';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomListStatusElements,
+} from '../../../components-list.types';
+import { ComponentRestUpdates } from '../components-list-relations.interface';
 
 export class UpdateRestLookupRelation extends BaseRelation {
   private readonly _restUpdates$: BehaviorSubject<ComponentRestUpdates> = new BehaviorSubject({});

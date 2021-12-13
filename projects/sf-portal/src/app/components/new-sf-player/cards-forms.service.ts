@@ -11,11 +11,11 @@ import {
   GetServiceRequest,
   Passport,
   Service,
-  ServicePermission
+  ServicePermission,
 } from '@epgu/ui/models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CardsFormsService {
   private serviceCache: { [name: string]: Service } = {};
@@ -25,15 +25,14 @@ export class CardsFormsService {
     mfc: 'mfc.button.disabled',
     equeue: 'booking.button.disabled',
     widget: 'widget.button.disabled',
-    widgetnoauth: 'widgetnoauth.button.disabled'
+    widgetnoauth: 'widgetnoauth.button.disabled',
   };
 
   constructor(
     private catalogService: CatalogService,
     private loadService: LoadService,
     private breadcrumbsService: BreadcrumbsService,
-  ) {
-  }
+  ) {}
 
   public getService(params: GetServiceRequest): Observable<Service> {
     const observableServiceData = new BehaviorSubject<Service>(null);
@@ -41,12 +40,15 @@ export class CardsFormsService {
     if (this.serviceCache[cacheKey]) {
       observableServiceData.next(this.serviceCache[cacheKey]);
     } else {
-      this.catalogService.getService(params).subscribe((data: Service) => {
-        this.serviceCache[cacheKey] = data;
-        observableServiceData.next(data);
-      }, error => {
-        observableServiceData.error(error);
-      });
+      this.catalogService.getService(params).subscribe(
+        (data: Service) => {
+          this.serviceCache[cacheKey] = data;
+          observableServiceData.next(data);
+        },
+        (error) => {
+          observableServiceData.error(error);
+        },
+      );
     }
     return observableServiceData.asObservable();
   }
@@ -57,12 +59,13 @@ export class CardsFormsService {
     if (this.passportCache[cacheKey]) {
       observablePassportData.next(this.passportCache[cacheKey]);
     } else {
-      this.catalogService.getPassport(params).pipe(
-        catchError(() => of({error: true}))
-      ).subscribe((data: Passport) => {
-        this.passportCache[cacheKey] = data;
-        observablePassportData.next(data);
-      });
+      this.catalogService
+        .getPassport(params)
+        .pipe(catchError(() => of({ error: true })))
+        .subscribe((data: Passport) => {
+          this.passportCache[cacheKey] = data;
+          observablePassportData.next(data);
+        });
     }
     return observablePassportData.asObservable();
   }
@@ -72,7 +75,7 @@ export class CardsFormsService {
   }
 
   public getAdditionalAttrValue(service: Service | Passport, attrName: string): AddAttrValue {
-    const attr = service.additionalAttributes.find(item => item.name === attrName);
+    const attr = service.additionalAttributes.find((item) => item.name === attrName);
     return attr?.value;
   }
 
@@ -95,15 +98,15 @@ export class CardsFormsService {
     this.breadcrumbsService.setLinks([
       {
         url: '/',
-        name: 'Главная'
+        name: 'Главная',
       },
       {
         url: '/catalog',
-        name: 'Категории услуг'
+        name: 'Категории услуг',
       },
       {
-        name: serviceName
-      }
+        name: serviceName,
+      },
     ]);
   }
 }
@@ -149,4 +152,3 @@ export interface RegionServiceCheck {
 }
 
 export type AddAttrValue = string | boolean | number;
-

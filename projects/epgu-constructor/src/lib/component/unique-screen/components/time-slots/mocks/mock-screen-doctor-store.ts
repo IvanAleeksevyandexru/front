@@ -80,7 +80,7 @@ export const mockScreenDoctorStore = {
           calculations: [
             {
               attributeName: 'eserviceId',
-              expr: ['$reg1.value.medicalInfo.smevVersion == \'3\' ? \'10000025167\' : \'33090\''],
+              expr: ["$reg1.value.medicalInfo.smevVersion == '3' ? '10000025167' : '33090'"],
               valueType: 'preset',
               value: 'eserviceId',
             },
@@ -89,7 +89,7 @@ export const mockScreenDoctorStore = {
             {
               attributeName: 'organizationId',
               expr: [
-                '$reg1.value.medicalInfo.smevVersion == \'3\' ? $ms1_smev3.value.value : $ms1_smev2.value.value',
+                "$reg1.value.medicalInfo.smevVersion == '3' ? $ms1_smev3.value.value : $ms1_smev2.value.value",
               ],
               valueType: 'preset',
               value: 'organizationId',
@@ -109,7 +109,7 @@ export const mockScreenDoctorStore = {
             {
               attributeName: 'Resource_Id',
               expr: [
-                '$reg1.value.medicalInfo.smevVersion == \'3\' ? $doc_smev3.value.id : $doc_smev2.value.id',
+                "$reg1.value.medicalInfo.smevVersion == '3' ? $doc_smev3.value.id : $doc_smev2.value.id",
               ],
               valueType: 'preset',
               value: 'Resource_Id',
@@ -117,27 +117,27 @@ export const mockScreenDoctorStore = {
             {
               attributeName: 'MO_Id',
               expr: [
-                '$reg1.value.medicalInfo.smevVersion == \'3\' ? $ms1_smev3.value.value : $ms1_smev2.value.value',
+                "$reg1.value.medicalInfo.smevVersion == '3' ? $ms1_smev3.value.value : $ms1_smev2.value.value",
               ],
               valueType: 'preset',
               value: 'MO_Id',
             },
             {
               attributeName: 'Starttime',
-              expr: ['\'00:00\''],
+              expr: ["'00:00'"],
               valueType: 'preset',
               value: 'Starttime',
             },
             {
               attributeName: 'Endtime',
-              expr: ['\'23:59\''],
+              expr: ["'23:59'"],
               valueType: 'preset',
               value: 'Endtime',
             },
             {
               attributeName: 'Service_Id',
               expr: [
-                '$reg1.value.medicalInfo.smevVersion == \'3\' ? $spec_smev3.value.id : $spec_smev2.value.id',
+                "$reg1.value.medicalInfo.smevVersion == '3' ? $spec_smev3.value.id : $spec_smev2.value.id",
               ],
               valueType: 'preset',
               value: 'Service_Id',
@@ -150,14 +150,14 @@ export const mockScreenDoctorStore = {
             },
             {
               attributeName: 'pacientname',
-              expr: ['\'\''],
+              expr: ["''"],
               valueType: 'preset',
               value: 'pacientname',
             },
             {
               attributeName: 'doctorname',
               expr: [
-                '$reg1.value.medicalInfo.smevVersion == \'3\' ? $doc_smev3.value.text : $doc_smev2.value.text',
+                "$reg1.value.medicalInfo.smevVersion == '3' ? $doc_smev3.value.text : $doc_smev2.value.text",
               ],
               valueType: 'preset',
               value: 'doctorname',
@@ -165,21 +165,21 @@ export const mockScreenDoctorStore = {
             {
               attributeName: 'doctor',
               expr: [
-                '$reg1.value.medicalInfo.smevVersion == \'3\' ? $spec_smev3.value.text : $spec_smev2.value.text',
+                "$reg1.value.medicalInfo.smevVersion == '3' ? $spec_smev3.value.text : $spec_smev2.value.text",
               ],
               valueType: 'preset',
               value: 'doctor',
             },
             {
               attributeName: 'anotherperson',
-              expr: ['$q1.value == \'Себя\' ? \'N\' : \'Y\''],
+              expr: ["$q1.value == 'Себя' ? 'N' : 'Y'"],
               valueType: 'preset',
               value: 'anotherperson',
             },
             {
               attributeName: 'doctorid',
               expr: [
-                '$reg1.value.medicalInfo.smevVersion == \'3\' ? $doc_smev3.value.id : $doc_smev2.value.id',
+                "$reg1.value.medicalInfo.smevVersion == '3' ? $doc_smev3.value.id : $doc_smev2.value.id",
               ],
               valueType: 'preset',
               value: 'doctorid',
@@ -187,12 +187,12 @@ export const mockScreenDoctorStore = {
             {
               attributeName: 'genderperson',
               expr: [
-                '($q1.value == \'Себя\' && $pd1.value.storedValues.gender == \'M\') ? \'Мужской\' : \'\'',
-                '($q1.value == \'Себя\' && $pd1.value.storedValues.gender == \'F\') ? \'Женский\' : \'\'',
-                '($q1.value == \'Ребенка\' && $cld1.value[0].cld1_5 == \'M\') ? \'Мужской\' : \'\'',
-                '($q1.value == \'Ребенка\' && $cld1.value[0].cld1_5 == \'F\') ? \'Женский\' : \'\'',
-                '($q1.value == \'Другого человека\' && $pd5_6.value == \'M\') ? \'Мужской\' : \'\'',
-                '($q1.value == \'Другого человека\' && $pd5_6.value == \'F\') ? \'Женский\' : \'Мужской\'',
+                "($q1.value == 'Себя' && $pd1.value.storedValues.gender == 'M') ? 'Мужской' : ''",
+                "($q1.value == 'Себя' && $pd1.value.storedValues.gender == 'F') ? 'Женский' : ''",
+                "($q1.value == 'Ребенка' && $cld1.value[0].cld1_5 == 'M') ? 'Мужской' : ''",
+                "($q1.value == 'Ребенка' && $cld1.value[0].cld1_5 == 'F') ? 'Женский' : ''",
+                "($q1.value == 'Другого человека' && $pd5_6.value == 'M') ? 'Мужской' : ''",
+                "($q1.value == 'Другого человека' && $pd5_6.value == 'F') ? 'Женский' : 'Мужской'",
               ],
               valueType: 'preset',
               value: 'genderperson',

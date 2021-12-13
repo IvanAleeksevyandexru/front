@@ -1,25 +1,12 @@
 module.exports = {
+  root: true,
   extends: ['plugin:@angular-eslint/recommended'],
-  rules: {
-    // ORIGINAL tslint.json -> 'directive-selector': [true, 'attribute', 'app', 'camelCase'],
-    // '@angular-eslint/directive-selector': [
-    //   'error',
-    //   { type: 'attribute', prefix: 'app', style: 'camelCase' },
-    // ],
-    // ORIGINAL tslint.json -> 'component-selector': [true, 'element', 'app', 'kebab-case'],
-    // '@angular-eslint/component-selector': [
-    //   'error',
-    //   { type: 'element', prefix: 'app', style: 'kebab-case' },
-    // ],
-  },
+  rules: {},
   overrides: [
-    // Add this rules, if you use inline templates inside *.component.ts files
     {
       files: ['*.component.ts'],
       extends: [
-        // AirBnB Styleguide rules
         'airbnb-typescript/base',
-        // Settings for Prettier
         'prettier/@typescript-eslint',
         'plugin:prettier/recommended',
       ],
@@ -28,7 +15,6 @@ module.exports = {
         ecmaVersion: 2020,
         sourceType: 'module',
       },
-      // Custom rules
       rules: {
         'import/no-unresolved': 'off',
         'import/prefer-default-export': 'off',

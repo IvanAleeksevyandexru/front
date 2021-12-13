@@ -8,12 +8,12 @@ import {
   startOfYear,
 } from 'date-fns';
 import { ListElement } from '@epgu/ui/models/dropdown';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { PaymentType } from '../mat-period.models';
 import {
+  DatesToolsService,
   DATE_STRING_DOT_FORMAT,
   DATE_STRING_LLLL_YYYY_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
+import { PaymentType } from '../mat-period.models';
 
 @Injectable()
 export class DurationService {
@@ -73,8 +73,8 @@ export class DurationService {
       const year = this.datesToolsService.format(halfYear, 'yyyy');
       const isStartOfHalYear = halfYear.getMonth() !== 6;
       const text = `${isStartOfHalYear ? '1' : '2'} полугодие ${year}`;
-      const date = this.datesToolsService.format(halfYear, DATE_STRING_DOT_FORMAT);
-      return this.createListElement(text, index, date, index);
+      const formatDate = this.datesToolsService.format(halfYear, DATE_STRING_DOT_FORMAT);
+      return this.createListElement(text, index, formatDate, index);
     });
   }
 

@@ -1,4 +1,3 @@
-import { ClickableLabelDirective } from './clickable-label.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -16,13 +15,14 @@ import {
   JsonHelperService,
   JsonHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { ClickableLabelDirective } from './clickable-label.directive';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ActionService } from '../action/action.service';
 import { ActionServiceStub } from '../action/action.service.stub';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
 @Component({
   selector: 'epgu-constructor-label-test-component',
@@ -35,7 +35,10 @@ import { SmuEventsService } from '@epgu/ui/services/smu-events';
 })
 class LabelTestComponent {
   public label;
+
   public clarifications: Clarifications;
+
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor,@typescript-eslint/no-empty-function
   constructor() {}
 }
 
@@ -76,7 +79,7 @@ describe('ClickableLabelDirective', () => {
 
   it('should open modal if clarifications are set', () => {
     component.label = '<p><a id="test">Ссылка</a></p>';
-    component.clarifications = { test: { text: '', title: '' }};
+    component.clarifications = { test: { text: '', title: '' } };
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
     const spy = jest.spyOn(modalService, 'openModal');
@@ -86,7 +89,7 @@ describe('ClickableLabelDirective', () => {
 
   it('should not open modal if clarifications are not set', () => {
     component.label = '<p><a id="test">Ссылка</a></p>';
-    component.clarifications = undefined; //{ test: { text: '', title: '' }};
+    component.clarifications = undefined; // { test: { text: '', title: '' }};
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
     const spy = jest.spyOn(modalService, 'openModal');
@@ -96,7 +99,7 @@ describe('ClickableLabelDirective', () => {
 
   it('should not open modal if clicked element without clarifications', () => {
     component.label = '<p><a id="test">Ссылка</a></p>';
-    component.clarifications = { test: { text: '', title: '' }};
+    component.clarifications = { test: { text: '', title: '' } };
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
     const spy = jest.spyOn(modalService, 'openModal');

@@ -4,10 +4,10 @@ import {
   DatesToolsService,
   DATE_TIME_HUMAN_FORMAT,
   ModalService,
+  regions,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
-import { regions } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class ContinueOrderModalService {

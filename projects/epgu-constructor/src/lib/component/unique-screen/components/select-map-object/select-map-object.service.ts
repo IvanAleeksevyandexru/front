@@ -11,22 +11,22 @@ import {
   YandexMapService,
   YMapItem,
 } from '@epgu/epgu-constructor-ui-kit';
+import { filter } from 'rxjs/operators';
+import {
+  ComponentBaloonContentDto,
+  ComponentDictionaryFilterDto,
+} from '@epgu/epgu-constructor-types';
+import { YaMapService } from '@epgu/ui/services/ya-map';
 import {
   DictionaryItem,
   DictionaryResponseError,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
-import { filter } from 'rxjs/operators';
-import {
-  ComponentBaloonContentDto,
-  ComponentDictionaryFilterDto,
-} from '@epgu/epgu-constructor-types';
 // eslint-disable-next-line max-len
 import { IuikFullDataResponse } from './components/balloon-content-resolver/components/elections-balloon-content/elections-balloon-content.interface';
 // eslint-disable-next-line max-len
 import { KindergartenSearchPanelService } from './components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
-import { YaMapService } from '@epgu/ui/services/ya-map';
 import { arePointsEqual } from './select-map-object.helpers';
 
 export interface SelectMapComponentAttrs {
@@ -58,21 +58,37 @@ export enum SidebarViewType {
 @Injectable()
 export class SelectMapObjectService implements OnDestroy {
   public dictionary: DictionaryResponseForYMap;
+
   public filteredDictionaryItems: DictionaryYMapItem[] = [];
+
   public selectedValue = new Subject();
+
   public selectedViewItems$ = new BehaviorSubject<DictionaryItem[]>([]);
+
   public isNoDepartmentErrorVisible = new Subject<boolean>();
+
   public ymaps;
+
   public componentAttrs: SelectMapComponentAttrs; // Атрибуты компонента из getNextStep
+
   public mapEvents; // events от карт, устанавливаются при создание балуна
+
   public mapOpenedBalloonId: number;
+
   public mapType = MapTypes.commonMap;
+
   public isMapLoaded = new BehaviorSubject<boolean>(false);
+
   public isSelectedView = new BehaviorSubject<boolean>(false);
+
   public userAddress: string;
+
   public searchString = new BehaviorSubject<string>(''); // Строка из панели поиска
+
   private _viewType = new BehaviorSubject(SidebarViewType.Map);
+
   private objectManager;
+
   private __mapStateCenter: number[];
 
   constructor(
@@ -112,9 +128,8 @@ export class SelectMapObjectService implements OnDestroy {
           (item) => item.attributeValues[this.componentAttrs.attributeNameWithAddress],
         ),
       });
-    } else {
-      return of({ coords: [], error: '' });
     }
+    return of({ coords: [], error: '' });
   }
 
   /**
@@ -128,12 +143,12 @@ export class SelectMapObjectService implements OnDestroy {
       hashMap[coord.address] = { latitude: coord.latitude, longitude: coord.longitude };
     });
     this.dictionary.items.forEach((item, index) => {
-      const coords = hashMap[
+      const coordinates = hashMap[
         item.attributeValues[this.componentAttrs.attributeNameWithAddress]
       ] as IGeoCoords;
       item.objectId = index;
-      if (coords) {
-        item.center = [coords.longitude, coords.latitude];
+      if (coordinates) {
+        item.center = [coordinates.longitude, coordinates.latitude];
       }
       item.baloonContent =
         this.getMappedAttrsForBaloon(this.componentAttrs.baloonContent, item) || [];
@@ -148,11 +163,11 @@ export class SelectMapObjectService implements OnDestroy {
    */
   public centeredPlaceMark(coords: number[], mapItem: YMapItem<DictionaryItem>): void {
     this.closeBalloon();
-    let serviceContext = this;
-    let offset = -0.00008;
+    const serviceContext = this;
+    const offset = -0.00008;
 
     if (coords && coords[0] && coords[1]) {
-      let center = this.yaMapService.map.getCenter();
+      const center = this.yaMapService.map.getCenter();
       let equal = true;
       if (!serviceContext.__mapStateCenter) {
         serviceContext.__mapStateCenter = [];
@@ -181,9 +196,9 @@ export class SelectMapObjectService implements OnDestroy {
   public searchMapObject(searchString: string): DictionaryYMapItem[] {
     const searchStringLower = searchString.toLowerCase();
     this.searchString.next(searchStringLower);
-    const searchSource = this.isSelectedView.getValue() ?
-      this.selectedViewItems$.getValue() :
-      this.dictionary.items;
+    const searchSource = this.isSelectedView.getValue()
+      ? this.selectedViewItems$.getValue()
+      : this.dictionary.items;
     const searchResult = searchSource.filter((item) => {
       const address = (item.attributeValues[
         this.componentAttrs.attributeNameWithAddress
@@ -192,7 +207,7 @@ export class SelectMapObjectService implements OnDestroy {
         item.title?.toLowerCase().includes(searchStringLower) ||
         address?.includes(searchStringLower)
       );
-    }) as DictionaryYMapItem[] ;
+    }) as DictionaryYMapItem[];
     const items = this.convertDictionaryItemsToMapPoints(searchResult);
     this.yandexMapService.placeObjectsOnMap(items);
     if (!this.isSelectedView.getValue()) {
@@ -234,15 +249,7 @@ export class SelectMapObjectService implements OnDestroy {
     electionLevel: string,
     options?,
   ): Observable<IuikFullDataResponse> {
-    const path =
-      `${this.config.lkuipElection}/api/map/uikFullData?pollStationNumber=` +
-      pollStationNumber +
-      '&pollStationRegion=' +
-      pollStationRegion +
-      '&electionDate=' +
-      electionDate +
-      '&electionLevel=' +
-      electionLevel;
+    const path = `${this.config.lkuipElection}/api/map/uikFullData?pollStationNumber=${pollStationNumber}&pollStationRegion=${pollStationRegion}&electionDate=${electionDate}&electionLevel=${electionLevel}`;
     return (this.http.get<IuikFullDataResponse>(path, {
       ...options,
       withCredentials: true,
@@ -350,7 +357,7 @@ export class SelectMapObjectService implements OnDestroy {
   ): { value: string; label: string }[] {
     const res = [];
     attrs.forEach((attr) => {
-      let itemValue = item.attributeValues[attr.name];
+      const itemValue = item.attributeValues[attr.name];
       if (itemValue) {
         res.push({
           value: itemValue,
@@ -440,8 +447,10 @@ export class SelectMapObjectService implements OnDestroy {
   private handleSelectedSearchResultPainting(searchResult: DictionaryYMapItem[]): void {
     const selectedValue: DictionaryYMapItem[] = this.yandexMapService.selectedValue$.getValue();
     if (selectedValue) {
-      searchResult.forEach(resultItem => {
-        const resultIsInSelectedValues = selectedValue.find(value => arePointsEqual(value, resultItem));
+      searchResult.forEach((resultItem) => {
+        const resultIsInSelectedValues = selectedValue.find((value) =>
+          arePointsEqual(value, resultItem),
+        );
         if (resultIsInSelectedValues) {
           const feature = this.yandexMapService.getObjectById(resultItem.idForMap);
           if (feature) {

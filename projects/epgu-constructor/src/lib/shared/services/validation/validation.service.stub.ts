@@ -18,12 +18,11 @@ enum ValidationType {
 @Injectable()
 export class ValidationServiceStub {
   public form?: FormArray;
+
   readonly typesWithoutValidation: CustomScreenComponentTypes[] = [
     CustomScreenComponentTypes.LabelSection,
     CustomScreenComponentTypes.HtmlString,
   ];
-
-  constructor() {}
 
   public customValidator(component: CustomComponent) {
     const componentValidations = component.attrs?.validation;

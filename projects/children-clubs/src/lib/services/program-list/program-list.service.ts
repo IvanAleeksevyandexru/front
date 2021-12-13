@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../api/api.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { BaseProgram, Filters, FocusFilter } from '../../typings';
 import {
   map,
   shareReplay,
@@ -13,47 +11,65 @@ import {
   filter,
 } from 'rxjs/operators';
 import { isEqual } from 'lodash';
+import { MicroAppStateQuery } from '@epgu/epgu-constructor-ui-kit';
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { StateService } from '../state/state.service';
 import {
   GroupFiltersModes,
   ChildrenClubsValue,
   ChildrenClubsState,
 } from '../../children-clubs.types';
-import { MicroAppStateQuery } from '@epgu/epgu-constructor-ui-kit';
-import { ListElement } from '@epgu/ui/models/dropdown';
+import { BaseProgram, Filters, FocusFilter } from '../../typings';
+import { ApiService } from '../api/api.service';
 
 @Injectable()
 export class ProgramListService {
   fullLoading$$ = new BehaviorSubject<boolean>(true);
+
   fullLoading$ = this.fullLoading$$.asObservable();
+
   get fullLoading(): boolean {
     return this.fullLoading$$.getValue();
   }
+
   loading$$ = new BehaviorSubject<boolean>(false);
+
   loading$ = this.loading$$.asObservable();
+
   get loading(): boolean {
     return this.loading$$.getValue();
   }
+
   page$$ = new BehaviorSubject<number>(0);
+
   isFinish$$ = new BehaviorSubject<boolean>(false);
+
   isFinish$ = this.isFinish$$.asObservable();
+
   get isFinish(): boolean {
     return this.isFinish$$.getValue();
   }
+
   pageSize: number;
 
   autoScroll$$ = new BehaviorSubject<boolean>(false);
+
   get autoScroll(): boolean {
     return this.autoScroll$$.getValue();
   }
+
   set autoScroll(auto: boolean) {
     this.autoScroll$$.next(auto);
   }
 
   data$$ = new BehaviorSubject<BaseProgram[]>([]);
+
   data$ = this.data$$.pipe(filter((val) => !!val.length));
+
   paginatedData$ = new BehaviorSubject<BaseProgram[]>([]);
+
   programFilters$ = new BehaviorSubject<Filters>({});
+
   isFilterPanelExpanded$ = new BehaviorSubject<boolean>(true);
 
   public groupFiltersMode$: Observable<{
@@ -131,7 +147,7 @@ export class ProgramListService {
     const page = this.page$$.getValue() + 1;
     const data = this.data$$.getValue();
     const size = page * this.pageSize;
-    const length = data.length;
+    const { length } = data;
     let result: BaseProgram[];
     if (size > length) {
       result = data.slice(size - this.pageSize, length);
@@ -169,7 +185,7 @@ export class ProgramListService {
       filters.municipality = place?.id as string;
     }
     const direction = filters?.direction as ListElement;
-    if (direction && direction?.id  && direction.id !== 'empty-item') {
+    if (direction && direction?.id && direction.id !== 'empty-item') {
       filters.direction = direction?.id as string;
     } else {
       delete filters.direction;

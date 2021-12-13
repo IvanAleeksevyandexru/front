@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { BatchRecorder, Tracer } from '@epgu/zipkin';
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TracingService } from './tracing.service';
 import { SessionService } from '../session/session.service';
 import { ConfigService } from '../config/config.service';
 import { TRACE_ALLOWED_REMOTE_SERVICES } from './tracing.token';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigServiceStub } from '../config/config.service.stub';
 
 describe('TracingService', () => {
@@ -35,20 +35,20 @@ describe('TracingService', () => {
   describe('init()', () => {
     it('should init recorder', () => {
       service.init(true);
-      expect(service['recorder']).not.toBeUndefined();
-      expect(service['recorder']).toBeInstanceOf(BatchRecorder);
+      expect(service.recorder).not.toBeUndefined();
+      expect(service.recorder).toBeInstanceOf(BatchRecorder);
     });
     it('should init tracer', () => {
       service.init(true);
       expect(service.tracer).not.toBeNull();
       expect(service.tracer).toBeInstanceOf(Tracer);
     });
-    it('shouldn\'t init recorder', () => {
+    it("shouldn't init recorder", () => {
       service.init(false);
-      expect(service['recorder']).toBeUndefined();
-      expect(service['recorder']).not.toBeInstanceOf(BatchRecorder);
+      expect(service.recorder).toBeUndefined();
+      expect(service.recorder).not.toBeInstanceOf(BatchRecorder);
     });
-    it('shouldn\'t init tracer', () => {
+    it("shouldn't init tracer", () => {
       service.init(false);
       expect(service.tracer).not.toBeInstanceOf(Tracer);
     });
@@ -66,7 +66,7 @@ describe('TracingService', () => {
   describe('tracer()', () => {
     it('should get tracer', () => {
       service.init(true);
-      expect(service.tracer).toBe(service['_tracer']);
+      expect(service.tracer).toBe(service._tracer);
     });
   });
 
@@ -75,7 +75,7 @@ describe('TracingService', () => {
       const serviceCode = '42';
       service.init(true);
       service.serviceCode = serviceCode;
-      expect(service['defaultTags']['serviceCode']).toBe(serviceCode);
+      expect(service.defaultTags.serviceCode).toBe(serviceCode);
     });
   });
 });

@@ -3,9 +3,10 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class UniqueScreenService {
-
   public setProcessingStatus(
-    { uploadId, status }: { uploadId: string; status: boolean }, uploaderProcessing: BehaviorSubject<string[]>): void {
+    { uploadId, status }: { uploadId: string; status: boolean },
+    uploaderProcessing: BehaviorSubject<string[]>,
+  ): void {
     const statusList = uploaderProcessing.getValue();
     const index = statusList.lastIndexOf(uploadId);
     if (status && index === -1) {
@@ -16,5 +17,4 @@ export class UniqueScreenService {
       uploaderProcessing.next(statusList);
     }
   }
-
 }

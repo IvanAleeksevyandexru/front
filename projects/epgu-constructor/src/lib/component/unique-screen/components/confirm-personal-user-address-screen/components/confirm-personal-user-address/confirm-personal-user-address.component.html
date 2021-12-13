@@ -14,10 +14,7 @@
     </div>
   </epgu-cf-ui-constructor-screen-pad>
   <div
-    *ngIf="
-      !(currentAnswersService.isValid$ | async) &&
-      (data$ | async)?.attrs?.emptyFieldsErrorMsg
-    "
+    *ngIf="!(currentAnswersService.isValid$ | async) && (data$ | async)?.attrs?.emptyFieldsErrorMsg"
     class="empty-fields"
   >
     {{ (data$ | async)?.attrs?.emptyFieldsErrorMsg }}

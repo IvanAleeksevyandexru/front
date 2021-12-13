@@ -1,8 +1,14 @@
 import { Component, Injector } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { AppTypes, DataDirectionType, InputAppDto, KeyValueMap } from '@epgu/epgu-constructor-types';
+import {
+  AppTypes,
+  DataDirectionType,
+  InputAppDto,
+  KeyValueMap,
+} from '@epgu/epgu-constructor-types';
 
+import { LoadService } from '@epgu/ui/services/load';
 import { MicroAppBaseComponent, getAppStorageKey } from './micro-app-base.component';
 import { MicroAppStateService } from '../micro-app-state/micro-app-state.service';
 import { MicroAppStateQuery } from '../micro-app-state/micro-app-state.query';
@@ -25,7 +31,6 @@ import { ConfigApiServiceStub } from '../../core/services/config-api/config-api.
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { LoggerServiceStub } from '../../core/services/logger/logger.service.stub';
-import { LoadService } from '@epgu/ui/services/load';
 import { BusEventType } from '../../core/services/event-bus/event-bus.service.interface';
 
 export interface TestValueType {
@@ -41,6 +46,7 @@ export interface TestStateType {
 })
 class TestAppComponent extends MicroAppBaseComponent<TestValueType, TestStateType> {
   public appType = 'TestAppComponent';
+
   constructor(public injector: Injector) {
     super(injector);
   }
@@ -130,7 +136,7 @@ describe('MicroAppBaseComponent', () => {
       expect(t).toThrowError();
     });
 
-    it('shouldn\'t throw error if input types are equals', () => {
+    it("shouldn't throw error if input types are equals", () => {
       const t = () => {
         component.openApp();
       };
@@ -205,9 +211,9 @@ describe('MicroAppBaseComponent', () => {
     });
 
     it('should subscribe on update lib state', (done) => {
-      expect(component['storeSub']).toBeUndefined();
+      expect(component.storeSub).toBeUndefined();
       component.isConfigReady$.subscribe(() => {
-        expect(component['storeSub']).toBeTruthy();
+        expect(component.storeSub).toBeTruthy();
         done();
       });
       component.openApp();
@@ -281,13 +287,13 @@ describe('MicroAppBaseComponent', () => {
     });
 
     it('should call unsubscribe on synchronization subscription', () => {
-      const unsubscribeSpy = jest.spyOn<any, any>(component['storeSub'], 'unsubscribe');
+      const unsubscribeSpy = jest.spyOn<any, any>(component.storeSub, 'unsubscribe');
       component.closeApp();
       expect(unsubscribeSpy).toBeCalled();
     });
 
     it('should call unsubscribe on synchronization subscription', () => {
-      const unsubscribeSpy = jest.spyOn<any, any>(component['eventSub'], 'unsubscribe');
+      const unsubscribeSpy = jest.spyOn<any, any>(component.eventSub, 'unsubscribe');
       component.closeApp();
       expect(unsubscribeSpy).toBeCalled();
     });

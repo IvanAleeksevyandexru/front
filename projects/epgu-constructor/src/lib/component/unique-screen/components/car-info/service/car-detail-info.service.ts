@@ -14,9 +14,13 @@ import { CurrentAnswersService } from '../../../../../screen/current-answers.ser
 @Injectable()
 export class CarDetailInfoService {
   public isLoadingOwnerCarInfo$ = new BehaviorSubject<boolean>(false);
+
   public isLoadingNotaryInfo$ = new BehaviorSubject<boolean>(false);
+
   public vehicleInfo$ = new BehaviorSubject<CarDetailInfo<VehicleOwnerInfo> | null>(null);
+
   public notaryInfo$ = new BehaviorSubject<CarDetailInfo<NotaryInfo> | null>(null);
+
   public hasCommonError$ = combineLatest([this.vehicleInfo$, this.notaryInfo$]).pipe(
     map((data) => {
       const hasErrors = data.every(
@@ -27,13 +31,16 @@ export class CarDetailInfoService {
       return hasErrors;
     }),
   );
+
   public hasCommonLoading$ = combineLatest([
     this.isLoadingOwnerCarInfo$,
     this.isLoadingNotaryInfo$,
   ]).pipe(map((loadings) => loadings.every((loading) => loading)));
+
   public hasData$ = combineLatest([this.hasCommonError$, this.hasCommonLoading$]).pipe(
-    map((data) => data.every((data) => !data)),
+    map((data) => data.every((hasData) => !hasData)),
   );
+
   public hasVin = !!this.screenService.component.arguments.vin;
 
   constructor(
@@ -103,7 +110,7 @@ export class CarDetailInfoService {
         };
         this.screenService.updateLoading(false);
         return of(data);
-      })
+      }),
     );
   }
 
@@ -121,7 +128,7 @@ export class CarDetailInfoService {
         };
         this.screenService.updateLoading(false);
         return of(data);
-      })
+      }),
     );
   }
 

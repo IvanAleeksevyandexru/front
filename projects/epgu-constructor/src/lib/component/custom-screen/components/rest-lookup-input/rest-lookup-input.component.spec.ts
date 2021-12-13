@@ -1,8 +1,5 @@
-import { DictionaryComponent } from '../dictionary/dictionary.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
-import { ComponentItemComponent } from '../component-item/component-item.component';
 import {
   BaseUiModule,
   ConfigService,
@@ -11,17 +8,20 @@ import {
   UnsubscribeService,
   UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DictionaryComponent } from '../dictionary/dictionary.component';
+import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
+import { ComponentItemComponent } from '../component-item/component-item.component';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { RestLookupInputComponent } from './rest-lookup-input.component';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { By } from '@angular/platform-browser';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { RestToolsService } from '../../../../shared/services/rest-tools/rest-tools.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import RestLookupInputModelAttrs from './RestLookupInputModelAttrs';
 import RestLookupInputModel from './RestLookupInputModel';
 import { ScreenService } from '../../../../screen/screen.service';

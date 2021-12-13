@@ -10,6 +10,7 @@ import {
   ScreenPadModule,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { CookieService } from 'ngx-cookie-service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
@@ -22,7 +23,6 @@ import { ValidationService } from '../../../../../../shared/services/validation/
 import { ValidationServiceStub } from '../../../../../../shared/services/validation/validation.service.stub';
 import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
-import { CookieService } from 'ngx-cookie-service';
 
 describe('RegistrationAddrReadonlyComponent', () => {
   let component: RegistrationAddrReadonlyComponent;
@@ -108,7 +108,7 @@ describe('RegistrationAddrReadonlyComponent', () => {
 
     it('should take error from screen service', () => {
       jest.spyOn(screenService, 'getStore').mockImplementation((...args) => {
-        return { errors: { pd5: 'testError' }};
+        return { errors: { pd5: 'testError' } };
       });
 
       component.ngOnInit();

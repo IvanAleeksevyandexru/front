@@ -1,8 +1,7 @@
 import { Directive, Input, OnChanges } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 @Directive({
   selector: '[epgu-constructor-counter]',
@@ -10,6 +9,7 @@ import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 })
 export class CounterDirective implements OnChanges {
   @Input('epgu-constructor-counter') counter: number;
+
   @Input() interval: number;
 
   private counter$ = new Subject<{ count: number; interval: number }>();

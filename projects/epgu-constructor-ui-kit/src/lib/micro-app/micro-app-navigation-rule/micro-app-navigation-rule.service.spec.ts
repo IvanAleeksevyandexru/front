@@ -27,9 +27,9 @@ describe('MicroAppNavigationRuleService', () => {
 
   describe('initRule()', () => {
     it('should set appNavigationRuleMap', () => {
-      expect(service['appNavigationRuleMap']).toBeUndefined();
+      expect(service.appNavigationRuleMap).toBeUndefined();
       service.initRule(rules);
-      expect(service['appNavigationRuleMap']).toBe(rules);
+      expect(service.appNavigationRuleMap).toBe(rules);
     });
   });
 
@@ -41,11 +41,11 @@ describe('MicroAppNavigationRuleService', () => {
     });
 
     it('should throw error when not find first component', () => {
-      const rules = {
+      const TestRules = {
         test1: { next: 'test2' },
         test2: { next: 'test1' },
       };
-      service.initRule(rules);
+      service.initRule(TestRules);
       expect(() => service.getFirst()).toThrowError();
     });
   });
@@ -58,11 +58,11 @@ describe('MicroAppNavigationRuleService', () => {
     });
 
     it('should throw error when not find last component', () => {
-      const rules = {
+      const testRules = {
         test1: { next: 'test2' },
         test2: { next: 'test1' },
       };
-      service.initRule(rules);
+      service.initRule(testRules);
       expect(() => service.getLast()).toThrowError();
     });
   });

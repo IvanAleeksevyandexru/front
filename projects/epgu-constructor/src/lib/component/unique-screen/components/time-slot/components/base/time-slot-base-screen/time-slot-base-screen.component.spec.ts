@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimeSlotBaseScreenComponent } from './time-slot-base-screen.component';
 import { FormsModule } from '@angular/forms';
-import { BaseModule } from '../../../../../../../shared/base.module';
-import { BaseComponentsModule } from '../../../../../../../shared/components/base-components/base-components.module';
 import { PREV_BUTTON_NAVIGATION, ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
 import { Component } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { MockModule } from 'ng-mocks';
+import { TimeSlotBaseScreenComponent } from './time-slot-base-screen.component';
+import { BaseModule } from '../../../../../../../shared/base.module';
+import { BaseComponentsModule } from '../../../../../../../shared/components/base-components/base-components.module';
 import { CurrentAnswersService } from '../../../../../../../screen/current-answers.service';
 import { CurrentAnswersServiceStub } from '../../../../../../../screen/current-answers-service.stub';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 import { ScreenService } from '../../../../../../../screen/screen.service';
-import { By } from '@angular/platform-browser';
 
 import { PrevButtonNavigationServiceStub } from '../../../../../../../core/services/prev-button-navigation/prev-button-navigation.service.stub';
-import { MockModule } from 'ng-mocks';
 
 const testHeader = 'testHeader';
 const testShowNav = true;

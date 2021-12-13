@@ -1,15 +1,25 @@
 import { Clarifications } from '@epgu/epgu-constructor-types';
-import { FileUploadAttributes, FileUploadItem } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
+import {
+  FileUploadAttributes,
+  FileUploadItem,
+} from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class FileUploadModelAttrs extends GenericAttrs {
   readonly clarifications: Clarifications;
+
   readonly uploads: FileUploadItem[];
+
   readonly uploadId?: string;
+
   readonly maxSize?: number;
+
   readonly maxFileCount?: number;
+
   readonly minFileCount?: number;
+
   readonly hideTotalAvailableSize?: boolean;
+
   readonly hideTotalAvailableCount?: boolean;
 
   constructor(attrs: FileUploadAttributes) {

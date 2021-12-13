@@ -36,8 +36,7 @@ import TimerItemModel from '../components/timer-item/TimerItem';
 import SignAppLinkModel from '../components/sign-app-link/SignAppLinkModel';
 import MaritalStatusInputModel from '../components/marital-status-input/MaritalStatusInputModel';
 import ComplexChoiceDictionary from '../components/form-complex-choice-dictionary/ComplexChoiceDictionaryModel';
-import ConfirmPersonalPolicyChangeModel
-  from '../components/confirm-personal-policy-change/ConfirmPersonalPolicyChangeModel';
+import ConfirmPersonalPolicyChangeModel from '../components/confirm-personal-policy-change/ConfirmPersonalPolicyChangeModel';
 import KinderGartenDraftHandlerModel from '../components/kinder-garten-draft-handler/KinderGartenDraftHandlerModel';
 
 export const CUSTOM_SCREEN_MODELS = {
@@ -61,13 +60,13 @@ export const CUSTOM_SCREEN_MODELS = {
   FileUploadComponent: FileUploadModel,
   HtmlString: HtmlStringModel,
   LabelSection: LabelSectionModel,
-  LegalInnInput: LegalInnInputModel ,
+  LegalInnInput: LegalInnInputModel,
   Lookup: LookupInputModel,
   RestLookup: RestLookupInputModel,
   MaritalStatusInput: MaritalStatusInputModel,
   MonthPicker: MonthPickerModel,
   MultipleChoiceDictionary: MultipleChoiceDictionaryModel,
-  ComplexChoiceDictionary: ComplexChoiceDictionary,
+  ComplexChoiceDictionary,
   MvdGiac: MvdGiacLookupModel,
   OgrnInput: OgrnInputModel,
   OgrnipInput: OgrnIpInputModel,

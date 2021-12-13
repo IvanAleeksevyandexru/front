@@ -3,19 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryOptions } from '@epgu/epgu-constructor-types';
 import { Observable, of, throwError } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import {
   DictionaryItem,
   DictionaryResponse,
   DictionaryResponseError,
 } from '../../../../../../../shared/services/dictionary/dictionary-api.types';
 
-import { switchMap } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { TimeSlotRequestType } from '../../../typings';
 
 @Injectable()
 export class Smev2RestApiService {
   additionalPath = this.screenService.component?.attrs?.dictionaryType || 'getAppointment2_mvdr01';
+
   path = `${this.urlPrefix}/${this.additionalPath}`;
 
   get urlPrefix(): string {

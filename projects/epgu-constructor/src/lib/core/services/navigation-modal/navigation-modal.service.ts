@@ -13,6 +13,7 @@ export class NavigationModalService {
   }
 
   private nextStep = new Subject<Navigation>();
+
   private prevStep = new Subject<Navigation>();
 
   next(navigation: Navigation): void {

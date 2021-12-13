@@ -1,7 +1,7 @@
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { waitForAsync, TestBed, fakeAsync } from '@angular/core/testing';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { brakBookRequest } from './mocks/mock-time-slots';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 
@@ -19,7 +19,7 @@ describe('FormPlayerApiService', () => {
   };
   let smevService: Smev3TimeSlotsRestService;
   let http: HttpTestingController;
-  let responseMock = [42];
+  const responseMock = [42];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -52,7 +52,7 @@ describe('FormPlayerApiService', () => {
         .getTimeSlots(slotReqBody)
         .subscribe((response) => expect(response).toBe(responseMock));
       const req = http.expectOne('/slots');
-      const body = req.request.body;
+      const { body } = req.request;
       expect(body).toEqual(slotReqBody);
       req.flush(responseMock);
     }));
@@ -73,7 +73,7 @@ describe('FormPlayerApiService', () => {
         .bookTimeSlot(brakBookRequest)
         .subscribe((response) => expect(response).toBe(responseMock));
       const req = http.expectOne('/book?srcSystem=BETA');
-      const body = req.request.body;
+      const { body } = req.request;
       expect(body).toEqual(brakBookRequest);
       req.flush(responseMock);
     }));
@@ -98,7 +98,7 @@ describe('FormPlayerApiService', () => {
         .cancelSlot(cancelRequestBody)
         .subscribe((response) => expect(response).toBe(responseMock));
       const req = http.expectOne('/cancel');
-      const body = req.request.body;
+      const { body } = req.request;
       expect(body).toEqual(cancelRequestBody);
       req.flush(responseMock);
     }));
