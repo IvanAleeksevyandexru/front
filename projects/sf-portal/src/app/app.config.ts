@@ -46,7 +46,7 @@ export class AppConfig {
           if (this.isServer) {
             this.loadService.load('', false, false, '', this.window.serverData);
           } else {
-            this.loadService.load('', false, true);
+            this.loadService.load('', !AppConfig.settings, true);
           }
 
           switch (true) {
