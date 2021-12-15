@@ -7,7 +7,7 @@ import { AbstractControl } from '@angular/forms';
     <epgu-cf-ui-constructor-constructor-checkbox
       [labelText]="labelText"
       [control]="control"
-      [checkboxId]="checkboxId"
+      [checkboxId]="checkboxId + 'tree-checkbox'"
     ></epgu-cf-ui-constructor-constructor-checkbox>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
