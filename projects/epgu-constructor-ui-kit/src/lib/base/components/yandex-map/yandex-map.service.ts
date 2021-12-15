@@ -186,8 +186,7 @@ export class YandexMapService implements OnDestroy {
             (featureItem) => featureItem.properties.res,
           );
     if (object.length === 1) {
-      //TODO Исправить типизацию
-      object[0] = { ...object[0], expanded: true };
+      this.expandMapObject(object[0]);
     }
     this.objectManager.objects.setObjectProperties(feature.id, { isActive: true });
     this.selectedValue$.next(object);
@@ -205,8 +204,7 @@ export class YandexMapService implements OnDestroy {
   public handleFeatureSelection<T>(feature: IFeatureItem<T>): void {
     this.objectManager.objects.setObjectProperties(feature.id, { pinStyle: 'pin-red' });
     const object = [(feature as IFeatureItem<T>).properties.res];
-    //TODO Исправить типизацию
-    object[0] = { ...object[0], expanded: true };
+    this.expandMapObject(object[0]);
     this.selectedValue$.next(object);
   }
 
@@ -607,5 +605,9 @@ export class YandexMapService implements OnDestroy {
       const text = get(item.obj, textRef);
       return text;
     });
+  }
+
+  private expandMapObject<T>(mapObject: YMapItem<T>): void {
+    mapObject.expanded = true;
   }
 }
