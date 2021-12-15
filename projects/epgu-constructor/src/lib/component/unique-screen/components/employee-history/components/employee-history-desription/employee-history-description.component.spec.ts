@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { EmployeeHistoryDescriptionComponent } from './employee-history-description.component';
+import { IconsModule } from '@epgu/epgu-constructor-ui-kit';
 
 describe('EmployeeHistoryDescriptionComponent', () => {
   let component: EmployeeHistoryDescriptionComponent;
@@ -10,6 +11,7 @@ describe('EmployeeHistoryDescriptionComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [EmployeeHistoryDescriptionComponent],
+      imports: [IconsModule],
       providers: [],
     })
       .overrideComponent(EmployeeHistoryDescriptionComponent, {

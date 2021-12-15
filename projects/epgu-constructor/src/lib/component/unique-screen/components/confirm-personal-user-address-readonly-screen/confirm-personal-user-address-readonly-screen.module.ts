@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 // eslint-disable-next-line max-len
 import { DatePipe } from '@angular/common';
-import { ScreenPadModule, TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  IconsModule,
+  ScreenPadModule,
+  TextTransformModule,
+  TrimModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmPersonalUserAddressReadonlyComponent } from './components/confirm-personal-user-address-readonly/confirm-personal-user-address-readonly.component';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { BaseModule } from '../../../../shared/base.module';
@@ -23,6 +28,7 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
     DefaultUniqueScreenWrapperModule,
     ConstructorDatePickerModule,
     DisclaimerModule,
+    IconsModule,
   ],
   providers: [DatePipe],
   entryComponents: [ConfirmPersonalUserAddressReadonlyComponent],

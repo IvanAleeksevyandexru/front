@@ -58,7 +58,14 @@
             class="fileupload__link-button"
             (click)="openGalleryFilesModal()"
           >
-            <div class="fileupload__icon"></div>
+            <epgu-cf-ui-icon
+              class="fileupload__icon"
+              [type]="iconType.Clock"
+              [width]="23"
+              [height]="23"
+              [mainColor]="iconColor.BaseGosblue"
+            >
+            </epgu-cf-ui-icon>
             Ранее загруженные
           </button>
           <epgu-constructor-uploader-button
@@ -68,11 +75,14 @@
             accept="image/*"
           >
             <button *ngIf="this.isMobile && uploader.hasImageTypes" class="fileupload__link-button">
-              <img
-                src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/camera.svg"
+              <epgu-cf-ui-icon
                 class="fileupload__button-icon"
-                alt="Фото"
-              />
+                [type]="iconType.Camera"
+                [width]="20"
+                [height]="20"
+                [mainColor]="iconColor.BaseGosblue"
+              >
+              </epgu-cf-ui-icon>
               Сделать фото
             </button>
           </epgu-constructor-uploader-button>
@@ -82,11 +92,14 @@
             [accept]="uploader.acceptTypes"
           >
             <button class="fileupload__link-button">
-              <img
-                src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg"
+              <epgu-cf-ui-icon
                 class="fileupload__button-icon"
-                alt="Файл"
-              />
+                [type]="iconType.Clip"
+                [width]="20"
+                [height]="20"
+                [mainColor]="iconColor.BaseGosblue"
+              >
+              </epgu-cf-ui-icon>
               Выбрать {{ plurals.uploadingFiles | pluralize: files.getValue().length + 1 }}
             </button>
           </epgu-constructor-uploader-button>

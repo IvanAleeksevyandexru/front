@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { UploaderComponent } from './components/uploader/uploader.component';
 import { UploaderButtonComponent } from './components/uploader-button/uploader-button.component';
 import { UploaderManagerComponent } from './components/uploader-manager/uploader-manager.component';
@@ -24,7 +24,7 @@ import { UploaderViewerContentComponent } from './components/uploader-viewer-con
   ],
 
   providers: [ModalService, ViewerService, SuggestMonitorService],
-  imports: [CommonModule, FileSizeModule, BaseModule, ZoomModule],
+  imports: [CommonModule, FileSizeModule, BaseModule, ZoomModule, IconsModule],
   exports: [UploaderComponent, UploaderButtonComponent, UploaderManagerComponent],
   entryComponents: [UploaderViewerComponent],
 })

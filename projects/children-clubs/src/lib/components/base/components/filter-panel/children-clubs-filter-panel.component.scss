@@ -56,6 +56,7 @@
     margin-right: 7px;
     position: relative;
     display: flex;
+    align-items: center;
     &.active:after {
       content: '';
       position: absolute;

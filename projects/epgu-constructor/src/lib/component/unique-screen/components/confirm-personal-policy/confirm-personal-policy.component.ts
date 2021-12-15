@@ -4,6 +4,7 @@ import {
   UnsubscribeService,
   ConfigService,
   JsonHelperService,
+  BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -15,7 +16,7 @@ import { PersonalPolicyWithErrors } from './confirm-personal-policy.types';
   styleUrls: ['./confirm-personal-policy.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfirmPersonalPolicyComponent implements OnInit {
+export class ConfirmPersonalPolicyComponent extends BaseComponent implements OnInit {
   data$ = this.screenService.component$.pipe(
     map<PersonalPolicyWithErrors, PersonalPolicyWithErrors>((data) => ({
       ...data,
@@ -33,7 +34,9 @@ export class ConfirmPersonalPolicyComponent implements OnInit {
     public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private jsonHelperService: JsonHelperService,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {

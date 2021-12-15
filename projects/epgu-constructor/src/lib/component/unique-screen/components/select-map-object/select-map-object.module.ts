@@ -8,6 +8,7 @@ import {
   PrevButtonModule,
   ScreenContainerModule,
   ScreenPadModule,
+  IconsModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierService } from '@epgu/ui/services/notifier';
 import { NotifierModule } from '@epgu/ui/components/notifier';
@@ -86,6 +87,7 @@ import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipea
     ClickableLabelModule,
     YandexMapModule,
     HighlightModule,
+    IconsModule,
     SmoothHeightAnimationDirectiveModule,
   ],
   entryComponents: [

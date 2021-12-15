@@ -2,7 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockModule, MockPipe } from 'ng-mocks';
-import { ScreenPadModule, ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ScreenPadModule,
+  IconsModule,
+  ConfigService,
+  ConfigServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ActionType } from '@epgu/epgu-constructor-types';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { FieldListModule } from '../../../../../../shared/components/field-list/field-list.module';
@@ -45,6 +50,7 @@ describe('ConfirmPersonalUserLegalDataComponent', () => {
         MockPipe(ConfirmPersonalUserDataPipe, (value) => value),
       ],
       imports: [
+        IconsModule,
         MockModule(OutputHtmlModule),
         MockModule(DefaultUniqueScreenWrapperModule),
         MockModule(BaseComponentsModule),

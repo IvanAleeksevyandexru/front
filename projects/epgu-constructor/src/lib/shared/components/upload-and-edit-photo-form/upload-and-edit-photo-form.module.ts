@@ -4,6 +4,7 @@ import { LyTheme2, StyleRenderer, LY_THEME, LY_THEME_NAME } from '@alyle/ui';
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { FormsModule } from '@angular/forms';
+import { IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { PhotoErrorModalComponent } from './components/photo-error-modal/photo-error-modal.component';
 import { PhotoEditorModalComponent } from './components/photo-editor-modal/photo-editor-modal.component';
 import { SliderComponent } from './components/slider/slider.component';
@@ -34,6 +35,7 @@ import { BaseModule } from '../../base.module';
     DragAndDropModule,
     BaseModule,
     FormsModule,
+    IconsModule,
   ],
   exports: [PhotoFormComponent],
   providers: [

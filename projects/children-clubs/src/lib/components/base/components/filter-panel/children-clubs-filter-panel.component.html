@@ -37,7 +37,12 @@
       <div class="filter-panel">
         <a class="filter-btn" (click)="openFilters.next()">
           <span class="filter-icon" [class.active]="filtersCount">
-            <img src="{{ config.staticDomainAssetsPath }}/assets/icons/filter.svg" />
+             <epgu-cf-ui-icon
+               [type]="iconType.Filter"
+               [mainColor]="iconColor.BaseGosblue"
+               [width]="18"
+               [height]="17"
+             ></epgu-cf-ui-icon>
           </span>
           Фильтры&nbsp;
           <span *ngIf="filtersCount">({{ filtersCount }})</span>

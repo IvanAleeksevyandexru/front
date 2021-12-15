@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadModule, IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { FormatPhoneModule } from '@epgu/ui/pipes';
 import { ConfirmPersonalUserPhoneEmailComponent } from './confirm-personal-user-phone-email.component';
 import { BaseModule } from '../../../../shared/base.module';
@@ -15,6 +15,7 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
     DefaultUniqueScreenWrapperModule,
     DisclaimerModule,
     FormatPhoneModule,
+    IconsModule,
   ],
   entryComponents: [ConfirmPersonalUserPhoneEmailComponent],
 })

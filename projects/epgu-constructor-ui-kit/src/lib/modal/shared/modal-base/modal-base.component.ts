@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 import { HelperService } from '@epgu/ui/services/helper';
 import { BehaviorSubject } from 'rxjs';
+import { BaseComponent } from '../../../base/components/base-components/base-component/base.component';
 
 @Component({
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ModalBaseComponent {
+export class ModalBaseComponent extends BaseComponent {
   detachView: Function;
   modalResult = new BehaviorSubject(null);
   protected elemRef: ElementRef;
@@ -22,6 +23,7 @@ export class ModalBaseComponent {
   protected backdropDismiss = true;
 
   constructor(public injector: Injector) {
+    super();
     this.elemRef = this.injector.get(ElementRef);
   }
 

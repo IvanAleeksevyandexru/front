@@ -14,10 +14,13 @@
         {{ traceId }}
       </span>
       <button (click)="copy(traceId)" class="copy-btn">
-        <img
-          src="{{ configService.staticDomainAssetsPath }}/assets/icons/svg/copy.svg"
-          alt="копировать"
-        />
+        <epgu-cf-ui-icon
+          [type]="iconType.Copy"
+          [mainColor]="iconColor.BaseGosblue"
+          [width]="16"
+          [height]="16"
+        >
+        </epgu-cf-ui-icon>
       </button>
     </div>
   </ng-container>

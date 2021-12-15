@@ -34,9 +34,7 @@
     border: none;
     &.up {
       margin-left: 16px;
-      img {
-        transform: rotate(180deg);
-      }
+      transform: rotate(180deg);
     }
     &.disabled {
       pointer-events: none;

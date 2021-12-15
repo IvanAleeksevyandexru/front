@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SafeModule } from '@epgu/epgu-constructor-ui-kit';
+import { SafeModule, IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { PhotoFormViewComponent } from './photo-form-view.component';
@@ -12,7 +12,7 @@ describe('PhotoFormViewComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoFormViewComponent],
-      imports: [SafeModule],
+      imports: [SafeModule, IconsModule],
       providers: [],
     })
       .overrideComponent(PhotoFormViewComponent, {
