@@ -1,6 +1,7 @@
-import { ListItem } from '@epgu/ui/models/dropdown';
-import { Observable, of } from 'rxjs';
 import { Component, Injector, OnInit } from '@angular/core';
+import { Observable, of } from 'rxjs';
+
+import { ListItem } from '@epgu/ui/models/dropdown';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import { AbstractComponentListItemComponent } from './abstract-component-list-item.component';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -29,8 +30,10 @@ export default abstract class AbstractDropdownLikeComponent<T extends Dictionary
   ngOnInit(): void {
     super.ngOnInit();
     this.loadReferenceData$().subscribe(() => {
-      setTimeout(() => this.formService.patch(this.model), 0);
-      this.formService.emitChanges();
+      window.requestAnimationFrame(() => {
+        this.formService.patch(this.model);
+        this.formService.emitChanges();
+      });
     });
   }
 

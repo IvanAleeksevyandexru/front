@@ -99,7 +99,7 @@ export class ConfirmWithCodeComponent implements OnInit {
   }
 
   focusToElement(element: HTMLElement): void {
-    setTimeout(() => element.focus(), 0);
+    window.requestAnimationFrame(() => element.focus());
   }
 
   focusIndex(nextIndex: number): void {

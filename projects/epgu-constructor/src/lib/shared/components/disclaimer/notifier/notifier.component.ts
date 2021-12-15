@@ -85,7 +85,7 @@ export class NotifierDisclaimerComponent implements OnInit, OnDestroy {
           this.animationQueue.push(animation);
 
           if (!this.animationInProgress) {
-            setTimeout(() => {
+            window.requestAnimationFrame(() => {
               animation();
             });
           }

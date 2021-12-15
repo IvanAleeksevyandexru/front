@@ -406,7 +406,9 @@ export class YandexMapService implements OnDestroy {
 
   public recalcPinStyles(): void {
     this.objectManager?.objects.getAll().forEach((mapObject) => {
-      this.objectManager.objects.setObjectProperties(mapObject.id, { pinStyle: this.getPinStyle(mapObject) });
+      this.objectManager.objects.setObjectProperties(mapObject.id, {
+        pinStyle: this.getPinStyle(mapObject),
+      });
     });
   }
 

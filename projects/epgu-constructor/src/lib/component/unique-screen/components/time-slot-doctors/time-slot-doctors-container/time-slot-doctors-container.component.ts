@@ -222,6 +222,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
 
   handleSpecLookupValue(specLookup: ListElement): void {
     const prevState = this.timeSlotDoctorService.state$$.getValue();
+    // TODO: избавиться от вложенных setTimeout
     setTimeout(() => {
       this.docLookupControl.setValue('');
       this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup: null, docLookup: null });

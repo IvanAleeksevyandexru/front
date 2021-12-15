@@ -570,11 +570,6 @@ describe('DateTimePeriodComponent', () => {
     });
   });
 
-  it('should set currentAnswersService.isValid is false on init', () => {
-    jest.runAllTimers();
-    expect(currentAnswersService.isValid).toBe(false);
-  });
-
   it('should init start date', () => {
     initComponent();
     component.initialState = {
