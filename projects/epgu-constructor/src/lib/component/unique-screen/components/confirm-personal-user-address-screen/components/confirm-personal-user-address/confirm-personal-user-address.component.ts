@@ -58,7 +58,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   public classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
   public form: FormGroup;
   public isRequired: boolean;
-  public strategy = BrokenDateFixStrategy;
+  public strategy = BrokenDateFixStrategy.RESET;
   public readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   public constructor(
