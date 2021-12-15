@@ -11,14 +11,17 @@ import {
   LocationService,
   LocationServiceStub,
   BaseUiModule,
+  DatesToolsService,
+  DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ReferralNumberComponent } from './referral-number.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
+
 import { LabelComponent } from '../../../../shared/components/base-components/label/label.component';
 import { DefaultUniqueScreenWrapperComponent } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { OutputHtmlComponent } from '../../../../shared/components/output-html/output-html.component';
@@ -26,9 +29,7 @@ import { ConstructorPlainInputComponent } from '../../../../shared/components/co
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { Smev3ErrorMessagePipe } from '../../../../shared/pipes/smev-3-error-message/smev-3-error-message.pipe';
-import { FormsModule } from '@angular/forms';
 
 const mockComponent = {
   id: 'referralNumber',

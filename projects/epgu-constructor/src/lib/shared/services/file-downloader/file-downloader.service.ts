@@ -1,8 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FileSaverService } from './file-saver.service';
 import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
+import { FileSaverService } from './file-saver.service';
 
 @Injectable({ providedIn: 'root' })
 export class FileDownloaderService {

@@ -39,7 +39,9 @@ import { TextTransformService } from '../../../core/services/text-transform/text
 })
 class TextTransformTestComponent {
   all: TextTransform = TextTransform.ALL;
+
   first: TextTransform = TextTransform.FIRST;
+
   uppercase: TextTransform = TextTransform.UPPERCASE;
 
   form: FormGroup;

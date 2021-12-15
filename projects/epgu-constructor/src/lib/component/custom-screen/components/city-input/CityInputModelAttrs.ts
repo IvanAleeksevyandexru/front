@@ -3,7 +3,9 @@ import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class CityInputModelAttrs extends GenericAttrs {
   readonly searchType: string;
+
   readonly cityFilter: string[];
+
   readonly hideLevels: string[];
 
   constructor(attrs: CustomComponentAttr) {

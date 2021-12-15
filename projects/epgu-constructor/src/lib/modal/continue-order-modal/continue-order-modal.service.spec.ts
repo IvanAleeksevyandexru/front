@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { ContinueOrderModalService } from './continue-order-modal.service';
 import {
   DatesToolsService,
   DatesToolsServiceStub,
   ModalService,
   ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ContinueOrderModalService } from './continue-order-modal.service';
 
 describe('ContinueOrderModalService', () => {
   let service: ContinueOrderModalService;

@@ -1,10 +1,13 @@
 import { CustomComponentAttr } from '../../components-list.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
-export default class MonthPickerModelAttrs extends GenericAttrs  {
+export default class MonthPickerModelAttrs extends GenericAttrs {
   readonly years: number;
+
   readonly nonStop: boolean;
+
   readonly minDate: string;
+
   readonly maxDate: string;
 
   constructor(attrs: CustomComponentAttr) {
@@ -14,5 +17,4 @@ export default class MonthPickerModelAttrs extends GenericAttrs  {
     this.minDate = attrs.minDate;
     this.maxDate = attrs.maxDate;
   }
-
 }

@@ -2,11 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { DocInputComponent } from './doc-input.component';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
-import { BaseModule } from '../../../../shared/base.module';
 import {
   ConfigService,
   DatesToolsService,
@@ -16,6 +11,13 @@ import {
   EventBusService,
   ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { By } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { DocInputComponent } from './doc-input.component';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
+import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
@@ -30,8 +32,6 @@ import { ConstructorMaskedInputModule } from '../../../../shared/components/cons
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
-import { By } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 
 const mockComponent = {
@@ -124,9 +124,9 @@ describe('DocInputComponent', () => {
           ],
         },
       },
-      number: { attrs: { validation: [] }},
-      emitter: { attrs: { validation: [] }},
-      date: { attrs: { validation: [] }},
+      number: { attrs: { validation: [] } },
+      emitter: { attrs: { validation: [] } },
+      date: { attrs: { validation: [] } },
     };
 
     valueControl = new FormControl(mockComponent.value);
@@ -136,7 +136,7 @@ describe('DocInputComponent', () => {
       value: valueControl,
       required: new FormControl(mockComponent.required),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
 
     fixture.detectChanges();
   });
@@ -163,7 +163,7 @@ describe('DocInputComponent', () => {
         required: new FormControl(mockComponent.required),
         label: new FormControl('Паспорт РФ'),
       });
-      formService['_form'] = new FormArray([control]);
+      formService._form = new FormArray([control]);
 
       fixture.detectChanges();
 
@@ -192,7 +192,7 @@ describe('DocInputComponent', () => {
 
     it('should change expiration date if expirationDate field existing', () => {
       expect(component.hasExpirationDate).toBeFalsy();
-      mockComponent.attrs.fields['expirationDate'] = { attrs: { validation: [] }};
+      mockComponent.attrs.fields.expirationDate = { attrs: { validation: [] } };
 
       component.ngOnInit();
 
@@ -338,11 +338,11 @@ describe('DocInputComponent', () => {
 
   it('prepareDate should work correct', () => {
     let date1 = new Date('2025-09-06T00:00:00.000Z');
-    let date2 = component['prepareDate']('2025-09-06T00:00:00.000Z');
+    let date2 = component.prepareDate('2025-09-06T00:00:00.000Z');
     let res = datesToolsService.isEqual(date1, date2);
     expect(res).toBeTruthy();
     date1 = new Date('02.01.2020');
-    date2 = component['prepareDate']('01.02.2020');
+    date2 = component.prepareDate('01.02.2020');
     res = datesToolsService.isEqual(date1, date2);
     expect(res).toBeTruthy();
   });

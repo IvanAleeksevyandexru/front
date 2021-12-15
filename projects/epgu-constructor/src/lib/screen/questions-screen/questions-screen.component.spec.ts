@@ -210,7 +210,7 @@ describe('QuestionsScreenComponent', () => {
 
       screenService.component = componentDtoSample;
 
-      configService['_disableUnderConstructionMode'] = false;
+      configService._disableUnderConstructionMode = false;
       // should NOT mutate action because configService.disableUnderConstructionMode is FALSE
       component.answerChoose(actionUnderConstruction);
 
@@ -222,7 +222,7 @@ describe('QuestionsScreenComponent', () => {
       expect(nextStepSpy).not.toBeCalled();
       showModalRedirectToSpy.mockReset();
 
-      configService['_disableUnderConstructionMode'] = true;
+      configService._disableUnderConstructionMode = true;
       // should mutate action because configService.disableUnderConstructionMode is TRUE
       component.answerChoose(actionUnderConstruction);
 
@@ -233,7 +233,7 @@ describe('QuestionsScreenComponent', () => {
       // call nextStep() because action is changed to ActionType.nextStep
       expect(nextStepSpy).toBeCalledTimes(1);
 
-      configService['_disableUnderConstructionMode'] = false;
+      configService._disableUnderConstructionMode = false;
       component.disableUnderConstructionMode = true;
       // should mutate action because component.disableUnderConstructionMode is TRUE
       component.answerChoose(actionUnderConstruction);

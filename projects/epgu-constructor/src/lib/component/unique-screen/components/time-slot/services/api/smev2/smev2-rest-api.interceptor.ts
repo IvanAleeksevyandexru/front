@@ -39,9 +39,9 @@ export class Smev2RestApiInterceptor implements HttpInterceptor {
     response: HttpResponse<DictionaryResponse>,
   ): Observable<HttpResponse<DictionaryResponse>> {
     return of(response).pipe(
-      tap((response) => {
-        if (this.api.hasError(response?.body?.error)) {
-          this.setErrorForResponse(response);
+      tap((dictionaryResponse) => {
+        if (this.api.hasError(dictionaryResponse?.body?.error)) {
+          this.setErrorForResponse(dictionaryResponse);
         }
       }),
     );

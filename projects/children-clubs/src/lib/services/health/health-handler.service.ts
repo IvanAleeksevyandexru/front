@@ -101,7 +101,8 @@ export class HealthHandlerService implements HealthHandler {
   }
 
   private isValidUrl<T>(payload: HttpRequest<T> | HttpEvent<T> | HttpErrorResponse): boolean {
-    const url = payload['url'];
+    // @ts-ignore
+    const { url } = payload;
     return (
       url &&
       !url.includes(CONFIG_API_REQUEST_SUB) &&

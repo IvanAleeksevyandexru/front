@@ -1,19 +1,22 @@
 import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { DictionaryApiService } from './dictionary-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
+
+import { DictionaryApiService } from './dictionary-api.service';
 
 describe('DictionaryApiService', () => {
   let service: DictionaryApiService;
   let http: HttpTestingController;
   let config: ConfigService;
-  let dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
-  let responseMock = [42];
-  let dictionaryName = 'someDictionary';
-  let optionsMock = {
+  const dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
+  const responseMock = [42];
+  const dictionaryName = 'someDictionary';
+  const optionsMock = {
     filter: {
       someFilter: 'asd',
     },
@@ -24,7 +27,7 @@ describe('DictionaryApiService', () => {
     selectAttributes: ['//'],
     tx: 'someTx',
   };
-  let additionalParams = {
+  const additionalParams = {
     additionalParams: [
       {
         name: 'param1',
@@ -32,7 +35,7 @@ describe('DictionaryApiService', () => {
       },
     ],
   };
-  let excludedParams = {
+  const excludedParams = {
     excludedParams: ['tx'],
   };
 
@@ -118,7 +121,7 @@ describe('DictionaryApiService', () => {
       const path = `${dictionaryUrl}/${dictionaryName}`;
       const req = http.expectOne(path);
       const mock = optionsMock;
-      delete mock['tx'];
+      delete mock.tx;
 
       expect(req.request.body).toEqual(mock);
       req.flush(responseMock);

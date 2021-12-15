@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotMonthComponent } from './time-slot-month.component';
 import { MockModule } from 'ng-mocks';
-import { CalendarModule } from '../../../../../../../shared/components/calendar/calendar.module';
 import { DatesToolsService, DatesToolsServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
-import { TimeSlotCalendarServiceStub } from '../../../services/calendar/time-slot-calendar.service.stub';
 import { of } from 'rxjs';
-import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { ListItem } from '@epgu/ui/models/dropdown';
+import { TimeSlotMonthComponent } from './time-slot-month.component';
+import { CalendarModule } from '../../../../../../../shared/components/calendar/calendar.module';
+import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
+import { TimeSlotCalendarServiceStub } from '../../../services/calendar/time-slot-calendar.service.stub';
+import { ScreenService } from '../../../../../../../screen/screen.service';
 
 describe('TimeSlotMonthComponent', () => {
   let component: TimeSlotMonthComponent;

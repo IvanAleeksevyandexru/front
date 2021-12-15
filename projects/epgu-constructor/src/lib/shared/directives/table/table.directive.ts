@@ -5,6 +5,7 @@ import { AfterViewInit, Directive, ElementRef, NgZone, Renderer2 } from '@angula
 })
 export class TableDirective implements AfterViewInit {
   tableClass = '.epgu-constructor-table';
+
   attrName = 'data-header';
 
   constructor(private elRef: ElementRef, private renderer: Renderer2, private zone: NgZone) {}

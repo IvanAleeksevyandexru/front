@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { RestService } from './rest.service';
 import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { LogicComponentMethods, RestAttrsDto } from '@epgu/epgu-constructor-types';
+import { RestService } from './rest.service';
 
 describe('RestService', () => {
   let service: RestService;

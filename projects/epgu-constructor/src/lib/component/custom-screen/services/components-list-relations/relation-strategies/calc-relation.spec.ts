@@ -20,7 +20,9 @@ describe('CalcRelation', () => {
   });
   let componentVal = { foo: 'bar' };
   let components: CustomComponent[] = [];
-  const refRelationService: RefRelationService = MockService(RefRelationService) as unknown as RefRelationService;
+  const refRelationService: RefRelationService = (MockService(
+    RefRelationService,
+  ) as unknown) as RefRelationService;
 
   beforeEach(() => {
     relation = new CalcRelation(refRelationService);
@@ -45,18 +47,18 @@ describe('CalcRelation', () => {
     const component = createComponentMock({
       value: '4',
     });
-    const components = [component];
+    const testComponents = [component];
     let formMock: FormArray;
 
     it('should return empty string, if not all components have valid values', () => {
       formMock = new FormArray([]);
-      expect(relation.getCalcValueFromRelation(calcRefMock, components, formMock)).toBe('');
+      expect(relation.getCalcValueFromRelation(calcRefMock, testComponents, formMock)).toBe('');
     });
 
     it('should return number calculated by formula, if components have valid values', () => {
-      const form = new FormBuilder().group({ ...component });
-      formMock = new FormArray([form]);
-      expect(relation.getCalcValueFromRelation(calcRefMock, components, formMock)).toBe('2');
+      const testForm = new FormBuilder().group({ ...component });
+      formMock = new FormArray([testForm]);
+      expect(relation.getCalcValueFromRelation(calcRefMock, testComponents, formMock)).toBe('2');
     });
   });
 

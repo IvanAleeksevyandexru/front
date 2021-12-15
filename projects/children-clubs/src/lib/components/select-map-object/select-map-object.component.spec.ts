@@ -18,6 +18,9 @@ import {
   YMapItem,
   YandexMapService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { of } from 'rxjs';
+import { YaMapService } from '@epgu/ui/services/ya-map';
+import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from '../../services/api/api.service';
 import { ApiServiceStub } from '../../services/api/api.service.stub';
 import { ProgramListService } from '../../services/program-list/program-list.service';
@@ -25,11 +28,8 @@ import { StateService } from '../../services/state/state.service';
 import { StateServiceStub } from '../../services/state/state.service.stub';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import { SelectMapObjectModule } from './select-map-object.module';
-import { of } from 'rxjs';
 import { BaseProgram } from '../../typings';
 import { baseProgramStub } from '../../stubs/projects.stub';
-import { YaMapService } from '@epgu/ui/services/ya-map';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -95,16 +95,16 @@ describe('SelectMapObjectComponent', () => {
 
   describe('ngOnInit()', () => {
     it('should hide footer', () => {
-      component['footerService'].setVisible(true);
+      component.footerService.setVisible(true);
 
       component.ngOnInit();
 
-      expect(component['footerService'].getVisible()).toEqual(false);
+      expect(component.footerService.getVisible()).toEqual(false);
     });
 
     it('fill coords should have been called on init', () => {
       const spy = jest.spyOn(component as any, 'fillCoords');
-      component['yaMapService'].mapSubject.next(true);
+      component.yaMapService.mapSubject.next(true);
 
       component.ngOnInit();
 
@@ -113,7 +113,7 @@ describe('SelectMapObjectComponent', () => {
 
     it('should process base program to specific coords object', (done) => {
       jest
-        .spyOn(component['addressesToolsService'], 'getCoordsByAddress')
+        .spyOn(component.addressesToolsService, 'getCoordsByAddress')
         .mockImplementation((items) => {
           return of({
             coords: items.map(() => ({
@@ -125,7 +125,7 @@ describe('SelectMapObjectComponent', () => {
           });
         });
 
-      component['fillCoords']().subscribe((coords: any) => {
+      component.fillCoords().subscribe((coords: any) => {
         expect(coords[0].center[0]).toBe(37.61017);
         expect(coords[0].center[1]).toBe(55.649489);
         expect(coords[0].obj.name).toBe('Ритмика, основы танцевального искусства');
@@ -158,15 +158,15 @@ describe('SelectMapObjectComponent', () => {
     it('should clear mapSubject value', () => {
       component.ngOnDestroy();
 
-      expect(component['yaMapService'].mapSubject.getValue()).toBeNull();
+      expect(component.yaMapService.mapSubject.getValue()).toBeNull();
     });
 
     it('should show footer', () => {
-      component['footerService'].setVisible(false);
+      component.footerService.setVisible(false);
 
       component.ngOnDestroy();
 
-      expect(component['footerService'].getVisible()).toEqual(true);
+      expect(component.footerService.getVisible()).toEqual(true);
     });
   });
 

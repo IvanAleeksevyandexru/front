@@ -61,7 +61,7 @@ describe('MultiChoiceDictionaryComponent', () => {
         subLabel: new FormControl('fake subLabel'),
       }),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(MultiChoiceDictionaryComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;

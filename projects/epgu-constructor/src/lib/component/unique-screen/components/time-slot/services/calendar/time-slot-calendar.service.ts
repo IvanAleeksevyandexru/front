@@ -13,9 +13,11 @@ export class TimeSlotCalendarService {
   set haveUnlockedDays(haveUnlockedDays: boolean) {
     this.haveUnlockedDays$$.next(haveUnlockedDays);
   }
+
   get haveUnlockedDays(): boolean {
     return this.haveUnlockedDays$$.getValue();
   }
+
   get haveUnlockedDays$(): Observable<boolean> {
     return this.haveUnlockedDays$$.asObservable();
   }
@@ -25,13 +27,16 @@ export class TimeSlotCalendarService {
   get isVisibleDays$(): Observable<boolean> {
     return this.isVisibleDays$$.asObservable();
   }
+
   today$$ = new BehaviorSubject<null>(null);
+
   today$: Observable<Date> = this.today$$.pipe(
     switchMapTo(from(this.datesTools.getToday(true))),
     shareReplay(),
   );
 
   monthList = new BehaviorSubject<Set<string>>(new Set<string>());
+
   monthsRange$ = this.monthList.pipe(map((list) => Array.from(list).join(' — ')));
 
   refDate$ = combineLatest([

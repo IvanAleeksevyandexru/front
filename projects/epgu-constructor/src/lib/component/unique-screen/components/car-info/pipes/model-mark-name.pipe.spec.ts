@@ -15,7 +15,7 @@ describe('ModelMarkNamePipe', () => {
     expect(pipe.transform(null, 'Kia', 'Rio')).toBe('Kia Rio');
   });
 
-  it('should return an empty string if there aren\'t values at all', () => {
+  it("should return an empty string if there aren't values at all", () => {
     expect(pipe.transform(null, null, null)).toBe('');
   });
 });

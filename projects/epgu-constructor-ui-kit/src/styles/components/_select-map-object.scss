@@ -6,11 +6,13 @@
 }
 
 :host::ng-deep {
-  ymaps, ymaps:before, ymaps:after {
+  ymaps,
+  ymaps:before,
+  ymaps:after {
     box-sizing: content-box !important;
   }
 
-  ymaps *[class*="zoom__runner"] {
+  ymaps *[class*='zoom__runner'] {
     box-sizing: border-box !important;
   }
 
@@ -179,14 +181,12 @@
   }
 
   .widget {
-
     overflow: hidden;
     &__form {
       &__toggle-button {
         color: $color-gosblue;
         cursor: pointer;
       }
-
     }
     ::ng-deep {
       lib-map {
@@ -215,7 +215,7 @@
 
     .widget-form__input {
       @include tablets-down() {
-        margin-bottom: 12px
+        margin-bottom: 12px;
       }
     }
 

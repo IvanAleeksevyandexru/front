@@ -1,5 +1,3 @@
-import { ScreenContent } from './screen-content';
-import { ScreenStore } from './screen.types';
 import {
   ComponentActionDto,
   DTOActionAction,
@@ -10,6 +8,8 @@ import {
   Gender,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
+import { ScreenContent } from './screen-content';
+import { ScreenStore } from './screen.types';
 
 const screenStoreSample: ScreenStore = {
   orderId: 653920,

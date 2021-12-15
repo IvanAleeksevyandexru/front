@@ -1,4 +1,8 @@
-import { CustomComponent, CustomComponentRef, CustomScreenComponentTypes } from '../../components-list.types';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomScreenComponentTypes,
+} from '../../components-list.types';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
@@ -35,8 +39,7 @@ export let componentMock: CustomComponent = {
         ref: '',
         dataType: '',
         condition: '',
-        errorMsg:
-          'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
+        errorMsg: 'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
         updateOn: 'change',
       },
       {
@@ -80,11 +83,14 @@ export const setupForRelationStrategy = ({
   referenceExtra = {},
   dependentComponentStatusExtra = {},
 }) => {
-  const reference: CustomComponentRef = _mergeWith({
-    relatedRel: 'rf1',
-    val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
-    relation: CustomComponentRefRelation.displayOff,
-  }, referenceExtra);
+  const reference: CustomComponentRef = _mergeWith(
+    {
+      relatedRel: 'rf1',
+      val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+      relation: CustomComponentRefRelation.displayOff,
+    },
+    referenceExtra,
+  );
 
   const dependentComponent = _mergeWith(
     createComponentMock({
@@ -107,15 +113,23 @@ export const setupForRelationStrategy = ({
   });
   const form = new FormArray([dependentControl]);
 
-  const dependentComponentStatus = _mergeWith({
-    isShown: false,
-    relation: CustomComponentRefRelation.displayOn,
-  },
-    dependentComponentStatusExtra
+  const dependentComponentStatus = _mergeWith(
+    {
+      isShown: false,
+      relation: CustomComponentRefRelation.displayOn,
+    },
+    dependentComponentStatusExtra,
   );
   const shownElements = {
     [dependentComponent.id]: dependentComponentStatus,
   };
 
-  return { reference, dependentComponent, dependentControl, form, dependentComponentStatus, shownElements };
+  return {
+    reference,
+    dependentComponent,
+    dependentControl,
+    form,
+    dependentComponentStatus,
+    shownElements,
+  };
 };

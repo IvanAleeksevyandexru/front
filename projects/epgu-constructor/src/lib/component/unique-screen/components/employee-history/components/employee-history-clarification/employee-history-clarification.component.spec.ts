@@ -22,7 +22,7 @@ describe('EmployeeHistoryClarificationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EmployeeHistoryClarificationComponent);
     component = fixture.componentInstance;
-    component.clarifications = { student: { position: {}}} as any;
+    component.clarifications = { student: { position: {} } } as any;
     fixture.detectChanges();
   });
 

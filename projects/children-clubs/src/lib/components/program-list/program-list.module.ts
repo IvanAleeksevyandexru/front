@@ -8,6 +8,7 @@ import {
   ScreenContainerModule,
   ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { PluralizeModule } from '@epgu/ui/pipes';
 import { ProgramListContainerComponent } from './container/program-list-container.component';
 import { ProgramListService } from '../../services/program-list/program-list.service';
 import { ListComponent } from './components/list/list.component';
@@ -18,7 +19,6 @@ import { BaseModule } from '../base/base.module';
 import { StateService } from '../../services/state/state.service';
 import { SelectMapObjectModule } from '../select-map-object/select-map-object.module';
 import { ToggleTextComponent } from './components/toggle-text/toggle-text.component';
-import { PluralizeModule } from '@epgu/ui/pipes';
 
 @NgModule({
   declarations: [

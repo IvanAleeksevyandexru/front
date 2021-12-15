@@ -34,7 +34,7 @@ import { FilterOnRelation } from './relation-strategies/filter-on-relation';
 export class ComponentsListRelationsService {
   public get restUpdates$(): Observable<ComponentRestUpdates> {
     const relationStrategy: UpdateRestLookupRelation = this.relationResolverService.getStrategy(
-      CustomComponentRefRelation.updateRestLookupOn
+      CustomComponentRefRelation.updateRestLookupOn,
     ) as UpdateRestLookupRelation;
 
     return relationStrategy.restUpdates$;
@@ -42,7 +42,7 @@ export class ComponentsListRelationsService {
 
   public get filters$(): Observable<UpdateFiltersEvents> {
     const relationStrategy: FilterOnRelation = this.relationResolverService.getStrategy(
-      CustomComponentRefRelation.filterOn
+      CustomComponentRefRelation.filterOn,
     ) as FilterOnRelation;
 
     return relationStrategy.filters$;
@@ -71,24 +71,28 @@ export class ComponentsListRelationsService {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
         dependentComponent.attrs.ref
-        // апдейт только при изменении значений компонента, у которого указаны связи
-        ?.filter((el) => (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id))
-        .forEach((reference) => {
-          const value = reference.valueFromCache
-            ? screenService.cachedAnswers[reference.valueFromCache].value
-            : component.value ?? component.valueFromCache;
+          // апдейт только при изменении значений компонента, у которого указаны связи
+          ?.filter((el) =>
+            (el.relatedRel ? el.relatedRel.split(';') : []).some((e) => e === component.id),
+          )
+          .forEach((reference) => {
+            const value = reference.valueFromCache
+              ? screenService.cachedAnswers[reference.valueFromCache].value
+              : component.value ?? component.valueFromCache;
 
-          calculatedShownElements = this.relationResolverService.getStrategy(reference.relation).handleRelation(
-            shownElements,
-            dependentComponent,
-            reference,
-            value as KeyValueMap,
-            form,
-            components,
-            initInitialValues,
-            dictionaryToolsService,
-            screenService,
-          );
+            calculatedShownElements = this.relationResolverService
+              .getStrategy(reference.relation)
+              .handleRelation(
+                shownElements,
+                dependentComponent,
+                reference,
+                value as KeyValueMap,
+                form,
+                components,
+                initInitialValues,
+                dictionaryToolsService,
+                screenService,
+              );
           });
 
         this.updateReferenceLimitDate(dependentComponent, component, form, screenService);
@@ -152,7 +156,6 @@ export class ComponentsListRelationsService {
     }, {});
   }
 
-
   public isComponentShown(
     component: CustomComponent,
     cachedAnswers: CachedAnswers,
@@ -169,10 +172,9 @@ export class ComponentsListRelationsService {
     if (
       displayOff &&
       cachedAnswers &&
-      cachedAnswers[displayOff?.relatedRel] && (
-        componentListStatus[displayOff?.relatedRel]?.isShown ||
-        !components.find(({ id }) => id === displayOff?.relatedRel)
-      )
+      cachedAnswers[displayOff?.relatedRel] &&
+      (componentListStatus[displayOff?.relatedRel]?.isShown ||
+        !components.find(({ id }) => id === displayOff?.relatedRel))
     ) {
       return !this.refRelationService.isValueEquals(
         displayOff.val,
@@ -215,9 +217,10 @@ export class ComponentsListRelationsService {
     components: CustomComponent[],
     componentVal: KeyValueMap | '',
   ): unknown {
-    const relatedComponent = components.find((item) => item.id === componentId) as DictionaryLikeModel;
+    const relatedComponent = components.find(
+      (item) => item.id === componentId,
+    ) as DictionaryLikeModel;
     if (relatedComponent) {
-
       return relatedComponent.getAttributeValue(componentVal, dictionaryAttributeName);
     }
     return undefined;
@@ -268,14 +271,16 @@ export class ComponentsListRelationsService {
     );
 
     for (let index = 0, len = relatedComponents.length; index < len; index += 1) {
-      const restriction = relatedComponents[index].attrs.dateRestrictions.find((restriction) => {
-        const [datePath] = this.dateRefService.extract(restriction.value as string);
-        const relatedComponentId = datePath.split('.')[0];
-        return (
-          this.dateRestrictionsService.haveDateRef(restriction) &&
-          relatedComponentId === component.id
-        );
-      });
+      const restriction = relatedComponents[index].attrs.dateRestrictions.find(
+        (dateRestriction) => {
+          const [datePath] = this.dateRefService.extract(dateRestriction.value as string);
+          const relatedComponentId = datePath.split('.')[0];
+          return (
+            this.dateRestrictionsService.haveDateRef(dateRestriction) &&
+            relatedComponentId === component.id
+          );
+        },
+      );
 
       if (restriction) {
         const restrictionGroups = this.createRestrictionGroups(
@@ -322,11 +327,13 @@ export class ComponentsListRelationsService {
     dateRange: Range,
     forChild: string,
   ): void {
-    const control = form.controls.find((control) => control.value.id === component.id);
+    const control = form.controls.find(
+      (abstractControl) => abstractControl.value.id === component.id,
+    );
 
     if (forChild !== DATE_RESTRICTION_GROUP_DEFAULT_KEY) {
       const attrsValue = control.get('attrs').value;
-      const child = attrsValue.components.find((component) => component.id === forChild);
+      const child = attrsValue.components.find((componentDto) => componentDto.id === forChild);
       if (child) {
         child.attrs.minDate = dateRange.min;
         child.attrs.maxDate = dateRange.max;

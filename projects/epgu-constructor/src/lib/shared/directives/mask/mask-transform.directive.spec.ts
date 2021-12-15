@@ -22,7 +22,9 @@ import { MaskTransformService } from '../../services/mask-transform/mask-transfo
 })
 class MaskTransformTestComponent {
   public mask = '';
+
   public maskOptions = {};
+
   control = new FormControl({ value: '' });
 }
 
@@ -34,11 +36,7 @@ describe('MaskTransformDirective', () => {
     TestBed.configureTestingModule({
       declarations: [MaskTransformDirective, MaskTransformTestComponent],
       imports: [CoreModule, MockModule(CoreUiModule), BaseModule],
-      providers: [
-        DecimalPipe,
-        NgControl,
-        MaskTransformService,
-      ],
+      providers: [DecimalPipe, NgControl, MaskTransformService],
     }).compileComponents();
   });
 

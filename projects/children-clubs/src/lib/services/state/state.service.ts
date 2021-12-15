@@ -65,6 +65,7 @@ export class StateService {
       ? cloneDeep(this.stateQuery.state?.programFilters)
       : {};
   }
+
   set programFilters(filters: Filters) {
     const programFilters = { ...this.programFilters, ...filters };
     this.changeState({ programFilters });

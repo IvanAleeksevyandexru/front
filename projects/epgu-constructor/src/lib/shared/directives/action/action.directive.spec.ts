@@ -3,7 +3,6 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
-import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import {
   ConfigService,
   DeviceDetectorService,
@@ -22,6 +21,14 @@ import {
   DownloadService,
   DownloadServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+  ActionApiResponse,
+  ComponentDto,
+} from '@epgu/epgu-constructor-types';
+import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
 import { NavigationModalService } from '../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationModalServiceStub } from '../../../core/services/navigation-modal/navigation-modal.service.stub';
 import { NavigationService } from '../../../core/services/navigation/navigation.service';
@@ -37,13 +44,6 @@ import { ActionDirective } from './action.directive';
 import { ActionService } from './action.service';
 import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
-import {
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-  ActionApiResponse,
-  ComponentDto,
-} from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { ActionToolsService } from './action-tools.service';
 
@@ -71,60 +71,70 @@ export class ActionTestComponent {
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.download,
   };
+
   prevStepModalAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.prevStepModal,
   };
+
   nextStepModalAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.nextStepModal,
   };
+
   skipStepAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.skipStep,
   };
+
   prevStepAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.prevStep,
   };
+
   nextStepAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.nextStep,
   };
+
   redirectToLKAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.redirectToLK,
   };
+
   profileEditAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.profileEdit,
   };
+
   homeAction: ComponentActionDto = {
     label: '',
     value: '',
     action: DTOActionAction.editPhoneNumber,
     type: ActionType.home,
   };
+
   quizToOrder: ComponentActionDto = {
     label: '',
     value: '',
     action: '/to-some-order' as DTOActionAction,
     type: ActionType.quizToOrder,
   };
+
   emptyAction: ComponentActionDto = undefined;
 }
 
@@ -282,7 +292,7 @@ describe('ActionDirective', () => {
     const button: HTMLElement = fixture.debugElement.query(By.css('.quizToOrder')).nativeElement;
     fixture.detectChanges();
     const spyRedirectTo = jest.spyOn(navigationService, 'redirectTo');
-    jest.spyOn(screenService, 'getStore').mockReturnValue({ applicantAnswers: {}});
+    jest.spyOn(screenService, 'getStore').mockReturnValue({ applicantAnswers: {} });
     const spySet = jest.spyOn(localStorageService, 'set');
     button.click();
 

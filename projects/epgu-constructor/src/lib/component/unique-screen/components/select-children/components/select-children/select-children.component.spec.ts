@@ -3,8 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { SelectChildrenComponent } from './select-children.component';
-import { CoreModule } from '../../../../../../core/core.module';
 import {
   CoreUiModule,
   LoggerService,
@@ -14,31 +12,38 @@ import {
   EventBusService,
   MemoModule,
   BusEventType,
+  ScreenPadModule,
+  ConstructorDropdownModule,
+  ConfigService,
+  ConfigServiceStub,
+  ModalService,
+  ModalServiceStub,
+  DatesToolsService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockModule } from 'ng-mocks';
+import { HttpClientModule } from '@angular/common/http';
+import { SelectChildrenComponent } from './select-children.component';
+import { CoreModule } from '../../../../../../core/core.module';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { SelectChildrenItemComponent } from '../select-children-item/select-children-item.component';
 import { SelectChildrenItemWrapperComponent } from '../select-children-item-wrapper/select-children-item-wrapper.component';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { CloneButtonModule } from '../../../../../../shared/components/clone-button/clone-button.module';
-import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { ComponentsListModule } from '../../../../../custom-screen/components-list.module';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { componentMock } from './mocks/select-children.mock';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
+
 import { RefRelationService } from '../../../../../../shared/services/ref-relation/ref-relation.service';
 import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
-import { MockModule } from 'ng-mocks';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
 import { DisclaimerModule } from '../../../../../../shared/components/disclaimer/disclaimer.module';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('SelectChildrenComponent', () => {
   let component: SelectChildrenComponent;
@@ -199,7 +204,7 @@ describe('SelectChildrenComponent', () => {
     it('should be return new child', () => {
       const newChild = component.createNewChild();
 
-      expect(newChild['ai15_6']).toBeTruthy();
+      expect(newChild.ai15_6).toBeTruthy();
     });
   });
 
@@ -228,7 +233,7 @@ describe('SelectChildrenComponent', () => {
 
     // TODO: починить тест
     xit('cloneButtonClickEvent should not make invalid form valid', () => {
-      let selector = 'epgu-cf-ui-constructor-constructor-dropdown';
+      const selector = 'epgu-cf-ui-constructor-constructor-dropdown';
       const childId = component.items[0].controlId;
       const itemToSelect = component.itemsToSelect[0];
       const childElement = fixture.debugElement.query(By.css(selector));

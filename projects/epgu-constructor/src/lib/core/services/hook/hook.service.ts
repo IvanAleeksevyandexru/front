@@ -9,8 +9,6 @@ import { HookTypes } from './hook.constants';
 export class HookService {
   private hooks: { [key in HookTypes]?: ObservableInput<NavigationPayload>[] } = {};
 
-  constructor() {}
-
   public addHook(type: HookTypes, observable: ObservableInput<NavigationPayload>): void {
     if (!Array.isArray(this.hooks[type])) {
       this.hooks[type] = [observable];

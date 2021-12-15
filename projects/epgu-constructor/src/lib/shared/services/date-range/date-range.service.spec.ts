@@ -1,4 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 import { DateRangeService } from './date-range.service';
 import {
   CustomComponent,
@@ -8,9 +11,6 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { DateRangeAttrs } from './date-range.models';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
 
 describe('DateRangeService', () => {
   let service: DateRangeService;

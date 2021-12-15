@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
+import {
+  DatesToolsService,
+  JsonHelperService,
+  DATE_STRING_DOT_FORMAT,
+} from '@epgu/epgu-constructor-ui-kit';
+import {
+  ComponentDto,
+  ComponentAttrsDto,
+  DictionaryFilters,
+  KeyValueMap,
+} from '@epgu/epgu-constructor-types';
+import { get } from 'lodash';
 import { CachedAnswersService } from '../cached-answers/cached-answers.service';
 import { CachedAnswers, ScreenStoreComponentDtoI } from '../../../screen/screen.types';
 import {
   CustomComponentRef,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { DatesToolsService, JsonHelperService, DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
 import { DocInputField } from '../../../component/custom-screen/components/doc-input/doc-input.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { RefRelationService } from '../ref-relation/ref-relation.service';
-import { ComponentDto, ComponentAttrsDto, DictionaryFilters, KeyValueMap } from '@epgu/epgu-constructor-types';
-import { get } from 'lodash';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 
 @Injectable()
@@ -42,12 +51,12 @@ export class PrepareComponentsService {
     return components.map((component) => {
       component.valueFromCache = false;
       if (component.type === UniqueScreenComponentTypes.repeatableFields) {
-        const components = component.attrs.components.map((component) =>
-          this.getComponentWithAttrsDateRef(component, cachedAnswers),
+        const mapComponents = component.attrs.components.map((componentDto) =>
+          this.getComponentWithAttrsDateRef(componentDto, cachedAnswers),
         );
 
         const repeatableFieldsComponents = this.setRepeatableFields(
-          components,
+          mapComponents,
           cachedAnswers,
           component,
         );
@@ -91,9 +100,8 @@ export class PrepareComponentsService {
         return this.getCacheRepeatableField(components, cachedValue, index);
       });
       return repeatableFieldComponents;
-    } else {
-      return [this.getCacheRepeatableField(components, cachedValue, 0)];
     }
+    return [this.getCacheRepeatableField(components, cachedValue, 0)];
   }
 
   private getCacheRepeatableField(
@@ -122,7 +130,7 @@ export class PrepareComponentsService {
     const preset = component.value;
 
     if (component.type === CustomScreenComponentTypes.SnilsInput) {
-      let parsedJson = JSON.parse(cachedValue);
+      const parsedJson = JSON.parse(cachedValue);
 
       if ((parentIndex || parentIndex === 0) && parentId) {
         return parsedJson[parentIndex][parentId].snils || parsedJson[parentIndex][parentId];
@@ -143,12 +151,11 @@ export class PrepareComponentsService {
 
       if (Array.isArray(parsedCachedValue)) {
         return JSON.stringify(parsedCachedValue);
-      } else {
-        return JSON.stringify({
-          ...parsedPreset,
-          ...(parsedCachedValue as object),
-        });
       }
+      return JSON.stringify({
+        ...parsedPreset,
+        ...(parsedCachedValue as object),
+      });
     }
 
     if (parentId && isCachedValueParsable) {
@@ -235,18 +242,15 @@ export class PrepareComponentsService {
       const date: string = get({ value: JSON.parse(cache) }, path, '');
       if (this.isShortTimeFormat(date)) {
         return date;
-      } else {
-        const parsedDate = this.datesToolsService.parseISO(date);
-        return this.datesToolsService.format(parsedDate, DATE_STRING_DOT_FORMAT);
       }
-    } else {
-      if (this.isShortTimeFormat(cache)) {
-        return cache;
-      } else {
-        const parsedDate = this.datesToolsService.parseISO(cache);
-        return this.datesToolsService.format(parsedDate, DATE_STRING_DOT_FORMAT);
-      }
+      const parsedDate = this.datesToolsService.parseISO(date);
+      return this.datesToolsService.format(parsedDate, DATE_STRING_DOT_FORMAT);
     }
+    if (this.isShortTimeFormat(cache)) {
+      return cache;
+    }
+    const parsedDate = this.datesToolsService.parseISO(cache);
+    return this.datesToolsService.format(parsedDate, DATE_STRING_DOT_FORMAT);
   }
 
   private getPresetsFromRawPresets(preset: string): string[] {
@@ -274,13 +278,13 @@ export class PrepareComponentsService {
       component.type === CustomScreenComponentTypes.MaritalStatusInput
     ) {
       const fields = attrs.fields as DocInputField[];
-      const haveDateRef = ({ attrs }: DocInputField): boolean =>
-        Boolean(attrs?.minDateRef || attrs?.maxDateRef);
+      const haveDateRef = ({ attrs: attributes }: DocInputField): boolean =>
+        Boolean(attributes?.minDateRef || attributes?.maxDateRef);
 
       Object.values(fields)
         .filter((field) => haveDateRef(field))
-        .forEach(({ attrs }) => {
-          this.setAttrsDateRef(attrs as ComponentAttrsDto, cachedAnswers);
+        .forEach(({ attrs: attributes }) => {
+          this.setAttrsDateRef(attributes as ComponentAttrsDto, cachedAnswers);
         });
     } else if (
       this.dictionaryToolsService.isDictionaryLike(component.type as CustomScreenComponentTypes)
@@ -342,7 +346,7 @@ export class PrepareComponentsService {
 
       valueRef.asString = (valueRef.asString as string).replace(`\${${key}}`, value);
     } else if (filter?.union?.subs) {
-      const subs = filter.union.subs;
+      const { subs } = filter.union;
 
       filter.union.subs = subs.map((subFilter) => {
         (subFilter.simple.value.asString as string).replace(`\${${key}}`, value);

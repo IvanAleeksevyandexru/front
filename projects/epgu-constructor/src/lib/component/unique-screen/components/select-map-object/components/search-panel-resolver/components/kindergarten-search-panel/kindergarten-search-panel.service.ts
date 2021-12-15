@@ -8,9 +8,13 @@ import { DictionaryResponse } from '../../../../../../../../shared/services/dict
 @Injectable()
 export class KindergartenSearchPanelService implements OnDestroy {
   public EDUORGMAX: number;
+
   public topLabel$ = new BehaviorSubject('');
+
   public bottomLabel$ = new BehaviorSubject('');
+
   public deptsLeftToChoose$ = new BehaviorSubject(0);
+
   private _deptsChoosen$ = new BehaviorSubject<number>(0);
 
   get childHomeCoords(): number[] {

@@ -11,6 +11,8 @@ import {
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 
+import { MockModule, MockProvider } from 'ng-mocks';
+import { FormatTimeModule } from '@epgu/ui/pipes';
 import { CoreModule } from '../../../../../core/core.module';
 import { NavigationModalService } from '../../../../../core/services/navigation-modal/navigation-modal.service';
 import { NavigationService } from '../../../../../core/services/navigation/navigation.service';
@@ -19,9 +21,7 @@ import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { BaseModule } from '../../../../../shared/base.module';
 import { CounterDirective } from '../../../../../shared/directives/counter/counter.directive';
 import { ConfirmEmailComponent } from './confirm-email.component';
-import { MockModule, MockProvider } from 'ng-mocks';
 import { NavigationServiceStub } from '../../../../../core/services/navigation/navigation.service.stub';
-import { FormatTimeModule } from '@epgu/ui/pipes';
 
 describe('ConfirmEmailComponent', () => {
   let component: ConfirmEmailComponent;

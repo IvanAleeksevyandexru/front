@@ -15,17 +15,21 @@ export class ScreenModalService extends FormPlayerBaseService {
   public get minContentHeight$(): Observable<number> {
     return this.minContentHeightSubject.asObservable();
   }
+
   public get isInternalScenarioFinish$(): Observable<boolean> {
     return this.isInternalScenarioFinishSub.asObservable();
   }
+
   public get isInternalScenarioFinishValue(): boolean {
     return this.isInternalScenarioFinishSub.value;
   }
 
   private _initStore: FormPlayerApiSuccessResponse;
+
   private minContentHeight = 0;
 
   private minContentHeightSubject = new BehaviorSubject<number>(this.minContentHeight);
+
   private isInternalScenarioFinishSub = new BehaviorSubject<boolean>(false);
 
   constructor(

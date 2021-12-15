@@ -1,21 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { ComponentListModalComponent } from './component-list-modal.component';
-import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenTypes } from '@epgu/epgu-constructor-types';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
-import { ScreenModalService } from '../../screen-modal.service';
-import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
-import { CustomScreenService } from '../../../../screen/custom-screen/custom-screen.service';
-import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentsListModule } from '../../../../component/custom-screen/components-list.module';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
-import { BaseModule } from '../../../../shared/base.module';
-import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
 import {
+  CoreUiModule,
+  DatesToolsService,
   ConfigService,
   ConfigServiceStub,
   HttpCancelService,
@@ -24,6 +13,19 @@ import {
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockModule } from 'ng-mocks';
+import { ComponentListModalComponent } from './component-list-modal.component';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
+import { NavigationModalService } from '../../../../core/services/navigation-modal/navigation-modal.service';
+import { ScreenModalService } from '../../screen-modal.service';
+import { ScreenModalServiceStub } from '../../screen-modal.service.stub';
+import { CustomScreenService } from '../../../../screen/custom-screen/custom-screen.service';
+import { ComponentsListModule } from '../../../../component/custom-screen/components-list.module';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
+import { BaseModule } from '../../../../shared/base.module';
+import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
+
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';

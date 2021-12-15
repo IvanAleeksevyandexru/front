@@ -9,16 +9,19 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
 import { Subject } from 'rxjs';
+import { YaMapService } from '@epgu/ui/services/ya-map';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryYMapItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
-import { YaMapService } from '@epgu/ui/services/ya-map';
 
 @Injectable()
 export class JusticeSearchPanelService implements OnDestroy {
   public fullAddress = new Subject();
+
   private courtZones;
+
   private myPlacemark;
+
   private arePolygonsVisible;
 
   constructor(
@@ -41,9 +44,9 @@ export class JusticeSearchPanelService implements OnDestroy {
   }
 
   public mapClick(coords): void {
-    const createPlacemark = (coords): void => {
+    const createPlacemark = (coordinates): void => {
       return new this.yandexMapService.ymaps.Placemark(
-        coords,
+        coordinates,
         {},
         {
           draggable: true,
@@ -63,8 +66,8 @@ export class JusticeSearchPanelService implements OnDestroy {
     };
 
     // Определяем адрес по координатам (обратное геокодирование).
-    const setAddress = (coords): void => {
-      this.yandexMapService.ymaps.geocode(coords).then((res) => {
+    const setAddress = (coordinates): void => {
+      this.yandexMapService.ymaps.geocode(coordinates).then((res) => {
         const firstGeoObject = res.geoObjects.get(0);
         let fullAddress;
 
@@ -140,7 +143,7 @@ export class JusticeSearchPanelService implements OnDestroy {
         title: attributeValues.CourtName,
       };
       // EPGU-lib изначально настроена на порядок координат longlat. Справочник же возвращает их в latlong
-      const coords = JSON.parse(attributeValues.CourtAddr_Nav).reverse();
+      coords = JSON.parse(attributeValues.CourtAddr_Nav).reverse();
       const items = [
         {
           center: coords,

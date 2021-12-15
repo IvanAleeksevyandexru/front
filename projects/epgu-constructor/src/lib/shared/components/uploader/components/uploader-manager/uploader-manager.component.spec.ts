@@ -1,5 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import {
+  ConfigService,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
+import { MockComponent, MockModule } from 'ng-mocks';
 import { UploaderManagerComponent } from './uploader-manager.component';
 import { ViewerService } from '../../services/viewer/viewer.service';
 import { ViewerServiceStub } from '../../services/viewer/viewer.service.stub';
@@ -7,20 +17,12 @@ import { UploaderManagerItemComponent } from '../uploader-manager-item/uploader-
 import { BaseModule } from '../../../../base.module';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { TerraByteApiServiceStub } from '../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
 
-import { ChangeDetectionStrategy } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemStatus } from '../../../file-upload/data';
-import { of } from 'rxjs';
-import { MockComponent, MockModule } from 'ng-mocks';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {

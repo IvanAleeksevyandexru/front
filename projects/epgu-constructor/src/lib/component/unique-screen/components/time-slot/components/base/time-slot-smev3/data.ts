@@ -1,5 +1,5 @@
-import { ErrorTemplate, ModalGenerator, TimeSlotTemplateType } from '../../../typings';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { ErrorTemplate, ModalGenerator, TimeSlotTemplateType } from '../../../typings';
 
 export const getConfirmChangeTimeModalParams: ModalGenerator = () => {
   return {

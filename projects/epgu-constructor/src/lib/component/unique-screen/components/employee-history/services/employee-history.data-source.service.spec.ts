@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
 import { Gender } from '@epgu/epgu-constructor-types';
+import { EmployeeHistoryDataSourceService } from './employee-history.data-source.service';
 
 describe('EmployeeHistoryDataSourceService', () => {
   let service: EmployeeHistoryDataSourceService;

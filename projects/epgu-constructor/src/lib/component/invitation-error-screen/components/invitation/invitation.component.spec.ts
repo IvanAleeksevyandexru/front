@@ -99,10 +99,7 @@ describe('InvitationComponent', () => {
           ScreenPadComponent,
         ),
       ],
-      imports: [
-        BaseUiModule,
-        FormsModule
-      ],
+      imports: [BaseUiModule, FormsModule],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: InvitationService, useClass: InvitationServiceStub },
@@ -126,9 +123,9 @@ describe('InvitationComponent', () => {
     component.config = TestBed.inject(ConfigService);
     fixture.detectChanges();
 
-    InvitationErrorPath = `${component['urlPrefix']}/orders/${mockOrderId}/invitations/inviteToSign/send`;
-    LkInvitationInputPathWithTemplateId = `${component['urlPrefix']}/register/${component.data.attrs.templateId}`;
-    LkInvitationInputPathWithoutTemplateId = `${component['urlPrefix']}/register/${InvitationType.LK_INVITATION}`;
+    InvitationErrorPath = `${component.urlPrefix}/orders/${mockOrderId}/invitations/inviteToSign/send`;
+    LkInvitationInputPathWithTemplateId = `${component.urlPrefix}/register/${component.data.attrs.templateId}`;
+    LkInvitationInputPathWithoutTemplateId = `${component.urlPrefix}/register/${InvitationType.LK_INVITATION}`;
   });
 
   describe('ngOnInit()', () => {
@@ -140,18 +137,18 @@ describe('InvitationComponent', () => {
     });
 
     it('should set urlPrefix with mockUrl', () => {
-      expect(component['urlPrefix']).toBeFalsy();
+      expect(component.urlPrefix).toBeFalsy();
       component.config.mocks.push('payment');
       component.ngOnInit();
 
-      expect(component['urlPrefix']).toEqual(`${component.config.mockUrl}/lk/v1`);
+      expect(component.urlPrefix).toEqual(`${component.config.mockUrl}/lk/v1`);
     });
 
     it('should set urlPrefix with invitationUrl', () => {
-      expect(component['urlPrefix']).toBeFalsy();
+      expect(component.urlPrefix).toBeFalsy();
       component.ngOnInit();
 
-      expect(component['urlPrefix']).toEqual(`${component.config.invitationUrl}`);
+      expect(component.urlPrefix).toEqual(`${component.config.invitationUrl}`);
     });
   });
 
@@ -169,16 +166,16 @@ describe('InvitationComponent', () => {
       component.sendEmail();
 
       expect(httpPostSpy).toBeCalledWith(
-        `${component['urlPrefix']}/orders/${component.orderId}/invitations/inviteToSign/send`,
+        `${component.urlPrefix}/orders/${component.orderId}/invitations/inviteToSign/send`,
         [
           {
             type: 'SNILS',
             id: JSON.parse(value).snils,
             email: component.email.value,
-          }
+          },
         ],
         {
-          withCredentials: true
+          withCredentials: true,
         },
       );
     });
@@ -194,13 +191,13 @@ describe('InvitationComponent', () => {
       component.sendEmail();
 
       expect(httpPostSpy).toBeCalledWith(
-        `${component['urlPrefix']}/register/${component.data.attrs.templateId}`,
+        `${component.urlPrefix}/register/${component.data.attrs.templateId}`,
         {
           additionalParams: { fio, gnr: mockData.attrs.gender },
           invitedUserEmail: '',
         },
         {
-          withCredentials: true
+          withCredentials: true,
         },
       );
 
@@ -209,13 +206,13 @@ describe('InvitationComponent', () => {
       component.sendEmail();
 
       expect(httpPostSpy).toBeCalledWith(
-        `${component['urlPrefix']}/register/${component.data.attrs.templateId}`,
+        `${component.urlPrefix}/register/${component.data.attrs.templateId}`,
         {
           additionalParams: { fio },
           invitedUserEmail: '',
         },
         {
-          withCredentials: true
+          withCredentials: true,
         },
       );
     });
@@ -226,14 +223,14 @@ describe('InvitationComponent', () => {
       component.componentType = InvitationTypes.invitationError;
       fixture.detectChanges();
 
-      expect(component['path']).toEqual(InvitationErrorPath);
+      expect(component.path).toEqual(InvitationErrorPath);
     });
 
     it('should return lkInvitationInput path with templateId', () => {
       component.componentType = InvitationTypes.lkInvitationInput;
       fixture.detectChanges();
 
-      expect(component['path']).toEqual(LkInvitationInputPathWithTemplateId);
+      expect(component.path).toEqual(LkInvitationInputPathWithTemplateId);
     });
 
     it('should return lkInvitationInput path without templateId', () => {
@@ -241,25 +238,25 @@ describe('InvitationComponent', () => {
       delete component.data.attrs.templateId;
       fixture.detectChanges();
 
-      expect(component['path']).toEqual(LkInvitationInputPathWithoutTemplateId);
+      expect(component.path).toEqual(LkInvitationInputPathWithoutTemplateId);
     });
   });
 
   describe('getFullName()', () => {
     it('should return fio if there is in attrs', () => {
-      component.data.attrs = Object.assign({}, component.data.attrs, { fio: mockFullName.fio });
+      component.data.attrs = { ...component.data.attrs, fio: mockFullName.fio };
       fixture.detectChanges();
 
-      expect(component['fullName']).toEqual(mockFullName.fio);
+      expect(component.fullName).toEqual(mockFullName.fio);
     });
 
     it('should return composite full name if there is not fio in attrs', () => {
-      component.data.attrs = Object.assign({}, component.data.attrs, mockFullName, { fio: null });
+      component.data.attrs = { ...component.data.attrs, ...mockFullName, fio: null };
       fixture.detectChanges();
 
       const { firstName, lastName, middleName } = mockFullName;
 
-      expect(component['fullName']).toEqual(`${lastName} ${firstName} ${middleName}`);
+      expect(component.fullName).toEqual(`${lastName} ${firstName} ${middleName}`);
     });
 
     it('should not return full name if there is not any name data in attrs', () => {
@@ -269,14 +266,14 @@ describe('InvitationComponent', () => {
       delete component.data.attrs.middleName;
       fixture.detectChanges();
 
-      expect(component['fullName']).toEqual('null null');
+      expect(component.fullName).toEqual('null null');
     });
 
     it('should return trimmed full name', () => {
-      component.data.attrs = Object.assign({}, component.data.attrs, { fio: '  Иванов Иван Иванович  ' });
+      component.data.attrs = { ...component.data.attrs, fio: '  Иванов Иван Иванович  ' };
       fixture.detectChanges();
 
-      expect(component['fullName']).toEqual(mockFullName.fio);
+      expect(component.fullName).toEqual(mockFullName.fio);
     });
   });
 });

@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { TimeSlotEmptyErrorComponent } from './time-slot-empty-error.component';
 import { BaseModule } from '../../../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../../../shared/components/base-components/base-components.module';
-import { By } from '@angular/platform-browser';
 
 const mockTemplate = {
   header: 'test',

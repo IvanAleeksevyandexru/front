@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { FileDownloaderService } from './file-downloader.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { FileDownloaderService } from './file-downloader.service';
 import { FileSaverService } from './file-saver.service';
 
 describe('FileDownloaderService', () => {

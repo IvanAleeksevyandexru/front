@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MockComponent } from 'ng-mocks';
 
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CheckboxCubeContainerComponent } from './checkbox-cube-container.component';
 import { CheckboxCubeComponent } from '../checkbox-cube/checkbox-cube.component';
 import { DefaultUniqueScreenWrapperComponent } from '../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.component';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('CheckboxCubeContainerComponent', () => {
   let component: CheckboxCubeContainerComponent;

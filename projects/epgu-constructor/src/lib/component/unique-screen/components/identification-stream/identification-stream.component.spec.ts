@@ -9,15 +9,18 @@ import {
   ModalServiceStub,
   JsonHelperService,
   JsonHelperServiceStub,
+  UnsubscribeService,
+  ConfigServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
+import { BaseModule } from '@epgu/ui/base';
+import { ModalService } from '@epgu/ui/services/modal';
+import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 import { IdentificationStreamComponent } from './identification-stream.component';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { IdentificationStreamService } from '../../shared/identification-stream/identification-stream.service';
-import { BaseModule } from '@epgu/ui/base';
-import { ModalService } from '@epgu/ui/services/modal';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
@@ -28,9 +31,7 @@ import { AutocompletePrepareService } from '../../../../core/services/autocomple
 import { IdentificationStreamModule } from './identification-stream.module';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
-import { HttpClient } from '@angular/common/http';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
-import { of } from 'rxjs';
 
 const mockComponent = {
   id: 'test',
@@ -81,8 +82,8 @@ describe('IdentificationStreamComponent', () => {
   describe('next()', () => {
     it('should call api method()', () => {
       const spy = jest
-        .spyOn(component['api'], 'videoIdentification')
-        .mockImplementation((...args) => of({ data: { quality: [] }} as any));
+        .spyOn(component.api, 'videoIdentification')
+        .mockImplementation((...args) => of({ data: { quality: [] } } as any));
       component.result = 3 as any;
 
       component.next();
@@ -92,10 +93,10 @@ describe('IdentificationStreamComponent', () => {
 
     it('should call switchAction()', () => {
       jest
-        .spyOn(component['api'], 'videoIdentification')
-        .mockImplementation((...args) => of({ data: { quality: [] }} as any));
+        .spyOn(component.api, 'videoIdentification')
+        .mockImplementation((...args) => of({ data: { quality: [] } } as any));
       const spySwitchAction = jest
-        .spyOn(component['actionService'], 'switchAction')
+        .spyOn(component.actionService, 'switchAction')
         .mockImplementation((...args) => null);
       component.result = 3 as any;
 
@@ -108,13 +109,13 @@ describe('IdentificationStreamComponent', () => {
   describe('record()', () => {
     it('should call terabyte upload methods()', () => {
       jest
-        .spyOn(component['modalService'], 'openModal')
+        .spyOn(component.modalService, 'openModal')
         .mockImplementation((...args) => of({ file: {}, status: true } as any));
       const spyUpload = jest
-        .spyOn(component['tera'], 'uploadFile')
+        .spyOn(component.tera, 'uploadFile')
         .mockImplementation((...args) => of({ file: {}, status: true } as any));
       const spyGet = jest
-        .spyOn(component['tera'], 'uploadFile')
+        .spyOn(component.tera, 'uploadFile')
         .mockImplementation((...args) => of({ file: {}, status: true } as any));
       component.result = 3 as any;
 

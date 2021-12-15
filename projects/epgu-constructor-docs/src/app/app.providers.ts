@@ -30,8 +30,19 @@ export const HIGHLIGHT_OPTIONS_VALUE = {
   },
 };
 
-export function exampleContentProcessor(content: FrontendExample): FrontendExample {
-  return processTs(content);
+export function addIntoExistingImport(
+  data: string = '',
+  entity: string = '',
+  packageName: string = '',
+): string {
+  const packageImportsRegex = new RegExp(
+    `(?:import\\s?\\{\\r?\\n?)(?:(?:.*),\\r?\\n?)*?(?:.*?)\\r?\\n?} from (?:'|")${packageName}(?:'|");`,
+    'gm',
+  );
+
+  return data.replace(packageImportsRegex, (parsed) => {
+    return parsed.replace('{', `{${entity}, `);
+  });
 }
 
 function processTs(content: FrontendExample): FrontendExample {
@@ -55,19 +66,8 @@ function processTs(content: FrontendExample): FrontendExample {
   };
 }
 
-export function addIntoExistingImport(
-  data: string = '',
-  entity: string = '',
-  packageName: string = '',
-): string {
-  const packageImportsRegex = new RegExp(
-    `(?:import\\s?\\{\\r?\\n?)(?:(?:.*),\\r?\\n?)*?(?:.*?)\\r?\\n?} from (?:'|")${packageName}(?:'|");`,
-    'gm',
-  );
-
-  return data.replace(packageImportsRegex, (parsed) => {
-    return parsed.replace('{', `{${entity}, `);
-  });
+export function exampleContentProcessor(content: FrontendExample): FrontendExample {
+  return processTs(content);
 }
 
 export const ICONS_PATH = iconsPathFactory('assets/taiga-ui/icons/');

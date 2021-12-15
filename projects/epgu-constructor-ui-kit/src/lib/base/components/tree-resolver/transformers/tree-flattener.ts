@@ -72,7 +72,9 @@ export class TreeFlattener<T, F, K = F> {
 
 export class TreeFlatDataSource<T, F, K = F> extends DataSource<F> {
   _flattenedData = new BehaviorSubject<F[]>([]);
+
   _expandedData = new BehaviorSubject<F[]>([]);
+
   _data: BehaviorSubject<T[]>;
 
   constructor(

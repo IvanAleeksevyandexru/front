@@ -58,20 +58,35 @@ export enum SidebarViewType {
 @Injectable()
 export class SelectMapObjectService implements OnDestroy {
   public dictionary: DictionaryResponseForYMap;
+
   public filteredDictionaryItems: DictionaryYMapItem[] = [];
+
   public selectedValue = new Subject();
+
   public selectedViewItems$ = new BehaviorSubject<DictionaryItem[]>([]);
+
   public isNoDepartmentErrorVisible = new Subject<boolean>();
+
   public ymaps;
+
   public componentAttrs: SelectMapComponentAttrs; // Атрибуты компонента из getNextStep
+
   public mapEvents; // events от карт, устанавливаются при создание балуна
+
   public mapOpenedBalloonId: number;
+
   public mapType = MapTypes.commonMap;
+
   public isMapLoaded = new BehaviorSubject<boolean>(false);
+
   public isSelectedView = new BehaviorSubject<boolean>(false);
+
   public userAddress: string;
+
   private _viewType = new BehaviorSubject(SidebarViewType.Map);
+
   private objectManager;
+
   private __mapStateCenter: number[];
 
   constructor(
@@ -127,12 +142,12 @@ export class SelectMapObjectService implements OnDestroy {
       hashMap[coord.address] = { latitude: coord.latitude, longitude: coord.longitude };
     });
     this.dictionary.items.forEach((item, index) => {
-      const coords = hashMap[
+      const coordinates = hashMap[
         item.attributeValues[this.componentAttrs.attributeNameWithAddress]
       ] as IGeoCoords;
       item.objectId = index;
-      if (coords) {
-        item.center = [coords.longitude, coords.latitude];
+      if (coordinates) {
+        item.center = [coordinates.longitude, coordinates.latitude];
       }
       item.baloonContent =
         this.getMappedAttrsForBaloon(this.componentAttrs.baloonContent, item) || [];
@@ -179,9 +194,9 @@ export class SelectMapObjectService implements OnDestroy {
    */
   public searchMapObject(searchString: string): DictionaryYMapItem[] {
     const searchStringLower = searchString.toLowerCase();
-    const searchSource = this.isSelectedView.getValue() ?
-      this.selectedViewItems$.getValue() :
-      this.dictionary.items;
+    const searchSource = this.isSelectedView.getValue()
+      ? this.selectedViewItems$.getValue()
+      : this.dictionary.items;
     const searchResult = searchSource.filter((item) => {
       const address = (item.attributeValues[
         this.componentAttrs.attributeNameWithAddress
@@ -190,7 +205,7 @@ export class SelectMapObjectService implements OnDestroy {
         item.title?.toLowerCase().includes(searchStringLower) ||
         address?.includes(searchStringLower)
       );
-    }) as DictionaryYMapItem[] ;
+    }) as DictionaryYMapItem[];
     const items = this.convertDictionaryItemsToMapPoints(searchResult);
     this.yandexMapService.placeObjectsOnMap(items);
     if (!this.isSelectedView.getValue()) {
@@ -438,8 +453,10 @@ export class SelectMapObjectService implements OnDestroy {
   private handleSelectedSearchResultPainting(searchResult: DictionaryYMapItem[]): void {
     const selectedValue: DictionaryYMapItem[] = this.yandexMapService.selectedValue$.getValue();
     if (selectedValue) {
-      searchResult.forEach(resultItem => {
-        const resultIsInSelectedValues = selectedValue.find(value => arePointsEqual(value, resultItem));
+      searchResult.forEach((resultItem) => {
+        const resultIsInSelectedValues = selectedValue.find((value) =>
+          arePointsEqual(value, resultItem),
+        );
         if (resultIsInSelectedValues) {
           const feature = this.yandexMapService.getObjectById(resultItem.idForMap);
           if (feature) {

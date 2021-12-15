@@ -8,17 +8,18 @@ import {
   BaseUiModule,
   ConstructorDropdownComponent,
   HelperTextComponent,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
+import { ComponentsListComponent } from 'projects/epgu-constructor/src/lib/component/custom-screen/components-list.component';
 import { SelectChildrenItemComponent } from './select-children-item.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { ComponentsListComponent } from 'projects/epgu-constructor/src/lib/component/custom-screen/components-list.component';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;
   let fixture: ComponentFixture<SelectChildrenItemComponent>;
-  let componentMock: any = [
+  const componentMock: any = [
     {
       id: 'ai19_0',
       type: 'StringInput',

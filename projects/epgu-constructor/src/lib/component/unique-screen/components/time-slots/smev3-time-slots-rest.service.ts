@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { Observable, throwError, of } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 import {
   BookTimeSlotReq,
   CancelSlotResponseInterface,
@@ -9,7 +10,6 @@ import {
   SmevSlotsResponseInterface,
   TimeSlotReq,
 } from './time-slots.types';
-import { concatMap } from 'rxjs/operators';
 
 @Injectable()
 export class Smev3TimeSlotsRestService {

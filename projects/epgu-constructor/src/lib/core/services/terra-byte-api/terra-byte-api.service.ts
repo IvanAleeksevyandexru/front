@@ -19,8 +19,10 @@ import { BYTES_IN_KB, FileItem } from '../../../shared/components/file-upload/da
  */
 @Injectable()
 export class TerraByteApiService {
-  chunkSize = 6 * BYTES_IN_KB * BYTES_IN_KB; //кол-во в мб
+  chunkSize = 6 * BYTES_IN_KB * BYTES_IN_KB; // кол-во в мб
+
   chunkPacketMaxSize = 1;
+
   constructor(private http: HttpClient, private config: ConfigService) {}
 
   /**
@@ -51,7 +53,7 @@ export class TerraByteApiService {
     );
   }
 
-    /**
+  /**
    * Возвращает список файлов из галереи (ака саджетс-файлы), для определённой мнемоники
    * @param mnemonic - строковый идентификатор мнемоники
    */
@@ -105,7 +107,7 @@ export class TerraByteApiService {
       return acc;
     }
     if (acc.length === 1) {
-      acc.push([]); //запрещаем добавлять в 1 часть
+      acc.push([]); // запрещаем добавлять в 1 часть
     }
     if (acc[acc.length - 1].length === this.chunkPacketMaxSize) {
       // максимум параллельно запсукаемых элементов
@@ -148,23 +150,26 @@ export class TerraByteApiService {
    */
   copyFile(options: TerraUploadFileOptions, storedFile: FileItem): Observable<void> {
     const body: FileCopyEmitValue = {
-      data: [{
+      data: [
+        {
           srcFile: {
             objectId: +storedFile.item.objectId,
             mnemonic: storedFile.item.mnemonic,
-            objectType: storedFile.item.objectType
+            objectType: storedFile.item.objectType,
           },
           trgFile: {
             objectId: +options.objectId,
             mnemonic: options.mnemonic,
-            objectType: options.objectType
+            objectType: options.objectType,
           },
-      }] };
+        },
+      ],
+    };
     return this.http.post<void>(
       this.getTerabyteApiUrl('/copy'),
       body,
-      this.getServerRequestOptions()
-      );
+      this.getServerRequestOptions(),
+    );
   }
 
   createFormData(options: TerraUploadFileOptions, file: File | Blob): FormData {
@@ -198,6 +203,7 @@ export class TerraByteApiService {
       `/${options.objectId}/${options.objectType}/download?mnemonic=${options.mnemonic}`,
     );
   }
+
   /**
    * Запрос на загрузку уже существующего
    * @param options - данные о файле
@@ -219,10 +225,7 @@ export class TerraByteApiService {
    */
   openFileNewTabByMimeType(options: TerraFileOptions, mimeType: string): void {
     this.downloadFile(options).subscribe((res) => {
-      window.open(
-        URL.createObjectURL(new Blob([res], { type: mimeType })),
-        '_blank',
-      );
+      window.open(URL.createObjectURL(new Blob([res], { type: mimeType })), '_blank');
     });
   }
 
@@ -248,13 +251,14 @@ export class TerraByteApiService {
    */
   private getTerabyteApiUrl = (relativePath): string => this.config.fileUploadApiUrl + relativePath;
 
-
   /**
    * Возвращает путь API адреса для обращений к сервису Gallery
    *
    * @param relativePath - относительный путь от API для запросов
    */
-  private getGalleryApiUrl = (relativePath): string => this.config.galleryApiUrl + relativePath + '/files';
+  private getGalleryApiUrl = (relativePath): string =>
+    `${this.config.galleryApiUrl + relativePath}/files`;
+
   /**
    * Возращает опции запроса
    * @private

@@ -8,10 +8,10 @@ import {
   DatesToolsService,
   DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 import { FileUploadAttributes } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileUploadItemComponent } from '../file-upload-item/file-upload-item.component';
 import { FileUploadComponent } from './file-upload.component';
-import { Clarifications } from '@epgu/epgu-constructor-types';
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
 import { FileUploadContainerComponent } from '../file-upload-container/file-upload-container.component';
 import { UploaderStoreService } from '../services/store/uploader-store.service';
@@ -26,9 +26,9 @@ import { BaseModule } from '../../../base.module';
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
   let fixture: ComponentFixture<FileUploadComponent>;
-  let FileUploadItemComponentMock = MockComponent(FileUploadItemComponent);
+  const FileUploadItemComponentMock = MockComponent(FileUploadItemComponent);
   let eventService: EventBusService;
-  let mockAttributes: FileUploadAttributes = {
+  const mockAttributes: FileUploadAttributes = {
     clarifications: ([] as unknown) as Clarifications,
     uploads: [
       {
@@ -135,9 +135,9 @@ describe('FileUploadComponent', () => {
       files: [{ required: true, uploadId: '1', value: [] }],
     };
     jest.spyOn(eventService, 'emit');
-    component['handleNewValueForItem'](event);
+    component.handleNewValueForItem(event);
 
     expect(eventService.emit).toHaveBeenCalledWith('fileUploadValueChangedEvent', check);
-    expect(component['value']?.files).toEqual(check.files);
+    expect(component.value?.files).toEqual(check.files);
   });
 });

@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { By } from '@angular/platform-browser';
+import { ScreenTypes } from '@epgu/epgu-constructor-types';
 import { ComponentUniqueResolverComponent } from './component-unique-resolver.component';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { ScreenService } from '../../../screen/screen.service';
 import { UNIQUE_SCREEN_COMPONENTS } from './component-unique-resolver.const';
 import { UniqueScreenComponentTypes } from '../unique-screen-components.types';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { By } from '@angular/platform-browser';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
 
 @Component({ template: '<div>test</div>' })
 class TestComponent {}

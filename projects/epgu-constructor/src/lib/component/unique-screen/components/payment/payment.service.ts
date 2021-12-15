@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, LocationService } from '@epgu/epgu-constructor-ui-kit';
+import { get } from 'lodash';
 import { ScreenService } from '../../../../screen/screen.service';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { getPaymentRequestOptions } from './payment.constants';
@@ -13,12 +14,11 @@ import {
   PaymentInfoInterface,
   PaymentsAttrs,
 } from './payment.types';
-import { LocationService } from '@epgu/epgu-constructor-ui-kit';
+
 import {
   DictionaryItem,
   DictionaryResponse,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
-import { get } from 'lodash';
 
 /**
  * Сервис для оплаты услуг пользователем
@@ -132,11 +132,11 @@ export class PaymentService {
 
     if (href.includes(historyParam)) {
       return href;
-    } else if (encode) {
-      return encodeURIComponent(url);
-    } else {
-      return url;
     }
+    if (encode) {
+      return encodeURIComponent(url);
+    }
+    return url;
   }
 
   /**
@@ -145,7 +145,7 @@ export class PaymentService {
    * @param billId - уникальный идентификатор патежа
    */
   getPaymentLink(billId: number): string {
-    let domain = this.config.paymentUrl.replace(/\/+$/g, '');
+    const domain = this.config.paymentUrl.replace(/\/+$/g, '');
     return `${domain}/?billIds=${billId}&returnUrl=${this.getReturnUrl()}&subscribe=true`;
   }
 
@@ -192,11 +192,11 @@ export class PaymentService {
         if (code === 0) {
           let result = items[0].attributeValues as PaymentInfoInterface;
 
-          if (!!returnUrl) {
+          if (returnUrl) {
             result = { ...result, returnUrl: this.createReturnUrl(returnUrl) };
           }
 
-          if (!!returnUrlOrder) {
+          if (returnUrlOrder) {
             result = { ...result, returnUrlOrder: this.createReturnUrl(returnUrlOrder) };
           }
 

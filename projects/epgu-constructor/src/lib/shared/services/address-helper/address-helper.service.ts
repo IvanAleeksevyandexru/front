@@ -60,9 +60,7 @@ export class AddressHelperService {
           ? from(addresses).pipe(
               filter(({ address }: DadataSuggestionsAddress) => {
                 const test: string = address.toLowerCase();
-                return cityFilter.some(
-                  (filter: string) => test.indexOf(filter.toLowerCase()) !== -1,
-                );
+                return cityFilter.some((city: string) => test.indexOf(city.toLowerCase()) !== -1);
               }),
             )
           : from(addresses);

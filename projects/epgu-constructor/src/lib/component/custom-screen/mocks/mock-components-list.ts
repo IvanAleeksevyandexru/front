@@ -66,12 +66,12 @@ export const mockComponentsListComponentStore = {
     type: 'CUSTOM',
     header: 'Реквизиты актовой записи из свидетельства о заключении брака',
     subHeader: {
-      text: '<p><a id =\'example\' href=\'\'>Посмотреть пример</a></p>',
+      text: "<p><a id ='example' href=''>Посмотреть пример</a></p>",
       clarifications: {
         example: {
           title: 'Пример документа',
           text:
-            '<p class=\'block--content-centered\'><img class=\'width--auto\' src=\'https://gu-st.ru/content/catalog/new/marriage_success.svg\'></p>',
+            "<p class='block--content-centered'><img class='width--auto' src='https://gu-st.ru/content/catalog/new/marriage_success.svg'></p>",
         },
       },
     },
@@ -179,7 +179,7 @@ export const mockComponentsListComponentStore = {
               condition: '<',
               errorMsg: 'Дата не может быть меньше, чем дата рождения заявителя + 14 лет',
             },
-            { type: 'maxDate', ref: '', value: 'TODAY', add: {}},
+            { type: 'maxDate', ref: '', value: 'TODAY', add: {} },
           ],
           refs: {},
         },

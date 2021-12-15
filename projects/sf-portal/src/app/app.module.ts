@@ -23,6 +23,7 @@ import { LocationSelectComponent, LocationSelectModule } from '@epgu/ui/componen
 import { FormPlayerModule } from '@epgu/epgu-constructor';
 import { FrameModule } from '@epgu/ui/components/frame';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
 
 registerLocaleData(localeRu);
 
@@ -31,24 +32,25 @@ export function initializeApp(appConfig: AppConfig) {
 }
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(httpClient, `${AppConfig.settings?.staticDomainLibAssetsPath}i18n/`,
-    `.json?v=${environment.appVersion}`);
+  return new TranslateHttpLoader(
+    httpClient,
+    `${AppConfig.settings?.staticDomainLibAssetsPath}i18n/`,
+    `.json?v=${environment.appVersion}`,
+  );
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NewSfPlayerComponent
-  ],
+  declarations: [AppComponent, NewSfPlayerComponent],
   imports: [
+    CoreUiModule,
     HttpClientModule,
     NgxPageScrollCoreModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
     CommonModule,
     CookieModule.forRoot(),
@@ -60,7 +62,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SmallFooterModule,
     LocationSelectModule,
     FormPlayerModule,
-    FrameModule
+    FrameModule,
   ],
   providers: [
     ConstantsService,
@@ -70,19 +72,16 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
       deps: [AppConfig],
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UserAuthInterceptor,
-      multi: true
+      multi: true,
     },
     { provide: LOCALE_ID, useValue: 'ru' },
   ],
-  entryComponents: [
-    LocationSelectComponent
-  ],
-  bootstrap: [AppComponent]
+  entryComponents: [LocationSelectComponent],
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

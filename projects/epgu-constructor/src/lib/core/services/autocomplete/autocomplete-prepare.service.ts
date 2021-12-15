@@ -16,7 +16,11 @@ import {
   CustomComponentAttr,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
-import { DatesToolsService, JsonHelperService, DATE_STRING_DOT_FORMAT } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  JsonHelperService,
+  DATE_STRING_DOT_FORMAT,
+} from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class AutocompletePrepareService {
@@ -199,7 +203,7 @@ export class AutocompletePrepareService {
       fields,
       componentMnemonic,
     );
-    const requiredField = fields.find(field => {
+    const requiredField = fields.find((field) => {
       const mnemonics = this.splitParentMnemonic(field.mnemonic);
       return mnemonics.includes(componentMnemonic);
     });
@@ -273,11 +277,11 @@ export class AutocompletePrepareService {
       if (repeatableComponents.length && parsedValue.length) {
         parsedValue = Object.values(parsedValue[0])[0];
       }
-      value = parsedValue['text'];
+      value = parsedValue.text;
 
       // Кейс парсинга значения для SnilsInput
       if ('snils' in parsedValue) {
-        value = parsedValue['snils'];
+        value = parsedValue.snils;
       }
     }
 
@@ -365,9 +369,9 @@ export class AutocompletePrepareService {
     componentsSuggestionsList: [string, string][],
   ): string {
     const isDocInput = component.type === CustomScreenComponentTypes.DocInput;
-    const prepareDocInputValue = (value, fieldName, suggestItemValue): string =>
+    const prepareDocInputValue = (docInputValue, fieldName, suggestItemValue): string =>
       JSON.stringify({
-        ...(this.jsonHelperService.tryToParse(value) as object),
+        ...(this.jsonHelperService.tryToParse(docInputValue) as object),
         [fieldName]: suggestItemValue,
       });
 
@@ -459,7 +463,7 @@ export class AutocompletePrepareService {
 
         return typeof value === 'string' ? value : JSON.stringify(value);
       } else if ('snils' in parsedValue) {
-        return parsedValue['snils'];
+        return parsedValue.snils;
       }
     }
     return value;

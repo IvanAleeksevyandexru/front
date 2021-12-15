@@ -8,14 +8,14 @@ import {
   ScreenContainerModule,
   ScreenPadModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService } from '@epgu/ui/services/modal';
+import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 import { GroupListContainerComponent } from './components/group-list-container/group-list-container.component';
 import { BaseModule } from '../base/base.module';
 import { GroupListService } from '../../services/group-list/group-list.service';
 import { ApiService } from '../../services/api/api.service';
 import { StateService } from '../../services/state/state.service';
 import { GroupItemComponent } from './components/group-item/group-item.component';
-import { ModalService } from '@epgu/ui/services/modal';
-import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 
 @NgModule({
   declarations: [GroupListContainerComponent, GroupItemComponent],

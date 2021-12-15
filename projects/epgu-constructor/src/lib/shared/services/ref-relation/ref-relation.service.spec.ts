@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { ListElement } from '@epgu/ui/models/dropdown';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { RefRelationService } from './ref-relation.service';
 import {
   autofillFromDictionaryRefMock,
@@ -9,8 +11,6 @@ import {
   filterOnRefMock,
   getValueRefMock,
 } from './ref-relation.mock';
-import { ListElement } from '@epgu/ui/models/dropdown';
-import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 
 describe('RefRelationService', () => {
   let service: RefRelationService;
@@ -115,21 +115,21 @@ describe('RefRelationService', () => {
     describe('getValueFromComponentVal()', () => {
       it('should return component string value, if arg is string', () => {
         const value = 'value';
-        expect(service['getValueFromComponentVal'](value)).toBe(value);
+        expect(service.getValueFromComponentVal(value)).toBe(value);
       });
       it('should return component string value, if arg is {id: string}', () => {
         const value = { id: 'value' };
-        expect(service['getValueFromComponentVal'](value)).toBe('value');
+        expect(service.getValueFromComponentVal(value)).toBe('value');
       });
 
       it('should return component as original array, if arg is array', () => {
         const value = [{ id: 'value' }] as ListElement[];
-        expect(service['getValueFromComponentVal'](value)).toBe(value);
+        expect(service.getValueFromComponentVal(value)).toBe(value);
       });
       it('should return item id, if arg is JSON-stringified obj with id attr', () => {
         const value = '{"id": "AUS", "label":"Австралия"}';
         const expectedResult = 'AUS';
-        expect(service['getValueFromComponentVal'](value)).toEqual(expectedResult);
+        expect(service.getValueFromComponentVal(value)).toEqual(expectedResult);
       });
       it('should return parsed JSON, if arg is JSON-stringified array', () => {
         const value = '[{"id": "AUS", "label":"Австралия"},{"id": "RUS", "label":"Россия"}]';
@@ -137,20 +137,20 @@ describe('RefRelationService', () => {
           { id: 'AUS', label: 'Австралия' },
           { id: 'RUS', label: 'Россия' },
         ];
-        expect(service['getValueFromComponentVal'](value)).toEqual(expectedResult);
+        expect(service.getValueFromComponentVal(value)).toEqual(expectedResult);
       });
       it('should return array of ids when multichoice dictionary value present', () => {
         const value: string = JSON.stringify({
           amount: 2,
           list: [
-            { id: 1, text: '123213', originalItem: {}},
-            { id: 2, text: 'gfsd', originalItem: {}},
+            { id: 1, text: '123213', originalItem: {} },
+            { id: 2, text: 'gfsd', originalItem: {} },
           ],
         });
 
-        expect(service['getValueFromComponentVal'](value)).toStrictEqual([
-          { id: 1, text: '123213', originalItem: {}},
-          { id: 2, text: 'gfsd', originalItem: {}},
+        expect(service.getValueFromComponentVal(value)).toStrictEqual([
+          { id: 1, text: '123213', originalItem: {} },
+          { id: 2, text: 'gfsd', originalItem: {} },
         ]);
       });
     });

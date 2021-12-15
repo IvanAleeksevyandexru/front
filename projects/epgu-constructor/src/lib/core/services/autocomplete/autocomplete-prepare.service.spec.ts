@@ -3,29 +3,38 @@ import { TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { cloneDeep as _cloneDeep } from 'lodash';
 
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { ScreenService } from '../../../screen/screen.service';
 import {
   ConfigService,
   EventBusServiceStub,
   UnsubscribeServiceStub,
   JsonHelperService,
+  ConfigServiceStub,
+  DatesToolsService,
+  DeviceDetectorServiceStub,
+  EventBusService,
+  UnsubscribeService,
+  DeviceDetectorService,
+  LocalStorageService,
+  LocalStorageServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
+import {
+  Gender,
+  ComponentDto,
+  ScreenTypes,
+  ScenarioDto,
+  Answer,
+} from '@epgu/epgu-constructor-types';
 import { AutocompleteApiService } from './autocomplete-api.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { AutocompleteService } from './autocomplete.service';
-import { Gender, ComponentDto, ScreenTypes, ScenarioDto } from '@epgu/epgu-constructor-types';
 import { ISuggestionApi, ISuggestionItemList } from './autocomplete.inteface';
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { LocalStorageService, LocalStorageServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { UniqueScreenComponentTypes } from '../../../component/unique-screen/unique-screen-components.types';
-import { Answer } from '@epgu/epgu-constructor-types';
+
+import { ScreenService } from '../../../screen/screen.service';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { CurrentAnswersServiceStub } from '../../../screen/current-answers-service.stub';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 
@@ -39,7 +48,7 @@ describe('AutocompletePrepareService', () => {
   let parentComponent: ComponentDto;
   let currentAnswersService: CurrentAnswersService;
 
-  let mockData: ScenarioDto = {
+  const mockData: ScenarioDto = {
     additionalParameters: {},
     applicantAnswers: {},
     currentScenarioId: null,
@@ -90,7 +99,8 @@ describe('AutocompletePrepareService', () => {
           },
           value: '[{}]',
           required: true,
-        }, {
+        },
+        {
           id: 'pd5_6',
           type: 'RadioInput',
           label: 'Пол',
@@ -98,25 +108,25 @@ describe('AutocompletePrepareService', () => {
           attrs: {
             fields: [
               {
-                fieldName: 'gender'
-              }
+                fieldName: 'gender',
+              },
             ],
             supportedValues: [
               {
                 label: 'Мужской',
-                value: 'M'
+                value: 'M',
               },
               {
                 label: 'Женский',
-                value: 'F'
-              }
+                value: 'F',
+              },
             ],
           },
           value: '',
-          visited: false
-        }
+          visited: false,
+        },
       ],
-      subHeader: { text: '', clarifications: {}},
+      subHeader: { text: '', clarifications: {} },
       header: '',
       label: '',
       id: '',
@@ -135,7 +145,7 @@ describe('AutocompletePrepareService', () => {
     serviceId: '487545987',
     currentUrl: '487545987',
   };
-  let mockSuggestionApi: ISuggestionApi[] = [
+  const mockSuggestionApi: ISuggestionApi[] = [
     {
       mnemonic: 'prev_region',
       multiple: false,
@@ -154,13 +164,13 @@ describe('AutocompletePrepareService', () => {
       ],
     },
   ];
-  let mockSuggestionItemList: ISuggestionItemList = {
+  const mockSuggestionItemList: ISuggestionItemList = {
     mnemonic: 'prev_region',
     value: 'value',
     id: 123,
     componentsGroupIndex: 0,
   };
-  let mockAddressInput = {
+  const mockAddressInput = {
     id: 'ddr1',
     type: 'AddressInput',
     label: 'Тест',
@@ -170,11 +180,11 @@ describe('AutocompletePrepareService', () => {
         {
           fieldName: 'regAddr',
           label: 'Адрес',
-          type: 'input'
-        }
-      ]
+          type: 'input',
+        },
+      ],
     },
-    visited: false
+    visited: false,
   };
 
   let deviceDetectorService: DeviceDetectorService;
@@ -224,7 +234,7 @@ describe('AutocompletePrepareService', () => {
       const result = [{ value: 'value', mnemonic: 'prev_region' }];
       autocompleteService.init();
       expect(
-        service['getFormattedHints'](
+        service.getFormattedHints(
           repeatableComponents,
           componentsSuggestionsList,
           fields,
@@ -282,7 +292,7 @@ describe('AutocompletePrepareService', () => {
       expect(spy1).toBeCalled();
       expect(spy2).toBeCalled();
     });
-    it('should call setComponentValue with findAndUpdateComponentsWithValue(... value) if component.type === .AddressInput',() => {
+    it('should call setComponentValue with findAndUpdateComponentsWithValue(... value) if component.type === .AddressInput', () => {
       const spy = jest.spyOn<any, string>(service, 'setComponentValue');
       jest
         .spyOn(AutocompletePrepareService.prototype as any, 'findComponents')
@@ -304,14 +314,14 @@ describe('AutocompletePrepareService', () => {
         const value = '{ "text": "value" }';
         autocompleteService.init();
         expect(
-          service['prepareValue'](repeatableComponents, componentsSuggestionsList, 'value', value),
+          service.prepareValue(repeatableComponents, componentsSuggestionsList, 'value', value),
         ).toBe('value');
       });
       it('if value is not json structure', () => {
-        const value = mockSuggestionItemList.value;
+        const { value } = mockSuggestionItemList;
         autocompleteService.init();
         expect(
-          service['prepareValue'](repeatableComponents, componentsSuggestionsList, 'value', value),
+          service.prepareValue(repeatableComponents, componentsSuggestionsList, 'value', value),
         ).toBe('value');
       });
     });
@@ -325,7 +335,7 @@ describe('AutocompletePrepareService', () => {
       const componentMnemonic = 'prev_region1';
       autocompleteService.init();
       expect(
-        service['findComponents'](
+        service.findComponents(
           mockRepeatableComponents,
           componentsSuggestionsList,
           componentMnemonic,
@@ -340,7 +350,7 @@ describe('AutocompletePrepareService', () => {
       const component = mockData.display.components[0];
       const componentValue = 'value';
       const componentMnemonic = 'prev_region';
-      screenService.suggestions['pd8'] = {
+      screenService.suggestions.pd8 = {
         mnemonic: 'prev_region',
         list: [
           {
@@ -351,7 +361,7 @@ describe('AutocompletePrepareService', () => {
         ],
       };
       expect(
-        service['findComponentValue'](
+        service.findComponentValue(
           component,
           null,
           componentValue,
@@ -366,7 +376,7 @@ describe('AutocompletePrepareService', () => {
     it('should set component with passed value', () => {
       const component = mockData.display.components[0];
       const value = 'value';
-      service['setComponentValue'](component, value);
+      service.setComponentValue(component, value);
       expect(component.value).toEqual(value);
     });
   });
@@ -377,10 +387,10 @@ describe('AutocompletePrepareService', () => {
         visited: true,
         value: '[{"value":"value","ai18":"value"}]',
       };
-      const parentComponent = { id: 'pd8' } as ComponentDto;
+      const newParentComponent = { id: 'pd8' } as ComponentDto;
       const component = { id: 'ai18', value: 'value' } as ComponentDto;
       currentAnswersService.state = [{ value: 'value', ai18: 'value' }];
-      const result = service['prepareCachedAnswers'](parentComponent, component, 0, 'value');
+      const result = service.prepareCachedAnswers(newParentComponent, component, 0, 'value');
       expect(result).toEqual(answer);
     });
   });
@@ -391,10 +401,10 @@ describe('AutocompletePrepareService', () => {
       component.type = 'DateInput';
       const value = '2020-01-01T00:00:00.000Z';
       it('formatted', () => {
-        expect(service['getFormattedValue'](component, value, true)).toEqual('01.01.2020');
+        expect(service.getFormattedValue(component, value, true)).toEqual('01.01.2020');
       });
       it('not formatted', () => {
-        expect(service['getFormattedValue'](component, value, false)).toEqual(
+        expect(service.getFormattedValue(component, value, false)).toEqual(
           datesToolsService.toDate(value),
         );
       });
@@ -406,10 +416,10 @@ describe('AutocompletePrepareService', () => {
       const value = 'F';
 
       it('formatted', () => {
-        expect(service['getFormattedValue'](component, value, true)).toEqual('Женский');
+        expect(service.getFormattedValue(component, value, true)).toEqual('Женский');
       });
       it('not formatted', () => {
-        expect(service['getFormattedValue'](component, value, false)).toEqual(value);
+        expect(service.getFormattedValue(component, value, false)).toEqual(value);
       });
     });
 
@@ -417,24 +427,24 @@ describe('AutocompletePrepareService', () => {
       const component = _cloneDeep(mockData.display.components[0]);
       component.type = 'StringInput';
       let value = '{ "value": "value" }';
-      let result = 'value';
+      const result = 'value';
       it('value via existing json-path in suggestionPath attr', () => {
         component.attrs.suggestionPath = 'value';
-        expect(service['getFormattedValue'](component, value)).toEqual(result);
+        expect(service.getFormattedValue(component, value)).toEqual(result);
       });
       it('undefined value via non existing json-path in suggestionPath attr', () => {
         component.attrs.suggestionPath = 'nonExisting.json.path.value';
-        expect(service['getFormattedValue'](component, value)).toBeUndefined();
+        expect(service.getFormattedValue(component, value)).toBeUndefined();
       });
       it('json-string of finded item in json-stringified array of items', () => {
         component.attrs.suggestionPath = null;
         value = '[{ "pd8": "value"}]';
-        expect(service['getFormattedValue'](component, value)).toEqual(result);
+        expect(service.getFormattedValue(component, value)).toEqual(result);
       });
       it('snils as text if json-object with snils attr passed', () => {
         component.attrs.suggestionPath = null;
         value = '{"snils": "123"}';
-        expect(service['getFormattedValue'](component, value)).toEqual('123');
+        expect(service.getFormattedValue(component, value)).toEqual('123');
       });
     });
   });

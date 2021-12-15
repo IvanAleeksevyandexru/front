@@ -14,10 +14,12 @@ import { Directive, Input } from '@angular/core';
 })
 export class TreeNodeToggleDirective<T> extends CdkTreeNodeToggle<T> {
   static ngAcceptInputType_recursive: boolean;
+
   @Input('epgu-cf-ui-tree-node-toggle-recursive')
   get recursive(): boolean {
     return this._recursive;
   }
+
   set recursive(value: boolean) {
     this._recursive = coerceBooleanProperty(value);
   }

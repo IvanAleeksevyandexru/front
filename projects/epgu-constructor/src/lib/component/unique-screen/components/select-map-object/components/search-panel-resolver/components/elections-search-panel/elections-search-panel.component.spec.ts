@@ -86,10 +86,12 @@ describe('ElectionsSearchPanelComponent', () => {
       .spyOn(dictionaryApiService, 'getDadataSuggestions')
       .mockReturnValue(of(mockedApiServiceResponse as DadataSuggestionsResponse));
 
-    component['providerSearch']()('test').subscribe((response) => {
-      expect(response).toEqual(expectedResult);
-      done();
-    });
+    component
+      .providerSearch()('test')
+      .subscribe((response) => {
+        expect(response).toEqual(expectedResult);
+        done();
+      });
   });
 
   it('returns adress suggestions in expected format', () => {
@@ -97,7 +99,7 @@ describe('ElectionsSearchPanelComponent', () => {
       .spyOn(dictionaryApiService, 'getDadataNormalize')
       .mockImplementation(() => of({ geo_lon: 1, geo_lat: 2, fiasLevel: 3 } as any));
     const spy = jest.spyOn(yandexMapService, 'setCenter');
-    component['lookupChanged']({ address: 'test' } as any);
+    component.lookupChanged({ address: 'test' } as any);
     expect(spy).toBeCalled();
   });
 });

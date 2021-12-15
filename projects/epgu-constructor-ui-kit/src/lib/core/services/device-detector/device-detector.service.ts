@@ -13,8 +13,11 @@ export class DeviceDetectorService {
   // для локальной работы и для наших стендов используется angular пакет device-detector
 
   isMobile: boolean;
+
   isTablet: boolean;
+
   isDesktop: boolean;
+
   isWebView: boolean;
 
   constructor(
@@ -41,8 +44,7 @@ export class DeviceDetectorService {
     return (
       ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
         navigator.platform,
-      ) ||
-      (navigator.userAgent.includes('Mac'))
+      ) || navigator.userAgent.includes('Mac')
     );
   }
 

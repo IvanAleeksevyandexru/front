@@ -3,27 +3,30 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 
+import { MockComponent, MockModule } from 'ng-mocks';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  ScreenContainerModule,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { UploadAndEditPhotoContainerComponent } from './upload-and-edit-photo-container.component';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
-import { MockComponent, MockModule } from 'ng-mocks';
 import { PhotoFormComponent } from '../../../../../shared/components/upload-and-edit-photo-form/components/photo-form/photo-form.component';
 import { PhotoDescriptionComponent } from '../component/photo-description/photo-description.component';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { UserInfoLoaderModule } from '../../../../../shared/components/user-info-loader/user-info-loader.module';
 import { BaseModule } from '../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../shared/components/base-components/base-components.module';
 import { CurrentAnswersService } from '../../../../../screen/current-answers.service';
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../shared/directives/action/action.service.stub';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 describe('UploadAndEditPhotoContainerComponent', () => {
   let component: UploadAndEditPhotoContainerComponent;
   let fixture: ComponentFixture<UploadAndEditPhotoContainerComponent>;
-  let mockData: ComponentDto = {
+  const mockData: ComponentDto = {
     id: 'pd5',
     type: 'PhotoUploadComponent',
     label:

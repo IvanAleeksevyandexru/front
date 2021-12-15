@@ -1,31 +1,53 @@
 import {
-  ComponentDictionaryFilterDto, ComponentFilterDto, CustomComponentRefRelation,
+  ComponentDictionaryFilterDto,
+  ComponentFilterDto,
+  CustomComponentRefRelation,
   DictionaryOptions,
-  DictionaryUrlTypes
+  DictionaryUrlTypes,
 } from '@epgu/epgu-constructor-types';
-import { CustomComponentAttr, CustomComponentDropDownItemList, MappingParamsDto } from '../components-list.types';
+import {
+  CustomComponentAttr,
+  CustomComponentDropDownItemList,
+  MappingParamsDto,
+} from '../components-list.types';
 import GenericAttrs from './GenericAttrs';
 
 export default class DictionarySharedAttrs extends GenericAttrs {
   readonly dictionaryType: string;
+
   readonly lockedValue?: boolean;
+
   readonly repeatWithNoFilters?: boolean;
+
   readonly dictionaryFilter?: ComponentDictionaryFilterDto[];
+
   readonly dictionaryFilters?: ComponentDictionaryFilterDto[][];
+
   readonly secondaryDictionaryFilter?: ComponentDictionaryFilterDto[];
+
   readonly defaultIndex?: number;
+
   readonly searchProvider: {
     dictionaryOptions: DictionaryOptions;
     dictionaryFilter: ComponentDictionaryFilterDto[];
   };
+
   readonly lookupDefaultValue?: string | number;
+
   readonly needUnfilteredDictionaryToo: boolean;
+
   readonly dictionaryOptions?: DictionaryOptions;
+
   readonly dictionaryUrlType?: DictionaryUrlTypes;
+
   readonly filter?: ComponentFilterDto;
+
   readonly add?: { component: string; caption: string[] };
+
   readonly dictionaryList?: CustomComponentDropDownItemList;
+
   readonly mappingParams: MappingParamsDto;
+
   readonly lookupFilterPath: string;
 
   constructor(attrs: CustomComponentAttr) {

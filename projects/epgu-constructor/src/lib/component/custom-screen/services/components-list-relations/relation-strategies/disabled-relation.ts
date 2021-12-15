@@ -1,6 +1,10 @@
 import { BaseRelation } from './base-relation';
 import { CustomComponentRefRelation, KeyValueMap } from '@epgu/epgu-constructor-types';
-import { CustomComponent, CustomComponentRef, CustomListStatusElements } from '../../../components-list.types';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomListStatusElements,
+} from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { isUndefined } from 'lodash';
 
@@ -40,6 +44,7 @@ export class DisabledRelation extends BaseRelation {
     valueControl.markAsUntouched();
     control.disable({ onlySelf: true, emitEvent: false });
   }
+
   /**
    * Возвращает true, если значение у компонента есть хотя бы один реф с relation disabled, у которого значение совпадает
    * со значением контрола

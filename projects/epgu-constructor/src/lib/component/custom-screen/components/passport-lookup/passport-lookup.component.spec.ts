@@ -55,7 +55,7 @@ describe('PassportLookupComponent', () => {
       value: valueControl,
       attrs: new FormControl('fake attrs'),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(PassportLookupComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -79,7 +79,7 @@ describe('PassportLookupComponent', () => {
     expect(debugEl.componentInstance.attrs).toBe('fake attrs');
     expect(debugEl.componentInstance.suggestions).toBeUndefined();
 
-    screenService.suggestions = { someId: { value: 'fake suggestion' }} as any;
+    screenService.suggestions = { someId: { value: 'fake suggestion' } } as any;
     fixture.detectChanges();
     expect(debugEl.componentInstance.suggestions).toEqual({ value: 'fake suggestion' });
   });

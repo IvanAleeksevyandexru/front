@@ -151,8 +151,8 @@ describe('ConfirmPersonalUserDataPipe', () => {
   });
 
   describe('when have fieldGroups', function () {
-    const setup = (fieldGroups: FieldGroup[] = null) => {
-      return { ...componentData, attrs: { ...componentData.attrs, fieldGroups }};
+    const setup = (fields: FieldGroup[] = null) => {
+      return { ...componentData, attrs: { ...componentData.attrs, fieldGroups: fields } };
     };
 
     it('should return the same value if no fieldGroup attrs', () => {
@@ -171,7 +171,7 @@ describe('ConfirmPersonalUserDataPipe', () => {
         fieldGroups,
         componentValue.storedValues,
         '-',
-        true
+        true,
       );
     });
 
@@ -192,24 +192,28 @@ describe('ConfirmPersonalUserDataPipe', () => {
         fieldGroups,
         componentValue.storedValues,
         '-',
-        false
+        false,
       );
     });
 
     describe('when some group has no fields', () => {
       it('should remove group with empty fields', () => {
-        const resultOfInterpolationWithEmptyGroup = [ ...resultOfInterpolation, {
-          groupName: 'Паспорт иностранного гражданина',
-          fields: [
-            {
-              label: 'Поле, которое не представленно массивом полей',
-              value: '-',
-            },
-          ],
-        }];
+        const resultOfInterpolationWithEmptyGroup = [
+          ...resultOfInterpolation,
+          {
+            groupName: 'Паспорт иностранного гражданина',
+            fields: [
+              {
+                label: 'Поле, которое не представленно массивом полей',
+                value: '-',
+              },
+            ],
+          },
+        ];
 
         const fieldGroupsWithEmptyGroup = [
-          ...fieldGroups, {
+          ...fieldGroups,
+          {
             groupName: 'Паспорт иностранного гражданина',
             fields: [
               {
@@ -217,9 +221,12 @@ describe('ConfirmPersonalUserDataPipe', () => {
                 value: '${undefined}',
               },
             ],
-          }] as FieldGroup[];
+          },
+        ] as FieldGroup[];
 
-        const interpolationSpy = jest.spyOn(service, 'interpolateRecursive').mockReturnValue(resultOfInterpolationWithEmptyGroup);
+        const interpolationSpy = jest
+          .spyOn(service, 'interpolateRecursive')
+          .mockReturnValue(resultOfInterpolationWithEmptyGroup);
 
         const data = setup(fieldGroupsWithEmptyGroup);
         const expected = {
@@ -236,7 +243,7 @@ describe('ConfirmPersonalUserDataPipe', () => {
           fieldGroupsWithEmptyGroup,
           componentValue.storedValues,
           '-',
-          true
+          true,
         );
       });
     });

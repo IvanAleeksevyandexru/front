@@ -1,5 +1,15 @@
-import { ValidationTypeModule } from '../../shared/directives/validation-type/validation-type.module';
 import { NgModule } from '@angular/core';
+import {
+  ConstructorCheckboxModule,
+  ConstructorDropdownModule,
+  ConstructorLookupModule,
+  InputErrorModule,
+  MemoModule,
+  CurrencyModule,
+} from '@epgu/epgu-constructor-ui-kit';
+import { FormsModule } from '@angular/forms';
+import { PluralizeModule } from '@epgu/ui/pipes';
+import { ValidationTypeModule } from '../../shared/directives/validation-type/validation-type.module';
 import { ValidationService } from '../../shared/services/validation/validation.service';
 import { AddressHelperService } from '../../shared/services/address-helper/address-helper.service';
 import { ComponentsListToolsService } from './services/components-list-tools/components-list-tools.service';
@@ -10,14 +20,6 @@ import { ConstructorPlainInputModule } from '../../shared/components/constructor
 import { ConstructorMaskedInputModule } from '../../shared/components/constructor-masked-input/constructor-masked-input.module';
 import { PassportModule } from '../../shared/components/add-passport/passport.module';
 import { ConstructorDadataWidgetModule } from '../../shared/components/constructor-dadata-widget/constructor-dadata-widget.module';
-import {
-  ConstructorCheckboxModule,
-  ConstructorDropdownModule,
-  ConstructorLookupModule,
-  InputErrorModule,
-  MemoModule,
-  CurrencyModule,
-} from '@epgu/epgu-constructor-ui-kit';
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { FieldListModule } from '../../shared/components/field-list/field-list.module';
 import { ConstructorDatePickerModule } from '../../shared/components/constructor-date-picker/constructor-date-picker.module';
@@ -71,11 +73,9 @@ import { InterpolationService } from '../../shared/services/interpolation/interp
 import { FormDisclaimerComponent } from './components/form-disclaimer/form-disclaimer.component';
 import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
 import { SignAppLinkComponent } from './components/sign-app-link/sign-app-link.component';
-import { FormsModule } from '@angular/forms';
 import { ConfirmPersonalPolicyChangeModule } from './components/confirm-personal-policy-change/confirm-personal-policy-change.module';
 import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-personal-policy-change/confirm-personal-policy-change.component';
 import { MaritalStatusInputModule } from './components/marital-status-input/marital-status-input.module';
-import { PluralizeModule } from '@epgu/ui/pipes';
 import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-draft-handler/kinder-garten-draft-handler.component';
 import { RelationResolverService } from './services/components-list-relations/relation-resolver.service';
 

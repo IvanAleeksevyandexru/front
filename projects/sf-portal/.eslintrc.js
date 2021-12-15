@@ -1,14 +1,9 @@
 module.exports = {
+  root: true,
   extends: ['plugin:@angular-eslint/recommended'],
   rules: {
-    '@angular-eslint/directive-selector': [
-      'error',
-      { type: 'attribute', style: 'kebab-case' },
-    ],
-    '@angular-eslint/component-selector': [
-      'error',
-      { type: 'element', style: 'kebab-case' },
-    ],
+    '@angular-eslint/directive-selector': ['error', { type: 'attribute', style: 'kebab-case' }],
+    '@angular-eslint/component-selector': ['error', { type: 'element', style: 'kebab-case' }],
     semi: 'off',
     '@typescript-eslint/semi': ['error'],
     'no-empty-function': ['error', { allow: ['constructors'] }],

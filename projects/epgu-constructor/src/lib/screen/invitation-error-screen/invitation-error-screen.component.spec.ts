@@ -3,9 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { ApplicantAnswersDto, ComponentDto } from '@epgu/epgu-constructor-types';
+import { EventBusService, EventBusServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../current-answers.service';
 import { CurrentAnswersServiceStub } from '../current-answers-service.stub';
-import { EventBusService, EventBusServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { InvitationComponent } from '../../component/invitation-error-screen/components/invitation/invitation.component';
 import { InvitationErrorScreenComponent } from './invitation-error-screen.component';
 import { InvitationTypes } from '../../component/invitation-error-screen/invitation.types';
@@ -50,10 +50,7 @@ describe('InvitationErrorScreenComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        InvitationErrorScreenComponent,
-        MockComponent(InvitationComponent),
-      ],
+      declarations: [InvitationErrorScreenComponent, MockComponent(InvitationComponent)],
       providers: [
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: EventBusService, useClass: EventBusServiceStub },

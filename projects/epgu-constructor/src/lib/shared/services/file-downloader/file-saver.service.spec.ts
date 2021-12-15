@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { FileSaverService } from './file-saver.service';
 import * as FileSaver from 'file-saver';
+import { FileSaverService } from './file-saver.service';
 
 describe('FileSaverService', () => {
   let service: FileSaverService;

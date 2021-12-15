@@ -3,12 +3,11 @@ import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MockComponent, MockModule } from 'ng-mocks';
 
+import { ConstructorDropdownModule, ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { InformationCenterFormComponent } from './information-center-form.component';
-import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { InformationCenterCardComponent } from '../information-center-card/information-center-card.component';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 
 describe('InformationCenterFormComponent', () => {
   let component: InformationCenterFormComponent;

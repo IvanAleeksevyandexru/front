@@ -17,7 +17,7 @@ describe('DeviceDetectorService', () => {
       providers: [
         DeviceDetectorService,
         { provide: LoadService, useClass: LoadServiceStub },
-        { provide: WINDOW, useValue: { navigator: {}}},
+        { provide: WINDOW, useValue: { navigator: {} } },
         SmuEventsService,
       ],
     }).compileComponents();
@@ -61,7 +61,9 @@ describe('DeviceDetectorService', () => {
   });
 
   it('is IOS', () => {
-    userAgent.mockReturnValue('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8');
+    userAgent.mockReturnValue(
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8',
+    );
     expect(deviceDetectorService.isIOS()).toBe(true);
   });
 

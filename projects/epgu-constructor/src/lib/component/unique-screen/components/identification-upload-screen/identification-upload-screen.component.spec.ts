@@ -75,8 +75,8 @@ describe('IdentificationUploadScreenComponent', () => {
   describe('getRequest()', () => {
     const uploadedFile = {} as UploadedFile;
     it('should call selfieIdentification api', () => {
-      const spy = jest.spyOn(component['identification'], 'selfieIdentification');
-      screenService.component = ({ arguments: { faceId: '1' }} as unknown) as ComponentDto;
+      const spy = jest.spyOn(component.identification, 'selfieIdentification');
+      screenService.component = ({ arguments: { faceId: '1' } } as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile);
 
@@ -84,8 +84,8 @@ describe('IdentificationUploadScreenComponent', () => {
     });
 
     it('should call selfie passportIdentification api', () => {
-      const spy = jest.spyOn(component['identification'], 'passportIdentification');
-      screenService.component = ({ arguments: { faceId: '' }} as unknown) as ComponentDto;
+      const spy = jest.spyOn(component.identification, 'passportIdentification');
+      screenService.component = ({ arguments: { faceId: '' } } as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile);
 
@@ -97,12 +97,12 @@ describe('IdentificationUploadScreenComponent', () => {
         quality: { test: 1.211 },
       } as unknown) as PassportIdentificationResponse;
       const spy = jest
-        .spyOn(component['identification'], 'passportIdentification')
+        .spyOn(component.identification, 'passportIdentification')
         .mockImplementation((...args) => of(mockQualityResponse));
-      screenService.component = ({ arguments: { faceId: '' }} as unknown) as ComponentDto;
+      screenService.component = ({ arguments: { faceId: '' } } as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile).subscribe((value) => {
-        const state: any = component['currentAnswersService'].state;
+        const state: any = component.currentAnswersService.state;
         expect(state.quality.test).toEqual(121);
         done();
       });
@@ -116,12 +116,12 @@ describe('IdentificationUploadScreenComponent', () => {
         similaritySelfieFaceId: 1.211,
       } as unknown) as PassportIdentificationResponse;
       jest
-        .spyOn(component['identification'], 'passportIdentification')
+        .spyOn(component.identification, 'passportIdentification')
         .mockImplementation((...args) => of(mockQualityResponse));
-      screenService.component = ({ arguments: { faceId: '' }} as unknown) as ComponentDto;
+      screenService.component = ({ arguments: { faceId: '' } } as unknown) as ComponentDto;
 
       component.getRequest(uploadedFile).subscribe((value) => {
-        const state: any = component['currentAnswersService'].state;
+        const state: any = component.currentAnswersService.state;
         expect(state.similarity).toEqual(121);
         expect(state.similarityFaceId).toEqual(121);
         expect(state.similaritySelfieFaceId).toEqual(121);

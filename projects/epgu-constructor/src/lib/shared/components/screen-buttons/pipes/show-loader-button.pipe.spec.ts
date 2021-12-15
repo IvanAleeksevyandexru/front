@@ -1,5 +1,5 @@
-import { ShowLoaderButtonPipe } from './show-loader-button.pipe';
 import { ScreenButton, DTOActionAction } from '@epgu/epgu-constructor-types';
+import { ShowLoaderButtonPipe } from './show-loader-button.pipe';
 
 describe('ShowLoaderButtonPipe', () => {
   let pipe: ShowLoaderButtonPipe;

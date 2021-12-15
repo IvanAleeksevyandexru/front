@@ -13,16 +13,22 @@ import { createComponentMock, setupForRelationStrategy } from '../components-lis
 
 describe('DisplayOffRelation', () => {
   let relation: DisplayOffRelation;
-  let componentVal =  { foo: 'bar' };
-  const refRelationService: RefRelationService = MockService(RefRelationService, {
-    isDisplayOnRelation: jest.fn().mockImplementation(
-      (relation: CustomComponentRefRelation) => relation === CustomComponentRefRelation.displayOn
-    ),
-    isDisplayOffRelation: jest.fn().mockImplementation(
-      (relation: CustomComponentRefRelation) => relation === CustomComponentRefRelation.displayOff
-    ),
+  let componentVal = { foo: 'bar' };
+  const refRelationService: RefRelationService = (MockService(RefRelationService, {
+    isDisplayOnRelation: jest
+      .fn()
+      .mockImplementation(
+        (refRelation: CustomComponentRefRelation) =>
+          refRelation === CustomComponentRefRelation.displayOn,
+      ),
+    isDisplayOffRelation: jest
+      .fn()
+      .mockImplementation(
+        (refRelation: CustomComponentRefRelation) =>
+          refRelation === CustomComponentRefRelation.displayOff,
+      ),
     isValueEquals: jest.fn().mockReturnValue(false),
-  }) as unknown as RefRelationService;
+  }) as unknown) as RefRelationService;
 
   beforeEach(() => {
     relation = new DisplayOffRelation(refRelationService);
@@ -41,13 +47,7 @@ describe('DisplayOffRelation', () => {
 
     dependentControl.markAsTouched();
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     // потому что isShown === false AND isDisplayOn
     expect(dependentControl.touched).toBeTruthy();
@@ -68,18 +68,12 @@ describe('DisplayOffRelation', () => {
       shownElements,
     } = setupForRelationStrategy({
       referenceExtra: { relation: CustomComponentRefRelation.displayOff },
-      dependentComponentStatusExtra: { isShown: true }
+      dependentComponentStatusExtra: { isShown: true },
     });
 
     dependentControl.markAsTouched();
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     // потому что isShown === true
     expect(dependentControl.touched).toBeFalsy();
@@ -100,18 +94,12 @@ describe('DisplayOffRelation', () => {
       shownElements,
     } = setupForRelationStrategy({
       referenceExtra: { relation: CustomComponentRefRelation.displayOff },
-      dependentComponentStatusExtra: { relation: CustomComponentRefRelation.getValue }
+      dependentComponentStatusExtra: { relation: CustomComponentRefRelation.getValue },
     });
 
     dependentControl.markAsTouched();
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     // потому что NOT isDisplayOn
     expect(dependentControl.touched).toBeFalsy();
@@ -136,8 +124,7 @@ describe('DisplayOffRelation', () => {
       value: false,
       id: 'rp1_2',
     });
-    const form3 = fb.group({ ...createComponentMock(),
-      id: 'rp1_3', });
+    const form3 = fb.group({ ...createComponentMock(), id: 'rp1_3' });
     const mockForm = new FormArray([form1, form2, form3]);
 
     const shownElements: CustomListStatusElements = {
@@ -152,7 +139,7 @@ describe('DisplayOffRelation', () => {
       rp1_3: {
         isShown: true,
         relation: CustomComponentRefRelation.displayOff,
-      }
+      },
     };
     const dependentComponent: CustomComponent = {
       attrs: {
@@ -166,11 +153,11 @@ describe('DisplayOffRelation', () => {
             relatedRel: 'rp1_2',
             val: true,
             relation: CustomComponentRefRelation.displayOff,
-          }
-        ]
+          },
+        ],
       },
       id: 'rp1_3',
-      type: CustomScreenComponentTypes.LabelSection
+      type: CustomScreenComponentTypes.LabelSection,
     };
     const reference: CustomComponentRef = {
       relatedRel: 'rp1_3',
@@ -178,17 +165,11 @@ describe('DisplayOffRelation', () => {
       val: true,
     };
 
-    expect(shownElements['rp1_3'].isShown).toEqual(true);
+    expect(shownElements.rp1_3.isShown).toEqual(true);
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      {},
-      mockForm,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, {}, mockForm);
 
-    expect(shownElements['rp1_3'].isShown).toEqual(false);
+    expect(shownElements.rp1_3.isShown).toEqual(false);
   });
 
   it('should not be broken if one of the elements is not on form, but go from user answers', () => {
@@ -204,8 +185,7 @@ describe('DisplayOffRelation', () => {
       value: false,
       id: 'rp1_2',
     });
-    const form3 = fb.group({ ...createComponentMock(),
-      id: 'rp1_3', });
+    const form3 = fb.group({ ...createComponentMock(), id: 'rp1_3' });
     const mockForm = new FormArray([form1, form2, form3]);
 
     const shownElements: CustomListStatusElements = {
@@ -220,7 +200,7 @@ describe('DisplayOffRelation', () => {
       rp1_3: {
         isShown: true,
         relation: CustomComponentRefRelation.displayOff,
-      }
+      },
     };
     const dependentComponent: CustomComponent = {
       attrs: {
@@ -234,11 +214,11 @@ describe('DisplayOffRelation', () => {
             relatedRel: 'rp1_1',
             val: true,
             relation: CustomComponentRefRelation.displayOff,
-          }
-        ]
+          },
+        ],
       },
       id: 'rp1_3',
-      type: CustomScreenComponentTypes.LabelSection
+      type: CustomScreenComponentTypes.LabelSection,
     };
     const reference: CustomComponentRef = {
       relatedRel: 'rel_from_answers',
@@ -246,16 +226,10 @@ describe('DisplayOffRelation', () => {
       val: true,
     };
 
-    expect(shownElements['rp1_3'].isShown).toEqual(true);
+    expect(shownElements.rp1_3.isShown).toEqual(true);
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      {},
-      mockForm,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, {}, mockForm);
 
-    expect(shownElements['rp1_3'].isShown).toEqual(false);
+    expect(shownElements.rp1_3.isShown).toEqual(false);
   });
 });

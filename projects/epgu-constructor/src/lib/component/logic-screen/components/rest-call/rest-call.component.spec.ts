@@ -19,7 +19,7 @@ import {
   LogicComponentEventTypes,
   LogicComponentMethods,
   AttributeTypes,
-  DictionaryConditions
+  DictionaryConditions,
 } from '@epgu/epgu-constructor-types';
 import RestCallComponent from './rest-call.component';
 import { LogicComponentsContainerComponent } from '../../component/logic-components-container.component';
@@ -215,7 +215,7 @@ describe('RestCallComponent', () => {
       .map(prepareDataAfterFetch);
 
     component.ngOnInit();
-    hooks['ON_BEFORE_SUBMIT'][0].subscribe();
+    hooks.ON_BEFORE_SUBMIT[0].subscribe();
 
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenNthCalledWith(1, expectedValue2);
@@ -249,7 +249,7 @@ describe('RestCallComponent', () => {
       .map(prepareDataAfterFetch);
 
     component.ngOnInit();
-    hooks['ON_BEFORE_REJECT'][0].subscribe();
+    hooks.ON_BEFORE_REJECT[0].subscribe();
 
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenNthCalledWith(1, expectedValue2);

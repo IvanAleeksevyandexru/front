@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListToolsService } from './components-list-tools.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 
 describe('ComponentsListToolsService', () => {
   let service: ComponentsListToolsService;
-  let mockComponent: CustomComponent = {
+  const mockComponent: CustomComponent = {
     id: 'rf1',
     type: CustomScreenComponentTypes.StringInput,
     label: 'Прежняя фамилия',

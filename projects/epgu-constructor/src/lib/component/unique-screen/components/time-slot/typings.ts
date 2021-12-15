@@ -96,12 +96,12 @@ export interface ErrorTemplate {
   checkboxLabel?: string;
   button?: ScreenButton;
 }
-export type nextHandler = (error: TimeSlotError) => void;
+export type NextHandler = (error: TimeSlotError) => void;
 
 export type TimeSlotErrorHandler = (
   error?: TimeSlotError,
   injector?: Injector,
-  next?: nextHandler,
+  next?: NextHandler,
 ) => void;
 
 export enum TimeSlotTemplateType {

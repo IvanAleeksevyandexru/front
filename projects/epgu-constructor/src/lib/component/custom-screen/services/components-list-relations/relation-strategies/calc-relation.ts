@@ -1,6 +1,10 @@
 import { BaseRelation } from './base-relation';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { CustomComponent, CustomComponentRef, CustomListStatusElements } from '../../../components-list.types';
+import {
+  CustomComponent,
+  CustomComponentRef,
+  CustomListStatusElements,
+} from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
 
 export class CalcRelation extends BaseRelation {
@@ -21,6 +25,7 @@ export class CalcRelation extends BaseRelation {
 
     return this.afterHandleRelation(shownElements, dependentComponent, form);
   }
+
   /**
    * Подсчитывает автовычисляемое значение из формулы, которую передали
    * @param itemRef - объект с информацией о связи

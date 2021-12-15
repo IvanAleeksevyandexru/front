@@ -39,7 +39,7 @@ const mockFileItem: (status?: FileItemStatus, fileName?: string) => FileItem = (
   fileName?: string,
 ) =>
   new FileItem(
-    (status ? status : FileItemStatus.uploaded) as FileItemStatus,
+    (status || FileItemStatus.uploaded) as FileItemStatus,
     '',
     null,
     createUploadedFileMock((fileName ? { fileName } : {}) as Partial<TerraUploadFileOptions>),
