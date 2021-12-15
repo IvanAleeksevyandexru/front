@@ -5,6 +5,7 @@ import {
   BaseUiModule,
   ConfigService,
   ErrorModule,
+  IconsModule,
   ImgPrefixerModule,
   PrevButtonModule,
   SafeModule,
@@ -44,6 +45,7 @@ import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-re
     SafeModule,
     ImgPrefixerModule,
     PrevButtonModule,
+    IconsModule,
   ],
   providers: [DictionaryService, ConfigService, ApiService, StateService],
   exports: [

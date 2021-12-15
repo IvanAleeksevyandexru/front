@@ -1,0 +1,1 @@
+<svg [attr.width]="width" [attr.height]="height" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="11" y="4" width="2" height="16" rx="1" [attr.fill]="color" /><rect x="4" y="13.334" width="2" height="16" rx="1" transform="rotate(-90 4 13.334)" [attr.fill]="color"/></svg>

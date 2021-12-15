@@ -6,6 +6,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   ActivatedRouteStub,
+  IconsModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -78,7 +79,13 @@ describe('UploaderViewerContentComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderViewerContentComponent],
-      imports: [BaseUiModule, MockModule(ZoomModule), HttpClientModule, FileSizeModule],
+      imports: [
+        BaseUiModule,
+        MockModule(ZoomModule),
+        HttpClientModule,
+        FileSizeModule,
+        IconsModule,
+      ],
       providers: [
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from 'lodash';
-import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { UnsubscribeService, ConfigService, BaseComponent } from '@epgu/epgu-constructor-ui-kit';
 
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -22,7 +22,7 @@ type PersonalUserPhoneEmailWithErrors = ComponentBase & {
   styleUrls: ['./confirm-personal-user-phone-email.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
+export class ConfirmPersonalUserPhoneEmailComponent extends BaseComponent implements OnInit {
   data$ = this.screenService.component$.pipe(
     map<PersonalUserPhoneEmailWithErrors, PersonalUserPhoneEmailWithErrors>((data) => ({
       ...data,
@@ -38,7 +38,9 @@ export class ConfirmPersonalUserPhoneEmailComponent implements OnInit {
     public config: ConfigService,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetectionRef: ChangeDetectorRef,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {

@@ -4,6 +4,7 @@ import {
   ConstructorCheckboxModule,
   MemoModule,
   DatesToolsService,
+  IconsModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryDataSourceService } from './services/employee-history.data-source.service';
 import { EmployeeHistoryFormService } from './services/employee-history.form.service';
@@ -39,6 +40,7 @@ import { ClickableLabelModule } from '../../../../shared/directives/clickable-la
     MemoModule,
     DefaultUniqueScreenWrapperModule,
     ClickableLabelModule,
+    IconsModule,
   ],
   exports: [
     EmployeeHistoryContainerComponent,

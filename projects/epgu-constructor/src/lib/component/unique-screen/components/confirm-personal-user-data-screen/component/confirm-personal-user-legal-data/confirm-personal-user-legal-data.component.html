@@ -39,10 +39,11 @@
     <div class="data-footer" *ngIf="screenService.action?.type">
       <div class="divider"></div>
       <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
-        <img
+        <epgu-cf-ui-icon
           class="btn-edit__icon"
-          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/edit.svg"
-        />
+          [type]="iconType.PencilLine"
+          [mainColor]="iconColor.BaseGosblue"
+        ></epgu-cf-ui-icon>
         <span class="btn-edit__text" *ngIf="screenService.action$ | async as action">{{
           action.label
         }}</span>

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MemoModule } from '@epgu/epgu-constructor-ui-kit';
+import { MemoModule, IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { LyImageCropperModule } from '@alyle/ui/image-cropper';
 import { AngularResizedEventModule } from 'angular-resize-event';
 import { FormsModule } from '@angular/forms';
@@ -33,6 +33,7 @@ const COMPONENTS = [FileUploadComponent, FileUploadPreviewComponent, FileUploadS
     MemoModule,
     FormsModule,
     PluralizeModule,
+    IconsModule,
   ],
   providers: [],
   entryComponents: [...COMPONENTS],

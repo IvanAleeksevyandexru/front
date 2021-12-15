@@ -21,45 +21,8 @@
       @include tablets-up() {
         display: none;
       }
-      .icon {
-        width: 24px;
-        height: 24px;
-        background-repeat: no-repeat;
-        background-color: transparent;
-        box-sizing: content-box;
-        border: none;
-        padding: 0 12px;
-        background-position: 50% 50%;
-        border-right: 1px solid $color-blu-selvaggio;
+      display: flex;
 
-        &:first-child {
-          padding-left: 0;
-          background-position: calc(50% - 6px) 50%;
-        }
-        &:last-child {
-          border-right: none;
-          padding-right: 0;
-          background-position: calc(50% + 6px) 50%;
-        }
-      }
-
-      .map {
-        background-image: url('../../../../../../../assets/icons/svg/map.svg');
-
-        &.active {
-          background-image: url('../../../../../../../assets/icons/svg/map-active.svg');
-          cursor: default;
-        }
-      }
-
-      .list {
-        background-image: url('../../../../../../../assets/icons/svg/menu.svg');
-
-        &.active {
-          background-image: url('../../../../../../../assets/icons/svg/menu-active.svg');
-          cursor: default;
-        }
-      }
     }
   }
   &__title {
@@ -80,4 +43,9 @@
 }
 ::ng-deep.map-search-panel__title > p {
   font-size: $font-sm;
+}
+.vertical-divider {
+  margin: 0 12px;
+  width: 1px;
+  border-right: 1px solid $color-blu-selvaggio;
 }

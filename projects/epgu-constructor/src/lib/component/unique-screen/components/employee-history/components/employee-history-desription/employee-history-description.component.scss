@@ -42,13 +42,6 @@
       display: flex;
     }
 
-    &__icon {
-      margin-left: auto;
-      width: 24px;
-      height: 24px;
-      background-image: url('../../../../../../../assets/icons/svg/progress_form.svg');
-    }
-
     &__msg {
       padding-top: 0;
     }
@@ -57,9 +50,6 @@
   &__completed {
     &__icon {
       margin-left: auto;
-      width: 33px;
-      height: 32px;
-      background-image: url('../../../../../../../assets/icons/svg/complete_form.svg');
     }
   }
 

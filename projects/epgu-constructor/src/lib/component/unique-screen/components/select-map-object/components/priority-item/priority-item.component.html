@@ -7,14 +7,24 @@
         [ngClass]="{ disabled: !isDown || disabled }"
         class="priority-header__action down"
       >
-        <img [src]="arrowPath" alt="Опустить" />
+        <epgu-cf-ui-icon
+          [type]="iconType.DirectionArrow"
+          [mainColor]="iconColor.White"
+          [width]="10"
+          [height]="6">
+        </epgu-cf-ui-icon>
       </button>
       <button
         (click)="upAction()"
         [ngClass]="{ disabled: !isUp || disabled }"
         class="priority-header__action up"
       >
-        <img [src]="arrowPath" alt="Поднять" />
+        <epgu-cf-ui-icon
+          [type]="iconType.DirectionArrow"
+          [mainColor]="iconColor.White"
+          [width]="10"
+          [height]="6">
+        </epgu-cf-ui-icon>
       </button>
     </div>
   </div>

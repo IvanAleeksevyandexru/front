@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PluralizeModule } from '@epgu/ui/pipes';
+import { IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../base.module';
 import { UserInfoLoaderModule } from '../../user-info-loader/user-info-loader.module';
 import { UploaderModule } from '../../uploader/uploader.module';
@@ -17,7 +18,14 @@ const COMPONENTS = [FileUploadItemComponent, FileUploadContainerComponent];
 @NgModule({
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
-  imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule, PluralizeModule],
+  imports: [
+    BaseModule,
+    UserInfoLoaderModule,
+    UploaderModule,
+    FileSizeModule,
+    PluralizeModule,
+    IconsModule,
+  ],
   providers: [
     UploaderStoreService,
     UploaderValidationService,

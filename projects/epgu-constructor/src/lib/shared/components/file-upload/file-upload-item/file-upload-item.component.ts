@@ -18,6 +18,7 @@ import {
   UnsubscribeService,
   ConfigService,
   BusEventType,
+  BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
@@ -52,7 +53,7 @@ import { UploaderButtonComponent } from '../../uploader/components/uploader-butt
   styleUrls: ['./file-upload-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FileUploadItemComponent implements OnInit, OnDestroy {
+export class FileUploadItemComponent extends BaseComponent implements OnInit, OnDestroy {
   @Input() clarification: Clarifications;
   @Input() set initFiles(files: UploadedFile[]) {
     this.uploader.maxFileNumber = -1;
@@ -149,7 +150,9 @@ export class FileUploadItemComponent implements OnInit, OnDestroy {
     private validation: UploaderValidationService,
     private process: UploaderProcessService,
     private cdRef: ChangeDetectorRef,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     // TODO Добавить динамическое значение в enum BusEventType после обновления typescript

@@ -17,6 +17,7 @@ import {
   HttpCancelService,
   DatesToolsService,
   DATE_STRING_DOT_FORMAT,
+  BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -35,7 +36,8 @@ import { FieldNames } from '../../../registration-addr/registration-addr-screen.
   providers: [UnsubscribeService],
   changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
 })
-export class ConfirmPersonalUserAddressReadonlyComponent implements OnInit, OnDestroy {
+export class ConfirmPersonalUserAddressReadonlyComponent extends BaseComponent
+  implements OnInit, OnDestroy {
   public data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
     ConfirmAddressInterface
   >;
@@ -54,7 +56,9 @@ export class ConfirmPersonalUserAddressReadonlyComponent implements OnInit, OnDe
     private changeDetectionRef: ChangeDetectorRef,
     private datesToolsService: DatesToolsService,
     private httpCancelService: HttpCancelService,
-  ) {}
+  ) {
+    super();
+  }
 
   public ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => this.onDataChange(data));

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenPadModule, IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmPersonalUserDataComponent } from './component/confirm-personal-user-data/confirm-personal-user-data.component';
 import { FieldListModule } from '../../../../shared/components/field-list/field-list.module';
 import { BaseModule } from '../../../../shared/base.module';
@@ -22,6 +22,7 @@ import { ConfirmPersonalUserDataPipe } from './confirm-personal-user-data.pipe';
     ScreenPadModule,
     DefaultUniqueScreenWrapperModule,
     DisclaimerModule,
+    IconsModule,
   ],
   entryComponents: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent],
 })

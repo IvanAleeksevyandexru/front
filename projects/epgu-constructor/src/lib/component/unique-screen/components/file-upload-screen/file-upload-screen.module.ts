@@ -9,6 +9,7 @@ import { UserInfoLoaderModule } from '../../../../shared/components/user-info-lo
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
 import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
+import { UniqueScreenService } from '../../unique-screen.service';
 
 @NgModule({
   declarations: [FileUploadScreenComponent],
@@ -24,6 +25,6 @@ import { UploaderScreenService } from '../../../../shared/components/file-upload
     FileSizeModule,
   ],
   entryComponents: [FileUploadScreenComponent],
-  providers: [UploaderScreenService],
+  providers: [UploaderScreenService, UniqueScreenService],
 })
 export class FileUploadScreenModule {}

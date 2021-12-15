@@ -120,8 +120,6 @@
       padding: 0;
       outline: none;
       background-color: $color-white;
-      width: 24px;
-      height: 24px;
       border: none;
     }
 
@@ -178,8 +176,7 @@
       margin-top: 28px;
       width: 216px;
 
-      img {
-        width: 27px;
+      &__icon {
         margin-right: 8px;
       }
     }
@@ -212,7 +209,7 @@
         }
       }
 
-      img {
+      &__icon {
         margin-right: 16px;
       }
     }

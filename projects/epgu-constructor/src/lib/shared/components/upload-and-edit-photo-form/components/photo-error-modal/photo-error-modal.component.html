@@ -19,7 +19,14 @@
       </div>
       <div class="photo-error-modal__button">
         <lib-button color="white" (click)="choseAnotherPhoto()">
-          <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/clip.svg" alt="" />
+          <epgu-cf-ui-icon
+            class="photo-error-modal__button__icon"
+            [type]="iconType.Clip"
+            [width]="20"
+            [height]="20"
+            [mainColor]="iconColor.BaseGosblue"
+          >
+          </epgu-cf-ui-icon>
           Загрузить фото
         </lib-button>
       </div>

@@ -186,12 +186,7 @@ input[type='file'] {
 .fileupload {
   &__icon {
     display: inline-block;
-    background-color: $color-gosblue;
-    mask: url('../../../../../assets/icons/svg/clock.svg');
-    mask-size: 100%;
     margin-right: 8px;
-    width: 20px;
-    height: 20px;
     transform: translateY(2px);
   }
 }

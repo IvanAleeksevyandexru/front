@@ -67,7 +67,12 @@
         [hidden]="status.zoom >= status.max && status.max != 1"
         (click)="zoomIn()"
       >
-        <img [src]="basePath + 'zoom-in-white.svg'" alt="Приблизить" />
+        <epgu-cf-ui-icon
+          class="viewer__toolbar-action__icon"
+          [type]="iconType.ZoomInMagnifyingGlass"
+          [mainColor]="iconColor.White"
+        >
+        </epgu-cf-ui-icon>
         <span>Приблизить</span>
       </button>
       <button
@@ -76,7 +81,11 @@
         [disabled]="isError"
         (click)="zoomOut()"
       >
-        <img [src]="basePath + 'zoom-out-white.svg'" alt="Отдалить" />
+        <epgu-cf-ui-icon
+          class="viewer__toolbar-action__icon"
+          [type]="iconType.ZoomOutMagnifyingGlass"
+          [mainColor]="iconColor.White"
+        ></epgu-cf-ui-icon>
         <span>Отдалить</span>
       </button>
     </ng-container>
@@ -86,7 +95,11 @@
       class="viewer__toolbar-action download-action hide-text"
       (click)="downloadAction()"
     >
-      <img [src]="basePath + 'download.svg'" alt="Скачать" />
+      <epgu-cf-ui-icon
+        class="viewer__toolbar-action__icon"
+        [type]="iconType.Download"
+        [mainColor]="iconColor.White"
+      ></epgu-cf-ui-icon>
       <span>Скачать</span>
     </button>
     <button
@@ -94,7 +107,11 @@
       class="viewer__toolbar-action suggest-action hide-text"
       (click)="confirmAction()"
     >
-      <img [src]="basePath + 'remove-file.svg'" alt="Удалить" />
+      <epgu-cf-ui-icon
+        class="viewer__toolbar-action__icon"
+        [type]="iconType.Trash"
+        [mainColor]="iconColor.White"
+      ></epgu-cf-ui-icon>
       <span>Удалить</span>
     </button>
     <div class="viewer__toolbar-counter">{{ position }}/{{ size }}</div>
@@ -104,7 +121,12 @@
       *ngIf="!readonly && type === filesType.suggest && !item.attached"
       (click)="suggestAction(true)"
     >
-      <img [src]="basePath + 'plus-white.svg'" alt="Прикрепить" />
+      <epgu-cf-ui-icon
+        class="viewer__toolbar-action__icon"
+        [type]="iconType.Plus"
+        [mainColor]="iconColor.White"
+      >
+      </epgu-cf-ui-icon>
       <span>Добавить</span>
     </button>
     <button
@@ -113,7 +135,11 @@
       *ngIf="!readonly && type === filesType.suggest && item.attached"
       (click)="suggestAction(false)"
     >
-      <img [src]="basePath + 'arrow-back-white.svg'" alt="Открепить" />
+      <epgu-cf-ui-icon
+        class="viewer__toolbar-action__icon"
+        [type]="iconType.CurveArrow"
+        [mainColor]="iconColor.White"
+      ></epgu-cf-ui-icon>
       <span>Убрать</span>
     </button>
   </div>

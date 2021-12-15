@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { A11yModule } from '@angular/cdk/a11y';
 
-import { BaseUiModule, ModalService, SharedModalModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  BaseUiModule,
+  IconsModule,
+  ModalService,
+  SharedModalModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ConfirmationModalComponent } from './confirmation-modal.component';
 import { BaseModule } from '../../shared/base.module';
@@ -20,6 +25,7 @@ import { AnswerButtonModule } from '../../shared/components/answer-button/answer
     SharedModalModule,
     ClipboardModule,
     AnswerButtonModule,
+    IconsModule,
   ],
   entryComponents: [ConfirmationModalComponent],
 })

@@ -11,6 +11,7 @@ import {
   DeviceDetectorService,
   ConfigService,
   createDownloadEvent,
+  BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 
@@ -29,7 +30,7 @@ import { SuggestActions } from '../../../../constants/suggest';
   styleUrls: ['./uploader-viewer-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploaderViewerContentComponent {
+export class UploaderViewerContentComponent extends BaseComponent {
   @ViewChild('zoomComponent') zoomComponent!: ZoomComponent;
   @Input() type: FilesCollection;
 
@@ -68,7 +69,9 @@ export class UploaderViewerContentComponent {
     private deviceDetector: DeviceDetectorService,
     private teraService: TerraByteApiService,
     private monitor: SuggestMonitorService,
-  ) {}
+  ) {
+    super();
+  }
 
   zoomMoveEnd(): void {
     this.moveZoom.next(true);

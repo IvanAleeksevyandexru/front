@@ -1,7 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { concatMap, filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { ConfigService, ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  BaseComponent,
+  ConfigService,
+  ModalService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
@@ -23,7 +28,7 @@ import { simplifyQualityTransform } from '../../shared/identification-api/identi
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
-export class IdentificationStreamComponent {
+export class IdentificationStreamComponent extends BaseComponent {
   attrs = this.screenService.component?.attrs;
   component = this.screenService.component;
   display = this.screenService.display;
@@ -54,7 +59,9 @@ export class IdentificationStreamComponent {
     private actionService: ActionService,
     private ngUnsubscribe$: UnsubscribeService,
     private currentAnswersService: CurrentAnswersService,
-  ) {}
+  ) {
+    super();
+  }
 
   mnemonic(): string {
     return `${this.component.id}.IdentificationStreamComponent.test.0`;
