@@ -1,10 +1,8 @@
-FROM node:16 as build
+FROM node:12 as build
 
 WORKDIR /opt
-COPY *.json .npmrc ./
-COPY /projects/sf-portal/*.json ./projects/sf-portal/
-RUN yarn install
 COPY . .
+RUN yarn install
 RUN yarn build:portal:all
 
 FROM registry.gosuslugi.local/base_images/nginx:1.13.10-1_centos-7.5
