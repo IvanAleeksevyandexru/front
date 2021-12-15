@@ -11,16 +11,16 @@ import {
   ModalServiceStub,
   SharedModalModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ApiService } from '../../../../services/api/api.service';
-import { ApiServiceStub } from '../../../../services/api/api.service.stub';
+import { HttpClientModule } from '@angular/common/http';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockComponent } from 'ng-mocks';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../../../services/api/api.service';
+import { ApiServiceStub } from '../../../../services/api/api.service.stub';
 import { StateService } from '../../../../services/state/state.service';
 import { PaymentSelectorComponent } from '../payment-selector/payment-selector.component';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 import { BaseModule } from '../../base.module';
-import { HttpClientModule } from '@angular/common/http';
 import { GroupFiltersFormComponent } from './group-filters-form.component';
 import { VendorType } from '../../../../typings';
 import { defaultInlearnoFilters, defaultPdfoFilters } from '../../base.models';
@@ -63,7 +63,6 @@ describe('GroupFiltersFormComponent', () => {
     fixture = TestBed.createComponent(GroupFiltersFormComponent);
     component = fixture.componentInstance;
     eventBusService = TestBed.inject(EventBusService);
-
   });
 
   it('should create', () => {
@@ -71,7 +70,6 @@ describe('GroupFiltersFormComponent', () => {
   });
 
   describe('OnInit', () => {
-
     it('should set form key-value to defaultPdfoFilters', () => {
       component.ngOnInit();
 
@@ -128,13 +126,13 @@ describe('GroupFiltersFormComponent', () => {
       eventBusService.emit(`closeModalEvent_${component.modalId}`);
 
       expect(spy).toHaveBeenCalled();
-
     });
   });
 
   describe('numberValidators', () => {
     it('should throw error if not a number passed', () => {
       const control = new FormControl('nan');
+      // eslint-disable-next-line
       const validator = component['numberValidators']();
 
       const res = validator(control);
@@ -144,12 +142,12 @@ describe('GroupFiltersFormComponent', () => {
 
     it('should pass validation for numbers', () => {
       const control = new FormControl(3);
+      // eslint-disable-next-line
       const validator = component['numberValidators']();
 
       const res = validator(control);
 
       expect(res).toBeNull();
     });
-
   });
 });

@@ -45,8 +45,10 @@ describe('ModalService', () => {
   describe('createModal', () => {
     it('should set overflow hidden', () => {
       document.body.style.overflow = null;
+      document.body.style.height = null;
       service.createModal(ModalContainerComponent);
       expect(document.body.style.overflow).toBe('hidden');
+      expect(document.body.style.height).toBe('100%');
     });
   });
 });

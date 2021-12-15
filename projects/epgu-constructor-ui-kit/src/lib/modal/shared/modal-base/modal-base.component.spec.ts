@@ -60,8 +60,10 @@ describe('ModalBaseComponent', () => {
   describe('closeModal', () => {
     it('should be reset overflow', () => {
       document.body.style.overflow = 'hidden';
+      document.body.style.height = '100%';
       component.closeModal();
       expect(document.body.style.overflow).toBe('');
+      expect(document.body.style.height).toBe('');
     });
   });
 });
