@@ -1815,39 +1815,39 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.3.tgz#90420f9f9c6d3987f176a19a7d8e764271a2f55d"
   integrity sha512-Fxt+AfXgjMoin2maPIYzFZnQjAXjAL0PHscM5pRTtatFqB+vZxAM9tLp2Optnuw3QOQC40jTNeGYFOMvyf7v9g==
 
-"@epgu/children-clubs@0.0.79826":
-  version "0.0.79826"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/children-clubs/-/children-clubs-0.0.79826.tgz#69116cd9eb3dd36f0d11f64b9196ccda134f9777"
-  integrity sha512-wTQNuVhtXRd/sDVl+qR/BElahSHH6SXBHHhkBNMe4Qnsi4LGH5Lbu3dPOHv1rIBKwLvQckLBdE9XVDmnoNgrCg==
+"@epgu/children-clubs@395.9.3":
+  version "395.9.3"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/children-clubs/-/children-clubs-395.9.3.tgz#18c95ffbb91a8302317306c801383408f5fcd9de"
+  integrity sha512-o2V9P7ck0al6mlyMtoXtaSQqAnbSvMwXVVyva3vHkDG+NUqRJiViLeWaYVkjZkkzd3nlY04JkqWbe7EtrAYIyQ==
   dependencies:
-    "@epgu/epgu-constructor-types" "0.0.79826"
-    "@epgu/epgu-constructor-ui-kit" "0.0.79826"
+    "@epgu/epgu-constructor-types" "395.9.3"
+    "@epgu/epgu-constructor-ui-kit" "395.9.3"
     tslib "^2.0.0"
 
-"@epgu/epgu-constructor-types@0.0.79826":
-  version "0.0.79826"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-0.0.79826.tgz#74de3d39c40a462d1fa51845f7c46ad0fc983f98"
-  integrity sha512-bkytU57QDET4wxyb+jrpivPbXi/0T5TegSIY8Ydp1MHlWGOBPLu4FJsxqZaoZ06twTJhZS+2+QGuf4w24KcUsA==
+"@epgu/epgu-constructor-types@395.9.3":
+  version "395.9.3"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-395.9.3.tgz#e2c474dbaf81254246befbb824b82627b6ab2157"
+  integrity sha512-gVlJnOL2tggOkbOmCnGb153oBj/PEyDPVJsd2iFgPjScCwxGy7eqfa+uCjB0yTEhtQSHW5wE3XrPV8s79GulqA==
 
-"@epgu/epgu-constructor-ui-kit@0.0.79826":
-  version "0.0.79826"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-0.0.79826.tgz#755bbc4a3730930a8cd23560d97bf286bee80a57"
-  integrity sha512-wVj672O46/EDwuiI83oQthLudYgty9voo+4dY19FWtrb6ugBduF0tY1n3rG4fZhrd92J9qGU9GhvboXCbO5hfA==
+"@epgu/epgu-constructor-ui-kit@395.9.3":
+  version "395.9.3"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-395.9.3.tgz#601fd08d8f582c8f3d7b73a643b237d75f0ee5e6"
+  integrity sha512-QPydxTISe44KCQHMThXx770lqCu3uFTsboh7NlBASmhMmWRr+WKIiUHfZhpMnKSmGVzCervZnuI99utRuAZw1g==
   dependencies:
-    "@epgu/epgu-constructor-types" "0.0.79826"
+    "@epgu/epgu-constructor-types" "395.9.3"
     "@epgu/zipkin" "0.0.3"
     ismobilejs "^1.1.1"
     tslib "^2.0.0"
     zipkin-transport-http "0.22.0"
 
-"@epgu/epgu-constructor@0.0.79826":
-  version "0.0.79826"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor/-/epgu-constructor-0.0.79826.tgz#c59e4e35db704d1fa865a72d6bf6f15247ccf3bf"
-  integrity sha512-1WLFJWsQQTnTHd36IVr7td/O1s2xqkVKXjwgcpyDIqlLm4/yrhiBXz55jVLYAqkcX2KSUcvHr+CNo/KTLCdGZg==
+"@epgu/epgu-constructor@395.9.3":
+  version "395.9.3"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor/-/epgu-constructor-395.9.3.tgz#2e6bef8f328ef73e5cf592f36701ca7fc4c6f95a"
+  integrity sha512-pSBTIoLcK4+jTDpK8xnFweSlcne8d8WnmHvsKmBAdFEowJcqurJdaRS7hWTBoU09sGxpGUOaKW8QDAUNpBaeGw==
   dependencies:
     "@alyle/ui" "10.5.1"
-    "@epgu/epgu-constructor-types" "0.0.79826"
-    "@epgu/epgu-constructor-ui-kit" "0.0.79826"
+    "@epgu/epgu-constructor-types" "395.9.3"
+    "@epgu/epgu-constructor-ui-kit" "395.9.3"
     "@tanker/file-ponyfill" "2.6.3"
     ics "2.24.0"
     node-fetch "2.6.1"

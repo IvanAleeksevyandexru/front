@@ -23,6 +23,7 @@ import { LocationSelectComponent, LocationSelectModule } from '@epgu/ui/componen
 import { FormPlayerModule } from '@epgu/epgu-constructor';
 import { FrameModule } from '@epgu/ui/components/frame';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
 
 registerLocaleData(localeRu);
 
@@ -41,6 +42,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 @NgModule({
   declarations: [AppComponent, NewSfPlayerComponent],
   imports: [
+    CoreUiModule,
     HttpClientModule,
     NgxPageScrollCoreModule.forRoot(),
     TranslateModule.forRoot({
