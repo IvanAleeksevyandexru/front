@@ -160,6 +160,7 @@ export class PriorityItemsService {
 
   remove(item: DictionaryItem): CancelContext {
     const size = this.getStep();
+    item.isSelected = false;
     const result = { index: -1, isAdded: size > 0, item };
     const index = this.getItems().findIndex(
       (dictionaryItem) => dictionaryItem?.attributeValues?.CODE === item?.attributeValues?.CODE,
