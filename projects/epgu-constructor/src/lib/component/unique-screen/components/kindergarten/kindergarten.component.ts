@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -17,10 +18,11 @@ import { KindergartenSearchPanelService } from '../select-map-object/components/
   styleUrls: ['./kindergarten.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KindergartenComponent implements OnInit {
+export class KindergartenComponent implements OnInit, AfterViewInit {
   @ViewChild('selectMapObjectComp', { read: ViewContainerRef })
   selectMapObjectComp: ViewContainerRef;
   public readonly states = KindergartenStates;
+  private yandexMapService;
   constructor(
     public kindergartenService: KindergartenService,
     public kindergartenSearchPanel: KindergartenSearchPanelService,
@@ -36,9 +38,17 @@ export class KindergartenComponent implements OnInit {
       });
   }
 
+  ngAfterViewInit(): void {
+    this.yandexMapService = this.selectMapObjectComp.injector.get(YandexMapService);
+    this.kindergartenService.state$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((state) => {
+      if (state === this.states.map) {
+        this.yandexMapService.recalcPinStyles();
+      }
+    });
+  }
+
   public showMap(mapObject): void {
-    const yandexMapService = this.selectMapObjectComp.injector.get(YandexMapService);
     this.kindergartenService.setState(this.states.map);
-    yandexMapService.selectMapObject(mapObject, true);
+    this.yandexMapService.selectMapObject(mapObject, true);
   }
 }
