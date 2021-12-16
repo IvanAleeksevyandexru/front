@@ -1,4 +1,6 @@
+// stylelint-disable selector-type-no-unknown
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components/_select-map-object';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/_buttons';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 
 :host {
@@ -54,4 +56,16 @@
 .map-objects-list {
   display: flex;
   flex-direction: column;
+}
+
+@include desktops-down {
+  // TODO убрать когда сделаем общий дизайн карт для кружков
+  :host::ng-deep {
+    .map-objects-list {
+      perfect-scrollbar {
+        // Заголовок 72 и бордер 1
+        max-height: calc(100vh - 73px);
+      }
+    }
+  }
 }
