@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ServiceEntity, ServiceInfo, FormPlayerContext } from '@epgu/epgu-constructor-types';
-
 import { LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { AppService } from '../app.service';
 
@@ -26,7 +24,6 @@ export class FpContainerComponent {
         orderId: config.orderId,
         invited: config.invited,
         canStartNew: config.canStartNew,
-        // eslint-disable-next-line radix
         gepsId: typeof config.gepsId === 'string' ? parseInt(config.gepsId) : config.gepsId,
       };
 

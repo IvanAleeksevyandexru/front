@@ -17,6 +17,7 @@ export * from './lib/base/components/tree-resolver/components/indents.component'
 export * from './lib/base/components/tree-resolver/components/node.component';
 export * from './lib/base/components/tree-resolver/components/option.component';
 export * from './lib/base/components/tree-resolver/components/tree-view.component';
+export * from './lib/base/components/tree-resolver/components/tree-virtual-view.component';
 export * from './lib/base/components/tree-resolver/components/tree.component';
 export * from './lib/base/components/tree-resolver/directives/node-def.directive';
 export * from './lib/base/components/tree-resolver/directives/node-indent-line.directive';
@@ -208,7 +209,6 @@ export * from './lib/modal/modal.service.stub';
 export * from './lib/modal/shared/shared-modal.module';
 export * from './lib/modal/shared/modal-base/modal-base.component';
 export * from './lib/modal/shared/modal-container/modal-container.component';
-export * from './lib/modal/shared/common-modal/common-modal.component';
 export * from './lib/modal/shared/common-modal/common-modal.component';
 export * from './lib/modal/shared/cta-modal/cta-modal.interface';
 export * from './lib/modal/shared/cta-modal/cta-modal.component';

@@ -182,6 +182,7 @@
     "concurrently": "^6.2.0",
     "eslint-config-airbnb-typescript": "16.1.0",
     "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-import": "2.25.3",
     "eslint-plugin-prettier": "3.1.4",
     "http-proxy-middleware": "^2.0.1",
     "husky": "4.2.5",

@@ -19,7 +19,6 @@ import {
   YMapItem,
   IDirectProblemSolution,
 } from './yandex-map.interface';
-
 import { ConfigService } from '../../../core/services/config/config.service';
 import { GeoCodeResponse } from './geo-code.interface';
 import { MapAnimationService } from './yandex-map-animation/map-animation.service';
@@ -187,8 +186,7 @@ export class YandexMapService implements OnDestroy {
             (featureItem) => featureItem.properties.res,
           );
     if (object.length === 1) {
-      // TODO Исправить типизацию
-      object[0] = { ...object[0], expanded: true };
+      this.expandMapObject(object[0]);
     }
     this.objectManager.objects.setObjectProperties(feature.id, { isActive: true });
     this.selectedValue$.next(object);
@@ -206,8 +204,7 @@ export class YandexMapService implements OnDestroy {
   public handleFeatureSelection<T>(feature: IFeatureItem<T>): void {
     this.objectManager.objects.setObjectProperties(feature.id, { pinStyle: 'pin-red' });
     const object = [(feature as IFeatureItem<T>).properties.res];
-    // TODO Исправить типизацию
-    object[0] = { ...object[0], expanded: true };
+    this.expandMapObject(object[0]);
     this.selectedValue$.next(object);
   }
 
@@ -402,6 +399,19 @@ export class YandexMapService implements OnDestroy {
     return this.http.get<GeoCodeResponse>(
       `https://geocode-maps.yandex.ru/1.x/?apikey=${this.configService.yandexMapsApiKey}&format=json&geocode=${geocode}`,
     );
+  }
+
+  public recalcPinStyles(): void {
+    this.objectManager?.objects.getAll().forEach((mapObject) => {
+      this.objectManager.objects.setObjectProperties(mapObject.id, {
+        pinStyle: this.getPinStyle(mapObject),
+      });
+    });
+  }
+
+  private getPinStyle(mapObject): string {
+    if (mapObject.properties.isActive) return 'pin-red';
+    return mapObject.properties.res.isSelected ? 'pin-red-checked' : 'pin-blue';
   }
 
   private prepareMapObjectsForAnimation(): void {
@@ -608,5 +618,9 @@ export class YandexMapService implements OnDestroy {
       const text = get(item.obj, textRef);
       return text;
     });
+  }
+
+  private expandMapObject<T>(mapObject: YMapItem<T>): void {
+    mapObject.expanded = true;
   }
 }
