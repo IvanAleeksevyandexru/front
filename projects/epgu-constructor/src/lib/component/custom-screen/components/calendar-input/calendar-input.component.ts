@@ -80,7 +80,7 @@ export class CalendarInputComponent
           value: parsedValue[componentId] ? new Date(parsedValue[componentId]) : '',
           disabled: false,
         },
-        [this.requiredValidatorFn()],
+        component.required ? [this.requiredValidatorFn()] : [],
       );
     });
     this.form = this.fb.group(formGroup, {});
