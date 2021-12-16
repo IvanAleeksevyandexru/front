@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { forkJoin, ObservableInput, of } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { catchError, concatMap, delay, map, takeUntil, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, takeUntil, tap } from 'rxjs/operators';
 
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { LogicComponents, NavigationPayload } from '@epgu/epgu-constructor-types';
@@ -72,7 +72,6 @@ export default class RestCallComponent extends AbstractLogicComponent {
             : response;
       }),
       catchError(() => this.screenService.logicComponents$),
-      delay(500),
       takeUntil(this.unSubscribeService$),
     );
   }
