@@ -91,10 +91,8 @@ export class MaritalStatusInputComponent
   }
 
   public ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.handleServerErrors();
-      this.cdr.markForCheck();
-    });
+    this.handleServerErrors();
+    this.cdr.markForCheck();
   }
 
   public handleServerErrors(): void {

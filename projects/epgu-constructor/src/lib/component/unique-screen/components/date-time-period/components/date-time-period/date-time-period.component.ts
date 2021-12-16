@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   ChangeDetectorRef,
+  AfterViewInit,
 } from '@angular/core';
 import { ListElement } from '@epgu/ui/models/dropdown';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
@@ -30,7 +31,7 @@ import { DateRestrictionsService } from '../../../../../../shared/services/date-
   styleUrls: ['./date-time-period.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DateTimePeriodComponent implements OnInit {
+export class DateTimePeriodComponent implements OnInit, AfterViewInit {
   @Input() attrs: ComponentAttrsDto = {};
 
   @Input() initialState: DateTimePeriodState | null = null;
@@ -69,13 +70,6 @@ export class DateTimePeriodComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // без setTimeout кнопка "Отправить заявление" будет активной, если перейти на этот экран с предыдущего,
-    // хотя форма при этом будет с незаполненными полями.
-    setTimeout(() => {
-      this.currentAnswersService.isValid = false;
-      this.cdr.markForCheck();
-    }, 0);
-
     const startDate = this.initStartDate();
     const startTime = this.initStartTime();
     const endDate = this.initEndDate();
@@ -132,6 +126,14 @@ export class DateTimePeriodComponent implements OnInit {
           this.updateState.emit(state);
         },
       );
+  }
+
+  ngAfterViewInit(): void {
+    // обновляем состояние кнопки "Отправить заявление"
+    window.requestAnimationFrame(() => {
+      this.group.updateValueAndValidity();
+      this.currentAnswersService.isValid = this.group.valid;
+    });
   }
 
   setOneDayPeriod(): void {

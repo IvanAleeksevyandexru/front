@@ -1,12 +1,13 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, AbstractControl } from '@angular/forms';
+import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+
 import {
   TextTransformService,
   UnsubscribeService,
   DatesToolsService,
   DATE_STRING_DOT_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
-import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import {
   BrokenDateFixStrategy,
@@ -33,7 +34,7 @@ import DocInputModelAttrs from './DocInputModelAttrs';
   templateUrl: './doc-input.component.html',
   styleUrls: ['./doc-input.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.Default, // TODO
 })
 export class DocInputComponent extends AbstractComponentListItemComponent<DocInputModelAttrs>
   implements OnInit, AfterViewInit {
@@ -98,17 +99,12 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      // updateValueAndValidity необходим для отработки transform функций после первой подстановки значений в форму
-      this.form.updateValueAndValidity();
-      this.handleServerErrors();
-      this.cdr.markForCheck();
-    }); // https://stackoverflow.com/questions/54611631/expressionchangedafterithasbeencheckederror-on-angular-6-while-using-mat-tab
+    // updateValueAndValidity необходим для отработки transform функций после первой подстановки значений в форму
+    this.form.updateValueAndValidity();
+    this.handleServerErrors();
+    this.cdr.markForCheck();
   }
 
-  /**
-   * If there are server errors - adds them to appropriate fields and displays by setting field's state to touched
-   */
   handleServerErrors(): void {
     const serverErrorJson = this.control?.get('value')?.errors?.serverError || null;
 

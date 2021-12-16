@@ -70,7 +70,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
+    window.requestAnimationFrame(() => {
       this.showMap = true;
       this.cdr.markForCheck();
     });
@@ -115,7 +115,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private subscribeToEmmitNextStepData(): void {
     this.yandexMapService.selectedValue$.subscribe(() => {
-      setTimeout(() => this.cdr.detectChanges(), 0);
+      window.requestAnimationFrame(() => this.cdr.detectChanges());
     });
   }
 
@@ -148,6 +148,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         tap((coords: IYMapPoint<BaseProgram>[]) => this.handleGettingCoordinatesResponse(coords)),
       )
       .subscribe((coords) => {
+        window.requestAnimationFrame(() => this.cdr.detectChanges());
+
         if (coords.length) {
           this.initCenter();
         }
@@ -165,7 +167,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private handleGettingCoordinatesResponse(coords: IYMapPoint<BaseProgram>[]): void {
     this.stateService.isLoaderVisible = false;
     this.yandexMapService.placeObjectsOnMap<BaseProgram>(coords);
-    setTimeout(() => this.cdr.detectChanges(), 0);
   }
 
   private fillCoords(): Observable<IYMapPoint<BaseProgram>[]> {
@@ -224,10 +225,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         );
       });
       this.yandexMapService.centeredPlaceMark(selectedCluster);
-      setTimeout(() => {
+      window.requestAnimationFrame(() => {
         const expandedNode = this.elementRef.nativeElement.querySelector('.map-object.expanded');
         expandedNode?.scrollIntoView();
-      }, 0);
+      });
     } else if (addressString) {
       this.yandexMapService.geoCode(addressString).subscribe((geoCode) => {
         const envelope =

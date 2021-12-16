@@ -107,20 +107,23 @@ export class MapSidebarComponent implements OnInit {
           }
           this.originalValue = value;
           [this.activeItem] = value;
+
           if (value.length === 1 || this.sidebarData.attrs.mapType !== MapTypes.electionsMap) {
             this.activeItem.expanded = true;
           }
           this.cdr.detectChanges();
+
           const matchingBalloon = this.balloonComponents.find((item) =>
             arePointsEqual(item.mapObject, value[0]),
           );
+
           if (matchingBalloon) {
-            setTimeout(() => {
+            window.requestAnimationFrame(() => {
               matchingBalloon.balloonContentComponentRef.location.nativeElement.scrollIntoView();
               if (activeBalloonRef) {
                 activeBalloonRef.balloonContentComponentRef.instance.lockAnimation = false;
               }
-            }, 0);
+            });
           }
         } else {
           this.originalValue = [];

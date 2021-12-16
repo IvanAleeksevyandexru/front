@@ -16,7 +16,7 @@ export class ChildrenClubsAppComponent
   @HostBinding('class.micro-app-host') class = true;
   public appType = 'ChildrenClubs';
   public isLoaderVisible$ = this.stateService.isLoaderVisible$.pipe(
-    tap(() => setTimeout(() => this.cdr.detectChanges(), 0)),
+    tap(() => window.requestAnimationFrame(() => this.cdr.detectChanges())),
   );
 
   constructor(public injector: Injector, public stateService: StateService) {

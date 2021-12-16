@@ -158,9 +158,9 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     const config: ScrollToConfigOptions = {
       target: String(target),
     };
-    setTimeout(() => {
+    window.requestAnimationFrame(() => {
       this.scrollToService.scrollTo(config);
-    }, 0);
+    });
   }
 
   ngAfterViewChecked(): void {
