@@ -2,7 +2,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of, ObservableInput } from 'rxjs';
 import { GetServiceRequest, Region, Service, ServicePermission } from '@epgu/ui/models';
 import { LoadService } from '@epgu/ui/services/load';
 import { LocationService } from '@epgu/ui/services/location';
@@ -13,7 +13,6 @@ import {
   ServerFormData,
   ServiceInfoDepartment,
 } from './cards-forms.service';
-import { ObservableInput } from '../../../../../../node_modules/rxjs/index';
 
 @Component({
   selector: 'portal-new-sf-player',
