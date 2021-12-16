@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
 import { ListElement } from '@epgu/ui/models/dropdown';
 import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
+import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
 
 @Injectable()
 export class RefRelationService {
@@ -43,7 +43,7 @@ export class RefRelationService {
    */
   public isValueEquals(
     value: string | string[] | boolean,
-    componentVal: { id?: string } | string | number, //TODO: нормализовать типы
+    componentVal: { id?: string } | string | number, // TODO: нормализовать типы
   ): boolean {
     const parsedComponentValue = this.getValueFromComponentVal(componentVal);
 
@@ -82,11 +82,11 @@ export class RefRelationService {
       const parsedValue = JSON.parse(componentVal as string);
       if (Array.isArray(parsedValue)) {
         return parsedValue;
-      } else if (Array.isArray(parsedValue?.list)) {
-        return parsedValue?.list;
-      } else {
-        return parsedValue.id;
       }
+      if (Array.isArray(parsedValue?.list)) {
+        return parsedValue?.list;
+      }
+      return parsedValue.id;
     }
 
     // NOTICE: иногда сюда приходят значения мультисписка, которые представлены массивом ListElement

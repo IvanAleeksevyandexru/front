@@ -16,6 +16,11 @@ import {
   LoggerService,
   LoggerServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
+import { ComponentDto, ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { PluralizeModule } from '@epgu/ui/pipes';
 import { FileUploadItemComponent } from './file-upload-item.component';
 import { UserInfoLoaderModule } from '../../user-info-loader/user-info-loader.module';
 import { BaseModule } from '../../../base.module';
@@ -37,14 +42,10 @@ import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { FileItem, FileItemStatus } from '../data';
-import { of } from 'rxjs';
 import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
 import { ViewerService } from '../../uploader/services/viewer/viewer.service';
 import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service.stub';
-import { ComponentDto, ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { UploaderValidationService } from '../services/validation/uploader-validation.service';
 import { UploaderLimitsService } from '../services/limits/uploader-limits.service';
@@ -53,7 +54,6 @@ import { UploaderManagerService } from '../services/manager/uploader-manager.ser
 import { UploaderStatService } from '../services/stat/uploader-stat.service';
 import { UploaderProcessService } from '../services/process/uploader-process.service';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
-import { PluralizeModule } from '@epgu/ui/pipes';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {

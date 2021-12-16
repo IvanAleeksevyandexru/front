@@ -5,12 +5,15 @@ import {
   CoreUiModule,
   MainContainerModule,
   PREV_BUTTON_NAVIGATION,
+  ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+
+import { CookieService } from 'ngx-cookie-service';
+import { SmuEventsService } from '@epgu/ui/services/smu-events';
+import { NotifierModule } from '@epgu/ui/components/notifier';
 import { FormPlayerComponent } from './form-player.component';
 import { FormPlayerApiService } from './services/form-player-api/form-player-api.service';
 import { FormPlayerService } from './services/form-player/form-player.service';
-import { CookieService } from 'ngx-cookie-service';
 import { ScreenModule } from '../screen/screen.module';
 import { CoreModule } from '../core/core.module';
 import { ModalModule } from '../modal/modal.module';
@@ -19,8 +22,6 @@ import { AutocompleteModule } from '../core/services/autocomplete/autocomplete.m
 import { LogicScreenModule } from '../component/logic-screen/logic-screen.module';
 import { PrevButtonNavigationService } from '../core/services/prev-button-navigation/prev-button-navigation.service';
 import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
-import { SmuEventsService } from '@epgu/ui/services/smu-events';
-import { NotifierModule } from '@epgu/ui/components/notifier';
 import '@squadette/hammerjs';
 
 registerLocaleData(localeRu);

@@ -53,6 +53,6 @@ export class UploaderManagerComponent {
         this.readonly,
       )
       .pipe(take(1))
-      .subscribe(() => {});
+      .subscribe();
   }
 }

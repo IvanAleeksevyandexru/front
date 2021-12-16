@@ -15,6 +15,7 @@ import {
   FocusManagerService,
   FocusManagerServiceStub,
   CoreUiModule,
+  OPTIONAL_FIELD,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentItemComponent } from './component-item.component';
 import { WebcamShootModule } from '../../../../shared/components/webcam-shoot/webcam-shoot.module';
@@ -28,7 +29,7 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { HintComponent } from '../../../../shared/components/base-components/hint/hint.component';
-import { OPTIONAL_FIELD } from '@epgu/epgu-constructor-ui-kit';
+
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 
 describe('ComponentItemComponent', () => {
@@ -124,7 +125,7 @@ describe('ComponentItemComponent', () => {
     const helperTextSelector = 'epgu-constructor-helper-text';
 
     it('is show', () => {
-      component.component = { ...mockComponent, attrs: {}} as any;
+      component.component = { ...mockComponent, attrs: {} } as any;
       component.ngOnChanges();
       fixture.detectChanges();
       expect(component.hasInfo).toBeFalsy();

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { DatesToolsService } from './dates-tools.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { DatesToolsService } from './dates-tools.service';
 import {
   DATE_ISO_STRING_FORMAT,
   DATE_STRING_DOT_FORMAT,

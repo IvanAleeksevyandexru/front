@@ -23,7 +23,7 @@ describe('CarDetailInfoService', () => {
       errors: {
         EXTERNAL_SERVER_ERROR:
           'Попробуйте снова или продолжите заполнять заявление без проверки транспортного средства <a data-retry=0>Повторить</a>',
-        NOT_FOUND_ERROR: 'на учет <a data-action-type=\'prevStep\'>Попробовать снова</a>',
+        NOT_FOUND_ERROR: "на учет <a data-action-type='prevStep'>Попробовать снова</a>",
       },
       refs: {},
     },

@@ -5,11 +5,6 @@ import {
   FormPlayerNavigation,
   Navigation,
   NavigationPayload,
-} from '@epgu/epgu-constructor-types';
-import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import { ScreenService } from '../../../screen/screen.service';
-import { HtmlRemoverService } from '../html-remover/html-remover.service';
-import {
   FormPlayerApiErrorResponse,
   FormPlayerApiErrorStatuses,
   FormPlayerApiResponse,
@@ -17,6 +12,9 @@ import {
   ScenarioDto,
   ScenarioErrorsDto,
 } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { HtmlRemoverService } from '../html-remover/html-remover.service';
 
 /**
  * Этот базоый сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -26,17 +24,27 @@ import {
 @Injectable()
 export abstract class FormPlayerBaseService {
   protected formPlayerApiService: FormPlayerApiService;
+
   protected screenServiceBase: ScreenService;
+
   protected loggerBase: LoggerService;
+
   protected htmlRemover: HtmlRemoverService;
+
   protected _store: FormPlayerApiSuccessResponse;
+
   protected playerLoaded = false;
+
   protected isLoading = false;
+
   protected logSuffix = '';
 
   protected isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
+
   protected playerLoadedSubject = new BehaviorSubject<boolean>(this.playerLoaded);
+
   protected _isLoading$ = this.isLoadingSubject.asObservable();
+
   protected _playerLoaded$ = this.playerLoadedSubject.asObservable();
 
   protected constructor(public injector: Injector) {
@@ -194,7 +202,7 @@ export abstract class FormPlayerBaseService {
     }
 
     this._store = response;
-    const scenarioDto = response.scenarioDto;
+    const { scenarioDto } = response;
 
     this.initScreenStore(scenarioDto);
     this.updatePlayerLoaded(true);

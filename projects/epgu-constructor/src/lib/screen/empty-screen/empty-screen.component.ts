@@ -7,11 +7,15 @@ import {
   ComponentActionDto,
   ComponentDto,
 } from '@epgu/epgu-constructor-types';
-import { LocationService, UnsubscribeService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  LocationService,
+  UnsubscribeService,
+  LoggerService,
+  DownloadService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../screen.service';
 import { EmptyScreenComponentTypes } from '../../component/empty-screen/empty-screen-components.types';
 import { InitDataService } from '../../core/services/init-data/init-data.service';
-import { FileDownloaderService } from '../../shared/services/file-downloader/file-downloader.service';
 import { ActionService } from '../../shared/directives/action/action.service';
 
 /**
@@ -49,7 +53,7 @@ export class EmptyScreenComponent {
     private initDataService: InitDataService,
     private locationService: LocationService,
     private loggerService: LoggerService,
-    private fileDownloaderService: FileDownloaderService,
+    private downloadService: DownloadService,
     private actionService: ActionService,
   ) {}
 
@@ -92,6 +96,6 @@ export class EmptyScreenComponent {
   }
 
   private download(downloadLink?: string): Observable<unknown> {
-    return downloadLink ? this.fileDownloaderService.download(downloadLink) : of();
+    return downloadLink ? this.downloadService.downloadFile(downloadLink) : of();
   }
 }

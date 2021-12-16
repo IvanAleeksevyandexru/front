@@ -1,14 +1,15 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
-import { ActionService } from './action.service';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
+import { CurrentAnswersService } from '../../../screen/current-answers.service';
+import { ActionService } from './action.service';
 
 @Directive({
   selector: '[epgu-constructor-action]',
 })
 export class ActionDirective {
   @Input() action: ComponentActionDto;
+
   @Input() componentId: string;
 
   constructor(
@@ -22,8 +23,9 @@ export class ActionDirective {
     const target = event.target as HTMLButtonElement;
     if (this.canSwitchActionAfterKeyDown(event, target)) {
       event.preventDefault();
-      this.currentAnswersService.isValid &&
+      if (this.currentAnswersService.isValid) {
         this.actionService.switchAction(this.action, this.componentId);
+      }
     }
   }
 

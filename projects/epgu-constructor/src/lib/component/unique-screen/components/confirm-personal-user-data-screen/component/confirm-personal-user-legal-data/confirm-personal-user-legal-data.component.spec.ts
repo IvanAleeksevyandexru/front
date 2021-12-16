@@ -2,18 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockModule, MockPipe } from 'ng-mocks';
+import {
+  ScreenPadModule,
+  IconsModule,
+  ConfigService,
+  ConfigServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ActionType } from '@epgu/epgu-constructor-types';
 import { DefaultUniqueScreenWrapperModule } from '../../../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { FieldListModule } from '../../../../../../shared/components/field-list/field-list.module';
 import { OutputHtmlModule } from '../../../../../../shared/components/output-html/output-html.module';
 import { ConfirmPersonalUserLegalDataComponent } from './confirm-personal-user-legal-data.component';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
-import { ActionType } from '@epgu/epgu-constructor-types';
 import { BaseComponentsModule } from '../../../../../../shared/components/base-components/base-components.module';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { ConfirmPersonalUserDataPipe } from '../../confirm-personal-user-data.pipe';
@@ -46,6 +50,7 @@ describe('ConfirmPersonalUserLegalDataComponent', () => {
         MockPipe(ConfirmPersonalUserDataPipe, (value) => value),
       ],
       imports: [
+        IconsModule,
         MockModule(OutputHtmlModule),
         MockModule(DefaultUniqueScreenWrapperModule),
         MockModule(BaseComponentsModule),
@@ -126,7 +131,7 @@ describe('ConfirmPersonalUserLegalDataComponent', () => {
     const selector = 'epgu-constructor-output-html';
     expect(fixture.debugElement.query(By.css(selector))).not.toBeTruthy();
 
-    screenService.component = { ...componentMock, attrs: { hint: 'fake hint' }};
+    screenService.component = { ...componentMock, attrs: { hint: 'fake hint' } };
     fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css(selector))).toBeTruthy();

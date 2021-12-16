@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { LogicService } from './logic.service';
 import {
   DatesToolsService,
   LocalStorageService,
@@ -9,6 +8,11 @@ import {
   ObjectHelperService,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { MockProviders } from 'ng-mocks';
+import { ComponentValue, LogicComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { of, throwError } from 'rxjs';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { LogicService } from './logic.service';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
@@ -16,16 +20,12 @@ import { ScreenService } from '../../../screen/screen.service';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { DictionaryApiServiceStub } from '../../../shared/services/dictionary/dictionary-api.service.stub';
-import { MockProviders } from 'ng-mocks';
 import { ComponentsListRelationsService } from '../../custom-screen/services/components-list-relations/components-list-relations.service';
 import { SuggestHandlerService } from '../../../shared/services/suggest-handler/suggest-handler.service';
 import { ComponentsListFormService } from '../../custom-screen/services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../custom-screen/services/components-list-form/components-list-form.service.stub';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { ComponentValue, LogicComponentAttrsDto } from '@epgu/epgu-constructor-types';
-import { of, throwError } from 'rxjs';
 import { RestService } from '../../../shared/services/rest/rest.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 describe('LogicService', () => {
   let service: LogicService;

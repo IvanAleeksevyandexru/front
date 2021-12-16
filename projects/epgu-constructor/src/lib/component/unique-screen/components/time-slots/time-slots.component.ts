@@ -497,7 +497,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   showError(errorMessage: string): void {
     this.errorModalResultSub.unsubscribe();
     const params = {
-      ...COMMON_ERROR_MODAL_PARAMS,
+      ...COMMON_ERROR_MODAL_PARAMS(),
       buttons: [
         {
           label: 'Попробовать ещё раз',

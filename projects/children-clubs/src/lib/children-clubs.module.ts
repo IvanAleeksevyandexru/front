@@ -12,6 +12,7 @@ import {
   ERROR_HANDLER_SERVICE,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierModule } from '@epgu/ui/components/notifier';
+import { NotifierService } from '@epgu/ui/services/notifier';
 import { BaseModule } from './components/base/base.module';
 import { ChildrenClubsAppComponent } from './children-clubs-app.component';
 import { ProgramListModule } from './components/program-list/program-list.module';
@@ -30,7 +31,6 @@ import {
   SEARCH_PROGRAM_SUB_URL,
 } from './services/health/health-handler';
 import { ErrorHandlerService } from './services/error-handler/error-handler.service';
-import { NotifierService } from '@epgu/ui/services/notifier';
 
 const APP_CONFIG: MicroAppUiConfig = {
   appRoutingComponentMap: {

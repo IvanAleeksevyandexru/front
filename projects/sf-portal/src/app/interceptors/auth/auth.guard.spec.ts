@@ -9,9 +9,7 @@ describe('AuthGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [
-        { provide: WINDOW, useValue: { navigator: {}} },
-      ]
+      providers: [{ provide: WINDOW, useValue: { navigator: {} } }],
     });
     guard = TestBed.inject(AuthGuard);
   });

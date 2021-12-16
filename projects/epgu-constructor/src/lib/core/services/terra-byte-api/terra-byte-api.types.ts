@@ -12,9 +12,9 @@ export type ChunkPacket = FormData[];
  */
 
 export interface TerraFileOptions {
-  objectId: string; //идентификатор объекта, к которому прикреплён файл
-  objectType: number; //тип объекта, к которому прикреплён файл
-  mnemonic: string; //мнемоника файла
+  objectId: string; // идентификатор объекта, к которому прикреплён файл
+  objectType: number; // тип объекта, к которому прикреплён файл
+  mnemonic: string; // мнемоника файла
   mimeType?: string;
 }
 /**

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PrevButtonNavigation } from '@epgu/epgu-constructor-types';
+import { By } from '@angular/platform-browser';
 import { PrevButtonComponent } from './prev-button.component';
 import { PREV_BUTTON_NAVIGATION } from './prev-button.token';
-import { By } from '@angular/platform-browser';
 
 @Injectable()
 class TestService implements PrevButtonNavigation {

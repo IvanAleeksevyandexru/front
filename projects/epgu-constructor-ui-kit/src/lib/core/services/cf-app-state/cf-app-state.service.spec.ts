@@ -1,7 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { CfAppStateService } from './cf-app-state.service';
-import { LocalStorageService } from '../local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
 import {
   APP_INPUT_KEY,
   APP_OUTPUT_KEY,
@@ -9,6 +6,9 @@ import {
   InputAppDto,
   OutputAppDto,
 } from '@epgu/epgu-constructor-types';
+import { CfAppStateService } from './cf-app-state.service';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageServiceStub } from '../local-storage/local-storage.service.stub';
 
 describe('CfAppStateService', () => {
   let service: CfAppStateService;

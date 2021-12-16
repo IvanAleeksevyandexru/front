@@ -13,6 +13,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { DisclaimerDto } from '@epgu/epgu-constructor-types';
+import { BaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { MapTypes, SelectMapObjectService, SidebarViewType } from '../../select-map-object.service';
 import { KindergartenSearchPanelComponent } from './components/kindergarten-search-panel/kindergarten-search-panel.component';
@@ -41,7 +42,7 @@ export const PanelTypes = {
   styleUrls: ['./search-panel-resolver.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchPanelResolverComponent implements AfterViewInit {
+export class SearchPanelResolverComponent extends BaseComponent implements AfterViewInit {
   @ViewChild('panel', { read: ViewContainerRef }) panel: ViewContainerRef;
 
   @Output() handleFiltering = new EventEmitter<DictionaryYMapItem[]>();
@@ -69,7 +70,9 @@ export class SearchPanelResolverComponent implements AfterViewInit {
     public selectMapObjectService: SelectMapObjectService,
     private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) {
+    super();
+  }
 
   ngAfterViewInit(): void {
     this.addPanel();

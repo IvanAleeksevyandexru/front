@@ -13,6 +13,15 @@ import {
   SlotInterface,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { get } from 'lodash';
+import {
+  DictionaryConditions,
+  DictionaryOptions,
+  DictionarySubFilter,
+  DictionaryUnionKind,
+  KeyValueMap,
+} from '@epgu/epgu-constructor-types';
+import { addDays, format, subSeconds } from 'date-fns';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
   DictionaryItem,
@@ -31,26 +40,17 @@ import {
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
 } from './time-slots.types';
-import { get } from 'lodash';
 import { ScreenService } from '../../../../screen/screen.service';
-import {
-  DictionaryConditions,
-  DictionaryOptions,
-  DictionarySubFilter,
-  DictionaryUnionKind,
-  KeyValueMap,
-} from '@epgu/epgu-constructor-types';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
-import { addDays, format, subSeconds } from 'date-fns';
 import {
   ComponentValue,
   DictionaryToolsService,
 } from '../../../../shared/services/dictionary/dictionary-tools.service';
 
-type attributesMapType = { name: string; value: string }[];
+type AttributesMapType = { name: string; value: string }[];
 
-type configType = {
-  [key: string]: string | attributesMapType;
+type ConfigType = {
+  [key: string]: string | AttributesMapType;
 };
 
 const TIMEZONE_STR_OFFSET = -6;
@@ -58,25 +58,43 @@ const TIMEZONE_STR_OFFSET = -6;
 @Injectable()
 export class TimeSlotsService {
   public activeMonthNumber: number; // 0..11
+
   public activeYearNumber: number;
+
   public bookId;
+
   public isBookedDepartment: boolean; // Флаг показывающий что выбран департамент, на который уже есть бронь
+
   public waitingTimeExpired: boolean; // Флаг показывающий что забуканный слот был просрочен
+
   public timeSlotsType: TimeSlotsTypes;
+
   public cancelReservation: string[];
+
   public isSmev2: boolean;
+
   public smev2CacheItems: Record<string, DictionaryItem> = {};
 
   public department: DepartmentInterface;
+
   private solemn: boolean;
+
   private slotsPeriod;
+
   private slotsMap: SmevSlotsMapInterface;
+
   private bookedSlot: SlotInterface;
+
   private errorMessage;
+
   private availableMonths: string[];
+
   private areas: string[];
-  private config: configType = {};
+
+  private config: ConfigType = {};
+
   private timeSlotRequestAttrs: { name: string; value: string }[];
+
   private areaNamesIsNeeded: boolean;
 
   constructor(
@@ -299,7 +317,7 @@ export class TimeSlotsService {
   changed(data: TimeSlotValueInterface, cachedAnswer: TimeSlotsAnswerInterface): boolean {
     let changed = false;
 
-    let department = JSON.parse(data.department);
+    const department = JSON.parse(data.department);
     this.isBookedDepartment = this.getBookedDepartment(cachedAnswer, department);
     this.areaNamesIsNeeded = [TimeSlotsTypes.BRAK, TimeSlotsTypes.RAZBRAK].includes(
       this.timeSlotsType,
@@ -309,7 +327,7 @@ export class TimeSlotsService {
       this.department = department;
     }
 
-    const config: configType = {
+    const config: ConfigType = {
       orderId: data.orderId,
       parentOrderId: data.parentOrderId,
       serviceId: data.serviceId,
@@ -321,7 +339,7 @@ export class TimeSlotsService {
       bookAttributes: this.jsonHelperService.tryToParse(
         data?.bookAttributes,
         null,
-      ) as attributesMapType,
+      ) as AttributesMapType,
       departmentRegion: data.departmentRegion,
       bookParams: data.bookingRequestParams,
       attributeNameWithAddress: this.screenService.component.attrs.attributeNameWithAddress,
@@ -329,7 +347,7 @@ export class TimeSlotsService {
     };
 
     if (this.areaNamesIsNeeded) {
-      let solemn = data.solemn === 'Да';
+      const solemn = data.solemn === 'Да';
       if (this.solemn !== solemn) {
         changed = true;
         this.solemn = solemn;
@@ -337,7 +355,7 @@ export class TimeSlotsService {
     }
 
     if (this.timeSlotsType === TimeSlotsTypes.BRAK) {
-      let slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
+      const slotsPeriod = JSON.parse(data.slotsPeriod).value.substring(0, 7);
       if (this.slotsPeriod !== slotsPeriod) {
         changed = true;
         this.slotsPeriod = slotsPeriod;
@@ -414,7 +432,7 @@ export class TimeSlotsService {
     return this.smev3TimeSlotsRestService
       .cancelSlot({
         eserviceId: (this.config.eserviceId as string) || eserviceId,
-        bookId: bookId,
+        bookId,
       })
       .pipe(
         tap((response) => {
@@ -508,7 +526,7 @@ export class TimeSlotsService {
       routeNumber,
       subject: (this.config.subject as string) || subject,
       userSelectedRegion: this.config.userSelectedRegion as string,
-      params: (this.config.bookParams as attributesMapType) || [
+      params: (this.config.bookParams as AttributesMapType) || [
         {
           name: 'phone',
           value: this.department.attributeValues.PHONE,
@@ -524,7 +542,8 @@ export class TimeSlotsService {
       organizationId: this.getSlotsRequestOrganizationId(this.timeSlotsType),
       calendarName: (this.config.calendarName as string) || calendarName,
       areaId: [selectedSlot.areaId || ''],
-      selectedHallTitle: (this.department.attributeValues.AREA_NAME || selectedSlot.slotId) as string,
+      selectedHallTitle: (this.department.attributeValues.AREA_NAME ||
+        selectedSlot.slotId) as string,
       parentOrderId: this.config.orderId as string,
       preliminaryReservationPeriod,
       attributes: this.getBookRequestAttributes(this.timeSlotsType, serviceId) || [],
@@ -549,7 +568,7 @@ export class TimeSlotsService {
   private getBookRequestAttributes(
     slotsType: TimeSlotsTypes,
     serviceId: string,
-  ): attributesMapType {
+  ): AttributesMapType {
     const settings = {
       [TimeSlotsTypes.BRAK]: [],
       [TimeSlotsTypes.RAZBRAK]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
@@ -557,16 +576,14 @@ export class TimeSlotsService {
       [TimeSlotsTypes.GIBDD]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
     };
 
-    return (this.config.bookAttributes as attributesMapType) || settings[slotsType];
+    return (this.config.bookAttributes as AttributesMapType) || settings[slotsType];
   }
 
   private getAddress(attributeValues: KeyValueMap): string {
-    return (
-      attributeValues[this.config.attributeNameWithAddress as string] ||
+    return (attributeValues[this.config.attributeNameWithAddress as string] ||
       attributeValues.ADDRESS ||
       attributeValues.ADDRESS_OUT ||
-      attributeValues.address
-    ) as string;
+      attributeValues.address) as string;
   }
 
   private initSlotsMap(slots: TimeSlot[]): void {
@@ -576,7 +593,7 @@ export class TimeSlotsService {
         this.slotsMap[slotDate.getFullYear()] = {};
       }
 
-      let monthSlots = this.slotsMap[slotDate.getFullYear()];
+      const monthSlots = this.slotsMap[slotDate.getFullYear()];
       if (!monthSlots[slotDate.getMonth()]) {
         monthSlots[slotDate.getMonth()] = {};
         const month = this.datesToolsService.format(slotDate, DATE_STRING_YEAR_MONTH);
@@ -587,7 +604,7 @@ export class TimeSlotsService {
         this.availableMonths = [this.slotsPeriod];
       }
 
-      let daySlots = monthSlots[slotDate.getMonth()];
+      const daySlots = monthSlots[slotDate.getMonth()];
       if (!daySlots[slotDate.getDate()]) {
         daySlots[slotDate.getDate()] = [];
       }
@@ -610,18 +627,16 @@ export class TimeSlotsService {
     if (this.areaNamesIsNeeded) {
       if (areaName) {
         return of([areaName]);
-      } else {
-        return this.dictionaryApiService
-          .getSelectMapDictionary('FNS_ZAGS_ORGANIZATION_AREA', this.getOptionsMapDictionary())
-          .pipe(
-            map((response: DictionaryResponse) => {
-              return response.items.map((zags) => zags.attributeValues.AREA_NAME as string);
-            }),
-          );
       }
-    } else {
-      return of(['']);
+      return this.dictionaryApiService
+        .getSelectMapDictionary('FNS_ZAGS_ORGANIZATION_AREA', this.getOptionsMapDictionary())
+        .pipe(
+          map((response: DictionaryResponse) => {
+            return response.items.map((zags) => zags.attributeValues.AREA_NAME as string);
+          }),
+        );
     }
+    return of(['']);
   }
 
   /**

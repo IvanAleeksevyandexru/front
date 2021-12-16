@@ -2,11 +2,6 @@ import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MockComponent, MockModule } from 'ng-mocks';
-import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
-import {
-  CustomComponentOutputData,
-  CustomComponentValidationConditions,
-} from '../../component/custom-screen/components-list.types';
 import {
   LoggerService,
   ConfigService,
@@ -15,11 +10,25 @@ import {
   ScreenPadComponent,
   DatesToolsService,
   EventBusService,
+  ScreenContainerComponent,
 } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ComponentDto,
+  ActionType,
+  DTOActionAction,
+  ScreenTypes,
+  DisplayDto,
+} from '@epgu/epgu-constructor-types';
+import { HttpClientModule } from '@angular/common/http';
+import { ComponentsListComponent } from '../../component/custom-screen/components-list.component';
+import {
+  CustomComponentOutputData,
+  CustomComponentValidationConditions,
+} from '../../component/custom-screen/components-list.types';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
-import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -30,16 +39,8 @@ import { BaseModule } from '../../shared/base.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
-import {
-  ComponentDto,
-  ActionType,
-  DTOActionAction,
-  ScreenTypes,
-  DisplayDto
-} from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -48,7 +49,7 @@ describe('CustomScreenComponent', () => {
   let screenService: ScreenServiceStub;
   let customScreenService: CustomScreenService;
   let datesToolsService: DatesToolsService;
-  let components = [
+  const components = [
     {
       id: 'bd01',
       type: 'LabelSection',
@@ -267,7 +268,7 @@ describe('CustomScreenComponent', () => {
     expect(debugEl).toBeTruthy();
     expect(debugEl.componentInstance.errors).toBeNull();
 
-    const components: ComponentDto[] = [
+    const componentsDto: ComponentDto[] = [
       {
         attrs: {},
         id: 'id1',
@@ -275,7 +276,7 @@ describe('CustomScreenComponent', () => {
       },
     ];
     screenService.display = {
-      components,
+      components: componentsDto,
       header: 'header1',
       id: 'id1',
       name: 'name1',
@@ -289,7 +290,7 @@ describe('CustomScreenComponent', () => {
 
     fixture.detectChanges();
 
-    expect(debugEl.componentInstance.components).toBe(components);
+    expect(debugEl.componentInstance.components).toBe(componentsDto);
     expect(debugEl.componentInstance.errors).toBe(componentErrors);
   });
 

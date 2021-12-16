@@ -11,6 +11,8 @@ import {
   ConfigServiceStub,
   DownloadService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { cloneDeep } from 'lodash';
 import { AttachUploadedFilesModalComponent } from './attach-uploaded-files-modal.component';
 import { BaseModule } from '../../shared/base.module';
 import { ScreenService } from '../../screen/screen.service';
@@ -19,11 +21,9 @@ import { ViewerService } from '../../shared/components/uploader/services/viewer/
 import { AutocompleteApiService } from '../../core/services/autocomplete/autocomplete-api.service';
 import { AutocompleteService } from '../../core/services/autocomplete/autocomplete.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileItem, FileItemStatus } from '../../shared/components/file-upload/data';
 import { AutocompletePrepareService } from '../../core/services/autocomplete/autocomplete-prepare.service';
 import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
-import { cloneDeep } from 'lodash';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
 import { TerraByteApiService } from '../../core/services/terra-byte-api/terra-byte-api.service';
 
@@ -33,7 +33,7 @@ describe('AttachUploadedFilesModalComponent', () => {
   let screenService: ScreenService;
   let eventBusService: EventBusService;
   let viewerService: ViewerService;
-  let mockUploadedFile: UploadedFile = {
+  const mockUploadedFile: UploadedFile = {
     fileUid: 1882562370,
     metaId: 1874333481,
     objectId: '763706287',
@@ -58,7 +58,7 @@ describe('AttachUploadedFilesModalComponent', () => {
     alternativeMimeTypes: [],
     uploaded: true,
   };
-  let mockFile = new FileItem(FileItemStatus.uploaded, '', null, mockUploadedFile);
+  const mockFile = new FileItem(FileItemStatus.uploaded, '', null, mockUploadedFile);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -128,24 +128,23 @@ describe('AttachUploadedFilesModalComponent', () => {
   describe('isSameFile()', () => {
     it('should return true, if objectId, objectType, mnemonic are the same', () => {
       const resultFile = cloneDeep(mockFile);
-      expect(component['isSameFile'](mockFile, resultFile)).toBeTruthy();
+      expect(component.isSameFile(mockFile, resultFile)).toBeTruthy();
     });
     it('should return false, if any of objectId, objectType, mnemonic is not the same', () => {
       const resultFile = cloneDeep(mockFile);
       resultFile.item.mnemonic = 'someNewMnemonic';
-      expect(component['isSameFile'](mockFile, resultFile)).toBeFalsy();
+      expect(component.isSameFile(mockFile, resultFile)).toBeFalsy();
     });
   });
 
   describe('isIncludedToList()', () => {
     it('should return true, if file passes acceptTypes checks', () => {
-      expect(component['isIncludedToList'](mockUploadedFile)).toBeTruthy();
+      expect(component.isIncludedToList(mockUploadedFile)).toBeTruthy();
     });
     it('should return false, if file does not pass acceptTypes checks', () => {
       const newMockUploadedFile = cloneDeep(mockUploadedFile);
       newMockUploadedFile.fileExt = 'pdf';
-      expect(component['isIncludedToList'](newMockUploadedFile)).toBeFalsy();
+      expect(component.isIncludedToList(newMockUploadedFile)).toBeFalsy();
     });
   });
-
 });

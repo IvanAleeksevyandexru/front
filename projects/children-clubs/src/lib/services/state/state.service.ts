@@ -3,8 +3,8 @@ import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 
-import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import { MicroAppStateQuery, MicroAppStateService } from '@epgu/epgu-constructor-ui-kit';
+import { Filters, FindOptionsGroup, VendorType } from '../../typings';
 import {
   ChildrenClubsState,
   ChildrenClubsValue,
@@ -65,6 +65,7 @@ export class StateService {
       ? cloneDeep(this.stateQuery.state?.programFilters)
       : {};
   }
+
   set programFilters(filters: Filters) {
     const programFilters = { ...this.programFilters, ...filters };
     this.changeState({ programFilters });
@@ -84,9 +85,8 @@ export class StateService {
       Object.keys(this.stateQuery.state?.groupFilters).length === 0
     ) {
       return defaultFindOptions;
-    } else {
-      return cloneDeep(this.stateQuery.state?.groupFilters);
     }
+    return cloneDeep(this.stateQuery.state?.groupFilters);
   }
 
   set groupFilters(filters: FindOptionsGroup) {

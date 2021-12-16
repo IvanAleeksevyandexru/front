@@ -4,21 +4,14 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class SelectMapObjectServiceStub {
   isMapLoaded = new BehaviorSubject(false);
+
   public isSelectedView = new BehaviorSubject<boolean>(false);
 
-  public placeChildsHomeOnMap(): void {
-    return;
-  }
+  public placeChildsHomeOnMap(): void {}
 
-  public resetSelectedView(): void {
-    return;
-  }
+  public resetSelectedView(): void {}
 
-  public handleKindergartenSelection(): void {
-    return;
-  }
+  public handleKindergartenSelection(): void {}
 
-  public searchMapObject(str: string): void {
-    return;
-  }
+  public searchMapObject(str: string): void {}
 }

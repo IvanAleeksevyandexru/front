@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ProgramFiltersFormComponent } from './program-filters-form.component';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
@@ -13,19 +12,25 @@ import {
   SharedModalModule,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ApiService } from '../../../../services/api/api.service';
-import { ApiServiceStub } from '../../../../services/api/api.service.stub';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockComponent } from 'ng-mocks';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { of } from 'rxjs';
+import { ProgramFiltersFormComponent } from './program-filters-form.component';
+import { ApiService } from '../../../../services/api/api.service';
+import { ApiServiceStub } from '../../../../services/api/api.service.stub';
 import { StateService } from '../../../../services/state/state.service';
 import { PaymentSelectorComponent } from '../payment-selector/payment-selector.component';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 import { BaseModule } from '../../base.module';
-import { HttpClientModule } from '@angular/common/http';
-import { defaultInlearnoFilters, defaultPdfoFilters, HealthListElements, LevelListElements } from '../../base.models';
+import {
+  defaultInlearnoFilters,
+  defaultPdfoFilters,
+  HealthListElements,
+  LevelListElements,
+} from '../../base.models';
 import { LevelType, OvzType, VendorType } from '../../../../typings';
-import { of } from 'rxjs';
 
 describe('ProgramFiltersComponent', () => {
   let component: ProgramFiltersFormComponent;
@@ -63,7 +68,7 @@ describe('ProgramFiltersComponent', () => {
 
   beforeEach(() => {
     state = TestBed.inject(StateService);
-    state.changeState({ programFilters: {}});
+    state.changeState({ programFilters: {} });
     eventBusService = TestBed.inject(EventBusService);
     fixture = TestBed.createComponent(ProgramFiltersFormComponent);
     component = fixture.componentInstance;
@@ -74,7 +79,6 @@ describe('ProgramFiltersComponent', () => {
   });
 
   describe('OnInit', () => {
-
     it('should set form value to defaultPdfoFilters', () => {
       component.ngOnInit();
 
@@ -122,7 +126,8 @@ describe('ProgramFiltersComponent', () => {
         isRegistrationOpen: true,
         onlyDistanceProgram: true,
         ovzType: OvzType.deafness,
-        level: LevelType.initial };
+        level: LevelType.initial,
+      };
 
       component.ngOnInit();
 
@@ -146,23 +151,26 @@ describe('ProgramFiltersComponent', () => {
   });
 
   describe('setFocusList', () => {
-
     it('should set directions list to initial focus', () => {
       jest.useFakeTimers();
 
-      state.programFilters = { focus: {
-        id: 'fizkulturno-sportivnoe',
-        text: 'Физкультурно-спортивная'
-      }};
+      state.programFilters = {
+        focus: {
+          id: 'fizkulturno-sportivnoe',
+          text: 'Физкультурно-спортивная',
+        },
+      };
       const testDirections = [];
       component.initForm({});
 
-      component.setFocusList({ directions: { 'fizkulturno-sportivnoe': testDirections }, focus: null });
+      component.setFocusList({
+        directions: { 'fizkulturno-sportivnoe': testDirections },
+        focus: null,
+      });
       jest.runAllTimers();
 
       expect(component.directionList.getValue()).toBe(testDirections);
     });
-
 
     it('should set directions list to empty item', () => {
       jest.useFakeTimers();
@@ -170,7 +178,10 @@ describe('ProgramFiltersComponent', () => {
       const testDirections = [];
       component.initForm({});
 
-      component.setFocusList({ directions: { 'fizkulturno-sportivnoe': testDirections }, focus: null });
+      component.setFocusList({
+        directions: { 'fizkulturno-sportivnoe': testDirections },
+        focus: null,
+      });
       jest.runAllTimers();
 
       expect(component.directionList.getValue()[0].originalItem.id).toBe('empty-item');
@@ -181,7 +192,7 @@ describe('ProgramFiltersComponent', () => {
       state.programFilters = { focus: 'hudozhestvennoe', direction: 'test' };
       component.initForm({});
 
-      component.setFocusList({ focus: null, directions: {}});
+      component.setFocusList({ focus: null, directions: {} });
       jest.runAllTimers();
 
       expect(component.form.get('focus').value).toEqual('hudozhestvennoe');
@@ -190,28 +201,29 @@ describe('ProgramFiltersComponent', () => {
   });
 
   describe('placeSearch', () => {
-
     it('should return all items if searchString is empty', () => {
-      component['dictionary'].municipalitiesList$ = of([{ id: 1, text: 'a' }]);
+      component.dictionary.municipalitiesList$ = of([{ id: 1, text: 'a' }]);
       const search = component.placeSearch();
 
       const res = search('');
 
-      res.subscribe(value => {
+      res.subscribe((value) => {
         expect(value.length).toBe(1);
       });
     });
 
     it('should filter out items', () => {
-      component['dictionary'].municipalitiesList$ = of([{ id: 1, text: 'a' }, { id: 1, text: 'b' },]);
+      component.dictionary.municipalitiesList$ = of([
+        { id: 1, text: 'a' },
+        { id: 1, text: 'b' },
+      ]);
       const search = component.placeSearch();
 
       const res = search('b');
 
-      res.subscribe(value => {
+      res.subscribe((value) => {
         expect(value.length).toBe(1);
       });
     });
-
   });
 });

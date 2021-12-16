@@ -2,32 +2,33 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { DateRangeService } from '../../services/date-range/date-range.service';
-import { CoreModule } from '../../../core/core.module';
 import {
   CoreUiModule,
   DatesToolsService,
   ObjectHelperService,
   WordTransformService,
-} from '@epgu/epgu-constructor-ui-kit';
-import {
   ConfigService,
   ConfigServiceStub,
   EventBusService,
   LoggerService,
   LoggerServiceStub,
+  TextTransformModule,
+  TrimModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { By } from '@angular/platform-browser';
+import { TextTransform } from '@epgu/epgu-constructor-types';
+import { MockProvider } from 'ng-mocks';
+import { DateRangeService } from '../../services/date-range/date-range.service';
+import { CoreModule } from '../../../core/core.module';
+
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
-import { TextTransformModule, TrimModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { ValidationTypeModule } from '../../directives/validation-type/validation-type.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ConstructorMultilineInputComponent } from './constructor-multiline-input.component';
-import { By } from '@angular/platform-browser';
-import { TextTransform } from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
-import { MockProvider } from 'ng-mocks';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 describe('ConstructorMultilineInputComponent', () => {

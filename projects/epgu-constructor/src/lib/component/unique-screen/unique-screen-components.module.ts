@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  EventBusService,
+  UnsubscribeService,
+  ConstructorDropdownModule,
+} from '@epgu/epgu-constructor-ui-kit';
+
 import { ModalModule } from '../../modal/modal.module';
 import { BaseModule } from '../../shared/base.module';
 import { WebcamShootModule } from '../../shared/components/webcam-shoot/webcam-shoot.module';
@@ -29,7 +33,7 @@ import { SelectChildrenScreenModule } from './components/select-children/select-
 import { RegistrationAddrScreenModule } from './components/registration-addr/registration-addr-screen.module';
 import { ReferralNumberModule } from './components/referral-number/referral-number.module';
 import { AddPassportModule } from './components/add-passport/add-passport.module';
-import { ConstructorDropdownModule } from '@epgu/epgu-constructor-ui-kit';
+
 import { BaseComponentsModule } from '../../shared/components/base-components/base-components.module';
 import { FieldListScreenModule } from './components/field-list-screen/field-list-screen.module';
 import { TimerScreenModule } from './components/timer-screen/timer-screen.module';

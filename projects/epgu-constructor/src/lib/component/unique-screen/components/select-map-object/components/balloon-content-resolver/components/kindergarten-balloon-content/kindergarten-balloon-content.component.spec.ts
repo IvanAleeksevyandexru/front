@@ -2,13 +2,13 @@ import { cloneDeep } from 'lodash';
 import { ScenarioDto } from '@epgu/epgu-constructor-types';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { YandexMapModule } from '@epgu/epgu-constructor-ui-kit';
+import { By } from '@angular/platform-browser';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { BaseModule } from '../../../../../../../../shared/base.module';
 import { mockKindergartenStore } from '../../../../../kindergarten/mocks/stores';
 import { KindergartenSearchPanelService } from '../../../search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { KindergartenContentComponent } from './kindergarten-balloon-content.component';
 import { mockKindergartenMapObject } from './mocks/map-objects';
-import { By } from '@angular/platform-browser';
 import { ForTestsOnlyModule } from '../../../../../../../../core/for-tests-only.module';
 
 describe('KindergartenContentComponent', () => {

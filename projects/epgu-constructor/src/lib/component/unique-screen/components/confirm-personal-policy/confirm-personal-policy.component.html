@@ -46,10 +46,11 @@
         [action]="action"
         [disabled]="async.isLoading"
       >
-        <img
+        <epgu-cf-ui-icon
           class="btn-edit__icon"
-          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/edit.svg"
-        />
+          [type]="iconType.PencilLine"
+          [mainColor]="iconColor.BaseGosblue"
+        ></epgu-cf-ui-icon>
         <span class="btn-edit__text">{{ action.label }}</span>
       </button>
     </div>

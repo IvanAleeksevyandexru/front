@@ -5,16 +5,21 @@
       *ngIf="screenService.showNav$ | async"
     ></epgu-cf-ui-prev-button>
     <div class="map-search-panel__nav__toolbar">
-      <button
-        class="icon map"
-        [ngClass]="{ active: selectMapObjectService.isMapViewType }"
+      <epgu-cf-ui-icon
+        [activeColor]="iconColor.ActiveGray"
+        [isActive]="selectMapObjectService.isMapViewType"
+        [type]="iconType.Map"
+        [mainColor]="iconColor.BaseGosblue"
         (click)="selectMapObjectService.setViewType(viewTypes.Map)"
-      ></button>
-      <button
-        class="icon list"
-        [ngClass]="{ active: selectMapObjectService.isListViewType }"
+      ></epgu-cf-ui-icon>
+      <div class="vertical-divider"></div>
+      <epgu-cf-ui-icon
+        [activeColor]="iconColor.ActiveGray"
+        [isActive]="selectMapObjectService.isListViewType"
+        [type]="iconType.Menu"
+        [mainColor]="iconColor.BaseGosblue"
         (click)="selectMapObjectService.setViewType(viewTypes.List)"
-      ></button>
+      ></epgu-cf-ui-icon>
     </div>
   </div>
 

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { ScreenPadModule, ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
 import { InformationCenterContainerComponent } from './container/information-center-container.component';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
-import { ScreenPadModule, ConstructorLookupModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { ActionModule } from '../../../../shared/directives/action/action.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';

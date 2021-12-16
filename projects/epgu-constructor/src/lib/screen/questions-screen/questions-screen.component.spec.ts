@@ -9,19 +9,32 @@ import {
   SessionService,
   JsonHelperService,
   JsonHelperServiceStub,
+  ConfigServiceStub,
+  EventBusService,
+  LocationService,
+  WINDOW_PROVIDERS,
+  ModalService,
+  ModalServiceStub,
+  ScreenContainerComponent,
+  ImgPrefixerPipe,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { LocationService, WINDOW_PROVIDERS } from '@epgu/epgu-constructor-ui-kit';
+
+import {
+  NavigationPayload,
+  ComponentDto,
+  ActionType,
+  ComponentActionDto,
+  DTOActionAction,
+  Clarifications,
+} from '@epgu/epgu-constructor-types';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { NavigationPayload } from '@epgu/epgu-constructor-types';
-import { ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+
 import { AnswerButtonComponent } from '../../shared/components/answer-button/answer-button.component';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
-import { ScreenContainerComponent } from '@epgu/epgu-constructor-ui-kit';
+
 import { ActionDirective } from '../../shared/directives/action/action.directive';
-import { ImgPrefixerPipe } from '@epgu/epgu-constructor-ui-kit';
+
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import { ScreenServiceStub } from '../screen.service.stub';
@@ -31,13 +44,7 @@ import { ScreenButtonsModule } from '../../shared/components/screen-buttons/scre
 import { BaseModule } from '../../shared/base.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
-import {
-  ComponentDto,
-  ActionType,
-  ComponentActionDto,
-  DTOActionAction,
-  Clarifications,
-} from '@epgu/epgu-constructor-types';
+
 import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
 
 const componentDtoSample: ComponentDto = {
@@ -210,7 +217,7 @@ describe('QuestionsScreenComponent', () => {
 
       screenService.component = componentDtoSample;
 
-      configService['_disableUnderConstructionMode'] = false;
+      configService._disableUnderConstructionMode = false;
       // should NOT mutate action because configService.disableUnderConstructionMode is FALSE
       component.answerChoose(actionUnderConstruction);
 
@@ -222,7 +229,7 @@ describe('QuestionsScreenComponent', () => {
       expect(nextStepSpy).not.toBeCalled();
       showModalRedirectToSpy.mockReset();
 
-      configService['_disableUnderConstructionMode'] = true;
+      configService._disableUnderConstructionMode = true;
       // should mutate action because configService.disableUnderConstructionMode is TRUE
       component.answerChoose(actionUnderConstruction);
 
@@ -233,7 +240,7 @@ describe('QuestionsScreenComponent', () => {
       // call nextStep() because action is changed to ActionType.nextStep
       expect(nextStepSpy).toBeCalledTimes(1);
 
-      configService['_disableUnderConstructionMode'] = false;
+      configService._disableUnderConstructionMode = false;
       component.disableUnderConstructionMode = true;
       // should mutate action because component.disableUnderConstructionMode is TRUE
       component.answerChoose(actionUnderConstruction);

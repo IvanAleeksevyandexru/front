@@ -1,26 +1,4 @@
 import { Injectable } from '@angular/core';
-import {
-  BackendDictionary,
-  BackendHealthList,
-  CommonPayload,
-  DICTIONARY_CODES,
-  DictionaryError,
-  DictionaryPayload,
-  ERROR_UPDATE_DRAFT_SERVICE_NAME,
-  EXCEPTIONS,
-  FilterType,
-  GET_SLOTS,
-  GET_SLOTS_MODIFIED,
-  NEXT_EVENT_TYPE,
-  NEXT_PREV_STEP_SERVICE_NAME,
-  PREV_EVENT_TYPE,
-  PREV_STEP_SERVICE_NAME,
-  DICTIONARY,
-  RegionSource,
-  RENDER_FORM_SERVICE_NAME,
-  SlotInfo,
-  UnspecifiedDTO,
-} from './health-handler';
 
 import {
   ConfigService,
@@ -46,12 +24,37 @@ import {
   ScenarioDto,
 } from '@epgu/epgu-constructor-types';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  BackendDictionary,
+  BackendHealthList,
+  CommonPayload,
+  DICTIONARY_CODES,
+  DictionaryError,
+  DictionaryPayload,
+  ERROR_UPDATE_DRAFT_SERVICE_NAME,
+  EXCEPTIONS,
+  FilterType,
+  GET_SLOTS,
+  GET_SLOTS_MODIFIED,
+  NEXT_EVENT_TYPE,
+  NEXT_PREV_STEP_SERVICE_NAME,
+  PREV_EVENT_TYPE,
+  PREV_STEP_SERVICE_NAME,
+  DICTIONARY,
+  RegionSource,
+  RENDER_FORM_SERVICE_NAME,
+  SlotInfo,
+  UnspecifiedDTO,
+} from './health-handler';
 
 @Injectable()
 export class HealthHandlerService implements HealthHandler {
   private commonParams: CommonPayload = {} as CommonPayload;
+
   private regionCode: string | undefined;
+
   private cachedRegionId: string;
+
   private mnemonic: string = undefined;
 
   private slotInfo: SlotInfo = {} as SlotInfo;
@@ -132,15 +135,19 @@ export class HealthHandlerService implements HealthHandler {
       const requestBody = request?.body || {};
 
       if (
+        // eslint-disable-next-line
         this.objectHelperService.isDefined(requestBody['organizationId']) &&
+        // eslint-disable-next-line
         Array.isArray(requestBody['organizationId'])
       ) {
-        this.slotInfo['organizationId'] = requestBody['organizationId'][0];
+        // eslint-disable-next-line
+        this.slotInfo.organizationId = requestBody['organizationId'][0];
       } else {
-        this.slotInfo['organizationId'] = requestBody['organizationId'];
+        // eslint-disable-next-line
+        this.slotInfo.organizationId = requestBody['organizationId'];
       }
 
-      this.slotInfo['region'] = this.cachedRegionId;
+      this.slotInfo.region = this.cachedRegionId;
     }
 
     return [serviceName, lastUrlPart];
@@ -185,13 +192,14 @@ export class HealthHandlerService implements HealthHandler {
           const department = JSON.parse(slot.department);
 
           const orgName = department.attributeValues.FULLNAME || department.title;
-          const timeSlotType = slot.timeSlotType;
+          const { timeSlotType } = slot;
           const { serviceCode } = this.configService.timeSlots[timeSlotType];
 
+          // eslint-disable-next-line
           this.slotInfo['orgName'] = encodeURIComponent(
             this.wordTransformService.cyrillicToLatin(orgName),
           );
-          this.slotInfo['serviceCode'] = serviceCode;
+          this.slotInfo.serviceCode = serviceCode;
         } catch (e) {}
       }
 
@@ -199,7 +207,7 @@ export class HealthHandlerService implements HealthHandler {
         ...this.commonParams,
         id: display.id,
         name: this.wordTransformService.cyrillicToLatin(display.name),
-        orderId: orderId,
+        orderId,
       };
 
       if (serviceName === RENDER_FORM_SERVICE_NAME || serviceName === PREV_STEP_SERVICE_NAME) {
@@ -239,16 +247,19 @@ export class HealthHandlerService implements HealthHandler {
     if (!this.isThatDictionary(responseBody) || !this.isValidScenarioDto(responseBody)) {
       let payload = {};
       const { id, name, orderId, date, method } = this.commonParams;
-      const mnemonic = this.mnemonic;
+      const { mnemonic } = this;
 
       payload = { id, name, orderId, mnemonic, date, method, ...(isTraceIdRequire && { traceId }) };
 
       if (
         serviceName === GET_SLOTS_MODIFIED &&
+        // eslint-disable-next-line
         this.objectHelperService.isDefined(responseBody['slots']) &&
+        // eslint-disable-next-line
         Array.isArray(responseBody['slots'])
       ) {
-        this.slotInfo['slotsCount'] = responseBody['slots'].length;
+        // eslint-disable-next-line
+        this.slotInfo.slotsCount = responseBody['slots'].length;
       }
 
       if (serviceName === GET_SLOTS_MODIFIED) {
@@ -318,7 +329,7 @@ export class HealthHandlerService implements HealthHandler {
   }
 
   private getParameterByName(url: string, name: string): string | null {
-    const match = RegExp('[?&]' + name + '=([^&]*)').exec(url);
+    const match = RegExp(`[?&]${name}=([^&]*)`).exec(url);
     return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
   }
 
@@ -377,7 +388,7 @@ export class HealthHandlerService implements HealthHandler {
       this.commonParams = {
         ...commonParams,
         serverError: keyCode,
-        errorMessage: errorMessage,
+        errorMessage,
       };
     }
 
@@ -412,7 +423,7 @@ export class HealthHandlerService implements HealthHandler {
             id: serviceName,
             status: dictionary.status,
             method: dictionary.method,
-            orderId: orderId,
+            orderId,
             regdictname: RegionSource.Okato,
             ...(traceId && { traceId }),
           }),
@@ -460,7 +471,9 @@ export class HealthHandlerService implements HealthHandler {
     payload: HttpRequest<T> | HttpEvent<T> | HttpErrorResponse,
   ): boolean {
     return (
+      // eslint-disable-next-line
       this.serviceNameService.isValidHttpUrl(payload['url']) &&
+      // eslint-disable-next-line
       !this.checkUrlForExceptions(payload['url'])
     );
   }
@@ -469,12 +482,16 @@ export class HealthHandlerService implements HealthHandler {
     filter: DictionaryFilters['filter'] | DictionarySubFilter | undefined,
   ): FilterType {
     if (
+      // eslint-disable-next-line
       this.objectHelperService.isDefined(filter['union']) &&
-      this.objectHelperService.isDefined(filter['union']['subs']) &&
-      Array.isArray(filter['union']['subs'])
+      // eslint-disable-next-line
+      this.objectHelperService.isDefined(filter['union'].subs) &&
+      // eslint-disable-next-line
+      Array.isArray(filter['union'].subs)
     ) {
       return FilterType.UnionKind;
-    } else if (this.isValidSubFilter(filter)) {
+    }
+    if (this.isValidSubFilter(filter)) {
       return FilterType.SimpleKind;
     }
 

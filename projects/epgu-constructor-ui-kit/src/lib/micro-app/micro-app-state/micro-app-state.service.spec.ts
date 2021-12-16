@@ -23,7 +23,7 @@ describe('MicroAppStateService', () => {
     let initState;
 
     beforeEach(() => {
-      initState = { value: {}, state: {}};
+      initState = { value: {}, state: {} };
     });
 
     it('should call store update', () => {

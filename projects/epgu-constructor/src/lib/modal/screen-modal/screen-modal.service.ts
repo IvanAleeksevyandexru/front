@@ -1,31 +1,36 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FormPlayerNavigation, Navigation } from '@epgu/epgu-constructor-types';
-import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
-import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
-import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';
 import {
+  FormPlayerNavigation,
+  Navigation,
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
   DTOActionAction,
 } from '@epgu/epgu-constructor-types';
+import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
+import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';
 
 @Injectable()
 export class ScreenModalService extends FormPlayerBaseService {
   public get minContentHeight$(): Observable<number> {
     return this.minContentHeightSubject.asObservable();
   }
+
   public get isInternalScenarioFinish$(): Observable<boolean> {
     return this.isInternalScenarioFinishSub.asObservable();
   }
+
   public get isInternalScenarioFinishValue(): boolean {
     return this.isInternalScenarioFinishSub.value;
   }
 
   private _initStore: FormPlayerApiSuccessResponse;
+
   private minContentHeight = 0;
 
   private minContentHeightSubject = new BehaviorSubject<number>(this.minContentHeight);
+
   private isInternalScenarioFinishSub = new BehaviorSubject<boolean>(false);
 
   constructor(

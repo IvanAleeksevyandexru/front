@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ModalService } from './modal.service';
 import { Component } from '@angular/core';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { ModalService } from './modal.service';
 import { DeviceDetectorService } from '../core/services/device-detector/device-detector.service';
 import { ModalContainerComponent } from './shared/modal-container/modal-container.component';
 
@@ -45,8 +45,10 @@ describe('ModalService', () => {
   describe('createModal', () => {
     it('should set overflow hidden', () => {
       document.body.style.overflow = null;
+      document.body.style.height = null;
       service.createModal(ModalContainerComponent);
       expect(document.body.style.overflow).toBe('hidden');
+      expect(document.body.style.height).toBe('100%');
     });
   });
 });

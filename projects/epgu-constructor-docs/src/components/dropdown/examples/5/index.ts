@@ -12,13 +12,21 @@ import { ListElement } from '@epgu/ui/models/dropdown';
 })
 export class Example5EpguDropdownComponent {
   readonly id = '123';
+
   readonly control: AbstractControl = new FormControl();
+
   readonly invalid = false;
+
   readonly validationShowOn = ValidationShowOn.IMMEDIATE;
+
   readonly clearable = false;
+
   readonly disabled = false;
+
   readonly localSearch = false;
+
   readonly placeholder = 'Выберите значение из списка';
+
   readonly items: ListElement[] = [
     {
       id: 1,

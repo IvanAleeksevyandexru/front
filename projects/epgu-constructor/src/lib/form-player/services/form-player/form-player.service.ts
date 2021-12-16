@@ -1,8 +1,6 @@
 import { Inject, Injectable, Injector } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
-import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
@@ -11,9 +9,12 @@ import {
   QuizRequestDto,
   FormPlayerNavigation,
   Navigation,
+  ScenarioDto,
 } from '@epgu/epgu-constructor-types';
-import { ScenarioDto } from '@epgu/epgu-constructor-types';
+
 import { catchError, finalize, mergeMap, tap } from 'rxjs/operators';
+import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
+import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
 
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -57,23 +58,22 @@ export class FormPlayerService extends FormPlayerBaseService {
       mergeMap((response) => {
         if (this.hasError(response)) {
           return throwError(response);
-        } else {
-          const successResponse = response as FormPlayerApiSuccessResponse;
-
-          this.augmentDisplayId(successResponse, otherScenario);
-
-          return this.formPlayerApiService.navigate(
-            {
-              ...successResponse,
-              scenarioDto: {
-                ...successResponse.scenarioDto,
-                ...otherScenario,
-              },
-            },
-            undefined,
-            FormPlayerNavigation.NEXT,
-          );
         }
+        const successResponse = response as FormPlayerApiSuccessResponse;
+
+        this.augmentDisplayId(successResponse, otherScenario);
+
+        return this.formPlayerApiService.navigate(
+          {
+            ...successResponse,
+            scenarioDto: {
+              ...successResponse.scenarioDto,
+              ...otherScenario,
+            },
+          },
+          undefined,
+          FormPlayerNavigation.NEXT,
+        );
       }),
       tap((response) => this.processResponse(response)),
       catchError((error) => {

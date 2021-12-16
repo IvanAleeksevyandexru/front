@@ -6,11 +6,6 @@ import {
   ObjectHelperService,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { UserInfoLoaderComponent } from './user-info-loader.component';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { UserInfoComponent } from './components/user-info/user-info.component';
-import { CycledInfoComponent } from './components/cycled-info/cycled-info.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
@@ -25,6 +20,11 @@ import {
   UserInfo,
   UserInfoComponentTypes,
 } from '@epgu/epgu-constructor-types';
+import { UserInfoLoaderComponent } from './user-info-loader.component';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { UserInfoComponent } from './components/user-info/user-info.component';
+import { CycledInfoComponent } from './components/cycled-info/cycled-info.component';
 import { componentMock } from '../../../component/unique-screen/components/select-children/components/select-children/mocks/select-children.mock';
 
 const displayMock = ({

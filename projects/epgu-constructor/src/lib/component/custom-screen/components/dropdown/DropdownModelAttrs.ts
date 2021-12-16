@@ -3,6 +3,7 @@ import { CustomComponentAttr } from '../../components-list.types';
 
 export default class DropdownModelAttrs extends DictionarySharedAttrs {
   readonly localSearch: boolean;
+
   readonly isNotDuplicate: boolean;
 
   constructor(attrs: CustomComponentAttr) {

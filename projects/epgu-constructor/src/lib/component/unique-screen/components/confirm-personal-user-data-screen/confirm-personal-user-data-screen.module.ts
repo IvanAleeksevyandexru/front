@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
+import { ScreenPadModule, IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmPersonalUserDataComponent } from './component/confirm-personal-user-data/confirm-personal-user-data.component';
 import { FieldListModule } from '../../../../shared/components/field-list/field-list.module';
-import { ScreenPadModule } from '@epgu/epgu-constructor-ui-kit';
 import { BaseModule } from '../../../../shared/base.module';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 // eslint-disable-next-line max-len
@@ -22,6 +22,7 @@ import { ConfirmPersonalUserDataPipe } from './confirm-personal-user-data.pipe';
     ScreenPadModule,
     DefaultUniqueScreenWrapperModule,
     DisclaimerModule,
+    IconsModule,
   ],
   entryComponents: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent],
 })

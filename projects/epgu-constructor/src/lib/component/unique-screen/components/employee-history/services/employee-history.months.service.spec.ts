@@ -5,11 +5,11 @@ import {
   DatesToolsServiceStub,
   LoggerService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { EmployeeHistoryMonthsService } from './employee-history.months.service';
-import { EmployeeHistoryAvailableDates, EmployeeHistoryModel } from '../employee-history.types';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockProvider } from 'ng-mocks';
 import { MonthYear } from '@epgu/ui/models/date-time';
+import { EmployeeHistoryAvailableDates, EmployeeHistoryModel } from '../employee-history.types';
+import { EmployeeHistoryMonthsService } from './employee-history.months.service';
 
 describe('EmployeeHistoryMonthsService', () => {
   let service: EmployeeHistoryMonthsService;
@@ -121,7 +121,9 @@ describe('EmployeeHistoryMonthsService', () => {
         .spyOn(EmployeeHistoryMonthsService.prototype as any, 'getAvailableMonths')
         .mockReturnValueOnce([{ date: '01/2021', checked: true }]);
       await service.initSettings();
-      const month = service.availableMonths.find((month) => month.date === '01/2021');
+      const month = service.availableMonths.find(
+        (availableMonth) => availableMonth.date === '01/2021',
+      );
       expect(month).toEqual(expectedMonth);
       await service.updateAvailableMonths(generation);
     });

@@ -1,27 +1,34 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  BaseUiModule,
+  ConfigService,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  ActivatedRouteStub,
+  IconsModule,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { MockModule } from 'ng-mocks';
+import { HttpClientModule } from '@angular/common/http';
+import { FileSizeModule } from '@epgu/ui/pipes';
 import { ZoomModule } from '../../../zoom/zoom.module';
 import { UploaderViewerContentComponent } from './uploader-viewer-content.component';
-import { BaseUiModule, ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorServiceStub, ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
-import { ActivatedRoute } from '@angular/router';
+
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { SuggestMonitorService } from '../../../../services/suggest-monitor/suggest-monitor.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { TerraByteApiServiceStub } from '../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
-import { ChangeDetectionStrategy } from '@angular/core';
 import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
-import { By } from '@angular/platform-browser';
-import { MockModule } from 'ng-mocks';
-import { HttpClientModule } from '@angular/common/http';
-import { FileSizeModule } from '@epgu/ui/pipes';
+
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
     fileName: '123.pdf',
@@ -72,7 +79,13 @@ describe('UploaderViewerContentComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [UploaderViewerContentComponent],
-      imports: [BaseUiModule, MockModule(ZoomModule), HttpClientModule, FileSizeModule],
+      imports: [
+        BaseUiModule,
+        MockModule(ZoomModule),
+        HttpClientModule,
+        FileSizeModule,
+        IconsModule,
+      ],
       providers: [
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
@@ -188,7 +201,7 @@ describe('UploaderViewerContentComponent', () => {
     it('should be zoomIn action', () => {
       component.zoom.next({ zoom: 0, max: 5 });
       fixture.detectChanges();
-      let zoomButton: HTMLButtonElement = fixture.debugElement.query(
+      const zoomButton: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.zoom-in'),
       )?.nativeElement;
       jest.spyOn(component, 'zoomIn');
@@ -205,7 +218,7 @@ describe('UploaderViewerContentComponent', () => {
       component.zoom.next({ zoom: 0, max: 5 });
 
       fixture.detectChanges();
-      let zoomButton: HTMLButtonElement = fixture.debugElement.query(
+      const zoomButton: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.zoom-out'),
       )?.nativeElement;
       jest.spyOn(component, 'zoomOut');
@@ -219,7 +232,7 @@ describe('UploaderViewerContentComponent', () => {
     });
 
     it('should be remove action', () => {
-      let button: HTMLButtonElement = fixture.debugElement.query(
+      const button: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.suggest-action'),
       )?.nativeElement;
       jest.spyOn(component, 'confirmAction');
@@ -246,7 +259,7 @@ describe('UploaderViewerContentComponent', () => {
     it('should be attach action', () => {
       component.type = FilesCollection.suggest;
       fixture.detectChanges();
-      let button: HTMLButtonElement = fixture.debugElement.query(
+      const button: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.attach'),
       )?.nativeElement;
       jest.spyOn(component, 'suggestAction');
@@ -269,7 +282,7 @@ describe('UploaderViewerContentComponent', () => {
       component.type = FilesCollection.suggest;
       component.item.setAttached(true);
       fixture.detectChanges();
-      let button: HTMLButtonElement = fixture.debugElement.query(
+      const button: HTMLButtonElement = fixture.debugElement.query(
         By.css('.viewer__toolbar-action.detach'),
       )?.nativeElement;
       jest.spyOn(component, 'suggestAction');

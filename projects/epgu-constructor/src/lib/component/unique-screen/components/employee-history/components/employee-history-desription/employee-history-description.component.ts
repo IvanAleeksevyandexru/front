@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+import { BaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import { EmployeeHistoryUncheckedPeriod } from '../../employee-history.types';
 
 @Component({
@@ -8,7 +9,7 @@ import { EmployeeHistoryUncheckedPeriod } from '../../employee-history.types';
   styleUrls: ['./employee-history-description.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EmployeeHistoryDescriptionComponent {
+export class EmployeeHistoryDescriptionComponent extends BaseComponent {
   @Input() years: number;
   @Input() periods: EmployeeHistoryUncheckedPeriod[] = [];
   @Input() isCompleted: boolean;

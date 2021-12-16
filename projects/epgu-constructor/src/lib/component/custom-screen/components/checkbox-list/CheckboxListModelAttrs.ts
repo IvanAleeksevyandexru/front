@@ -4,7 +4,11 @@ import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class CheckboxInputModelAttrs extends GenericAttrs {
   readonly labelShow?: string;
+
   readonly labelHide?: string;
+
+  readonly limit?: number | string;
+
   readonly checkBoxes: {
     [id: string]: CheckboxListElement;
   };
@@ -14,5 +18,6 @@ export default class CheckboxInputModelAttrs extends GenericAttrs {
     this.labelHide = attrs.labelHide;
     this.checkBoxes = attrs.checkBoxes;
     this.labelShow = attrs.labelShow;
+    this.limit = attrs.limit;
   }
 }

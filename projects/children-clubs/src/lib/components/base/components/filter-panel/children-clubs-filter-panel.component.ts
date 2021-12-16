@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
+  BaseComponent,
   ConfigService,
   MicroAppStateQuery,
   MicroAppStateService,
@@ -18,7 +19,7 @@ import { ProgramListService } from '../../../../services/program-list/program-li
   templateUrl: './children-clubs-filter-panel.component.html',
   styleUrls: ['./children-clubs-filter-panel.component.scss', '../../../../../styles/index.scss'],
 })
-export class ChildrenClubsFilterPanelComponent implements OnInit {
+export class ChildrenClubsFilterPanelComponent extends BaseComponent implements OnInit {
   @Input() filtersCount: number;
   @Input() initValue: () => string;
   @Input() isShowMenu = true;
@@ -36,14 +37,17 @@ export class ChildrenClubsFilterPanelComponent implements OnInit {
     public config: ConfigService,
     private query: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
     private appStateService: MicroAppStateService<ChildrenClubsValue, ChildrenClubsState>,
-  ) {}
+  ) {
+    super();
+  }
+
   ngOnInit(): void {
     if (this.initValue) {
       this.searchControl.setValue(this.initValue());
     }
     this.searchControl.valueChanges
       .pipe(
-        filter((value) => value.length > 3 || !value.length),
+        filter((value) => value.length >= 3 || !value.length),
         distinctUntilChanged(),
         debounceTime(2000),
       )
@@ -55,5 +59,11 @@ export class ChildrenClubsFilterPanelComponent implements OnInit {
       ...this.query.state,
       groupFiltersMode: mode,
     });
+  }
+
+  public expand(): void {
+    this.programListService.isFilterPanelExpanded$.next(
+      !this.programListService.isFilterPanelExpanded$.getValue(),
+    );
   }
 }

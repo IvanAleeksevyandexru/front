@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProgramFiltersFormComponent } from './components/program-filters-form/program-filters-form.component';
 import {
   BaseUiModule,
   ConfigService,
   ErrorModule,
+  IconsModule,
   ImgPrefixerModule,
   PrevButtonModule,
   SafeModule,
   ScreenPadModule,
   SharedModalModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ProgramFiltersFormComponent } from './components/program-filters-form/program-filters-form.component';
 import { ApiService } from '../../services/api/api.service';
 
 import { StateService } from '../../services/state/state.service';
@@ -44,6 +45,7 @@ import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-re
     SafeModule,
     ImgPrefixerModule,
     PrevButtonModule,
+    IconsModule,
   ],
   providers: [DictionaryService, ConfigService, ApiService, StateService],
   exports: [

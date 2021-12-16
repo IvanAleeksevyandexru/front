@@ -6,6 +6,7 @@ import { ErrorActions, FileItem, FileItemStatus } from '../../data';
 @Injectable()
 export class UploaderStoreService {
   files = new BehaviorSubject<FileItem[]>([]);
+
   lastSelected?: MaxCountByType;
 
   reset(): void {

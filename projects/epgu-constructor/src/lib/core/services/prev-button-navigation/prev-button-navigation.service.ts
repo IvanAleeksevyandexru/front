@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { PrevButtonNavigation } from '@epgu/epgu-constructor-ui-kit';
 
+import { Navigation } from '@epgu/epgu-constructor-types';
 import { ScreenService } from '../../../screen/screen.service';
 import { NavigationService } from '../navigation/navigation.service';
-import { Navigation } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class PrevButtonNavigationService implements PrevButtonNavigation {

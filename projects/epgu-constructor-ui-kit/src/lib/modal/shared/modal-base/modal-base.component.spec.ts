@@ -39,7 +39,7 @@ describe('ModalBaseComponent', () => {
   describe('onClickComponent', () => {
     it('should be call closeModal', () => {
       const spy = jest.spyOn(component, 'closeModal');
-      jest.spyOn(component['elemRef'].nativeElement, 'contains').mockReturnValue(true);
+      jest.spyOn(component.elemRef.nativeElement, 'contains').mockReturnValue(true);
       const event = {
         target: {
           className: 'modal-overlay',
@@ -60,8 +60,10 @@ describe('ModalBaseComponent', () => {
   describe('closeModal', () => {
     it('should be reset overflow', () => {
       document.body.style.overflow = 'hidden';
+      document.body.style.height = '100%';
       component.closeModal();
       expect(document.body.style.overflow).toBe('');
+      expect(document.body.style.height).toBe('');
     });
   });
 });

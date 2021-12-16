@@ -38,7 +38,7 @@
         ></ng-container>
         <epgu-constructor-components-list
           class="cmp-group__item"
-          [id]="screenKey"
+          [id]="screenKey + 'repeatable-list'"
           [componentsGroupIndex]="i"
           [components]="$any(screens[screenKey])"
           [errors]="((commonError$ | async)?.errors)[i] || {}"

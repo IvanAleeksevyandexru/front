@@ -21,8 +21,10 @@ import {
   WINDOW,
   YandexMapService,
   JsonHelperService,
-  MapAnimationService, DeviceDetectorServiceStub
+  MapAnimationService,
+  DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KindergartenService } from '../component/unique-screen/components/kindergarten/kindergarten.service';
 import { KindergartenSearchPanelService } from '../component/unique-screen/components/select-map-object/components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 import { SelectMapObjectService } from '../component/unique-screen/components/select-map-object/select-map-object.service';
@@ -46,7 +48,6 @@ import { InitDataService } from './services/init-data/init-data.service';
 import { NavigationModalService } from './services/navigation-modal/navigation-modal.service';
 import { NavigationService } from './services/navigation/navigation.service';
 import { NavigationServiceStub } from './services/navigation/navigation.service.stub';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HtmlSelectService } from './services/html-select/html-select.service';
 import { JusticeSearchPanelService } from '../component/unique-screen/components/select-map-object/components/search-panel-resolver/components/justice-search-panel/justice-search-panel.service';
 
@@ -96,7 +97,7 @@ import { JusticeSearchPanelService } from '../component/unique-screen/components
     YandexMapService,
     MapAnimationService,
     HtmlSelectService,
-    JusticeSearchPanelService
-  ]
+    JusticeSearchPanelService,
+  ],
 })
 export class ForTestsOnlyModule {}

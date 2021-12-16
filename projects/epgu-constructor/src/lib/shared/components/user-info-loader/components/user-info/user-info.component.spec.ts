@@ -1,11 +1,13 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { UserInfoComponent } from './user-info.component';
-import { ConfigService, ObjectHelperService } from '@epgu/epgu-constructor-ui-kit';
-
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ConfigService,
+  ObjectHelperService,
+  ConfigServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { AgeType, Gender, UserInfo } from '@epgu/epgu-constructor-types';
+import { UserInfoComponent } from './user-info.component';
 
 describe('UserInfoComponent', () => {
   let component: UserInfoComponent;
@@ -23,18 +25,17 @@ describe('UserInfoComponent', () => {
     gender: Gender.female,
     ageType: AgeType.MATURE,
   };
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [UserInfoComponent],
-        providers: [ObjectHelperService, { provide: ConfigService, useClass: ConfigServiceStub }],
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [UserInfoComponent],
+      providers: [ObjectHelperService, { provide: ConfigService, useClass: ConfigServiceStub }],
+    })
+      .overrideComponent(UserInfoComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
       })
-        .overrideComponent(UserInfoComponent, {
-          set: { changeDetection: ChangeDetectionStrategy.Default },
-        })
-        .compileComponents();
-    }),
-  );
+      .compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserInfoComponent);

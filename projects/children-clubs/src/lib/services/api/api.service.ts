@@ -1,4 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   BaseProgram,
   DirectionsResponse,
@@ -12,11 +17,6 @@ import {
   MunicipalityResponse,
   Program,
 } from '../../typings';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   DIRECTIONS_SUB_URL,
   MUNICIPALITIES_SUB_URL,

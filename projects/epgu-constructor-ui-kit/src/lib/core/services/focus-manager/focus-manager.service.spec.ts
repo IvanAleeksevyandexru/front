@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FocusManagerService } from './focus-manager.service';
 import { PlainInputComponent } from '@epgu/ui/controls';
 import { By } from '@angular/platform-browser';
+import { Component } from '@angular/core';
+import { FocusManagerService } from './focus-manager.service';
 import { DatesToolsService } from '../dates-tools/dates-tools.service';
 import { EventBusService } from '../event-bus/event-bus.service';
 import { TrimModule } from '../../../base/directives/trim/trim.module';
 import { TextTransformModule } from '../../../base/directives/text-transform/text-transform.module';
 import { CurrencyModule } from '../../../base/directives/currency/currency.module';
 import { RankPipeModule } from '../../../base/pipes/rank/rank-pipe.module';
-import { Component } from '@angular/core';
 import { BaseUiModule } from '../../../base/base-ui.module';
 
 @Component({
@@ -16,6 +16,7 @@ import { BaseUiModule } from '../../../base/base-ui.module';
 })
 class TestPlainInputComponent {
   id = 'testId';
+
   name = 'test';
 }
 

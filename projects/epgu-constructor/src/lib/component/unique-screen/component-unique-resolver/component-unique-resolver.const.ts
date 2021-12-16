@@ -98,7 +98,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   UniqueScreenComponentTypes,
   Type<UniqueScreenComponent>
 >> = {
-  IdentificationStreamComponent: IdentificationStreamComponent,
+  IdentificationStreamComponent,
   IdentificationUploadComponent: IdentificationUploadScreenComponent,
   CityDepartment: InformationCenterMvdContainerComponent,
   UnusedPayments: UnusedPaymentsContainerComponent,

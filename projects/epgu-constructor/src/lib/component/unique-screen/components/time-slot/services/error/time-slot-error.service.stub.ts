@@ -7,6 +7,7 @@ export class TimeSlotErrorServiceStub {
   handling() {}
 
   show() {}
+
   resetHandlers() {}
 
   addHandler() {}

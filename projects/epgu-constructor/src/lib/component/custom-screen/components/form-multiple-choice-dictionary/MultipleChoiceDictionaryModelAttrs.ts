@@ -4,10 +4,15 @@ import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class MultipleChoiceDictionaryModelAttrs extends GenericAttrs {
   readonly dictionaryList: CustomComponentDropDownItemList;
+
   readonly dictionaryType: string;
+
   readonly subLabel: string;
+
   readonly modalHeader: string;
+
   readonly withAmount: boolean;
+
   readonly dictionaryFilter: ComponentDictionaryFilterDto[];
 
   constructor(attrs: CustomComponentAttr) {

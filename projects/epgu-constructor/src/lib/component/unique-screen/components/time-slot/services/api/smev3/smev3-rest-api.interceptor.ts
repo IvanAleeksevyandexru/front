@@ -46,9 +46,9 @@ export class Smev3RestApiInterceptor implements HttpInterceptor {
     response: HttpResponse<SmevSlotsResponseInterface>,
   ): Observable<HttpResponse<SmevSlotsResponseInterface>> {
     return of(response).pipe(
-      tap((response) => {
-        if (this.api.hasError(response?.body?.error)) {
-          this.setErrorForResponse(request, response);
+      tap((smevSlotsResponse) => {
+        if (this.api.hasError(smevSlotsResponse?.body?.error)) {
+          this.setErrorForResponse(request, smevSlotsResponse);
         }
       }),
     );

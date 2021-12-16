@@ -5,9 +5,16 @@ import { get } from 'lodash';
 export class InterpolationService {
   public variableRegExp = /\${(\w(\w|\d|_|\.)*)}/gi;
 
-  public interpolateRecursive(source: unknown, variables: object, defaultValue: string = '', keepVariables = true): unknown {
+  public interpolateRecursive(
+    source: unknown,
+    variables: object,
+    defaultValue: string = '',
+    keepVariables = true,
+  ): unknown {
     if (Array.isArray(source)) {
-      return source.map((item) => this.interpolateRecursive(item, variables, defaultValue, keepVariables));
+      return source.map((item) =>
+        this.interpolateRecursive(item, variables, defaultValue, keepVariables),
+      );
     }
 
     if (typeof source === 'object') {
@@ -24,7 +31,12 @@ export class InterpolationService {
     return source;
   }
 
-  public interpolateObject(source: object, variables: object, defaultValue: string = '', keepVariables = true): object {
+  public interpolateObject(
+    source: object,
+    variables: object,
+    defaultValue: string = '',
+    keepVariables = true,
+  ): object {
     return Object.entries(source).reduce((result, [key, value]) => {
       result[key] =
         typeof value === 'string'

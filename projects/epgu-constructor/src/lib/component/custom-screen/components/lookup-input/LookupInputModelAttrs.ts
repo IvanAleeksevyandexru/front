@@ -1,12 +1,21 @@
-import { CustomComponentAttr } from '../../components-list.types';
+import { Clarifications, Hint } from '@epgu/epgu-constructor-types';
+import {
+  CustomComponentAttr,
+  FocusOnInitAndStartSearch,
+  QueryMinSymbolsCount,
+  SearchIconForcedShowing,
+} from '../../components-list.types';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
-import { Clarifications } from '@epgu/epgu-constructor-types';
 
 export default class LookupInputModelAttrs extends DictionarySharedAttrs {
-  readonly searchIconForcedShowing: boolean;
-  readonly hint: string;
-  readonly queryMinSymbolsCount: number;
-  readonly focusOnInitAndStartSearch: boolean;
+  readonly searchIconForcedShowing: SearchIconForcedShowing;
+
+  readonly hint: Hint;
+
+  readonly queryMinSymbolsCount: QueryMinSymbolsCount;
+
+  readonly focusOnInitAndStartSearch: FocusOnInitAndStartSearch;
+
   readonly clarifications: Clarifications;
 
   constructor(attrs: CustomComponentAttr) {
@@ -17,5 +26,4 @@ export default class LookupInputModelAttrs extends DictionarySharedAttrs {
     this.focusOnInitAndStartSearch = attrs.focusOnInitAndStartSearch;
     this.clarifications = attrs.clarifications;
   }
-
 }

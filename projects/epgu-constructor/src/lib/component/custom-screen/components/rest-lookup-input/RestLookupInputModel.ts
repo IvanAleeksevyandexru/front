@@ -1,4 +1,3 @@
-
 import { CustomComponentAttr, CustomScreenComponentTypes } from '../../components-list.types';
 import RestLookupInputModelAttrs from './RestLookupInputModelAttrs';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';

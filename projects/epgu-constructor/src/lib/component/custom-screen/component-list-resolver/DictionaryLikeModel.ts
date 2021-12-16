@@ -1,24 +1,28 @@
-import BaseModel from './BaseModel';
-import DictionarySharedAttrs from './DictionarySharedAttrs';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { get, isUndefined } from 'lodash';
+import { ListElement, ListItem } from '@epgu/ui/models/dropdown';
+import {
+  DictionaryItem,
+  DictionaryResponse,
+} from '../../../shared/services/dictionary/dictionary-api.types';
 import {
   CustomComponent,
   CustomComponentAttr,
   CustomListDictionary,
   CustomListGenericData,
 } from '../components-list.types';
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { DictionaryItem, DictionaryResponse } from '../../../shared/services/dictionary/dictionary-api.types';
-import {  switchMap } from 'rxjs/operators';
-import { get, isUndefined } from 'lodash';
-import { ListElement, ListItem } from '@epgu/ui/models/dropdown';
+import DictionarySharedAttrs from './DictionarySharedAttrs';
+import BaseModel from './BaseModel';
 
 export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs> {
-
-  protected _dictionary$ = new BehaviorSubject<CustomListDictionary>(this.getDictionaryFirstState());
+  protected _dictionary$ = new BehaviorSubject<CustomListDictionary>(
+    this.getDictionaryFirstState(),
+  );
 
   constructor(componentDto: CustomComponent) {
-    super(componentDto);
+    super({ ...componentDto });
   }
 
   public get dictionary$(): Observable<CustomListDictionary> {
@@ -36,8 +40,8 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
     if (this.attrs.defaultIndex !== undefined && !this.value) {
       control.get('value').patchValue(dictionary.list[this.attrs.defaultIndex]);
       return true;
-    } else if (this.attrs.lookupDefaultValue !== undefined && !this.value) {
-
+    }
+    if (this.attrs.lookupDefaultValue !== undefined && !this.value) {
       const { lookupDefaultValue, lookupFilterPath } = this.attrs;
       const isRef = String(lookupDefaultValue).includes('$');
       const specialCharactersRegExp = /[&\/\\#^,+()$~%'":*?<>{}]/g;
@@ -50,8 +54,7 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
       if (lookupFilterPath) {
         value = dictionary.list.find(
           (item: ListItem) =>
-            get(item, lookupFilterPath) ===
-            (isRef ? get(screenStore, compareValue) : compareValue),
+            get(item, lookupFilterPath) === (isRef ? get(screenStore, compareValue) : compareValue),
         );
       } else {
         value = dictionary?.list.find(({ id }) => id === lookupDefaultValue);
@@ -60,39 +63,44 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
         control.get('value').patchValue(value);
       }
       return true;
-    } else if (!this.value) {
+    }
+    if (!this.value) {
       return true;
     }
   }
-
 
   getAttrs(attrs: CustomComponentAttr): DictionarySharedAttrs {
     return new DictionarySharedAttrs(attrs);
   }
 
-  loadReferenceData$(dataSource: Observable<CustomListGenericData<DictionaryResponse>>): Observable<CustomListDictionary> {
+  loadReferenceData$(
+    dataSource: Observable<CustomListGenericData<DictionaryResponse>>,
+  ): Observable<CustomListDictionary> {
     return dataSource.pipe(
       switchMap((dictionary) => {
-      return this.initDictionary(dictionary);
-    }));
+        return this.initDictionary(dictionary);
+      }),
+    );
   }
 
   public getDictionariesByFilter(
     hasFilter: boolean,
-    dataSource: Observable<CustomListGenericData<DictionaryResponse>>
+    dataSource: Observable<CustomListGenericData<DictionaryResponse>>,
   ): Observable<CustomListDictionary> {
-      if (hasFilter || this.attrs.needUnfilteredDictionaryToo) {
-        return dataSource.pipe(switchMap((dictionary) => {
+    if (hasFilter || this.attrs.needUnfilteredDictionaryToo) {
+      return dataSource.pipe(
+        switchMap((dictionary) => {
           return this.initDictionary(dictionary);
-        }));
-      } else if (!hasFilter && !this.attrs.needUnfilteredDictionaryToo) {
-        return this.initDictionary({ data: this.emptyDictionary() });
-      }
-
+        }),
+      );
+    }
+    if (!hasFilter && !this.attrs.needUnfilteredDictionaryToo) {
+      return this.initDictionary({ data: this.emptyDictionary() });
+    }
   }
 
   public emptyDictionary(): DictionaryResponse {
-   return {
+    return {
       error: { code: 0, message: 'emptyDictionary' },
       fieldErrors: [],
       items: [],
@@ -100,18 +108,23 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
     };
   }
 
-  public getAttributeValue(componentVal: KeyValueMap | '', dictionaryAttributeName: string): unknown {
+  public getAttributeValue(
+    componentVal: KeyValueMap | '',
+    dictionaryAttributeName: string,
+  ): unknown {
     const dictionary = this._dictionary$.getValue();
-      if (componentVal) {
-        const dictionaryItem = dictionary.list.find((item) => item.id === componentVal.id);
-        if (dictionaryItem) {
-          return dictionaryItem.originalItem.attributeValues[dictionaryAttributeName];
-        }
-        return undefined;
+    if (componentVal) {
+      const dictionaryItem = dictionary.list.find((item) => item.id === componentVal.id);
+      if (dictionaryItem) {
+        return dictionaryItem.originalItem.attributeValues[dictionaryAttributeName];
       }
+      return undefined;
+    }
   }
 
-  protected initDictionary(reference: CustomListGenericData<DictionaryResponse>): Observable<CustomListDictionary> {
+  protected initDictionary(
+    reference: CustomListGenericData<DictionaryResponse>,
+  ): Observable<CustomListDictionary> {
     const dictionary = this.getDictionaryFirstState();
     dictionary.loading = false;
     dictionary.paginationLoading = false;
@@ -158,5 +171,4 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
       }`,
     }));
   }
-
 }

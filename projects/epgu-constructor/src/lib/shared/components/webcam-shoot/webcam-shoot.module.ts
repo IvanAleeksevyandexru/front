@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WebcamShootComponent } from './webcam-shoot.component';
 import { WebcamModule } from 'ngx-webcam';
+import { WebcamShootComponent } from './webcam-shoot.component';
 
 @NgModule({
   declarations: [WebcamShootComponent],

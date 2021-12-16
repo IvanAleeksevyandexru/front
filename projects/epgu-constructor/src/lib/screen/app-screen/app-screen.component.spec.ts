@@ -1,12 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EventBusService, LoggerService, LoggerServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
-import { CurrentAnswersService } from '../current-answers.service';
-import { ScreenService } from '../screen.service';
-import { ScreenServiceStub } from '../screen.service.stub';
-import { AppScreenComponent } from './app-screen.component';
-import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
+import {
+  EventBusService,
+  LoggerService,
+  LoggerServiceStub,
+  CfAppStateService,
+  CfAppStateServiceStub,
+  LocationService,
+  LocationServiceStub,
+  ConfigService,
+  ConfigServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import {
   ComponentDto,
   DataDirectionType,
@@ -14,15 +17,14 @@ import {
   OutputAppDto,
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
-import {
-  CfAppStateService,
-  CfAppStateServiceStub,
-  LocationService,
-  LocationServiceStub,
-} from '@epgu/epgu-constructor-ui-kit';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { CurrentAnswersService } from '../current-answers.service';
+import { ScreenService } from '../screen.service';
+import { ScreenServiceStub } from '../screen.service.stub';
+import { AppScreenComponent } from './app-screen.component';
+import { ComponentUniqueResolverComponent } from '../../component/unique-screen/component-unique-resolver/component-unique-resolver.component';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -108,7 +110,7 @@ describe('SpaScreenComponent', () => {
       };
     });
 
-    it('should call handleOutputSpaData and shouldn\'t call sendDataToSpa and redirectToSpa when on init', () => {
+    it("should call handleOutputSpaData and shouldn't call sendDataToSpa and redirectToSpa when on init", () => {
       jest.spyOn(cfAppStateService, 'getState').mockReturnValue(state);
       const handleOutputAppDataSpy = jest.spyOn<any, any>(component, 'handleOutputAppData');
       const sendDataToAppSpy = jest.spyOn<any, any>(component, 'sendDataToApp');
@@ -225,7 +227,7 @@ describe('SpaScreenComponent', () => {
       jest.spyOn(locationService, 'getHref').mockReturnValue(currentUrl);
     });
 
-    it('shouldn\'t call handleOutputSpaData and should call sendDataToSpa and redirectToSpa when on init', () => {
+    it("shouldn't call handleOutputSpaData and should call sendDataToSpa and redirectToSpa when on init", () => {
       const handleOutputAppDataSpy = jest.spyOn<any, any>(component, 'handleOutputAppData');
       const sendDataToAppSpy = jest.spyOn<any, any>(component, 'sendDataToApp');
       const redirectToAppSpy = jest.spyOn<any, any>(component, 'redirectToApp');
@@ -246,11 +248,11 @@ describe('SpaScreenComponent', () => {
         value: currentComponent.value,
         callbackRedirectUrl: currentUrl,
         isPrevStepCase: false,
-        orderId: orderId,
+        orderId,
         healthPayload: {
           id: displayDtoSample.id,
           name: displayDtoSample.name,
-          orderId: orderId,
+          orderId,
         },
       };
 
@@ -268,11 +270,11 @@ describe('SpaScreenComponent', () => {
         value: currentComponent.value,
         callbackRedirectUrl: currentUrl,
         isPrevStepCase: true,
-        orderId: orderId,
+        orderId,
         healthPayload: {
           id: displayDtoSample.id,
           name: displayDtoSample.name,
-          orderId: orderId,
+          orderId,
         },
       };
 
@@ -285,7 +287,7 @@ describe('SpaScreenComponent', () => {
       expect(hrefSpy).toBeCalledWith(appUrl);
     });
 
-    it('shouldn throw error if config hasn\'t ', () => {
+    it("shouldn throw error if config hasn't ", () => {
       jest.spyOn(configService, 'appPathMap', 'get').mockReturnValue({});
       const errorCall = () => {
         component.ngOnInit();

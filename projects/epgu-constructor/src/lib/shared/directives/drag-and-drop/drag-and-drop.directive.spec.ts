@@ -3,15 +3,17 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { takeUntil } from 'rxjs/operators';
-import { BusEventType, EventBusService } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+
 import { DragAndDropDirective } from './drag-and-drop.directive';
 
 class FileListMock {
   readonly length: number = 1;
+
   item(index: number): File | null {
     return this[index];
   }
+
   [index: number]: File;
 }
 
@@ -34,6 +36,7 @@ const createDragEventMock = (fileList: FileList) => {
 })
 class DragAndDropTestComponent {
   e: FileList;
+
   constructor(
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
@@ -43,6 +46,7 @@ class DragAndDropTestComponent {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((payload: FileList) => this.onFileSelected(payload));
   }
+
   onFileSelected(e: FileList) {
     this.e = e;
   }

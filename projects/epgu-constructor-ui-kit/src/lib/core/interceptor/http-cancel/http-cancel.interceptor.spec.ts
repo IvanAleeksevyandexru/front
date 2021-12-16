@@ -1,9 +1,9 @@
-import { HttpCancelInterceptor } from './http-cancel.interceptor';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpCancelService } from './http-cancel.service';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { HttpCancelService } from './http-cancel.service';
+import { HttpCancelInterceptor } from './http-cancel.interceptor';
 
 describe('HttpCancelInterceptor', () => {
   let interceptor: HttpCancelInterceptor;

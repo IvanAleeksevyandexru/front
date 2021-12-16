@@ -1,22 +1,24 @@
-import { CustomComponent } from '../../../components-list.types';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { MockService } from 'ng-mocks';
+import { CustomComponent } from '../../../components-list.types';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { GetValueRelation } from './get-value-relation';
 import { createComponentMock, setupForRelationStrategy } from '../components-list-relations.mock';
 
 describe('GetValueRelation', () => {
   let relation: GetValueRelation;
-  let componentVal = 'some value';
+  const componentVal = 'some value';
   let components: CustomComponent[] = [];
-  const refRelationService: RefRelationService = MockService(RefRelationService) as unknown as RefRelationService;
+  const refRelationService: RefRelationService = (MockService(
+    RefRelationService,
+  ) as unknown) as RefRelationService;
 
   beforeEach(() => {
     relation = new GetValueRelation(refRelationService);
   });
 
   it('should patch dependentControl value', () => {
-    let {
+    const {
       reference,
       dependentComponent,
       form,
@@ -39,7 +41,7 @@ describe('GetValueRelation', () => {
       dependentControlValue: {
         firstControl: 'first value',
         secondControl: 'second value',
-      }
+      },
     });
     components = [createComponentMock({ id: 'someSourceId' })];
 

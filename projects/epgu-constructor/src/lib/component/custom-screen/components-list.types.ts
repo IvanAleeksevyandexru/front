@@ -1,20 +1,17 @@
 import {
   ComponentDictionaryFilterDto,
-  DictionaryOptions,
-  Clarifications,
   DisplayDto,
   TextTransform,
-  ComponentFilterDto,
-  ComponentRelationFieldDto,
-  ComponentImageDto,
   ComponentAttrsDto,
   DictionaryUrlTypes,
   CustomComponentRefRelation,
   RestAttrsDto,
   KeyValueMap,
+  ComponentValidationDto,
 } from '@epgu/epgu-constructor-types';
 import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { ListItem } from '@epgu/ui/models/dropdown';
+import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentBase } from '../../screen/screen.types';
 import { DateRangeRef } from '../../shared/services/date-range/date-range.models';
 import {
@@ -22,7 +19,6 @@ import {
   DictionaryResponse,
 } from '../../shared/services/dictionary/dictionary-api.types';
 import { CheckboxListElement } from './components/checkbox-list/checkbox-list.types';
-import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
 import { AppLink } from './components/sign-app-link/sign-app-link.types';
 
 export enum CustomScreenComponentTypes {
@@ -144,103 +140,135 @@ export interface MappingParamsDto {
   isRoot?: boolean;
 }
 
+interface Relation {
+  ref: string;
+  conditions: RelationCondition[];
+}
+
+interface CheckBoxes {
+  [id: string]: CheckboxListElement;
+}
+
+type CharsAmount = number;
+type CityFilter = string[];
+type Class = string;
+type CurrentTime = string;
+type Description = string;
+type ErrorButton = string;
+export type FocusOnInitAndStartSearch = boolean;
+type From = string;
+export type Grid = string;
+type HideApartmentCheckbox = boolean;
+type HideHouseCheckbox = boolean;
+type HideLevels = string[];
+type InterpolationEnabled = boolean;
+type IsBottomSlot = boolean;
+type IsHorizontal = boolean;
+type IsNonStop = boolean;
+type IsNotDuplicate = boolean;
+type IsTextHelper = boolean;
+type LabelHide = string;
+type LabelShow = string;
+type Limit = string;
+type LocalSearch = boolean;
+export type LockedValue = boolean;
+export type LookupDefaultValue = string | number;
+export type LookupFilterPath = string;
+type ModalHeader = string;
+export type NeedUnfilteredDictionaryToo = boolean;
+export type OnlyFirstScreen = boolean;
+type OrderId = string;
+export type Placeholder = string;
+type Price = number;
+export type QueryMinSymbolsCount = number;
+type Readonly = boolean;
+export type RepeatWithNoFilters = boolean;
+type Required = boolean;
+type RequiredAttrs = string[];
+export type SearchIconForcedShowing = boolean;
+type SearchType = string;
+type SelectApartmentCheckbox = boolean;
+type SelectHouseCheckbox = boolean;
+type ShowPlaceholderOnFocus = boolean;
+type SubLabel = string;
+type SuggestionId = string;
+type Title = string;
+type TitleHide = boolean;
+type To = string;
+type Type = string;
+type Wait = string;
+type WithAmount = boolean;
+
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
- * (например Регион связан со траной что и чтоб не выкачивать все регионы мира, в ссылке будет указана страна)
- * @property dictionaryType - dictionary name for request {@see getDictionary}
+ * (например Регион связан со страной и чтобы не выкачивать все регионы мира, в ссылке будет указана страна)
  */
 export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
-  add?: { component: string; caption: string[] };
-  cityFilter?: string[];
-  clarifications?: Clarifications;
-  class?: string;
-  customUnrecLabel?: string;
+  appLinks?: AppLink[];
+  brokenDateFixStrategy?: BrokenDateFixStrategy;
+  charsAmount?: CharsAmount;
+  checkBoxes?: CheckBoxes;
+  cityFilter?: CityFilter;
+  class?: Class;
+  currentTime?: CurrentTime;
   dateRestrictions?: DateRestriction[];
-  defaultIndex?: number;
-  defaultValue?: string;
-  dictionaryFilter?: ComponentDictionaryFilterDto[];
+  description?: Description;
   dictionaryFilters?: ComponentDictionaryFilterDto[][];
   dictionaryList?: CustomComponentDropDownItemList;
-  dictionaryOptions?: DictionaryOptions;
-  dictionaryType?: string;
   dictionaryUrlType?: DictionaryUrlTypes;
-  disabled?: boolean;
+  errorButton?: ErrorButton;
   fields?: CustomComponentAttrField;
-  filter?: ComponentFilterDto;
-  focusOnInitAndStartSearch?: boolean;
-  grid?: string;
-  hidden?: boolean;
-  hint?: string;
-  image?: ComponentImageDto;
-  isBottomSlot?: boolean;
-  isNotDuplicate?: boolean;
-  isTextHelper?: boolean;
-  labelAttr?: string; // TODO: deprecated?
-  labelHint?: string;
-  lockedValue?: boolean;
-  lookupDefaultValue?: string | number;
-  lookupFilterPath?: string;
+  focusOnInitAndStartSearch?: FocusOnInitAndStartSearch;
+  from?: From;
+  grid?: Grid;
+  hideApartmentCheckbox?: HideApartmentCheckbox;
+  hideHouseCheckbox?: HideHouseCheckbox;
+  hideLevels?: HideLevels;
+  interpolationEnabled?: InterpolationEnabled;
+  isBottomSlot?: IsBottomSlot;
+  isHorizontal?: IsHorizontal;
+  isNonStop?: IsNonStop;
+  isNotDuplicate?: IsNotDuplicate;
+  isTextHelper?: IsTextHelper;
+  labelHide?: LabelHide;
+  labelShow?: LabelShow;
+  limit?: Limit;
+  localSearch?: LocalSearch;
+  lockedValue?: LockedValue;
+  lookupDefaultValue?: LookupDefaultValue;
+  lookupFilterPath?: LookupFilterPath;
   mappingParams?: MappingParamsDto;
   maskOptions?: NumberMaskOptions;
-  maxDate?: string;
-  minDate?: string;
-  needUnfilteredDictionaryToo?: boolean;
-  emptyWhenNoFilter?: boolean;
-  onlyFirstScreen?: boolean;
-  ref?: (CustomComponentRef | DateRangeRef)[]; //TODO разобраться с типами
+  modalHeader?: ModalHeader;
+  needUnfilteredDictionaryToo?: NeedUnfilteredDictionaryToo;
+  onlyFirstScreen?: OnlyFirstScreen;
+  orderId?: OrderId;
+  placeholder?: Placeholder;
+  price?: Price;
+  queryMinSymbolsCount?: QueryMinSymbolsCount;
+  readonly?: Readonly;
+  ref?: (CustomComponentRef | DateRangeRef)[];
   refs?: KeyValueMap;
-  relation?: { ref: string; conditions: RelationCondition[] };
-  relationField?: ComponentRelationFieldDto;
-  repeatWithNoFilters?: boolean;
-  requiredAttrs?: string[];
-  searchProvider?: {
-    dictionaryOptions: DictionaryOptions;
-    dictionaryFilter: ComponentDictionaryFilterDto[];
-  };
-  searchType?: string;
+  relation?: Relation;
+  repeatWithNoFilters?: RepeatWithNoFilters;
+  required?: Required;
+  requiredAttrs?: RequiredAttrs;
+  searchIconForcedShowing?: SearchIconForcedShowing;
+  searchType?: SearchType;
   secondaryDictionaryFilter?: ComponentDictionaryFilterDto[];
-  subLabel?: string;
-  suggestionId?: string;
-  supportedValues?: SupportedValue[];
+  selectApartmentCheckbox?: SelectApartmentCheckbox;
+  selectHouseCheckbox?: SelectHouseCheckbox;
+  showPlaceholderOnFocus?: ShowPlaceholderOnFocus;
+  subLabel?: SubLabel;
+  suggestionId?: SuggestionId;
+  title?: Title;
+  titleHide?: TitleHide;
+  to?: To;
+  type?: Type;
   updateOnValidation?: UpdateOn;
   validation?: CustomComponentAttrValidation[];
-  withAmount?: boolean;
-  interpolationEnabled?: boolean;
-  readonly?: boolean;
-  brokenDateFixStrategy?: BrokenDateFixStrategy;
-  currentTime?: string;
-  placeholder?: string;
-  hideHouseCheckbox?: boolean;
-  hideApartmentCheckbox?: boolean;
-  selectHouseCheckbox?: boolean;
-  selectApartmentCheckbox?: boolean;
-  hideLevels?: string[];
-  wait?: string;
-  errorButton?: string;
-  orderId?: string;
-  isHorizontal?: boolean;
-  labelShow?: string;
-  labelHide?: string;
-  checkBoxes?: {
-    [id: string]: CheckboxListElement;
-  };
-  localSearch?: boolean;
-  title?: string;
-  type?: string;
-  description?: string;
-  modalHeader?: string;
-  searchIconForcedShowing?: boolean;
-  queryMinSymbolsCount?: number;
-  price?: number;
-  showPlaceholderOnFocus?: boolean;
-  isNonStop?: boolean;
-  titleHide?: boolean;
-  charsAmount?: number;
-  to?: string;
-  from?: string;
-  limit?: string;
-  appLinks?: AppLink[];
-  required?: boolean;
+  wait?: Wait;
+  withAmount?: WithAmount;
 }
 
 export interface DateRestriction {
@@ -252,13 +280,7 @@ export interface DateRestriction {
 
 export type UpdateOn = 'blur' | 'change' | 'submit';
 
-export interface CustomComponentAttrValidation {
-  type: string;
-  value: string;
-  ref: string;
-  condition: string;
-  dataType: string;
-  errorMsg: string;
+export interface CustomComponentAttrValidation extends ComponentValidationDto {
   errorDesc?: string;
   updateOn?: UpdateOn;
   expr?: string;

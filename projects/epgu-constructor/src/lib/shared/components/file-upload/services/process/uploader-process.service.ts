@@ -1,13 +1,4 @@
 import { Injectable } from '@angular/core';
-import {
-  ErrorActions,
-  FileItem,
-  FileItemStatus,
-  Operation,
-  OperationHandler,
-  OperationType,
-  UPLOAD_OBJECT_TYPE,
-} from '../../data';
 import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 
 import {
@@ -24,6 +15,15 @@ import {
 } from 'rxjs/operators';
 
 import { Observable } from 'rxjs/internal/Observable';
+import {
+  ErrorActions,
+  FileItem,
+  FileItemStatus,
+  Operation,
+  OperationHandler,
+  OperationType,
+  UPLOAD_OBJECT_TYPE,
+} from '../../data';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { UploaderStoreService } from '../store/uploader-store.service';
 import { UploaderManagerService } from '../manager/uploader-manager.service';
@@ -34,13 +34,16 @@ import { UploadedFile } from '../../../../../core/services/terra-byte-api/terra-
 @Injectable()
 export class UploaderProcessService {
   operations: Record<string, Operation> = {};
+
   counter = new BehaviorSubject<number>(0);
+
   processing$ = this.counter.pipe(
     map((counter) => counter > 0),
     distinctUntilChanged(),
   );
 
   stream = new Subject<Operation>();
+
   stream$ = this.stream.pipe(
     tap(() => this.increment()),
     mergeMap((operation: Operation) => {
@@ -162,7 +165,7 @@ export class UploaderProcessService {
       mapTo(null),
       takeUntil(
         cancel.pipe(
-          filter((status) => status),
+          filter((hasCancel) => hasCancel),
           tap(() => this.store.changeStatus(item, oldStatus)),
         ),
       ),
@@ -257,7 +260,7 @@ export class UploaderProcessService {
       map(() => undefined),
       takeUntil(
         cancel.pipe(
-          filter((status) => status),
+          filter((hasCancel) => hasCancel),
           tap(() => this.store.changeStatus(item, oldStatus)),
         ),
       ),

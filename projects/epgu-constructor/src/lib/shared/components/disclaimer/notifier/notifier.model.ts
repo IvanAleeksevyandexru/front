@@ -1,12 +1,20 @@
 export class Notifier {
   public type: NotifierType;
+
   public title: string;
+
   public message: string;
+
   public notifierId: string;
+
   public keepAfterRouteChange: boolean;
+
   public showIcon: boolean;
+
   public onCancel: () => void;
+
   public onAction: () => void;
+
   public actionName: string;
 
   constructor(init?: Partial<Notifier>) {
@@ -16,11 +24,17 @@ export class Notifier {
 
 export class NotifierSetting {
   public singleNotifier?: boolean;
+
   public removeDelay?: number;
+
   public maxNotificationsCount?: number;
+
   public showCloseAllCount?: number;
+
   public align?: 'right' | 'left';
+
   public theme?: 'light' | 'dark';
+
   public animated?: boolean;
 }
 

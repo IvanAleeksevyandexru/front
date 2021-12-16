@@ -8,6 +8,12 @@ import {
   LoggerService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DictionaryConditions,
+  ComponentRelationFieldDto,
+  RelationCondition,
+} from '@epgu/epgu-constructor-types';
+import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
@@ -30,13 +36,7 @@ import { ComponentsListToolsService } from '../components-list-tools/components-
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import {
-  DictionaryConditions,
-  ComponentRelationFieldDto,
-  RelationCondition,
-} from '@epgu/epgu-constructor-types';
 import { MaskTransformService } from '../../../../shared/services/mask-transform/mask-transform.service';
-import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
@@ -45,23 +45,31 @@ import { MaritalStatusInputField } from '../../components/marital-status-input/m
 @Injectable()
 export class ComponentsListFormService {
   private _form = new FormArray([]);
+
   private _shownElements: CustomListStatusElements = {};
+
   private _changes = new EventEmitter<CustomComponentOutputData>();
+
   private mapRelationTypes = {
     RegExp: this.relationRegExp.bind(this),
     MinDate: this.relationMinDate.bind(this),
     MaxDate: this.relationMaxDate.bind(this),
   };
+
   private indexesByIds: Record<string, number> = {};
+
   private cachedAttrsComponents: Record<string, { base: CustomComponentAttr; last: string }> = {};
+
   private lastChangedComponent: [CustomListFormGroup, CustomListFormGroup];
 
   get shownElements(): CustomListStatusElements {
     return this._shownElements;
   }
+
   get form(): FormArray {
     return this._form;
   }
+
   get changes(): EventEmitter<CustomComponentOutputData> {
     return this._changes;
   }
@@ -166,13 +174,13 @@ export class ComponentsListFormService {
     refComponent?: Fields,
   ): void {
     if (!relationField) {
-      const value = next.value;
+      const { value } = next;
       if (!next.attrs?.relationField || !value) {
         return;
       }
       const { ref, conditions } = next.attrs?.relationField;
-      const refComponent = this.form.getRawValue()[this.indexesByIds[ref]];
-      this.updateRelationMap(conditions, value, refComponent);
+      const refComponentForm = this.form.getRawValue()[this.indexesByIds[ref]];
+      this.updateRelationMap(conditions, value, refComponentForm);
     } else {
       const { conditions } = relationField;
 
@@ -210,15 +218,15 @@ export class ComponentsListFormService {
           value = this.datesToolsService.format(value);
         } else if (type === CustomScreenComponentTypes.CalendarInput) {
           const keys = Object.keys(value);
-          keys.forEach((key: string) => {
-            value[key] = this.datesToolsService.format(value[key]);
+          keys.forEach((prop: string) => {
+            value[prop] = this.datesToolsService.format(value[prop]);
           });
         } else if (
           type === CustomScreenComponentTypes.StringInput &&
           val.attrs.mask === 'NumberMaskInput' &&
           value
         ) {
-          //при вводе любого числа, оно должно отправляться в нужном формате NumberMaskInput (EPGUCORE-59658)
+          // при вводе любого числа, оно должно отправляться в нужном формате NumberMaskInput (EPGUCORE-59658)
           value = this.maskTransformService.transformNumberMaskInput(value, val.attrs.maskOptions);
         }
         acc[val.id] = { value, isValid, disabled, condition };
@@ -231,10 +239,12 @@ export class ComponentsListFormService {
   private relationRegExp(value: string, params: RegExp): string[] {
     return String(value).match(params);
   }
+
   private relationMinDate(value: string | Date, params: string): boolean {
     const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
     return this.datesToolsService.isSameOrAfter(dateLeft, dateRight);
   }
+
   private relationMaxDate(value: string | Date, params: string): boolean {
     const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
     return this.datesToolsService.isSameOrBefore(dateLeft, dateRight);
@@ -258,7 +268,7 @@ export class ComponentsListFormService {
     patch: object,
     refControl?: AbstractControl,
   ): void {
-    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch }};
+    const resultComponent = { ...component, attrs: { ...component.attrs, ...patch } };
 
     if (!refControl) {
       const control = this.form.controls[this.indexesByIds[component.id]] as FormGroup;
@@ -289,7 +299,7 @@ export class ComponentsListFormService {
     result?: Partial<CustomComponent>,
     refControl?: AbstractControl,
   ): void {
-    const accessKey = !!(component as Fields)?.fieldName
+    const accessKey = (component as Fields)?.fieldName
       ? (component as Fields).fieldName
       : component.id;
 
@@ -318,7 +328,7 @@ export class ComponentsListFormService {
     refControl?: AbstractControl,
   ): void {
     let result;
-    for (let condition of conditions) {
+    for (const condition of conditions) {
       const func = this.mapRelationTypes[condition.type];
       if (!func) {
         this.logger.error(
@@ -355,6 +365,7 @@ export class ComponentsListFormService {
       validators.push(this.validationService.dateValidator(component, componentsGroupIndex));
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { type, attrs, id, label, required, arguments: _arguments } = component;
 
     const form: FormGroup = this.fb.group(

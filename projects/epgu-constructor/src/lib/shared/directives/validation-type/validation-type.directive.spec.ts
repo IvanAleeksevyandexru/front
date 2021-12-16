@@ -5,27 +5,29 @@ import { FormBuilder, FormControl, FormGroup, NgControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
-  CustomComponent,
-  CustomScreenComponentTypes,
-} from '../../../component/custom-screen/components-list.types';
-import { DateRangeService } from '../../services/date-range/date-range.service';
-import { CoreModule } from '../../../core/core.module';
-import { CoreUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import {
+  CoreUiModule,
+  DatesToolsService,
   ConfigService,
   ConfigServiceStub,
   EventBusService,
   LoggerService,
   LoggerServiceStub,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { MockModule, MockProvider } from 'ng-mocks';
+import {
+  CustomComponent,
+  CustomScreenComponentTypes,
+} from '../../../component/custom-screen/components-list.types';
+import { DateRangeService } from '../../services/date-range/date-range.service';
+import { CoreModule } from '../../../core/core.module';
+
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { BaseModule } from '../../base.module';
 import { ValidationService } from '../../services/validation/validation.service';
 import { ValidationTypeModule } from './validation-type.module';
 import { DateRestrictionsService } from '../../services/date-restrictions/date-restrictions.service';
-import { MockModule, MockProvider } from 'ng-mocks';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 
 const componentMockData: CustomComponent = {
@@ -61,7 +63,9 @@ const componentMockData: CustomComponent = {
 })
 class MockComponent {
   @Input() componentMockData: CustomComponent;
+
   form: FormGroup;
+
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       value: new FormControl({ value: '' }),

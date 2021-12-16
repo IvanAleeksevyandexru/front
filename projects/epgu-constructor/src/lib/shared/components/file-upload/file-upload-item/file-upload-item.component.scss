@@ -186,17 +186,12 @@ input[type='file'] {
 .fileupload {
   &__icon {
     display: inline-block;
-    background-color: $color-gosblue;
-    mask: url('../../../../../assets/icons/svg/clock.svg');
-    mask-size: 100%;
     margin-right: 8px;
-    width: 20px;
-    height: 20px;
     transform: translateY(2px);
   }
 }
 
-.info__text::ng-deep > .text ul{
+.info__text::ng-deep > .text ul {
   margin: 0 !important;
 }
 @include rubles('.info__text');

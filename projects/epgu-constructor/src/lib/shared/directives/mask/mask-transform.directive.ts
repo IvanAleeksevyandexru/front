@@ -8,6 +8,7 @@ import { MaskTransformService } from '../../services/mask-transform/mask-transfo
 })
 export class MaskTransformDirective {
   @Input('epgu-constructor-mask-transform') mask: string | string[];
+
   @Input() maskOptions?: Partial<NumberMaskOptions>;
 
   constructor(private ngControl: NgControl, private maskTransformService: MaskTransformService) {}

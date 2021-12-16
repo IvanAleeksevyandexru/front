@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
-import { MicroAppComponentResolverComponent } from './micro-app-component-resolver.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { MicroAppComponentResolverComponent } from './micro-app-component-resolver.component';
 import { MicroAppRoutingService } from '../micro-app-routing/micro-app-routing.service';
 import { MicroAppRoutingServiceStub } from '../micro-app-routing/micro-app-routing.service.stub';
 import { UnsubscribeService } from '../../core/services/unsubscribe/unsubscribe.service';

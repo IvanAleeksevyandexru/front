@@ -7,10 +7,10 @@ import { setupForRelationStrategy } from '../components-list-relations.mock';
 
 describe('DisabledRelation', () => {
   let relation: DisabledRelation;
-  let componentVal =  { foo: 'bar' };
-  const refRelationService: RefRelationService = MockService(RefRelationService, {
+  const componentVal = { foo: 'bar' };
+  const refRelationService: RefRelationService = (MockService(RefRelationService, {
     isValueEquals: jest.fn().mockReturnValue(false),
-  }) as unknown as RefRelationService;
+  }) as unknown) as RefRelationService;
 
   beforeEach(() => {
     relation = new DisabledRelation(refRelationService);
@@ -18,7 +18,7 @@ describe('DisabledRelation', () => {
 
   it('should do nothing if isValueEquals() === TRUE AND component is disabled', () => {
     jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-    let {
+    const {
       reference,
       dependentComponent,
       dependentControl,
@@ -27,19 +27,13 @@ describe('DisabledRelation', () => {
     } = setupForRelationStrategy({
       referenceExtra: { relation: CustomComponentRefRelation.disabled },
       dependentComponentExtra: { id: 'dependentComponentId' },
-      dependentControlValue: 'a'
+      dependentControlValue: 'a',
     });
 
     dependentControl.disable();
     dependentControl.markAsTouched();
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     expect(dependentControl.get('value').value).toBe('a');
     expect(dependentControl.touched).toBeTruthy();
@@ -48,7 +42,7 @@ describe('DisabledRelation', () => {
 
   it('should patchValueAndDisable if isValueEquals() === TRUE and control is enabled', () => {
     jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-    let {
+    const {
       reference,
       dependentComponent,
       dependentControl,
@@ -62,13 +56,7 @@ describe('DisabledRelation', () => {
 
     dependentControl.markAsTouched();
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     // если в reference нет defaultValue, то контролу устанавливается ""
     expect(dependentControl.get('value').value).toBe('');
@@ -77,7 +65,7 @@ describe('DisabledRelation', () => {
   });
 
   it('should patchValueAndDisable if isValueEquals() === TRUE and control is enabled and has default value', () => {
-    let {
+    const {
       reference,
       dependentComponent,
       dependentControl,
@@ -94,13 +82,7 @@ describe('DisabledRelation', () => {
 
     dependentControl.markAsTouched();
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     // контролу устанавливается значение reference.defaultValue
     expect(dependentControl.get('value').value).toBe('some default value');
@@ -123,13 +105,7 @@ describe('DisabledRelation', () => {
       dependentControlValue: 'a',
     });
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     expect(dependentControl.enabled).toBeTruthy();
 
@@ -138,13 +114,7 @@ describe('DisabledRelation', () => {
 
     // делаем это для того, чтобы в кэше сервиса (this.prevValues) сохранилось значение для компонента
     jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     dependentControl = new FormGroup({
       id: new FormControl(dependentComponent.id),
@@ -154,13 +124,7 @@ describe('DisabledRelation', () => {
     form = new FormArray([dependentControl]);
 
     jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     // значение контрола изменилось, т.к. в кэше сервиса (this.prevValues) есть значение для компонента
     expect(dependentControl.get('value').value).toBe('a');
@@ -170,12 +134,7 @@ describe('DisabledRelation', () => {
   it('should do nothing if isValueEquals() === FALSE AND component has any disabled refs with same value', () => {
     // делаем это для того, чтобы в кэше сервиса (this.prevValues) сохранилось значение для компонента
     jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
-    let {
-      reference,
-      dependentComponent,
-      form,
-      shownElements,
-    } = setupForRelationStrategy({
+    let { reference, dependentComponent, form, shownElements } = setupForRelationStrategy({
       referenceExtra: { relation: CustomComponentRefRelation.disabled },
       dependentComponentExtra: {
         id: 'dependentComponentId',
@@ -197,15 +156,9 @@ describe('DisabledRelation', () => {
       dependentControlValue: 'b',
     });
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
-    let dependentControl = new FormGroup({
+    const dependentControl = new FormGroup({
       id: new FormControl(dependentComponent.id),
       value: new FormControl('b'),
     });
@@ -218,13 +171,7 @@ describe('DisabledRelation', () => {
       .spyOn(refRelationService, 'isValueEquals')
       .mockImplementation((a: unknown, b: unknown) => a === b);
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-    );
+    relation.handleRelation(shownElements, dependentComponent, reference, componentVal, form);
 
     expect(dependentControl.get('value').value).toBe('b');
     expect(dependentControl.enabled).toBeFalsy();

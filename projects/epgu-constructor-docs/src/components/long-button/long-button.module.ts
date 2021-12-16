@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { generateRoutes, TuiAddonDocModule } from '@taiga-ui/addon-doc';
+import { BaseUiModule, LongButtonModule } from '@epgu/epgu-constructor-ui-kit';
 import { ExampleEpguLongButtonComponent } from './long-button.component';
 import { Example1EpguLongButtonComponent } from './examples/1';
 import { Example2EpguLongButtonComponent } from './examples/2';
-import { BaseUiModule, LongButtonModule } from '@epgu/epgu-constructor-ui-kit';
 
 @NgModule({
   declarations: [

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
 import { MockModule, MockProvider } from 'ng-mocks';
-import { FieldListComponent } from './field-list.component';
 import {
   UnsubscribeService,
   UnsubscribeServiceStub,
@@ -9,14 +8,15 @@ import {
   JsonHelperServiceStub,
   RankPipe,
 } from '@epgu/epgu-constructor-ui-kit';
+import { By } from '@angular/platform-browser';
+import { cloneDeep } from 'lodash';
+import { FieldListComponent } from './field-list.component';
 import { OutputHtmlModule } from '../output-html/output-html.module';
 import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
-import { By } from '@angular/platform-browser';
 import { EaisdoGroupCostServiceStub } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service.stub';
 import { ConfirmUserDataErrorType } from '../../../component/unique-screen/components/confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
-import { cloneDeep } from 'lodash';
 
 describe('FieldListComponent', () => {
   let component: FieldListComponent;
@@ -35,12 +35,12 @@ describe('FieldListComponent', () => {
       },
       fieldGroups: [
         {
-          groupName: '<h4 class=\'mb-12\'>Реквизиты сертификата</h4>',
+          groupName: "<h4 class='mb-12'>Реквизиты сертификата</h4>",
           needDivider: true,
           fields: [{}],
         },
         {
-          groupName: '<h5 class=\'mb-12\'>Детали оплаты программы</h5>',
+          groupName: "<h5 class='mb-12'>Детали оплаты программы</h5>",
           visibilityLabel: 'wait',
           fields: [{}],
         },
@@ -98,7 +98,7 @@ describe('FieldListComponent', () => {
       icon: 'red-line',
       title: 'Удалите лишние символы',
       type: ConfirmUserDataErrorType.error,
-    }
+    },
   ];
 
   const mockGroupedErrors = [
@@ -113,7 +113,7 @@ describe('FieldListComponent', () => {
       icon: 'red-line',
       title: 'Удалите лишние символы',
       type: ConfirmUserDataErrorType.error,
-    }
+    },
   ];
 
   beforeEach(() => {
@@ -152,10 +152,10 @@ describe('FieldListComponent', () => {
       fixture.detectChanges();
 
       component.ngOnChanges({
-        data: new SimpleChange(null, 1, true)
+        data: new SimpleChange(null, 1, true),
       });
 
-      expect(component['groupErrors']).toBeCalled();
+      expect(component.groupErrors).toBeCalled();
     });
 
     it('should not call "groupErrors()" if "isNeedToGroupErrors" is false or errors amount less than 2', () => {
@@ -167,10 +167,10 @@ describe('FieldListComponent', () => {
       fixture.detectChanges();
 
       component.ngOnChanges({
-        data: new SimpleChange(null, 1, true)
+        data: new SimpleChange(null, 1, true),
       });
 
-      expect(component['groupErrors']).not.toBeCalled();
+      expect(component.groupErrors).not.toBeCalled();
 
       component.data.attrs.isNeedToGroupErrors = true;
       component.data.value = JSON.stringify({
@@ -179,10 +179,10 @@ describe('FieldListComponent', () => {
       fixture.detectChanges();
 
       component.ngOnChanges({
-        data: new SimpleChange(null, 1, true)
+        data: new SimpleChange(null, 1, true),
       });
 
-      expect(component['groupErrors']).not.toBeCalled();
+      expect(component.groupErrors).not.toBeCalled();
     });
   });
 
@@ -205,7 +205,7 @@ describe('FieldListComponent', () => {
           setting: {},
           type: 'clarification type',
           id: 'clarification id',
-        }
+        },
       };
       component.data.attrs.clarifications = clarifications;
       component.preparedData = mockPreparedData;
@@ -251,7 +251,7 @@ describe('FieldListComponent', () => {
           setting: {},
           type: 'clarification type',
           id: 'clarification id',
-        }
+        },
       };
       component.data.attrs.clarifications = clarifications;
       component.preparedData = mockPreparedData;
@@ -276,12 +276,12 @@ describe('FieldListComponent', () => {
       const result = component.calculateVisibility(1);
       expect(result).toBeTruthy();
     });
-    it('should return false, if current fieldGroup item passed by index contain visibilityLabel and doesn\'t match currentEaisdoState', () => {
+    it("should return false, if current fieldGroup item passed by index contain visibilityLabel and doesn't match currentEaisdoState", () => {
       component.currentEaisdoState = EaisdoStateTypes.errorBad;
       const result = component.calculateVisibility(1);
       expect(result).toBeFalsy();
     });
-    it('should return true, if current fieldGroup item passed by index doesn\'t contain visibilityLabel', () => {
+    it("should return true, if current fieldGroup item passed by index doesn't contain visibilityLabel", () => {
       const result = component.calculateVisibility(0);
       expect(result).toBeTruthy();
     });
@@ -294,14 +294,14 @@ describe('FieldListComponent', () => {
   describe('transformString()', () => {
     const str = '${id.value.value.placeholder}';
     it('should return transformed string, from passed string with placeholders', () => {
-      currentAnswersService.state = { id: { value: { value: { placeholder: 'someValue' }}}};
-      const result = component['transformString'](str);
+      currentAnswersService.state = { id: { value: { value: { placeholder: 'someValue' } } } };
+      const result = component.transformString(str);
       expect(result).toBe('someValue');
     });
 
     it('should return passed string if path is incorrectly specified', () => {
-      currentAnswersService.state = { id: { value: { value: {}}}};
-      const result2 = component['transformString'](str);
+      currentAnswersService.state = { id: { value: { value: {} } } };
+      const result2 = component.transformString(str);
       expect(result2).toBe(str);
     });
   });
@@ -312,7 +312,7 @@ describe('FieldListComponent', () => {
       component.errors = mockErrors;
       fixture.detectChanges();
 
-      component['groupErrors']();
+      component.groupErrors();
 
       expect(component.errors).toEqual(mockGroupedErrors);
     });

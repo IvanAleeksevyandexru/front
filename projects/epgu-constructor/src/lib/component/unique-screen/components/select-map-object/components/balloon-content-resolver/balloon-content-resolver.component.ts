@@ -49,6 +49,7 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
   @Input() contentType = ContentTypes[MapTypes.commonMap];
   @Input() attrs = {};
   @Input() redraw: boolean;
+  @Input() showCrossButton = true;
   @Output() selectObject = new EventEmitter<YMapItem<DictionaryItem>>();
   @Output() handleObjectClickEvent = new EventEmitter<YMapItem<DictionaryItem>>();
   @Output() collapseObjectEvent = new EventEmitter<YMapItem<DictionaryItem>>();
@@ -117,6 +118,7 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
     instance.mapObject = this.mapObject;
     instance.isSelectButtonHidden = this.isSelectButtonHidden;
     instance.attrs = this.attrs || {};
+    instance.showCrossButton = this.showCrossButton;
     instance.selectObject = (obj, evt: Event): void => {
       evt.stopPropagation();
       this.selectObject.emit(obj);

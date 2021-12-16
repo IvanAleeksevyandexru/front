@@ -65,13 +65,14 @@ export class EmployeeHistoryContainerComponent implements AfterViewInit {
   }
 
   private formatToServerModel(employee: EmployeeHistoryModel): EmployeeHistoryServerModel {
-    const { minDateTo, to, from, ...employeeHistory } = employee;
+    const { to, from, ...employeeHistory } = employee;
 
     const toFormatted = { ...to, monthCode: months[to.month] };
     const fromFormatted = { ...from, monthCode: months[from.month] };
     const chosenRole = this.ds.filter((role) => role.type === employee.type);
 
     delete employeeHistory.error;
+    delete employeeHistory.minDateTo;
     return {
       ...employeeHistory,
       to: toFormatted,

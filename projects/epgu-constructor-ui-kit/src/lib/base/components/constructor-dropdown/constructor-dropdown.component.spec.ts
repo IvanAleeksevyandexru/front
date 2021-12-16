@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormControlDirective } from '@angular/forms';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { ConstructorDropdownComponent } from './constructor-dropdown.component';
-import { BaseUiModule } from '../../base-ui.module';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { BaseUiModule } from '../../base-ui.module';
+import { ConstructorDropdownComponent } from './constructor-dropdown.component';
 
 describe('ConstructorDropdownComponent', () => {
   let component: ConstructorDropdownComponent;

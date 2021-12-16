@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ScreenService } from '../../../../screen/screen.service';
 import {
   ConstructorCheckboxModule,
   ConstructorLookupModule,
@@ -8,6 +7,7 @@ import {
   ScreenPadModule,
   TimeCalendarModule,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenService } from '../../../../screen/screen.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';

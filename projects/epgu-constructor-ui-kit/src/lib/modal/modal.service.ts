@@ -15,6 +15,7 @@ import { take } from 'rxjs/operators';
 @Injectable()
 export class ModalService {
   private injector: Injector;
+
   private renderer: Renderer2 = this.rendererFactory.createRenderer(null, null);
 
   constructor(
@@ -28,7 +29,7 @@ export class ModalService {
     const componentRef = this.createModal(modalComponent, modalParameters);
     const modalResult = new Subject<T>();
 
-    componentRef.instance['detachView'] = (data): void => {
+    componentRef.instance.detachView = (data): void => {
       this.appRef.detachView(componentRef.hostView);
       componentRef.destroy();
       modalResult.next(data);
@@ -40,6 +41,7 @@ export class ModalService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public createModal<R, K = any>(modalComponent: Type<R>, modalParameters?: K): ComponentRef<R> {
     document.body.style.overflow = 'hidden';
+    document.body.style.height = '100%';
     if (HelperService.isTouchDevice()) {
       const screenResolver = document.querySelector<HTMLElement>(
         'epgu-constructor-screen-resolver',

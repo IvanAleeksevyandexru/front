@@ -9,6 +9,7 @@ import { HookTypes } from './hook.constants';
 export class HookServiceStub {
   private hooks = {};
 
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor,@typescript-eslint/no-empty-function
   constructor() {}
 
   public hasHooks(type: HookTypes): boolean {

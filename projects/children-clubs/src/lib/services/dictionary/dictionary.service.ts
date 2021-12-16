@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
+import { ListElement } from '@epgu/ui/models/dropdown';
 import { ApiService } from '../api/api.service';
 import { StateService } from '../state/state.service';
 import { FocusDirectionsItem, Municipality, NormalizedFocusData, Program } from '../../typings';
-import { ListElement } from '@epgu/ui/models/dropdown';
 
 @Injectable({ providedIn: 'root' })
 export class DictionaryService {

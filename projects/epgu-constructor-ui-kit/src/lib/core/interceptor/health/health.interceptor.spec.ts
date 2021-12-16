@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpEvent, HttpRequest, HttpXhrBackend } from '@angular/common/http';
 
-import { HealthInterceptor } from './health.interceptor';
-import { HEALTH_SERVICE, HealthHandler } from './health.token';
 import { Observable } from 'rxjs/internal/Observable';
 import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
 import { Injectable } from '@angular/core';
+import { HEALTH_SERVICE, HealthHandler } from './health.token';
+import { HealthInterceptor } from './health.interceptor';
 
 const apiUrl = 'http://some-url.com/api/book';
 const dto = {

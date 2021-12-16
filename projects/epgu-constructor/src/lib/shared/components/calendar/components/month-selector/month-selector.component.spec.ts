@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MonthSelectorComponent } from './month-selector.component';
 import { FormsModule } from '@angular/forms';
-import { BaseModule } from '../../../../base.module';
 import { ConfigService, ConfigServiceStub, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { ListItem } from '@epgu/ui/models/dropdown';
+import { BaseModule } from '../../../../base.module';
+import { MonthSelectorComponent } from './month-selector.component';
 
 describe('MonthSelectorComponent', () => {
   let component: MonthSelectorComponent;

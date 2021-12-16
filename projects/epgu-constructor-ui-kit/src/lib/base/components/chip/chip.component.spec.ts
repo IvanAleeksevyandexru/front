@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { ChipComponent } from './chip.component';
 import { By } from '@angular/platform-browser';
+import { ChipComponent } from './chip.component';
 
 describe('ChipComponent', () => {
   let component: ChipComponent;

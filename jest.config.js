@@ -26,9 +26,10 @@ module.exports = {
   ],
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.(ts|js|html|svg)$': 'jest-preset-angular',
+    '\\.svg': '<rootDir>/asset-transformer.js',
+    '^.+\\.(ts|js|html)$': 'jest-preset-angular',
   },
-  moduleFileExtensions: ['ts', 'html', 'js', 'json'],
+  moduleFileExtensions: ['ts', 'html', 'js', 'json', 'svg'],
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -38,7 +39,7 @@ module.exports = {
   },
   testEnvironmentOptions: {
     beforeParse(window) {
-      window.scroll = () => { };
+      window.scroll = () => {};
     },
   },
 };

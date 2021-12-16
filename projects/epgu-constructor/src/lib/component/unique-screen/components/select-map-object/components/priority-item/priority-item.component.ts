@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { BaseComponent, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { PriorityItemsService } from '../../services/priority-items/priority-items.service';
 
@@ -9,7 +9,7 @@ import { PriorityItemsService } from '../../services/priority-items/priority-ite
   styleUrls: ['./priority-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PriorityItemComponent {
+export class PriorityItemComponent extends BaseComponent {
   @Input() data: DictionaryItem;
   @Input() index: number;
   @Input() isUp: boolean;
@@ -22,11 +22,12 @@ export class PriorityItemComponent {
   @Output() showMap = new EventEmitter<DictionaryItem>();
 
   isShowDetails = false;
-  arrowPath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/arrow-down-white.svg`;
 
   maxKindergarten$ = this.itemsService.maxKindergarten$;
 
-  constructor(public itemsService: PriorityItemsService, public config: ConfigService) {}
+  constructor(public itemsService: PriorityItemsService, public config: ConfigService) {
+    super();
+  }
 
   toggleShowDetails(): void {
     this.isShowDetails = !this.isShowDetails;

@@ -1,6 +1,11 @@
 <section *ngIf="!!periods.length && !isCompleted" class="employee-history__progress">
   <div class="employee-history__progress__notification">
-    <div class="employee-history__progress__icon"></div>
+    <epgu-cf-ui-icon
+      [mainColor]="iconColor.Red"
+      [type]="iconType.ProgressForm"
+      [width]="24"
+      [height]="24"
+    ></epgu-cf-ui-icon>
     <div class="employee-history__progress__msg">Не заполнены периоды</div>
   </div>
   <div class="employee-history__progress__periods">
@@ -15,6 +20,12 @@
 </section>
 
 <section *ngIf="isCompleted" class="employee-history__completed">
-  <div class="employee-history__completed__icon"></div>
+  <epgu-cf-ui-icon
+    class="employee-history__completed__icon"
+    [mainColor]="iconColor.Green"
+    [type]="iconType.CompleteForm"
+    [width]="33"
+    [height]="32"
+  ></epgu-cf-ui-icon>
   <div class="employee-history__completed__msg">Вы заполнили {{ years }} лет</div>
 </section>

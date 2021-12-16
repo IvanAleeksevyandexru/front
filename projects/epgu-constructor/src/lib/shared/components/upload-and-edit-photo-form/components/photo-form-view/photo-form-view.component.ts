@@ -6,6 +6,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { BaseComponent } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-photo-form-view',
@@ -13,7 +14,7 @@ import {
   styleUrls: ['./photo-form-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PhotoFormViewComponent implements OnInit {
+export class PhotoFormViewComponent extends BaseComponent implements OnInit {
   @Input() isDesktop: boolean;
   @Input() staticDomainAssetsPath: string;
   @Input() croppedImageUrl: string;

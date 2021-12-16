@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { CompressionService } from './compression.service';
-import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import {
+  ConfigService,
   ConfigServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { CompressionService } from './compression.service';
+import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 
 describe('CompressionService', () => {
   const LOAD_SUCCESS_SRC =

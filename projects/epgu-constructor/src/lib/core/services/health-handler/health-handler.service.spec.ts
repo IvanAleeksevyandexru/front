@@ -18,33 +18,33 @@ import {
   WordTransformService,
   DeviceDetectorServiceStub,
   DeviceDetectorService,
-} from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
-import { InitDataService } from '../init-data/init-data.service';
-import { InitDataServiceStub } from '../init-data/init-data.service.stub';
-import { DownloadService } from '@epgu/epgu-constructor-ui-kit';
-import { HealthServiceStub } from '@epgu/epgu-constructor-ui-kit';
-import {
+  ConfigServiceStub,
+  DownloadService,
+  HealthServiceStub,
   LocationService,
   LocationServiceStub,
   HealthService,
   ActivatedRouteStub,
 } from '@epgu/epgu-constructor-ui-kit';
+
+import {
+  ActionRequestPayload,
+  DictionaryFilters,
+  RequestStatus,
+} from '@epgu/epgu-constructor-types';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { InitDataService } from '../init-data/init-data.service';
+import { InitDataServiceStub } from '../init-data/init-data.service.stub';
+
 import {
   ERROR_UPDATE_DRAFT_SERVICE_NAME,
   RENDER_FORM_SERVICE_NAME,
   UnspecifiedDTO,
 } from './health-handler';
 import { DictionaryApiService } from '../../../shared/services/dictionary/dictionary-api.service';
-import {
-  ActionRequestPayload,
-  DictionaryFilters,
-  RequestStatus,
-} from '@epgu/epgu-constructor-types';
 import { HealthHandlerService } from './health-handler.service';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class TestHealthInterceptor<T extends DictionaryFilters & UnspecifiedDTO>
@@ -66,8 +66,8 @@ describe('HealthHandlerService', () => {
   let dictionaryService: DictionaryApiService;
   let httpMock: HttpTestingController;
 
-  let serviceId = 'local';
-  let orderId = '12345';
+  const serviceId = 'local';
+  const orderId = '12345';
 
   const api = 'service/10000000101/scenario/getNextStep';
   const dto = {
@@ -150,7 +150,7 @@ describe('HealthHandlerService', () => {
       const params = {
         id: dto.scenarioDto.display.id,
         name: wordTransformService.cyrillicToLatin(dto.scenarioDto.display.name),
-        orderId: orderId,
+        orderId,
         method: 'POST',
         date: new Date().toISOString(),
         typeEvent: 'getNextStep',
@@ -164,8 +164,7 @@ describe('HealthHandlerService', () => {
   });
 
   describe('client dictionary with error', () => {
-    it('should set error and errorMessage params for the first type of dictionaries', fakeAsync((
-    ) => {
+    it('should set error and errorMessage params for the first type of dictionaries', fakeAsync(() => {
       const spyMeasureStart = jest.spyOn(healthService, 'measureStart');
       const spyMeasureEnd = jest.spyOn(healthService, 'measureEnd');
       dictionaryService.getDictionary(dictionaryName).subscribe((response) => {
@@ -195,8 +194,7 @@ describe('HealthHandlerService', () => {
       flush();
     }));
 
-    it('should set error and errorMessage params for the second type of dictionaries', fakeAsync((
-    ) => {
+    it('should set error and errorMessage params for the second type of dictionaries', fakeAsync(() => {
       const spyMeasureStart = jest.spyOn(healthService, 'measureStart');
       const spyMeasureEnd = jest.spyOn(healthService, 'measureEnd');
       dictionaryService.getDictionary(dictionaryName).subscribe((response) => {
@@ -296,19 +294,19 @@ describe('HealthHandlerService', () => {
 
     it('should call measureStart of health service with serviceName param', fakeAsync(() => {
       const spyMeasureStart = jest.spyOn(healthService, 'measureStart');
-      service['startMeasureHealth'](serviceName);
+      service.startMeasureHealth(serviceName);
       expect(spyMeasureStart).toHaveBeenCalledWith(serviceName);
     }));
 
     it('should call measureStart of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
       const spyMeasureStart = jest.spyOn(healthService, 'measureStart');
-      service['startMeasureHealth'](serviceName);
+      service.startMeasureHealth(serviceName);
       expect(spyMeasureStart).toHaveBeenCalledWith(ERROR_UPDATE_DRAFT_SERVICE_NAME);
     }));
 
-    it('shouldn\'t call measureStart of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
+    it("shouldn't call measureStart of health service with serviceName errorUpdateDraft when service name is renderForm", fakeAsync(() => {
       const spyMeasureStart = jest.spyOn(healthService, 'measureStart');
-      service['startMeasureHealth']('some service name');
+      service.startMeasureHealth('some service name');
       expect(spyMeasureStart).not.toHaveBeenCalledWith(ERROR_UPDATE_DRAFT_SERVICE_NAME);
     }));
   });
@@ -326,17 +324,13 @@ describe('HealthHandlerService', () => {
 
     it('should call measureEnd of health service with serviceName param', fakeAsync(() => {
       const spyMeasureEnd = jest.spyOn(healthService, 'measureEnd');
-      service['endMeasureHealth'](serviceName, requestStatus, configParams);
-      expect(spyMeasureEnd).toHaveBeenCalledWith(
-        serviceName,
-        requestStatus,
-        configParams,
-      );
+      service.endMeasureHealth(serviceName, requestStatus, configParams);
+      expect(spyMeasureEnd).toHaveBeenCalledWith(serviceName, requestStatus, configParams);
     }));
 
     it('should call measureEnd of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
       const spyMeasureEnd = jest.spyOn(healthService, 'measureEnd');
-      service['endMeasureHealth'](serviceName, requestStatus, configParams);
+      service.endMeasureHealth(serviceName, requestStatus, configParams);
       expect(spyMeasureEnd).toHaveBeenCalledWith(
         ERROR_UPDATE_DRAFT_SERVICE_NAME,
         requestStatus,
@@ -344,9 +338,9 @@ describe('HealthHandlerService', () => {
       );
     }));
 
-    it('shouldn\'t call measureEnd of health service with serviceName errorUpdateDraft when service name is renderForm', fakeAsync(() => {
+    it("shouldn't call measureEnd of health service with serviceName errorUpdateDraft when service name is renderForm", fakeAsync(() => {
       const spyMeasureEnd = jest.spyOn(healthService, 'measureEnd');
-      service['endMeasureHealth']('some service name', requestStatus, configParams);
+      service.endMeasureHealth('some service name', requestStatus, configParams);
       expect(spyMeasureEnd).not.toHaveBeenCalledWith(
         ERROR_UPDATE_DRAFT_SERVICE_NAME,
         requestStatus,

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
@@ -33,7 +33,7 @@ import example6Html from '!!raw-loader!./examples/6/index.html';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExampleEpguDropdownComponent implements OnInit {
+export class ExampleEpguDropdownComponent {
   readonly exampleImportModule = exampleImportModule;
   readonly exampleInsertTemplate = exampleInsertTemplate;
 
@@ -110,8 +110,6 @@ export class ExampleEpguDropdownComponent implements OnInit {
     ],
   ];
   readonly items: ListElement[] = this.itemsVariants[0];
-
-  ngOnInit(): void {}
 
   handleSelect(event): void {
     if (event?.id) {

@@ -54,8 +54,8 @@ describe('CalendarInputComponent', () => {
       type: 'CalendarInput',
       attrs: {
         components: [
-          { id: 'firstDate', attrs: {}},
-          { id: 'secondDate', attrs: {}},
+          { id: 'firstDate', attrs: {} },
+          { id: 'secondDate', attrs: {} },
         ],
         dateRestrictions: {
           type: 'const',
@@ -77,7 +77,7 @@ describe('CalendarInputComponent', () => {
       required: new FormControl(mockComponent.required),
       type: new FormControl(mockComponent.type),
     });
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(CalendarInputComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;
@@ -106,6 +106,20 @@ describe('CalendarInputComponent', () => {
       expect(component.form.get('secondDate').value).toEqual(
         new Date('1979-07-05T00:00:00.000+05:00'),
       );
+    });
+
+    it('should add validation depending on field required param', () => {
+      component.control.value.attrs.components = [
+        { id: 'firstDate', attrs: {}, required: true },
+        { id: 'secondDate', attrs: {} },
+      ];
+      component.ngOnInit();
+
+      component.form.get('firstDate').setValue('');
+      component.form.get('secondDate').setValue('');
+
+      expect(component.form.controls.firstDate.invalid).toBeTruthy();
+      expect(component.form.controls.secondDate.invalid).toBeFalsy();
     });
   });
 

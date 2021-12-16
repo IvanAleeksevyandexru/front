@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PhotoErrorModalComponent } from './photo-error-modal.component';
 import { MockComponent } from 'ng-mocks';
 
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub, IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { ButtonComponent } from '@epgu/ui/base';
+import { PhotoErrorModalComponent } from './photo-error-modal.component';
 
 describe('PhotoErrorModalComponent', () => {
   let component: PhotoErrorModalComponent;
@@ -13,6 +12,7 @@ describe('PhotoErrorModalComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PhotoErrorModalComponent, MockComponent(ButtonComponent)],
+      imports: [IconsModule],
       providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],
     }).compileComponents();
   });

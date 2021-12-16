@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 })
 export class Example1EpguChipComponent {
   labels = ['Привет', 'Плашка', 'Плашка с длинным текстом, содержащим например адрес'];
+
   ids = ['id1', 'id2', 'id3'];
 
   onClose(id): void {

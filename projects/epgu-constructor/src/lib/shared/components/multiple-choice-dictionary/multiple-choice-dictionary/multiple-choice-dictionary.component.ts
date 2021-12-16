@@ -112,14 +112,15 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-empty-function
   private onChange = (_: ListElement[] | MultipleSelectedItems): void => {};
 
+  // eslint-disable-next-line no-empty-function
   private onTouched = (): void => {};
 
   private openErrorModal(): Observable<ListElement[]> {
     return this.modalService
-      .openModal(ConfirmationModalComponent, COMMON_ERROR_MODAL_PARAMS)
+      .openModal(ConfirmationModalComponent, COMMON_ERROR_MODAL_PARAMS())
       .pipe(mapTo(this.selectedItems.list));
   }
 }

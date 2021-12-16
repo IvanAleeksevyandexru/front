@@ -6,8 +6,10 @@ import { createComponentMock, setupForRelationStrategy } from '../components-lis
 
 describe('ResetControlRelation', () => {
   let relation: ResetControlRelation;
-  let componentVal = { foo: 'bar' };
-  const refRelationService: RefRelationService = MockService(RefRelationService) as unknown as RefRelationService;
+  const componentVal = { foo: 'bar' };
+  const refRelationService: RefRelationService = (MockService(
+    RefRelationService,
+  ) as unknown) as RefRelationService;
 
   beforeEach(() => {
     relation = new ResetControlRelation(refRelationService);
@@ -15,11 +17,7 @@ describe('ResetControlRelation', () => {
 
   describe('handleResetControl()', () => {
     it('should reset dependent control', () => {
-      let {
-        reference,
-        dependentComponent,
-        shownElements,
-      } = setupForRelationStrategy({
+      const { reference, dependentComponent, shownElements } = setupForRelationStrategy({
         referenceExtra: { relatedRel: 'rf1', val: '', relation: 'reset' },
         dependentComponentStatusExtra: { isShown: true },
       });
@@ -42,13 +40,7 @@ describe('ResetControlRelation', () => {
       const mockForm = new FormArray([form, form2]);
       const control = mockForm.controls[0];
 
-      relation.handleRelation(
-        shownElements,
-        dependentComponent,
-        reference,
-        componentVal,
-        mockForm,
-      );
+      relation.handleRelation(shownElements, dependentComponent, reference, componentVal, mockForm);
       expect(control.value.value).toBeNull();
     });
   });

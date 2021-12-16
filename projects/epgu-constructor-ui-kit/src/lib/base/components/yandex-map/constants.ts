@@ -60,12 +60,12 @@ export class Icons {
 
   private pinLayout(): ymaps.IClassConstructor<ymaps.ILayout> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ymaps = (window as any).ymaps;
+    const { ymaps } = window as any;
     const animationService = this.mapAnimationService;
     return ymaps.templateLayoutFactory.createClass(
       '<div class="pin {{properties.pinStyle}}{% if properties.isActive %} pin-red{% endif %}">',
       {
-        build: function () {
+        build() {
           this.constructor.superclass.build.call(this);
           const element = this.getParentElement().getElementsByClassName('pin')[0];
           if (!this.inited) {
@@ -79,18 +79,18 @@ export class Icons {
             }
           }
         },
-      }
+      },
     );
   }
 
   private clusterLayout(): ymaps.IClassConstructor<ymaps.ILayout> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ymaps = (window as any).ymaps;
+    const { ymaps } = window as any;
     const animationService = this.mapAnimationService;
     return ymaps.templateLayoutFactory.createClass(
       '<div class="cluster {{properties.clusterStyle}}"><span class="cluster-elements">{{ properties.amount }}</span></div>',
       {
-        build: function () {
+        build() {
           this.constructor.superclass.build.call(this);
           const element = this.getParentElement().getElementsByClassName('cluster')[0];
           const props = this.getData().properties;

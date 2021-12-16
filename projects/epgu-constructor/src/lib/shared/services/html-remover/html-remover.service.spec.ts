@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { ScreenTypes } from '@epgu/epgu-constructor-types';
+import { ScreenTypes, DisplayDto } from '@epgu/epgu-constructor-types';
 import { HtmlRemoverService } from './html-remover.service';
-import { DisplayDto } from '@epgu/epgu-constructor-types';
 
 describe('HtmlRemoverService', () => {
   let service: HtmlRemoverService;
-  let mockDisplay: DisplayDto = {
+  const mockDisplay: DisplayDto = {
     id: 's1',
     name: 'Приветствие',
     type: ScreenTypes.INFO,

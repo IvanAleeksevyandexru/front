@@ -1,6 +1,17 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import {
+  ConfigService,
+  WINDOW,
+  DatesToolsService,
+  DeviceDetectorService,
+  LoggerService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  JsonHelperService,
+} from '@epgu/epgu-constructor-ui-kit';
+import { MockProvider } from 'ng-mocks';
 import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
@@ -10,21 +21,16 @@ import { DictionaryApiService } from '../../../shared/services/dictionary/dictio
 import { DictionaryToolsService } from '../../../shared/services/dictionary/dictionary-tools.service';
 import { PrepareComponentsService } from '../../../shared/services/prepare-components/prepare-components.service';
 import { RefRelationService } from '../../../shared/services/ref-relation/ref-relation.service';
-import { ConfigService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+
 import { AutocompleteAutofillService } from './autocomplete-autofill.service';
 import { AutocompletePrepareService } from './autocomplete-prepare.service';
 import { ISuggestionItemList } from './autocomplete.inteface';
 import { DateRestrictionsService } from '../../../shared/services/date-restrictions/date-restrictions.service';
-import { LocalStorageService, LocalStorageServiceStub, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { MockProvider } from 'ng-mocks';
 
 describe('AutocompleteAutofillService', () => {
   let service: AutocompleteAutofillService;
   let screenService: ScreenService;
-  let component: ComponentDto = {
+  const component: ComponentDto = {
     id: 'pd8_1',
     type: 'EmployeeHistory',
     label: 'Трудовой стаж',
@@ -33,7 +39,7 @@ describe('AutocompleteAutofillService', () => {
     required: true,
     suggestionId: 'employee_history',
   };
-  let suggestionItemList: ISuggestionItemList = {
+  const suggestionItemList: ISuggestionItemList = {
     mnemonic: 'prev_region',
     value: '[{"value": "value"}]',
     originalItem: '[{"value": "value"}]',
@@ -64,7 +70,7 @@ describe('AutocompleteAutofillService', () => {
         MockProvider(DateRestrictionsService),
         JsonHelperService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-        { provide: WINDOW, useValue: { navigator: {}}},
+        { provide: WINDOW, useValue: { navigator: {} } },
       ],
     });
     service = TestBed.inject(AutocompleteAutofillService);

@@ -1,9 +1,8 @@
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpErrorResponse } from '@angular/common/http';
+
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { ErrorsInterceptor } from './errors.interceptor';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   BOOKING_ONLINE_ERROR,
@@ -19,21 +18,22 @@ import { FormPlayerServiceStub } from '@epgu/epgu-constructor/src/lib/form-playe
 import { ErrorHandlerService } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler.service';
 import { FormPlayerApiSuccessResponse, FormPlayerNavigation } from '@epgu/epgu-constructor-types';
 import { ConfirmationModalComponent } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.component';
+import { FormPlayerService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service';
+import { DictionaryToolsService } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsServiceStub } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service.stub';
+import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
+import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
 import { ModalService } from '../../../modal/modal.service';
 import { ConfigService } from '../../services/config/config.service';
 import { ModalServiceStub } from '../../../modal/modal.service.stub';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
 import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { LocationService } from '../../services/location/location.service';
-import { FormPlayerService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service';
 import { ERROR_HANDLER_SERVICE } from './errors.token';
 import { SessionService } from '../../services/session/session.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
-import { DictionaryToolsService } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service';
-import { DictionaryToolsServiceStub } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service.stub';
-import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
-import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
+import { ErrorsInterceptor } from './errors.interceptor';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 
 const responseDto = new FormPlayerServiceStub()._store;
@@ -47,8 +47,8 @@ describe('ErrorsInterceptor', () => {
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
 
-  let serviceId = 'local';
-  let orderId = 12345;
+  const serviceId = 'local';
+  const orderId = 12345;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -120,10 +120,7 @@ describe('ErrorsInterceptor', () => {
     );
     const body = new HttpErrorResponse({ status: 401, statusText: 'Unauthorized' });
     requestToError.flush('Unauthorized', body);
-    expect(spy).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      AUTH_ERROR_MODAL_PARAMS,
-    );
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, AUTH_ERROR_MODAL_PARAMS);
     tick();
   }));
 
@@ -146,10 +143,7 @@ describe('ErrorsInterceptor', () => {
     expect(req.request.method).toBe('POST');
 
     req.flush(data);
-    expect(spy).toHaveBeenCalledWith(
-      ConfirmationModalComponent,
-      BOOKING_ONLINE_ERROR,
-    );
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, BOOKING_ONLINE_ERROR);
     tick();
   }));
 
@@ -181,14 +175,14 @@ describe('ErrorsInterceptor', () => {
       errors: {
         description: 'Заявление уже было подано',
         name: 'Conflict',
-       },
+      },
     });
     tick();
   }));
 
   it('should switch screen to expire order display error when get 410 status code on getOrderStatus request', fakeAsync(() => {
-    const orderId = '42';
-    formPlayerApi.getOrderStatus(Number(orderId)).subscribe(
+    const testOrderId = '42';
+    formPlayerApi.getOrderStatus(Number(testOrderId)).subscribe(
       () => fail('should have failed with the 410 error'),
       (error: HttpErrorResponse) => {
         expect(error.status).toEqual(410);

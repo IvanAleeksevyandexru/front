@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Slot } from '../../typings';
-import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { DatesToolsService, ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { Slot } from '../../typings';
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Injectable()
@@ -22,9 +22,11 @@ export class TimeSlotStateService {
   }
 
   private haveSlots$$ = new BehaviorSubject<boolean>(true);
+
   set haveSlots(haveWeeks: boolean) {
     this.haveSlots$$.next(haveWeeks);
   }
+
   get haveSlots$(): Observable<boolean> {
     return this.haveSlots$$.asObservable();
   }
@@ -34,69 +36,87 @@ export class TimeSlotStateService {
   }
 
   private month$$ = new BehaviorSubject<string>(null);
+
   get month$(): Observable<string> {
     return this.month$$.asObservable();
   }
+
   set month(month: string) {
     this.month$$.next(month);
   }
+
   get month(): string {
     return this.month$$.getValue();
   }
 
   private day$$ = new BehaviorSubject<Date>(null);
+
   get day$(): Observable<Date> {
     return this.day$$.pipe(
       distinctUntilChanged((prev, next) => this.datesTools.isEqual(prev, next)),
     );
   }
+
   set day(day: Date) {
     this.day$$.next(day);
   }
+
   get day(): Date {
     return this.day$$.getValue();
   }
 
   private slot$$ = new BehaviorSubject<Slot>(null);
+
   get slot$(): Observable<Slot> {
     return this.slot$$.asObservable();
   }
+
   set slot(slot: Slot) {
     this.slot$$.next(slot);
   }
+
   get slot(): Slot {
     return this.slot$$.getValue();
   }
 
   private list$$ = new BehaviorSubject<Slot[]>([]);
+
   get list$(): Observable<Slot[]> {
     return this.list$$.asObservable();
   }
+
   get list(): Slot[] {
     return this.list$$.getValue();
   }
+
   set list(list: Slot[]) {
     this.list$$.next(list);
   }
 
   private months$$ = new BehaviorSubject<string[]>([]);
+
   get months$(): Observable<string[]> {
     return this.months$$.asObservable();
   }
+
   get months(): string[] {
     return this.months$$.getValue();
   }
+
   set months(months: string[]) {
     this.months$$.next(months);
   }
 
   private additionalDisplayingButton$$ = new BehaviorSubject<boolean>(false);
+
   get additionalDisplayingButton$(): Observable<boolean> {
     return this.additionalDisplayingButton$$.asObservable();
   }
+
   get additionalDisplayingButton(): boolean {
     return this.additionalDisplayingButton$$.getValue();
   }
+
   set additionalDisplayingButton(additionalDisplayingButton: boolean) {
     this.additionalDisplayingButton$$.next(additionalDisplayingButton);
   }

@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimeSlotMarriageComponent } from './time-slot-marriage.component';
 import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+import { DictionaryConditions } from '@epgu/epgu-constructor-types';
+import { TimeSlotMarriageComponent } from './time-slot-marriage.component';
 import { TimeSlotSmev3Component } from '../../base/time-slot-smev3/time-slot-smev3.component';
 import { TimeSlotAreaComponent } from '../../base/time-slot-area/time-slot-area.component';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
@@ -10,8 +12,6 @@ import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-sl
 import { TimeSlotSmev3StateServiceStub } from '../../../services/smev3-state/time-slot-smev3-state.service.stub';
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
 import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-state.service.stub';
-import { of } from 'rxjs';
-import { DictionaryConditions } from '@epgu/epgu-constructor-types';
 import { DepartmentInterface, TimeSlotValueInterface } from '../../../typings';
 
 import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
@@ -64,7 +64,7 @@ describe('TimeSlotMarriageComponent', () => {
       ]);
     });
     it('should be getPartialListRequestParams', () => {
-      let attributeValues = { code: 'test3' };
+      const attributeValues = { code: 'test3' };
       expect(
         component.getPartialListRequestParams(
           ({ organizationId: 'test' } as unknown) as TimeSlotValueInterface,

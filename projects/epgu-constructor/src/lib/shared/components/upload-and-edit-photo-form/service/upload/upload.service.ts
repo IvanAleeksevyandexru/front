@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
+import { WordTransformService } from '@epgu/epgu-constructor-ui-kit';
+import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { UploadedFile } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { CompressionService } from '../compression/compression.service';
-import { WordTransformService } from '@epgu/epgu-constructor-ui-kit';
-
-import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class UploadService {
@@ -25,12 +24,12 @@ export class UploadService {
     let dataAfterSend: ComponentUploadedFileDto;
 
     return of(requestData.name).pipe(
-      switchMap((fileName) => this.deletePrevImage(fileName, requestData)),
+      switchMap((name) => this.deletePrevImage(name, requestData)),
       switchMap(() => this.compressFile(croppedImageUrl)),
       map((compressedFile) => this.prepareFile(fileName, requestData, compressedFile)),
-      tap(({ requestData }) => (dataAfterSend = requestData)),
-      switchMap(({ requestData, compressedFile }) =>
-        this.terraByteApiService.uploadFile(requestData, compressedFile),
+      tap((data) => (dataAfterSend = data?.requestData)),
+      switchMap((data) =>
+        this.terraByteApiService.uploadFile(data?.requestData, data?.compressedFile),
       ),
       switchMap(() => this.terraByteApiService.getFileInfo(requestData)),
       map((terraFile) => ({ ...dataAfterSend, ...terraFile })),

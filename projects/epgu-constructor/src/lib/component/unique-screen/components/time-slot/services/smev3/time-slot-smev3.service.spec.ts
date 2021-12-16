@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { TimeSlotSmev3Service } from './time-slot-smev3.service';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -9,6 +8,10 @@ import {
   ModalServiceStub,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { of } from 'rxjs';
+import { isSameDay } from 'date-fns';
+import { TimeSlotSmev3Service } from './time-slot-smev3.service';
 import { Smev3RestApiService } from '../api/smev3/smev3-rest-api.service';
 import { Smev3RestApiServiceStub } from '../api/smev3/smev3-rest-api.service.stub';
 import { TimeSlotCalendarService } from '../calendar/time-slot-calendar.service';
@@ -29,11 +32,8 @@ import {
   TimeSlotValueInterface,
   TIMEZONE_STR_OFFSET,
 } from '../../typings';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { of } from 'rxjs';
 import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
-import { isSameDay } from 'date-fns';
 
 const mockTimeSlotValue = {
   timeSlotType: 'BRAK',

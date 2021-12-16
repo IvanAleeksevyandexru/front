@@ -53,7 +53,7 @@ describe('FormDisclaimerComponent', () => {
       ComponentsListFormService,
     ) as unknown) as ComponentsListFormServiceStub;
     control = fb.group(mockFormDisclaimerComponent);
-    formService['_form'] = new FormArray([control]);
+    formService._form = new FormArray([control]);
     fixture = TestBed.createComponent(FormDisclaimerComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;

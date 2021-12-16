@@ -1,5 +1,3 @@
-import { TextTransformDirective } from './text-transform.directive';
-
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CurrencyPipe } from '@angular/common';
@@ -7,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { FormBuilder, FormControl, FormGroup, NgControl } from '@angular/forms';
 import { BaseModule } from '@epgu/epgu-constructor/src/lib/shared/base.module';
 import { TextTransform } from '@epgu/epgu-constructor-types';
+import { TextTransformDirective } from './text-transform.directive';
 import { TextTransformService } from '../../../core/services/text-transform/text-transform.service';
 
 @Component({
@@ -39,7 +38,9 @@ import { TextTransformService } from '../../../core/services/text-transform/text
 })
 class TextTransformTestComponent {
   all: TextTransform = TextTransform.ALL;
+
   first: TextTransform = TextTransform.FIRST;
+
   uppercase: TextTransform = TextTransform.UPPERCASE;
 
   form: FormGroup;

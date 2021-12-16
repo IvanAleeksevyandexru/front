@@ -56,10 +56,12 @@ export const MASKS_HANDLERS = {
     let hadDecimals = false;
 
     return (value: string): (string | RegExp)[] => {
-      const decimalSymbol = options.decimalSymbol;
-      const cleanValue = DecimalSymbolReplacer[decimalSymbol] ?
-        value.replace(DecimalSymbolReplacer[decimalSymbol], decimalSymbol).replace(cleanupPattern, '') :
-        value.replace(cleanupPattern, '');
+      const { decimalSymbol } = options;
+      const cleanValue = DecimalSymbolReplacer[decimalSymbol]
+        ? value
+            .replace(DecimalSymbolReplacer[decimalSymbol], decimalSymbol)
+            .replace(cleanupPattern, '')
+        : value.replace(cleanupPattern, '');
 
       const parts: string[] = cleanValue.split(options.decimalSymbol);
       const hasDecimals: boolean = parts.length > 1;
@@ -71,7 +73,10 @@ export const MASKS_HANDLERS = {
       if (maskForDecimalsShown) {
         for (
           let i = 0,
-            length = Math.min(options.allowDecimalRounding ? options.decimalLimit + 1 : options.decimalLimit, decimalPart.length + 1);
+            length = Math.min(
+              options.allowDecimalRounding ? options.decimalLimit + 1 : options.decimalLimit,
+              decimalPart.length + 1,
+            );
           i < length;
           i += 1
         ) {

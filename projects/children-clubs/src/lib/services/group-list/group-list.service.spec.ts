@@ -1,17 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApiService } from '../api/api.service';
-import { ApiServiceStub } from '../api/api.service.stub';
-import { StateService } from '../state/state.service';
-import { StateServiceStub } from '../state/state.service.stub';
-import { GroupListService } from './group-list.service';
-import { ProgramListService } from '../program-list/program-list.service';
 import {
   MicroAppStateQuery,
   MicroAppStateQueryStub,
   MicroAppStateService,
   MicroAppStateServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
+import { ApiService } from '../api/api.service';
+import { ApiServiceStub } from '../api/api.service.stub';
+import { StateService } from '../state/state.service';
+import { StateServiceStub } from '../state/state.service.stub';
+import { GroupListService } from './group-list.service';
+import { ProgramListService } from '../program-list/program-list.service';
 import { groupStub } from '../../stubs/projects.stub';
 import { ChildrenClubsState } from '../../children-clubs.types';
 

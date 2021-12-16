@@ -25,7 +25,9 @@ export class Smev3RestApiService {
   baseOptions = { withCredentials: true };
 
   listPath = 'slots';
+
   bookPath = 'book';
+
   cancelPath = 'cancel';
 
   get urlPrefix(): string {

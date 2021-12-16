@@ -1,11 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TimeSlotDoctorComponent } from './time-slot-doctor.component';
 import { MockComponent } from 'ng-mocks';
-import { TimeSlotSmev3Component } from '../../base/time-slot-smev3/time-slot-smev3.component';
-import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
-import { TimeSlotSmev3ServiceStub } from '../../../services/smev3/time-slot-smev3.service.stub';
-import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
-import { TimeSlotErrorService } from '../../../services/error/time-slot-error.service';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -13,6 +7,12 @@ import {
   ModalServiceStub,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
+import { TimeSlotDoctorComponent } from './time-slot-doctor.component';
+import { TimeSlotSmev3Component } from '../../base/time-slot-smev3/time-slot-smev3.component';
+import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
+import { TimeSlotSmev3ServiceStub } from '../../../services/smev3/time-slot-smev3.service.stub';
+import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
+import { TimeSlotErrorService } from '../../../services/error/time-slot-error.service';
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 import { ScreenService } from '../../../../../../../screen/screen.service';

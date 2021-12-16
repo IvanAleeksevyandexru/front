@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { ComponentDto, DisclaimerMnemonic } from '@epgu/epgu-constructor-types';
 import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { CurrentAnswersService } from './current-answers.service';
 import { ScreenContent } from './screen-content';
 import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentDto, DisclaimerMnemonic } from '@epgu/epgu-constructor-types';
 import { NotifierDisclaimerService } from '../shared/services/notifier/notifier.service';
 
 @Injectable()
@@ -15,11 +15,15 @@ export class ScreenService extends ScreenContent {
   }
 
   public confirmationModalComponent;
+
   public dropdownListModalComponent;
+
   public isLoaderVisible = new BehaviorSubject<boolean>(false);
 
   private screenStore: ScreenStore = {};
+
   private isLoading = false;
+
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
 
   constructor(
@@ -47,7 +51,7 @@ export class ScreenService extends ScreenContent {
   }
 
   public getCompValueFromCachedAnswers(componentId?: string): string {
-    const cachedAnswers = this.getStore().cachedAnswers;
+    const { cachedAnswers } = this.getStore();
     if (!componentId) {
       componentId = this.component?.id;
     }
@@ -55,7 +59,7 @@ export class ScreenService extends ScreenContent {
   }
 
   public setCompValueToCachedAnswer(componentId: string, value: string): void {
-    const cachedAnswers = this.getStore().cachedAnswers;
+    const { cachedAnswers } = this.getStore();
     if (!componentId) {
       componentId = this.component?.id;
     }
@@ -108,7 +112,7 @@ export class ScreenService extends ScreenContent {
     if (!disclaimers.length) return;
     const disclaimerMnemonicTypes = this.getDisclaimerMnemonics();
     disclaimers.forEach((disclaimer) => {
-      if(disclaimerMnemonicTypes.includes(disclaimer.mnemonic)) {
+      if (disclaimerMnemonicTypes.includes(disclaimer.mnemonic)) {
         const { level, title, message, id: notifierId } = disclaimer;
         const type = level.toLocaleLowerCase();
         setTimeout(() => {
@@ -128,26 +132,26 @@ export class ScreenService extends ScreenContent {
       return [
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET_DESKTOP,
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET,
-        DisclaimerMnemonic.SERVICE_TARGET
+        DisclaimerMnemonic.SERVICE_TARGET,
       ];
     }
-    if(this.deviceDetectorService.isWebView) {
+    if (this.deviceDetectorService.isWebView) {
       return [DisclaimerMnemonic.SMU_SERVICE_TARGET, DisclaimerMnemonic.SERVICE_TARGET];
     }
     if (this.deviceDetectorService.isMobile || this.deviceDetectorService.isTablet) {
       return [
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET_MOBILE,
         DisclaimerMnemonic.EPGU_V3_SERVICE_TARGET,
-        DisclaimerMnemonic.SERVICE_TARGET
+        DisclaimerMnemonic.SERVICE_TARGET,
       ];
     }
     return [DisclaimerMnemonic.SERVICE_TARGET];
   }
 
   private prepareComponents(): void {
-    const components = this.screenStore.display.components;
+    const { components } = this.screenStore.display;
     const cashedAnswers = this.screenStore.cachedAnswers;
-    const applicantAnswers = this.screenStore.applicantAnswers;
+    const { applicantAnswers } = this.screenStore;
     const screenStoreComponent = this.prepareComponentsService.prepareComponents(components, {
       ...cashedAnswers,
       ...applicantAnswers,

@@ -21,11 +21,11 @@
       </div>
       <div class="video-container">
         <button [disabled]="result" (click)="record()" class="fileupload__link-button">
-          <img
-            src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/video.svg"
+          <epgu-cf-ui-icon
+            [mainColor]="iconColor.BaseGosblue"
+            [type]="iconType.Video"
             class="fileupload__button-icon"
-            alt="Фото"
-          />
+          ></epgu-cf-ui-icon>
           <ng-container>{{ result ? 'Видео добавлено' : 'Снять видео' }}</ng-container>
         </button>
       </div>

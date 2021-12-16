@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UniqueComponentModalComponent } from './unique-component-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { UniqueComponentModalComponent } from './unique-component-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 

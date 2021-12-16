@@ -16,9 +16,9 @@ describe('CustomScreenService', () => {
 
   describe('getPrepareResponseData method', () => {
     it('without data', () => {
-      //@ts-ignore
+      // @ts-ignore
       const result = service.getPrepareResponseData();
-      //@ts-ignore
+      // @ts-ignore
       expect(result).toEqual({});
     });
   });

@@ -6,7 +6,7 @@ export * from './lib/core/core-ui.module';
 export * from './lib/base/base-ui.module';
 
 // Components
-
+export * from './lib/base/components/base-components/base-component/base.component';
 export * from './lib/micro-app/micro-app-base/micro-app-base.module';
 export * from './lib/micro-app/micro-app-base/micro-app-base.component';
 
@@ -75,6 +75,8 @@ export * from './lib/base/components/time-calendar/time-calendar.module';
 export * from './lib/base/components/time-calendar/time-calendar.component';
 export * from './lib/base/components/time-calendar/time-calendar.interface';
 
+export * from './lib/base/components/icon-component/icons.module';
+export * from './lib/base/components/icon-component/icon-resolver.component';
 // Directives
 export * from './lib/base/directives/trim/trim.module';
 export * from './lib/base/directives/trim/trim.directive';

@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-
-import { FileDownloaderService } from '../../../../../../shared/services/file-downloader/file-downloader.service';
+import { ConfigService, DownloadService } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-car-owner-info-link',
@@ -11,5 +9,5 @@ import { FileDownloaderService } from '../../../../../../shared/services/file-do
 })
 export class CarOwnerInfoLinkComponent {
   @Input() pdfLink: string;
-  constructor(public fileDownloader: FileDownloaderService, public config: ConfigService) {}
+  constructor(public downloadService: DownloadService, public config: ConfigService) {}
 }

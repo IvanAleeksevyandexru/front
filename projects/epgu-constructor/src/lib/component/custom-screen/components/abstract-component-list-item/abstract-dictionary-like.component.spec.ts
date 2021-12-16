@@ -1,31 +1,38 @@
+import { FormArray, FormBuilder } from '@angular/forms';
+import { of } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockModule, MockProvider } from 'ng-mocks';
+import {
+  BaseUiModule,
+  ConfigService,
+  ConfigServiceStub,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { componentMock } from '../../services/components-list-relations/components-list-relations.mock';
 import LookupInputModel from '../lookup-input/LookupInputModel';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
-import { FormArray, FormBuilder } from '@angular/forms';
-import { of } from 'rxjs';
 import { CustomComponent } from '../../components-list.types';
 import AbstractDictionaryLikeComponent from './abstract-dictionary-like.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockModule, MockProvider } from 'ng-mocks';
-import { BaseUiModule, ConfigService, ConfigServiceStub, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 
 @Component({
   template: '<div></div>',
 })
-class ConcreteDictionaryLikeComponent extends AbstractDictionaryLikeComponent<DictionarySharedAttrs> { }
+class ConcreteDictionaryLikeComponent extends AbstractDictionaryLikeComponent<
+  DictionarySharedAttrs
+> {}
 
 describe('AbstractDictionaryLikeComponent', () => {
   let component: ConcreteDictionaryLikeComponent;
@@ -75,7 +82,7 @@ describe('AbstractDictionaryLikeComponent', () => {
         },
       ],
     ) => {
-      const dependentComponent = new LookupInputModel({
+      const dependentComponent = new LookupInputModel(({
         id: 'acc_org',
         type: 'Lookup',
         required: true,
@@ -85,7 +92,7 @@ describe('AbstractDictionaryLikeComponent', () => {
         },
         value: '',
         visited: false,
-      } as unknown as BaseModel<DictionarySharedAttrs>);
+      } as unknown) as BaseModel<DictionarySharedAttrs>);
 
       const fb = new FormBuilder();
       const mockForm = new FormArray([
@@ -102,7 +109,7 @@ describe('AbstractDictionaryLikeComponent', () => {
       const { dependentControl, mockForm } = setup(null);
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
 
-      component['onAfterFilterOnRel'](componentMock as BaseModel<DictionarySharedAttrs>, mockForm);
+      component.onAfterFilterOnRel(componentMock as BaseModel<DictionarySharedAttrs>, mockForm);
 
       expect(dependentControlSpy).not.toBeCalled();
     });
@@ -111,19 +118,18 @@ describe('AbstractDictionaryLikeComponent', () => {
       const { dependentControl, control, mockForm, dependentComponent } = setup();
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
       control.markAsTouched();
-      dependentComponent.loadReferenceData$(of({
-        component: dependentComponent as CustomComponent,
-        data: {
-          error: { code: 0, message: 'emptyDictionary' },
-          fieldErrors: [],
-          items: [],
-          total: 0,
-        },
-      }));
-      component['onAfterFilterOnRel'](
-        dependentComponent,
-        mockForm,
+      dependentComponent.loadReferenceData$(
+        of({
+          component: dependentComponent as CustomComponent,
+          data: {
+            error: { code: 0, message: 'emptyDictionary' },
+            fieldErrors: [],
+            items: [],
+            total: 0,
+          },
+        }),
       );
+      component.onAfterFilterOnRel(dependentComponent, mockForm);
 
       expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
     });
@@ -154,20 +160,19 @@ describe('AbstractDictionaryLikeComponent', () => {
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
       control.markAsTouched();
 
-      dependentComponent.loadReferenceData$(of({
-        component: dependentComponent as CustomComponent,
-        data: {
-          error: { code: 0, message: 'emptyDictionary' },
-          fieldErrors: [],
-          items: [],
-          total: 0,
-        },
-      }));
-
-      component['onAfterFilterOnRel'](
-        dependentComponent,
-        mockForm,
+      dependentComponent.loadReferenceData$(
+        of({
+          component: dependentComponent as CustomComponent,
+          data: {
+            error: { code: 0, message: 'emptyDictionary' },
+            fieldErrors: [],
+            items: [],
+            total: 0,
+          },
+        }),
       );
+
+      component.onAfterFilterOnRel(dependentComponent, mockForm);
 
       expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
       expect(dependentComponent.attrs.ref).toEqual(refsExpected);

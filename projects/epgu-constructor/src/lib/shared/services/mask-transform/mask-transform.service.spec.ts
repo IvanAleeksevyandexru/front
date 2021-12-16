@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 
-import { MaskTransformService } from '../../services/mask-transform/mask-transform.service';
+import { MaskTransformService } from './mask-transform.service';
 
 describe('MaskTransformService', () => {
   let service: MaskTransformService;

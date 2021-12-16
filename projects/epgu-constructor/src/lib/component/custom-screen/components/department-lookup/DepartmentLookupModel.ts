@@ -1,9 +1,9 @@
+import { AbstractControl } from '@angular/forms';
+import { ListItem } from '@epgu/ui/models/dropdown';
 import { CustomComponentAttr, CustomScreenComponentTypes } from '../../components-list.types';
 import DepartmentLookupModelAttrs from './DepartmentLookupModelAttrs';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
-import { AbstractControl } from '@angular/forms';
-import { ListItem } from '@epgu/ui/models/dropdown';
 
 export default class DepartmentLookupModel extends DictionaryLikeModel {
   type = CustomScreenComponentTypes.DropDownDepts;

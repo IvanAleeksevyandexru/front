@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Smev3RestApiService } from './smev3-rest-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { Smev3RestApiService } from './smev3-rest-api.service';
 import { ErrorInterface, TimeSlotCancelRequest, TimeSlotRequestType } from '../../../typings';
 
 describe('Smev3RestApiService', () => {
