@@ -107,6 +107,20 @@ describe('CalendarInputComponent', () => {
         new Date('1979-07-05T00:00:00.000+05:00'),
       );
     });
+
+    it('should add validation depending on field required param', () => {
+      component.control.value.attrs.components = [
+        { id: 'firstDate', attrs: {}, required: true },
+        { id: 'secondDate', attrs: {} },
+      ];
+      component.ngOnInit();
+
+      component.form.get('firstDate').setValue('');
+      component.form.get('secondDate').setValue('');
+
+      expect(component.form.controls.firstDate.invalid).toBeTruthy();
+      expect(component.form.controls.secondDate.invalid).toBeFalsy();
+    });
   });
 
   describe('processErrors()', () => {

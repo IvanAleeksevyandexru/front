@@ -6,10 +6,10 @@
 
 <lib-dropdown
   *ngIf="carFixedItems"
-  [disabled]="carFixedItems.length === 1"
+  [disabled]="!carFixedItems.length"
   [items]="carFixedItems"
   (changed)="lookupChanged()"
-  [clearable]="true"
+  [clearable]="false"
   [localSearch]="true"
   [formControl]="control"
   placeholder=""

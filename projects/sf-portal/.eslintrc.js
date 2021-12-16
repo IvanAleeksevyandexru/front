@@ -1,11 +1,17 @@
 module.exports = {
   root: true,
-  extends: ['plugin:@angular-eslint/recommended'],
+  extends: [
+    'plugin:@angular-eslint/recommended',
+    'airbnb-typescript/base',
+    'prettier/@typescript-eslint',
+    'plugin:prettier/recommended'
+  ],
   rules: {
     '@angular-eslint/directive-selector': ['error', { type: 'attribute', style: 'kebab-case' }],
     '@angular-eslint/component-selector': ['error', { type: 'element', style: 'kebab-case' }],
     semi: 'off',
     '@typescript-eslint/semi': ['error'],
+    'import/no-extraneous-dependencies': 'off',
     'no-empty-function': ['error', { allow: ['constructors'] }],
     'object-curly-spacing': ['error', 'always', { objectsInObjects: false }],
     '@typescript-eslint/no-explicit-any': ['error', { ignoreRestArgs: false }],
@@ -80,6 +86,8 @@ module.exports = {
         'airbnb-typescript/base',
         'prettier/@typescript-eslint',
         'plugin:prettier/recommended',
+        'plugin:import/recommended',
+        'plugin:import/typescript',
       ],
       parser: '@typescript-eslint/parser',
       parserOptions: {

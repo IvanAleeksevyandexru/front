@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
 import { GetServiceRequest, Region, Service, ServicePermission } from '@epgu/ui/models';
@@ -41,7 +41,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
     this.route.snapshot.paramMap.get('orderId');
   private readonly billNumber: string = this.route.snapshot.queryParamMap.get('billNumber');
   private readonly routeNumber: string = this.route.snapshot.queryParamMap.get('routeNumber');
-  private readonly formId: string = this.route.snapshot.paramMap.get('targetId');
+  private readonly formId: string = this.router.url?.split('/').pop().split('?').shift();
 
   constructor(
     public route: ActivatedRoute,
@@ -49,6 +49,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
     public loadService: LoadService,
     public locationService: LocationService,
     @Inject(DOCUMENT) private document: Document,
+    private router: Router,
   ) {}
 
   public ngOnInit(): void {

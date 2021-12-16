@@ -12,7 +12,8 @@
     "@angular/forms": "12.2.5",
     "@angular/cdk": "12.2.5",
     "@epgu/ui": "0.1.13-ssr",
-    "rxjs": "6.6.7"
+    "rxjs": "6.6.7",
+    "ngx-perfect-scrollbar": "8.0.0"
   },
   "dependencies": {
     "@epgu/epgu-constructor-types": "43.7.0",
