@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { ChangeDetectionStrategy, QueryList } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -153,14 +153,15 @@ describe('LogicComponentsContainerComponent', () => {
     expect(screenService.isLogicComponentLoading).toBeTruthy();
   });
 
-  it('should subscribe to init hooks if viewComponents has been set', () => {
+  it('should subscribe to init hooks if viewComponents has been set', fakeAsync(() => {
     const spy = jest.spyOn<any, string>(component, 'resetInitSubscribe');
     component.viewComponents = {} as QueryList<LogicComponentResolverComponent>;
     screenService.logicComponents = [componentsMock[3]];
     fixture.detectChanges();
+    tick(50);
 
     expect(spy).toHaveBeenCalledTimes(1);
-  });
+  }));
 
   it('should set loading to false if all initial observables have resolved', () => {
     const mockViewComponents = [{} as any];

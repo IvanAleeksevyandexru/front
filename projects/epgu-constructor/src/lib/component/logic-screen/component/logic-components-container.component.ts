@@ -55,14 +55,19 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
         if (components.filter(isOnInitComponent).length) {
           this.screenService.isLogicComponentLoading = true;
 
-          // Необходимо для корректного обновления экрана при подстановке значений из suggestions
-          if (this.viewComponents) this.resetInitSubscribe();
+          /**
+            requestAnimationFrame нужен, чтоб дождаться viewComponents
+            Подписка в этом месте, т.к. в ngAfterViewInit возникает баг обновления экрана
+            при подстановке значений из suggestions
+          */
+          window.requestAnimationFrame(() => {
+            this.resetInitSubscribe();
+          });
         }
       });
   }
 
   ngAfterViewInit(): void {
-    this.subscribeToInitHooks();
     this.viewComponents.changes.subscribe(() => {
       this.resetInitSubscribe();
     });
