@@ -18,8 +18,7 @@ export class TreeComponent<T> extends CdkTree<T> implements OnInit, OnDestroy {
   static ngAcceptInputType_blockNode: boolean;
   @Input() directoryTree = false;
   @Input() blockNode = false;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Input() treeControl!: TreeControl<T, any>;
+  @Input() treeControl!: TreeControl<T, T>;
   @Input('dataSource')
   get dataSource(): DataSource<T> | Observable<T[]> | T[] {
     return super.dataSource;

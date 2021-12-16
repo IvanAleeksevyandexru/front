@@ -264,6 +264,10 @@ p.hint-text {
   color: $color-text-helper;
 }
 
+.tree-list-holder {
+  min-height: 200px;
+}
+
 .tree-switcher {
   position: relative;
   flex: none;
