@@ -12,9 +12,16 @@
         formControlName="search"
         contextClass="mb-24"
       ></lib-search-bar>
-
+      <!-- 
+        In case you want to change the scrolling behavior,
+        just replace 'epgu-cf-ui-tree-view' component
+        with 'epgu-cf-ui-tree-virtual-scroll-view' 
+      -->
       <ng-container [formGroupName]="formField.checkboxGroup">
-        <epgu-cf-ui-tree-view [treeControl]="treeControl" [dataSource]="dataSource">
+        <epgu-cf-ui-tree-view
+          [treeControl]="treeControl"
+          [dataSource]="dataSource"
+        >
           <epgu-cf-ui-tree-node
             *epgu-cf-ui-tree-node-def="let node"
             epgu-cf-ui-tree-node-indent-line

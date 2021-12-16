@@ -17,6 +17,7 @@ export * from './lib/base/components/tree-resolver/components/indents.component'
 export * from './lib/base/components/tree-resolver/components/node.component';
 export * from './lib/base/components/tree-resolver/components/option.component';
 export * from './lib/base/components/tree-resolver/components/tree-view.component';
+export * from './lib/base/components/tree-resolver/components/tree-virtual-view.component';
 export * from './lib/base/components/tree-resolver/components/tree.component';
 export * from './lib/base/components/tree-resolver/directives/node-def.directive';
 export * from './lib/base/components/tree-resolver/directives/node-indent-line.directive';

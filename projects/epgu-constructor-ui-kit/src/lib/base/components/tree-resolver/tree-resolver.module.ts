@@ -12,6 +12,7 @@ import { TreeNodeComponent } from './components/node.component';
 import { TreeNodeOptionComponent } from './components/option.component';
 import { TreeComponent } from './components/tree.component';
 import { TreeViewComponent } from './components/tree-view.component';
+import { TreeVirtualScrollViewComponent } from './components/tree-virtual-view.component';
 
 import { TreeNodeDefDirective } from './directives/node-def.directive';
 import { TreeNodeIndentLineDirective } from './directives/node-indent-line.directive';
@@ -39,6 +40,7 @@ const treeWithControlComponents = [
   TreeNodeOutletDirective,
   TreeNodePaddingDirective,
   TreeNodeToggleActiveIconDirective,
+  TreeVirtualScrollViewComponent,
 ];
 
 @NgModule({
