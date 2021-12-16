@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const libVersion = require('../projects/epgu-constructor/package.json').version;
+const sfVersion = require('../projects/sf-portal/package.json').version;
+const cfVersion = require('../projects/epgu-constructor/package.json').version;
 const uiVersion = require('@epgu/ui/package.json').version;
 const versionFileLibPath = path.join(
   __dirname,
@@ -11,7 +12,7 @@ const versionFileLibPath = path.join(
   'assets',
   'version.json',
 );
-const src = `{ "formPlayerVersion": "${libVersion}", "epguLibVersion": "${uiVersion}" }`;
+const src = `{ "sfPortalVersion": "${sfVersion}", "formPlayerVersion": "${cfVersion}", "epguLibVersion": "${uiVersion}" }`;
 
 fileWrite();
 
@@ -27,6 +28,6 @@ function fileWriteCallBack(err) {
     console.error('epguc: generate file with lib version is FAIL - ', err);
     throw err;
   } else {
-    console.log(`epguc: generate file lib version ${libVersion} is SUCCESS`);
+    console.log(`epguc: generate file lib version ${cfVersion} is SUCCESS`);
   }
 }
