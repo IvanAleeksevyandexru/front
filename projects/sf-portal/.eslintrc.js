@@ -6,6 +6,11 @@ module.exports = {
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended'
   ],
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    }
+  },
   rules: {
     '@angular-eslint/directive-selector': ['error', { type: 'attribute', style: 'kebab-case' }],
     '@angular-eslint/component-selector': ['error', { type: 'element', style: 'kebab-case' }],

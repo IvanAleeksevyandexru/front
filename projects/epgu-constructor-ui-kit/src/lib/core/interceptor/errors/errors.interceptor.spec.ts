@@ -1,8 +1,6 @@
 import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient, HttpErrorResponse } from '@angular/common/http';
-
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
 import {
   AUTH_ERROR_MODAL_PARAMS,
   BOOKING_ONLINE_ERROR,
@@ -12,8 +10,7 @@ import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/
 import { FormPlayerApiService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
 import { InitDataService } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service';
 import { InitDataServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
-import DOUBLE_ORDER_ERROR_DISPLAY from '@epgu/epgu-constructor/src/lib/core/display-presets/409-error';
-import EXPIRE_ORDER_ERROR_DISPLAY from '@epgu/epgu-constructor/src/lib/core/display-presets/410-error';
+import { DOUBLE_ORDER_ERROR_DISPLAY } from '@epgu/epgu-constructor/src/lib/core/display-presets/409-error';
 import { FormPlayerServiceStub } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service.stub';
 import { ErrorHandlerService } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler.service';
 import { FormPlayerApiSuccessResponse, FormPlayerNavigation } from '@epgu/epgu-constructor-types';

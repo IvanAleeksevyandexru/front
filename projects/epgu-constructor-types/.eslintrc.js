@@ -8,6 +8,11 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
   ],
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    }
+  },
   overrides: [
     {
       files: ['*.ts'],

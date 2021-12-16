@@ -2,11 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenStore } from './screen.types';
 import { ScreenContent } from './screen-content';
-import {
-  CachedAnswersDto,
-  ComponentDto,
-  DisplayDto,
-} from '../form-player/services/form-player-api/form-player-api.types';
+import { CachedAnswersDto, ComponentDto, DisplayDto } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class ScreenServiceStub extends ScreenContent {
@@ -30,7 +26,7 @@ export class ScreenServiceStub extends ScreenContent {
 
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
-    this.updateScreenContent(store);
+    this.updateScreenContent(store, false);
   }
 
   public updateScreenStore(newState: ScreenStore): void {}

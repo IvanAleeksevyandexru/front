@@ -2,7 +2,6 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { YaMapService } from '@epgu/ui/services/ya-map';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import type * as ymaps from 'yandex-maps';
 import { get } from 'lodash';
 import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 import { HttpClient } from '@angular/common/http';
@@ -22,6 +21,7 @@ import {
 import { ConfigService } from '../../../core/services/config/config.service';
 import { GeoCodeResponse } from './geo-code.interface';
 import { MapAnimationService } from './yandex-map-animation/map-animation.service';
+import type * as ymaps from 'yandex-maps';
 
 const POINT_ON_MAP_OFFSET = -0.00008; // оффсет для точки на карте чтобы панель поиска не перекрывала точку
 

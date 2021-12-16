@@ -1,6 +1,6 @@
 import { DisplayDto, ActionType, DTOActionAction, ScreenTypes } from '@epgu/epgu-constructor-types';
 
-const EXPIRE_ORDER_ERROR_DISPLAY: DisplayDto = {
+export const EXPIRE_ORDER_ERROR_DISPLAY: DisplayDto = {
   id: 'finishscreen_expire_order_error',
   name: 'Финальная страница сценария электронный вариант',
   type: ScreenTypes.CUSTOM,
@@ -29,5 +29,3 @@ const EXPIRE_ORDER_ERROR_DISPLAY: DisplayDto = {
   ],
   firstScreen: false,
 };
-
-export default EXPIRE_ORDER_ERROR_DISPLAY;
