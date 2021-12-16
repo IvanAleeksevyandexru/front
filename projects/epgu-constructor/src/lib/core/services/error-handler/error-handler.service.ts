@@ -34,7 +34,7 @@ import {
   RESOURCE_NOT_AVAILABLE,
   NO_DOCTORS,
 } from './error-handler';
-import DOUBLE_ORDER_ERROR_DISPLAY from '../../display-presets/409-error';
+import { DOUBLE_ORDER_ERROR_DISPLAY } from '../../display-presets/409-error';
 import { NavigationService } from '../navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
 import { ScreenService } from '../../../screen/screen.service';

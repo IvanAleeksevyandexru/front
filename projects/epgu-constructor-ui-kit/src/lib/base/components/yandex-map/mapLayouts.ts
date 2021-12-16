@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import type * as ymaps from 'yandex-maps';
 
 @Injectable()
 export class MapLayouts {

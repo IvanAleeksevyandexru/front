@@ -2,12 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';
-
-import { ComponentActionDto } from '../../../../../../form-player/services/form-player-api/form-player-api.types';
 import { BaseModule } from '../../../../../../shared/base.module';
 import { AnswerButtonModule } from '../../../../../../shared/components/answer-button/answer-button.module';
 import { ActionModule } from '../../../../../../shared/directives/action/action.module';
 import { PaymentTypeSelectorButtonComponent } from './payment-type-selector-button.component';
+import { ComponentActionDto } from '@epgu/epgu-constructor-types';
 
 describe('PaymentTypeSelectorButtonComponent', () => {
   let component: PaymentTypeSelectorButtonComponent;

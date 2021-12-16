@@ -29,5 +29,3 @@ export const DOUBLE_ORDER_ERROR_DISPLAY: DisplayDto = {
   ],
   firstScreen: false,
 };
-
-export default DOUBLE_ORDER_ERROR_DISPLAY;

@@ -1,5 +1,5 @@
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import * as ymaps from 'yandex-maps';
+import type * as ymaps from 'yandex-maps';
 
 export interface IYMapPoint<T> {
   center: [number, number];

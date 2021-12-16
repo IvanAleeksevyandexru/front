@@ -7,7 +7,6 @@ import {
   PREV_BUTTON_NAVIGATION,
   ConfigService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { CookieService } from 'ngx-cookie-service';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { NotifierModule } from '@epgu/ui/components/notifier';
