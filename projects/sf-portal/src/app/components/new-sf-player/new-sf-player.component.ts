@@ -7,12 +7,16 @@ import { GetServiceRequest, Region, Service, ServicePermission } from '@epgu/ui/
 import { LoadService } from '@epgu/ui/services/load';
 import { LocationService } from '@epgu/ui/services/location';
 import { DOCUMENT } from '@angular/common';
+import { HealthService } from '@epgu/epgu-constructor-ui-kit';
+import { RequestStatus } from '@epgu/epgu-constructor-types';
+import { cloneDeep } from 'lodash';
 import {
   CardsFormsService,
   RegionServiceCheck,
   ServerFormData,
   ServiceInfoDepartment,
 } from './cards-forms.service';
+import { AppConfig } from '../../app.config';
 
 @Component({
   selector: 'portal-new-sf-player',
@@ -47,8 +51,9 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
     public cardsFormsService: CardsFormsService,
     public loadService: LoadService,
     public locationService: LocationService,
-    @Inject(DOCUMENT) private document: Document,
     private router: Router,
+    private health: HealthService,
+    @Inject(DOCUMENT) private document: Document,
   ) {}
 
   public ngOnInit(): void {
@@ -137,6 +142,19 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
     const selected = this.service.passport.services.find((v) => {
       return v.selected;
     });
+
+    function getNormalizedQueryParams(queryParams: Object): Object {
+      return Object.keys(queryParams).reduce((acc, key) => {
+        const clonedQueryParams = cloneDeep(queryParams);
+
+        if (Array.isArray(clonedQueryParams[key])) {
+          clonedQueryParams[key] = clonedQueryParams[key].pop();
+        }
+
+        return { ...acc, ...{ [key]: clonedQueryParams[key] } };
+      }, {});
+    }
+
     if (selected?.id) {
       const orderType = this.service.additionalAttributes.find(
         (item) => item.name === 'ORDER_TYPE',
@@ -147,10 +165,27 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
       if (canStartNewQueryParam !== null) {
         canStartNew = !(canStartNewQueryParam === 'false' || canStartNewQueryParam === '0');
       }
+
       const invitedQueryParam = this.route.snapshot.queryParamMap.get('invited');
       let invited;
       if (invitedQueryParam !== null) {
         invited = !(invitedQueryParam === 'false' || invitedQueryParam === '0');
+      }
+
+      let { queryParams } = this.route.snapshot;
+      const hasQueryParamsArrays = Object.keys(queryParams).some((key) =>
+        Array.isArray(queryParams[key]),
+      );
+
+      if (hasQueryParamsArrays) {
+        const { url } = this.router;
+
+        if (AppConfig.settings?.isHealthErrorsOn) {
+          this.health.measureStart('queryParamsArrayError');
+          this.health.measureEnd('queryParamsArrayError', RequestStatus.Failed, { url });
+        }
+
+        queryParams = getNormalizedQueryParams(queryParams);
       }
 
       this.newSfService = {
@@ -174,7 +209,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
             name: this.region.name,
             path: this.region.path,
           },
-          queryParams: this.route.snapshot.queryParams,
+          queryParams,
           formId: this.formId,
         },
       };
