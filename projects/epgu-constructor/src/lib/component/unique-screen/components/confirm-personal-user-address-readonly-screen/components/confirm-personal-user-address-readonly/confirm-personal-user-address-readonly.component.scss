@@ -27,11 +27,6 @@
   margin: 4px 0 12px 0;
 }
 
-.footer {
-  margin: 16px 0 0;
-  display: block;
-}
-
 .label-helper {
   @include typ-plain-text;
   margin-bottom: 4px;
@@ -46,7 +41,7 @@
 }
 
 .divider {
-  margin: 0 0 24px;
+  margin: 24px 0 24px;
 }
 
 .btn-edit {
