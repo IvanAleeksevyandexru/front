@@ -1,0 +1,37 @@
+:host{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+
+  .epgu-constructor-component-item {
+    width: 100%;
+
+    ::ng-deep .component-item {
+      .form__input > *:first-child {
+        width: 100%;
+      }
+    }
+  }
+
+  .hide_input_value::ng-deep .component-item .form__input input{
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hide_checkbox_space ::ng-deep .component-item{
+    margin-bottom: 0;
+  }
+
+  .manager_checkbox_container{
+    width: max-content;
+    height: 24px;
+    margin-bottom: 28px;
+    ::ng-deep .text-plain{
+      height: 24px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+}

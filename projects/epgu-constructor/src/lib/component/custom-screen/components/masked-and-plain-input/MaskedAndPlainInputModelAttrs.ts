@@ -1,4 +1,4 @@
-import { Clarifications, TextTransform } from '@epgu/epgu-constructor-types';
+import { Clarifications, DisabledByCheckbox, TextTransform } from '@epgu/epgu-constructor-types';
 import { CustomComponentAttr } from '../../components-list.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
@@ -25,6 +25,8 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
 
   readonly clarifications: Clarifications;
 
+  readonly disabledByCheckbox: DisabledByCheckbox;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.customUnrecLabel = attrs.customUnrecLabel;
@@ -38,5 +40,6 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
     this.showPlaceholderOnFocus = attrs.showPlaceholderOnFocus;
     this.hint = attrs.hint;
     this.clarifications = attrs.clarifications;
+    this.disabledByCheckbox = attrs.disabledByCheckbox;
   }
 }
