@@ -3,6 +3,9 @@
   [component]="control.value"
   [invalid]="control.invalid"
   [hidden]="control.value?.attrs?.hidden"
+  class="epgu-constructor-component-item"
+  [class.hide_checkbox_space]="hasDisabledByCheckbox"
+  [class.hide_input_value]="hasDisabledByCheckbox && control.get('value').disabled"
 >
   <ng-container
     *ngTemplateOutlet="
@@ -12,6 +15,13 @@
   >
   </ng-container>
 </epgu-constructor-component-item>
+<div class="manager_checkbox_container" *ngIf="hasDisabledByCheckbox">
+  <lib-checkbox
+    [labelText]="attrs.disabledByCheckbox"
+    (change)="changeCheckboxDisableStatus()"
+    [checked]="control.get('value').disabled"
+  ></lib-checkbox>
+</div>
 
 <ng-template #plainInput let-component>
   <epgu-constructor-constructor-plain-input

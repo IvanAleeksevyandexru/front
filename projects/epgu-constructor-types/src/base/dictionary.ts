@@ -88,6 +88,8 @@ export enum DictionaryConditions {
   GREATER_THAN_OR_EQUALS = 'GREATER_THAN_OR_EQUALS',
 }
 
+export type DisabledByCheckbox = string;
+
 export interface FilterDtoConfig {
   str: number[];
   additionalString?: string;

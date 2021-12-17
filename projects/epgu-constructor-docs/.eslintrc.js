@@ -11,7 +11,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       typescript: {},
-    }
+    },
   },
   rules: {
     '@angular-eslint/directive-selector': [
@@ -27,6 +27,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/extensions': 'off',
+    'import/no-unresolved': 'off', // TODO: Временное решение для нераспознаваемых импортов
     '@typescript-eslint/semi': ['error'],
     'no-empty-function': ['error', { allow: ['constructors'] }],
     'object-curly-spacing': ['error', 'always'],
