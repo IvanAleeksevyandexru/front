@@ -504,7 +504,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         this.screenStore,
         dictionaryFilters,
       ),
-      selectAttributes: this.screenService.component.attrs.selectAttributes || ['*'],
+      // TODO: временный костыль до момента, как придумают обратную совместимость с черновиками,
+      // ref: https://jira.egovdev.ru/browse/EPGUCORE-82378
+      // selectAttributes: this.screenService.component.attrs.selectAttributes || ['*'],
+      selectAttributes: ['*'],
       pageSize: '100000',
     };
   }
