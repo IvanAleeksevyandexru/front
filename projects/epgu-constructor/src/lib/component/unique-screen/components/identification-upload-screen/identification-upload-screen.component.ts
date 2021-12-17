@@ -65,7 +65,7 @@ export class IdentificationUploadScreenComponent implements OnInit {
   disabled$$ = new BehaviorSubject<boolean>(true);
   disabled$ = this.disabled$$.pipe(
     distinctUntilChanged(),
-    tap(() => setTimeout(() => this.cdr.detectChanges())),
+    tap(() => window.requestAnimationFrame(() => this.cdr.detectChanges())),
   );
   allMaxFiles = 0; // Максимальное количество файлов, на основе данных форм
   nextStepAction: ComponentActionDto = {

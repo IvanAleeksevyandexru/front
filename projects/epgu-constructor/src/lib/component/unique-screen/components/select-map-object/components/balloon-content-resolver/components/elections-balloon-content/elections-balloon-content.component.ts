@@ -47,7 +47,7 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
           this.electionForDisclaimer = response.elections.find(
             (election) => !election.userDistrictEqalUikDistrict,
           );
-          setTimeout(() => this.cdr.detectChanges(), 0);
+          window.requestAnimationFrame(() => this.cdr.detectChanges());
         }),
       );
     this.cdr.detectChanges();

@@ -63,6 +63,7 @@ export class FileUploadPreviewComponent extends ModalBaseComponent implements Af
 
   public showErrorText(): void {
     this.errorTextIsShown = true;
+    // скрываем ошибку по заданному таймауту
     setTimeout(() => {
       this.errorTextIsShown = false;
       this.changeDetectionRef.markForCheck();

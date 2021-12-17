@@ -46,10 +46,7 @@ export class ConfirmPersonalUserPhoneEmailComponent extends BaseComponent implem
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.isPhoneScreenType = this.getIsPhoneScreenType();
       this.updateValue(data.value, data.errors);
-
-      setTimeout(() => {
-        this.changeDetectionRef.markForCheck();
-      });
+      this.changeDetectionRef.markForCheck();
     });
   }
 

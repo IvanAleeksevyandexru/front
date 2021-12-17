@@ -43,10 +43,7 @@ export class CtaModalComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.perfectScroll && this.scrollTop) {
-      /* TODO Подумать над лучшей реализацией. Сейчас задержка необходима для корректной работы
-      https://jira.egovdev.ru/secure/attachment/514868/514868_2021-07-06+12-03-52.mp4
-      */
-      setTimeout(() => {
+      window.requestAnimationFrame(() => {
         (this.perfectScroll as ElementRef).nativeElement.scrollIntoView();
       });
     }

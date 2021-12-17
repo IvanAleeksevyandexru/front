@@ -5,4 +5,6 @@ export class MicroAppNavigationServiceStub {
   public next(): void {}
 
   public prev(): void {}
+
+  public toDisplay(): void {}
 }
