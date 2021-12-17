@@ -7,6 +7,8 @@ export default class CheckboxInputModelAttrs extends GenericAttrs {
 
   readonly labelHide?: string;
 
+  readonly labelHint?: string;
+
   readonly limit?: number | string;
 
   readonly checkBoxes: {
@@ -16,6 +18,7 @@ export default class CheckboxInputModelAttrs extends GenericAttrs {
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.labelHide = attrs.labelHide;
+    this.labelHint = attrs.labelHint;
     this.checkBoxes = attrs.checkBoxes;
     this.labelShow = attrs.labelShow;
     this.limit = attrs.limit;
