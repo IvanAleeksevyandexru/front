@@ -16,6 +16,19 @@
           <div class="value-text">
             {{ getAddress(valueParsed[field.fieldName]) }}
           </div>
+          <div *ngIf="isEditAction">
+            <div class="divider"></div>
+            <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
+              <epgu-cf-ui-icon
+                class="btn-edit__icon"
+                [type]="iconType.PencilLine"
+                [mainColor]="iconColor.BaseGosblue"
+              ></epgu-cf-ui-icon>
+              <span class="btn-edit__text" *ngIf="screenService.action$ | async as action">{{
+                action.label
+                }}</span>
+            </button>
+          </div>
         </div>
       </ng-container>
 
@@ -57,19 +70,6 @@
       [clarifications]="(data$ | async)?.attrs?.clarifications"
     ></epgu-constructor-disclaimer>
 
-    <div class="footer" *ngIf="isEditAction">
-      <div class="divider"></div>
-      <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
-        <epgu-cf-ui-icon
-          class="btn-edit__icon"
-          [type]="iconType.PencilLine"
-          [mainColor]="iconColor.BaseGosblue"
-        ></epgu-cf-ui-icon>
-        <span class="btn-edit__text" *ngIf="screenService.action$ | async as action">{{
-          action.label
-        }}</span>
-      </button>
-    </div>
   </epgu-cf-ui-constructor-screen-pad>
   <div
     *ngIf="!(currentAnswersService.isValid$ | async) && (data$ | async)?.attrs?.emptyFieldsErrorMsg"
