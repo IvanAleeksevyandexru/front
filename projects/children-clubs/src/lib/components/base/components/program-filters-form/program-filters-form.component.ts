@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Injector,
@@ -88,35 +89,37 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     private ngUnsubscribe$: UnsubscribeService,
     private stateService: StateService,
     private dictionary: DictionaryService,
+    private cdr: ChangeDetectorRef,
   ) {
     super(injector);
   }
 
   changeFocus(element: ListElement): void {
     const focus = this.focusMap[element.id];
+
     this.form.get(this.formFields.direction).setValue(null);
     this.directionList.next(
       focus || [new ListItem({ id: 'empty-item', text: 'Все', unselectable: true })],
     );
+    this.cdr.detectChanges();
   }
 
   setFocusList(data: NormalizedFocusData): void {
     this.focusMap = data.directions;
     this.focusList.next(data.focus);
 
-    setTimeout(() => {
-      const focus = this.stateService.programFilters?.focus as ListElement;
-      if (focus) {
-        this.changeFocus(focus);
-        this.form.get(this.formFields.focus).setValue(focus);
-      }
-      setTimeout(() => {
-        const direction = this.stateService.programFilters?.direction as ListElement;
-        if (direction) {
-          this.form.get(this.formFields.direction).setValue(direction);
-        }
-      });
-    });
+    const focus = this.stateService.programFilters?.focus as ListElement;
+
+    if (focus) {
+      this.changeFocus(focus);
+      this.form.get(this.formFields.focus).setValue(focus);
+    }
+
+    const direction = this.stateService.programFilters?.direction as ListElement;
+
+    if (direction) {
+      this.form.get(this.formFields.direction).setValue(direction);
+    }
   }
 
   paymentFilterChange(value: InlernoPaymentFilters | PfdoPaymentFilters): void {

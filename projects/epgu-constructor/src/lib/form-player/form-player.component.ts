@@ -221,7 +221,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
 
   private initLoader(): void {
     this.screenService.isLoaderVisible.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      setTimeout(() => this.changeDetectionRef.detectChanges(), 0);
+      window.requestAnimationFrame(() => this.changeDetectionRef.detectChanges());
     });
   }
 }

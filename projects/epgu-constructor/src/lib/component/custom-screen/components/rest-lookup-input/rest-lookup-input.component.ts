@@ -103,13 +103,11 @@ export class RestLookupInputComponent
   }
 
   private reRenderChildLookup(): void {
-    setTimeout(() => {
-      this.forReRenderChildLookup = false;
-      this.cdr.detectChanges();
-    }, 0);
-    setTimeout(() => {
+    this.forReRenderChildLookup = false;
+
+    window.requestAnimationFrame(() => {
       this.forReRenderChildLookup = true;
       this.cdr.detectChanges();
-    }, 0);
+    });
   }
 }

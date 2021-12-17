@@ -60,6 +60,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
 
   public showErrorText(): void {
     this.errorTextIsShown = true;
+    // скрываем ошибку по заданному таймауту
     setTimeout(() => {
       this.errorTextIsShown = false;
       this.changeDetectionRef.markForCheck();

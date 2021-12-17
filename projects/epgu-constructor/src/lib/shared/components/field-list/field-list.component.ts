@@ -60,10 +60,10 @@ export class FieldListComponent implements OnInit, OnChanges {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((state: EaisdoStateTypes) => {
         this.currentEaisdoState = state;
-        setTimeout(() => {
+        window.requestAnimationFrame(() => {
           this.transformData();
           this.cdr.detectChanges();
-        }, 0);
+        });
       });
   }
 

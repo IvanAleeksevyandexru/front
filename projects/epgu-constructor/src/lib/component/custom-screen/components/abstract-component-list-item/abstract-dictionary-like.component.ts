@@ -39,8 +39,10 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
   ngOnInit(): void {
     super.ngOnInit();
     this.loadReferenceData$().subscribe(() => {
-      setTimeout(() => this.formService.patch(this.model), 0);
-      this.formService.emitChanges();
+      window.requestAnimationFrame(() => {
+        this.formService.patch(this.model);
+        this.formService.emitChanges();
+      });
     });
     this.watchForFilters();
   }
