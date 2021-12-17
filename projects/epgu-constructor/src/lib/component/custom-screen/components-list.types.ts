@@ -8,6 +8,7 @@ import {
   RestAttrsDto,
   KeyValueMap,
   ComponentValidationDto,
+  DisabledByCheckbox,
 } from '@epgu/epgu-constructor-types';
 import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { ListItem } from '@epgu/ui/models/dropdown';
@@ -216,6 +217,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   dictionaryFilters?: ComponentDictionaryFilterDto[][];
   dictionaryList?: CustomComponentDropDownItemList;
   dictionaryUrlType?: DictionaryUrlTypes;
+  disabledByCheckbox?: DisabledByCheckbox;
   errorButton?: ErrorButton;
   fields?: CustomComponentAttrField;
   focusOnInitAndStartSearch?: FocusOnInitAndStartSearch;
