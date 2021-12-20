@@ -1894,10 +1894,10 @@
     os "0.1.1"
     tslib "2.1.0"
 
-"@epgu/ui@0.1.13-ssr":
-  version "0.1.13-ssr"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-0.1.13-ssr.tgz#cec56980db46f70f4b9bd768f4816b325a8ae500"
-  integrity sha512-SN2bDnxLNz105ARJVa8gyrlrurdQQwIYq3NkaiOKwQhUPsC0uhefTEOZIrb63WTMud1XZk0FbO/DSo2U2qjTUA==
+"@epgu/ui@3.0.395-2-front":
+  version "3.0.395-2-front"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.395-2-front.tgz#3c04eaae7b70c623331694c11f18d829b9314dfc"
+  integrity sha512-Uj/edA6NhjJqO9dZJ4hVKipigcv8iBxWgY/uF6A1FiNPncujCmeD6LsEQIMuN/rtSQrxMC/fRWCx+ACa18Qd4w==
   dependencies:
     "@epgu/zipkin" "0.0.3"
     date-fns "2.24.0"

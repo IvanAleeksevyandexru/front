@@ -43,6 +43,7 @@
   "viewType": "PORTAL",
   "yandexMapsApiKey": "9e8e2fc4-5970-4ca6-95c5-3e620095e8e3",
   "psoOnlyRobomaxIco": true,
-  "showNewDesignPsoHel": true,
+  "showNewDesignPsoHelp": true,
+  "psoDomain": "//ssp-dev.test.gosuslugi.ru",
   "excludePsoFromMain": false
 }
