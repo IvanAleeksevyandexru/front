@@ -185,19 +185,21 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   private getGalleryFilesGroupedByDate(galleryFiles: FileItem[]): [string, FileItem[]][] {
     return Object.entries(
-      galleryFiles.reduce((acc, file) => {
-        let date: Date | string = this.datesToolsService.parse(
-          file.item.created,
-          DATE_STRING_DASH_FORMAT,
-        );
-        date = this.datesToolsService.format(date, DATE_TIME_STRING_SHORT);
-        if (acc[date]) {
-          acc[date].push(file);
-        } else {
-          acc[date] = [file];
-        }
-        return acc;
-      }, {}),
+      galleryFiles
+        .sort((a, b) => new Date(b.item.created).getTime() - new Date(a.item.created).getTime())
+        .reduce((acc, file) => {
+          let date: Date | string = this.datesToolsService.parse(
+            file.item.created,
+            DATE_STRING_DASH_FORMAT,
+          );
+          date = this.datesToolsService.format(date, DATE_TIME_STRING_SHORT);
+          if (acc[date]) {
+            acc[date].push(file);
+          } else {
+            acc[date] = [file];
+          }
+          return acc;
+        }, {}),
     );
   }
 }
