@@ -121,6 +121,7 @@ export class AppComponent implements OnInit {
       window.psoOnlyRobomaxIcon = this.loadService.config.psoOnlyRobomaxIcon;
       window.showNewDesignPsoHelp = this.loadService.config.showNewDesignPsoHelp;
       window.betaUrl = this.loadService.config.betaUrl;
+      this.psoService.loadAndRunPso();
     }
   }
 }

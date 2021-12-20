@@ -72,6 +72,7 @@ describe('ProgramFiltersComponent', () => {
     eventBusService = TestBed.inject(EventBusService);
     fixture = TestBed.createComponent(ProgramFiltersFormComponent);
     component = fixture.componentInstance;
+    jest.spyOn((component as any).cdr, 'detectChanges').mockReturnValue(null);
   });
 
   it('should create', () => {
