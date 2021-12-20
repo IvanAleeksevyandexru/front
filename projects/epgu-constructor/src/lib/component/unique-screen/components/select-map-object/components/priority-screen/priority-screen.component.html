@@ -91,14 +91,12 @@
           ></epgu-constructor-priority-item-empty>
         </ng-container>
 
-        <ng-container *ngIf="maxKindergarten > items.length">
-          <button (click)="moreAction()" *ngIf="leftItems > 0" class="link-btn mt-24">
-            Показать еще {{ leftItems }}
-          </button>
-          <button (click)="rollUpAction()" *ngIf="leftItems <= 0" class="link-btn mt-24">
-            Свернуть
-          </button>
-        </ng-container>
+        <button (click)="moreAction()" *ngIf="leftItems > 0" class="link-btn mt-24">
+          Показать еще {{ leftItems }}
+        </button>
+        <button (click)="rollUpAction()" *ngIf="leftItems <= 0 && itemsService.listMaxLength < maxKindergarten" class="link-btn mt-24">
+          Свернуть
+        </button>
       </div>
       <div class="moreGarden mt-24">
         <epgu-cf-ui-constructor-constructor-checkbox
