@@ -3,6 +3,7 @@ import { TargetType } from './target-type';
 import { ActionAnswerDto } from './action-answer-dto';
 import { Clarifications } from './clarifications';
 import { KeyValueMap } from './core.types';
+import { System } from './system';
 
 export interface ComponentActionDto {
   action: DTOActionAction;
@@ -12,6 +13,7 @@ export interface ComponentActionDto {
     hidden?: boolean;
     clarifications?: Clarifications;
     additionalParams?: KeyValueMap;
+    showOnOS?: System[];
   };
   color?: ButtonColor;
   deliriumAction?: string;
