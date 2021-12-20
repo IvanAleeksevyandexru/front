@@ -296,9 +296,11 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
   }
 
   isErrorShown(control: string | string[]): boolean {
+    const updateOn = this.form.get(control).updateOn;
     return (
-      (this.isInvalidAndTouched(control) || this.isInvalidAndDirty(control)) &&
-      this.form.get(control).errors.msg
+      (updateOn === 'change'
+        ? this.isInvalidAndTouched(control)
+        : this.isInvalidAndDirty(control)) && this.form.get(control).errors.msg
     );
   }
 
