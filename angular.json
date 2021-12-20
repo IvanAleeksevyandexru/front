@@ -389,6 +389,11 @@
               },
               {
                 "glob": "**/*",
+                "input": "./node_modules/@epgu/epgu-constructor-ui-kit/src/assets",
+                "output": "./assets"
+              },
+              {
+                "glob": "**/*",
                 "input": "./node_modules/@epgu/children-clubs/src/assets",
                 "output": "./assets"
               },

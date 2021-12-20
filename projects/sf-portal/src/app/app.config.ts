@@ -15,6 +15,7 @@ import { HOST_URL } from './tokens/host-url.token';
 })
 export class AppConfig {
   public static settings: any;
+
   private isServer = isPlatformServer(this.platformId);
 
   constructor(
@@ -44,7 +45,7 @@ export class AppConfig {
         })
         .finally(() => {
           if (this.isServer) {
-            this.loadService.load('', false, false, '', this.window.serverData);
+            this.loadService.load('', false, false, '');
           } else {
             this.loadService.load('', false, true);
           }
