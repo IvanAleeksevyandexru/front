@@ -9,9 +9,13 @@ export default class FormOutputModelAttrs extends GenericAttrs {
 
   readonly isBottomSlot: boolean;
 
+  readonly isTextHelper: boolean;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.clarifications = attrs.clarifications;
     this.interpolationEnabled = attrs.interpolationEnabled;
+    this.isBottomSlot = attrs.isBottomSlot;
+    this.isTextHelper = attrs.isTextHelper;
   }
 }
