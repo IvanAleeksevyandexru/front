@@ -114,7 +114,7 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
         const selectedItem = value && this.items.find((item) => item.id === key);
         return [...acc, selectedItem];
       }, []);
-    this.closeModal(items);
+    this.closeModal([...items, ...this.selectedItems]);
   }
 
   private initializeForm(items: ListElement[]): void {
