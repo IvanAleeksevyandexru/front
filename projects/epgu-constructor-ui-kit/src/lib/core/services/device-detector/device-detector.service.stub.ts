@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { System } from './device-detector.types';
+import { System } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class DeviceDetectorServiceStub {
