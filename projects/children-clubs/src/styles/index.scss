@@ -1,7 +1,7 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
-
 :host::ng-deep {
+  @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
+  @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+
   .mb-24 {
     margin-bottom: 24px;
   }

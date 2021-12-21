@@ -23,7 +23,7 @@ export class CalendarInputComponent
   maxDateDefault = '+50y';
   clearable = true;
   align = 'left';
-  strategy = BrokenDateFixStrategy.NONE;
+  strategy = BrokenDateFixStrategy.RESTORE;
   form: FormGroup;
 
   constructor(
