@@ -30,6 +30,15 @@
     <epgu-constructor-field-list
       [data]="data | confirmPersonalUserData"
     ></epgu-constructor-field-list>
+    <ng-container *ngIf="errors">
+      <epgu-constructor-disclaimer
+        *ngFor="let error of errors"
+        class="mb-8"
+        [type]="error.type"
+        [title]="error.title"
+        [description]="error.desc"
+      ></epgu-constructor-disclaimer>
+    </ng-container>
     <div class="data-footer" *ngIf="data.attrs.hint">
       <epgu-constructor-output-html
         [clarifications]="data.attrs.clarifications"
