@@ -25,9 +25,6 @@
 .uploader-manager-item__info {
   flex-grow: 1;
   min-width: 0;
-  button {
-    margin-top: 4px;
-  }
 }
 
 .uploader-manager-item__title {
@@ -171,11 +168,14 @@
     }
   }
 }
+
 .view_button {
+  margin-top: 4px;
   @include phones-down {
     display: none;
   }
 }
+
 .remove_button {
   &:after {
     content: 'Удалить';
