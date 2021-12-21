@@ -277,11 +277,6 @@ export class AutocompletePrepareService {
         parsedValue = Object.values(parsedValue[0])[0];
       }
       value = parsedValue.text;
-
-      // Кейс парсинга значения для SnilsInput
-      if ('snils' in parsedValue) {
-        value = parsedValue.snils;
-      }
     }
 
     const componentsGroupIndex = 0;
@@ -459,9 +454,6 @@ export class AutocompletePrepareService {
         value = parsedItem[component.id];
 
         return typeof value === 'string' ? value : JSON.stringify(value);
-      }
-      if ('snils' in parsedValue) {
-        return parsedValue.snils;
       }
     }
     return value;
