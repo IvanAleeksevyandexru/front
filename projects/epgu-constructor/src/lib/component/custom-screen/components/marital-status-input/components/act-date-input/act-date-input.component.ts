@@ -13,7 +13,7 @@ export class ActDateInputComponent {
   @Input() attrs: ComponentAttrsDto;
   @Input() hint?: string;
   @Input() control: AbstractControl;
-  @Input() brokenDateFixStrategy?: BrokenDateFixStrategy = BrokenDateFixStrategy.NONE;
+  @Input() brokenDateFixStrategy?: BrokenDateFixStrategy = BrokenDateFixStrategy.RESTORE;
   @Input() validationShowOn: ValidationShowOn | string | boolean;
   @Input() id: string;
 
