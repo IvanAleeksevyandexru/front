@@ -441,11 +441,6 @@ describe('AutocompletePrepareService', () => {
         value = '[{ "pd8": "value"}]';
         expect(service.getFormattedValue(component, value)).toEqual(result);
       });
-      it('snils as text if json-object with snils attr passed', () => {
-        component.attrs.suggestionPath = null;
-        value = '{"snils": "123"}';
-        expect(service.getFormattedValue(component, value)).toEqual('123');
-      });
     });
   });
 });
