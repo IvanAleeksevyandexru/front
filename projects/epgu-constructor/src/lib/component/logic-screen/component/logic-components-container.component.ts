@@ -34,6 +34,7 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
   isLoading$ = this.screenService.isLogicComponentLoading$;
   logicComponents$ = this.screenService.logicComponents$;
   loadSubscription: Subscription;
+  isLoading = true;
 
   constructor(
     private screenService: ScreenService,
@@ -54,20 +55,14 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
         }
         if (components.filter(isOnInitComponent).length) {
           this.screenService.isLogicComponentLoading = true;
-
-          /**
-            requestAnimationFrame нужен, чтоб дождаться viewComponents
-            Подписка в этом месте, т.к. в ngAfterViewInit возникает баг обновления экрана
-            при подстановке значений из suggestions
-          */
-          window.requestAnimationFrame(() => {
-            this.resetInitSubscribe();
-          });
+        } else {
+          this.isLoading = false;
         }
       });
   }
 
   ngAfterViewInit(): void {
+    this.resetInitSubscribe();
     this.viewComponents.changes.subscribe(() => {
       this.resetInitSubscribe();
     });
@@ -85,10 +80,13 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
 
     this.loadSubscription = combineLatest(hasLoadedSubjects)
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((hasLoadedResult) => {
-        if (hasLoadedResult.every((element) => !!element)) {
-          this.screenService.isLogicComponentLoading = false;
-          this.cdr.detectChanges();
+      .subscribe((hasLoadedResult: boolean[]) => {
+        if (hasLoadedResult.every((element: boolean) => !!element)) {
+          window.requestAnimationFrame(() => {
+            this.isLoading = false;
+            this.screenService.isLogicComponentLoading = false;
+            this.cdr.detectChanges();
+          });
         }
       });
   }
