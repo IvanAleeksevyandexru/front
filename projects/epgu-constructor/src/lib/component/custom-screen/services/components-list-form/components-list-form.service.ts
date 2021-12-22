@@ -90,11 +90,11 @@ export class ComponentsListFormService {
   ) {}
 
   public create(components: CustomComponent[], componentsGroupIndex?: number): FormArray {
-    this._shownElements = this.componentsListRelationsService.createStatusElements(
+    this._shownElements = this.componentsListRelationsService.calculateVisibility(
       components,
       this.screenService.cachedAnswers,
+      this.form,
     );
-
     this.indexesByIds = {};
     this.cachedAttrsComponents = {};
     this.lastChangedComponent = null;
@@ -110,7 +110,7 @@ export class ComponentsListFormService {
 
     components.forEach((component: CustomComponent) => {
       this.relationMapChanges(this.form.at(this.indexesByIds[component.id]).value);
-      this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
+      this._shownElements = this.componentsListRelationsService.processRelations(
         components,
         {
           ...component,
@@ -120,7 +120,6 @@ export class ComponentsListFormService {
         this.form,
         false,
         this.screenService,
-        this.dictionaryToolsService,
         componentsGroupIndex,
       );
     });
@@ -397,14 +396,13 @@ export class ComponentsListFormService {
       .subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
         this.lastChangedComponent = [prev, next];
         if (!isEqual(prev, next)) {
-          this._shownElements = this.componentsListRelationsService.getUpdatedShownElements(
+          this._shownElements = this.componentsListRelationsService.processRelations(
             components,
             next,
             this.shownElements,
             this.form,
             true,
             this.screenService,
-            this.dictionaryToolsService,
             componentsGroupIndex,
           );
           // TODO: в перспективе избавиться от этой хардкодной логики

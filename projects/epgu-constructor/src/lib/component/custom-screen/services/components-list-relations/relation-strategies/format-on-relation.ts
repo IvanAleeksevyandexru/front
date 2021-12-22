@@ -1,23 +1,20 @@
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { AbstractControl, FormArray } from '@angular/forms';
 import { BaseRelation } from './base-relation';
-import {
-  CustomComponent,
-  CustomComponentRef,
-  CustomListStatusElements,
-} from '../../../components-list.types';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import { CustomComponent, CustomComponentRef } from '../../../components-list.types';
+import { FormArray } from '@angular/forms';
+import BaseModel from '../../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class FormatOnRelation extends BaseRelation {
   public handleRelation(
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
+    dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
     reference: CustomComponentRef,
     componentVal: KeyValueMap,
     form: FormArray,
-  ): CustomListStatusElements {
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
-    );
+  ): void {
+    const dependentControl = this.getControlById(dependentComponent.id, form);
     const newValue = {
       ...(dependentControl?.value?.value ?? {}),
       [reference.relatedRel]: { ...componentVal },
@@ -27,6 +24,6 @@ export class FormatOnRelation extends BaseRelation {
       { onlySelf: true, emitEvent: false },
     );
 
-    return this.afterHandleRelation(shownElements, dependentComponent, form);
+    this.afterHandleRelation(dependentComponent, form);
   }
 }

@@ -1,29 +1,26 @@
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { AbstractControl, FormArray } from '@angular/forms';
 import { BaseRelation } from './base-relation';
-import {
-  CustomComponent,
-  CustomComponentRef,
-  CustomListStatusElements,
-} from '../../../components-list.types';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import { CustomComponent, CustomComponentRef } from '../../../components-list.types';
+import { FormArray } from '@angular/forms';
+import BaseModel from '../../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class CalcRelation extends BaseRelation {
   public handleRelation(
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
+    dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
     reference: CustomComponentRef,
     _componentVal: KeyValueMap,
     form: FormArray,
-    components: CustomComponent[],
-  ): CustomListStatusElements {
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
-    );
+    components: (CustomComponent | BaseModel<GenericAttrs>)[],
+  ): void {
+    const dependentControl = this.getControlById(dependentComponent.id, form);
     const relation: CustomComponentRef = this.getRelation(dependentComponent, reference);
     const newValue = this.getCalcValueFromRelation(relation, components, form);
     dependentControl.get('value').patchValue(newValue, { onlySelf: true, emitEvent: false });
 
-    return this.afterHandleRelation(shownElements, dependentComponent, form);
+    this.afterHandleRelation(dependentComponent, form);
   }
 
   /**
@@ -35,7 +32,7 @@ export class CalcRelation extends BaseRelation {
    */
   public getCalcValueFromRelation(
     itemRef: CustomComponentRef,
-    components: CustomComponent[],
+    components: (CustomComponent | BaseModel<GenericAttrs>)[],
     form: FormArray,
   ): string {
     let str = itemRef.val as string;

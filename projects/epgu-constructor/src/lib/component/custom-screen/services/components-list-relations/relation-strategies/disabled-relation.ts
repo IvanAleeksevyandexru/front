@@ -1,32 +1,28 @@
+import { BaseRelation } from './base-relation';
 import { CustomComponentRefRelation, KeyValueMap } from '@epgu/epgu-constructor-types';
+import { CustomComponent, CustomComponentRef } from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { isUndefined } from 'lodash';
-import {
-  CustomComponent,
-  CustomComponentRef,
-  CustomListStatusElements,
-} from '../../../components-list.types';
-import { BaseRelation } from './base-relation';
+import BaseModel from '../../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class DisabledRelation extends BaseRelation {
   public handleRelation(
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
+    dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
     reference: CustomComponentRef,
     componentVal: KeyValueMap,
     form: FormArray,
-  ): CustomListStatusElements {
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
-    );
-
+  ): void {
+    const dependentControl = this.getControlById(dependentComponent.id, form);
     if (this.refRelationService.isValueEquals(reference.val, componentVal)) {
       this.patchValueAndDisable(dependentComponent.id, dependentControl, reference.defaultValue);
     } else if (!this.componentHasAnyDisabledRefsWithSameValue(dependentComponent, form)) {
       // включаем контрол только если нет ни одного disabled рефа с таким же значением
       this.patchToPrevValueAndEnable(dependentComponent.id, dependentControl);
     }
-    return this.afterHandleRelation(shownElements, dependentComponent, form);
+    this.afterHandleRelation(dependentComponent, form);
   }
 
   private patchValueAndDisable(
@@ -52,14 +48,14 @@ export class DisabledRelation extends BaseRelation {
    * @param form
    */
   private componentHasAnyDisabledRefsWithSameValue(
-    component: CustomComponent,
+    component: CustomComponent | BaseModel<GenericAttrs>,
     form: FormArray,
   ): boolean {
     return component.attrs.ref.some((itemReference) => {
       if (itemReference.relation !== CustomComponentRefRelation.disabled) {
         return false;
       }
-      const itemControl = form.controls.find((ctrl) => ctrl.value.id === itemReference.relatedRel);
+      const itemControl = this.getControlById(itemReference.relatedRel, form);
       return this.refRelationService.isValueEquals(
         itemReference.val,
         itemControl.get('value').value,

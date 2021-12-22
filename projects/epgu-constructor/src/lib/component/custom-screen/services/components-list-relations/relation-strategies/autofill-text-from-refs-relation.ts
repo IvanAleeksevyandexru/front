@@ -1,37 +1,56 @@
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { AbstractControl, FormArray } from '@angular/forms';
-import { get } from 'lodash';
-import {
-  CustomComponent,
-  CustomComponentRef,
-  CustomListStatusElements,
-} from '../../../components-list.types';
 import { BaseRelation } from './base-relation';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import { CustomComponent, CustomComponentRef } from '../../../components-list.types';
+import { FormArray } from '@angular/forms';
+import { get } from 'lodash';
+import BaseModel from '../../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
+import { InterpolationService } from '../../../../../shared/services/interpolation/interpolation.service';
+import { Injectable, Injector } from '@angular/core';
 
+@Injectable()
 export class AutofillTextFromRefsRelation extends BaseRelation {
+  protected interpolationService: InterpolationService;
+
+  constructor(protected injector: Injector) {
+    super(injector);
+    this.interpolationService = this.injector.get(InterpolationService);
+  }
+
   public handleRelation(
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
+    dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
     reference: CustomComponentRef,
     componentVal: KeyValueMap,
     form: FormArray,
-  ): CustomListStatusElements {
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
-    );
+  ): void {
+    const dependentControl = this.getControlById(dependentComponent.id, form);
     if (componentVal) {
-      const newValue = JSON.stringify(dependentComponent).replace(/\${\w+}/gi, (match) => {
-        const relatedRelKey = match.replace(/[^\w]+/gi, '');
-        const relatedRelValue = reference.relatedRelValues[relatedRelKey];
-        if (relatedRelValue) {
-          return get(componentVal, relatedRelValue) as string;
-        }
-        return match;
-      });
-      dependentControl.patchValue(
-        { ...JSON.parse(newValue) },
-        { onlySelf: true, emitEvent: false },
+      // when dependentComponent instanceof DictionaryLikeModel JSON.stringify produces circular structure to JSON error
+      const componentDto: CustomComponent =
+        dependentComponent instanceof BaseModel
+          ? dependentComponent.asObject()
+          : dependentComponent;
+
+      const variables = Object.keys(reference.relatedRelValues).reduce(
+        (acc: KeyValueMap, relatedRelKey): KeyValueMap => ({
+          ...acc,
+          [relatedRelKey]: get(componentVal, reference.relatedRelValues[relatedRelKey]),
+        }),
+        {},
       );
+
+      const interpolatedValue = this.interpolationService.interpolateRecursive(
+        componentDto,
+        variables,
+        '',
+        true,
+      );
+      const newValue =
+        dependentComponent instanceof BaseModel
+          ? new (dependentComponent.constructor as ObjectConstructor)(interpolatedValue)
+          : interpolatedValue;
+
+      dependentControl.patchValue(newValue, { onlySelf: true, emitEvent: false });
     }
 
     const isDependentDisabled: boolean = dependentComponent.attrs.disabled;
@@ -39,6 +58,6 @@ export class AutofillTextFromRefsRelation extends BaseRelation {
       dependentControl.disable();
     }
 
-    return this.afterHandleRelation(shownElements, dependentComponent, form);
+    this.afterHandleRelation(dependentComponent, form);
   }
 }

@@ -1,9 +1,7 @@
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
-import { Injectable } from '@angular/core';
 import { DisplayOffRelation } from './relation-strategies/display-off-relation';
 import { DisplayOnRelation } from './relation-strategies/display-on-relation';
 import { BaseRelation } from './relation-strategies/base-relation';
-import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { GetValueRelation } from './relation-strategies/get-value-relation';
 import { AutofillFromDictionaryRelation } from './relation-strategies/autofill-from-dictionary-relation';
 import { CalcRelation } from './relation-strategies/calc-relation';
@@ -14,46 +12,47 @@ import { ValidateDependentRelation } from './relation-strategies/validate-depend
 import { AutofillTextFromRefsRelation } from './relation-strategies/autofill-text-from-refs-relation';
 import { FormatOnRelation } from './relation-strategies/format-on-relation';
 import { UpdateRestLookupRelation } from './relation-strategies/update-rest-lookup-relation';
+import { Injectable, Injector } from '@angular/core';
 
 export const RELATION_STRATEGIES: Partial<Record<
   CustomComponentRefRelation,
-  (refRelationService: RefRelationService) => BaseRelation
+  (injector: Injector) => BaseRelation
 >> = {
-  [CustomComponentRefRelation.autofillFromDictionary]: (refRelationService: RefRelationService) =>
-    new AutofillFromDictionaryRelation(refRelationService),
-  [CustomComponentRefRelation.autoFillTextFromRefs]: (refRelationService: RefRelationService) =>
-    new AutofillTextFromRefsRelation(refRelationService),
-  [CustomComponentRefRelation.calc]: (refRelationService: RefRelationService) =>
-    new CalcRelation(refRelationService),
-  [CustomComponentRefRelation.disabled]: (refRelationService: RefRelationService) =>
-    new DisabledRelation(refRelationService),
-  [CustomComponentRefRelation.displayOff]: (refRelationService: RefRelationService) =>
-    new DisplayOffRelation(refRelationService),
-  [CustomComponentRefRelation.displayOn]: (refRelationService: RefRelationService) =>
-    new DisplayOnRelation(refRelationService),
-  [CustomComponentRefRelation.filterOn]: (refRelationService: RefRelationService) =>
-    new FilterOnRelation(refRelationService),
-  [CustomComponentRefRelation.formatOn]: (refRelationService: RefRelationService) =>
-    new FormatOnRelation(refRelationService),
-  [CustomComponentRefRelation.getValue]: (refRelationService: RefRelationService) =>
-    new GetValueRelation(refRelationService),
-  [CustomComponentRefRelation.reset]: (refRelationService: RefRelationService) =>
-    new ResetControlRelation(refRelationService),
-  [CustomComponentRefRelation.updateRestLookupOn]: (refRelationService: RefRelationService) =>
-    new UpdateRestLookupRelation(refRelationService),
-  [CustomComponentRefRelation.validateDependentControl]: (refRelationService: RefRelationService) =>
-    new ValidateDependentRelation(refRelationService),
+  [CustomComponentRefRelation.autofillFromDictionary]: (injector: Injector) =>
+    new AutofillFromDictionaryRelation(injector),
+  [CustomComponentRefRelation.autoFillTextFromRefs]: (injector: Injector) =>
+    new AutofillTextFromRefsRelation(injector),
+  [CustomComponentRefRelation.calc]: (injector: Injector) => new CalcRelation(injector),
+  [CustomComponentRefRelation.disabled]: (injector: Injector) => new DisabledRelation(injector),
+  [CustomComponentRefRelation.displayOff]: (injector: Injector) => new DisplayOffRelation(injector),
+  [CustomComponentRefRelation.displayOn]: (injector: Injector) => new DisplayOnRelation(injector),
+  [CustomComponentRefRelation.filterOn]: (injector: Injector) => new FilterOnRelation(injector),
+  [CustomComponentRefRelation.formatOn]: (injector: Injector) => new FormatOnRelation(injector),
+  [CustomComponentRefRelation.getValue]: (injector: Injector) => new GetValueRelation(injector),
+  [CustomComponentRefRelation.reset]: (injector: Injector) => new ResetControlRelation(injector),
+  [CustomComponentRefRelation.updateRestLookupOn]: (injector: Injector) =>
+    new UpdateRestLookupRelation(injector),
+  [CustomComponentRefRelation.validateDependentControl]: (injector: Injector) =>
+    new ValidateDependentRelation(injector),
 };
 
 @Injectable()
 export class RelationResolverService {
   private _strategies: Partial<Record<CustomComponentRefRelation, BaseRelation>> = {};
 
-  constructor(private refRelationService: RefRelationService) {}
+  public constructor(private injector: Injector) {}
+
+  public isMassStrategy(relationType: CustomComponentRefRelation): boolean {
+    return [
+      CustomComponentRefRelation.displayOff,
+      CustomComponentRefRelation.displayOn,
+      // todo add CustomComponentRefRelation.disabled
+    ].includes(relationType);
+  }
 
   public getStrategy(relationType: CustomComponentRefRelation): BaseRelation {
     if (!this._strategies[relationType]) {
-      this._strategies[relationType] = RELATION_STRATEGIES[relationType](this.refRelationService);
+      this._strategies[relationType] = RELATION_STRATEGIES[relationType](this.injector);
     }
 
     return this._strategies[relationType];

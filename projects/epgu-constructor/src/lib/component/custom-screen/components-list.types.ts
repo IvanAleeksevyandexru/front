@@ -100,7 +100,6 @@ export interface CustomListStatusElements {
 
 export interface CustomStatusElement {
   isShown: boolean;
-  relation: CustomComponentRefRelation;
 }
 
 export interface CustomListGenericData<T> {

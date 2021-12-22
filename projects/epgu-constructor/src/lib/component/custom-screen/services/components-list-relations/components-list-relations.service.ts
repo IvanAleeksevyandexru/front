@@ -1,13 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { cloneDeep, get } from 'lodash';
-import {
-  ApplicantAnswersDto,
-  CustomComponentRefRelation,
-  KeyValueMap,
-} from '@epgu/epgu-constructor-types';
-import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { Observable } from 'rxjs';
 import {
   CustomComponent,
   CustomListFormGroup,
@@ -17,18 +9,27 @@ import {
   DateRestrictionGroups,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../../screen/screen.service';
-import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { DateRangeRef, Range } from '../../../../shared/services/date-range/date-range.models';
 import { CachedAnswers } from '../../../../screen/screen.types';
+import {
+  ApplicantAnswersDto,
+  CustomComponentRefRelation,
+  KeyValueMap,
+} from '@epgu/epgu-constructor-types';
 import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 import { UpdateRestLookupRelation } from './relation-strategies/update-rest-lookup-relation';
-import { UpdateFiltersEvents, ComponentRestUpdates } from './components-list-relations.interface';
+import { ComponentRestUpdates, UpdateFiltersEvents } from './components-list-relations.interface';
+import { Observable } from 'rxjs';
 import { RelationResolverService } from './relation-resolver.service';
 import { FilterOnRelation } from './relation-strategies/filter-on-relation';
+import { BaseRelation } from './relation-strategies/base-relation';
+import { DisplayOffRelation } from './relation-strategies/display-off-relation';
+import { DisplayOnRelation } from './relation-strategies/display-on-relation';
+import BaseModel from '../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 @Injectable()
 export class ComponentsListRelationsService {
@@ -50,24 +51,20 @@ export class ComponentsListRelationsService {
 
   constructor(
     private dateRangeService: DateRangeService,
-    private refRelationService: RefRelationService,
     private dateRestrictionsService: DateRestrictionsService,
-    private jsonHelperService: JsonHelperService,
     private dateRefService: DateRefService,
     private relationResolverService: RelationResolverService,
   ) {}
 
-  public getUpdatedShownElements(
-    components: CustomComponent[],
-    component: CustomListFormGroup | CustomComponent,
+  public processRelations(
+    components: (CustomComponent | BaseModel<GenericAttrs>)[],
+    component: CustomListFormGroup | CustomComponent | BaseModel<GenericAttrs>,
     shownElements: CustomListStatusElements,
     form: FormArray,
     initInitialValues = false,
     screenService: ScreenService,
-    dictionaryToolsService: DictionaryToolsService,
     componentsGroupIndex?: number,
   ): CustomListStatusElements {
-    let calculatedShownElements = cloneDeep<CustomListStatusElements>(shownElements);
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
         dependentComponent.attrs.ref
@@ -80,19 +77,25 @@ export class ComponentsListRelationsService {
               ? screenService.cachedAnswers[reference.valueFromCache].value
               : component.value ?? component.valueFromCache;
 
-            calculatedShownElements = this.relationResolverService
-              .getStrategy(reference.relation)
-              .handleRelation(
-                shownElements,
+            const isMassStrategy = this.relationResolverService.isMassStrategy(reference.relation);
+            const strategy: BaseRelation = this.relationResolverService.getStrategy(
+              reference.relation,
+            );
+
+            if (strategy && !isMassStrategy) {
+              strategy.handleRelation(
                 dependentComponent,
                 reference,
                 value as KeyValueMap,
                 form,
                 components,
                 initInitialValues,
-                dictionaryToolsService,
-                screenService,
               );
+            } else if (!strategy) {
+              console.error(
+                `Undefined relation ${reference.relation} for component ${dependentComponent.id}`,
+              );
+            }
           });
 
         this.updateReferenceLimitDate(dependentComponent, component, form, screenService);
@@ -108,7 +111,7 @@ export class ComponentsListRelationsService {
       componentsGroupIndex,
     );
 
-    return calculatedShownElements;
+    return this.calculateVisibility(components, screenService.cachedAnswers, form, shownElements);
   }
 
   async updateLimitDatesByDateRestrictions(
@@ -135,62 +138,37 @@ export class ComponentsListRelationsService {
     }
   }
 
-  public createStatusElements(
+  public calculateVisibility(
     components: CustomComponent[],
     cachedAnswers: CachedAnswers,
+    form: FormArray,
+    previousStatusElements: CustomListStatusElements = {},
   ): CustomListStatusElements {
     return components.reduce((acc, component: CustomComponent) => {
-      const hasDisplayOff = this.hasRelation(component, CustomComponentRefRelation.displayOff);
       const hasDisplayOn = this.hasRelation(component, CustomComponentRefRelation.displayOn);
+      const isDisplayOnFired = (<DisplayOnRelation>(
+        this.relationResolverService.getStrategy(CustomComponentRefRelation.displayOn)
+      )).isAtLeastOneRelationFired(component, acc, form, cachedAnswers);
+
+      const isDisplayOffFired = (<DisplayOffRelation>(
+        this.relationResolverService.getStrategy(CustomComponentRefRelation.displayOff)
+      )).isAtLeastOneRelationFired(component, acc, form, cachedAnswers);
+
+      const isShown = (!hasDisplayOn || isDisplayOnFired) && !isDisplayOffFired;
+
+      if (
+        !previousStatusElements[component.id] ||
+        previousStatusElements[component.id].isShown != isShown
+      ) {
+        const dependentControl = form.controls.find((control) => control.value.id === component.id);
+        dependentControl?.markAsUntouched();
+      }
 
       return {
         ...acc,
-        [component.id]: {
-          relation:
-            hasDisplayOff && !hasDisplayOn
-              ? CustomComponentRefRelation.displayOff
-              : CustomComponentRefRelation.displayOn,
-          isShown: this.isComponentShown(component, cachedAnswers, components, acc),
-        },
+        [component.id]: { isShown },
       };
-    }, {});
-  }
-
-  public isComponentShown(
-    component: CustomComponent,
-    cachedAnswers: CachedAnswers,
-    components: CustomComponent[],
-    componentListStatus: CustomListStatusElements,
-  ): boolean {
-    const refs = component.attrs?.ref;
-    const displayOff = refs?.find((o) => this.refRelationService.isDisplayOffRelation(o.relation));
-    const displayOn = refs?.find((o) => this.refRelationService.isDisplayOnRelation(o.relation));
-
-    // notice: такое условие потому, что нужно скрывать элемент если:
-    // * зависим от элемента текущего экрана и он не скрыт
-    // * зависим от элемента предыдущего экрана (нельзя найти среди компонент этого экрана)
-    if (
-      displayOff &&
-      cachedAnswers &&
-      cachedAnswers[displayOff?.relatedRel] &&
-      (componentListStatus[displayOff?.relatedRel]?.isShown ||
-        !components.find(({ id }) => id === displayOff?.relatedRel))
-    ) {
-      return !this.refRelationService.isValueEquals(
-        displayOff.val,
-        get(this.getRefValue(cachedAnswers[displayOff.relatedRel].value), displayOff.path) ||
-          cachedAnswers[displayOff.relatedRel].value,
-      );
-    }
-    if (displayOn && cachedAnswers && cachedAnswers[displayOn?.relatedRel]) {
-      return this.refRelationService.isValueEquals(
-        displayOn.val,
-        get(this.getRefValue(cachedAnswers[displayOn.relatedRel].value), displayOn.path) ||
-          cachedAnswers[displayOn.relatedRel].value,
-      );
-    }
-
-    return true;
+    }, previousStatusElements);
   }
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
@@ -249,11 +227,6 @@ export class ComponentsListRelationsService {
     }
 
     return restrictionGroups;
-  }
-
-  private getRefValue(value: string | unknown): unknown {
-    const isParsable = this.jsonHelperService.hasJsonStructure(value as string);
-    return isParsable ? JSON.parse(value as string) : value;
   }
 
   private async updateLimitDates(
@@ -328,13 +301,13 @@ export class ComponentsListRelationsService {
     dateRange: Range,
     forChild: string,
   ): void {
-    const control = form.controls.find(
-      (abstractControl) => abstractControl.value.id === component.id,
-    );
+    const control = form.controls.find((formControl) => formControl.value.id === component.id);
 
     if (forChild !== DATE_RESTRICTION_GROUP_DEFAULT_KEY) {
       const attrsValue = control.get('attrs').value;
-      const child = attrsValue.components.find((componentDto) => componentDto.id === forChild);
+      const child = attrsValue.components.find(
+        (currentComponent) => currentComponent.id === forChild,
+      );
       if (child) {
         child.attrs.minDate = dateRange.min;
         child.attrs.maxDate = dateRange.max;

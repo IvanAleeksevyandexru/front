@@ -191,6 +191,10 @@ describe('RefRelationService', () => {
         const componentVal = '{ amount: 2, list: [ { id: 1 }, { id: 2 }, ] }';
         expect(service.isValueEquals('14685', componentVal)).toBe(false);
       });
+      it('should return true, if componentValue is undefined', () => {
+        const componentVal = undefined;
+        expect(service.isValueEquals('', componentVal)).toBe(true);
+      });
     });
   });
 });
