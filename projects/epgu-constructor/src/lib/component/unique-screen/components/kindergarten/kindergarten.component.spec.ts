@@ -55,10 +55,14 @@ import { PrevButtonNavigationService } from '../../../../core/services/prev-butt
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { KindergartenService, KindergartenStates } from './kindergarten.service';
+import { By } from '@angular/platform-browser';
+import { PriorityScreenComponent } from '../select-map-object/components/priority-screen/priority-screen.component';
 
 describe('KindergartenComponent', () => {
   let component: KindergartenComponent;
   let fixture: ComponentFixture<KindergartenComponent>;
+  let kinderGartenService: KindergartenService;
   let screenService: ScreenService;
   let MapStore: ScenarioDto;
 
@@ -100,12 +104,14 @@ describe('KindergartenComponent', () => {
         CertificateEaisdoService,
         ScreenService,
         EaisdoGroupCostService,
+        KindergartenService,
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
+    kinderGartenService = TestBed.inject(KindergartenService);
     MapStore = cloneDeep(mockKindergartenStore);
     screenService.initScreenStore(MapStore);
     fixture = TestBed.createComponent(KindergartenComponent);
@@ -115,5 +121,21 @@ describe('KindergartenComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should disable button with directive on state change', () => {
+    const priorityScreen = <PriorityScreenComponent>(
+      fixture.debugElement.query(By.directive(PriorityScreenComponent)).componentInstance
+    );
+
+    kinderGartenService.setState(KindergartenStates.priority);
+    fixture.detectChanges();
+
+    expect(priorityScreen.disableNextButton).toBeFalsy();
+
+    kinderGartenService.setState(KindergartenStates.map);
+    fixture.detectChanges();
+
+    expect(priorityScreen.disableNextButton).toBeTruthy();
   });
 });
