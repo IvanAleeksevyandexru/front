@@ -146,6 +146,54 @@ describe('RegistrationAddrComponent', () => {
         regDate: new Date('2021-09-19T10:21:36.575Z'),
       });
     });
+
+    it('should reset invalid initial date', () => {
+      const mockTestForValidation = JSON.parse(JSON.stringify(mockData));
+      mockTestForValidation.attrs.fields[1].type = 'date';
+      const initData = {
+        ...mockTestForValidation,
+        value: JSON.stringify({
+          regAddr: {
+            fullAddress: '129090, г. Москва, пр-кт. Мира, д. 22, кв. 1',
+          },
+          regDate: '2021-09-19T10:21:36.575Z',
+        }),
+      };
+      jest
+        .spyOn((component as any).validationService, 'dateValidator')
+        .mockReturnValue(function (a, b) {
+          return { msg: 'test' };
+        });
+      component.initFormGroup(initData);
+      expect(component.redAddrForm.value).toEqual({
+        regAddr: '129090, г. Москва, пр-кт. Мира, д. 22, кв. 1',
+        regDate: null,
+      });
+    });
+
+    it('should not reset valid initial date', () => {
+      const mockTestForValidation = JSON.parse(JSON.stringify(mockData));
+      mockTestForValidation.attrs.fields[1].type = 'date';
+      const initData = {
+        ...mockTestForValidation,
+        value: JSON.stringify({
+          regAddr: {
+            fullAddress: '129090, г. Москва, пр-кт. Мира, д. 22, кв. 1',
+          },
+          regDate: '2021-09-19T10:21:36.575Z',
+        }),
+      };
+      jest
+        .spyOn((component as any).validationService, 'dateValidator')
+        .mockReturnValue(function (a, b) {
+          return false;
+        });
+      component.initFormGroup(initData);
+      expect(component.redAddrForm.value).toEqual({
+        regAddr: '129090, г. Москва, пр-кт. Мира, д. 22, кв. 1',
+        regDate: new Date('2021-09-19T10:21:36.575Z'),
+      });
+    });
   });
 
   describe('hintClick', () => {

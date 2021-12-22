@@ -50,5 +50,22 @@ export default abstract class BaseModel<T> {
     return false;
   }
 
+  public asObject(): CustomComponent {
+    return {
+      attrs: this.attrs,
+      id: this.id,
+      type: this.type,
+      label: this.label,
+      required: this.required,
+      visited: this.visited,
+      presetValue: this.presetValue,
+      valueFromCache: this.valueFromCache,
+      suggestionId: this.suggestionId,
+      arguments: this.arguments,
+      linkedValues: this.linkedValues,
+      value: this.value,
+    };
+  }
+
   abstract getAttrs(attrs: unknown): T;
 }

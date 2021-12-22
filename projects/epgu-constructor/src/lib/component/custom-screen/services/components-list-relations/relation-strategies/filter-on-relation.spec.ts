@@ -3,36 +3,46 @@ import {
   DictionaryConditions,
   DictionaryValueTypes,
 } from '@epgu/epgu-constructor-types';
-import { MockService } from 'ng-mocks';
-import { Observable } from 'rxjs';
-import { CustomComponent } from '../../../components-list.types';
+import { MockProvider } from 'ng-mocks';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { FilterOnRelation } from './filter-on-relation';
 import { setupForRelationStrategy } from '../components-list-relations.mock';
+import { Observable } from 'rxjs';
 import { UpdateFilterEvent, UpdateFiltersEvents } from '../components-list-relations.interface';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { TestBed } from '@angular/core/testing';
 
 describe('FilterOnRelation', () => {
   let relation: FilterOnRelation;
-  const componentVal = { foo: 'bar', regOkato: '123' };
-  const components: CustomComponent[] = [];
-  const refRelationService: RefRelationService = (MockService(RefRelationService, {
-    isDisplayOnRelation: jest
-      .fn()
+  let componentVal = { foo: 'bar', regOkato: '123' };
+  let refRelationService: RefRelationService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        FilterOnRelation,
+        MockProvider(RefRelationService),
+        MockProvider(JsonHelperService),
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    relation = TestBed.inject(FilterOnRelation);
+    refRelationService = TestBed.inject(RefRelationService);
+    jest
+      .spyOn(refRelationService, 'isDisplayOnRelation')
       .mockImplementation(
         (refRelation: CustomComponentRefRelation) =>
           refRelation === CustomComponentRefRelation.displayOn,
-      ),
-    isDisplayOffRelation: jest
-      .fn()
+      );
+    jest
+      .spyOn(refRelationService, 'isDisplayOffRelation')
       .mockImplementation(
         (refRelation: CustomComponentRefRelation) =>
           refRelation === CustomComponentRefRelation.displayOff,
-      ),
-    isValueEquals: jest.fn().mockReturnValue(false),
-  }) as unknown) as RefRelationService;
-
-  beforeEach(() => {
-    relation = new FilterOnRelation(refRelationService);
+      );
+    jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
   });
 
   it('should apply filter if isValueEquals() AND isDictionaryLike()', () => {
@@ -47,7 +57,7 @@ describe('FilterOnRelation', () => {
         },
       ],
     };
-    const { reference, dependentComponent, form, shownElements } = setupForRelationStrategy({
+    let { reference, dependentComponent, form } = setupForRelationStrategy({
       referenceExtra,
     });
 
@@ -62,15 +72,7 @@ describe('FilterOnRelation', () => {
 
     jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(true);
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-      components,
-      false,
-    );
+    relation.handleRelation(dependentComponent, reference, componentVal, form);
 
     // вызывается applyFilter(), потому что isValueEquals() === TRUE AND isDictionaryLike() === TRUE
     expect(clearFilterSpy).not.toBeCalled();
@@ -79,7 +81,7 @@ describe('FilterOnRelation', () => {
   });
 
   it('should apply filter if isValueEquals() AND isDictionaryLike()', () => {
-    const { reference, dependentComponent, form, shownElements } = setupForRelationStrategy({
+    let { reference, dependentComponent, form } = setupForRelationStrategy({
       referenceExtra: { relation: CustomComponentRefRelation.filterOn },
     });
 
@@ -93,15 +95,7 @@ describe('FilterOnRelation', () => {
     clearFilterSpy.mockClear();
     jest.spyOn(refRelationService, 'isValueEquals').mockReturnValue(false);
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-      components,
-      false,
-    );
+    relation.handleRelation(dependentComponent, reference, componentVal, form);
 
     // вызывается clearFilter(), потому что isValueEquals() === FALSE
     expect(applyFilterSpy).not.toBeCalled();
@@ -120,7 +114,9 @@ describe('FilterOnRelation', () => {
         },
         value: { comp1: 'some value' },
       };
+      // @ts-ignore
       relation.applyFilter(dependentComponentId, filter);
+      // @ts-ignore
       expect(relation.filters[dependentComponentId]).toEqual(filter);
     });
   });
@@ -128,6 +124,7 @@ describe('FilterOnRelation', () => {
   describe('clearFilter()', () => {
     it('should clear filter for passed dependent component', () => {
       const dependentComponentId = 'rf1';
+      // @ts-ignore
       relation.filters[dependentComponentId] = {
         reference: {
           relatedRel: 'comp1',
@@ -136,7 +133,9 @@ describe('FilterOnRelation', () => {
         },
         value: { comp1: 'some value' },
       };
+      // @ts-ignore
       relation.clearFilter(dependentComponentId);
+      // @ts-ignore
       expect(relation.filters[dependentComponentId]).toBeNull();
     });
   });
@@ -155,6 +154,7 @@ describe('FilterOnRelation', () => {
         a: null,
       };
 
+      // @ts-ignore
       relation.filters = filters;
 
       relation.filters$.subscribe((result) => {
@@ -166,6 +166,7 @@ describe('FilterOnRelation', () => {
 
   describe('filters property', () => {
     it('should be {} by default', () => {
+      // @ts-ignore
       expect(relation.filters).toEqual({});
     });
   });

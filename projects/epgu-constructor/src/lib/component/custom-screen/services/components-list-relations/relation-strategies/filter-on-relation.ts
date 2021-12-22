@@ -1,14 +1,14 @@
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { FormArray } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { BaseRelation } from './base-relation';
-import {
-  CustomComponent,
-  CustomComponentRef,
-  CustomListStatusElements,
-} from '../../../components-list.types';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import { CustomComponent, CustomComponentRef } from '../../../components-list.types';
+import { FormArray } from '@angular/forms';
 import { UpdateFiltersEvents, UpdateFilterEvent } from '../components-list-relations.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
+import BaseModel from '../../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class FilterOnRelation extends BaseRelation {
   private get filters(): UpdateFiltersEvents {
     return this._filters$.getValue();
@@ -25,21 +25,18 @@ export class FilterOnRelation extends BaseRelation {
   private readonly _filters$: BehaviorSubject<UpdateFiltersEvents> = new BehaviorSubject({});
 
   public handleRelation(
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
+    dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
     reference: CustomComponentRef,
     componentVal: KeyValueMap,
     form: FormArray,
-    _components: CustomComponent[],
-    _initInitialValues: boolean,
-  ): CustomListStatusElements {
+  ): void {
     if (this.refRelationService.isValueEquals(reference.val, componentVal)) {
       this.applyFilter(dependentComponent.id, { reference, value: componentVal });
     } else {
       this.clearFilter(dependentComponent.id);
     }
 
-    return this.afterHandleRelation(shownElements, dependentComponent, form);
+    this.afterHandleRelation(dependentComponent, form);
   }
 
   private applyFilter(dependentComponentId: CustomComponent['id'], data: UpdateFilterEvent): void {

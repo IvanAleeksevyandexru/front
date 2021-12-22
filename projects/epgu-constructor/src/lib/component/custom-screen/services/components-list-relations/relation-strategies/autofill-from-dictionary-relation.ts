@@ -1,27 +1,24 @@
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { AbstractControl, FormArray } from '@angular/forms';
-import { isEmpty } from 'lodash';
-import {
-  CustomComponent,
-  CustomComponentRef,
-  CustomListStatusElements,
-} from '../../../components-list.types';
 import { BaseRelation } from './base-relation';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import { CustomComponent, CustomComponentRef } from '../../../components-list.types';
+import { FormArray } from '@angular/forms';
+import { isEmpty } from 'lodash';
 import DictionaryLikeModel from '../../../component-list-resolver/DictionaryLikeModel';
+import BaseModel from '../../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class AutofillFromDictionaryRelation extends BaseRelation {
   public handleRelation(
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
+    dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
     reference: CustomComponentRef,
     componentVal: KeyValueMap,
     form: FormArray,
-    components: CustomComponent[],
+    components: (CustomComponent | BaseModel<GenericAttrs>)[],
     initInitialValues: boolean,
-  ): CustomListStatusElements {
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
-    );
+  ): void {
+    const dependentControl = this.getControlById(dependentComponent.id, form);
     /* NOTICE: тут происходит некая магия, которая разруливает конфликтный кейс автофила данных
       при первичной загрузке формы и ранее закешированных в cachedAnswers данных, а также
       отрабатывается кейс различающий первичную загрузку данных и нового пользовательского выбора */
@@ -55,7 +52,7 @@ export class AutofillFromDictionaryRelation extends BaseRelation {
       dependentControl.updateValueAndValidity();
     }
 
-    return this.afterHandleRelation(shownElements, dependentComponent, form);
+    this.afterHandleRelation(dependentComponent, form);
   }
 
   /**
@@ -65,7 +62,7 @@ export class AutofillFromDictionaryRelation extends BaseRelation {
   private getDictionaryAttributeValue(
     dictionaryAttributeName: string,
     componentId: string,
-    components: CustomComponent[],
+    components: (CustomComponent | BaseModel<GenericAttrs>)[],
     componentVal: KeyValueMap | '',
   ): unknown {
     const relatedComponent = components.find(

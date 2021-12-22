@@ -30,7 +30,6 @@ import {
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
-import { ValidatorDate } from './validation.service.interface';
 
 export const CARD_VALIDATION_EVENT = 'CardValidation';
 
@@ -168,7 +167,10 @@ export class ValidationService {
     };
   }
 
-  public dateValidator(component: ComponentDto, componentsGroupIndex?: number): ValidatorFn {
+  public dateValidator(
+    component: Partial<ComponentDto>,
+    componentsGroupIndex?: number,
+  ): ValidatorFn {
     const validations = this.getDateValidators(component);
 
     return (control: AbstractControl): ValidationErrors => {
@@ -249,15 +251,6 @@ export class ValidationService {
           );
         }
       }
-    };
-  }
-
-  public isDateValidValidator(): ValidatorFn {
-    return (aControl: AbstractControl): ValidatorDate | null => {
-      const dateValidator =
-        (aControl && aControl.value && !this.datesToolsService.isValid(aControl.value)) ||
-        (aControl && typeof aControl.value !== 'object');
-      return dateValidator ? { dateValidator } : null;
     };
   }
 
@@ -407,7 +400,7 @@ export class ValidationService {
     );
   }
 
-  private getDateValidators(component: ComponentDto): CustomComponentAttrValidation[] {
+  private getDateValidators(component: Partial<ComponentDto>): CustomComponentAttrValidation[] {
     let validations: CustomComponentAttrValidation[] = [];
     if (component.type === CustomScreenComponentTypes.CalendarInput) {
       const { components } = component.attrs;
