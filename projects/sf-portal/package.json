@@ -1,7 +1,6 @@
 {
   "name": "sf-portal",
-  "version": "395.9.3",
-  "private": true,
+  "version": "396.2.0",
   "scripts": {
     "build": "cd ../../ && ng build sf-portal --prod",
     "watch": "cd ../../ && ng build sf-portal --watch",
@@ -25,10 +24,10 @@
     "@angular/platform-server": "12.2.5",
     "@angular/router": "12.2.5",
     "@datorama/akita": "6.2.3",
-    "@epgu/children-clubs": "395.9.3",
-    "@epgu/epgu-constructor-types": "395.9.3",
-    "@epgu/epgu-constructor-ui-kit": "395.9.3",
-    "@epgu/epgu-constructor": "395.9.3",
+    "@epgu/children-clubs": "396.2.0",
+    "@epgu/epgu-constructor-types": "396.2.0",
+    "@epgu/epgu-constructor-ui-kit": "396.2.0",
+    "@epgu/epgu-constructor": "396.2.0",
     "@epgu/ui": "3.0.395-2-front",
     "@nguniversal/express-engine": "12.1.0",
     "@ngx-translate/core": "13.0.0",
@@ -68,10 +67,5 @@
     "cpx": "^1.5.0",
     "@nguniversal/builders": "^12.1.0",
     "@types/express": "^4.17.0"
-  },
-  "workspaces": {
-    "nohoist": [
-      "@epgu/**"
-    ]
   }
 }

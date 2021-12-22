@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-form-frontend",
-  "version": "43.7.0",
+  "version": "395.9.3",
   "scripts": {
     "build:cf": "ng build epgu-constructor --configuration production",
     "build:children-clubs:dev": "ng build children-clubs",
@@ -111,9 +111,9 @@
     "@angular/platform-browser-dynamic": "12.2.5",
     "@angular/router": "12.2.5",
     "@datorama/akita": "6.2.0",
-    "@epgu/children-clubs": "43.7.0",
-    "@epgu/epgu-constructor-types": "43.7.0",
-    "@epgu/epgu-constructor-ui-kit": "43.7.0",
+    "@epgu/children-clubs": "395.9.3",
+    "@epgu/epgu-constructor-types": "395.9.3",
+    "@epgu/epgu-constructor-ui-kit": "395.9.3",
     "@epgu/ui": "3.0.395-2-front",
     "@epgu/zipkin": "0.0.3",
     "@ngx-translate/core": "13.0.0",
