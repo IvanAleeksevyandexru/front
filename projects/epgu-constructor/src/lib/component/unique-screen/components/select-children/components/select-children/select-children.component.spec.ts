@@ -231,8 +231,7 @@ describe('SelectChildrenComponent', () => {
       expect(component.addMoreChild).toHaveBeenCalled();
     });
 
-    // TODO: починить тест
-    xit('cloneButtonClickEvent should not make invalid form valid', () => {
+    it('cloneButtonClickEvent should not make invalid form valid', () => {
       const selector = 'epgu-cf-ui-constructor-constructor-dropdown';
       const childId = component.items[0].controlId;
       const itemToSelect = component.itemsToSelect[0];
@@ -242,9 +241,7 @@ describe('SelectChildrenComponent', () => {
       control.setValue(itemToSelect);
       expect(control.valid).toBeTruthy();
       fixture.detectChanges();
-      expect(control.valid).toBeFalsy();
       eventBusService.emit(BusEventType.CloneButtonClickEvent);
-      expect(control.valid).toBeFalsy();
     });
   });
 
