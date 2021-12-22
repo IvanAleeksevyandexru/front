@@ -9,6 +9,7 @@ import {
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { PersonalPolicyWithErrors } from './confirm-personal-policy.types';
+import { ComponentFieldDto } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-policy',
@@ -17,16 +18,15 @@ import { PersonalPolicyWithErrors } from './confirm-personal-policy.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPersonalPolicyComponent extends BaseComponent implements OnInit {
-  data$ = this.screenService.component$.pipe(
+  public data$ = this.screenService.component$.pipe(
     map<PersonalPolicyWithErrors, PersonalPolicyWithErrors>((data) => ({
       ...data,
       value: data.value,
       errors: data?.errors || [],
     })),
   );
-  isPhoneScreenType: boolean;
-  series: string;
-  number: string;
+  public errors = [];
+  public fields: ComponentFieldDto[];
 
   constructor(
     public currentAnswersService: CurrentAnswersService,
@@ -40,15 +40,24 @@ export class ConfirmPersonalPolicyComponent extends BaseComponent implements OnI
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
-      if (data.value) {
-        this.currentAnswersService.state = data.value;
-        const value = this.jsonHelperService.tryToParse(data.value) as {
-          series: string;
-          number: string;
-        };
-        this.series = value.series;
-        this.number = value.number;
+      if (!data.value) {
+        this.errors = data.errors;
+        this.currentAnswersService.isValid = false;
+        return;
       }
+
+      this.currentAnswersService.state = data.value;
+      const value = this.jsonHelperService.tryToParse(
+        data.value,
+      ) as PersonalPolicyWithErrors['value'];
+
+      this.errors = data.errors?.length ? data.errors : value.errors;
+      this.fields = data.attrs?.fields;
+      this.fields.forEach((field) => {
+        field.value = value.storedValues[field.fieldName];
+      });
+
+      this.currentAnswersService.isValid = !this.errors.length;
     });
   }
 }
