@@ -204,7 +204,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
         );
         newFile.setAttached(true);
         this.store.add(newFile);
-        this.addCopy(file);
+        this.addCopy(file, newFile);
       });
     } else {
       file.setAttached(false);
@@ -248,8 +248,8 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
     this.process.prepare(file);
   }
 
-  addCopy(file: FileItem): void {
-    this.process.copy(file);
+  addCopy(file: FileItem, newFile: FileItem): void {
+    this.process.copy(file, newFile);
   }
 
   addDownload(file: FileItem): void {
