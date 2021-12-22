@@ -123,13 +123,7 @@ const actionMock = {
   type: ActionType.nextStep,
 };
 
-/* TODO: починить тесты
-На сборочной машине:
-  ● ConfirmPersonalUserDataComponent › should set session param in ngOnInit
-    TypeError: Cannot read property 'component$' of undefined
-    12 | export abstract class AbstractConfirmPersonalUserDataDirective<T extends ComponentBase>
-    13 |   implements OnInit {
-  > 14 |   data$: Observable<T> = this.screenService.component$ as Observable<T>; */
+// TODO: нужно починить сломанные тесты и желательно отрефакторить сам компонент дабы избавиться от ngDoCheck
 xdescribe('ConfirmPersonalUserDataComponent', () => {
   let component: ConfirmPersonalUserDataComponent;
   let fixture: ComponentFixture<ConfirmPersonalUserDataComponent>;

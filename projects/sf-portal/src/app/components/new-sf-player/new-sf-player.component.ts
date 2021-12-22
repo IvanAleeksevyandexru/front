@@ -57,7 +57,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.document.querySelector('.main-container').classList.add('new-sf-player');
+    this.document.querySelector('.main-container')?.classList.add('new-sf-player');
     const params = new GetServiceRequest(this.passportId, this.targetId, false, false, true);
     this.isEmbedded = this.cardsFormsService.checkIsEmbedded(this.route.snapshot.data);
     this.locationService.savedDetectRegion$

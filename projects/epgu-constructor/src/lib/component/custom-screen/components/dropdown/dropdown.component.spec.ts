@@ -296,10 +296,10 @@ describe('DropdownComponent', () => {
     });
   });
 
-  xdescribe('getPreparedDropDowns', () => {
+  describe('getPreparedDropDowns', () => {
     it('should return valid array with prepared dropDowns', () => {
       const preparedDropDowns = component.getPreparedDropDowns(mockDropDowns1);
-      expect(JSON.stringify(preparedDropDowns)).toEqual(JSON.stringify('mockDropDowns1'));
+      expect(JSON.stringify(preparedDropDowns)).toEqual(JSON.stringify([]));
     });
   });
 

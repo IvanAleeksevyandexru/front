@@ -1,9 +1,9 @@
 <epgu-constructor-default-unique-screen-wrapper
-  [header]="screenService.header$ | async"
-  [isLoading]="screenService.isLoading$ | async"
-  [screenButtons]="screenService.buttons$ | async"
-  [showNav]="screenService.showNav$ | async"
-  [isValid]="currentAnswersService.isValid$ | async"
+  [header]="screenService?.header$ | async"
+  [isLoading]="screenService?.isLoading$ | async"
+  [screenButtons]="screenService?.buttons$ | async"
+  [showNav]="screenService?.showNav$ | async"
+  [isValid]="currentAnswersService?.isValid$ | async"
 >
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
     <epgu-constructor-field-list
@@ -19,16 +19,16 @@
         [description]="error.desc"
       ></epgu-constructor-disclaimer>
     </ng-container>
-    <div class="data-footer" *ngIf="screenService.action?.type">
+    <div class="data-footer" *ngIf="screenService?.action?.type">
       <div class="divider"></div>
-      <button class="btn-edit" epgu-constructor-action [action]="screenService.action$ | async">
+      <button class="btn-edit" epgu-constructor-action [action]="screenService?.action$ | async">
         <epgu-cf-ui-icon
           class="btn-edit__icon"
           [type]="iconType.PencilLine"
           [mainColor]="iconColor.BaseGosblue"
         >
         </epgu-cf-ui-icon>
-        <span class="btn-edit__text" *ngIf="screenService.action$ | async as action">{{
+        <span class="btn-edit__text" *ngIf="screenService?.action$ | async as action">{{
           action.label
         }}</span>
       </button>

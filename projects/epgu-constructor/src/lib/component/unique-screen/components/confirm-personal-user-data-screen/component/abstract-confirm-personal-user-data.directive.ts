@@ -20,7 +20,7 @@ import {
 export abstract class AbstractConfirmPersonalUserDataDirective<T extends ComponentBase>
   extends BaseComponent
   implements OnInit {
-  data$: Observable<T> = this.screenService.component$ as Observable<T>;
+  data$: Observable<T> = this.screenService?.component$ as Observable<T>;
 
   errors: ConfirmUserDataError[] = [];
 
@@ -35,7 +35,7 @@ export abstract class AbstractConfirmPersonalUserDataDirective<T extends Compone
   }
 
   ngOnInit(): void {
-    this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
+    this.data$?.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
       this.updateValue(data.value);
       this.changeDetectionRef.markForCheck();
     });
@@ -44,12 +44,12 @@ export abstract class AbstractConfirmPersonalUserDataDirective<T extends Compone
   }
 
   protected processCustomValidation(): void {
-    const customValidation: CustomValidationDto = this.screenService.getStore().display
+    const customValidation: CustomValidationDto = this.screenService?.getStore().display
       ?.components[0]?.attrs?.customValidation;
     if (customValidation) {
       const value: { [key: string]: unknown } =
-        JSON.parse(this.screenService.getStore().display?.components[0]?.value) || {};
-      const fields: ComponentFieldDto[] = this.screenService.getStore().display?.components[0]
+        JSON.parse(this.screenService?.getStore().display?.components[0]?.value) || {};
+      const fields: ComponentFieldDto[] = this.screenService?.getStore().display?.components[0]
         ?.attrs?.fields;
       customValidation.fields?.forEach((currentFieldName: string) => {
         const currentField: ComponentFieldDto = fields.find(

@@ -21,7 +21,7 @@ export class ConfirmPersonalUserDataComponent
   private readonly sessionStorageService: SessionStorageService = new SessionStorageService();
 
   ngDoCheck(): void {
-    const error = this.screenService.getStore().errors[this.screenService.component?.id];
+    const error = this.screenService?.getStore().errors[this.screenService?.component?.id];
     if (typeof error === 'string' && !this.errors.find(({ desc }) => desc === error)) {
       this.errors.push({
         type: 'error',
@@ -36,7 +36,7 @@ export class ConfirmPersonalUserDataComponent
 
     this.sessionStorageService.setRaw(
       'childId',
-      this.screenService.cycledApplicantAnswerContext?.cycledApplicantAnswerItem?.id || '',
+      this.screenService?.cycledApplicantAnswerContext?.cycledApplicantAnswerItem?.id || '',
     );
   }
 }
