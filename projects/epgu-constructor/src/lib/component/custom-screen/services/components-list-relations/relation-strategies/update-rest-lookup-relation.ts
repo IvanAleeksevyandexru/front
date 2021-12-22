@@ -1,14 +1,14 @@
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { AbstractControl, FormArray } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { BaseRelation } from './base-relation';
-import {
-  CustomComponent,
-  CustomComponentRef,
-  CustomListStatusElements,
-} from '../../../components-list.types';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import { CustomComponent, CustomComponentRef } from '../../../components-list.types';
+import { FormArray } from '@angular/forms';
 import { ComponentRestUpdates } from '../components-list-relations.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
+import BaseModel from '../../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class UpdateRestLookupRelation extends BaseRelation {
   private readonly _restUpdates$: BehaviorSubject<ComponentRestUpdates> = new BehaviorSubject({});
 
@@ -25,15 +25,12 @@ export class UpdateRestLookupRelation extends BaseRelation {
   }
 
   public handleRelation(
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
+    dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
     reference: CustomComponentRef,
     componentVal: KeyValueMap,
     form: FormArray,
-  ): CustomListStatusElements {
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
-    );
+  ): void {
+    const dependentControl = this.getControlById(dependentComponent.id, form);
     dependentControl.get('value').patchValue(reference.defaultValue || '');
     if (this.refRelationService.isValueEquals(reference.val, componentVal)) {
       if (this.restUpdates[dependentComponent.id]) {
@@ -52,6 +49,6 @@ export class UpdateRestLookupRelation extends BaseRelation {
       this.restUpdates = { [dependentComponent.id]: null };
     }
 
-    return this.afterHandleRelation(shownElements, dependentComponent, form);
+    this.afterHandleRelation(dependentComponent, form);
   }
 }

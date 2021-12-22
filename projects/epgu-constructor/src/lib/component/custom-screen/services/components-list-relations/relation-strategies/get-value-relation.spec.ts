@@ -1,30 +1,33 @@
-import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
-import { MockService } from 'ng-mocks';
 import { CustomComponent } from '../../../components-list.types';
+import { CustomComponentRefRelation, KeyValueMap } from '@epgu/epgu-constructor-types';
+import { MockProvider } from 'ng-mocks';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { GetValueRelation } from './get-value-relation';
 import { createComponentMock, setupForRelationStrategy } from '../components-list-relations.mock';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { TestBed } from '@angular/core/testing';
 
 describe('GetValueRelation', () => {
   let relation: GetValueRelation;
-  const componentVal = 'some value';
+  let componentVal: KeyValueMap = ('some value' as unknown) as KeyValueMap;
   let components: CustomComponent[] = [];
-  const refRelationService: RefRelationService = (MockService(
-    RefRelationService,
-  ) as unknown) as RefRelationService;
 
   beforeEach(() => {
-    relation = new GetValueRelation(refRelationService);
+    TestBed.configureTestingModule({
+      providers: [
+        GetValueRelation,
+        MockProvider(RefRelationService),
+        MockProvider(JsonHelperService),
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    relation = TestBed.inject(GetValueRelation);
   });
 
   it('should patch dependentControl value', () => {
-    const {
-      reference,
-      dependentComponent,
-      form,
-      shownElements,
-      dependentControl,
-    } = setupForRelationStrategy({
+    let { reference, dependentComponent, form, dependentControl } = setupForRelationStrategy({
       referenceExtra: { relation: CustomComponentRefRelation.getValue },
       dependentComponentExtra: {
         attrs: {
@@ -38,6 +41,7 @@ describe('GetValueRelation', () => {
           ],
         },
       },
+      // @ts-ignore
       dependentControlValue: {
         firstControl: 'first value',
         secondControl: 'second value',
@@ -45,14 +49,7 @@ describe('GetValueRelation', () => {
     });
     components = [createComponentMock({ id: 'someSourceId' })];
 
-    relation.handleRelation(
-      shownElements,
-      dependentComponent,
-      reference,
-      componentVal,
-      form,
-      components,
-    );
+    relation.handleRelation(dependentComponent, reference, componentVal, form, components);
 
     expect(dependentControl.get('value').value).toEqual({
       firstControl: 'first value',

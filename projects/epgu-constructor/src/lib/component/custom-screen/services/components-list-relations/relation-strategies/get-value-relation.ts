@@ -1,30 +1,27 @@
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { AbstractControl, FormArray } from '@angular/forms';
 import { BaseRelation } from './base-relation';
-import {
-  CustomComponent,
-  CustomComponentRef,
-  CustomListStatusElements,
-} from '../../../components-list.types';
+import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import { CustomComponent, CustomComponentRef } from '../../../components-list.types';
+import { FormArray } from '@angular/forms';
+import BaseModel from '../../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class GetValueRelation extends BaseRelation {
   public handleRelation(
-    shownElements: CustomListStatusElements,
     dependentComponent: CustomComponent,
     reference: CustomComponentRef,
     componentVal: KeyValueMap,
     form: FormArray,
-    components: CustomComponent[],
-  ): CustomListStatusElements {
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
-    );
+    components: (CustomComponent | BaseModel<GenericAttrs>)[],
+  ): void {
+    const dependentControl = this.getControlById(dependentComponent.id, form);
     const relation: CustomComponentRef = this.getRelation(dependentComponent, reference);
     const newValue = this.getValueFromRelationComponent(relation, components, componentVal, form);
     dependentControl.get('value').patchValue(newValue, { onlySelf: true, emitEvent: false });
     dependentComponent.value = newValue as string;
 
-    return this.afterHandleRelation(shownElements, dependentComponent, form);
+    this.afterHandleRelation(dependentComponent, form);
   }
 
   /**
@@ -36,11 +33,12 @@ export class GetValueRelation extends BaseRelation {
    */
   private getValueFromRelationComponent(
     itemRef: CustomComponentRef,
-    components: CustomComponent[],
+    components: (CustomComponent | BaseModel<GenericAttrs>)[],
     componentVal: KeyValueMap | '',
     form: FormArray,
   ): number | string | undefined {
     const conditionValue = itemRef.val;
+    // todo use isEqualValue?
     if (componentVal === conditionValue) {
       const sourceComponentIndex = components.findIndex(({ id }) => id === itemRef.sourceId);
       const control = form.get(sourceComponentIndex.toString());

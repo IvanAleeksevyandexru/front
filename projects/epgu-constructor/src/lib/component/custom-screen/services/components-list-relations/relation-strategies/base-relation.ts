@@ -1,42 +1,32 @@
+import { CustomComponent, CustomComponentRef } from '../../../components-list.types';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import {
-  CustomComponent,
-  CustomComponentRef,
-  CustomListStatusElements,
-} from '../../../components-list.types';
+import BaseModel from '../../../component-list-resolver/BaseModel';
+import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
-import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
-import { ScreenService } from '../../../../../screen/screen.service';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { Injectable, Injector } from '@angular/core';
 
+@Injectable()
 export abstract class BaseRelation {
   protected prevValues: KeyValueMap = {};
 
-  public constructor(protected refRelationService: RefRelationService) {}
+  protected refRelationService: RefRelationService;
 
-  protected afterHandleRelation(
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
-    form: FormArray,
-  ): CustomListStatusElements {
-    const dependentControl: AbstractControl = form.controls.find(
-      (control: AbstractControl) => control.value.id === dependentComponent.id,
-    );
+  protected jsonHelperService: JsonHelperService;
+
+  public constructor(protected injector: Injector) {
+    this.refRelationService = this.injector.get(RefRelationService);
+    this.jsonHelperService = this.injector.get(JsonHelperService);
+  }
+
+  protected afterHandleRelation(dependentComponent: CustomComponent, form: FormArray): void {
+    const dependentControl = this.getControlById(dependentComponent.id, form);
 
     const isDependentDisabled: boolean = dependentComponent.attrs.disabled;
     if (isDependentDisabled) {
       dependentControl.disable();
     }
-
-    return shownElements;
-  }
-
-  protected hasControlWithIdOnForm(id: string, form: FormArray): boolean {
-    return !!form.controls.find((control) => control.value.id === id);
-  }
-
-  protected getControlValueById(id: string, form: FormArray): { id?: string } | string | number {
-    return form.controls.find((control) => control.value.id === id).get('value').value;
   }
 
   protected handleResetControl(
@@ -44,7 +34,7 @@ export abstract class BaseRelation {
     form: FormArray,
     reference: CustomComponentRef,
   ): void {
-    const { value } = form.controls.find((control) => control.value.id === reference.relatedRel);
+    const { value } = this.getControlById(reference.relatedRel, form);
     const controlValue = value.value?.id || value.value;
     if (
       !this.refRelationService.isValueEquals(
@@ -64,15 +54,29 @@ export abstract class BaseRelation {
     return component.attrs.ref?.find(({ relation }) => relation === reference.relation);
   }
 
+  protected hasControlWithIdOnForm(id: string, form: FormArray): boolean {
+    return !!this.getControlById(id, form);
+  }
+
+  protected getControlValueById(id: string, form: FormArray): { id?: string } | string | number {
+    return this.getControlById(id, form).get('value').value;
+  }
+
+  protected getControlById(id: string, form: FormArray): AbstractControl {
+    return form.controls.find((control: AbstractControl) => control.value.id === id);
+  }
+
+  protected getRefValue(value: string | unknown): unknown {
+    const isParsable = this.jsonHelperService.hasJsonStructure(value as string);
+    return isParsable ? JSON.parse(value as string) : value;
+  }
+
   public abstract handleRelation(
-    shownElements: CustomListStatusElements,
-    dependentComponent: CustomComponent,
+    dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
     reference: CustomComponentRef,
     componentVal: KeyValueMap | '',
     form: FormArray,
-    components: CustomComponent[],
+    components: (CustomComponent | BaseModel<GenericAttrs>)[],
     initInitialValues: boolean,
-    dictionaryToolsService: DictionaryToolsService,
-    screenService: ScreenService,
-  ): CustomListStatusElements;
+  ): void;
 }

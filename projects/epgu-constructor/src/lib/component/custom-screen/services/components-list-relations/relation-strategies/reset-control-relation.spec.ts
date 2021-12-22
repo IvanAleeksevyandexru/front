@@ -1,23 +1,32 @@
 import { FormArray, FormBuilder } from '@angular/forms';
-import { MockService } from 'ng-mocks';
+import { MockProvider } from 'ng-mocks';
 import { ResetControlRelation } from './reset-control-relation';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { createComponentMock, setupForRelationStrategy } from '../components-list-relations.mock';
+import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { TestBed } from '@angular/core/testing';
 
 describe('ResetControlRelation', () => {
   let relation: ResetControlRelation;
-  const componentVal = { foo: 'bar' };
-  const refRelationService: RefRelationService = (MockService(
-    RefRelationService,
-  ) as unknown) as RefRelationService;
+  let componentVal = { foo: 'bar' };
 
   beforeEach(() => {
-    relation = new ResetControlRelation(refRelationService);
+    TestBed.configureTestingModule({
+      providers: [
+        ResetControlRelation,
+        MockProvider(RefRelationService),
+        MockProvider(JsonHelperService),
+      ],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    relation = TestBed.inject(ResetControlRelation);
   });
 
   describe('handleResetControl()', () => {
     it('should reset dependent control', () => {
-      const { reference, dependentComponent, shownElements } = setupForRelationStrategy({
+      let { reference, dependentComponent } = setupForRelationStrategy({
         referenceExtra: { relatedRel: 'rf1', val: '', relation: 'reset' },
         dependentComponentStatusExtra: { isShown: true },
       });
@@ -40,7 +49,7 @@ describe('ResetControlRelation', () => {
       const mockForm = new FormArray([form, form2]);
       const control = mockForm.controls[0];
 
-      relation.handleRelation(shownElements, dependentComponent, reference, componentVal, mockForm);
+      relation.handleRelation(dependentComponent, reference, componentVal, mockForm);
       expect(control.value.value).toBeNull();
     });
   });

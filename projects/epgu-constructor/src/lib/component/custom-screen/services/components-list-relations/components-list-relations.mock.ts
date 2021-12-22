@@ -1,14 +1,13 @@
-import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
-import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import {
   CustomComponent,
   CustomComponentRef,
   CustomScreenComponentTypes,
 } from '../../components-list.types';
-import { BaseRelation } from './relation-strategies/base-relation';
+import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
+import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
-export const componentMock: CustomComponent = {
+export let componentMock: CustomComponent = {
   id: 'rf1',
   type: CustomScreenComponentTypes.StringInput,
   label: 'Прежняя фамилия',
@@ -21,7 +20,6 @@ export const componentMock: CustomComponent = {
         relation: CustomComponentRefRelation.displayOn,
       },
     ],
-    labelAttr: '',
     fields: [],
     validation: [
       {
@@ -67,13 +65,34 @@ export const componentMock: CustomComponent = {
 };
 
 export const createComponentMock = (
-  mergedData: unknown = {},
+  mergedData: object = {},
   component: CustomComponent = componentMock,
 ): CustomComponent => {
   return _mergeWith({}, component, mergedData, (objValue, srcValue) => {
     if (_isArray(objValue)) {
       return srcValue;
     }
+  });
+};
+
+export const createComponentMockWithNoRel = (componentId: string): CustomComponent => {
+  return createComponentMock({
+    id: componentId,
+    attrs: {
+      ref: [],
+    },
+  });
+};
+
+export const createComponentMockWithRel = (
+  componentId: string,
+  ...references: CustomComponentRef[]
+): CustomComponent => {
+  return createComponentMock({
+    id: componentId,
+    attrs: {
+      ref: references,
+    },
   });
 };
 
@@ -113,23 +132,13 @@ export const setupForRelationStrategy = ({
   });
   const form = new FormArray([dependentControl]);
 
-  const dependentComponentStatus = _mergeWith(
+  const shownElements = _mergeWith(
     {
       isShown: false,
       relation: CustomComponentRefRelation.displayOn,
     },
     dependentComponentStatusExtra,
   );
-  const shownElements = {
-    [dependentComponent.id]: dependentComponentStatus,
-  };
 
-  return {
-    reference,
-    dependentComponent,
-    dependentControl,
-    form,
-    dependentComponentStatus,
-    shownElements,
-  };
+  return { reference, dependentComponent, dependentControl, form, shownElements };
 };
