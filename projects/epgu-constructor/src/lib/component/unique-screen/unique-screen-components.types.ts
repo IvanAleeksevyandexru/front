@@ -7,6 +7,7 @@ export enum UniqueScreenComponentTypes {
   timeSlotDoctor = 'TimeSlotDoctor',
   timeSlotWithComputableDepartment = 'TimeSlotWithComputableDepartment',
   mapService = 'MapService',
+  barbarbokMapService = 'BarbarbokMapService',
   carInfo = 'CarInfo',
   carOwnerInfo = 'CarOwnerInfo',
   carList = 'CarList',
