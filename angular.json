@@ -375,6 +375,7 @@
             "main": "projects/sf-portal/src/main.ts",
             "polyfills": "projects/sf-portal/src/polyfills.ts",
             "tsConfig": "projects/sf-portal/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "preserveSymlinks": true,
             "assets": [
               {
