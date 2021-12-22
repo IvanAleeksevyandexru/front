@@ -1,4 +1,4 @@
-<div class="wrapper" *ngIf="isLoading$ | async">
+<div class="wrapper" *ngIf="isLoading">
   <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
 </div>
 <ng-container *ngFor="let componentDto of logicComponents$ | async">

@@ -163,7 +163,7 @@ describe('LogicComponentsContainerComponent', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   }));
 
-  it('should set loading to false if all initial observables have resolved', () => {
+  it('should set loading to false if all initial observables have resolved', fakeAsync(() => {
     const mockViewComponents = [{} as any];
     mockViewComponents[0].componentDto = componentsMock[0];
     mockViewComponents[0].componentRef = {};
@@ -174,10 +174,13 @@ describe('LogicComponentsContainerComponent', () => {
     component.viewComponents = mockViewComponents as any;
     screenService.isLogicComponentLoading = true;
 
-    component.subscribeToInitHooks();
-
+    component.resetInitSubscribe();
     expect(screenService.isLogicComponentLoading).toBeTruthy();
+    expect(component.isLoading).toBeTruthy();
     testSubject.next(true);
+
+    tick(50);
     expect(screenService.isLogicComponentLoading).toBeFalsy();
-  });
+    expect(component.isLoading).toBeFalsy();
+  }));
 });
