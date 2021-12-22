@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Output, EventEmitter, Input } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { pluck, skip, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
@@ -27,6 +27,7 @@ import { SAVE_STEP_ACTION } from '../../../../../../shared/constants/actions';
   providers: [UnsubscribeService],
 })
 export class PriorityScreenComponent {
+  @Input() disableNextButton = false;
   @Output() showMap = new EventEmitter<DictionaryItem>();
   @Output() back = new EventEmitter<null>();
 
