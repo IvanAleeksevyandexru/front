@@ -3,7 +3,7 @@ import { PaymentInfoInterface } from '../../../component/unique-screen/component
 
 export interface DictionaryResponse {
   error?: DictionaryResponseError | null;
-  fieldErrors: string[];
+  fieldErrors?: string[];
   items: DictionaryItem[];
   total: number;
 }

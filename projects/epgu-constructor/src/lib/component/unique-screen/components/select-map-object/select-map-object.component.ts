@@ -45,6 +45,7 @@ import { ComponentBase, ScreenStore } from '../../../../screen/screen.types';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import {
   DictionaryItem,
+  DictionaryResponse,
   DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
@@ -437,7 +438,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     } catch (e) {
       return throwError(e);
     }
-    return this.dictionaryApiService.getSelectMapDictionary(this.getDictionaryType(), options).pipe(
+    return this.getDataSource(options).pipe(
       switchMap((dictionary: DictionaryResponseForYMap) => {
         if (dictionary.error !== null && dictionary.error?.code !== 0) {
           return throwError(dictionary.error);
@@ -510,6 +511,15 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       selectAttributes: ['*'],
       pageSize: '100000',
     };
+  }
+
+  private getDataSource(options): Observable<DictionaryResponse> {
+    if (this.componentValue?.smevConverterRequest) {
+      return this.dictionaryApiService.getSmevConverterData(
+        this.componentValue?.smevConverterRequest,
+      );
+    }
+    return this.dictionaryApiService.getSelectMapDictionary(this.getDictionaryType(), options);
   }
 
   private getDictionaryType(): string {
