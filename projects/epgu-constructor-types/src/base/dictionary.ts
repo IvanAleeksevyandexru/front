@@ -86,6 +86,7 @@ export enum DictionaryConditions {
   EQUALS = 'EQUALS',
   CONTAINS = 'CONTAINS',
   GREATER_THAN_OR_EQUALS = 'GREATER_THAN_OR_EQUALS',
+  LESS_THAN_OR_EQUALS = 'LESS_THAN_OR_EQUALS',
 }
 
 export type DisabledByCheckbox = string;

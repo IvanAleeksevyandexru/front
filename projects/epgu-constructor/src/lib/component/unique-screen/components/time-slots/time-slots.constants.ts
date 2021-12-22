@@ -27,6 +27,7 @@ export enum TimeSlotsTypes {
   MVD = 'MVD',
   DOCTOR = 'DOCTOR',
   VACCINATION = 'VACCINATION',
+  ROSGVARD = 'ROSGVARD',
 }
 
 export enum DateTypeTypes {
