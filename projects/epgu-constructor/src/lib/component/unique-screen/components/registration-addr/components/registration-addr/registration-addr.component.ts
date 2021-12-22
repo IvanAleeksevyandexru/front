@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { skip, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
-import { ComponentActionDto } from '@epgu/epgu-constructor-types';
+import { ComponentActionDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import {
   UnsubscribeService,
   ConfigService,
@@ -90,6 +90,9 @@ export class RegistrationAddrComponent implements OnInit {
         { value: formControlValue, disabled: field.disabled },
         this.getValidatorsForField(field),
       );
+      if (controls[field.fieldName].invalid) {
+        controls[field.fieldName].setValue(null);
+      }
     });
     this.redAddrForm = this.fb.group(controls);
   }
@@ -110,7 +113,7 @@ export class RegistrationAddrComponent implements OnInit {
     }
 
     if (isDateType) {
-      validators.push(this.validationService.isDateValidValidator());
+      validators.push(this.validationService.dateValidator(field as Partial<ComponentDto>));
     }
 
     if (isRequired) {
