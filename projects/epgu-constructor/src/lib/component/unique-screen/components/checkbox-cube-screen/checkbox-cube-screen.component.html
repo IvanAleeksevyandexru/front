@@ -1,0 +1,18 @@
+<epgu-constructor-default-unique-screen-wrapper
+  [header]="screenService.header$ | async"
+  [isLoading]="screenService.isLoading$ | async"
+  [screenButtons]="screenService.buttons$ | async"
+  [showNav]="screenService.showNav$ | async"
+  [isValid]="currentAnswersService.isValid$ | async"
+>
+  <epgu-cf-ui-constructor-screen-pad>
+    <epgu-constructor-checkbox-cube
+      *ngIf="(component$ | async) as component"
+      [clarifications]="component.attrs.clarifications"
+      [component]="component"
+      [label]="screenService.componentLabel$ | async"
+      [required]="component.required"
+      (changed)="handleCheckboxChange($event)"
+    ></epgu-constructor-checkbox-cube>
+  </epgu-cf-ui-constructor-screen-pad>
+</epgu-constructor-default-unique-screen-wrapper>

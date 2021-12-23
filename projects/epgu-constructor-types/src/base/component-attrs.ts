@@ -16,6 +16,7 @@ import {
   LogicComponentMethods,
 } from './logic-component';
 import { ScreenButton } from './screen-buttons';
+import { CubeElements } from './checkbox';
 
 export interface KindergartenAttrs {
   header?: string;
@@ -213,6 +214,7 @@ export interface ComponentAttrsDto {
   clarifications?: Clarifications;
   codeLength?: CodeLength;
   components?: ComponentDto[];
+  cubeElements?: CubeElements;
   customUnrecLabel?: CustomUnrecLabel;
   customValidation?: CustomValidationDto;
   dateType?: DateType;

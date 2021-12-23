@@ -25,7 +25,7 @@ import { FieldListScreenComponent } from '../components/field-list-screen/field-
 import { TimerScreenComponent } from '../components/timer-screen/timer-screen.component';
 import { CarListContainerComponent } from '../components/car-list/components/car-list-container/car-list-container.component';
 import { CarOwnerInfoContainerComponent } from '../components/car-info/containers/car-owner-info-screen/car-owner-info-container.component';
-import { CheckboxCubeContainerComponent } from '../components/checkbox-cube/checkbox-cube-container/checkbox-cube-container.component';
+import { CheckboxCubeScreenComponent } from '../components/checkbox-cube-screen/checkbox-cube-screen.component';
 import { MatPeriodContainerComponent } from '../components/mat-period/mat-period-container/mat-period-container.component';
 import { DateTimePeriodContainerComponent } from '../components/date-time-period/components/date-time-period-container/date-time-period-container.component';
 import { ConfirmPersonalUserAddressReadonlyComponent } from '../components/confirm-personal-user-address-readonly-screen/components/confirm-personal-user-address-readonly/confirm-personal-user-address-readonly.component';
@@ -81,7 +81,7 @@ type UniqueScreenComponent =
   | MatPeriodContainerComponent
   | DateTimePeriodContainerComponent
   | DatePeriodContainerComponent
-  | CheckboxCubeContainerComponent
+  | CheckboxCubeScreenComponent
   | ConfirmPersonalUserAddressReadonlyComponent
   | CarDetailInfoContainerComponent
   | MedicalReferralsListContainerComponent
@@ -142,7 +142,7 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   MatPeriod: MatPeriodContainerComponent,
   DateTimePeriod: DateTimePeriodContainerComponent,
   DatePeriod: DatePeriodContainerComponent,
-  CheckboxCube: CheckboxCubeContainerComponent,
+  CheckboxCube: CheckboxCubeScreenComponent,
   ConfirmUserCorpEmail: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,
   CarDetailInfo: CarDetailInfoContainerComponent,

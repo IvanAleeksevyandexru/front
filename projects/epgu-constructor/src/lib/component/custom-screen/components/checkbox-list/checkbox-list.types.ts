@@ -1,5 +1,4 @@
-import { ComponentAttrsDto } from '@epgu/epgu-constructor-types';
-import { Checkbox } from '../../../unique-screen/components/checkbox-cube/models/checkbox-cube.interface';
+import { Checkbox, ComponentAttrsDto } from '@epgu/epgu-constructor-types';
 
 export interface CheckboxListComponentAttrsDto extends ComponentAttrsDto {
   labelShow?: string;

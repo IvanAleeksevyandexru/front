@@ -9,6 +9,7 @@ import {
   KeyValueMap,
   ComponentValidationDto,
   DisabledByCheckbox,
+  CubeElements,
 } from '@epgu/epgu-constructor-types';
 import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { ListItem } from '@epgu/ui/models/dropdown';
@@ -27,6 +28,7 @@ export enum CustomScreenComponentTypes {
   CardNumberInput = 'CardNumberInput',
   CertificateEaisdo = 'CertificateEaisdo',
   CheckBox = 'CheckBox',
+  CheckboxCube = 'CheckboxCube',
   CheckBoxList = 'CheckBoxList',
   CheckingAccount = 'CheckingAccount',
   CityInput = 'CityInput',
@@ -210,6 +212,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   checkBoxes?: CheckBoxes;
   cityFilter?: CityFilter;
   class?: Class;
+  cubeElements?: CubeElements;
   currentTime?: CurrentTime;
   dateRestrictions?: DateRestriction[];
   description?: Description;
