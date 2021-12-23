@@ -11,6 +11,7 @@
     >Расставить сады по приоритету
   </lib-button>
   <epgu-constructor-priority-screen
+    [disableNextButton]="!(state === states.priority)"
     [hidden]="!(state === states.priority)"
     (back)="kindergartenService.setState(states.map)"
     (showMap)="showMap($event)"

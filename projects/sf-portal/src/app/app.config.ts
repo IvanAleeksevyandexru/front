@@ -29,7 +29,7 @@ export class AppConfig {
   ) {}
 
   public load(): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>((resolve, reject) => {
       this.fetchConfig()
         .then((response: any) => {
           AppConfig.settings = response;
@@ -42,6 +42,10 @@ export class AppConfig {
         })
         .then((response: any) => {
           this.window.serverData.data.user = response || {};
+        })
+        .catch((err) => {
+          console.error('Error occured, while fetching config resources', err);
+          reject();
         })
         .finally(() => {
           if (this.isServer) {

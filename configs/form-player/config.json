@@ -3,6 +3,7 @@
     "lkuipElection": "https://lkuip-elections-dev.test.gosuslugi.ru",
     "nsiSuggestDictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi-suggest/v1",
     "dictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary",
+    "smevConverterUrl": "https://dev01.pgu2-pub.test.gosuslugi.ru/smev-converter/services/get",
     "externalApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1",
     "listPaymentsApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/orders/listpaymentsinfo",
     "uinApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/paygate/uin",
@@ -22,6 +23,14 @@
     "mocks": [],
     "mockUrl": "https://pgu-dev-fed.test.gosuslugi.ru/mock/api",
     "timeSlots": {
+      "ROSGVARD": {
+        "subject": "Запись на прием в Федеральную службу войск национальной гвардии Российской Федерации",
+        "calendarName": "Запись на прием в Федеральную службу войск национальной гвардии Российской Федераци",
+        "preliminaryReservation": "false",
+        "eserviceId": "10000082092",
+        "serviceCode": "-1000382227",
+        "routeNumber": "5167746175977"
+      },
       "MVD": {
         "subject": "Выдача паспорта гражданина Российской Федерации в случае утраты (хищения) паспорта",
         "calendarName": "на приём в подразделения МВД РФ",

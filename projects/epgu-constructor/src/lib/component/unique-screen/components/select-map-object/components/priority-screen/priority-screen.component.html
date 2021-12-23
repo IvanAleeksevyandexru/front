@@ -122,7 +122,7 @@
       <epgu-constructor-screen-buttons
         class="screen-buttons"
         [screenButtons]="finalScreen ? buttonFinalScreen : buttonBase"
-        [disabled]="disabled"
+        [disabled]="disabled || disableNextButton"
         [isLoading]="isLoading"
       ></epgu-constructor-screen-buttons>
     </ng-template>

@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-constructor",
-  "version": "43.7.0",
+  "version": "395.9.3",
   "scripts": {
     "build": "cd ../../ && ng build epgu-constructor --prod",
     "watch": "cd ../../ && ng build epgu-constructor --watch",
@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@alyle/ui": "10.5.1",
-    "@epgu/epgu-constructor-types": "43.7.0",
-    "@epgu/epgu-constructor-ui-kit": "43.7.0",
+    "@epgu/epgu-constructor-types": "395.9.3",
+    "@epgu/epgu-constructor-ui-kit": "395.9.3",
     "@tanker/file-ponyfill": "2.6.3",
     "ics": "2.24.0",
     "node-fetch": "2.6.1",

@@ -25,6 +25,10 @@
 .confirm-personal-data-disclaimer {
   margin-top: 24px;
   display: block;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .btn-edit {

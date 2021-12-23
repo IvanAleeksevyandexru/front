@@ -10,11 +10,10 @@ import {
   HelperTextComponent,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-
-import { ComponentsListComponent } from 'projects/epgu-constructor/src/lib/component/custom-screen/components-list.component';
 import { SelectChildrenItemComponent } from './select-children-item.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
+import { ComponentsListComponent } from '../../../../../custom-screen/components-list.component';
 
 describe('SelectChildrenItemComponent', () => {
   let component: SelectChildrenItemComponent;

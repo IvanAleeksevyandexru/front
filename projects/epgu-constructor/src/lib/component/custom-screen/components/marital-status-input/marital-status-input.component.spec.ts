@@ -7,12 +7,6 @@ import {
   InputErrorModule,
   ConstructorLookupComponent,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DateRestrictionsService } from 'projects/epgu-constructor/src/lib/shared/services/date-restrictions/date-restrictions.service';
-import { ConstructorDatePickerModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-date-picker/constructor-date-picker.module';
-import { ConstructorPlainInputModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-plain-input/constructor-plain-input.module';
-import { ConstructorMaskedInputModule } from 'projects/epgu-constructor/src/lib/shared/components/constructor-masked-input/constructor-masked-input.module';
-import { ValidationTypeModule } from 'projects/epgu-constructor/src/lib/shared/directives/validation-type/validation-type.module';
-import { SuggestHandlerService } from 'projects/epgu-constructor/src/lib/shared/services/suggest-handler/suggest-handler.service';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MaritalStatusInputComponent } from './marital-status-input.component';
@@ -29,6 +23,12 @@ import { ActNumberInputComponent } from './components/act-number-input/act-numbe
 import { ActRegistratorInputComponent } from './components/act-registrator-input/act-registrator-input.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
+import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
+import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
+import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
+import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
+import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
+import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
 
 const mockComponent = {
   id: 'pd6',

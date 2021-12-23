@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { Observable, of } from 'rxjs';
+
+import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import AbstractLogicComponent from '../abstract-logic/abstract-logic.component';
 
 @Component({

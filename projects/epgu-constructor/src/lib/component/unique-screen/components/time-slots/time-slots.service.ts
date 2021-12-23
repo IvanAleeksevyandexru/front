@@ -8,10 +8,10 @@ import {
   DATE_ISO_STRING_FORMAT,
   DATE_STRING_YEAR_MONTH,
   DatesToolsService,
+  JsonHelperService,
   LoggerService,
   SessionService,
   SlotInterface,
-  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { get } from 'lodash';
 import {
@@ -176,6 +176,32 @@ export class TimeSlotsService {
 
   getCurrentYear(): number {
     return this.activeYearNumber;
+  }
+
+  getSmev3DictionaryOptions(): DictionaryOptions {
+    const filter = this.dictionaryTools.getFilterOptions(
+      this.jsonHelperService.tryToParse(
+        this.screenService.componentValue as string,
+        {},
+      ) as ComponentValue,
+      this.screenService.getStore(),
+      this.screenService.component.attrs?.dictionaryFilter,
+    );
+
+    const additionalFilters = filter?.filter?.simple
+      ? [filter?.filter as DictionarySubFilter]
+      : filter?.filter?.union.subs;
+
+    return additionalFilters?.length > 0
+      ? {
+          filter: {
+            union: {
+              unionKind: DictionaryUnionKind.AND,
+              subs: [...additionalFilters],
+            },
+          },
+        }
+      : {};
   }
 
   getSmev2DictionaryOptions(date: Date): DictionaryOptions {
@@ -385,7 +411,7 @@ export class TimeSlotsService {
   private getSlotsRequest(): TimeSlotReq {
     const { serviceId, eserviceId, routeNumber } = this.configService.timeSlots[this.timeSlotsType];
 
-    return <TimeSlotReq>this.deleteIgnoreRequestParams({
+    const request = {
       organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
       caseNumber:
         this.timeSlotsType === TimeSlotsTypes.MVD
@@ -395,7 +421,11 @@ export class TimeSlotsService {
       eserviceId: (this.config.eserviceId as string) || eserviceId,
       routeNumber,
       attributes: this.getSlotsRequestAttributes(this.timeSlotsType, serviceId),
-    });
+    };
+
+    return <TimeSlotReq>(
+      this.deleteIgnoreRequestParams({ ...request, ...this.getSmev3DictionaryOptions() })
+    );
   }
 
   private getTimeSlotsForCancel(): TimeSlotsAnswerInterface[] {
@@ -552,9 +582,12 @@ export class TimeSlotsService {
     };
 
     if (
-      [TimeSlotsTypes.MVD, TimeSlotsTypes.DOCTOR, TimeSlotsTypes.VACCINATION].includes(
-        this.timeSlotsType,
-      )
+      [
+        TimeSlotsTypes.MVD,
+        TimeSlotsTypes.DOCTOR,
+        TimeSlotsTypes.VACCINATION,
+        TimeSlotsTypes.ROSGVARD,
+      ].includes(this.timeSlotsType)
     ) {
       requestBody.parentOrderId = this.config.parentOrderId
         ? (this.config.parentOrderId as string)
