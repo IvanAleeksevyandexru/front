@@ -19,8 +19,8 @@
       [href]="item.urlToFile() | safe: 'url'"
       target="_blank"
     >
-      <img [src]="baseFileTypeIconPath + selectedIconType + '.svg'" [alt]="item.item.fileName"
-    /></a>
+      <img [src]="baseFileTypeIconPath + selectedIconType + '.svg'" [alt]="item.item.fileName" />
+    </a>
     <div *ngIf="isError" [ngClass]="{ 'file-viewer__file_link': isPDF }" class="file-viewer__file">
       <img [src]="baseFileTypeIconPath + iconsType.error + '.svg'" alt="Ошибка" />
       <div class="file-viewer__error-title">Что-то пошло не так</div>
@@ -34,8 +34,7 @@
       [imageURL]="imageURL"
       (zoom)="zoomAction($event)"
       (moveEnd)="zoomMoveEnd()"
-    >
-    </epgu-constructor-zoom>
+    ></epgu-constructor-zoom>
   </div>
 
   <div *ngIf="isConfirm" class="viewer__confirmation">
