@@ -16,6 +16,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { ConfirmPersonalPolicyComponent } from './confirm-personal-policy.component';
 import { ConfirmPolicyError, PersonalPolicyWithErrors } from './confirm-personal-policy.types';
+import { of } from 'rxjs';
 
 describe('ConfirmPersonalPolicyComponent', () => {
   let component: ConfirmPersonalPolicyComponent;
@@ -29,11 +30,29 @@ describe('ConfirmPersonalPolicyComponent', () => {
         title: 'Нашли ошибку?',
         description: 'description',
       },
+      fields: [
+        {
+          fieldName: 'series',
+          label: 'Серия полиса ОМС',
+          required: true,
+        },
+        {
+          fieldName: 'number',
+          label: 'Номер полиса ОМС1',
+          required: true,
+        },
+      ],
     },
     id: '',
     label: '',
     type: '',
-    value: '{"series":"","number":"2515093164354727"}',
+    value: {
+      storedValues: {
+        series: '',
+        number: '3575134621310480',
+      },
+      errors: [],
+    },
     errors: [],
   };
   const actionMock: ComponentActionDto = {
@@ -42,6 +61,20 @@ describe('ConfirmPersonalPolicyComponent', () => {
     action: DTOActionAction.editUserPolicy,
     type: ActionType.nextStepModal,
   };
+  const preparedFields = [
+    {
+      fieldName: 'series',
+      label: 'Серия полиса ОМС',
+      required: true,
+      value: '',
+    },
+    {
+      fieldName: 'number',
+      label: 'Номер полиса ОМС1',
+      required: true,
+      value: '3575134621310480',
+    },
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -65,6 +98,7 @@ describe('ConfirmPersonalPolicyComponent', () => {
     screenService.component = mockData;
     fixture.detectChanges();
     jest.spyOn(screenService, 'action', 'get').mockReturnValue(actionMock);
+    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockData));
   });
 
   it('should create', () => {
@@ -80,6 +114,7 @@ describe('ConfirmPersonalPolicyComponent', () => {
       } as ConfirmPolicyError,
     ];
     screenService.component = mockData;
+    component.ngOnInit();
     fixture.detectChanges();
 
     const selector = 'epgu-constructor-disclaimer';
@@ -91,7 +126,13 @@ describe('ConfirmPersonalPolicyComponent', () => {
   });
 
   it('should rendered correctly view state without errors', () => {
-    mockData.errors = [];
+    mockData.value = {
+      storedValues: {
+        series: '343423',
+        number: '3575134621310480',
+      },
+      errors: [],
+    };
     screenService.component = mockData;
     fixture.detectChanges();
 
@@ -99,5 +140,36 @@ describe('ConfirmPersonalPolicyComponent', () => {
     const debugEl: DebugElement = fixture.debugElement.query(By.css(selector));
     expect(debugEl.nativeElement.type).toEqual('warn');
     expect(debugEl.nativeElement.description).toEqual('description');
+  });
+
+  it('should set correct fields', () => {
+    mockData.value = {
+      storedValues: {
+        series: '',
+        number: '3575134621310480',
+      },
+      errors: [],
+    };
+    component.ngOnInit();
+
+    expect(component.fields).toEqual(preparedFields);
+  });
+
+  it('should set correct errors', () => {
+    const mockErrors = [
+      {
+        title: 'title',
+      },
+    ];
+    mockData.errors = mockErrors;
+    component.ngOnInit();
+
+    expect(component.errors).toEqual(mockErrors);
+
+    mockData.errors = [];
+    mockData.value.errors = mockErrors;
+    component.ngOnInit();
+
+    expect(component.errors).toEqual(mockData.value.errors);
   });
 });

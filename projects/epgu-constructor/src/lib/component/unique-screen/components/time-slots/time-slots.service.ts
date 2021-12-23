@@ -8,10 +8,10 @@ import {
   DATE_ISO_STRING_FORMAT,
   DATE_STRING_YEAR_MONTH,
   DatesToolsService,
+  JsonHelperService,
   LoggerService,
   SessionService,
   SlotInterface,
-  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { get } from 'lodash';
 import {
@@ -582,9 +582,12 @@ export class TimeSlotsService {
     };
 
     if (
-      [TimeSlotsTypes.MVD, TimeSlotsTypes.DOCTOR, TimeSlotsTypes.VACCINATION].includes(
-        this.timeSlotsType,
-      )
+      [
+        TimeSlotsTypes.MVD,
+        TimeSlotsTypes.DOCTOR,
+        TimeSlotsTypes.VACCINATION,
+        TimeSlotsTypes.ROSGVARD,
+      ].includes(this.timeSlotsType)
     ) {
       requestBody.parentOrderId = this.config.parentOrderId
         ? (this.config.parentOrderId as string)

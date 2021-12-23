@@ -25,6 +25,8 @@ export class ConfigService implements Config {
 
   private _dictionaryUrl: string;
 
+  private _smevConverterUrl: string;
+
   private _externalApiUrl: string;
 
   private _fileUploadApiUrl: string;
@@ -141,6 +143,10 @@ export class ConfigService implements Config {
 
   get dictionaryUrl(): string {
     return this._dictionaryUrl;
+  }
+
+  get smevConverterUrl(): string {
+    return this._smevConverterUrl;
   }
 
   get externalApiUrl(): string {
@@ -301,6 +307,7 @@ export class ConfigService implements Config {
     this._configApiUrl = config.configApiUrl ?? `${this.loadService.config.newSfApiUrl}`;
     this._billsApiUrl = config.billsApiUrl ?? `${this.loadService.config.ipshApi}`;
     this._dictionaryUrl = config.dictionaryUrl ?? `${this.loadService.config.nsiApiUrl}dictionary`;
+    this._smevConverterUrl = config.smevConverterUrl;
     this._lkuipElection = config.lkuipElection;
     this._nsiSuggestDictionaryUrl =
       config.nsiSuggestDictionaryUrl ?? `${this.loadService.config.newSfApiUrl}/nsi-suggest/v1`;

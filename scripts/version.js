@@ -28,6 +28,6 @@ function fileWriteCallBack(err) {
     throw err;
   } else {
     console.log('epgu2: generate version file is SUCCESS');
-    console.log(`sfPortalVersion: ${sfVersion}, formPlayerVersion: ${cfVersion}, epguLibVersion: "${uiVersion}`);
+    console.log(`sfPortalVersion: ${sfVersion}, formPlayerVersion: ${cfVersion}, epguLibVersion: ${uiVersion}`);
   }
 }

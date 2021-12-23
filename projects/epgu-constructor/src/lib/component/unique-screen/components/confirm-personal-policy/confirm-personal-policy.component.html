@@ -6,37 +6,25 @@
   [showNav]="screenService.showNav$ | async"
   [isValid]="currentAnswersService.isValid$ | async"
 >
-  <ng-container *ngIf="!(data$ | async).errors?.length">
-    <epgu-constructor-disclaimer
-      class="confirm-personal-data-disclaimer"
-      *ngIf="(data$ | async).attrs?.disclaimer as disclaimer"
-      [type]="disclaimer.type"
-      [title]="disclaimer.title"
-      [description]="disclaimer.description"
-    ></epgu-constructor-disclaimer>
-  </ng-container>
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body" *ngIf="data$ | async as data">
-    <ng-container *ngIf="data.errors">
+    <ng-container *ngIf="!this.errors?.length; else errorTemplate">
+      <ng-container *ngFor="let field of fields; let last = last">
+        <div [ngClass]="{'mb-16': !last}" *ngIf="field.label && field.value">
+          <div class="label-helper mb-4">{{field.label}}</div>
+          <div class="text-helper">{{field.value}}</div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #errorTemplate>
       <epgu-constructor-disclaimer
-        *ngFor="let error of data.errors"
-        class="mb-16"
+        class="confirm-personal-data-disclaimer"
+        *ngFor="let error of errors"
         [type]="error.type"
         [title]="error.title"
         [description]="error.desc"
-        [clarifications]="data.attrs?.clarifications"
       ></epgu-constructor-disclaimer>
-    </ng-container>
-
-    <ng-container *ngIf="!data.errors?.length">
-      <div class="mb-16">
-        <div class="label-helper mb-4">Номер полиса ОМС</div>
-        <div class="text-helper">{{ number }}</div>
-      </div>
-      <div class="mb-16" *ngIf="series">
-        <div class="label-helper">Серия полиса ОМС</div>
-        <div class="text-helper">{{ series }}</div>
-      </div>
-    </ng-container>
+    </ng-template>
 
     <div class="footer" *ngIf="screenService.action$ | async as action">
       <div class="divider"></div>

@@ -151,4 +151,5 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   PaymentWay: PaymentWayContainerComponent,
   PersonUserInn: PersonUserInnComponent,
   EquipmentChoice: EquipmentChoiceContainerComponent,
+  BarbarbokMapService: SelectMapObjectComponent,
 };
