@@ -21,7 +21,7 @@
     "build:ui-kit:dev": "ng build epgu-constructor-ui-kit",
     "build:ui-kit": "ng build epgu-constructor-ui-kit --configuration production",
     "build:emulator": "ng build --configuration production",
-    "ci": "yarn clean && yarn lint && yarn stylelint && yarn test && yarn build:types && yarn build:ui-kit && yarn build:children-clubs && yarn build:cf && yarn build:emulator && yarn build:portal",
+    "ci": "yarn clean && yarn lint && yarn stylelint && yarn test && yarn build:types && yarn build:ui-kit && yarn build:children-clubs && yarn build:cf && yarn build:emulator && yarn build:portal:all",
     "clean": "rimraf dist && rimraf projects/epgu-constructor-types/dist",
     "copy-all-i18n": "yarn copy-dev-i18n && yarn copy-dev2-i18n && yarn copy-express-i18n && yarn copy-rcod-i18n && yarn copy-svcdev-i18n && yarn copy-demo-i18n && yarn copy-uat-i18n && yarn copy-prod-i18n",
     "copy-demo-i18n": "cpx \"dist/sf-portal-st/demo/lib-assets/i18n/**/*\" \"dist/sf-portal-st/demo/lib-assets/i18n\"",
