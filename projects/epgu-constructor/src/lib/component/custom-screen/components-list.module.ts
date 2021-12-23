@@ -78,12 +78,15 @@ import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-perso
 import { MaritalStatusInputModule } from './components/marital-status-input/marital-status-input.module';
 import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-draft-handler/kinder-garten-draft-handler.component';
 import { RelationResolverService } from './services/components-list-relations/relation-resolver.service';
+import { CheckboxCubeItemComponent } from './components/checkbox-cube-item/checkbox-cube-item.component';
+import { CheckboxCubeModule } from '../../shared/components/checkbox-cube/checkbox-cube.module';
 
 @NgModule({
   declarations: [
     AbstractComponentListItemComponent,
     AddressInputComponent,
     CertificateEaisdoComponent,
+    CheckboxCubeItemComponent,
     CheckboxInputComponent,
     CityInputComponent,
     ComponentsListComponent,
@@ -117,6 +120,7 @@ import { RelationResolverService } from './services/components-list-relations/re
   imports: [
     BaseComponentsModule,
     BaseModule,
+    CheckboxCubeModule,
     CheckboxListModule,
     ComponentItemModule,
     ComponentListResolverModule,
@@ -163,6 +167,7 @@ import { RelationResolverService } from './services/components-list-relations/re
   ],
   entryComponents: [
     AddressInputComponent,
+    CheckboxCubeItemComponent,
     CheckboxInputComponent,
     CheckboxListComponent,
     CityInputComponent,
