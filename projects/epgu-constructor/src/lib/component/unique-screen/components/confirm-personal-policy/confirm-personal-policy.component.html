@@ -7,6 +7,13 @@
   [isValid]="currentAnswersService.isValid$ | async"
 >
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body" *ngIf="data$ | async as data">
+    <epgu-constructor-output-html
+      *ngIf="data.label as label"
+      [html]="label"
+      [clarifications]="data.attrs?.clarifications"
+    >
+    </epgu-constructor-output-html>
+
     <ng-container *ngIf="!this.errors?.length; else errorTemplate">
       <ng-container *ngFor="let field of fields; let last = last">
         <div [ngClass]="{'mb-16': !last}" *ngIf="field.label && field.value">
