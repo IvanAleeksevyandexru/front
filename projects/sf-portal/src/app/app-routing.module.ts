@@ -44,12 +44,32 @@ const routes: Routes = [
             component: NewSfPlayerComponent,
           },
           {
+            path: 'form/info',
+            canActivate: [AuthGuard],
+            component: NewSfPlayerComponent,
+          },
+          {
             path: 'order/:orderId',
             pathMatch: 'full',
             redirectTo: 'form/order/:orderId',
           },
           {
             path: 'form/order/:orderId',
+            canActivate: [AuthGuard],
+            component: NewSfPlayerComponent,
+          },
+          {
+            path: 'form/order/:orderId/accept',
+            canActivate: [AuthGuard],
+            component: NewSfPlayerComponent,
+          },
+          {
+            path: 'form/order/:orderId/reject',
+            canActivate: [AuthGuard],
+            component: NewSfPlayerComponent,
+          },
+          {
+            path: 'form/order/:orderId/edit',
             canActivate: [AuthGuard],
             component: NewSfPlayerComponent,
           },
