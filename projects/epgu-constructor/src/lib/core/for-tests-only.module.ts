@@ -23,6 +23,8 @@ import {
   JsonHelperService,
   MapAnimationService,
   DeviceDetectorServiceStub,
+  ActivatedRouteStub,
+  FocusManagerService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KindergartenService } from '../component/unique-screen/components/kindergarten/kindergarten.service';
@@ -50,6 +52,18 @@ import { NavigationService } from './services/navigation/navigation.service';
 import { NavigationServiceStub } from './services/navigation/navigation.service.stub';
 import { HtmlSelectService } from './services/html-select/html-select.service';
 import { JusticeSearchPanelService } from '../component/unique-screen/components/select-map-object/components/search-panel-resolver/components/justice-search-panel/justice-search-panel.service';
+import { DateRangeService } from '../shared/services/date-range/date-range.service';
+import { ComponentsListFormService } from '../component/custom-screen/services/components-list-form/components-list-form.service';
+import { FormBuilder } from '@angular/forms';
+import { ValidationService } from '../shared/services/validation/validation.service';
+import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
+import { ActivatedRoute } from '@angular/router';
+import { ComponentsListToolsService } from '../component/custom-screen/services/components-list-tools/components-list-tools.service';
+import { TypeCastService } from './services/type-cast/type-cast.service';
+import { ComponentsListRelationsService } from '../component/custom-screen/services/components-list-relations/components-list-relations.service';
+import { RelationResolverService } from '../component/custom-screen/services/components-list-relations/relation-resolver.service';
+import { MaskTransformService } from '../shared/services/mask-transform/mask-transform.service';
+import { DecimalPipe } from '@angular/common';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -57,47 +71,60 @@ import { JusticeSearchPanelService } from '../component/unique-screen/components
 @NgModule({
   imports: [HttpClientModule, BrowserAnimationsModule],
   providers: [
+    { provide: ActivatedRoute, useClass: ActivatedRouteStub },
     { provide: ConfigService, useClass: ConfigServiceStub },
+    { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
     { provide: LocationService, useClass: LocationServiceStub },
     { provide: NavigationService, useClass: NavigationServiceStub },
     { provide: ScreenService, useClass: ScreenServiceStub },
-    { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
     { provide: WINDOW, useValue: window },
     AddressesToolsService,
     AddressHelperService,
     AutocompleteApiService,
     CachedAnswersService,
+    ComponentsListFormService,
+    ComponentsListRelationsService,
+    ComponentsListToolsService,
     CurrentAnswersService,
+    DateRangeService,
     DateRefService,
+    DateRestrictionsService,
     DatesToolsService,
+    DecimalPipe,
     DictionaryApiService,
     DictionaryToolsService,
     DownloadService,
     EventBusService,
+    FocusManagerService,
+    FormBuilder,
     FormPlayerApiService,
     FormPlayerService,
     HtmlRemoverService,
+    HtmlSelectService,
     Icons,
     InitDataService,
     JsonHelperService,
+    JusticeSearchPanelService,
     KindergartenSearchPanelService,
     KindergartenService,
     LocalStorageService,
     LoggerService,
+    MapAnimationService,
+    MaskTransformService,
     ModalErrorService,
     ModalService,
     NavigationModalService,
     PrepareComponentsService,
     PriorityItemsService,
     RefRelationService,
+    RelationResolverService,
     SelectMapObjectService,
     SessionService,
     SessionStorageService,
+    TypeCastService,
     UnsubscribeService,
+    ValidationService,
     YandexMapService,
-    MapAnimationService,
-    HtmlSelectService,
-    JusticeSearchPanelService,
   ],
 })
 export class ForTestsOnlyModule {}
