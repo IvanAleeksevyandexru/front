@@ -38,7 +38,7 @@ import { TimerScreenModule } from './components/timer-screen/timer-screen.module
 import { CarListModule } from './components/car-list/car-list.module';
 import { MatPeriodModule } from './components/mat-period/mat-period.module';
 import { DateTimePeriodModule } from './components/date-time-period/date-time-period.module';
-import { CheckboxCubeModule } from './components/checkbox-cube/checkbox-cube.module';
+import { CheckboxCubeScreenModule } from './components/checkbox-cube-screen/checkbox-cube-screen.module';
 // eslint-disable-next-line max-len
 import { ConfirmPersonalUserAddressReadonlyScreenModule } from './components/confirm-personal-user-address-readonly-screen/confirm-personal-user-address-readonly-screen.module';
 import { MedicalReferralsListModule } from './components/medical-referrals-list/medical-referrals-list.module';
@@ -89,7 +89,7 @@ import { TimeSlotResolverVersionModule } from './components/time-slot-resolver-v
     TimerScreenModule,
     CarListModule,
     MatPeriodModule,
-    CheckboxCubeModule,
+    CheckboxCubeScreenModule,
     DateTimePeriodModule,
     MedicalReferralsListModule,
     PaymentWayModule,
@@ -126,7 +126,7 @@ import { TimeSlotResolverVersionModule } from './components/time-slot-resolver-v
     TimerScreenModule,
     CarListModule,
     MatPeriodModule,
-    CheckboxCubeModule,
+    CheckboxCubeScreenModule,
     DateTimePeriodModule,
     MedicalReferralsListModule,
     DatePeriodModule,

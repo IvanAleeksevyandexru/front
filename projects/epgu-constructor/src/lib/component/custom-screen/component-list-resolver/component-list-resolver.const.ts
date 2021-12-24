@@ -32,12 +32,14 @@ import { SignAppLinkComponent } from '../components/sign-app-link/sign-app-link.
 import { ConfirmPersonalPolicyChangeComponent } from '../components/confirm-personal-policy-change/confirm-personal-policy-change.component';
 import { MaritalStatusInputComponent } from '../components/marital-status-input/marital-status-input.component';
 import { KinderGartenDraftHandlerComponent } from '../components/kinder-garten-draft-handler/kinder-garten-draft-handler.component';
+import { CheckboxCubeItemComponent } from '../components/checkbox-cube-item/checkbox-cube-item.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
 type CustomScreenComponent =
   | AddressInputComponent
   | CertificateEaisdoComponent
+  | CheckboxCubeItemComponent
   | CheckboxInputComponent
   | CheckboxListComponent
   | CityInputComponent
@@ -79,6 +81,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   CardNumberInput: MaskedAndPlainInputComponent,
   CertificateEaisdo: CertificateEaisdoComponent,
   CheckBox: CheckboxInputComponent,
+  CheckboxCube: CheckboxCubeItemComponent,
   CheckBoxList: CheckboxListComponent,
   CheckingAccount: MaskedAndPlainInputComponent,
   CityInput: CityInputComponent,
