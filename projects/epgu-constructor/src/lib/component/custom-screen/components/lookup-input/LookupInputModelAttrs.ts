@@ -1,4 +1,4 @@
-import { Clarifications, Hint } from '@epgu/epgu-constructor-types';
+import { Clarifications, CustomUnrecLabel, Hint } from '@epgu/epgu-constructor-types';
 import {
   CustomComponentAttr,
   FocusOnInitAndStartSearch,
@@ -18,6 +18,8 @@ export default class LookupInputModelAttrs extends DictionarySharedAttrs {
 
   readonly clarifications: Clarifications;
 
+  readonly customUnrecLabel: CustomUnrecLabel;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.searchIconForcedShowing = attrs.searchIconForcedShowing;
@@ -25,5 +27,6 @@ export default class LookupInputModelAttrs extends DictionarySharedAttrs {
     this.queryMinSymbolsCount = attrs.queryMinSymbolsCount;
     this.focusOnInitAndStartSearch = attrs.focusOnInitAndStartSearch;
     this.clarifications = attrs.clarifications;
+    this.customUnrecLabel = attrs.customUnrecLabel;
   }
 }

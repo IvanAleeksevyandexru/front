@@ -3,6 +3,7 @@ export * from './additional-parameters';
 export * from './answer';
 export * from './applicant-answers';
 export * from './cached-answers';
+export * from './checkbox';
 export * from './clarifications';
 export * from './color';
 export * from './component-action-dto';

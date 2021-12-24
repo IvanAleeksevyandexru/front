@@ -38,12 +38,14 @@ import MaritalStatusInputModel from '../components/marital-status-input/MaritalS
 import ComplexChoiceDictionary from '../components/form-complex-choice-dictionary/ComplexChoiceDictionaryModel';
 import ConfirmPersonalPolicyChangeModel from '../components/confirm-personal-policy-change/ConfirmPersonalPolicyChangeModel';
 import KinderGartenDraftHandlerModel from '../components/kinder-garten-draft-handler/KinderGartenDraftHandlerModel';
+import CheckboxCubeItemModel from '../components/checkbox-cube-item/CheckboxCubeItemModel';
 
 export const CUSTOM_SCREEN_MODELS = {
   AddressInput: AddressInputModel,
   CardNumberInput: CardNumberInputModel,
   CertificateEaisdo: CertificateEaisdoModel,
   CheckBox: CheckboxInputModel,
+  CheckboxCube: CheckboxCubeItemModel,
   CheckBoxList: CheckboxListModel,
   CityInput: CityInputModel,
   ConfirmPersonalPolicyChange: ConfirmPersonalPolicyChangeModel,

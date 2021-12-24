@@ -1,7 +1,7 @@
 import { ComponentActionDto } from './component-action-dto';
 import { Clarifications } from './clarifications';
 import { CustomComponentRef } from './custom-component-ref';
-import { ComponentDto } from './component-dto';
+import type { ComponentDto } from './component-dto';
 import { ComponentAnswerDto } from './qustion-component-answer';
 import { ComponentDictionaryFilterDto, DictionaryOptions } from './dictionary';
 import { TextTransform } from './text-transform';
@@ -10,12 +10,13 @@ import { TimerComponentDtoAction, TimerLabelSection } from './timer';
 import { ColorDto } from './color';
 import { ConfirmationModal } from '../modal';
 import { KeyValueMap } from './core.types';
-import {
+import type {
   LogicComponentEventTypes,
   LogicComponentHeaders,
   LogicComponentMethods,
 } from './logic-component';
 import { ScreenButton } from './screen-buttons';
+import { CubeElements } from './checkbox';
 
 export interface KindergartenAttrs {
   header?: string;
@@ -82,7 +83,7 @@ type CharacterMask = string;
 type CheckedParametersGIBDD = string[];
 type ChooseChildLabel = string;
 type CodeLength = number;
-type CustomUnrecLabel = string;
+export type CustomUnrecLabel = string;
 type DateType = string;
 type DaysToShow = number;
 export type DefaultIndex = number;
@@ -213,6 +214,7 @@ export interface ComponentAttrsDto {
   clarifications?: Clarifications;
   codeLength?: CodeLength;
   components?: ComponentDto[];
+  cubeElements?: CubeElements;
   customUnrecLabel?: CustomUnrecLabel;
   customValidation?: CustomValidationDto;
   dateType?: DateType;
