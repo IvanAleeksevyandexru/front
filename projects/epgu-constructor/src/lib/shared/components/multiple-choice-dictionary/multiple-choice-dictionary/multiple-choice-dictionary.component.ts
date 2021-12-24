@@ -74,7 +74,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
       )
       .subscribe((items) => {
         this.writeValue(items);
-        const selectedItems = this.selectedItems.list?.length ? this.selectedItems.list : null;
+        const selectedItems = this.selectedItems.list?.length ? this.selectedItems.list : [];
         this.onChange(selectedItems);
         this.cdr.markForCheck();
       });
