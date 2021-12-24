@@ -9,7 +9,11 @@ import {
 
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { ERROR_HANDLER_SERVICE, ErrorHandlerAbstractService } from './errors.token';
+import {
+  ERROR_HANDLER_SERVICE,
+  ErrorHandlerAbstractService,
+  IS_REQUEST_USED,
+} from './errors.token';
 
 @Injectable()
 export class ErrorsInterceptor implements HttpInterceptor {
@@ -22,10 +26,16 @@ export class ErrorsInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<void | never>> {
     return next.handle(req).pipe(
-      catchError((err) => this.errorHandleService.handleResponseError(err)),
+      catchError((err) => {
+        if (!req.context.get(IS_REQUEST_USED)) {
+          return this.errorHandleService.handleResponseError(err);
+        }
+      }),
       tap((res) => {
         if (res instanceof HttpResponse && res?.body && typeof res.body === 'object') {
-          this.errorHandleService.handleResponse(req, res);
+          if (!req.context.get(IS_REQUEST_USED)) {
+            this.errorHandleService.handleResponse(req, res);
+          }
         }
       }),
     );
