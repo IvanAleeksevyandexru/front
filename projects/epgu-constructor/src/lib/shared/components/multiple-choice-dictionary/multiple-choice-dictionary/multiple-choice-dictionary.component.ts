@@ -39,7 +39,6 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   @Input() dictionaryFilter: DictionaryFilters;
   @Input() dictionaryList?: unknown;
   @Input() dictionaryType?: string;
-  @Input() withAmount?: boolean;
   @Input() isReadonly?: boolean;
   @Input() tip?: string;
 
@@ -57,7 +56,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
 
   public onClick(): void {
     this.modalService
-      .openModal<ListElement[] | null>(MultiChoiceDictionaryModalComponent, {
+      .openModal<MultipleSelectedItems | null>(MultiChoiceDictionaryModalComponent, {
         title: this.modalHeader || this.subLabel,
         dictionaryFilter: this.dictionaryFilter,
         dictionaryList: this.dictionaryList,
@@ -69,22 +68,23 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
           if (items instanceof Error) {
             return this.openErrorModal();
           }
-          return of(items || this.selectedItems.list);
+          return of(items);
         }),
       )
       .subscribe((items) => {
-        this.writeValue(items);
-        const selectedItems = this.selectedItems.list?.length ? this.selectedItems.list : [];
-        this.onChange(this.withAmount ? this.selectedItems : selectedItems);
+        this.writeValue(items as MultipleSelectedItems);
+        this.onChange(this.selectedItems);
         this.cdr.markForCheck();
       });
   }
 
   public remove(id: number | string): void {
     const items = this.selectedItems.list.filter((item) => item.id !== id);
-    this.writeValue(items);
-    const selectedItems = this.selectedItems.list.length ? this.selectedItems.list : null;
-    this.onChange(this.withAmount ? this.selectedItems : selectedItems);
+    this.writeValue({
+      list: items,
+      amount: items.length,
+    });
+    this.onChange(this.selectedItems);
     this.onTouched();
   }
 
@@ -96,20 +96,10 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
     this.onTouched = fn;
   }
 
-  public writeValue(items: ListElement[] | string): void {
+  public writeValue(items: MultipleSelectedItems | string): void {
     if (!items) return;
     const value = typeof items === 'string' ? JSON.parse(items) : items;
-
-    // TODO: когда-нибудь value всегда будет объектом, тогда можно будет убрать вторую проверку
-    // пока что сохраняем обратную совместимость со старыми json'ами услуг
-    if (Array.isArray(value)) {
-      this.selectedItems = {
-        list: value,
-        amount: value.length,
-      };
-    } else {
-      this.selectedItems = value;
-    }
+    this.selectedItems = value;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-empty-function
