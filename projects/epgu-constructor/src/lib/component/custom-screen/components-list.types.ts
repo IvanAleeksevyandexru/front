@@ -273,6 +273,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   validation?: CustomComponentAttrValidation[];
   wait?: Wait;
   withAmount?: WithAmount;
+  rank?: boolean;
 }
 
 export interface DateRestriction {
