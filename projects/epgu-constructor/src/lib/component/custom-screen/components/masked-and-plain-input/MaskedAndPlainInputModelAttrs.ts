@@ -27,6 +27,8 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
 
   readonly disabledByCheckbox: DisabledByCheckbox;
 
+  readonly rank: boolean;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.customUnrecLabel = attrs.customUnrecLabel;
@@ -41,5 +43,6 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
     this.hint = attrs.hint;
     this.clarifications = attrs.clarifications;
     this.disabledByCheckbox = attrs.disabledByCheckbox;
+    this.rank = attrs.rank;
   }
 }
