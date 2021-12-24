@@ -50,6 +50,7 @@ export interface FileUploadAttributes {
   minFileCount?: number;
   hideTotalAvailableSize?: boolean;
   hideTotalAvailableCount?: boolean;
+  previewModalDescription?: string;
 }
 
 export interface MaxCountByType {
@@ -91,7 +92,7 @@ export interface UploadedFile {
   bucket?: string;
   created?: string;
   deleted?: boolean;
-  description: string;
+  description?: string;
   fileExt?: string;
   fileName: string;
   fileSize: number;

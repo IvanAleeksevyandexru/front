@@ -23,12 +23,15 @@ import { SuggestMonitorService } from '../../../../services/suggest-monitor/sugg
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { TerraByteApiServiceStub } from '../../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import {
+  FileUploadAttributes,
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
 import { OutputHtmlComponent } from '../../../output-html/output-html.component';
+import { ComponentDto } from 'projects/epgu-constructor-types/src/base';
+import { of } from 'rxjs';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -72,9 +75,21 @@ const mockInfo = (name: string, status?: FileItemStatus, error?: FileItemError) 
   }
   return { file, position: 1, size: 1 } as ViewerInfo;
 };
+
+const mockComponent: ComponentDto = {
+  attrs: {
+    previewModalDescription: 'Test description',
+  } as FileUploadAttributes,
+  label: 'testComponent',
+  type: '',
+  id: '12',
+  value: '',
+};
+
 describe('UploaderViewerContentComponent', () => {
   let component: UploaderViewerContentComponent;
   let fixture: ComponentFixture<UploaderViewerContentComponent>;
+  let screenService: ScreenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -103,6 +118,9 @@ describe('UploaderViewerContentComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploaderViewerContentComponent);
+    screenService = TestBed.inject(ScreenService);
+    screenService.component = mockComponent;
+    jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));
     component = fixture.componentInstance;
     component.selectedItem = mockInfo('image.png', FileItemStatus.uploaded);
     fixture.detectChanges();
@@ -166,6 +184,11 @@ describe('UploaderViewerContentComponent', () => {
     });
     it('should be zoom component', () => {
       expect(fixture.debugElement.query(By.css('epgu-constructor-zoom'))).not.toBeNull();
+    });
+    it('should show description custom text', () => {
+      expect(component.description).toBe(
+        (mockComponent.attrs as FileUploadAttributes).previewModalDescription,
+      );
     });
   });
 
