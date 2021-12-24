@@ -316,6 +316,8 @@ export class ValidationService {
         return this.checkCardNumber(value);
       case CustomScreenComponentTypes.StringInput:
         return this.calculateStringPredicate(component, value);
+      case CustomScreenComponentTypes.MultipleChoiceDictionary:
+        return this.isArrayLikeValueValid((value as unknown) as unknown[]);
       default:
         return true;
     }
@@ -419,5 +421,9 @@ export class ValidationService {
         ) || [];
     }
     return validations;
+  }
+
+  private isArrayLikeValueValid(value: unknown[]): boolean {
+    return !!value && !!value.length;
   }
 }
