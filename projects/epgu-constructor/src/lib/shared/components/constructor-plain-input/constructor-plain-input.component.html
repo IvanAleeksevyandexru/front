@@ -22,4 +22,5 @@
   [suggest]="suggestions"
   [suggestSeparator]="suggestSeparator"
   (selectSuggest)="selectSuggest.emit($event)"
+  [ngClass]="{ 'showPlaceholder-on-focus': showPlaceholderOnFocus }"
 ></lib-plain-input>

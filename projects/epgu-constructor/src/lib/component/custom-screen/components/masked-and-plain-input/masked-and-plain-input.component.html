@@ -36,6 +36,7 @@
     [placeholder]="component?.attrs?.placeholder"
     [component]="component"
     [suggestions]="suggestions$ | async"
+    [showPlaceholderOnFocus]="component?.attrs?.showPlaceholderOnFocus"
     (selectSuggest)="suggestHandlerService.handleEvent($event, componentsGroupIndex, 'PLAIN_INPUT')"
   ></epgu-constructor-constructor-plain-input>
 </ng-template>
