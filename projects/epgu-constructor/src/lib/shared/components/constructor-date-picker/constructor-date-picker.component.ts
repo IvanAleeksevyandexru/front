@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Align, BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/common-enums';
+import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { RelativeDate } from '@epgu/ui/models/date-time';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
 
@@ -55,6 +56,7 @@ export class ConstructorDatePickerComponent {
   public onInput($event: Event): void {
     const input = $event.target as HTMLInputElement;
     const [day, month, year] = this.getDateTuple(input.value);
+
     if (
       !Number.isNaN(day) &&
       !Number.isNaN(month) &&
@@ -62,11 +64,22 @@ export class ConstructorDatePickerComponent {
       year.toString().length === 4
     ) {
       const date = new Date(year, month - 1, day);
-      this.onDateSelected(date);
+
+      if (!this.isDateInRange(date)) {
+        this.control.updateValueAndValidity();
+      } else {
+        this.onDateSelected(date);
+      }
     }
   }
 
   private getDateTuple(date: string): number[] {
     return date.split('.').map((num) => parseInt(num, 10));
+  }
+
+  private isDateInRange(date: Date): boolean {
+    const minDate = DatesHelperService.relativeOrFixedToFixed(this.minDate);
+    const maxDate = DatesHelperService.relativeOrFixedToFixed(this.maxDate);
+    return DatesHelperService.isBetween(date, minDate, maxDate);
   }
 }
