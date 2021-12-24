@@ -104,23 +104,6 @@ describe('ErrorsInterceptor', () => {
     tick();
   }));
 
-  it('should open modal with AUTH_ERROR_MODAL_PARAMS params', fakeAsync(() => {
-    const spy = jest.spyOn(modalService, 'openModal');
-    formPlayerApi.checkIfOrderExist().subscribe(
-      () => fail('should have failed with the 401 error'),
-      (error: HttpErrorResponse) => {
-        expect(error.status).toEqual(401);
-      },
-    );
-    const requestToError = httpMock.expectOne(
-      `${config.apiUrl}/service/${init.serviceId}/scenario/checkIfOrderIdExists`,
-    );
-    const body = new HttpErrorResponse({ status: 401, statusText: 'Unauthorized' });
-    requestToError.flush('Unauthorized', body);
-    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, AUTH_ERROR_MODAL_PARAMS);
-    tick();
-  }));
-
   it('should open modal with BOOKING_ONLINE_ERROR params', fakeAsync(() => {
     const data = {
       scenarioDto: {
@@ -141,6 +124,23 @@ describe('ErrorsInterceptor', () => {
 
     req.flush(data);
     expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, BOOKING_ONLINE_ERROR);
+    tick();
+  }));
+
+  it('should open modal with AUTH_ERROR_MODAL_PARAMS params', fakeAsync(() => {
+    const spy = jest.spyOn(modalService, 'openModal');
+    formPlayerApi.checkIfOrderExist().subscribe(
+      () => fail('should have failed with the 401 error'),
+      (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(401);
+      },
+    );
+    const requestToError = httpMock.expectOne(
+      `${config.apiUrl}/service/${init.serviceId}/scenario/checkIfOrderIdExists`,
+    );
+    const body = new HttpErrorResponse({ status: 401, statusText: 'Unauthorized' });
+    requestToError.flush('Unauthorized', body);
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, AUTH_ERROR_MODAL_PARAMS);
     tick();
   }));
 

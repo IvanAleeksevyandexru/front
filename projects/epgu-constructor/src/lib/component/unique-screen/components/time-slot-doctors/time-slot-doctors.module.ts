@@ -16,12 +16,29 @@ import { TimeSlotDoctorsComponent } from './time-slot-doctors.component';
 import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-screen-wrapper/default-unique-screen-wrapper.module';
 import { TimeSlotDoctorService } from './time-slot-doctor.service';
 import { DisclaimerModule } from '../../../../shared/components/disclaimer/disclaimer.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RefResourceInterceptor } from '../../../../core/interceptor/ref-resource/ref-resource.interceptor';
+import { RefServiceOrSpecsInterceptor } from '../../../../core/interceptor/ref-service-or-specs/ref-service-or-specs.interceptor';
 
 const COMPONENTS = [TimeSlotDoctorsContainerComponent, TimeSlotDoctorsComponent];
 
 @NgModule({
   declarations: [...COMPONENTS],
-  providers: [ScreenService, EventBusService, TimeSlotDoctorService],
+  providers: [
+    ScreenService,
+    EventBusService,
+    TimeSlotDoctorService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefResourceInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefServiceOrSpecsInterceptor,
+      multi: true,
+    },
+  ],
   exports: [...COMPONENTS],
   imports: [
     BaseModule,

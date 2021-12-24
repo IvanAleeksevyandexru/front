@@ -39,6 +39,9 @@ import { JusticeSearchPanelComponent } from './components/search-panel-resolver/
 import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
 import { MapSidebarComponent } from './components/map-sidebar/map-sidebar.component';
 import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipeable-wrapper.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DictionaryLoadingTimeoutInterceptor } from '../../../../core/interceptor/dictionary-loading-timeout/dictionary-loading-timeout.interceptor';
+import { DictionaryLoadingErrorInterceptor } from '../../../../core/interceptor/dictionary-loading-error/dictionary-loading-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,16 @@ import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipea
     NotifierService,
     KindergartenSearchPanelService,
     KindergartenService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: DictionaryLoadingTimeoutInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: DictionaryLoadingErrorInterceptor,
+      multi: true,
+    },
     {
       provide: 'notifierSetting',
       useValue: { singleNotifier: true },
