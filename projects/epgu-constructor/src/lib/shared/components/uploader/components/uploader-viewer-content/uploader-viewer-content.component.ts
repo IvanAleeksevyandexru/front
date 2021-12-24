@@ -23,6 +23,8 @@ import { TerraByteApiService } from '../../../../../core/services/terra-byte-api
 import { SuggestMonitorService } from '../../../../services/suggest-monitor/suggest-monitor.service';
 import { FileItem, FileItemStatus } from '../../../file-upload/data';
 import { SuggestActions } from '../../../../constants/suggest';
+import { ScreenService } from '../../../../../screen/screen.service';
+import { FileUploadAttributes } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer-content',
@@ -69,6 +71,7 @@ export class UploaderViewerContentComponent extends BaseComponent {
     private deviceDetector: DeviceDetectorService,
     private teraService: TerraByteApiService,
     private monitor: SuggestMonitorService,
+    private screenService: ScreenService,
   ) {
     super();
   }
@@ -82,14 +85,13 @@ export class UploaderViewerContentComponent extends BaseComponent {
       $event.preventDefault();
     }
   }
+
   init({ file, size, position }: ViewerInfo): void {
     this.isError = file.status === FileItemStatus.error;
     this.isConfirm = false;
     this.size = size;
     this.position = position;
-    this.description =
-      file.item.description ||
-      'Убедитесь, что документ не просрочен, страницы хорошо видны, данные не прикрыты пальцами и не обрезаны. Это важно, чтобы заявление приняли';
+    this.description = this.setModalDescription(file);
     this.item = file;
     this.zoomComponent?.resetZoom();
     this.imageURL = file.isImage ? file.urlToFile() : null;
@@ -102,6 +104,7 @@ export class UploaderViewerContentComponent extends BaseComponent {
   zoomAction(zoom: ZoomEvent): void {
     this.zoom.next(zoom);
   }
+
   zoomIn(): void {
     this.zoomComponent?.zoomIn();
   }
@@ -118,6 +121,7 @@ export class UploaderViewerContentComponent extends BaseComponent {
     } else {
       this.download.emit(this.item);
     }
+
     this.monitor.handleAutocompleteEvent(SuggestActions.DOWNLOAD_ACTION, 'UPLOAD_DOWNLOAD_BUTTON', {
       mnemonic: this.item.createUploadedParams().mnemonic,
       date: new Date().toISOString(),
@@ -135,6 +139,7 @@ export class UploaderViewerContentComponent extends BaseComponent {
   cancelAction(): void {
     this.isConfirm = false;
   }
+
   confirmAction(): void {
     if (this.item.attached) {
       this.suggestAction(false);
@@ -153,5 +158,13 @@ export class UploaderViewerContentComponent extends BaseComponent {
       mnemonic: this.item.createUploadedParams().mnemonic,
       date: new Date().toISOString(),
     });
+  }
+
+  private setModalDescription(file: FileItem): string {
+    return (
+      (this.screenService.component?.attrs as FileUploadAttributes)?.previewModalDescription ||
+      file.item.description ||
+      'Убедитесь, что документ не просрочен, страницы хорошо видны, данные не прикрыты пальцами и не обрезаны. Это важно, чтобы заявление приняли'
+    );
   }
 }
