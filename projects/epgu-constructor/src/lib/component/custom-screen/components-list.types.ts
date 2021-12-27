@@ -250,6 +250,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   placeholder?: Placeholder;
   price?: Price;
   queryMinSymbolsCount?: QueryMinSymbolsCount;
+  rank?: boolean;
   readonly?: Readonly;
   ref?: (CustomComponentRef | DateRangeRef)[];
   refs?: KeyValueMap;
@@ -263,6 +264,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   selectApartmentCheckbox?: SelectApartmentCheckbox;
   selectHouseCheckbox?: SelectHouseCheckbox;
   showPlaceholderOnFocus?: ShowPlaceholderOnFocus;
+  stringsAmount?: number;
   subLabel?: SubLabel;
   suggestionId?: SuggestionId;
   title?: Title;
@@ -273,7 +275,6 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   validation?: CustomComponentAttrValidation[];
   wait?: Wait;
   withAmount?: WithAmount;
-  rank?: boolean;
 }
 
 export interface DateRestriction {
