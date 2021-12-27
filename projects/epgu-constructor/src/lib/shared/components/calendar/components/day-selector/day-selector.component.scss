@@ -1,5 +1,6 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 .calendar-grid-wrap {
   display: flex;
@@ -29,7 +30,7 @@
       padding: 10px;
 
       .calendar-week-day-text {
-        font-family: Lato, sans-serif;
+        font-family: $font-main;
         font-size: 14px;
         line-height: 20px;
         color: $color-dark-gray;
