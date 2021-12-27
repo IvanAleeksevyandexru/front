@@ -12,6 +12,7 @@ import { GroupListService } from '../../../../services/group-list/group-list.ser
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 import { FindOptionsGroup, VendorType } from '../../../../typings';
 import { GroupFiltersFormComponent } from '../../../base/components/group-filters-form/group-filters-form.component';
+import { countFilters } from '../../../../helpers';
 
 @Component({
   selector: 'children-clubs-group-list-container',
@@ -54,31 +55,13 @@ export class GroupListContainerComponent implements OnInit {
   }
 
   countingFilters(filters: FindOptionsGroup): void {
-    let count = 0;
-    if (!filters) {
-      this.filtersCount$$.next(count);
-      return;
-    }
-    const finded = Object.entries(filters).filter(
-      ([key, value]) =>
-        value !== null &&
-        value !== false &&
-        value !== undefined &&
-        key !== 'vendor' &&
-        key !== 'nextSchoolYear' &&
-        key !== 'inlearnoPayments' &&
-        key !== 'pfdoPayments' &&
-        key !== 'query',
-    );
-    count += finded.length;
-
-    if (filters?.inlearnoPayments) {
-      count += Object.entries(filters.inlearnoPayments).filter((value) => value[1]).length;
-    }
-    if (filters?.pfdoPayments) {
-      count += Object.entries(filters.pfdoPayments).filter((value) => value[1]).length;
-    }
-
+    const count = countFilters(filters, [
+      'vendor',
+      'nextSchoolYear',
+      'inlearnoPayments',
+      'pfdoPayments',
+      'query',
+    ]);
     this.filtersCount$$.next(count);
   }
 
