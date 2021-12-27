@@ -76,18 +76,46 @@ describe('ConstructorDatePickerComponent', () => {
 
   describe('input event', () => {
     it('should call date selected event when input is correct', () => {
-      const event = { target: { value: '01.01.2021' } };
-      const date = new Date('01.01.2021');
+      const event = { target: { value: '01.01.2014' } };
+      const date = new Date('01.01.2014');
       jest.spyOn(component.dateSelectedEvent, 'emit');
       debugEl.triggerEventHandler('input', event);
       expect(component.dateSelectedEvent.emit).toHaveBeenCalledWith(date);
     });
 
-    it('should do nothing if date isnt full', () => {
+    it('should do nothing if date is not full', () => {
       const event = { target: { value: '01.01.____' } };
       jest.spyOn(component.dateSelectedEvent, 'emit');
       debugEl.triggerEventHandler('input', event);
       expect(component.dateSelectedEvent.emit).not.toHaveBeenCalled();
+    });
+
+    it('should do nothing if date is not in allowable range', () => {
+      const eventMax = { target: { value: '01.01.2023' } };
+      const eventMin = { target: { value: '01.01.1023' } };
+      jest.spyOn(component.dateSelectedEvent, 'emit');
+      debugEl.triggerEventHandler('input', eventMax);
+      debugEl.triggerEventHandler('input', eventMin);
+      expect(component.dateSelectedEvent.emit).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('isDateInRange()', () => {
+    it('should return true if date has in allowable range', () => {
+      const date = new Date('01.01.2014');
+      const isDateInRange = (component as any).isDateInRange(date);
+
+      expect(isDateInRange).toBeTruthy();
+    });
+
+    it('should return false if date has not in allowable range', () => {
+      const dateMin = new Date('01.01.2010');
+      const dateMax = new Date('01.01.2020');
+      const isMinDateInRange = (component as any).isDateInRange(dateMin);
+      const isMaxDateInRange = (component as any).isDateInRange(dateMax);
+
+      expect(isMinDateInRange).toBeFalsy();
+      expect(isMaxDateInRange).toBeFalsy();
     });
   });
 });

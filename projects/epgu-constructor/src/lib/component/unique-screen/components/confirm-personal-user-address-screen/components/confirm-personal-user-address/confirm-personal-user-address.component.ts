@@ -164,7 +164,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
 
   private getPreparedDataToSend(): string {
     const value = this.form.getRawValue();
-    if (value.regDate) {
+    if (value.regDate && !isNaN(value.regDate)) {
       value.regDate = this.datesToolsService.format(value.regDate, DATE_STRING_DOT_FORMAT);
     }
     return JSON.stringify(value);
