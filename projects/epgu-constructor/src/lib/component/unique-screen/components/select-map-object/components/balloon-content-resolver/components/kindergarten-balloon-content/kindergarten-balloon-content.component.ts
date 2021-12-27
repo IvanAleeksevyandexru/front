@@ -62,15 +62,12 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
 
   public ngOnInit(): void {
     this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
-      this.cdr.detectChanges();
+      window.requestAnimationFrame(() => this.cdr.detectChanges());
     });
   }
 
   public calcGartens(mapObj, evt: MouseEvent): void {
-    const val =
-      this.kindergartenSearchPanelService.deptsLeftToChoose$.value + (mapObj.isSelected ? 1 : -1);
-    this.kindergartenSearchPanelService.deptsLeftToChoose$.next(val);
-    this.selectObject.apply(null, [mapObj, evt]);
+    this.selectObject(mapObj, evt);
     this.cdr.detectChanges();
   }
 

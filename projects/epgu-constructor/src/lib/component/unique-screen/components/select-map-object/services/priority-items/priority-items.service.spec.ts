@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 
-import { take, takeLast } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 
 import { PriorityItemsService } from './priority-items.service';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
+import { ForTestsOnlyModule } from '../../../../../../core/for-tests-only.module';
 
 const mockCreateItem = (CODE: string) => {
   const attributeValues = { CODE };
@@ -18,7 +18,7 @@ describe('PriorityItemsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PriorityItemsService, { provide: ScreenService, useClass: ScreenServiceStub }],
+      imports: [ForTestsOnlyModule],
     });
     screenService = TestBed.inject(ScreenService);
     const kindergartenAttrs = { listMaxLength: 8, nextStepLength: 11 };

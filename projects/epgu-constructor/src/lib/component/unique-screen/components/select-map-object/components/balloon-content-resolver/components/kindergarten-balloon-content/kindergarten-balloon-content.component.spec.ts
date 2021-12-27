@@ -35,9 +35,10 @@ describe('KindergartenContentComponent', () => {
     kindergartenSearchPanelService = fixture.debugElement.injector.get(
       KindergartenSearchPanelService,
     );
-    kindergartenSearchPanelService.deptsLeftToChoose$.next(10);
+    kindergartenSearchPanelService.EDUORGMAX = 10;
+
     component = fixture.componentInstance;
-    component.selectObject = (item) => (item.isSelected = !item.isSelected);
+    component.selectObject = jest.fn((item) => (item.isSelected = !item.isSelected));
     component.mapObject = mockKindergartenMapObject;
     component.objectClick = () => null;
     fixture.detectChanges();
@@ -52,12 +53,11 @@ describe('KindergartenContentComponent', () => {
     const selectBtn = fixture.debugElement.query(By.css('.submit-button')).nativeElement;
     selectBtn.click();
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(kindergartenSearchPanelService.deptsLeftToChoose$.getValue()).toEqual(9);
+    expect(component.selectObject).toHaveBeenCalledTimes(1);
     const cancelBtn = fixture.debugElement.query(
       By.css('div.department-selected > a.information-link'),
     ).nativeElement;
     cancelBtn.click();
     expect(spy).toHaveBeenCalledTimes(2);
-    expect(kindergartenSearchPanelService.deptsLeftToChoose$.getValue()).toEqual(10);
   });
 });
