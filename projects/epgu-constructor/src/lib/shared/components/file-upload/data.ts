@@ -302,7 +302,7 @@ export const createError = (
     description: '',
   };
   errorHandler[ErrorActions.addMaxSize] = {
-    text: `Файл тяжелее ${getSizeInMB(data.maxSize)} МБ`,
+    text: `Суммарный размер файлов превышает ${getSizeInMB(data.maxSize)} МБ`,
     description: 'Попробуйте уменьшить размер или загрузите файл полегче',
   };
 
