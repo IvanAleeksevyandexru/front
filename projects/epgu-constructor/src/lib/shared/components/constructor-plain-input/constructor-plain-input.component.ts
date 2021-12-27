@@ -39,6 +39,7 @@ export class ConstructorPlainInputComponent implements AfterViewInit {
   @Input() pattern?: string;
   @Input() component?: CustomComponent;
   @Input() suggestions?: ISuggestionItem;
+  @Input() showPlaceholderOnFocus?: boolean;
 
   @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
     ISuggestionItem | ISuggestionItemList
