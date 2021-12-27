@@ -44,6 +44,7 @@ export class DateRangeService {
     this.rangeMap.set(id, { max: null, min: null });
   }
 
+  // TODO в params приходит строка с датой, а не парамсы. Нужно проверить и переименовать.
   public parsedDates(value: string | Date, params: string): { dateLeft: Date; dateRight: Date } {
     const dateLeft =
       typeof value === 'string'
