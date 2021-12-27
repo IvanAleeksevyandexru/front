@@ -93,10 +93,16 @@ describe('ListComponent', () => {
       expect(component.filtersCount$$.getValue()).toBe(2);
     });
 
-    it('should not count falsy values', () => {
-      const filters: Filters = { focus: null, ovzType: undefined, isRegistrationOpen: false };
+    it('should not count falsy values except 0', () => {
+      const filters: Filters = {
+        focus: null,
+        ovzType: undefined,
+        isRegistrationOpen: false,
+        direction: '',
+        maxPrice: 0,
+      };
       component.countingFilters(filters);
-      expect(component.filtersCount$$.getValue()).toBe(0);
+      expect(component.filtersCount$$.getValue()).toBe(1);
     });
   });
 });
