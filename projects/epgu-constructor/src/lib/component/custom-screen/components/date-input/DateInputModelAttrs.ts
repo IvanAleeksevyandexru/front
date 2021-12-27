@@ -25,6 +25,8 @@ export default class DateInputModelAttrs extends GenericAttrs {
 
   readonly hidden: boolean;
 
+  readonly hint: string;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.readonly = attrs.readonly;
@@ -38,5 +40,6 @@ export default class DateInputModelAttrs extends GenericAttrs {
     this.to = attrs.to;
     this.from = attrs.from;
     this.hidden = attrs.hidden;
+    this.hint = attrs.hint;
   }
 }
