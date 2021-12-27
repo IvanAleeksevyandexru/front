@@ -8,11 +8,13 @@
   [externalApiUrl]="externalApiUrl"
   [id]="id"
   [validationShowOn]="validationShowOn"
-  [invalid]="invalid"
+  [invalid]="invalid && !controlFocused"
   [formControl]="$any(control)"
   [clearable]="clearable"
   [suggest]="suggestions"
   [suggestSeparator]="suggestSeparator"
   (selectSuggest)="selectSuggest.emit($event)"
+  (focus)="notifyFocusEvent(true)"
+  (blur)="notifyFocusEvent(false)"
 >
 </lib-dadata-widget>
