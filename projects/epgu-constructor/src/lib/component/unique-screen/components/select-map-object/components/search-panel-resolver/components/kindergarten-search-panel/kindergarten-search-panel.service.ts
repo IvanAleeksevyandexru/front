@@ -9,20 +9,10 @@ import { DictionaryResponse } from '../../../../../../../../shared/services/dict
 export class KindergartenSearchPanelService implements OnDestroy {
   public EDUORGMAX: number;
 
-  public topLabel$ = new BehaviorSubject('');
-
-  public bottomLabel$ = new BehaviorSubject('');
-
-  public deptsLeftToChoose$ = new BehaviorSubject(0);
-
-  private _deptsChoosen$ = new BehaviorSubject<number>(0);
+  public deptsChoosen$ = new BehaviorSubject<number>(0);
 
   get childHomeCoords(): number[] {
     return this.getChildHomeCoordinates();
-  }
-
-  get deptsChoosen$(): Observable<number> {
-    return this._deptsChoosen$.asObservable();
   }
 
   constructor(
@@ -30,22 +20,15 @@ export class KindergartenSearchPanelService implements OnDestroy {
     private dictionaryApiService: DictionaryApiService,
   ) {
     this.getEDUORGMAX();
-    this.deptsLeftToChoose$.subscribe((value) => {
-      const choosenCount = this.EDUORGMAX - value;
-      this.bottomLabel$.next(`Выбрано ${choosenCount} из ${this.EDUORGMAX}. Посмотреть`);
-      this._deptsChoosen$.next(choosenCount);
-    });
   }
 
   // TODO не вызывается из-за того что лежит в провайдерах модуля. Перенести в компонент
   ngOnDestroy(): void {
-    this.deptsLeftToChoose$.complete();
-    this.topLabel$.complete();
-    this.bottomLabel$.complete();
+    this.deptsChoosen$.complete();
   }
 
   public getEDUORGMAX(): Observable<DictionaryResponse> {
-    const municipalOktmo = this.screenService.component?.arguments.municipalOktmo as string;
+    const municipalOktmo = this.screenService.component?.arguments?.municipalOktmo as string;
     if (!municipalOktmo) {
       return;
     }

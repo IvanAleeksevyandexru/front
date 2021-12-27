@@ -28,7 +28,7 @@
     <ng-container
       *ngIf="
         !isSelectButtonHidden && {
-          deptsLeftToChoose: kindergartenSearchPanelService.deptsLeftToChoose$ | async
+          deptsLeftToChoose: (kindergartenSearchPanelService.EDUORGMAX - (kindergartenSearchPanelService.deptsChoosen$ | async))
         } as data
       "
     >

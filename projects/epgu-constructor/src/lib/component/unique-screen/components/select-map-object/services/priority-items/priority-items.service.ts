@@ -3,6 +3,7 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import { KindergartenSearchPanelService } from '../../components/search-panel-resolver/components/kindergarten-search-panel/kindergarten-search-panel.service';
 
 export interface CancelContext {
   index: number;
@@ -58,7 +59,10 @@ export class PriorityItemsService {
     return this.maxKindergarten$$.getValue();
   }
 
-  constructor(private screenService: ScreenService) {}
+  constructor(
+    private screenService: ScreenService,
+    private kindergartenSearchPanelService: KindergartenSearchPanelService,
+  ) {}
 
   getInitSize(): number {
     return this.maxKindergarten > this.listMaxLength ? this.listMaxLength : this.maxKindergarten;
@@ -66,7 +70,7 @@ export class PriorityItemsService {
 
   set(dictItems: DictionaryItem[]): void {
     const items = [...dictItems];
-    this.items.next(items);
+    this.updateItems(items);
     const size = this.getInitSize();
     if (items.length > size) {
       this.updateScreenItems(items.slice(0, size));
@@ -135,6 +139,7 @@ export class PriorityItemsService {
 
   updateItems(items: DictionaryItem[]): void {
     this.items.next(items);
+    this.kindergartenSearchPanelService.deptsChoosen$.next(items.length);
   }
 
   updateScreenItems(items: DictionaryItem[]): void {

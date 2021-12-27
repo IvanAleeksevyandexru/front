@@ -57,10 +57,8 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.kindergartenSearchPanelService.deptsLeftToChoose$.subscribe((value) => {
-      this.bottomLabel = `Выбрано ${this.kindergartenSearchPanelService.EDUORGMAX - value} из ${
-        this.kindergartenSearchPanelService.EDUORGMAX
-      }.`;
+    this.kindergartenSearchPanelService.deptsChoosen$.subscribe((value) => {
+      this.bottomLabel = `Выбрано ${value} из ${this.kindergartenSearchPanelService.EDUORGMAX}.`;
       this.cdr.detectChanges();
     });
     this.kindergartenSearchPanelService.getEDUORGMAX().subscribe((response) => {
@@ -130,9 +128,7 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
     this.kindergartenSearchPanelService.EDUORGMAX = Math.min(responseValue, KINDERGATEN_MAX_VALUE);
     const cacheValue = this.getItemsFromCache();
     this.itemsService.init(this.kindergartenSearchPanelService.EDUORGMAX, cacheValue);
-    this.kindergartenSearchPanelService.deptsLeftToChoose$.next(
-      this.kindergartenSearchPanelService.EDUORGMAX - cacheValue.length,
-    );
+    this.kindergartenSearchPanelService.deptsChoosen$.next(cacheValue.length);
     this.topLabel =
       this.kindergartenSearchPanelService.EDUORGMAX === 1
         ? `<p>Выберите детский сад</p>`
