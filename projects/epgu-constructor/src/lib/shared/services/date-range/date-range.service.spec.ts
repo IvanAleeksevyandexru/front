@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DatesToolsService, ConfigService, LoggerService } from '@epgu/epgu-constructor-ui-kit';
-import { ApplicantAnswersDto } from '@epgu/epgu-constructor-types';
+import { ApplicantAnswersDto, CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { DateRangeService } from './date-range.service';
 import {
   CustomComponent,
@@ -11,6 +11,8 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
 import { DateRangeAttrs } from './date-range.models';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { createComponentMock } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.mock';
 
 describe('DateRangeService', () => {
   let service: DateRangeService;
@@ -84,6 +86,51 @@ describe('DateRangeService', () => {
       screenService.applicantAnswers,
     );
     expect(maxDate).toEqual(expectedResult);
+  });
+
+  describe('parsedDates()', () => {
+    it('parsedDates should work for string and date', async () => {
+      const resp1 = service.parsedDates(MOCK_TODAY, '01.10.2018');
+      const resp2 = service.parsedDates(new Date(MOCK_TODAY), '01.10.2018');
+      expect(resp1).toEqual({
+        dateLeft: new Date(MOCK_TODAY),
+        dateRight: new Date('10.01.2018'),
+      });
+      expect(resp2).toEqual({
+        dateLeft: new Date(MOCK_TODAY),
+        dateRight: new Date('10.01.2018'),
+      });
+    });
+  });
+
+  it('updateLimitDate should work', async () => {
+    const dependentComponent = createComponentMock({
+      attrs: {
+        ref: [
+          {
+            relatedRel: 'pd7_3',
+            val: '0c5b2444-70a0-4932-980c-b4dc0d3f02b5',
+            relation: CustomComponentRefRelation.displayOn,
+            relatedDate: 'pd7_3',
+            period: 'years',
+            condition: '>today',
+          },
+        ],
+      },
+    });
+
+    const control = new FormGroup({
+      id: new FormControl(dependentComponent.id),
+      attrs: new FormControl(dependentComponent.attrs),
+      value: new FormControl(dependentComponent.value),
+    });
+    const form = new FormArray([control]);
+    await service.updateLimitDate(form, componentMock, dependentComponent, {});
+    expect(control.get('attrs').value).toStrictEqual({
+      ...dependentComponent.attrs,
+      minDate: undefined,
+      maxDate: undefined,
+    });
   });
 
   describe('clearDate()', () => {
