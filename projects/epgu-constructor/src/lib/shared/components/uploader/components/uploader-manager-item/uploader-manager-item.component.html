@@ -67,12 +67,24 @@
           class="uploader-manager-item__button remove_button {{
             status === fileStatus.error ? 'uploader-manager-item__button_error' : ''
           }}"
-        ></button>
+        >
+          <epgu-cf-ui-icon
+            *ngIf="deviceDetector.isMobile"
+            [type]="iconType.Delete"
+            [mainColor]="iconColor.BaseGosblue"
+          ></epgu-cf-ui-icon>
+        </button>
         <button
           *ngIf="fileItem?.attached"
           (click)="detach()"
           class="uploader-manager-item__button detach_button"
-        ></button>
+        >
+          <epgu-cf-ui-icon
+            *ngIf="deviceDetector.isMobile"
+            [type]="iconType.CurveArrow"
+            [mainColor]="iconColor.LightGray"
+          ></epgu-cf-ui-icon>
+        </button>
         <button
           class="uploader-manager-item__button"
           *ngIf="status === fileStatus.uploading"

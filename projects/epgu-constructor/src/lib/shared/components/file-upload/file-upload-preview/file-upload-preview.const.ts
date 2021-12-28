@@ -18,10 +18,6 @@ const minCropSize = {
     height: 413 * (45 / 35),
   },
 };
-const photoMaskSrc = {
-  desktop: 'assets/icons/svg/photo-mask-desktop.svg',
-  phone: 'assets/icons/svg/photo-mask-mobile.svg',
-};
 
 interface ImageErrorText {
   [errorType: string]: {
@@ -76,7 +72,6 @@ export {
   minCropSize,
   aspectRatio,
   hintSetting,
-  photoMaskSrc,
   showErrorTime,
   ImageErrorText,
   ImgSubject,

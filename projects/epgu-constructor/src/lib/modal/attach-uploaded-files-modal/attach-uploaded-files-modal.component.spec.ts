@@ -26,7 +26,10 @@ import { AutocompletePrepareService } from '../../core/services/autocomplete/aut
 import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
 import { TerraByteApiService } from '../../core/services/terra-byte-api/terra-byte-api.service';
-
+import { MockProvider } from 'ng-mocks';
+import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
+import { ActionService } from '../../shared/directives/action/action.service';
+import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;
   let fixture: ComponentFixture<AttachUploadedFilesModalComponent>;
@@ -80,6 +83,9 @@ describe('AttachUploadedFilesModalComponent', () => {
         CurrentAnswersService,
         JsonHelperService,
         TerraByteApiService,
+        MockProvider(FormPlayerApiService),
+        MockProvider(ActionService),
+        MockProvider(HtmlSelectService),
       ],
     }).compileComponents();
   });

@@ -24,6 +24,7 @@ import { PlusIconComponent } from './plus-icon/plus-icon.component';
 import { MapIconComponent } from './map-icon/map-icon.component';
 import { MenuIconComponent } from './menu-icon/menu-icon.component';
 import { FilterIconComponent } from './filter-icon/filter-icon.component';
+import { DeleteIconComponent } from './delete-icon/delete-icon.component';
 
 type IconComponent =
   | CameraIconComponent
@@ -49,7 +50,8 @@ type IconComponent =
   | PlusIconComponent
   | MenuIconComponent
   | MapIconComponent
-  | FilterIconComponent;
+  | FilterIconComponent
+  | DeleteIconComponent;
 
 export const IconTypeToComponent: Partial<Record<IconType, Type<IconComponent>>> = {
   ProgressForm: ProgressFormIconComponent,
@@ -76,4 +78,5 @@ export const IconTypeToComponent: Partial<Record<IconType, Type<IconComponent>>>
   Menu: MenuIconComponent,
   Map: MapIconComponent,
   Filter: FilterIconComponent,
+  Delete: DeleteIconComponent,
 };

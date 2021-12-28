@@ -5,4 +5,5 @@ export enum IconColor {
   Green = '#39A43E',
   Gray = '#605f67',
   ActiveGray = '#66727F',
+  LightGray = '#AEB5BC',
 }

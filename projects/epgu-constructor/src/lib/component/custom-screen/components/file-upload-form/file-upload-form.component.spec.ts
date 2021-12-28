@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 
-import { EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { EventBusService, IconsModule, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { Clarifications, DisplayDto, ScreenTypes } from '@epgu/epgu-constructor-types';
 import { ChangeDetectionStrategy, Injector } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
@@ -86,6 +86,7 @@ describe('FileUploadComponent', () => {
         Injector,
         UploaderScreenService,
         UnsubscribeService,
+        IconsModule,
       ],
     })
       .overrideComponent(FileUploadFormComponent, {

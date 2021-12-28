@@ -11,7 +11,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { MockModule } from 'ng-mocks';
+import { MockComponent, MockModule } from 'ng-mocks';
 import { HttpClientModule } from '@angular/common/http';
 import { FileSizeModule } from '@epgu/ui/pipes';
 import { ZoomModule } from '../../../zoom/zoom.module';
@@ -28,6 +28,7 @@ import {
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
+import { OutputHtmlComponent } from '../../../output-html/output-html.component';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -71,14 +72,13 @@ const mockInfo = (name: string, status?: FileItemStatus, error?: FileItemError) 
   }
   return { file, position: 1, size: 1 } as ViewerInfo;
 };
-
 describe('UploaderViewerContentComponent', () => {
   let component: UploaderViewerContentComponent;
   let fixture: ComponentFixture<UploaderViewerContentComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [UploaderViewerContentComponent],
+      declarations: [UploaderViewerContentComponent, MockComponent(OutputHtmlComponent)],
       imports: [
         BaseUiModule,
         MockModule(ZoomModule),

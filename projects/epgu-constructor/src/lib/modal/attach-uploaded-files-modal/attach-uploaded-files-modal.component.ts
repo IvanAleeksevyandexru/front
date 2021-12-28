@@ -25,6 +25,10 @@ import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';
 import { TerraByteApiService } from '../../core/services/terra-byte-api/terra-byte-api.service';
+const imageErrorPicture = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/image-error.svg')
+  .default as string;
+const stopImagePicture = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/stop.svg')
+  .default as string;
 
 @Component({
   selector: 'epgu-constructor-attach-uploaded-files-modal',
@@ -50,7 +54,10 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
   basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
   iconsTypes = iconsTypes;
-
+  icons = {
+    error: imageErrorPicture,
+    stop: stopImagePicture,
+  };
   constructor(
     public injector: Injector,
     public config: ConfigService,

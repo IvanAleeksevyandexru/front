@@ -1,31 +1,23 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Output,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output, Input } from '@angular/core';
 import { BaseComponent } from '@epgu/epgu-constructor-ui-kit';
-
+const desktopIcon = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/photo-upload-area-desktop.svg')
+  .default as string;
+const mobileIcon = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/photo-upload-area-mobile.svg')
+  .default as string;
 @Component({
   selector: 'epgu-constructor-photo-form-view',
   templateUrl: './photo-form-view.component.html',
   styleUrls: ['./photo-form-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PhotoFormViewComponent extends BaseComponent implements OnInit {
+export class PhotoFormViewComponent extends BaseComponent {
   @Input() isDesktop: boolean;
-  @Input() staticDomainAssetsPath: string;
   @Input() croppedImageUrl: string;
   @Output() hiddenFileInputEvent = new EventEmitter<void>();
   @Output() openCameraEvent = new EventEmitter<void>();
 
-  desktopIcon: string;
-  mobileIcon: string;
-
-  ngOnInit(): void {
-    this.desktopIcon = `${this.staticDomainAssetsPath}/assets/icons/svg/photo-upload-area-desktop.svg`;
-    this.mobileIcon = `${this.staticDomainAssetsPath}/assets/icons/svg/photo-upload-area-mobile.svg`;
-  }
+  public icons = {
+    desktopIcon: desktopIcon,
+    mobileIcon: mobileIcon,
+  };
 }

@@ -9,12 +9,13 @@ import {
 import { ImgCropperConfig, ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
 import { Subject } from 'rxjs';
 
-import { ModalBaseComponent, ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { hintSetting, photoMaskSrc, showErrorTime } from './photo-editor-modal.constant';
+import { ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
+import { hintSetting, showErrorTime } from './photo-editor-modal.constant';
 
 import { ImageErrorText, NewSizeEvent } from '../../upload-and-edit-photo-form.model';
 import { minCropSize, imageErrorText } from '../../upload-and-edit-photo-form.constant';
-
+const photoMask = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/photo-mask-desktop.svg')
+  .default as string;
 @Component({
   selector: 'epgu-constructor-photo-editor-modal',
   templateUrl: './photo-editor-modal.component.html',
@@ -29,7 +30,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
   hintSetting = hintSetting;
 
   imageObjectUrl: string;
-  maskSrc: string;
+  maskSrc = photoMask;
 
   imageErrors: string[][];
   imageErrorText: ImageErrorText = imageErrorText;
@@ -40,11 +41,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
 
   isPhoneSize: boolean;
 
-  constructor(
-    public injector: Injector,
-    public config: ConfigService,
-    private changeDetectionRef: ChangeDetectorRef,
-  ) {
+  constructor(public injector: Injector, private changeDetectionRef: ChangeDetectorRef) {
     super(injector);
   }
 
@@ -106,7 +103,6 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
 
   private setCropperSize(): void {
     this.isPhoneSize = matchMedia('(max-width: 576px)').matches;
-    this.maskSrc = `${this.config.staticDomainAssetsPath}/${photoMaskSrc.desktop}`;
   }
 
   private fitImageToCropArea(): void {
