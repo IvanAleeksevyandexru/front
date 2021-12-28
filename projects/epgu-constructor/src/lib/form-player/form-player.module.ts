@@ -6,6 +6,8 @@ import {
   MainContainerModule,
   PREV_BUTTON_NAVIGATION,
   ConfigService,
+  ModalService,
+  LocationService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CookieService } from 'ngx-cookie-service';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
@@ -22,6 +24,7 @@ import { LogicScreenModule } from '../component/logic-screen/logic-screen.module
 import { PrevButtonNavigationService } from '../core/services/prev-button-navigation/prev-button-navigation.service';
 import { NotifierDisclaimerModule } from '../shared/components/disclaimer/notifier/notifier.module';
 import '@squadette/hammerjs';
+import { NavigationService } from '../core/services/navigation/navigation.service';
 
 registerLocaleData(localeRu);
 
@@ -31,23 +34,26 @@ registerLocaleData(localeRu);
 @NgModule({
   declarations: [FormPlayerComponent],
   imports: [
-    ScreenModule,
+    AutocompleteModule,
+    BaseModule,
     CoreModule,
     CoreUiModule,
-    BaseModule,
-    ModalModule,
-    AutocompleteModule,
     LogicScreenModule,
     MainContainerModule,
-    NotifierModule,
+    ModalModule,
     NotifierDisclaimerModule,
+    NotifierModule,
+    ScreenModule,
   ],
   providers: [
-    FormPlayerService,
-    FormPlayerApiService,
-    CookieService,
-    SmuEventsService,
     ConfigService,
+    CookieService,
+    FormPlayerApiService,
+    FormPlayerService,
+    LocationService,
+    ModalService,
+    NavigationService,
+    SmuEventsService,
     { provide: LOCALE_ID, useValue: 'ru' },
     {
       provide: PREV_BUTTON_NAVIGATION,
