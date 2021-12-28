@@ -199,7 +199,6 @@ type TitleHide = boolean;
 type To = string;
 type Type = string;
 type Wait = string;
-type WithAmount = boolean;
 
 /**
  * @property ref - ссылки на связанные словари, что взять оттуда value для фильтрации текущего словаря
@@ -274,7 +273,6 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   updateOnValidation?: UpdateOn;
   validation?: CustomComponentAttrValidation[];
   wait?: Wait;
-  withAmount?: WithAmount;
 }
 
 export interface DateRestriction {

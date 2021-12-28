@@ -152,7 +152,7 @@ describe('MultiChoiceDictionaryModalComponent', () => {
       component.detachView = (): void => {};
       component.select(true);
       component.onClose();
-      expect(component.closeModal).toHaveBeenCalledWith(mockDictionaryValue);
+      expect(component.closeModal).toHaveBeenCalledWith({ list: mockDictionaryValue, amount: 2 });
     });
   });
 });

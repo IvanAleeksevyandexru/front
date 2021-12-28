@@ -11,8 +11,6 @@ export default class MultipleChoiceDictionaryModelAttrs extends GenericAttrs {
 
   readonly modalHeader: string;
 
-  readonly withAmount: boolean;
-
   readonly dictionaryFilter: ComponentDictionaryFilterDto[];
 
   constructor(attrs: CustomComponentAttr) {
@@ -21,7 +19,6 @@ export default class MultipleChoiceDictionaryModelAttrs extends GenericAttrs {
     this.dictionaryType = attrs.dictionaryType as string;
     this.subLabel = attrs.subLabel;
     this.modalHeader = attrs.modalHeader;
-    this.withAmount = attrs.withAmount;
     this.dictionaryFilter = attrs.dictionaryFilter;
   }
 }
