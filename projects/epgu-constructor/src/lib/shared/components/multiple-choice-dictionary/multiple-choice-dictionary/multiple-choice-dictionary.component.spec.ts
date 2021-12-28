@@ -103,10 +103,10 @@ describe('MultipleChoiceDictionaryComponent', () => {
     it('should be update value after success close modal', () => {
       jest.spyOn(modalService, 'openModal').mockReturnValue(of([]));
       component.onClick();
-      expect(component.selectedItems.list).toEqual([]);
+      expect(component.selectedItems).toEqual([]);
     });
 
-    it('should be  open error modal after error MultiChoiceDictionaryModalComponent', () => {
+    it('should be open error modal after error MultiChoiceDictionaryModalComponent', () => {
       jest.spyOn(modalService, 'openModal').mockReturnValue(of(new Error('Dictionary error')));
       component.onClick();
       jest.spyOn(modalService, 'openModal');
@@ -119,26 +119,30 @@ describe('MultipleChoiceDictionaryComponent', () => {
 
   describe('remove', () => {
     it('should be update selectedItems after remove', () => {
-      component.selectedItems.list = [
-        {
-          id: 'AUT',
-          text: 'АВСТРИЯ',
-          formatted: '',
-          originalItem: {
-            value: 'AUT',
-            parentValue: null,
-            title: 'АВСТРИЯ',
-            isLeaf: true,
-            children: [],
-            attributes: [],
-            source: null,
-            attributeValues: {},
+      component.selectedItems = {
+        list: [
+          {
+            id: 'AUT',
+            text: 'АВСТРИЯ',
+            formatted: '',
+            originalItem: {
+              value: 'AUT',
+              parentValue: null,
+              title: 'АВСТРИЯ',
+              isLeaf: true,
+              children: [],
+              attributes: [],
+              source: null,
+              attributeValues: {},
+            },
           },
-        },
-      ];
+        ],
+        amount: 1,
+      };
+
       fixture.detectChanges();
       component.remove('AUT');
-      expect(component.selectedItems.list).toEqual([]);
+      expect(component.selectedItems).toEqual({ list: [], amount: 0 });
     });
   });
 

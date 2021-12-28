@@ -121,7 +121,10 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
         const selectedItem = value && this.items.find((item) => item.id === key);
         return [...acc, selectedItem];
       }, []);
-    this.closeModal(selectedItems);
+    this.closeModal({
+      list: selectedItems,
+      amount: selectedItems.length,
+    });
   }
 
   private initForm(items: ListElement[]): void {
