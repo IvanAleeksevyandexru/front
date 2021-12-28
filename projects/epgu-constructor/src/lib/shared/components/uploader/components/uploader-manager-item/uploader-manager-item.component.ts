@@ -12,6 +12,7 @@ import {
   DeviceDetectorService,
   ConfigService,
   createDownloadEvent,
+  BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import {
@@ -32,7 +33,7 @@ import { iconsTypes, SuggestAction } from '../../data';
   styleUrls: ['./uploader-manager-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploaderManagerItemComponent {
+export class UploaderManagerItemComponent extends BaseComponent {
   @Output() update = new EventEmitter<FileItem>();
   @Output() cancel = new EventEmitter<CancelAction>();
   @Output() delete = new EventEmitter<FileItem>();
@@ -93,9 +94,11 @@ export class UploaderManagerItemComponent {
   constructor(
     private teraService: TerraByteApiService,
     public config: ConfigService,
+    public deviceDetector: DeviceDetectorService,
     private smu: SmuEventsService,
-    private deviceDetector: DeviceDetectorService,
-  ) {}
+  ) {
+    super();
+  }
 
   cancelAction(type: OperationType): void {
     this.cancel.emit({ type, item: this.fileItem });

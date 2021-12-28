@@ -8,9 +8,4 @@ const hintSetting = {
   color: '#FFD54C',
 };
 
-const photoMaskSrc = {
-  desktop: 'assets/icons/svg/photo-mask-desktop.svg',
-  phone: 'assets/icons/svg/photo-mask-mobile.svg',
-};
-
-export { aspectRatio, hintSetting, photoMaskSrc, showErrorTime };
+export { aspectRatio, hintSetting, showErrorTime };

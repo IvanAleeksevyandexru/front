@@ -24,6 +24,7 @@ import { PlusIconComponent } from './plus-icon/plus-icon.component';
 import { MenuIconComponent } from './menu-icon/menu-icon.component';
 import { MapIconComponent } from './map-icon/map-icon.component';
 import { FilterIconComponent } from './filter-icon/filter-icon.component';
+import { DeleteIconComponent } from './delete-icon/delete-icon.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { FilterIconComponent } from './filter-icon/filter-icon.component';
     ZoomInMagnifyingGlassIconComponent,
     ZoomOutMagnifyingGlassIconComponent,
     FilterIconComponent,
+    DeleteIconComponent,
   ],
   imports: [CommonModule],
   exports: [IconResolverComponent],

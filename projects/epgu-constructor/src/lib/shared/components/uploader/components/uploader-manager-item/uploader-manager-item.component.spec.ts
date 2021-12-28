@@ -8,6 +8,7 @@ import {
   ConfigServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
+  IconsModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FileSizePipe } from '@epgu/ui/pipes';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
@@ -91,6 +92,7 @@ describe('UploaderManagerItemComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         SmuEventsService,
+        IconsModule,
       ],
     })
       .overrideComponent(UploaderManagerItemComponent, {
