@@ -16,10 +16,12 @@ import { CommonModule } from '@angular/common';
 import { LoadService } from '@epgu/ui/services/load';
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormPlayerModule } from '@epgu/epgu-constructor';
 
 @NgModule({
   declarations: [AppComponent, ConfigComponent],
   imports: [
+    FormPlayerModule,
     CommonModule,
     LayoutModule,
     BrowserModule,
