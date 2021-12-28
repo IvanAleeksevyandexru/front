@@ -10,6 +10,7 @@ import {
   ConfigServiceStub,
   ModalService,
   ModalServiceStub,
+  EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HealthService } from '@epgu/ui/services/health';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
@@ -40,6 +41,7 @@ describe('SelectChildrenItemWrapperComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        EventBusService,
         CurrentAnswersService,
         SmuEventsService,
         HtmlSelectService,

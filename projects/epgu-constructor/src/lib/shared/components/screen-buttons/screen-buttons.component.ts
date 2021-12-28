@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ScreenButton, System } from '@epgu/epgu-constructor-types';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ActionType, ScreenButton, System } from '@epgu/epgu-constructor-types';
 import {
   BusEventType,
   DeviceDetectorService,
@@ -12,7 +12,7 @@ import {
   styleUrls: ['./screen-buttons.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ScreenButtonsComponent {
+export class ScreenButtonsComponent implements OnInit {
   @Input() set screenButtons(screenButtons: ScreenButton[]) {
     this.shownButtons = this.getShownButtons(screenButtons);
   }
@@ -28,6 +28,15 @@ export class ScreenButtonsComponent {
     private eventBusService: EventBusService,
     private deviceDetectorService: DeviceDetectorService,
   ) {}
+
+  public ngOnInit(): void {
+    this.eventBusService.on(BusEventType.GetNextStepWithoutClickedButtonEvent).subscribe(() => {
+      const getNextStepButton = this.shownButtons.find(
+        (button) => button.type == ActionType.nextStep,
+      );
+      if (getNextStepButton) this.setClickedButton(getNextStepButton);
+    });
+  }
 
   public setClickedButton(button: ScreenButton): void {
     this.clickedButton = button;

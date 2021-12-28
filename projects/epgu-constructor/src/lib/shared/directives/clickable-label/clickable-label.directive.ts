@@ -11,6 +11,8 @@ import {
   DeviceDetectorService,
   createOpenBrowserEvent,
   JsonHelperService,
+  EventBusService,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { SmuEvent } from '@epgu/ui/models';
@@ -40,6 +42,7 @@ export class ClickableLabelDirective {
     private ngZone: NgZone,
     private screenService: ScreenService,
     private smu: SmuEventsService,
+    private eventBusService: EventBusService,
   ) {}
 
   @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
@@ -138,6 +141,10 @@ export class ClickableLabelDirective {
 
     if (attrs) {
       _attrs = this.jsonHelperService.tryToParse(attrs);
+    }
+
+    if (type == ActionType.nextStep) {
+      this.eventBusService.emit(BusEventType.GetNextStepWithoutClickedButtonEvent);
     }
 
     this.actionService.switchAction(

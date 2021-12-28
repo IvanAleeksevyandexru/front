@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService, ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { ActionType, ComponentActionDto } from '@epgu/epgu-constructor-types';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ActionService } from './action.service';
@@ -17,6 +17,7 @@ export class ActionDirective {
     private readonly actionService: ActionService,
     private currentAnswersService: CurrentAnswersService,
     private modalService: ModalService,
+    private eventBusService: EventBusService,
   ) {}
 
   @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent): void {
@@ -24,6 +25,7 @@ export class ActionDirective {
     if (this.canSwitchActionAfterKeyDown(event, target)) {
       event.preventDefault();
       if (this.currentAnswersService.isValid) {
+        this.eventBusService.emit(BusEventType.GetNextStepWithoutClickedButtonEvent);
         this.actionService.switchAction(this.action, this.componentId);
       }
     }

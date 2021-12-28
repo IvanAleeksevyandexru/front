@@ -18,6 +18,7 @@ import {
   PrevButtonComponent,
   ScreenContainerComponent,
   ImgPrefixerPipe,
+  EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
@@ -82,6 +83,7 @@ describe('SignatureApplicationComponent', () => {
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        EventBusService,
         CurrentAnswersService,
         DownloadService,
         HtmlSelectService,

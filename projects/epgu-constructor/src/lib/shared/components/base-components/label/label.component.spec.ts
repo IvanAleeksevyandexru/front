@@ -11,6 +11,7 @@ import {
   ConfigServiceStub,
   ModalService,
   ModalServiceStub,
+  EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
@@ -39,6 +40,7 @@ describe('LabelComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        EventBusService,
         CurrentAnswersService,
         SmuEventsService,
         HtmlSelectService,
