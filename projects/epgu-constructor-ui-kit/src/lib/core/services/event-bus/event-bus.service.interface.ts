@@ -16,4 +16,5 @@ export enum BusEventType {
   DeleteCachedValueItem = 'deleteCachedValueItem',
   FileDeletedEvent = 'fileDeletedEvent',
   FileUploadItemValueChangedEvent = 'fileUploadItemValueChangedEvent',
+  GetNextStepWithoutClickedButtonEvent = 'getNextStepWithoutClickedButtonEvent',
 }

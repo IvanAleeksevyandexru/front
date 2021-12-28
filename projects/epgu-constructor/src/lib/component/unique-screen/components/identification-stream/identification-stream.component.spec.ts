@@ -11,6 +11,7 @@ import {
   JsonHelperServiceStub,
   UnsubscribeService,
   ConfigServiceStub,
+  EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { BaseModule } from '@epgu/ui/base';
@@ -56,6 +57,7 @@ describe('IdentificationStreamComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
+        EventBusService,
         MockProvider(AutocompletePrepareService),
         MockProvider(HttpClient),
         MockProvider(IdentificationStreamService),

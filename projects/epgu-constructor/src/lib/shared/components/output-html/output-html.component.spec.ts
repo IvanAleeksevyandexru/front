@@ -12,6 +12,7 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   ImgPrefixerPipe,
+  EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { OutputHtmlComponent } from './output-html.component';
@@ -38,6 +39,7 @@ describe('OutputHtmlComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        EventBusService,
         CurrentAnswersService,
         SmuEventsService,
         HtmlSelectService,
