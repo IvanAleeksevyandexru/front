@@ -30,7 +30,10 @@
               [(scale)]="scale"
               (ready)="imageLoaded()"
             ></ly-img-cropper>
-            <img class="photo-editor__mask" [src]="maskSrc" alt="" />
+            <epgu-constructor-output-html
+              class="photo-editor__mask"
+              [html]="maskSrc"
+            ></epgu-constructor-output-html>
           </div>
           <div *ngIf="cropper.isLoaded" class="photo-editor__actions">
             <button class="photo-editor__button" (click)="cropper.zoomOut()">

@@ -7,7 +7,13 @@
     <div class="photo-editor-modal__body">
       <div class="photo-editor__container">
         <div *ngIf="!isPhoneSize" class="photo-editor__moving-hint">
-          <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/move-icon.svg" alt="" />
+          <epgu-cf-ui-icon
+            class="photo-editor__moving-hint__icon"
+            [type]="iconType.MoveIcon"
+            [width]="27"
+            [height]="27"
+            [mainColor]="iconColor.Gray"
+          ></epgu-cf-ui-icon>
           <span>Перетащите фото,<br />чтобы изменить<br />положение</span>
         </div>
         <div class="photo-editor__cropper-container" (resized)="onResized($event)">
@@ -27,7 +33,10 @@
           </div>
           <div *ngIf="cropper.isLoaded" class="photo-editor__actions">
             <button class="photo-editor__button" (click)="cropper.zoomOut()">
-              <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/zoom-out.svg" alt="" />
+              <epgu-cf-ui-icon
+                [type]="iconType.ZoomOut"
+                [mainColor]="iconColor.BaseGosblue"
+              ></epgu-cf-ui-icon>
             </button>
             <epgu-constructor-file-upload-slider
               class="photo-editor__slider"
@@ -37,10 +46,18 @@
             >
             </epgu-constructor-file-upload-slider>
             <button class="photo-editor__button" (click)="cropper.zoomIn()">
-              <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/zoom-in.svg" alt="" />
+              <epgu-cf-ui-icon
+                [type]="iconType.ZoomIn"
+                [mainColor]="iconColor.BaseGosblue"
+              ></epgu-cf-ui-icon>
             </button>
             <button class="photo-editor__button" (click)="cropper.rotate(90)">
-              <img src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/rotate.svg" alt="" />
+              <epgu-cf-ui-icon
+                [width]="18"
+                [height]="18"
+                [type]="iconType.Rotate"
+                [mainColor]="iconColor.BaseGosblue"
+              ></epgu-cf-ui-icon>
             </button>
           </div>
         </div>

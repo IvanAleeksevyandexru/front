@@ -9,7 +9,8 @@
     "@alyle/ui",
     "@tanker/file-ponyfill",
     "node-fetch",
-    "os"
+    "os",
+    "raw-loader"
   ],
   "lib": {
     "entryFile": "src/public-api.ts",
@@ -34,7 +35,8 @@
       "date-fns": "date-fns",
       "date-fns/locale": "locale",
       "lodash": "lodash",
-      "@nicky-lenaers/ngx-scroll-to": "@nicky-lenaers/ngx-scroll-to"
+      "@nicky-lenaers/ngx-scroll-to": "@nicky-lenaers/ngx-scroll-to",
+      "raw-loader": "raw-loader"
     },
     "styleIncludePaths": ["."]
   }

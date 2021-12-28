@@ -1,6 +1,6 @@
 {
   "name": "sf-portal",
-  "version": "396.2.0",
+  "version": "397.1.0",
   "private": true,
   "scripts": {
     "build": "cd ../../ && ng build sf-portal --prod",
@@ -25,10 +25,10 @@
     "@angular/platform-server": "12.2.5",
     "@angular/router": "12.2.5",
     "@datorama/akita": "6.2.3",
-    "@epgu/children-clubs": "396.2.0",
-    "@epgu/epgu-constructor-types": "396.2.0",
-    "@epgu/epgu-constructor-ui-kit": "396.2.0",
-    "@epgu/epgu-constructor": "396.2.0",
+    "@epgu/children-clubs": "397.0.0",
+    "@epgu/epgu-constructor-types": "397.0.0",
+    "@epgu/epgu-constructor-ui-kit": "397.0.0",
+    "@epgu/epgu-constructor": "397.0.0",
     "@epgu/ui": "3.0.395-2-front",
     "@nguniversal/express-engine": "12.1.0",
     "@ngx-translate/core": "13.0.0",

@@ -9,8 +9,9 @@
     alt=""
   />
   <div *ngIf="!croppedImageUrl" dragAndDrop class="photo__uploading-area">
-    <img [src]="isDesktop ? desktopIcon : mobileIcon" alt="" />
-
+    <epgu-constructor-output-html
+      [html]="isDesktop ? icons.desktopIcon : icons.mobileIcon"
+    ></epgu-constructor-output-html>
     <div class="photo__uploading-inner-container">
       <p *ngIf="isDesktop" class="photo__uploading-text photo__uploading-text_mt-80">
         Перетащите фото сюда или выберите на компьютере

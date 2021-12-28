@@ -8,7 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { combineLatest, of, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { LogicComponents } from '@epgu/epgu-constructor-types';
@@ -45,7 +45,7 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
 
   ngOnInit(): void {
     this.logicComponents$
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe$), distinctUntilChanged())
       .subscribe((components: LogicComponents[]) => {
         if (!components.filter(isOnBeforeSubmitComponent).length) {
           this.hookService.clearHook(HookTypes.ON_BEFORE_SUBMIT);
@@ -55,6 +55,7 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
         }
         if (components.filter(isOnInitComponent).length) {
           this.screenService.isLogicComponentLoading = true;
+          this.isLoading = true;
         } else {
           this.isLoading = false;
         }

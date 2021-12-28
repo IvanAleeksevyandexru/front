@@ -153,6 +153,18 @@ describe('LogicComponentsContainerComponent', () => {
     expect(screenService.isLogicComponentLoading).toBeTruthy();
   });
 
+  it('should toggle inner loading variable depending on presence of init components', () => {
+    component.isLoading = false;
+    screenService.logicComponents = [componentsMock[3]];
+
+    component.ngOnInit();
+
+    expect(component.isLoading).toBeTruthy();
+
+    screenService.logicComponents = [componentsMock[1]];
+    expect(component.isLoading).toBeFalsy();
+  });
+
   it('should subscribe to init hooks if viewComponents has been set', fakeAsync(() => {
     const spy = jest.spyOn<any, string>(component, 'resetInitSubscribe');
     component.viewComponents = {} as QueryList<LogicComponentResolverComponent>;

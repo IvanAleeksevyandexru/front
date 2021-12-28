@@ -23,4 +23,5 @@ export enum IconType {
   Menu = 'Menu',
   Map = 'Map',
   Filter = 'Filter',
+  Delete = 'Delete',
 }

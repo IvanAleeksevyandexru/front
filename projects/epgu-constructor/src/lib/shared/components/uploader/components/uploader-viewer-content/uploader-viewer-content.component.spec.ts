@@ -11,12 +11,11 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { MockModule } from 'ng-mocks';
+import { MockComponent, MockModule } from 'ng-mocks';
 import { HttpClientModule } from '@angular/common/http';
 import { FileSizeModule } from '@epgu/ui/pipes';
 import { ZoomModule } from '../../../zoom/zoom.module';
 import { UploaderViewerContentComponent } from './uploader-viewer-content.component';
-
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { SuggestMonitorService } from '../../../../services/suggest-monitor/suggest-monitor.service';
@@ -29,8 +28,9 @@ import {
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
-import { ComponentDto } from 'projects/epgu-constructor-types/src/base';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
+import { OutputHtmlComponent } from '../../../output-html/output-html.component';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -92,7 +92,7 @@ describe('UploaderViewerContentComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [UploaderViewerContentComponent],
+      declarations: [UploaderViewerContentComponent, MockComponent(OutputHtmlComponent)],
       imports: [
         BaseUiModule,
         MockModule(ZoomModule),

@@ -25,6 +25,8 @@ import { FileItem, FileItemStatus } from '../../../file-upload/data';
 import { SuggestActions } from '../../../../constants/suggest';
 import { ScreenService } from '../../../../../screen/screen.service';
 import { FileUploadAttributes } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
+const arrowIcon = require('!raw-loader!@epgu/epgu-constructor-ui-kit/src/assets/icons/svg/arrow-circle.svg')
+  .default as string;
 
 @Component({
   selector: 'epgu-constructor-uploader-viewer-content',
@@ -58,7 +60,7 @@ export class UploaderViewerContentComponent extends BaseComponent {
   isConfirm = false;
 
   basePath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/`;
-  arrowIcon = `${this.basePath}arrow-circle.svg`;
+  arrowIcon = arrowIcon;
   iconsType = iconsTypes;
   selectedIconType: string;
   isPDF = false;
