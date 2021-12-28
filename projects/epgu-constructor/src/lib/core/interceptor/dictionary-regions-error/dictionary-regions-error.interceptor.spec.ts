@@ -1,11 +1,7 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import {
-  LOADING_ERROR_MODAL_PARAMS,
-  REGIONS_MODAL,
-  SERVICE_OR_SPEC_SESSION_TIMEOUT,
-} from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
+import { REGIONS_MODAL } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
 import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
 import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
 import { FormPlayerApiService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
@@ -29,6 +25,7 @@ import {
   SessionService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryRegionsErrorInterceptor } from './dictionary-regions-error.interceptor';
+import { InterceptorUtilsService } from '../../services/interceptor-utils/interceptor-utils.service';
 
 const data = {
   error: {
@@ -51,6 +48,7 @@ describe('DictionaryRegionsErrorInterceptor', () => {
       providers: [
         FormPlayerApiService,
         SessionService,
+        InterceptorUtilsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },

@@ -15,6 +15,9 @@ export const SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 =
   'Закончилось время, отведённое на заполнение формы';
 export const NO_AVAILABLE_DATA = 'должности в ближайшие 14 дней нет доступного времени';
 
+export const INTERNAL_ERROR_TEXT =
+  'Сервис временно недоступен. Попробуйте еще раз или запишитесь на приём через единый медицинский колл-центр по телефону 122';
+export const INTERNAL_ERROR_TITLE = 'Сервис недоступен';
 export enum RefName {
   serviceOrSpecs = 'ServiceOrSpecs',
   resource = 'Resource',

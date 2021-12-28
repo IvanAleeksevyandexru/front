@@ -1,4 +1,4 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LOADING_ERROR_MODAL_PARAMS } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
@@ -25,6 +25,7 @@ import {
   SessionService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryLoadingErrorInterceptor } from './dictionary-loading-error.interceptor';
+import { InterceptorUtilsService } from '../../services/interceptor-utils/interceptor-utils.service';
 
 const modalParams = {
   ...LOADING_ERROR_MODAL_PARAMS,
@@ -64,6 +65,7 @@ describe('DictionaryLoadingErrorInterceptor', () => {
       providers: [
         FormPlayerApiService,
         SessionService,
+        InterceptorUtilsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },

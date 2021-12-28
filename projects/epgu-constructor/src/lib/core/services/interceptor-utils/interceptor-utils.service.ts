@@ -6,7 +6,7 @@ import { LocationService, ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { NavigationService } from '../navigation/navigation.service';
 import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class InterceptorUtilsService {
   constructor(
     private modalService: ModalService,
