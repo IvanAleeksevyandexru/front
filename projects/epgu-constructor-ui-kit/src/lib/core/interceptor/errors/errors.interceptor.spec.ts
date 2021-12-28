@@ -32,6 +32,7 @@ import { LocalStorageService } from '../../services/local-storage/local-storage.
 import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 import { ErrorsInterceptor } from './errors.interceptor';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
+import { InterceptorUtilsService } from '@epgu/epgu-constructor/src/lib/core/services/interceptor-utils/interceptor-utils.service';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -54,6 +55,7 @@ describe('ErrorsInterceptor', () => {
         FormPlayerApiService,
         SessionService,
         ErrorHandlerService,
+        InterceptorUtilsService,
         UnsubscribeService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },

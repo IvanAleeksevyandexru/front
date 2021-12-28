@@ -42,6 +42,7 @@ import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipea
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DictionaryLoadingTimeoutInterceptor } from '../../../../core/interceptor/dictionary-loading-timeout/dictionary-loading-timeout.interceptor';
 import { DictionaryLoadingErrorInterceptor } from '../../../../core/interceptor/dictionary-loading-error/dictionary-loading-error.interceptor';
+import { InternalErrorInterceptor } from '../../../../core/interceptor/internal-error/internal-error.interceptor';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,11 @@ import { DictionaryLoadingErrorInterceptor } from '../../../../core/interceptor/
     NotifierService,
     KindergartenSearchPanelService,
     KindergartenService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InternalErrorInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: DictionaryLoadingTimeoutInterceptor,

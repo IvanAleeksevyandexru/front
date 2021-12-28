@@ -37,6 +37,7 @@ import {
   SMEV3_SERVICE_OR_SPEC_NO_AVAILABLE,
 } from '../../services/error-handler/error-handler.inteface';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { InterceptorUtilsService } from '../../services/interceptor-utils/interceptor-utils.service';
 
 describe('RefResourceInterceptor', () => {
   let modalService: ModalService;
@@ -49,6 +50,7 @@ describe('RefResourceInterceptor', () => {
       providers: [
         FormPlayerApiService,
         SessionService,
+        InterceptorUtilsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },

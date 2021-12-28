@@ -20,6 +20,7 @@ import LookupInputModelAttrs from './LookupInputModelAttrs';
 import AbstractDictionaryLikeComponent from '../abstract-component-list-item/abstract-dictionary-like.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DictionaryRegionsErrorInterceptor } from '../../../../core/interceptor/dictionary-regions-error/dictionary-regions-error.interceptor';
+import { InternalErrorInterceptor } from '../../../../core/interceptor/internal-error/internal-error.interceptor';
 
 @Component({
   selector: 'epgu-constructor-lookup-input',
@@ -28,6 +29,11 @@ import { DictionaryRegionsErrorInterceptor } from '../../../../core/interceptor/
   changeDetection: ChangeDetectionStrategy.Default,
   providers: [
     UnsubscribeService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InternalErrorInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: DictionaryRegionsErrorInterceptor,

@@ -2,13 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import {
-  LOADING_ERROR_MODAL_PARAMS,
-  NO_DOCTORS,
-  RESOURCE_NOT_AVAILABLE,
   SERVICE_OR_SPEC_NO_AVAILABLE,
   SERVICE_OR_SPEC_NO_SPECIALIST,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
-  SERVICE_OR_SPEC_SESSION_TIMEOUT_2,
   STATIC_ERROR_MODAL,
 } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
 import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
@@ -42,6 +38,7 @@ import {
 } from '../../services/error-handler/error-handler.inteface';
 
 import { RefServiceOrSpecsInterceptor } from './ref-service-or-specs.interceptor';
+import { InterceptorUtilsService } from '../../services/interceptor-utils/interceptor-utils.service';
 
 describe('RefServiceOrSpecsInterceptor', () => {
   let modalService: ModalService;
@@ -53,6 +50,7 @@ describe('RefServiceOrSpecsInterceptor', () => {
       providers: [
         FormPlayerApiService,
         SessionService,
+        InterceptorUtilsService,
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },

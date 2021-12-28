@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { SERVICE_OR_SPEC_SESSION_TIMEOUT } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
+import { STATIC_ERROR_MODAL } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
 import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
 import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
 import { FormPlayerApiService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
@@ -24,17 +24,25 @@ import {
   ModalServiceStub,
   SessionService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DictionaryLoadingTimeoutInterceptor } from './dictionary-loading-timeout.interceptor';
-import { SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 } from '../../services/error-handler/error-handler.inteface';
+import { InternalErrorInterceptor } from './internal-error.interceptor';
+import {
+  INTERNAL_ERROR_TEXT,
+  INTERNAL_ERROR_TITLE,
+} from '../../services/error-handler/error-handler.inteface';
 import { InterceptorUtilsService } from '../../services/interceptor-utils/interceptor-utils.service';
 
 const data = {
   error: {
-    message: SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2,
+    message: 'Internal Error',
   },
 };
+const configModal = {
+  ...STATIC_ERROR_MODAL,
+  title: INTERNAL_ERROR_TITLE,
+  text: STATIC_ERROR_MODAL.text.replace(/\{textAsset\}?/g, INTERNAL_ERROR_TEXT),
+};
 
-describe('DictionaryLoadingTimeoutInterceptor', () => {
+describe('InternalErrorInterceptor', () => {
   let modalService: ModalService;
   let formPlayerApi: FormPlayerApiService;
   let config: ConfigService;
@@ -56,7 +64,7 @@ describe('DictionaryLoadingTimeoutInterceptor', () => {
         { provide: InitDataService, useClass: InitDataServiceStub },
         {
           provide: HTTP_INTERCEPTORS,
-          useClass: DictionaryLoadingTimeoutInterceptor,
+          useClass: InternalErrorInterceptor,
           multi: true,
         },
       ],
@@ -71,36 +79,83 @@ describe('DictionaryLoadingTimeoutInterceptor', () => {
     httpClient = TestBed.inject(HttpClient);
   });
 
-  it('should open modal with dictionary/mzrf_lpu_equeue_smev3', () => {
+  it('should open modal with dictionary/mzrf_regions_smev3', () => {
     const spy = jest.spyOn(modalService, 'openModal');
-    httpClient.get('/dictionary/mzrf_lpu_equeue_smev3').subscribe();
-    const req = httpMock.expectOne(`/dictionary/mzrf_lpu_equeue_smev3`);
+    httpMock.match((v) => {
+      console.log(v);
+      return false;
+    });
+    httpClient.get('/dictionary/mzrf_regions_smev3').subscribe();
+
+    const req = httpMock.expectOne(`/dictionary/mzrf_regions_smev3`);
 
     req.flush(data);
 
     expect(req.request.context.get(IS_REQUEST_USED)).toBeTruthy();
-    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, SERVICE_OR_SPEC_SESSION_TIMEOUT);
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, configModal);
   });
 
   it('should open modal with dictionary/mzrf_equeue_lpu', () => {
     const spy = jest.spyOn(modalService, 'openModal');
+    httpMock.match((v) => {
+      console.log(v);
+      return false;
+    });
     httpClient.get('/dictionary/mzrf_equeue_lpu').subscribe();
+
     const req = httpMock.expectOne(`/dictionary/mzrf_equeue_lpu`);
 
     req.flush(data);
 
     expect(req.request.context.get(IS_REQUEST_USED)).toBeTruthy();
-    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, SERVICE_OR_SPEC_SESSION_TIMEOUT);
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, configModal);
+  });
+
+  it('should open modal with dictionary/mzrf_lpu_equeue_smev3', () => {
+    const spy = jest.spyOn(modalService, 'openModal');
+    httpMock.match((v) => {
+      console.log(v);
+      return false;
+    });
+    httpClient.get('/dictionary/mzrf_lpu_equeue_smev3').subscribe();
+
+    const req = httpMock.expectOne(`/dictionary/mzrf_lpu_equeue_smev3`);
+
+    req.flush(data);
+
+    expect(req.request.context.get(IS_REQUEST_USED)).toBeTruthy();
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, configModal);
+  });
+
+  it('should open modal with dictionary/mzrf_regions_vaccination', () => {
+    const spy = jest.spyOn(modalService, 'openModal');
+    httpMock.match((v) => {
+      console.log(v);
+      return false;
+    });
+    httpClient.get('/dictionary/mzrf_regions_vaccination').subscribe();
+
+    const req = httpMock.expectOne(`/dictionary/mzrf_regions_vaccination`);
+
+    req.flush(data);
+
+    expect(req.request.context.get(IS_REQUEST_USED)).toBeTruthy();
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, configModal);
   });
 
   it('should open modal with dictionary/mzrf_lpu_vaccination', () => {
     const spy = jest.spyOn(modalService, 'openModal');
+    httpMock.match((v) => {
+      console.log(v);
+      return false;
+    });
     httpClient.get('/dictionary/mzrf_lpu_vaccination').subscribe();
+
     const req = httpMock.expectOne(`/dictionary/mzrf_lpu_vaccination`);
 
     req.flush(data);
 
     expect(req.request.context.get(IS_REQUEST_USED)).toBeTruthy();
-    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, SERVICE_OR_SPEC_SESSION_TIMEOUT);
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, configModal);
   });
 });
