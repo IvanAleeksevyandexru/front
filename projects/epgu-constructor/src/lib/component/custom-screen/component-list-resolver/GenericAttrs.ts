@@ -42,6 +42,8 @@ export default class GenericAttrs {
 
   readonly disabled: Disabled;
 
+  readonly stringsAmount: number;
+
   constructor(attrs: CustomComponentAttr) {
     this.preset = attrs.preset;
     this.defaultValue = attrs.defaultValue;
@@ -55,5 +57,6 @@ export default class GenericAttrs {
     this.refs = attrs.refs;
     this.grid = attrs.grid;
     this.disabled = attrs.disabled;
+    this.stringsAmount = attrs.stringsAmount;
   }
 }

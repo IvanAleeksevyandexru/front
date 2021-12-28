@@ -25,6 +25,7 @@
 
 .swipeable-content.expanded {
   top: 0;
+  z-index: 10;
 }
 .swipeable-marker.rotated {
   transform: rotate(180deg);

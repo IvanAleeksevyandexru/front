@@ -30,4 +30,5 @@ export class ConstructorMultilineInputComponent {
   @Input() public validationShowOn: ValidationShowOn = ValidationShowOn.TOUCHED;
   @Input() public fullHeightScroll = true;
   @Input() public width?: Width | string;
+  @Input() public stringsAmount?: number;
 }

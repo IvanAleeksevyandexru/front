@@ -8,6 +8,7 @@ import { ProgramFiltersFormComponent } from '../../base/components/program-filte
 
 import { StateService } from '../../../services/state/state.service';
 import { GroupFiltersModes } from '../../../children-clubs.types';
+import { countFilters } from '../../../helpers';
 
 @Component({
   selector: 'children-clubs-program-list',
@@ -42,31 +43,10 @@ export class ProgramListContainerComponent implements OnInit {
   }
 
   countingFilters(filters: Filters): void {
-    let count = 0;
-    if (!filters) {
-      this.filtersCount$$.next(count);
-      return;
-    }
-    const finded = Object.entries(filters).filter(
-      ([key, value]) =>
-        value !== null &&
-        value !== false &&
-        value !== undefined &&
-        key !== 'inlearnoPayments' &&
-        key !== 'pfdoPayments' &&
-        key !== 'query',
-    );
-    count += finded.length;
-
-    if (filters?.inlearnoPayments) {
-      count += Object.entries(filters.inlearnoPayments).filter((value) => value[1]).length;
-    }
-    if (filters?.pfdoPayments) {
-      count += Object.entries(filters.pfdoPayments).filter((value) => value[1]).length;
-    }
-
+    const count = countFilters(filters, ['inlearnoPayments', 'pfdoPayments', 'query']);
     this.filtersCount$$.next(count);
   }
+
   openFilter(): void {
     this.modalService
       .openModal<Filters>(ProgramFiltersFormComponent)

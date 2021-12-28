@@ -8,10 +8,13 @@ export default class RadioInputModelAttrs extends GenericAttrs {
 
   readonly supportedValues: SupportedValue[];
 
+  readonly hint: string;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.hidden = attrs.hidden;
     this.isHorizontal = attrs.isHorizontal;
     this.supportedValues = attrs.supportedValues;
+    this.hint = attrs.hint;
   }
 }

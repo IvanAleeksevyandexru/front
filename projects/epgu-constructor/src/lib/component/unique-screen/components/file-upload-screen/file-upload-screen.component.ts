@@ -113,11 +113,7 @@ export class FileUploadScreenComponent implements OnInit {
         this.handleNewValueSet(payload);
         this.currentAnswersService.state = this.value;
         this.uploaderScreenService.updateLimits();
-        if (this.uploaderScreenService.showLimitsInfo()) {
-          window.requestAnimationFrame(() => {
-            this.cdr.markForCheck();
-          });
-        }
+        if (this.uploaderScreenService.showLimitsInfo()) this.cdr.detectChanges();
       });
 
     this.uploaderProcessing$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();

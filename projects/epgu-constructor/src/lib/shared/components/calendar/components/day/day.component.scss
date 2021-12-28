@@ -1,5 +1,6 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 :host {
   display: table-cell;
@@ -13,7 +14,7 @@
   cursor: pointer;
   border-radius: 12px;
   .calendar-day-text {
-    font-family: Lato, sans-serif;
+    font-family: $font-main;
     font-size: 14px;
     line-height: 20px;
     color: $color-gosblue;

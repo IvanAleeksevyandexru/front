@@ -6,13 +6,14 @@ import {
   ISuggestionItemList,
 } from '../../../core/services/autocomplete/autocomplete.inteface';
 import { SUGGEST_SEPARATOR_DEFAULT } from '../../../core/services/autocomplete/autocomplete.const';
+import { Focusable, FocusManager } from '@epgu/ui/services/focus';
 
 @Component({
   selector: 'epgu-constructor-constructor-dadata-widget',
   templateUrl: './constructor-dadata-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConstructorDadataWidgetComponent {
+export class ConstructorDadataWidgetComponent implements Focusable {
   @Input() simpleMode: boolean;
   @Input() hideLevels?: string[];
   @Input() hideHouseCheckbox: boolean;
@@ -26,10 +27,40 @@ export class ConstructorDadataWidgetComponent {
   @Input() clearable: boolean;
   @Input() control: AbstractControl;
   @Input() suggestions?: ISuggestionItem;
+  @Input() name?: string;
 
   @Output() selectSuggest: EventEmitter<ISuggestionItem | ISuggestionItemList> = new EventEmitter<
     ISuggestionItem | ISuggestionItemList
   >();
 
   readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
+  controlFocused = false;
+
+  constructor(private focusManager: FocusManager) {}
+
+  public ngAfterViewInit(): void {
+    this.focusManager.register(this);
+  }
+
+  public ngOnDestroy(): void {
+    this.focusManager.unregister(this);
+  }
+
+  handleFocus(): void {
+    this.controlFocused = true;
+  }
+
+  handleBlur(): void {
+    this.control.updateValueAndValidity();
+    this.controlFocused = false;
+  }
+
+  public notifyFocusEvent(e: boolean): void {
+    // после focus автоматически срабатывает blur, даже если его не было
+    // отлавливаем и игнорируем его
+    if (!e && this.focusManager.isJustFocused(this)) {
+      return;
+    }
+    this.focusManager.notifyFocusMayChanged(this, e);
+  }
 }
