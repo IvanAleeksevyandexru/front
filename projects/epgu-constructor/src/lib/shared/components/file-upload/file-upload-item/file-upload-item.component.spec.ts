@@ -1,25 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  DeviceDetectorService,
-  DeviceDetectorServiceStub,
   ConfigService,
   ConfigServiceStub,
-  UnsubscribeService,
-  ModalService,
-  ModalServiceStub,
-  JsonHelperService,
-  EventBusService,
-  DownloadService,
-  DownloadServiceStub,
   DatesToolsService,
   DatesToolsServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+  DownloadService,
+  DownloadServiceStub,
+  EventBusService,
+  IconsModule,
+  JsonHelperService,
   LoggerService,
   LoggerServiceStub,
+  ModalService,
+  ModalServiceStub,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { ComponentDto, ComponentAttrsDto } from '@epgu/epgu-constructor-types';
+import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { PluralizeModule } from '@epgu/ui/pipes';
 import { FileUploadItemComponent } from './file-upload-item.component';
 import { UserInfoLoaderModule } from '../../user-info-loader/user-info-loader.module';
@@ -42,7 +43,7 @@ import {
   TerraUploadFileOptions,
   UploadedFile,
 } from '../../../../core/services/terra-byte-api/terra-byte-api.types';
-import { FileItem, FileItemStatus } from '../data';
+import { ErrorActions, FileItem, FileItemStatus } from '../data';
 import { CompressionService } from '../../upload-and-edit-photo-form/service/compression/compression.service';
 import { ViewerService } from '../../uploader/services/viewer/viewer.service';
 import { ViewerServiceStub } from '../../uploader/services/viewer/viewer.service.stub';
@@ -122,7 +123,14 @@ describe('FileUploadItemComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [FileUploadItemComponent],
-      imports: [BaseModule, UserInfoLoaderModule, UploaderModule, FileSizeModule, PluralizeModule],
+      imports: [
+        BaseModule,
+        UserInfoLoaderModule,
+        UploaderModule,
+        FileSizeModule,
+        PluralizeModule,
+        IconsModule,
+      ],
       providers: [
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
@@ -278,5 +286,103 @@ describe('FileUploadItemComponent', () => {
     fixture.detectChanges();
 
     expect(modalService.openModal).toHaveBeenCalled();
+  });
+
+  describe('reduceChanges', () => {
+    let testFile = { error: { text: 'test' } } as FileItem;
+    beforeEach(() => {
+      testFile = { error: { text: 'test' } } as FileItem;
+    });
+    it('should add item to result', () => {
+      testFile.error.type = ErrorActions.addDeletionErr;
+      const testItem = {} as UploadedFile;
+      testFile.item = testItem;
+
+      const res = component.reduceChanges({ value: [] }, testFile);
+
+      expect(res.value[0]).toBe(testItem);
+    });
+
+    it('should add item to result', () => {
+      testFile.error = null;
+      const testItem = {} as UploadedFile;
+      testFile.item = testItem;
+
+      const res = component.reduceChanges({ value: [] }, testFile);
+
+      expect(res.value[0]).toBe(testItem);
+    });
+
+    it('should not add item to result', () => {
+      testFile.error.type = ErrorActions.addInvalidFile;
+
+      const res = component.reduceChanges({ value: [] }, testFile);
+
+      expect(res.value.length).toBe(0);
+    });
+
+    it('should add error to result', () => {
+      testFile.error.type = ErrorActions.serverError;
+      testFile.error.text = 'abcd';
+
+      const res = component.reduceChanges({ value: [], errors: [] }, testFile);
+
+      expect(res.errors[0]).toBe('abcd');
+    });
+  });
+
+  describe('selectFileByStatus', () => {
+    it('should set next to processing files', () => {
+      const testFiles = {} as any;
+      const event = { files: testFiles };
+
+      component.selectFileByStatus(event, true);
+
+      component.processingFiles.subscribe((value) => {
+        expect(value).toBe(testFiles);
+      });
+    });
+
+    it('should emit click on take photo', () => {
+      const spy = jest.spyOn(component.takePhoto, 'click');
+      const event = {} as any;
+
+      component.selectFileByStatus(event, false);
+
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should do nothing', () => {
+      const spy = jest.spyOn(component.takePhoto, 'click');
+      const testFiles = {} as any;
+      const event = { files: testFiles };
+      const testPrevProcessing = { item: {} as any, length: 1 };
+      component.processingFiles.next(testPrevProcessing);
+
+      component.selectFileByStatus(event, null);
+
+      expect(spy).toHaveBeenCalledTimes(0);
+      component.processingFiles.subscribe((value) => {
+        expect(value).toBe(testPrevProcessing);
+      });
+    });
+  });
+
+  describe('selectFiles', () => {
+    it('should open modal if all conditions are satisfied', () => {
+      const spy = jest.spyOn(component.modal, 'openModal').mockReturnValue(of(null));
+      const event = { files: [], action: '' } as any;
+      component.uploader.data = { isPreviewPhoto: false } as any;
+
+      component.selectFiles(event);
+      component.uploader.data = { isPreviewPhoto: true } as any;
+      component.selectFiles(event);
+      event.action = 'photo';
+      component.selectFiles(event);
+      event.files.push({});
+      component.selectFiles(event);
+
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
   });
 });

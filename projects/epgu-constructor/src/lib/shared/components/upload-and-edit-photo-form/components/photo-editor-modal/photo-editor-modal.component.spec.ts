@@ -7,7 +7,7 @@ import { isBoolean } from 'lodash';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub, IconsModule } from '@epgu/epgu-constructor-ui-kit';
 import { ButtonComponent } from '@epgu/ui/base';
 import { SliderComponent } from '../slider/slider.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
@@ -37,7 +37,7 @@ describe('PhotoEditorModalComponent', () => {
         MockComponent(SliderComponent),
         MockComponent(ButtonComponent),
       ],
-      imports: [MockModule(LyImageCropperModule)],
+      imports: [MockModule(LyImageCropperModule), IconsModule],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         [LyTheme2],

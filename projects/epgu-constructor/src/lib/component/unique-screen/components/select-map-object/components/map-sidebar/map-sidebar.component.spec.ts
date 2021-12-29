@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ConstructorLookupModule,
+  IconsModule,
   PrevButtonModule,
   YandexMapService,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -45,6 +46,7 @@ describe('MapSidebarComponent', () => {
         HttpClientTestingModule,
         DisclaimerModule,
         FormsModule,
+        IconsModule,
         ForTestsOnlyModule,
       ],
       providers: [],
