@@ -91,7 +91,7 @@ describe('KindergartenComponent', () => {
         MockProvider(DownloadService),
         MockProvider(HtmlRemoverService),
         MockProvider(AutocompleteApiService),
-        MockProvider(EventBusService),
+        EventBusService,
         MockProvider(JsonHelperService),
         MockProvider(AddressesToolsService),
         MockProvider(ComponentsListRelationsService),

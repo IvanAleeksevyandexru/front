@@ -14,6 +14,7 @@ import {
   DeviceDetectorServiceStub,
   JsonHelperService,
   JsonHelperServiceStub,
+  EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { ClickableLabelDirective } from './clickable-label.directive';
@@ -60,6 +61,7 @@ describe('ClickableLabelDirective', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        EventBusService,
         CurrentAnswersService,
         SmuEventsService,
         HtmlSelectService,

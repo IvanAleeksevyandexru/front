@@ -7,7 +7,6 @@ import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   EventBusService,
-  EventBusServiceStub,
   ModalService,
   ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -77,7 +76,7 @@ describe('ScreenButtonsComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: EventBusService, useClass: EventBusServiceStub },
+        EventBusService,
         { provide: ModalService, useClass: ModalServiceStub },
       ],
     })
