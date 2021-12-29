@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+
 import {
   DeviceDetectorService,
   ConfigService,

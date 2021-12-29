@@ -15,7 +15,11 @@ import { fromEvent, merge, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ComponentUploadedFileDto, ComponentValidationDto } from '@epgu/epgu-constructor-types';
+import {
+  ComponentUploadedFileDto,
+  ComponentValidationDto,
+  ImageCropOptions,
+} from '@epgu/epgu-constructor-types';
 import {
   ModalService,
   EventBusService,
@@ -32,6 +36,7 @@ import { PhotoErrorModalComponent } from '../photo-error-modal/photo-error-modal
 import { ValidationService } from '../../service/validation/validation.service';
 import { UploadService } from '../../service/upload/upload.service';
 import { ImgSubject } from '../../upload-and-edit-photo-form.model';
+import { ImageErrorText } from '../../../file-upload/file-upload-preview/file-upload-preview.const';
 
 @Component({
   selector: 'epgu-constructor-photo-form',
@@ -49,6 +54,8 @@ export class PhotoFormComponent implements OnChanges, OnInit {
   @Input() startToUploadPhoto: { isStart: boolean };
   @Input() startToChangeCroppedImageUrl: { isStart: boolean };
   @Input() validations: ComponentValidationDto[];
+  @Input() customImageErrorText?: ImageErrorText;
+  @Input() cropOptions?: ImageCropOptions;
   @Output() uploadPhotoToServerEvent = new EventEmitter<ComponentUploadedFileDto>();
   @Output() croppedImageUrlEvent = new EventEmitter<string>();
 
@@ -160,10 +167,17 @@ export class PhotoFormComponent implements OnChanges, OnInit {
         switchMap((imageObject) => {
           this.previousImageObjectUrl = imageObject?.imageObjectUrl;
           this.isModalOpened = true;
-          return this.modalService.openModal<{ changeImage?: boolean; imageObjectUrl?: string }>(
-            PhotoEditorModalComponent,
-            imageObject,
-          );
+
+          return this.modalService.openModal<{
+            changeImage?: boolean;
+            imageObjectUrl?: string;
+            customImageErrorText?: ImageErrorText;
+            cropOptions?: ImageCropOptions;
+          }>(PhotoEditorModalComponent, {
+            ...imageObject,
+            customImageErrorText: this.customImageErrorText,
+            cropOptions: this.cropOptions,
+          });
         }),
       )
       .subscribe((data) => {
@@ -183,8 +197,12 @@ export class PhotoFormComponent implements OnChanges, OnInit {
       .pipe(
         takeUntil(this.ngUnsubscribe$),
         switchMap((imageErrors) =>
-          this.modalService.openModal<{ changeImage?: boolean }>(PhotoErrorModalComponent, {
+          this.modalService.openModal<{
+            changeImage?: boolean;
+            customImageErrorText?: ImageErrorText;
+          }>(PhotoErrorModalComponent, {
             imageErrors,
+            customImageErrorText: this.customImageErrorText,
           }),
         ),
       )
