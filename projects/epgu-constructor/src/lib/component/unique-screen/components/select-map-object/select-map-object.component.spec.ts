@@ -14,6 +14,7 @@ import {
   WINDOW,
   SmoothHeightAnimationDirective,
   PrevButtonModule,
+  IconsModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockModule } from 'ng-mocks';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -81,6 +82,7 @@ describe('SelectMapObjectComponent', () => {
         DisclaimerModule,
         FormsModule,
         YandexMapModule,
+        IconsModule,
         ForTestsOnlyModule,
       ],
     })

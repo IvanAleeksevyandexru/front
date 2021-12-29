@@ -292,7 +292,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   selectFiles(event: UploadingFile): void {
     if (
-      this.uploader.data?.isPreviewPhoto === true &&
+      this.uploader.data?.isPreviewPhoto &&
       event?.action === 'photo' &&
       event.files.length === 1
     ) {
