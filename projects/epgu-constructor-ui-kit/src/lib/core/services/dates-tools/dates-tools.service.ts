@@ -106,6 +106,13 @@ export class DatesToolsService {
       .map((_, index) => this.format(_setMonth(date, nowMonth + index - 1), formatString));
   }
 
+  public getNextYearMonthList(today: Date): string[] {
+    const nextYear = parseInt(this.format(today, 'yyyy'), 10) + 1;
+    return new Array(12)
+      .fill(null)
+      .map((_, idx) => nextYear + '-' + (idx < 9 ? '0' : '') + (idx + 1));
+  }
+
   public resetTime(date: Date): void {
     date.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     date.setHours(0, 0, 0, 0);
