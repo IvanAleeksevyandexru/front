@@ -1,4 +1,3 @@
-<ng-content select=".map-sidebar"></ng-content>
 <lib-map
   class="widget__map-wrapper"
   [ngClass]="{ hidden: isListViewType }"
@@ -12,6 +11,7 @@
   [zoom]="zoom"
 >
 </lib-map>
+<ng-content select=".map-sidebar"></ng-content>
 <ng-content select=".search-panel"></ng-content>
 <ng-content select=".shadow-overlay"></ng-content>
 <ng-content select=".map-objects-list"></ng-content>
