@@ -6,6 +6,8 @@ import {
   ConfigServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
+  HealthService,
+  HealthServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CompressionService } from './compression.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
@@ -40,6 +42,7 @@ describe('CompressionService', () => {
         CompressionService,
         TerraByteApiService,
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: HealthService, useClass: HealthServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
     });

@@ -9,6 +9,8 @@ import {
   ConfigServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
+  HealthService,
+  HealthServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentUploadedFileDto } from '@epgu/epgu-constructor-types';
 import { UploadService } from './upload.service';
@@ -58,6 +60,7 @@ describe('UploadService', () => {
         CompressionService,
         WordTransformService,
         ObjectHelperService,
+        { provide: HealthService, useClass: HealthServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],

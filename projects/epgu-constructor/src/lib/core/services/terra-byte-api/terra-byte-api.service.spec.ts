@@ -1,8 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  HealthService,
+  HealthServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import * as FileSaver from 'file-saver';
 import {
   Chunk,
@@ -58,7 +63,11 @@ describe('TerraByteApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TerraByteApiService, { provide: ConfigService, useClass: ConfigServiceStub }],
+      providers: [
+        TerraByteApiService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: HealthService, useClass: HealthServiceStub },
+      ],
     });
   });
 
@@ -195,37 +204,61 @@ describe('TerraByteApiService', () => {
   });
 
   describe('uploadFile() method', () => {
-    it('should return uploadByChunkFile() result if file.size > service.chunkSize', () => {
+    it('should return uploadByChunkFile() result if file.size > service.chunkSize', (done) => {
       service.chunkSize = 1000;
 
-      const uploadByChunkFileObservable = of(undefined);
+      const uploadByChunkFileObservable = of(null);
 
       jest.spyOn(service, 'uploadByChunkFile').mockReturnValue(uploadByChunkFileObservable);
 
       const options = {} as TerraUploadFileOptions;
       const mockBlob = createMockBlob(10001);
 
-      const result = service.uploadFile(options, mockBlob);
-      expect(result).toBe(uploadByChunkFileObservable);
+      const result: Observable<void> = service.uploadFile(options, mockBlob);
+      result.subscribe((value) => {
+        expect(value).toBe(null);
+        done();
+      });
       expect(service.uploadByChunkFile).toHaveBeenCalledWith(options, mockBlob);
     });
 
-    it('should return uploadForm() result if file.size <= service.chunkSize', () => {
+    it('should return uploadForm() result if file.size < service.chunkSize', (done) => {
       service.chunkSize = 1000;
 
       const form = {} as FormData;
-      const uploadFormObservable = of(undefined);
+      const uploadFormObservable = of(null);
 
       jest.spyOn(service, 'uploadForm').mockReturnValue(uploadFormObservable);
       jest.spyOn(service, 'createFormData').mockReturnValue(form);
 
-      let result = service.uploadFile({} as TerraUploadFileOptions, createMockBlob(1000));
-      expect(result).toBe(uploadFormObservable);
+      let result: Observable<void> = service.uploadFile(
+        {} as TerraUploadFileOptions,
+        createMockBlob(999),
+      );
+      result.subscribe((value) => {
+        expect(value).toBe(null);
+        done();
+      });
       expect(service.uploadForm).toHaveBeenCalledWith(form);
+    });
 
-      (service.uploadForm as jest.Mock).mockClear();
-      result = service.uploadFile({} as TerraUploadFileOptions, createMockBlob(999));
-      expect(result).toBe(uploadFormObservable);
+    it('should return uploadForm() result if file.size == service.chunkSize', (done) => {
+      service.chunkSize = 1000;
+
+      const form = {} as FormData;
+      const uploadFormObservable = of(null);
+
+      jest.spyOn(service, 'uploadForm').mockReturnValue(uploadFormObservable);
+      jest.spyOn(service, 'createFormData').mockReturnValue(form);
+
+      let result: Observable<void> = service.uploadFile(
+        {} as TerraUploadFileOptions,
+        createMockBlob(service.chunkSize),
+      );
+      result.subscribe((value) => {
+        expect(value).toBe(null);
+        done();
+      });
       expect(service.uploadForm).toHaveBeenCalledWith(form);
     });
   });

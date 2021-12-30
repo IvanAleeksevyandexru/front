@@ -17,6 +17,7 @@ export class HealthService {
 
   constructor(private route: ActivatedRoute, private loadService: LoadService) {}
 
+  /** TODO: подумать над реализацией стандартного Get метода от Angular HttpClient */
   private static request(url: string): void {
     const scriptId = uuidv4();
     const s = document.createElement('script');
