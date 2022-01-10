@@ -828,7 +828,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.monthsYears = [];
 
     const availableMonths = this.isSmev2
-      ? this.datesHelperService.getMonthListByYear(this.today)
+      ? [
+          ...this.datesHelperService.getMonthListByYear(this.today),
+          ...this.datesHelperService.getNextYearMonthList(this.today),
+        ]
       : this.timeSlotsService.getAvailableMonths();
 
     if (availableMonths.length) {
