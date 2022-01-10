@@ -30,6 +30,7 @@ import {
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
+import { MultipleSelectedItems } from '../../components/multiple-choice-dictionary/multiple-choice-dictionary.models';
 
 export const CARD_VALIDATION_EVENT = 'CardValidation';
 
@@ -317,7 +318,7 @@ export class ValidationService {
       case CustomScreenComponentTypes.StringInput:
         return this.calculateStringPredicate(component, value);
       case CustomScreenComponentTypes.MultipleChoiceDictionary:
-        return this.isArrayLikeValueValid((value as unknown) as unknown[]);
+        return this.isMultipleSelectedItemsValid((value as unknown) as MultipleSelectedItems);
       default:
         return true;
     }
@@ -423,7 +424,7 @@ export class ValidationService {
     return validations;
   }
 
-  private isArrayLikeValueValid(value: unknown[]): boolean {
-    return !!value && !!value.length;
+  private isMultipleSelectedItemsValid(selectedItems: MultipleSelectedItems): boolean {
+    return selectedItems && !!selectedItems.amount;
   }
 }
