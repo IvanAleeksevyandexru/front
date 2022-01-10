@@ -12,6 +12,8 @@ export default class AddressInputModelAttrs extends GenericAttrs {
 
   readonly hideLevels: string[];
 
+  readonly customUnrecLabel: string;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.hideApartmentCheckbox = attrs.hideHouseCheckbox;
@@ -19,5 +21,6 @@ export default class AddressInputModelAttrs extends GenericAttrs {
     this.selectHouseCheckbox = attrs.selectHouseCheckbox;
     this.selectApartmentCheckbox = attrs.selectApartmentCheckbox;
     this.hideLevels = attrs.hideLevels;
+    this.customUnrecLabel = attrs.customUnrecLabel;
   }
 }
