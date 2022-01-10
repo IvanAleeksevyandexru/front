@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, range, from, combineLatest, of } from 'rxjs';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, HealthService } from '@epgu/epgu-constructor-ui-kit';
 import * as FileSaver from 'file-saver';
-import { concatMap, map, mergeMap, reduce } from 'rxjs/operators';
+import { concatMap, map, mergeMap, reduce, tap } from 'rxjs/operators';
 import {
   Chunk,
   ChunkPacket,
@@ -13,6 +13,7 @@ import {
   UploadedFile,
 } from './terra-byte-api.types';
 import { BYTES_IN_KB, FileItem } from '../../../shared/components/file-upload/data';
+import { RequestStatus } from '@epgu/epgu-constructor-types';
 
 /**
  * Сервис для обмена файлами с сервисом терабайт
@@ -23,7 +24,11 @@ export class TerraByteApiService {
 
   chunkPacketMaxSize = 1;
 
-  constructor(private http: HttpClient, private config: ConfigService) {}
+  constructor(
+    private http: HttpClient,
+    private config: ConfigService,
+    private health: HealthService,
+  ) {}
 
   /**
    * Переводит base64 картинку в Blob
@@ -69,13 +74,15 @@ export class TerraByteApiService {
    * @param options - параметры для получения файла
    */
   getFileInfo(options: TerraFileOptions): Observable<UploadedFile> {
-    // eslint-disable-next-line max-len
-    return this.http.get<UploadedFile>(
-      this.getTerabyteApiUrl(
-        `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`,
-      ),
-      this.getServerRequestOptions(),
-    );
+    this.health.measureStart('getFileInfoApi');
+    return this.http
+      .get<UploadedFile>(
+        this.getTerabyteApiUrl(
+          `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`,
+        ),
+        this.getServerRequestOptions(),
+      )
+      .pipe(tap(() => this.health.measureEnd('getFileInfoApi', RequestStatus.Succeed, options)));
   }
 
   uploadForm(form: FormData): Observable<void> {
@@ -138,9 +145,11 @@ export class TerraByteApiService {
    * @param file - данные файла
    */
   uploadFile(options: TerraUploadFileOptions, file: File | Blob): Observable<void> {
-    return file.size <= this.chunkSize
+    this.health.measureStart('uploadFileApi');
+    return (file.size <= this.chunkSize
       ? this.uploadForm(this.createFormData(options, file))
-      : this.uploadByChunkFile(options, file);
+      : this.uploadByChunkFile(options, file)
+    ).pipe(tap(() => this.health.measureEnd('uploadFileApi', RequestStatus.Succeed, options)));
   }
 
   /**
@@ -149,6 +158,7 @@ export class TerraByteApiService {
    * @param storedFile - данные и опции начального файла
    */
   copyFile(options: TerraUploadFileOptions, storedFile: FileItem): Observable<void> {
+    this.health.measureStart('copyFileApi');
     const body: FileCopyEmitValue = {
       data: [
         {
@@ -165,11 +175,9 @@ export class TerraByteApiService {
         },
       ],
     };
-    return this.http.post<void>(
-      this.getTerabyteApiUrl('/copy'),
-      body,
-      this.getServerRequestOptions(),
-    );
+    return this.http
+      .post<void>(this.getTerabyteApiUrl('/copy'), body, this.getServerRequestOptions())
+      .pipe(tap(() => this.health.measureEnd('copyFileApi', RequestStatus.Succeed, options)));
   }
 
   createFormData(options: TerraUploadFileOptions, file: File | Blob): FormData {
@@ -190,12 +198,11 @@ export class TerraByteApiService {
    * @param options - данные о файле
    */
   deleteFile(options: TerraFileOptions): Observable<UploadedFile> {
+    this.health.measureStart('deleteFileApi');
     const url = `/${options.objectId}/${options.objectType}?mnemonic=${options.mnemonic}`;
-    // eslint-disable-next-line max-len
-    return this.http.delete<UploadedFile>(
-      this.getTerabyteApiUrl(url),
-      this.getServerRequestOptions(),
-    );
+    return this.http
+      .delete<UploadedFile>(this.getTerabyteApiUrl(url), this.getServerRequestOptions())
+      .pipe(tap(() => this.health.measureEnd('deleteFileApi', RequestStatus.Succeed, options)));
   }
 
   getDownloadApiPath(options: TerraFileOptions): string {
@@ -209,13 +216,15 @@ export class TerraByteApiService {
    * @param options - данные о файле
    */
   downloadFile(options: TerraFileOptions): Observable<Blob> {
-    // eslint-disable-next-line max-len
-    return this.http.get<Blob>(
-      this.getDownloadApiPath(options),
-      this.getServerRequestOptions({
-        responseType: 'blob',
-      }),
-    );
+    this.health.measureStart('downloadFileApi');
+    return this.http
+      .get<Blob>(
+        this.getDownloadApiPath(options),
+        this.getServerRequestOptions({
+          responseType: 'blob',
+        }),
+      )
+      .pipe(tap(() => this.health.measureEnd('downloadFileApi', RequestStatus.Succeed, options)));
   }
 
   /**

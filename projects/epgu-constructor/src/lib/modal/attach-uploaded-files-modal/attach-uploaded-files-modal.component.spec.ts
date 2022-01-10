@@ -10,6 +10,8 @@ import {
   ConfigService,
   ConfigServiceStub,
   DownloadService,
+  HealthService,
+  HealthServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { cloneDeep } from 'lodash';
@@ -70,6 +72,7 @@ describe('AttachUploadedFilesModalComponent', () => {
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: HealthService, useClass: HealthServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         EventBusService,
         UnsubscribeService,

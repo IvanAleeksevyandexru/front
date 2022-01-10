@@ -67,6 +67,27 @@ describe('DatesToolsService', () => {
     });
   });
 
+  describe('getNextYearMonthList()', () => {
+    it('should return array of next year months', () => {
+      const now = new Date('2020-01-01');
+      const result = [
+        '2021-01',
+        '2021-02',
+        '2021-03',
+        '2021-04',
+        '2021-05',
+        '2021-06',
+        '2021-07',
+        '2021-08',
+        '2021-09',
+        '2021-10',
+        '2021-11',
+        '2021-12',
+      ];
+      expect(service.getNextYearMonthList(now)).toEqual(result);
+    });
+  });
+
   describe('isToday() method', () => {
     it('should return true if date is today', () => {
       const today = new Date();
