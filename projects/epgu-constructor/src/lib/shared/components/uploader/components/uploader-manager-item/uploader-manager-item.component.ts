@@ -22,6 +22,7 @@ import {
   FileItemStatus,
   FileItemStatusText,
   OperationType,
+  viewableFileTypes,
 } from '../../../file-upload/data';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 
@@ -52,7 +53,7 @@ export class UploaderManagerItemComponent extends BaseComponent {
       this.errorType = file.error.type;
     }
 
-    if (file.raw.type.indexOf('pdf') !== -1 && file.item) {
+    if (viewableFileTypes.some((type) => file.raw.type.indexOf(type) !== -1) && file.item) {
       this.link = this.teraService.getDownloadApiPath(file.createUploadedParams());
     }
     this.isImage = file.isImage;
