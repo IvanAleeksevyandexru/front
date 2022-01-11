@@ -1,5 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ConfigService,
+  ConfigServiceStub,
+  DeviceDetectorService,
+  DeviceDetectorServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 
 import { MockComponent } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
@@ -40,7 +45,10 @@ describe('InfoScreenBodyComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InfoScreenBodyComponent, MockComponent(OutputHtmlComponent)],
-      providers: [{ provide: ConfigService, useClass: ConfigServiceStub }],
+      providers: [
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+      ],
     })
       .overrideComponent(InfoScreenBodyComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

@@ -60,11 +60,26 @@
     }
   }
 
+  .info-screen--solution-page-2 {
+    .info__text {
+      h3 {
+        margin-bottom: $screen-pad-24;
+      }
+    }
+  }
+
   .info-screen--deadlock {
+    .info__text.mobile {
+      h3 {
+        margin: 16px 0;
+      }
+    }
+
     .red-line,
     .yellow-line {
       margin-top: $screen-pad-24;
     }
+
     p + ul:not(:first-child) {
       margin-top: $screen-pad-24;
     }
@@ -100,14 +115,6 @@
       li > ul + a {
         margin-top: 12px;
         display: inline-block;
-      }
-    }
-  }
-
-  .info-screen--solution-page-2 {
-    .info__text {
-      h3 {
-        margin-bottom: $screen-pad-24;
       }
     }
   }
