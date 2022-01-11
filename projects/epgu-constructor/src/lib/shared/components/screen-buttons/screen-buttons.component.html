@@ -1,6 +1,6 @@
 <ng-container *ngFor="let button of shownButtons">
   <lib-button
-    *ngIf="!button?.attrs?.hidden"
+    *ngIf="!button?.attrs?.hidden && !button.hidden"
     epgu-constructor-action
     [action]="button"
     [color]="button.color"
