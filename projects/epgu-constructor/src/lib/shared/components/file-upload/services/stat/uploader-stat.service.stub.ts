@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class UploaderStatServiceStub {}
+export class UploaderStatServiceStub {
+  decrementLimitByFileItem() {}
+
+  incrementLimits() {}
+}
