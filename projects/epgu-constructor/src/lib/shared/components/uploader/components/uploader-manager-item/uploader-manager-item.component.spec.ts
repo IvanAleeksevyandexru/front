@@ -374,4 +374,24 @@ describe('UploaderManagerItemComponent', () => {
       ),
     ).toBeNull();
   });
+
+  it('should set link for pdf type', () => {
+    const mockFile = mockFileItem('test.txt', FileItemStatus.uploading);
+    mockFile.raw = { type: 'application/pdf', name: 'abc' } as File;
+
+    component.file = mockFile;
+    fixture.detectChanges();
+
+    expect(component.link).toBeTruthy();
+  });
+
+  it('should set link for xml type', () => {
+    const mockFile = mockFileItem('test.txt', FileItemStatus.uploading);
+    mockFile.raw = { type: 'text/xml', name: 'abc' } as File;
+
+    component.file = mockFile;
+    fixture.detectChanges();
+
+    expect(component.link).toBeTruthy();
+  });
 });
