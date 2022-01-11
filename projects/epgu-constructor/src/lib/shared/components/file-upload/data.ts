@@ -346,3 +346,4 @@ export interface OverLimits {
   totalAmount: OverLimitsItem;
   amount: OverLimitsItem;
 }
+export const viewableFileTypes = ['pdf', 'xml'];
