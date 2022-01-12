@@ -8,7 +8,6 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -95,10 +94,8 @@ export class PassportComponent implements OnInit, OnChanges, ControlValueAccesso
       .subscribe((state) => this.setFocusedInput(state));
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.suggestions.currentValue) {
-      this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(this.suggestions);
-    }
+  ngOnChanges(): void {
+    this.classifiedSuggestionItems = prepareClassifiedSuggestionItems(this.suggestions);
   }
 
   initFormGroup(): void {
