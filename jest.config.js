@@ -5,7 +5,7 @@ module.exports = {
   moduleDirectories: ['node_modules'],
   setupFiles: ['<rootDir>/configs/jest/setup-jest.ts', 'jest-canvas-mock'],
   setupFilesAfterEnv: ['<rootDir>/configs/jest/setup-jest-env.ts'],
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/'],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/', '<rootDir>/projects/sf-portal'],
   moduleNameMapper: {
     '@ifc/plugin': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js',
     '@ifc/common': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js',
@@ -40,7 +40,7 @@ module.exports = {
   },
   testEnvironmentOptions: {
     beforeParse(window) {
-      window.scroll = () => {};
+      window.scroll = () => { };
     },
   },
 };
