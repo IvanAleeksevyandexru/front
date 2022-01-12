@@ -14,10 +14,8 @@ import {
   BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
-
 import { FilesCollection, iconsTypes, SuggestAction, ViewerInfo } from '../../data';
 import { ZoomComponent } from '../../../zoom/zoom.component';
-
 import { ZoomEvent } from '../../../zoom/typings';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { SuggestMonitorService } from '../../../../services/suggest-monitor/suggest-monitor.service';
@@ -27,7 +25,6 @@ import { ScreenService } from '../../../../../screen/screen.service';
 import { FileUploadAttributes } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 const arrowIcon = require('!raw-loader!@epgu/epgu-constructor-ui-kit/src/assets/icons/svg/arrow-circle.svg')
   .default as string;
-
 @Component({
   selector: 'epgu-constructor-uploader-viewer-content',
   templateUrl: './uploader-viewer-content.component.html',
