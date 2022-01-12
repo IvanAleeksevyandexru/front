@@ -28,9 +28,9 @@ import {
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { of } from 'rxjs';
 import { OutputHtmlComponent } from '../../../output-html/output-html.component';
+import { ComponentDto } from 'projects/epgu-constructor-types/src/base';
+import { of } from 'rxjs';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
