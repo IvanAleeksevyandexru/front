@@ -273,6 +273,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   updateOnValidation?: UpdateOn;
   validation?: CustomComponentAttrValidation[];
   wait?: Wait;
+  largeFontSize?: boolean;
 }
 
 export interface DateRestriction {
