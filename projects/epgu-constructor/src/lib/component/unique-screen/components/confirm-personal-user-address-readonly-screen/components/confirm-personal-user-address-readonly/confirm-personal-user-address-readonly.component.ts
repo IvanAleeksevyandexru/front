@@ -46,7 +46,7 @@ export class ConfirmPersonalUserAddressReadonlyComponent extends BaseComponent
   public isEditAction: boolean;
   public isRequired: boolean;
   public form: FormGroup = new FormGroup({});
-  public readonly strategy = BrokenDateFixStrategy.NONE;
+  public readonly strategy = BrokenDateFixStrategy.RESET;
 
   public constructor(
     public config: ConfigService,
