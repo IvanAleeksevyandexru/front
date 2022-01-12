@@ -15,7 +15,7 @@ enum UploaderCheckType {
   size = 'size',
 }
 
-type CheckResult = -1 | 0 | 1;
+export type CheckResult = -1 | 0 | 1;
 
 @Injectable()
 export class UploaderLimitsService {
