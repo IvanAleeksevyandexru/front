@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 
 @Component({
   selector: 'epgu-constructor-info-screen-body',
@@ -10,6 +10,7 @@ import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 })
 export class InfoScreenBodyComponent {
   @Input() data: ComponentDto;
+  isMobile = this.deviceDetector.isMobile;
 
-  constructor(public config: ConfigService) {}
+  constructor(public config: ConfigService, private deviceDetector: DeviceDetectorService) {}
 }
