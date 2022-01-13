@@ -1,6 +1,6 @@
 import { Inject, Injectable, Injector } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
+import { BusEventType, EventBusService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import {
   CheckOrderApiResponse,
   FormPlayerApiResponse,
@@ -26,6 +26,7 @@ export class FormPlayerService extends FormPlayerBaseService {
   constructor(
     public injector: Injector,
     public formPlayerApiService: FormPlayerApiService,
+    private eventBusService: EventBusService,
     @Inject(WINDOW) private window: Window,
   ) {
     super(injector);
@@ -161,6 +162,7 @@ export class FormPlayerService extends FormPlayerBaseService {
     } else {
       this.sendDataSuccess(response as FormPlayerApiSuccessResponse);
       this.resetViewByChangeScreen();
+      this.eventBusService.emit(BusEventType.CloseModalEventGlobal);
     }
   }
 

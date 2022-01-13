@@ -2,12 +2,10 @@ import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 import {
-  WINDOW_PROVIDERS,
   WINDOW,
   LoggerService,
-  LoggerServiceStub,
-  LocalStorageService,
-  LocalStorageServiceStub,
+  EventBusService,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import {
@@ -18,16 +16,11 @@ import {
   Navigation,
   FormPlayerApiErrorStatuses,
 } from '@epgu/epgu-constructor-types';
-import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../screen/screen.service.stub';
-import { CachedAnswersService } from '../../../shared/services/cached-answers/cached-answers.service';
-import { HtmlRemoverService } from '../../../shared/services/html-remover/html-remover.service';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
-import { FormPlayerApiServiceStub } from '../form-player-api/form-player-api.service.stub';
-import { InitDataService } from '../../../core/services/init-data/init-data.service';
 import { FormPlayerService } from './form-player.service';
 import { FormPlayerServiceStub } from './form-player.service.stub';
+import { ForTestsOnlyModule } from '../../../core/for-tests-only.module';
 
 declare global {
   namespace NodeJS {
@@ -44,24 +37,13 @@ describe('FormPlayerService', () => {
   let screenService: ScreenService;
   let formPlayerApiService: FormPlayerApiService;
   let logger: LoggerService;
+  let eventBusService: EventBusService;
   let location: Location;
   let orderId: number;
   let navigation: Navigation;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        FormPlayerService,
-        InitDataService,
-        CachedAnswersService,
-        CurrentAnswersService,
-        HtmlRemoverService,
-        Location,
-        WINDOW_PROVIDERS,
-        { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: LoggerService, useClass: LoggerServiceStub },
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
-      ],
+      imports: [ForTestsOnlyModule],
     }).compileComponents();
   });
 
@@ -72,6 +54,7 @@ describe('FormPlayerService', () => {
     location = TestBed.inject(Location);
     logger = TestBed.inject(LoggerService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
+    eventBusService = TestBed.inject(EventBusService);
     orderId = 1234;
     service._store = JSON.parse(JSON.stringify(response));
   });
@@ -428,6 +411,12 @@ describe('FormPlayerService', () => {
       jest.spyOn<any, string>(service, 'resetViewByChangeScreen');
       service.processResponse(response);
       expect(service.resetViewByChangeScreen).toHaveBeenCalled();
+    });
+
+    it('should eventBusService.emit CloseModalEventGlobal event when hasError return false', () => {
+      const spy = jest.spyOn(eventBusService, 'emit');
+      service.processResponse(response);
+      expect(spy).toHaveBeenCalledWith(BusEventType.CloseModalEventGlobal);
     });
   });
 

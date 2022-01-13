@@ -1,7 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { CtaModalComponent, BaseUiModule, LocationService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CtaModalComponent,
+  BaseUiModule,
+  LocationService,
+  EventBusService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { MockComponents, MockDirectives } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { NotifierService } from '@epgu/ui/services/notifier';
@@ -20,6 +25,7 @@ describe('ConfirmationModalComponent', () => {
   let notifierService: NotifierService;
   let navigationService: NavigationService;
   let locationService: LocationService;
+  let eventBusService: EventBusService;
   let fixture: ComponentFixture<ConfirmationModalComponent>;
 
   const initComponent = () => {
@@ -53,6 +59,7 @@ describe('ConfirmationModalComponent', () => {
     fixture.detectChanges();
     navigationService = TestBed.inject(NavigationService);
     locationService = TestBed.inject(LocationService);
+    eventBusService = TestBed.inject(EventBusService);
   });
 
   it('should render epgu-cf-ui-cta-modal', () => {
@@ -177,6 +184,14 @@ describe('ConfirmationModalComponent', () => {
       const spy = jest.spyOn(locationService, 'reload');
       component.closeHandlerCase = CloseHandlerCases.RELOAD;
       component.closeModal({});
+      expect(spy).toBeCalled();
+    });
+  });
+
+  describe('eventBusService cases', () => {
+    it('should call closeModal for closeModalEventGlobal', () => {
+      const spy = jest.spyOn(component, 'closeModal');
+      eventBusService.emit('closeModalEventGlobal');
       expect(spy).toBeCalled();
     });
   });
