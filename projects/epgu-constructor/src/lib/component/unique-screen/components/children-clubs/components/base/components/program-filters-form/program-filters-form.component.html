@@ -1,0 +1,125 @@
+<epgu-cf-ui-cta-modal
+  title="Фильтры"
+  [text]="modalId"
+  [showCrossButton]="true"
+  [isButtonsOutsideContent]="true"
+  [scrollTop]="false"
+  [showButtons]="true"
+>
+  <form [formGroup]="form" modal-content>
+    <div class="mb-24">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.isRegistrationOpen]"
+        [formControlName]="formFields.isRegistrationOpen"
+      ></lib-checkbox>
+    </div>
+
+    <div class="mb-24">
+      <div class="label">{{ formFieldsLabel[formFields.municipality] }}</div>
+      <lib-lookup
+        [formControlName]="formFields[formFields.municipality]"
+        [itemsProvider]="provider"
+        [placeholder]="'Все'"
+        [showExpandCollapse]="true"
+        [searchCaseSensitive]="false"
+      ></lib-lookup>
+    </div>
+
+    <div class="mb-24">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.onlyDistanceProgram]"
+        [formControlName]="formFields.onlyDistanceProgram"
+      ></lib-checkbox>
+    </div>
+
+    <div class="modal-divider mb-24"></div>
+
+    <epgu-constructor-cc-payment-selector
+      (changes)="paymentFilterChange($event)"
+      [initValue]="initFilters"
+    ></epgu-constructor-cc-payment-selector>
+
+    <div class="mb-24 half-for-desktop">
+      <div class="label">{{ formFieldsLabel[formFields.maxPrice] }}</div>
+      <lib-plain-input [formControlName]="formFields.maxPrice" [maxlength]="18"></lib-plain-input>
+      <epgu-cf-ui-constructor-error
+        [data]="form.get(formFields.maxPrice)"
+      ></epgu-cf-ui-constructor-error>
+    </div>
+
+    <div class="modal-divider mb-24"></div>
+
+    <h5 class="title mb-12">Программа обучения</h5>
+
+    <div class="mb-24 row">
+      <div class="row-item">
+        <div class="label">{{ formFieldsLabel[formFields.focus] }}</div>
+        <lib-dropdown
+          #focus
+          (opened)="scrollIntoView('focus', true)"
+          placeholder="Все"
+          [disabled]="(focusList | async).length === 1"
+          [formControlName]="formFields[formFields.focus]"
+          [items]="focusList | async"
+          (changed)="changeFocus($event)"
+        ></lib-dropdown>
+      </div>
+
+      <div class="row-item">
+        <div class="label">{{ formFieldsLabel[formFields.direction] }}</div>
+        <lib-dropdown
+          #direction
+          (opened)="scrollIntoView('direction', true)"
+          placeholder="Все"
+          [disabled]="(directionList | async).length === 1"
+          [formControlName]="formFields[formFields.direction]"
+          [items]="directionList | async"
+        ></lib-dropdown>
+      </div>
+    </div>
+
+    <div class="mb-24 row">
+      <div class="row-item">
+        <div class="label">{{ formFieldsLabel[formFields.level] }}</div>
+        <lib-dropdown
+          #level
+          (opened)="scrollIntoView('level', false)"
+          [formControlName]="formFields[formFields.level]"
+          [items]="levelListElements"
+          [rollUp]="true"
+        ></lib-dropdown>
+      </div>
+
+      <div class="row-item">
+        <div class="label">{{ formFieldsLabel[formFields.age] }}</div>
+        <lib-plain-input [formControlName]="formFields.age" [maxlength]="2"></lib-plain-input>
+        <epgu-cf-ui-constructor-error
+          [data]="form.get(formFields.age)"
+        ></epgu-cf-ui-constructor-error>
+      </div>
+    </div>
+
+    <div class="mb-24">
+      <div class="label">{{ formFieldsLabel[formFields.ovzType] }}</div>
+      <lib-dropdown
+        #ovzType
+        (opened)="scrollIntoView('ovzType', false)"
+        [formControlName]="formFields[formFields.ovzType]"
+        [items]="healthListElements"
+        [rollUp]="true"
+      ></lib-dropdown>
+    </div>
+  </form>
+
+  <ng-container modal-buttons>
+    <div class="row mb-4">
+      <lib-button class="row-item btn btn-submit" color="white" (click)="resetForm()"
+        >Сбросить всё</lib-button
+      >
+
+      <lib-button class="row-item btn" [disabled]="form.invalid" (click)="submit()"
+        >Применить</lib-button
+      >
+    </div>
+  </ng-container>
+</epgu-cf-ui-cta-modal>

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-
 import { UniqueScreenComponentTypes } from '../../../../component/unique-screen/unique-screen-components.types';
 import { ScreenService } from '../../../../screen/screen.service';
 
@@ -16,8 +15,8 @@ export class UniqueComponentModalComponent {
     this.uniqueComponentName.confirmEmailCodeInput,
   ];
   confirmEmailTypes: string[] = [
-    this.uniqueComponentName.ConfirmNewEmail,
-    this.uniqueComponentName.ConfirmLegalNewEmail,
+    this.uniqueComponentName.confirmNewEmail,
+    this.uniqueComponentName.confirmLegalNewEmail,
   ];
 
   constructor(public screenService: ScreenService) {}

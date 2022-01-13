@@ -1,10 +1,5 @@
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
-
-// Implement styleguide for all library's components
 @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
-
-// TODO: remove all normalize css styles, it may affect lib's style
-// stylelint-disable
 
 .epgu-constructor {
   counter-reset: section;
@@ -22,6 +17,41 @@ p.hint-text {
   line-height: $font-lg;
   margin-top: 4px;
   color: $color-text-helper;
+}
+
+// DEPRICATED: упразднить в пользу .helper-text
+.small-link {
+  @include typ-plain-small;
+}
+
+// DEPRICATED: упразднить в пользу .form__half в invitation.component.scss
+.half-for-desktop {
+  width: 100%;
+  @include tablets-up {
+    width: 50%;
+  }
+}
+
+// DEPRICATED: упразднить в пользу flex-container
+.row {
+  display: flex;
+  flex-direction: column;
+
+  &-item {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  @include tablets-up {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    &-item {
+      width: 48%;
+      margin-bottom: 0;
+    }
+  }
 }
 
 ::ng-deep .notifiers-list .notifier {

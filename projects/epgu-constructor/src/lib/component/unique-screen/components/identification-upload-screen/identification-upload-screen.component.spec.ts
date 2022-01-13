@@ -17,7 +17,6 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { ActionDirective } from '../../../../shared/directives/action/action.directive';
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
-
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { IdentificationApiService } from '../../shared/identification-api/identification-api.service';
 import { IdentificationApiServiceStub } from '../../shared/identification-api/identification-api.service.stub';
@@ -36,7 +35,7 @@ import { UniqueScreenService } from '../../unique-screen.service';
 
 const componentMock = {
   id: 'id',
-  type: UniqueScreenComponentTypes.IdentificationUploadComponent,
+  type: UniqueScreenComponentTypes.identificationUploadComponent,
   attrs: { uploads: [] },
 };
 
@@ -222,7 +221,7 @@ describe('IdentificationUploadScreenComponent', () => {
       component.allMaxFiles = 0;
       screenService.component = {
         id: 'id',
-        type: UniqueScreenComponentTypes.IdentificationUploadComponent,
+        type: UniqueScreenComponentTypes.identificationUploadComponent,
         attrs: { uploads: [{ maxFileCount: 9 }, { maxFileCount: 9 }] },
       } as any;
 

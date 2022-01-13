@@ -44,53 +44,61 @@ import { KindergartenComponent } from '../components/kindergarten/kindergarten.c
 import { EquipmentChoiceContainerComponent } from '../components/equipment-choice/container/equipment-choice-container.component';
 import { ConfirmPersonalPolicyComponent } from '../components/confirm-personal-policy/confirm-personal-policy.component';
 import { TimeSlotResolverVersionComponent } from '../components/time-slot-resolver-version/time-slot-resolver-version.component';
+import { ProgramListContainerComponent } from '../components/children-clubs/components/program-list/container/program-list-container.component';
+import { ViewComponent } from '../components/children-clubs/components/program-list/components/view/view.component';
+import { GroupListContainerComponent } from '../components/children-clubs/components/group-list/components/group-list-container/group-list-container.component';
 
 export type ComponentTypes = UniqueScreenComponentTypes;
 
 type UniqueScreenComponent =
-  | TimeSlotResolverVersionComponent
-  | IdentificationStreamComponent
-  | IdentificationUploadScreenComponent
-  | InformationCenterMvdContainerComponent
-  | UnusedPaymentsContainerComponent
-  | SelectMapObjectComponent
-  | FileUploadScreenComponent
-  | UploadAndEditPhotoContainerComponent
-  | EmployeeHistoryContainerComponent
-  | RepeatableScreenComponent
-  | TimeSlotsComponent
-  | TimeSlotDoctorsContainerComponent
-  | CarInfoContainerComponent
-  | CarOwnerInfoContainerComponent
-  | CarListContainerComponent
-  | SignatureApplicationContainerComponent
-  | PaymentComponent
+  | AddPassportContainerComponent
   | BillInfoComponent
-  | PaymentTypeSelectorContainerComponent
-  | InformationCenterContainerComponent
+  | CarDetailInfoContainerComponent
+  | CarDetailInfoContainerComponent
+  | CarInfoContainerComponent
+  | CarListContainerComponent
+  | CarOwnerInfoContainerComponent
+  | CheckboxCubeScreenComponent
+  | ConfirmPersonalPolicyComponent
   | ConfirmPersonalUserAddressComponent
+  | ConfirmPersonalUserAddressReadonlyComponent
+  | ConfirmPersonalUserAddressReadonlyComponent
   | ConfirmPersonalUserDataComponent
   | ConfirmPersonalUserLegalDataComponent
   | ConfirmPersonalUserPhoneEmailComponent
-  | ConfirmPersonalPolicyComponent
-  | RegistrationAddrComponent
-  | AddPassportContainerComponent
-  | SelectChildrenScreenContainerComponent
-  | FieldListScreenComponent
-  | TimerScreenComponent
-  | MatPeriodContainerComponent
-  | DateTimePeriodContainerComponent
   | DatePeriodContainerComponent
-  | CheckboxCubeScreenComponent
-  | ConfirmPersonalUserAddressReadonlyComponent
-  | CarDetailInfoContainerComponent
+  | DateTimePeriodContainerComponent
+  | EmployeeHistoryContainerComponent
+  | EquipmentChoiceContainerComponent
+  | FieldListScreenComponent
+  | FileUploadScreenComponent
+  | GroupListContainerComponent
+  | IdentificationStreamComponent
+  | IdentificationUploadScreenComponent
+  | InformationCenterContainerComponent
+  | InformationCenterMvdContainerComponent
+  | KindergartenComponent
+  | MatPeriodContainerComponent
   | MedicalReferralsListContainerComponent
-  | ReferralNumberComponent
+  | PaymentComponent
+  | PaymentTypeSelectorContainerComponent
   | PaymentWayContainerComponent
   | PersonUserInnComponent
+  | ProgramListContainerComponent
+  | ReferralNumberComponent
+  | RegistrationAddrComponent
   | RegistrationAddrReadonlyComponent
-  | KindergartenComponent
-  | EquipmentChoiceContainerComponent;
+  | RepeatableScreenComponent
+  | SelectChildrenScreenContainerComponent
+  | SelectMapObjectComponent
+  | SignatureApplicationContainerComponent
+  | TimerScreenComponent
+  | TimeSlotDoctorsContainerComponent
+  | TimeSlotResolverVersionComponent
+  | TimeSlotsComponent
+  | UnusedPaymentsContainerComponent
+  | UploadAndEditPhotoContainerComponent
+  | ViewComponent;
 
 export type ScreenComponentTypes = UniqueScreenComponent;
 
@@ -98,58 +106,61 @@ export const UNIQUE_SCREEN_COMPONENTS: Partial<Record<
   UniqueScreenComponentTypes,
   Type<UniqueScreenComponent>
 >> = {
-  IdentificationStreamComponent,
-  IdentificationUploadComponent: IdentificationUploadScreenComponent,
-  CityDepartment: InformationCenterMvdContainerComponent,
-  UnusedPayments: UnusedPaymentsContainerComponent,
-  MapService: SelectMapObjectComponent,
-  KindergartenMapService: KindergartenComponent,
-  OrderFileProcessingComponent: FileUploadScreenComponent,
-  FileUploadComponent: FileUploadScreenComponent,
-  PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
-  EmployeeHistory: EmployeeHistoryContainerComponent,
-  TimeSlot: TimeSlotResolverVersionComponent,
-  TimeSlotDoctor: TimeSlotDoctorsContainerComponent,
-  TimeSlotWithComputableDepartment: TimeSlotResolverVersionComponent,
+  BarbarbokMapService: SelectMapObjectComponent,
+  BillInfo: BillInfoComponent,
+  CarDetailInfo: CarDetailInfoContainerComponent,
   CarInfo: CarInfoContainerComponent,
   CarList: CarListContainerComponent,
   CarOwnerInfo: CarOwnerInfoContainerComponent,
-  EsepSign: SignatureApplicationContainerComponent,
-  PaymentScr: PaymentComponent,
-  BillInfo: BillInfoComponent,
-  PaymentTypeSelector: PaymentTypeSelectorContainerComponent,
-  InformationCenterPfr: InformationCenterContainerComponent,
-  InformationCenterFss: InformationCenterContainerComponent,
-  InformationCenterPfrSop: InformationCenterContainerComponent,
-  ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
-  ConfirmPersonalUserRegReadOnlyAddr: ConfirmPersonalUserAddressReadonlyComponent,
-  ConfirmPersonalUserData: ConfirmPersonalUserDataComponent,
-  ConfirmPersonalPolicy: ConfirmPersonalPolicyComponent,
+  CheckboxCube: CheckboxCubeScreenComponent,
+  ChildrenList: SelectChildrenScreenContainerComponent,
+  CityDepartment: InformationCenterMvdContainerComponent,
   ConfirmAnotherUserData: ConfirmPersonalUserDataComponent,
   ConfirmChildData: ConfirmPersonalUserDataComponent,
+  ConfirmLegalData: ConfirmPersonalUserLegalDataComponent,
+  ConfirmLegalEmail: ConfirmPersonalUserPhoneEmailComponent,
+  ConfirmLegalPhone: ConfirmPersonalUserPhoneEmailComponent,
+  ConfirmPersonalPolicy: ConfirmPersonalPolicyComponent,
+  ConfirmPersonalUserData: ConfirmPersonalUserDataComponent,
   ConfirmPersonalUserEmail: ConfirmPersonalUserPhoneEmailComponent,
   ConfirmPersonalUserPhone: ConfirmPersonalUserPhoneEmailComponent,
-  ConfirmLegalData: ConfirmPersonalUserLegalDataComponent,
-  ConfirmLegalPhone: ConfirmPersonalUserPhoneEmailComponent,
-  ConfirmLegalEmail: ConfirmPersonalUserPhoneEmailComponent,
+  ConfirmPersonalUserRegAddr: ConfirmPersonalUserAddressComponent,
+  ConfirmPersonalUserRegReadOnlyAddr: ConfirmPersonalUserAddressReadonlyComponent,
+  ConfirmUserCorpEmail: ConfirmPersonalUserPhoneEmailComponent,
+  ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,
+  DatePeriod: DatePeriodContainerComponent,
+  DateTimePeriod: DateTimePeriodContainerComponent,
+  EmployeeHistory: EmployeeHistoryContainerComponent,
+  EquipmentChoice: EquipmentChoiceContainerComponent,
+  EsepSign: SignatureApplicationContainerComponent,
+  FieldList: FieldListScreenComponent,
+  FileUploadComponent: FileUploadScreenComponent,
+  GroupList: GroupListContainerComponent,
+  IdentificationStreamComponent: IdentificationStreamComponent,
+  IdentificationUploadComponent: IdentificationUploadScreenComponent,
+  InformationCenterFss: InformationCenterContainerComponent,
+  InformationCenterPfr: InformationCenterContainerComponent,
+  InformationCenterPfrSop: InformationCenterContainerComponent,
+  KindergartenMapService: KindergartenComponent,
+  MapService: SelectMapObjectComponent,
+  MatPeriod: MatPeriodContainerComponent,
+  MedicalReferrals: MedicalReferralsListContainerComponent,
+  OrderFileProcessingComponent: FileUploadScreenComponent,
+  PassportLookup: AddPassportContainerComponent,
+  PaymentScr: PaymentComponent,
+  PaymentTypeSelector: PaymentTypeSelectorContainerComponent,
+  PaymentWay: PaymentWayContainerComponent,
+  PersonUserInn: PersonUserInnComponent,
+  PhotoUploadComponent: UploadAndEditPhotoContainerComponent,
+  ProgramList: ProgramListContainerComponent,
+  ProgramView: ViewComponent,
+  ReferralNumber: ReferralNumberComponent,
   RegistrationAddr: RegistrationAddrComponent,
   RegistrationLegalAddr: RegistrationAddrComponent,
   RegistrationLegalAddrReadOnly: RegistrationAddrReadonlyComponent,
-  PassportLookup: AddPassportContainerComponent,
-  ChildrenList: SelectChildrenScreenContainerComponent,
-  FieldList: FieldListScreenComponent,
   Timer: TimerScreenComponent,
-  MatPeriod: MatPeriodContainerComponent,
-  DateTimePeriod: DateTimePeriodContainerComponent,
-  DatePeriod: DatePeriodContainerComponent,
-  CheckboxCube: CheckboxCubeScreenComponent,
-  ConfirmUserCorpEmail: ConfirmPersonalUserPhoneEmailComponent,
-  ConfirmUserCorpPhone: ConfirmPersonalUserPhoneEmailComponent,
-  CarDetailInfo: CarDetailInfoContainerComponent,
-  MedicalReferrals: MedicalReferralsListContainerComponent,
-  ReferralNumber: ReferralNumberComponent,
-  PaymentWay: PaymentWayContainerComponent,
-  PersonUserInn: PersonUserInnComponent,
-  EquipmentChoice: EquipmentChoiceContainerComponent,
-  BarbarbokMapService: SelectMapObjectComponent,
+  TimeSlot: TimeSlotResolverVersionComponent,
+  TimeSlotDoctor: TimeSlotDoctorsContainerComponent,
+  TimeSlotWithComputableDepartment: TimeSlotResolverVersionComponent,
+  UnusedPayments: UnusedPaymentsContainerComponent,
 };

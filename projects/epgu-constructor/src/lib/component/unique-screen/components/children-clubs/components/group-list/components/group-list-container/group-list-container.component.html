@@ -1,0 +1,52 @@
+<epgu-cf-ui-screen-container>
+  <div class="screen-body">
+    <ng-container *ngIf="program$ | async as program"
+      ><div class="title mb-12">
+        Выберите группу обучения
+      </div>
+      <div class="program-name mb-24">
+        {{ program.name }}
+      </div>
+      <epgu-constructor-cc-filter-panel
+        [title]="titleFilter"
+        (openFilters)="openFilter()"
+        (search)="search($event)"
+        [initValue]="initFilter"
+        [filtersCount]="filtersCount$$ | async"
+        [isShowMenu]="false"
+      ></epgu-constructor-cc-filter-panel>
+      <ng-container *ngIf="loading$ | async; else content">
+        <epgu-cf-ui-constructor-screen-pad class="loader mt-24">
+          <lib-throbber-hexagon size="big"></lib-throbber-hexagon
+        ></epgu-cf-ui-constructor-screen-pad>
+      </ng-container>
+      <ng-template #content>
+        <ng-container *ngIf="data$ | async as data">
+          <ng-container *ngIf="$any(data)?.length > 0">
+            <ng-container *ngFor="let item of data$ | async; let i = index">
+              <epgu-constructor-cc-group-item
+                [program]="program"
+                class="mt-24"
+                [data]="item"
+                [index]="i"
+              >
+              </epgu-constructor-cc-group-item>
+            </ng-container>
+            <div class="btn">
+              <lib-button *ngIf="isShowButton$ | async" color="white" (click)="getMore()"
+                >Показать еще</lib-button
+              >
+            </div>
+          </ng-container>
+          <epgu-constructor-cc-not-found
+            *ngIf="$any(data)?.length === 0"
+            class="mt-24"
+          ></epgu-constructor-cc-not-found>
+        </ng-container>
+      </ng-template>
+    </ng-container>
+    <epgu-cf-ui-constructor-screen-pad *ngIf="fullLoading$ | async" class="loader">
+      <lib-throbber-hexagon size="big"></lib-throbber-hexagon
+    ></epgu-cf-ui-constructor-screen-pad>
+  </div>
+</epgu-cf-ui-screen-container>

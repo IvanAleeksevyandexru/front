@@ -1,0 +1,10 @@
+<div class="wrapper">
+  <ng-content></ng-content>
+</div>
+<div class="btn">
+  <lib-throbber-hexagon *ngIf="loading$ | async; else button"></lib-throbber-hexagon>
+</div>
+
+<ng-template #button>
+  <lib-button *ngIf="isShowButton$ | async" color="white" (click)="next()">Показать еще</lib-button>
+</ng-template>

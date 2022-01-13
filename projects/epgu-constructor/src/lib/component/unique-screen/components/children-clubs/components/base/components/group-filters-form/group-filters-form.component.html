@@ -1,0 +1,54 @@
+<epgu-cf-ui-cta-modal
+  title="Фильтры"
+  [text]="modalId"
+  [showCrossButton]="true"
+  [isButtonsOutsideContent]="true"
+  [scrollTop]="false"
+  [showButtons]="true"
+>
+  <form [formGroup]="form" modal-content>
+    <div class="mb-24">
+      <lib-checkbox
+        [labelText]="formFieldsLabel[formFields.isRegistrationOpen]"
+        [formControlName]="formFields.isRegistrationOpen"
+      ></lib-checkbox>
+    </div>
+
+    <div class="modal-divider mb-24"></div>
+
+    <epgu-constructor-cc-payment-selector
+      (changes)="paymentFilterChange($event)"
+      [initValue]="initFilters"
+    ></epgu-constructor-cc-payment-selector>
+
+    <div class="mb-24 half-for-desktop">
+      <div class="label">{{ formFieldsLabel[formFields.maxPrice] }}</div>
+      <lib-plain-input [formControlName]="formFields.maxPrice" [maxlength]="18"></lib-plain-input>
+      <epgu-cf-ui-constructor-error
+        [data]="form.get(formFields.maxPrice)"
+      ></epgu-cf-ui-constructor-error>
+    </div>
+
+    <div class="modal-divider mb-24"></div>
+
+    <div class="mb-24 half-for-desktop">
+      <div class="label">{{ formFieldsLabel[formFields.age] }}</div>
+      <lib-plain-input [formControlName]="formFields.age" [maxlength]="2"></lib-plain-input>
+      <epgu-cf-ui-constructor-error
+        [data]="form.get(formFields.age)"
+      ></epgu-cf-ui-constructor-error>
+    </div>
+  </form>
+
+  <ng-container modal-buttons>
+    <div class="row mb-4">
+      <lib-button class="row-item btn btn-submit" color="white" (click)="resetForm()"
+        >Сбросить всё</lib-button
+      >
+
+      <lib-button class="row-item btn" [disabled]="form.invalid" (click)="submit()"
+        >Применить</lib-button
+      >
+    </div>
+  </ng-container>
+</epgu-cf-ui-cta-modal>
