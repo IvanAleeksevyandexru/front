@@ -57,7 +57,7 @@ export class UploaderManagerItemComponent extends BaseComponent {
       this.link = this.teraService.getDownloadApiPath(file.createUploadedParams());
     }
     this.isImage = file.isImage;
-    this.isArchive = file.isArchive;
+    this.hasNoPreview = file.hasNoPreview;
     this.extension = file.raw.name.split('.').pop().toLowerCase();
     this.size = file.raw.size;
     this.name = file.raw.name;
@@ -83,7 +83,7 @@ export class UploaderManagerItemComponent extends BaseComponent {
   isError = false;
   errorType: ErrorActions;
   isImage = false;
-  isArchive = false;
+  hasNoPreview = false;
   fileItem: FileItem;
 
   statusText = FileItemStatusText;
