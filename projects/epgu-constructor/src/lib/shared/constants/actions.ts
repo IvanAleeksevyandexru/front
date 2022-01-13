@@ -6,6 +6,12 @@ export const NEXT_STEP_ACTION: ComponentActionDto = {
   type: ActionType.nextStep,
 };
 
+export const PREV_STEP_ACTION: ComponentActionDto = {
+  label: 'Назад',
+  action: DTOActionAction.getPrevStep,
+  type: ActionType.prevStep,
+};
+
 export const SAVE_STEP_ACTION: ComponentActionDto = {
   label: '',
   action: DTOActionAction.getSaveCacheToDraft,

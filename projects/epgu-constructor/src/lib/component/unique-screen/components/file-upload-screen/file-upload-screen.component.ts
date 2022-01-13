@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map, takeUntil, tap } from 'rxjs/operators';
-
 import { ActionType, ComponentActionDto, DTOActionAction } from '@epgu/epgu-constructor-types';
 import {
   ModalService,
@@ -39,7 +38,7 @@ export class FileUploadScreenComponent implements OnInit {
 
       this.uploaderScreenService.setValuesFromAttrs(attrs);
 
-      if (data.type === UniqueScreenComponentTypes.OrderFileProcessingComponent && attrs?.uploads) {
+      if (data.type === UniqueScreenComponentTypes.orderFileProcessingComponent && attrs?.uploads) {
         attrs.maxFileCount = attrs.uploads?.length ?? 0;
         attrs.uploads = attrs.uploads.map((upload) => this.toCSVUploader(upload));
         if (this.screenService.componentError) {

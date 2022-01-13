@@ -57,7 +57,7 @@ export class ConfirmEmailComponent implements OnInit {
 
   public resendEmailConfirmation(): void {
     const url =
-      this.screenService.componentType === UniqueScreenComponentTypes.ConfirmLegalNewEmail
+      this.screenService.componentType === UniqueScreenComponentTypes.confirmLegalNewEmail
         ? DTOActionAction.resendLegalEmailConfirmation
         : DTOActionAction.resendEmailConfirmation;
     const options: NavigationOptions = { url };
