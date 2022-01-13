@@ -92,7 +92,7 @@
     display: none;
   }
   & > p:first-of-type + .form__item.show {
-    &::ng-deep .form__radio--block {
+    &::ng-deep .form__input:only-child .form__radio--block {
       margin-top: 0;
     }
   }
