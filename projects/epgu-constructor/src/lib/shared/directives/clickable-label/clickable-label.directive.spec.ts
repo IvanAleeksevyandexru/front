@@ -15,6 +15,7 @@ import {
   JsonHelperService,
   JsonHelperServiceStub,
   EventBusService,
+  BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { ClickableLabelDirective } from './clickable-label.directive';
@@ -50,6 +51,7 @@ describe('ClickableLabelDirective', () => {
   let actionService: ActionService;
   let screenService: ScreenService;
   let currentAnswersService: CurrentAnswersService;
+  let eventBusService: EventBusService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -60,7 +62,7 @@ describe('ClickableLabelDirective', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        JsonHelperService,
         EventBusService,
         CurrentAnswersService,
         SmuEventsService,
@@ -77,6 +79,12 @@ describe('ClickableLabelDirective', () => {
     actionService = TestBed.inject(ActionService);
     screenService = TestBed.inject(ScreenService);
     currentAnswersService = TestBed.inject(CurrentAnswersService);
+    eventBusService = TestBed.inject(EventBusService);
+    screenService.component = {
+      attrs: {},
+      id: 'test1',
+      type: 'Lookup',
+    };
   });
 
   it('should open modal if clarifications are set', () => {
@@ -110,11 +118,6 @@ describe('ClickableLabelDirective', () => {
   });
 
   it('should call _handleAction if target element is ActionType', () => {
-    screenService.component = {
-      attrs: {},
-      id: 'test1',
-      type: 'Lookup',
-    };
     component.label = '<p><a data-action-type="nextStep" data-action-value=0>Ссылка</a></p>';
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
@@ -124,16 +127,21 @@ describe('ClickableLabelDirective', () => {
   });
 
   it('should not set _currentAnswersService.state if target ActionType is deleteSuggest', () => {
-    screenService.component = {
-      attrs: {},
-      id: 'test1',
-      type: 'Lookup',
-    };
     component.label = '<p><a data-action-type="deleteSuggest" data-action-value=0>Ссылка</a></p>';
     fixture.detectChanges();
     const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
     div.querySelector('a').click();
     expect(currentAnswersService.state).toBeUndefined();
+  });
+
+  it('should eventBusService.emit CloseModalEventGlobal event when needToCloseModal in attrs', () => {
+    const spy = jest.spyOn(eventBusService, 'emit');
+    component.label =
+      "<p><a data-action-attrs='{\"needToCloseModal\":true}' data-action-type='prevStep'>Ссылка</a></p>";
+    fixture.detectChanges();
+    const div: HTMLDivElement = fixture.debugElement.query(By.css('div')).nativeElement;
+    div.querySelector('a').click();
+    expect(spy).toHaveBeenCalledWith(BusEventType.CloseModalEventGlobal);
   });
 
   describe('div', () => {

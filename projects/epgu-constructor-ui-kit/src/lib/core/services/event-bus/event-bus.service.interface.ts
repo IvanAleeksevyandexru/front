@@ -17,4 +17,5 @@ export enum BusEventType {
   FileDeletedEvent = 'fileDeletedEvent',
   FileUploadItemValueChangedEvent = 'fileUploadItemValueChangedEvent',
   GetNextStepWithoutClickedButtonEvent = 'getNextStepWithoutClickedButtonEvent',
+  CloseModalEventGlobal = 'closeModalEventGlobal',
 }
