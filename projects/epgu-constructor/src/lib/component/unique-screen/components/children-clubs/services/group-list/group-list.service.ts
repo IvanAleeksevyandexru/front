@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { ApiService } from '../api/api.service';
 import { Group, FindOptionsGroup } from '../../models/children-clubs.types';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 
 @Injectable()
 export class GroupListService {
@@ -28,13 +28,13 @@ export class GroupListService {
     return this.data$$.getValue();
   }
 
-  constructor(private api: ApiService) {}
+  constructor(private dictionaryApiService: DictionaryApiService) {}
 
   public getGroupList(uuid: string, groupFilters: FindOptionsGroup): Observable<Group[]> {
     if (groupFilters?.query?.length === 0) {
       delete groupFilters.query;
     }
-    return this.api.getGroupList(uuid, groupFilters).pipe(
+    return this.dictionaryApiService.getGroupList(uuid, groupFilters).pipe(
       catchError((_) => of([])),
       tap((data) => this.setGroupList(data)),
       tap(() => this.loading$$.next(false)),

@@ -114,7 +114,7 @@ describe('PaymentService', () => {
         ],
       };
 
-      jest.spyOn(dictionaryApiService, 'getDictionary').mockReturnValue(of(responseMock));
+      jest.spyOn(dictionaryApiService, 'getGenericDictionary').mockReturnValue(of(responseMock));
       service.getDictionaryInfo(attrsMock).subscribe((response) => {
         expect(response).toEqual({ DATAK: '' });
       });
@@ -141,7 +141,7 @@ describe('PaymentService', () => {
         ],
       };
 
-      jest.spyOn(dictionaryApiService, 'getDictionary').mockReturnValue(of(responseMock));
+      jest.spyOn(dictionaryApiService, 'getGenericDictionary').mockReturnValue(of(responseMock));
       service
         .getDictionaryInfo(attrsMock)
         .pipe(catchError((error: any) => of(error)))

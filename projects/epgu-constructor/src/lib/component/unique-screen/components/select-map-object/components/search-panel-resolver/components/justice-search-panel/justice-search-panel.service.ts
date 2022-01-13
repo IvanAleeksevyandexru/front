@@ -197,7 +197,7 @@ export class JusticeSearchPanelService implements OnDestroy {
         },
       },
     };
-    this.dictionaryApiService.getDictionary('SDRF_Courts', options).subscribe((response) => {
+    this.dictionaryApiService.getGenericDictionary('SDRF_Courts', options).subscribe((response) => {
       // Складываем все полигоны в одну FeatureCollection чтобы проводить все операции с полигонами через нее
       const featureCollection = {
         type: 'FeatureCollection',

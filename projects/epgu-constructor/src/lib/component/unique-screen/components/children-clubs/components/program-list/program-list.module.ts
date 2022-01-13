@@ -14,11 +14,11 @@ import { ProgramListService } from '../../services/program-list/program-list.ser
 import { ListComponent } from './components/list/list.component';
 import { ItemComponent } from './components/item/item.component';
 import { ViewComponent } from './components/view/view.component';
-import { ApiService } from '../../services/api/api.service';
 import { BaseModule } from '../base/base.module';
 import { StateService } from '../../services/state/state.service';
 import { SelectMapObjectCcModule } from '../select-map-object/select-map-object.module';
 import { ToggleTextComponent } from './components/toggle-text/toggle-text.component';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +39,7 @@ import { ToggleTextComponent } from './components/toggle-text/toggle-text.compon
     PluralizeModule,
   ],
 
-  providers: [ProgramListService, ModalService, ConfigService, ApiService, StateService],
+  providers: [ProgramListService, ModalService, ConfigService, DictionaryApiService, StateService],
   exports: [ProgramListContainerComponent, ViewComponent],
   entryComponents: [ProgramListContainerComponent, ViewComponent],
 })

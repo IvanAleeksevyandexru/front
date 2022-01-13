@@ -75,7 +75,7 @@ export class DictionaryToolsService {
     return (
       this.dictionaryApiService
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .getDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
+        .getGenericDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
         .pipe(
           map((dictionary: DictionaryResponse) => ({
             component,

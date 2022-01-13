@@ -13,7 +13,6 @@ import {
   SharedModalModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramFiltersFormComponent } from './components/program-filters-form/program-filters-form.component';
-import { ApiService } from '../../services/api/api.service';
 import { StateService } from '../../services/state/state.service';
 import { ContentModalComponent } from './components/content-modal/content-modal.component';
 import { FilterPanelComponent } from './components/filter-panel/filter-panel.component';
@@ -22,6 +21,7 @@ import { DictionaryCcService } from '../../services/dictionary/dictionary.servic
 import { GroupFiltersFormComponent } from './components/group-filters-form/group-filters-form.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-reason-title.component';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-re
     PrevButtonModule,
     IconsModule,
   ],
-  providers: [DictionaryCcService, ConfigService, ApiService, StateService],
+  providers: [DictionaryCcService, ConfigService, DictionaryApiService, StateService],
   exports: [
     NotFoundComponent,
     ProgramFiltersFormComponent,

@@ -5,11 +5,11 @@ import {
   MicroAppStateStore,
 } from '@epgu/epgu-constructor-ui-kit';
 import { StateService } from '../state/state.service';
-import { ApiService } from '../api/api.service';
-import { ApiServiceStub } from '../api/api.service.stub';
 import { DictionaryCcService } from './dictionary.service';
 import { municipalityStub, programStub } from '../../stubs/projects.stub';
 import { FocusDirectionsItem } from '../../models/children-clubs.types';
+import { DictionaryApiServiceStub } from '../../../../../../shared/services/dictionary/dictionary-api.service.stub';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 
 describe('DictionaryService', () => {
   let service: DictionaryCcService;
@@ -23,7 +23,7 @@ describe('DictionaryService', () => {
         MicroAppStateService,
         MicroAppStateQuery,
         MicroAppStateStore,
-        { provide: ApiService, useClass: ApiServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
       ],
     }).compileComponents();
     service = TestBed.inject(DictionaryCcService);
