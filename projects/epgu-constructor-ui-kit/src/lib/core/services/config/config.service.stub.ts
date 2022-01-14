@@ -13,8 +13,6 @@ export class ConfigServiceStub implements Config {
 
   _dictionaryUrl = 'https://svcdev-pgu.test.gosuslugi.ru/api/nsi/v1/dictionary';
 
-  _smevConverterUrl = 'https://dev01.pgu2-pub.test.gosuslugi.ru/smev-converter/services/get';
-
   _externalApiUrl = 'https://svcdev-beta.test.gosuslugi.ru/api/nsi/v1';
 
   _timeSlotApiUrl = '';
@@ -161,10 +159,6 @@ export class ConfigServiceStub implements Config {
 
   get dictionaryUrl(): string {
     return this._dictionaryUrl;
-  }
-
-  get smevConverterUrl(): string {
-    return this._smevConverterUrl;
   }
 
   get externalApiUrl(): string {
@@ -325,7 +319,6 @@ export class ConfigServiceStub implements Config {
     this._apiUrl = config.apiUrl;
     this._billsApiUrl = config.billsApiUrl;
     this._dictionaryUrl = config.dictionaryUrl;
-    this._smevConverterUrl = config.smevConverterUrl;
     this._externalApiUrl = config.externalApiUrl;
     this._fileUploadApiUrl = config.fileUploadApiUrl;
     this._galleryApiUrl = config.galleryApiUrl;
