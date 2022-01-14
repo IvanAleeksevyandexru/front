@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 import { ItemsErrorResponse } from '@epgu/epgu-constructor-types';
 import { DictionaryResponseError } from '../../../shared/services/dictionary/dictionary-api.types';
@@ -17,10 +17,12 @@ export class InternalErrorInterceptor extends BaseInterceptor {
     super();
   }
 
-  validate(response: HttpResponse<unknown>): boolean {
-    const { url, body } = response;
-    const error = (body as ItemsErrorResponse)?.error;
-    const dictionaryError = error as DictionaryResponseError;
+  validate(response: HttpResponse<unknown> | HttpErrorResponse): boolean {
+    const { url, body } = response as HttpResponse<unknown>;
+    const { error } = response as HttpErrorResponse;
+    const errorData = (body as ItemsErrorResponse)?.error || error?.error;
+    const dictionaryError = errorData as DictionaryResponseError;
+
     return (
       (url.includes('dictionary/mzrf_regions_smev3') ||
         url.includes('dictionary/mzrf_equeue_lpu') ||
@@ -38,5 +40,9 @@ export class InternalErrorInterceptor extends BaseInterceptor {
       text: STATIC_ERROR_MODAL.text.replace(/\{textAsset\}?/g, INTERNAL_ERROR_TEXT),
     };
     this.utils.showModal(config);
+  }
+
+  protected checkStatus(status: number): boolean {
+    return status === 200 || status === 500;
   }
 }
