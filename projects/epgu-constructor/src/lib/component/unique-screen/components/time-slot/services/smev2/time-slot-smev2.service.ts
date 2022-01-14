@@ -15,14 +15,12 @@ import {
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Smev2RestApiService } from '../api/smev2/smev2-rest-api.service';
-import {
-  ComponentValue,
-  DictionaryToolsService,
-} from '../../../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../../../shared/services/dictionary/dictionary-tools.service';
 import { Slot, TIMEZONE_STR_OFFSET } from '../../typings';
 import { DictionaryItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { TimeSlotStateService } from '../state/time-slot-state.service';
+import { ComponentValue } from '../../../../../../shared/services/dictionary/dictionary.interface';
 
 @Injectable()
 export class TimeSlotSmev2Service {

@@ -17,11 +17,11 @@ import { StateService } from '../../services/state/state.service';
 import { ContentModalComponent } from './components/content-modal/content-modal.component';
 import { FilterPanelComponent } from './components/filter-panel/filter-panel.component';
 import { PaymentSelectorComponent } from './components/payment-selector/payment-selector.component';
-import { DictionaryCcService } from '../../services/dictionary/dictionary.service';
 import { GroupFiltersFormComponent } from './components/group-filters-form/group-filters-form.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-reason-title.component';
 import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryService } from '../../../../../../shared/services/dictionary/dictionary.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,7 @@ import { DictionaryApiService } from '../../../../../../shared/services/dictiona
     PrevButtonModule,
     IconsModule,
   ],
-  providers: [DictionaryCcService, ConfigService, DictionaryApiService, StateService],
+  providers: [DictionaryService, ConfigService, DictionaryApiService, StateService],
   exports: [
     NotFoundComponent,
     ProgramFiltersFormComponent,

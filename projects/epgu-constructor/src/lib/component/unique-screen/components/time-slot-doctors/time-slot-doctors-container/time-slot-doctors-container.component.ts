@@ -61,6 +61,7 @@ import {
   DictionaryResponse,
 } from '../../../../../shared/services/dictionary/dictionary-api.types';
 import { FormPlayerService } from '../../../../../form-player/services/form-player/form-player.service';
+import { DictionaryService } from '../../../../../shared/services/dictionary/dictionary.service';
 
 /* eslint-disable max-len */
 export const STATIC_ERROR_MESSAGE = 'должности в ближайшие 14 дней нет доступного времени';
@@ -180,9 +181,10 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
     public screenService: ScreenService,
     public currentAnswersService: CurrentAnswersService,
     public timeSlotDoctorService: TimeSlotDoctorService,
+    public constants: TimeSlotsConstants,
+    private dictionaryService: DictionaryService,
     private dictionaryToolsService: DictionaryToolsService,
     private modalService: ModalService,
-    public constants: TimeSlotsConstants,
     private ngUnsubscribe$: UnsubscribeService,
     private changeDetectionRef: ChangeDetectorRef,
     private datesHelperService: DatesToolsService,
@@ -632,7 +634,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
         [...getInitialDictionaryFilterFunc(), ...filters],
       );
 
-      return this.dictionaryToolsService
+      return this.dictionaryService
         .getDictionaries$(
           attrs.dictionaryType as string,
           { ...component, attrs } as CustomComponent,

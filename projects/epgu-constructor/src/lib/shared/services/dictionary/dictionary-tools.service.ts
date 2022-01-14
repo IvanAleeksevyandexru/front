@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { get } from 'lodash';
 import {
   ComponentDictionaryFilterDto,
@@ -9,7 +7,6 @@ import {
   DictionarySimpleFilter,
   DictionaryUnionFilter,
   DictionaryUnionKind,
-  DictionaryValue,
   DictionaryValueTypes,
   AttributeTypes,
   FilterDtoConfig,
@@ -21,106 +18,30 @@ import {
 import { DatesToolsService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { FormArray } from '@angular/forms';
 import { ListElement } from '@epgu/ui/models/dropdown';
-import { DictionaryApiService } from './dictionary-api.service';
 import {
   CustomComponent,
-  CustomListGenericData,
   CustomScreenComponentTypes,
   Searchable,
 } from '../../../component/custom-screen/components-list.types';
-import { DictionaryItem, DictionaryResponse } from './dictionary-api.types';
+import { DictionaryItem } from './dictionary-api.types';
 import { ScreenStore } from '../../../screen/screen.types';
-
-export type ComponentValue = {
-  [key: string]: string | number | object;
-};
-
-export interface ValueForFilter {
-  rawValue: string;
-  value: DictionaryValue;
-}
-
-interface CalcFilterFuncArgs {
-  componentValue: ComponentValue | FormArray;
-  screenStore: ScreenStore;
-  dFilter: ComponentDictionaryFilterDto;
-  index: number;
-  attributeType: AttributeTypes;
-}
-
-/**
- * attributes[?(@.name==AttributeName)].value
- * Groups:
- * attributes[?(@.name==AttributeName)].value
- * attributes
- * ?(@.name==AttributeName)
- * name
- * AttributeName
- */
-const FIND_INDEX_IN_OBJECT_ARRAY_REGEXP = '^(.*)\\[([?]\\(@\\.(.*)==(.*)\\))\\].*$';
+import {
+  CalcFilterFuncArgs,
+  ComponentValue,
+  FIND_INDEX_IN_OBJECT_ARRAY_REGEXP,
+  ValueForFilter,
+} from './dictionary.interface';
+import {
+  FocusDirectionsItem,
+  NormalizedFocusData,
+} from '../../../component/unique-screen/components/children-clubs/models/children-clubs.types';
 
 @Injectable()
 export class DictionaryToolsService {
   constructor(
-    private dictionaryApiService: DictionaryApiService,
     private datesToolsService: DatesToolsService,
     private jsonHelperService: JsonHelperService,
   ) {}
-
-  public getDictionaries$(
-    dictionaryType: string,
-    component: CustomComponent,
-    options: DictionaryOptions,
-  ): Observable<CustomListGenericData<DictionaryResponse>> {
-    return (
-      this.dictionaryApiService
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .getGenericDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
-        .pipe(
-          map((dictionary: DictionaryResponse) => ({
-            component,
-            data: {
-              ...dictionary,
-            },
-          })),
-          map((dictionary) => {
-            if (typeof dictionary.component.arguments?.id === 'string') {
-              const ids = JSON.parse(dictionary.component.arguments.id);
-              const items = dictionary.data.items.filter((item) => !ids.includes(item.value));
-              const data: DictionaryResponse = {
-                ...dictionary.data,
-                items,
-              };
-
-              return {
-                component,
-                data,
-              };
-            }
-            // TODO: удалить когда будет реализована фильтрация справочника на строне NSI-справочников в RTLabs
-            if (component.attrs.filter) {
-              const items = dictionary.data.items.filter((item) => {
-                if (component.attrs.filter.isExcludeType) {
-                  return !component.attrs.filter.value.includes(item[component.attrs.filter.key]);
-                }
-                return component.attrs.filter.value.includes(item[component.attrs.filter.key]);
-              });
-              const data: DictionaryResponse = {
-                ...dictionary.data,
-                items,
-              };
-
-              return {
-                component,
-                data,
-              };
-            }
-
-            return dictionary;
-          }),
-        )
-    );
-  }
 
   dictionaryFiltersCheckOptions(options: DictionaryOptions): DictionaryOptions | null {
     if (options?.filter?.simple?.minLength) {
@@ -319,6 +240,24 @@ export class DictionaryToolsService {
       CustomScreenComponentTypes.DropDownDepts,
       CustomScreenComponentTypes.Lookup,
     ].includes(type);
+  }
+
+  public normalizeFocusData(data: FocusDirectionsItem[]): NormalizedFocusData {
+    const directions: Record<string, ListElement[]> = {};
+
+    const focus = data.map((item) => {
+      directions[item.focusCode] = item.directions.map(
+        (direction) => ({ id: direction, text: direction } as ListElement),
+      );
+      if (directions[item.focusCode].length > 0) {
+        directions[item.focusCode].unshift({ id: 'empty-item', text: 'Все' });
+      }
+      return { id: item.focusCode, text: item.focusName } as ListElement;
+    });
+    if (focus.length > 0) {
+      focus.unshift({ id: 'empty-item', text: 'Все' });
+    }
+    return { directions, focus };
   }
 
   private getValueForFilter(

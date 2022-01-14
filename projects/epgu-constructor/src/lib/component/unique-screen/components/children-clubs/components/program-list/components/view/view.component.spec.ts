@@ -13,8 +13,6 @@ import { MockModule } from 'ng-mocks';
 import { ViewComponent } from './view.component';
 import { StateService } from '../../../../services/state/state.service';
 import { StateServiceStub } from '../../../../services/state/state.service.stub';
-import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
-import { DictionaryCcServiceStub } from '../../../../services/dictionary/dictionary.service.stub';
 import { ProgramListModule } from '../../program-list.module';
 import { ActionService } from '../../../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../../../shared/directives/action/action.service.stub';
@@ -26,12 +24,14 @@ import {
 } from '../../../../../../../../shared/constants/actions';
 import { VendorType } from '../../../../models/children-clubs.types';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary.service.stub';
 
 describe('ViewComponent', () => {
   let component: ViewComponent;
   let fixture: ComponentFixture<ViewComponent>;
   let actionService: ActionService;
-  let dictionaryService: DictionaryCcService;
+  let dictionaryService: DictionaryService;
   let screenService: ScreenService;
   const mockComponent: ComponentDto = {
     arguments: { vendor: VendorType.inlearno, program: '123', nextSchoolYear: 'false' },
@@ -51,7 +51,7 @@ describe('ViewComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: StateService, useClass: StateServiceStub },
-        { provide: DictionaryCcService, useClass: DictionaryCcServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         MicroAppStateStore,
       ],
       imports: [LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, ProgramListModule],
@@ -62,7 +62,7 @@ describe('ViewComponent', () => {
     fixture = TestBed.createComponent(ViewComponent);
     component = fixture.componentInstance;
     actionService = TestBed.inject(ActionService);
-    dictionaryService = TestBed.inject(DictionaryCcService);
+    dictionaryService = TestBed.inject(DictionaryService);
     screenService = TestBed.inject(ScreenService);
     screenService.component = mockComponent;
   });

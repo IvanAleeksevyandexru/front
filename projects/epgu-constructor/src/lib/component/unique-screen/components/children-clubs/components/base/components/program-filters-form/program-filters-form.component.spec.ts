@@ -20,8 +20,6 @@ import { of } from 'rxjs';
 import { ProgramFiltersFormComponent } from './program-filters-form.component';
 import { StateService } from '../../../../services/state/state.service';
 import { PaymentSelectorComponent } from '../payment-selector/payment-selector.component';
-import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
-import { DictionaryCcServiceStub } from '../../../../services/dictionary/dictionary.service.stub';
 import { BaseModule } from '../../base.module';
 import {
   defaultInlearnoFilters,
@@ -35,6 +33,8 @@ import { ScreenServiceStub } from '../../../../../../../../screen/screen.service
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
+import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary.service.stub';
 
 describe('ProgramFiltersComponent', () => {
   let component: ProgramFiltersFormComponent;
@@ -42,7 +42,7 @@ describe('ProgramFiltersComponent', () => {
   let eventBusService: EventBusService;
   let state: StateService;
   let screenService: ScreenService;
-  let dictionaryService: DictionaryCcService;
+  let dictionaryService: DictionaryService;
   const mockComponent: ComponentDto = {
     arguments: { vendor: VendorType.inlearno, program: '123', nextSchoolYear: 'false' },
     attrs: {},
@@ -60,7 +60,7 @@ describe('ProgramFiltersComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: DictionaryCcService, useClass: DictionaryCcServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         StateService,
         MicroAppStateService,
@@ -85,7 +85,7 @@ describe('ProgramFiltersComponent', () => {
     state.changeState({ programFilters: {} });
     screenService = TestBed.inject(ScreenService);
     screenService.component = mockComponent;
-    dictionaryService = TestBed.inject(DictionaryCcService);
+    dictionaryService = TestBed.inject(DictionaryService);
     eventBusService = TestBed.inject(EventBusService);
     fixture = TestBed.createComponent(ProgramFiltersFormComponent);
     component = fixture.componentInstance;

@@ -3,10 +3,6 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class DictionaryToolsServiceStub {
-  public getDictionaries$() {
-    return of({});
-  }
-
   public getFilterOptions() {
     return {
       filter: {

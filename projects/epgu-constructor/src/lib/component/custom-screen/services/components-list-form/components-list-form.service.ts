@@ -41,6 +41,7 @@ import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 import { MaritalStatusInputField } from '../../components/marital-status-input/marital-status-input.types';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -84,6 +85,7 @@ export class ComponentsListFormService {
     private logger: LoggerService,
     private datesToolsService: DatesToolsService,
     private datesRangeService: DateRangeService,
+    private dictionaryService: DictionaryService,
     private dictionaryToolsService: DictionaryToolsService,
     private screenService: ScreenService,
     private maskTransformService: MaskTransformService,
@@ -441,7 +443,7 @@ export class ComponentsListFormService {
       const carModelModel: DictionaryLikeModel = carModelControl.value.model;
       carModelModel
         .loadReferenceData$(
-          this.dictionaryToolsService.getDictionaries$('MODEL_TS', carModelModel, options),
+          this.dictionaryService.getDictionaries$('MODEL_TS', carModelModel, options),
         )
         .subscribe();
     }

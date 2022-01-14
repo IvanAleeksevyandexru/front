@@ -42,10 +42,8 @@ import {
 } from './time-slots.types';
 import { ScreenService } from '../../../../screen/screen.service';
 import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
-import {
-  ComponentValue,
-  DictionaryToolsService,
-} from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { ComponentValue } from '../../../../shared/services/dictionary/dictionary.interface';
 
 type AttributesMapType = { name: string; value: string }[];
 

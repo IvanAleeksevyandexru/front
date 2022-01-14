@@ -35,7 +35,6 @@ import {
   LevelListElements,
 } from '../../base.models';
 import { StateService } from '../../../../services/state/state.service';
-import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
 import {
   Filters,
   VendorType,
@@ -44,6 +43,7 @@ import {
   PfdoPaymentFilters,
 } from '../../../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
+import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
 
 @Component({
   selector: 'epgu-constructor-cc-program-filters',
@@ -88,7 +88,7 @@ export class ProgramFiltersFormComponent extends ModalBaseComponent implements O
     private eventBusService: EventBusService,
     private ngUnsubscribe$: UnsubscribeService,
     private stateService: StateService,
-    private dictionaryService: DictionaryCcService,
+    private dictionaryService: DictionaryService,
     private cdr: ChangeDetectorRef,
     private screenService: ScreenService,
   ) {

@@ -143,7 +143,7 @@ export class LookupInputComponent extends AbstractDictionaryLikeComponent<Lookup
         filters,
       );
 
-      return this.dictionaryToolsService
+      return this.dictionaryService
         .getDictionaries$(this.attrs?.dictionaryType as string, this.control.value, {
           ...this.attrs?.searchProvider.dictionaryOptions,
           ...dictionaryOptions,

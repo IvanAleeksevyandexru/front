@@ -22,6 +22,7 @@ import { DictionaryToolsService } from '../../../../shared/services/dictionary/d
 import MaritalStatusInputModelAttrs from './MaritalStatusInputModelAttrs';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { Fields } from '../../components-list.types';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 
 @Component({
   selector: 'epgu-constructor-marital-status-input',
@@ -53,6 +54,7 @@ export class MaritalStatusInputComponent
     private validationService: ValidationService,
     private fb: FormBuilder,
     private textTransform: TextTransformService,
+    private dictionaryService: DictionaryService,
     private dictionaryToolsService: DictionaryToolsService,
     private componentList: ComponentsListFormService,
   ) {
@@ -248,7 +250,7 @@ export class MaritalStatusInputComponent
         filters,
       );
 
-      return this.dictionaryToolsService
+      return this.dictionaryService
         .getDictionaries$(regComponent.attrs.dictionaryType as string, regComponent, {
           ...(regComponent.attrs.searchProvider.dictionaryOptions || {}),
           ...dictionaryOptions,

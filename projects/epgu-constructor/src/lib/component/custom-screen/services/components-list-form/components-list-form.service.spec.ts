@@ -640,7 +640,7 @@ describe('ComponentsListFormService', () => {
   });
 
   describe('checkAndFetchCarModel()', () => {
-    it('should call dictionaryToolsService.getDictionaries$() and initDictionary(), if MARKI_TS has place', () => {
+    it('should call dictionaryService.getDictionaries$() and initDictionary(), if MARKI_TS has place', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       extraComponent.attrs.dictionaryType = 'MODEL_TS';
       extraComponent.id = 'rf2';

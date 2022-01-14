@@ -12,6 +12,7 @@ import { CustomComponentRef, CustomListDictionary } from '../../components-list.
 import BaseModel from '../../component-list-resolver/BaseModel';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 
 @Component({
   template: '',
@@ -20,6 +21,7 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
   extends AbstractComponentListItemComponent<T>
   implements OnInit {
   protected screenService: ScreenService;
+  protected dictionaryService: DictionaryService;
   protected dictionaryToolsService: DictionaryToolsService;
   protected componentsListToolsService: ComponentsListToolsService;
   protected componentsListRelationsService: ComponentsListRelationsService;
@@ -27,6 +29,7 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
   constructor(public injector: Injector) {
     super(injector);
     this.screenService = this.injector.get(ScreenService);
+    this.dictionaryService = this.injector.get(DictionaryService);
     this.dictionaryToolsService = this.injector.get(DictionaryToolsService);
     this.componentsListToolsService = this.injector.get(ComponentsListToolsService);
     this.componentsListRelationsService = this.injector.get(ComponentsListRelationsService);
@@ -77,7 +80,7 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
 
   protected getDictionary(options): Observable<CustomListDictionary> {
     return this.model.loadReferenceData$(
-      this.dictionaryToolsService.getDictionaries$(
+      this.dictionaryService.getDictionaries$(
         this.attrs.dictionaryType as string,
         this.model,
         options,
@@ -114,11 +117,7 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
         this.model
           .getDictionariesByFilter(
             hasFilterReference,
-            this.dictionaryToolsService.getDictionaries$(
-              dictionaryType as string,
-              this.model,
-              options,
-            ),
+            this.dictionaryService.getDictionaries$(dictionaryType as string, this.model, options),
           )
           .subscribe(() => {
             this.model.value = this.componentsListToolsService.convertedValue(this.model) as string;
