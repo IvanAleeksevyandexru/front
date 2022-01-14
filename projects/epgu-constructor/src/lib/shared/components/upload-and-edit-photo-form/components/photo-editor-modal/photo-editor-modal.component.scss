@@ -5,6 +5,9 @@
 
 :host::ng-deep {
   .LyImageCropper-area-d {
+    box-shadow: 0 0 0 200px rgb(0 0 0 / 20%);
+    border-radius: 12px;
+
     &:after {
       border: none;
     }

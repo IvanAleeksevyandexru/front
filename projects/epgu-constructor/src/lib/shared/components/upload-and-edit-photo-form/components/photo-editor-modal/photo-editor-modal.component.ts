@@ -1,4 +1,5 @@
 import {
+  OnInit,
   Component,
   ViewChild,
   AfterViewInit,
@@ -6,14 +7,19 @@ import {
   ChangeDetectorRef,
   Injector,
 } from '@angular/core';
-import { ImgCropperConfig, ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
+import { ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
 import { Subject } from 'rxjs';
 
 import { ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
 import { hintSetting, showErrorTime } from './photo-editor-modal.constant';
+import {
+  ImageErrorText,
+  NewSizeEvent,
+  ExtendedImgCropperConfig,
+} from '../../upload-and-edit-photo-form.model';
+import { cropperConfig, imageErrorText } from '../../upload-and-edit-photo-form.constant';
+import { CropTypes, ImageCropOptions } from '@epgu/epgu-constructor-types';
 
-import { ImageErrorText, NewSizeEvent } from '../../upload-and-edit-photo-form.model';
-import { minCropSize, imageErrorText } from '../../upload-and-edit-photo-form.constant';
 const photoMask = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/photo-mask-desktop.svg')
   .default as string;
 @Component({
@@ -22,27 +28,36 @@ const photoMask = require('!raw-loader!projects/epgu-constructor-ui-kit/src/asse
   styleUrls: ['./photo-editor-modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PhotoEditorModalComponent extends ModalBaseComponent implements AfterViewInit {
+export class PhotoEditorModalComponent extends ModalBaseComponent implements OnInit, AfterViewInit {
   @ViewChild('cropper') cropper: LyImageCropper;
 
-  cropConfig: ImgCropperConfig = minCropSize;
+  cropConfig: ExtendedImgCropperConfig = cropperConfig.face;
   cropping = new Subject<ImgCropperEvent>();
   hintSetting = hintSetting;
 
   imageObjectUrl: string;
   maskSrc = photoMask;
 
+  cropOptions: ImageCropOptions = {
+    cropType: CropTypes.FACE,
+  };
   imageErrors: string[][];
-  imageErrorText: ImageErrorText = imageErrorText;
+  customImageErrorText: ImageErrorText;
+  imageErrorText: ImageErrorText;
   errorTextIsShown = false;
 
   scale: number;
   isScalingAvailable = false;
-
+  isFacePhotoMode = true;
   isPhoneSize: boolean;
 
   constructor(public injector: Injector, private changeDetectionRef: ChangeDetectorRef) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    this.setCustomErrorText();
+    this.setCropperConfig();
   }
 
   ngAfterViewInit(): void {
@@ -113,5 +128,20 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements Aft
 
   private getCroppedImageUrl(): string {
     return this.cropper.crop().dataURL;
+  }
+
+  private setCustomErrorText(): void {
+    this.imageErrorText = {
+      ...imageErrorText,
+      ...this.customImageErrorText,
+    };
+  }
+
+  private setCropperConfig(): void {
+    this.isFacePhotoMode = !this.cropOptions || this.cropOptions.cropType === CropTypes.FACE;
+
+    if (this.cropOptions && this.cropOptions.cropType) {
+      this.cropConfig = cropperConfig[this.cropOptions.cropType];
+    }
   }
 }
