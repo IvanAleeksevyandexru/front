@@ -50,6 +50,7 @@ export class ActionDirective {
       event.key === 'Enter' &&
       this.action?.type === ActionType.nextStep &&
       !target.classList.contains('multiline-input') &&
+      !target.classList.contains('text-input') &&
       target?.name !== 'prev' &&
       target.nodeName !== 'A' &&
       !this.modalService.isModalOpen()

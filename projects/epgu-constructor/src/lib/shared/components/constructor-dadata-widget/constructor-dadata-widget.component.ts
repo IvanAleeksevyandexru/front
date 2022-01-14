@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { AbstractControl } from '@angular/forms';
 import {
@@ -13,7 +21,7 @@ import { Focusable, FocusManager } from '@epgu/ui/services/focus';
   templateUrl: './constructor-dadata-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ConstructorDadataWidgetComponent implements Focusable {
+export class ConstructorDadataWidgetComponent implements Focusable, AfterViewInit, OnDestroy {
   @Input() simpleMode: boolean;
   @Input() hideLevels?: string[];
   @Input() hideHouseCheckbox: boolean;

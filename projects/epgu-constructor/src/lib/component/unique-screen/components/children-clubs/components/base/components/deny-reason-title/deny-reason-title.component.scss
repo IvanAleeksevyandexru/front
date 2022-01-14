@@ -1,0 +1,19 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 16px;
+  border: 2px solid $color-gosred;
+  border-radius: 8px;
+  flex-shrink: 0;
+  text-align: center;
+
+  @include typ-plain-text;
+  @include phones-down {
+    width: 100%;
+  }
+}

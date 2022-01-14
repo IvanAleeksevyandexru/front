@@ -1,0 +1,114 @@
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/variables';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+
+.nav::ng-deep {
+  margin-bottom: 0;
+
+  & .container {
+    margin: 0 0;
+  }
+}
+
+.subtitle {
+  @include typ-plain-small;
+  color: $color-summer-night;
+  margin: 16px 0 4px 0;
+}
+
+.buttons-row {
+  display: flex;
+
+  .delimiter {
+    background: $color-divider;
+    width: 1px;
+    height: 24px;
+    margin: 0 24px 0 24px;
+  }
+
+  .icon-arrow--up {
+    margin: 0 3px 0 9px;
+  }
+}
+
+.icon-magnifying-glass {
+  margin-right: 12px;
+}
+
+.filter-panel {
+  margin-top: 16px;
+  padding: 0 4px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  line-height: 24px;
+
+  .filter-btn {
+    @include typ-plain-text;
+  }
+  .filter-btn,
+  .preview {
+    align-self: center;
+    display: flex;
+  }
+  .filter-icon {
+    margin-right: 7px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    &.active:after {
+      content: '';
+      position: absolute;
+      left: calc(50% - 8px / 2 + 8px);
+      top: calc(50% - 8px / 2 - 8px);
+      width: 8px;
+      height: 8px;
+      background: $color-gosred;
+      border-radius: 50%;
+    }
+  }
+
+  .nav-bar {
+    display: flex;
+  }
+
+  .nav-item {
+    color: $color-gosblue;
+    cursor: pointer;
+
+    &:first-child {
+      border-right: 1px solid $color-blu-selvaggio;
+      padding-right: 12px;
+    }
+
+    &:last-child {
+      padding-left: 12px;
+    }
+
+    &.active {
+      color: $color-black;
+      font-weight: $fw-bold;
+    }
+  }
+}
+.back-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:active,
+  &:focus,
+  &:hover {
+    color: $color-active-item;
+  }
+}
+
+@include desktops-down {
+  .buttons-row {
+    justify-content: space-between;
+  }
+
+  .delimiter {
+    display: none;
+  }
+}

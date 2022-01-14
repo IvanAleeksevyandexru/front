@@ -1,10 +1,42 @@
-const minCropSize = {
-  width: 306,
-  height: 306 * (45 / 35),
-  type: 'image/jpeg',
-  output: {
-    width: 413,
-    height: 413 * (45 / 35),
+const cropperConfig = {
+  face: {
+    width: 306,
+    height: 306 * (45 / 35),
+    type: 'image/jpeg',
+    output: {
+      width: 413,
+      height: 413 * (45 / 35),
+    },
+    containerSize: {
+      width: 306,
+      height: 306 * (45 / 35),
+    },
+  },
+  '1:1': {
+    width: 220,
+    height: 220,
+    type: 'image/jpeg',
+    output: {
+      width: 220,
+      height: 220,
+    },
+    containerSize: {
+      width: 306,
+      height: 306,
+    },
+  },
+  '3:4': {
+    width: 220,
+    height: 308,
+    type: 'image/jpeg',
+    output: {
+      width: 220,
+      height: 308,
+    },
+    containerSize: {
+      width: 306,
+      height: 393,
+    },
   },
 };
 
@@ -60,8 +92,8 @@ enum UploadPhotoElemId {
 }
 
 export {
+  cropperConfig,
   imageErrorText,
-  minCropSize,
   UploadPhotoElemId,
   minSize,
   mmInInch,

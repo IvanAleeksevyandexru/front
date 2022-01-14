@@ -143,6 +143,10 @@ export class ClickableLabelDirective {
       _attrs = this.jsonHelperService.tryToParse(attrs);
     }
 
+    if (_attrs?.needToCloseModal) {
+      this.eventBusService.emit(BusEventType.CloseModalEventGlobal);
+    }
+
     if (type == ActionType.nextStep) {
       this.eventBusService.emit(BusEventType.GetNextStepWithoutClickedButtonEvent);
     }

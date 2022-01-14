@@ -1,0 +1,65 @@
+// stylelint-disable selector-type-no-unknown
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+
+:host {
+  flex: 1 1 auto;
+}
+
+.filter-panel {
+  position: absolute;
+  left: calc(50% - 296px);
+  top: 24px;
+  ::ng-deep.container {
+    margin-top: 0px;
+  }
+}
+
+.invisible {
+  display: none;
+}
+
+.item-mock {
+  min-height: 231px;
+  background: rgb(66, 245, 84);
+  width: 100%;
+}
+
+.item {
+  margin-bottom: 24px;
+  width: 592px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.title {
+  @include typ-h3;
+  color: $color-summer-night;
+}
+
+@include desktops-down {
+  .filter-panel {
+    position: static;
+    width: auto;
+    z-index: 8;
+
+    &.expanded {
+      padding: 16px;
+    }
+
+    ::ng-deep.container {
+      margin-top: 0px;
+    }
+
+    &:not(.expanded) ::ng-deep {
+      epgu-cf-ui-constructor-screen-pad {
+        padding: 8px 32px 8px 32px;
+        border-top: 1px solid $color-divider;
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+  }
+}

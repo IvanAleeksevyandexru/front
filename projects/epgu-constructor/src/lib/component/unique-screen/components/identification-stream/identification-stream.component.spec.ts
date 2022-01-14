@@ -13,7 +13,6 @@ import {
   ConfigServiceStub,
   EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { BaseModule } from '@epgu/ui/base';
 import { ModalService } from '@epgu/ui/services/modal';
 import { HttpClient } from '@angular/common/http';
@@ -36,7 +35,7 @@ import { UniqueScreenComponentTypes } from '../../unique-screen-components.types
 
 const mockComponent = {
   id: 'test',
-  type: UniqueScreenComponentTypes.IdentificationStreamComponent,
+  type: UniqueScreenComponentTypes.identificationStreamComponent,
   arguments: { selfieId: 2, faceId: 1 },
 };
 describe('IdentificationStreamComponent', () => {

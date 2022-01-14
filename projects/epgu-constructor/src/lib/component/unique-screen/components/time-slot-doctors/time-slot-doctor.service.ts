@@ -346,7 +346,6 @@ export class TimeSlotDoctorService {
       preliminaryReservationPeriod,
       routeNumber,
     } = this.configService.timeSlots[this.timeSlotsType];
-
     const requestBody: BookTimeSlotReq = {
       preliminaryReservation,
       address: (this.department?.attributeValues?.[

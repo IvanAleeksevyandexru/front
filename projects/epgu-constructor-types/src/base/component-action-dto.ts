@@ -14,6 +14,7 @@ export interface ComponentActionDto {
     clarifications?: Clarifications;
     additionalParams?: KeyValueMap;
     showOnOS?: System[];
+    needToCloseModal?: boolean;
   };
   color?: ButtonColor;
   deliriumAction?: string;

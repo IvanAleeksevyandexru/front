@@ -9,6 +9,7 @@ const hintSetting = {
   text: 'Перетащите фото, чтобы изменить положение',
   color: '#FFD54C',
 };
+
 const minCropSize = {
   width: 306,
   height: 306 * (45 / 35),

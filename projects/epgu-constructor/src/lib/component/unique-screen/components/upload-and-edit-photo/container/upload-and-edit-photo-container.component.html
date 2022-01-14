@@ -16,7 +16,9 @@
       [staticDomainAssetsPath]="config.staticDomainAssetsPath"
       [startToUploadPhoto]="startToUploadPhoto$ | async"
       [startToChangeCroppedImageUrl]="startToChangeCroppedImageUrl$ | async"
-      [validations]="data.attrs.validation"
+      [validations]="data.attrs?.validation"
+      [customImageErrorText]="data.attrs?.customImageErrorText"
+      [cropOptions]="data.attrs?.cropOptions"
       (croppedImageUrlEvent)="changeCroppedImageUrl($event)"
       (uploadPhotoToServerEvent)="nextStep($event)"
     >

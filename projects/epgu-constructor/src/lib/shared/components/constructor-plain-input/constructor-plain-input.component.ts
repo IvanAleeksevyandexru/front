@@ -21,6 +21,7 @@ import { SUGGEST_SEPARATOR_DEFAULT } from '../../../core/services/autocomplete/a
 @Component({
   selector: 'epgu-constructor-constructor-plain-input',
   templateUrl: './constructor-plain-input.component.html',
+  styleUrls: ['./constructor-plain-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConstructorPlainInputComponent implements AfterViewInit {

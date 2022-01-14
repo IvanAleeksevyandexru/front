@@ -1,0 +1,166 @@
+<epgu-cf-ui-screen-container>
+  <div class="screen-body">
+    <div *ngIf="data$ | async as data">
+      <div class="project__title">{{ data.name }}</div>
+      <epgu-cf-ui-constructor-screen-pad class="project">
+        <div class="project-grid">
+          <div [ngStyle]="{ backgroundImage: 'url(' + data.imageUrl + ')' }" class="project__image">
+            <div class="project__age-limit">{{ data.minAge }}-{{ data.maxAge }} лет</div>
+          </div>
+          <div class="project__info">
+            <div class="project__organization">{{ data.partnerName }}</div>
+            <div class="project__description">{{ data.announce }}</div>
+            <div class="project__status" *ngIf="!data.available">Запись закрыта</div>
+            <div class="divider"></div>
+
+            <div class="project__info-item-list">
+              <div *ngIf="data?.address" class="project__info-item">
+                <div class="item-icon">
+                  <img
+                    alt="адрес"
+                    src="{{ config.staticDomainAssetsPath }}/assets/icons/address.svg"
+                  />
+                </div>
+                <div class="item-label">{{ data?.address }}</div>
+              </div>
+              <div *ngIf="data?.teachers" class="project__info-item">
+                <div class="item-icon">
+                  <img
+                    alt="учитель"
+                    src="{{ config.staticDomainAssetsPath }}/assets/icons/teacher.svg"
+                  />
+                </div>
+                <div class="item-label">
+                  <epgu-constructor-toggle-text
+                    [text]="data?.teachers"
+                    [linesQuantity]="2"
+                  ></epgu-constructor-toggle-text>
+                </div>
+              </div>
+              <div *ngIf="data?.maxPersons" class="project__info-item">
+                <div class="item-icon">
+                  <img
+                    alt="размер группы"
+                    src="{{ config.staticDomainAssetsPath }}/assets/icons/group.svg"
+                  />
+                </div>
+                <div class="item-label">
+                  Размер группы до {{ data?.maxPersons }}
+                  {{ ['человека', 'человек', 'человек'] | pluralize: data?.maxPersons }}
+                </div>
+              </div>
+              <ng-container *ngFor="let item of data.financingTypes; let i = index">
+                <div class="project__info-item">
+                  <div class="item-icon">
+                    <img
+                      [alt]="financingTypes[item].text"
+                      src="{{ config.staticDomainAssetsPath }}/assets/icons/{{
+                        financingTypes[item].icon
+                      }}"
+                    />
+                  </div>
+                  <div class="item-label">{{ financingTypes[item].text }}</div>
+                </div>
+              </ng-container>
+            </div>
+            <div class="divider"></div>
+            <div class="project-buttons">
+              <button
+                *ngIf="data?.detailDescription"
+                (click)="openModal('Описание программы', data.detailDescription)"
+                class="link-btn"
+              >
+                Описание программы
+              </button>
+              <button
+                *ngIf="data?.programContent"
+                (click)="openModal('План занятий', data.programContent)"
+                class="link-btn"
+              >
+                План занятий
+              </button>
+              <button
+                *ngIf="data?.goals"
+                (click)="openModal('Цели обучения', data.goals)"
+                class="link-btn"
+              >
+                Цели обучения
+              </button>
+              <button
+                *ngIf="data?.results"
+                (click)="openModal('Результаты обучения', data.results)"
+                class="link-btn"
+              >
+                Результаты обучения
+              </button>
+              <button
+                *ngIf="data?.technicalBase"
+                (click)="openModal('Особые условия', data.technicalBase)"
+                class="link-btn"
+              >
+                Особые условия
+              </button>
+            </div>
+          </div>
+        </div>
+      </epgu-cf-ui-constructor-screen-pad>
+      <div class="project__btn-text">
+        <ng-container
+          *ngIf="
+            data.groupCount === 0 || (data.groupCount > 0 && data.availableGroupCount === 0);
+            else availableBtnText
+          "
+        >
+          <h6 class="mt-24 mb-6 red-line">Запись на программу закрыта</h6>
+          <p class="mb-24 text-color--text-helper fs-sm" [ngSwitch]="data.groupCount">
+            <ng-container *ngSwitchCase="0">
+              В программу не добавлены группы. По вопросам обращайтесь к организатору обучения
+            </ng-container>
+            <ng-container *ngSwitchCase="1">
+              В группе нет свободных мест. Вы можете посмотреть группу, чтобы записаться позже
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              В группах нет свободных мест. Вы можете посмотреть группы, чтобы выбрать подходящую и
+              записаться позже
+            </ng-container>
+          </p>
+        </ng-container>
+
+        <ng-template #availableBtnText>
+          <p class="text-color--text-helper fs-sm">
+            <ng-container
+              *ngIf="data.groupCount > 0 && data.availableGroupCount === 1; else someGroups"
+            >
+              Чтобы записаться, выберите открытую группу
+            </ng-container>
+            <ng-template #someGroups>
+              Чтобы записаться, выберите 1 из {{ data.availableGroupCount }} открытых групп
+            </ng-template>
+          </p>
+        </ng-template>
+      </div>
+
+      <div class="center btn_pd">
+        <lib-button color="white" (click)="prev()" *ngIf="data.groupCount === 0">
+          Назад
+        </lib-button>
+        <lib-button
+          color="white"
+          (click)="next()"
+          *ngIf="data.groupCount > 0 && data.availableGroupCount === 0"
+        >
+          Посмотреть групп{{ data.groupCount === 1 ? 'у' : 'ы' }}
+        </lib-button>
+        <lib-button (click)="next()" *ngIf="data.groupCount > 0 && data.availableGroupCount > 0">
+          Выбрать группу
+        </lib-button>
+      </div>
+    </div>
+
+    <div *ngIf="loading$ | async">
+      <epgu-cf-ui-constructor-screen-pad>
+        <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+      </epgu-cf-ui-constructor-screen-pad>
+    </div>
+  </div>
+</epgu-cf-ui-screen-container>

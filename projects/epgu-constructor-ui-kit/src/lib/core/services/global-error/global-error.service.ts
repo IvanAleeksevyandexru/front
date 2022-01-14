@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Inject, Injectable } from '@angular/core';
 import { HealthService } from '../health/health.service';
-
 import { LoggerService } from '../logger/logger.service';
 import {
   ERROR_HANDLER_ORDER_PARAMS_SERVICES,

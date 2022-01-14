@@ -12,7 +12,6 @@ import { takeUntil } from 'rxjs/operators';
 import {
   ScreenButton,
   ConfirmationModal,
-  ActionType,
   Clarifications,
   LongButtonColor,
   CloseHandlerCases,
@@ -24,7 +23,6 @@ import {
   ConfirmationModalBaseButton,
   ConfigService,
   ConfirmationModalAnswerButton,
-  BusEventType,
   LocationService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierService } from '@epgu/ui/services/notifier';
@@ -85,19 +83,17 @@ export class ConfirmationModalComponent extends ModalBaseComponent
       });
 
     this.eventBusService
-      .on(BusEventType.ScreenButtonClicked)
+      .on(`closeModalEventGlobal`)
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((button: ScreenButton) => {
-        if (button.type === ActionType.deliriumNextStep) {
-          this.closeModal();
-        }
+      .subscribe(() => {
+        this.closeModal();
       });
   }
 
   ngAfterViewInit(): void {
     this.setDefaultCloseAction();
     this.setCustomButtons();
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   setDefaultCloseAction(): void {
