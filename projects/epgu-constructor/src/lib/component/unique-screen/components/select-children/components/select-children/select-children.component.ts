@@ -308,6 +308,10 @@ export class SelectChildrenComponent implements OnInit {
     }
   }
 
+  trackItemsById(_index, item: ChildI): number | string {
+    return item.id;
+  }
+
   private setHideStateToSelectedItems(clearEvent?: ClearEvent): void {
     this.itemsToSelect = this.itemsToSelect.map((child) => {
       // eslint-disable-next-line no-param-reassign

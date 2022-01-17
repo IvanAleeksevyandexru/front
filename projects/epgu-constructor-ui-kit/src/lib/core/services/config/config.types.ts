@@ -58,7 +58,6 @@ export interface Config {
   configApiUrl: string;
   configId: string;
   dictionaryUrl: string;
-  smevConverterUrl: string;
   externalApiUrl: string;
   timeSlotApiUrl: string;
   listPaymentsApiUrl: string;

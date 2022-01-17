@@ -107,6 +107,10 @@ export class FieldListComponent implements OnInit, OnChanges {
     return true;
   }
 
+  trackGroupItemByName(_index, groupItem: ConfirmUserDataFieldsState): string {
+    return groupItem.groupName + JSON.stringify(groupItem.fields);
+  }
+
   private transformString(str: string): string {
     if (!str) return '';
 

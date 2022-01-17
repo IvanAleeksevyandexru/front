@@ -7,6 +7,8 @@ import {
   ModalService,
   ModalServiceStub,
   LongButtonComponent,
+  UnsubscribeService,
+  UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockComponent, MockDirective } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
@@ -95,6 +97,7 @@ describe('FileUploadScreenComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
         EventBusService,
         CertificateEaisdoService,
         CurrentAnswersService,

@@ -123,8 +123,10 @@ export class AutocompleteService {
           const { value, mnemonic, id } = item;
           const html = `
           <div class="suggest-item">
-            <div>${value}</div>
-            ${hints ? `<div class="suggest-hint">${hints}</div>` : ''}
+            <div class="suggest-item-text">
+              <div>${value}</div>
+              ${hints ? `<div class="suggest-hint">${hints}</div>` : ''}
+            </div>
             <button class="suggest-delete" data-action-type="deleteSuggest" data-action-value="${`${mnemonic}:${value}:${id}`}">
             </button>
           </div>

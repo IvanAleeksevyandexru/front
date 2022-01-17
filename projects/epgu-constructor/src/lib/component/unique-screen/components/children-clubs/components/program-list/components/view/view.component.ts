@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ConfigService, ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { tap } from 'rxjs/operators';
-import { ContentModalComponent } from '../../../base/components/content-modal/content-modal.component';
 import { financingTypes, Program } from '../../../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../../../../../../../shared/constants/actions';
 import { ActionService } from '../../../../../../../../shared/directives/action/action.service';
 import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
+import { ConfirmationModalComponent } from '../../../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-cc-view',
@@ -36,8 +36,7 @@ export class ViewComponent implements OnInit {
 
   public ngOnInit(): void {
     const programUuid = this.screenService.component?.arguments?.program as string;
-    const isNextSchoolYear =
-      this.screenService.component?.arguments?.nextSchoolYear === 'true' ? true : false;
+    const isNextSchoolYear = this.screenService.component?.arguments?.nextSchoolYear === 'true';
     this.data$ = this.dictionaryService
       .getProgram(programUuid, isNextSchoolYear)
       .pipe(tap(() => this.loading.next(false)));
@@ -53,7 +52,7 @@ export class ViewComponent implements OnInit {
 
   public openModal(title: string, text: string): void {
     this.modalService
-      .openModal(ContentModalComponent, { title, text, modalId: 'info' })
+      .openModal(ConfirmationModalComponent, { title, text, subModal: true })
       .subscribe();
   }
 }

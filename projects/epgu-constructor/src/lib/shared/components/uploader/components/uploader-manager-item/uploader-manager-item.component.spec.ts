@@ -191,6 +191,26 @@ describe('UploaderManagerItemComponent', () => {
     expect(component.preview).not.toHaveBeenCalled();
   });
 
+  it('should be no preview for specific formats', () => {
+    component.file = mockFileItem('test.zip', FileItemStatus.uploaded);
+    fixture.detectChanges();
+    expect(component.hasNoPreview).toEqual(true);
+
+    component.file = mockFileItem('test.rar', FileItemStatus.uploaded);
+    fixture.detectChanges();
+    expect(component.hasNoPreview).toEqual(true);
+
+    component.file = mockFileItem('test.sig', FileItemStatus.uploaded);
+    fixture.detectChanges();
+    expect(component.hasNoPreview).toEqual(true);
+  });
+
+  it('should be preview for other formats', () => {
+    component.file = mockFileItem('test.pdf', FileItemStatus.uploaded);
+    fixture.detectChanges();
+    expect(component.hasNoPreview).toEqual(false);
+  });
+
   it('should be view action for pdf and webview  = true', () => {
     component.file = mockFileItem('test.pdf', FileItemStatus.uploaded);
     deviceDetectorService.isWebView = true;

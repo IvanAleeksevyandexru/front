@@ -12,6 +12,7 @@ export interface ConfirmationModal {
   showCrossButton?: boolean;
   closeHandlerCase?: CloseHandlerCases;
   preview?: boolean;
+  subModal?: boolean;
   elemEventHandlers?: {
     elemId: string;
     event: string;

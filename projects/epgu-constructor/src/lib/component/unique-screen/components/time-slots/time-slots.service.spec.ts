@@ -37,7 +37,7 @@ import { Smev2TimeSlotsRestService } from './smev2-time-slots-rest.service';
 import { Smev2TimeSlotsRestServiceStub } from './stubs/smev2-time-slots-rest.service.stub';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 
-describe('TimeSlotsComponent', () => {
+describe('TimeSlotsService', () => {
   let screenService: ScreenServiceStub;
   let timeSlotsService: TimeSlotsService;
   let dictionaryApiService: DictionaryApiService;
