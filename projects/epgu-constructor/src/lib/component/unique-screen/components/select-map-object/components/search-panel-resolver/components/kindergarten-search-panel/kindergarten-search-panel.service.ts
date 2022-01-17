@@ -45,7 +45,7 @@ export class KindergartenSearchPanelService implements OnDestroy {
       selectAttributes: ['EDUORGMAX'],
     };
 
-    return this.dictionaryApiService.getDictionary('KINDERGARTEN_EDUORGMAX', requestBody);
+    return this.dictionaryApiService.getGenericDictionary('KINDERGARTEN_EDUORGMAX', requestBody);
   }
 
   private getChildHomeCoordinates(): number[] {

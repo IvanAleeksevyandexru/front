@@ -14,6 +14,8 @@ import {
   ScreenPadComponent,
   ModalService,
   ModalServiceStub,
+  UnsubscribeService,
+  UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 
 import {
@@ -94,6 +96,7 @@ describe('InfoScreenComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
         EventBusService,
         CertificateEaisdoService,
         CurrentAnswersService,

@@ -13,16 +13,16 @@ import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary
 import {
   ActivatedRouteStub,
   ConfigService,
-  DatesToolsService,
   LoggerService,
   UnsubscribeService,
   JsonHelperService,
   NumberMaskOptions,
+  DatesToolsService,
+  DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../components-list-relations/components-list-relations.service';
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import {
@@ -46,6 +46,9 @@ import StringInputModel from '../../components/masked-and-plain-input/StringInpu
 import DepartmentLookupModel from '../../components/department-lookup/DepartmentLookupModel';
 import { RelationResolverService } from '../components-list-relations/relation-resolver.service';
 import { ComponentsListRelationsServiceStub } from '../components-list-relations/components-list-relations.service.stub';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
+import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
 
 describe('ComponentsListFormService', () => {
   const componentsGroupIndex = 1;
@@ -110,7 +113,6 @@ describe('ComponentsListFormService', () => {
     required: true,
   };
   let mockComponent: MockComponent;
-  let dictionaryToolsService: DictionaryToolsService;
   let addressHelperService: AddressHelperService;
   let componentsListToolsService: ComponentsListToolsService;
   let maskTransformService: MaskTransformService;
@@ -140,26 +142,25 @@ describe('ComponentsListFormService', () => {
       declarations: [MockComponent],
       imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: ValidationService, useClass: ValidationServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
+        DatesToolsService,
         DateRefService,
         ComponentsListFormService,
-        ValidationService,
         CurrentAnswersService,
         UnsubscribeService,
         ComponentsListToolsService,
         AddressHelperService,
         LoggerService,
-        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         DateRangeService,
-        DatesToolsService,
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        DictionaryToolsService,
-        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         RelationResolverService,
         HttpClient,
         HttpHandler,
         RefRelationService,
-        DictionaryToolsService,
         MockProvider(DateRestrictionsService),
         ConfigService,
         MaskTransformService,
@@ -172,7 +173,6 @@ describe('ComponentsListFormService', () => {
 
   beforeEach(() => {
     service = TestBed.inject(ComponentsListFormService);
-    dictionaryToolsService = TestBed.inject(DictionaryToolsService);
     addressHelperService = TestBed.inject(AddressHelperService);
     componentsListToolsService = TestBed.inject(ComponentsListToolsService);
     maskTransformService = TestBed.inject(MaskTransformService);
@@ -640,7 +640,7 @@ describe('ComponentsListFormService', () => {
   });
 
   describe('checkAndFetchCarModel()', () => {
-    it('should call dictionaryToolsService.getDictionaries$() and initDictionary(), if MARKI_TS has place', () => {
+    it('should call dictionaryService.getDictionaries$() and initDictionary(), if MARKI_TS has place', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       extraComponent.attrs.dictionaryType = 'MODEL_TS';
       extraComponent.id = 'rf2';

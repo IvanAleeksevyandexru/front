@@ -15,11 +15,9 @@ import {
   InformationCenterMvdI,
 } from '../interface/information-center-mvd.interface';
 import { DictionaryApiService } from '../../../../../shared/services/dictionary/dictionary-api.service';
-import {
-  DictionaryToolsService,
-  ComponentValue,
-} from '../../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryItem } from '../../../../../shared/services/dictionary/dictionary-api.types';
+import { ComponentValue } from '../../../../../shared/services/dictionary/dictionary.interface';
 
 @Component({
   selector: 'epgu-constructor-information-center-mvd-container',

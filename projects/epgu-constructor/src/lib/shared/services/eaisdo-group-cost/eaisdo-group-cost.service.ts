@@ -164,11 +164,13 @@ export class EaisdoGroupCostService {
     return EaisdoStateTypes.wait;
   }
 
-  private calculateVisibility(button: ScreenButton): void {
+  calculateVisibility(button: ScreenButton): void {
     if (this.isInformerScreen) {
-      button.hidden =
-        !this.currentButtonsState.includes(button.type) &&
-        !this.certificateEaisdoService.showButtons;
+      button.attrs = {
+        hidden:
+          !this.currentButtonsState.includes(button.type) &&
+          !this.certificateEaisdoService.showButtons,
+      };
     }
   }
 }

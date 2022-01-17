@@ -14,7 +14,6 @@ import { isEqual } from 'lodash';
 import { MicroAppStateQuery } from '@epgu/epgu-constructor-ui-kit';
 import { ListElement } from '@epgu/ui/models/dropdown';
 import { StateService } from '../state/state.service';
-import { ApiService } from '../api/api.service';
 import {
   BaseProgram,
   Filters,
@@ -28,6 +27,7 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 
 @Injectable()
 export class ProgramListService {
@@ -106,7 +106,7 @@ export class ProgramListService {
     tap(() => this.reset()),
     switchMap((options: FindOptionsProgram) => {
       options = { ...options, ...this.screenService.component?.arguments };
-      return this.api
+      return this.dictionaryApiService
         .getProgramList({
           ...options,
           page: 0,
@@ -122,7 +122,7 @@ export class ProgramListService {
   );
 
   constructor(
-    private api: ApiService,
+    private dictionaryApiService: DictionaryApiService,
     private stateService: StateService,
     private appStateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
     private screenService: ScreenService,

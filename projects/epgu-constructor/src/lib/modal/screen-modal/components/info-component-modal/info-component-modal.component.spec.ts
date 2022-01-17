@@ -3,7 +3,13 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ActionType, DTOActionAction, ComponentDto } from '@epgu/epgu-constructor-types';
-import { EventBusService, ModalService, ModalServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import {
+  EventBusService,
+  ModalService,
+  ModalServiceStub,
+  UnsubscribeService,
+  UnsubscribeServiceStub,
+} from '@epgu/epgu-constructor-ui-kit';
 import { ButtonComponent } from '@epgu/ui/base';
 import { InfoComponentModalComponent } from './info-component-modal.component';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -49,6 +55,7 @@ describe('InfoComponentModalComponent', () => {
         { provide: NavigationModalService, useClass: NavigationModalServiceStub },
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
       ],
     })
       .overrideComponent(InfoComponentModalComponent, {

@@ -88,6 +88,8 @@ import {
 import { ActionService } from '../../../../../shared/directives/action/action.service';
 import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 import { ComponentsListRelationsServiceStub } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service.stub';
+import { DictionaryService } from '../../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../../shared/services/dictionary/dictionary.service.stub';
 
 describe('TimeSlotDoctorsContainerComponent', () => {
   let component: TimeSlotDoctorsContainerComponent;
@@ -350,6 +352,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: FormPlayerApiService, useClass: FormPlayerApiServiceStub },
         { provide: SessionStorageService, useClass: SessionStorageServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },

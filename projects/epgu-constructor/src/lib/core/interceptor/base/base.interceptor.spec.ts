@@ -35,6 +35,10 @@ class TestInterceptor extends BaseInterceptor {
   validate(_, request: HttpRequest<unknown>): boolean {
     return request.url.includes('test');
   }
+
+  protected checkStatus(status: number): boolean {
+    return status === 200 || status === 304;
+  }
 }
 
 describe('BaseInterceptor', () => {
@@ -83,7 +87,16 @@ describe('BaseInterceptor', () => {
     req.flush({});
     expect(req.request.context.get(IS_REQUEST_USED)).toBeTruthy();
   });
+  it('should be test validate ok for 304 status', () => {
+    httpClient
+      .get('/test')
+      .pipe(catchError(() => of(null)))
+      .subscribe();
 
+    const req = httpMock.expectOne(`/test`);
+    req.flush({}, { status: 304, statusText: '' });
+    expect(req.request.context.get(IS_REQUEST_USED)).toBeTruthy();
+  });
   it('should be test validate not ok', () => {
     httpClient.get('/tes').subscribe();
 

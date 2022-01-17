@@ -18,12 +18,18 @@ import { CurrentAnswersServiceStub } from '../../../screen/current-answers-servi
 import { DisabledButtonPipe } from './pipes/disabled-button.pipe';
 import { ScreenButtonsComponent } from './screen-buttons.component';
 import { ShowLoaderButtonPipe } from './pipes/show-loader-button.pipe';
+import { EaisdoGroupCostServiceStub } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service.stub';
+import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { MockProvider } from 'ng-mocks';
+import { CertificateEaisdoService } from '../../services/certificate-eaisdo/certificate-eaisdo.service';
+import { ScreenService } from '../../../screen/screen.service';
 
 describe('ScreenButtonsComponent', () => {
   let component: ScreenButtonsComponent;
   let fixture: ComponentFixture<ScreenButtonsComponent>;
   let deviceDetectorService: DeviceDetectorService;
   let deviceDetectorServiceSpy: jest.SpyInstance;
+  let screenService: ScreenService;
 
   const mockScreenButtons: ScreenButton[] = [
     {
@@ -78,6 +84,9 @@ describe('ScreenButtonsComponent', () => {
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         EventBusService,
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: EaisdoGroupCostService, useClass: EaisdoGroupCostServiceStub },
+        MockProvider(CertificateEaisdoService),
+        MockProvider(ScreenService),
       ],
     })
       .overrideComponent(ScreenButtonsComponent, {
@@ -87,9 +96,11 @@ describe('ScreenButtonsComponent', () => {
   });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     deviceDetectorServiceSpy = jest.spyOn(deviceDetectorService, 'system', 'get');
     createComponent();
+    jest.spyOn(screenService, 'buttons', 'get').mockReturnValue([]);
     fixture.detectChanges();
   });
 

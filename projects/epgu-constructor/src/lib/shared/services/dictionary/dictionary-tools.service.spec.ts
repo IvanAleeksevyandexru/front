@@ -25,6 +25,7 @@ import { DateRestrictionsService } from '../date-restrictions/date-restrictions.
 import { getDictKeyByComp } from './dictionary-helper';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
 import { DictionaryItem } from './dictionary-api.types';
+import { FocusDirectionsItem } from '../../../component/unique-screen/components/children-clubs/models/children-clubs.types';
 
 const getDictionary = (count = 0) => {
   const items = [];
@@ -439,6 +440,45 @@ describe('DictionaryToolsService', () => {
       const item = (dictionaryItem as unknown) as DictionaryItem;
 
       expect(service.parsePath(path, item)).toBe('attributes[2].value');
+    });
+  });
+
+  describe('normalizeFocusData()', () => {
+    it('should unshift specific item to focus array if array is not empty', () => {
+      const focusData: FocusDirectionsItem[] = [
+        { directions: ['top'], focusCode: '2', focusName: '3' },
+      ];
+
+      const { focus } = service.normalizeFocusData(focusData);
+      expect(focus.length).toBe(2);
+      expect(focus[0]).toEqual({ id: 'empty-item', text: 'Все' });
+    });
+
+    it('should not unshift specific item to focus array if array is empty', () => {
+      const focusData: FocusDirectionsItem[] = [];
+
+      const { focus } = service.normalizeFocusData(focusData);
+
+      expect(focus.length).toBe(0);
+    });
+
+    it('should unshift specific item to directions array if array is not empty', () => {
+      const focusData: FocusDirectionsItem[] = [
+        { directions: ['top'], focusCode: '2', focusName: '3' },
+      ];
+
+      const { directions } = service.normalizeFocusData(focusData);
+
+      expect(directions['2'].length).toBe(2);
+      expect(directions['2'][0]).toEqual({ id: 'empty-item', text: 'Все' });
+    });
+
+    it('should unshift specific item to directions array if array is not empty', () => {
+      const focusData: FocusDirectionsItem[] = [{ directions: [], focusCode: '2', focusName: '3' }];
+
+      const { directions } = service.normalizeFocusData(focusData);
+
+      expect(directions['2'].length).toBe(0);
     });
   });
 });

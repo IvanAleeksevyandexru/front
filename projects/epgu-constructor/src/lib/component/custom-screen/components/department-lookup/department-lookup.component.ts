@@ -69,18 +69,18 @@ export class DepartmentLookupComponent
         ? this.dictionaryToolsService.prepareOptions(this.model, screenStore, dictionaryFilter)
         : { pageNum: 0 };
 
-      return this.dictionaryToolsService
+      return this.dictionaryService
         .getDictionaries$(dictionaryType as string, this.model, firstQueryOptions)
         .pipe(
           concatMap((value) => {
-            if (value.data.items.length === 0 && repeatWithNoFilters) {
+            if (value.data?.items.length === 0 && repeatWithNoFilters) {
               const { secondaryDictionaryFilter } = this.attrs;
               const secondQueryOptions: DictionaryOptions = this.dictionaryToolsService.prepareOptions(
                 this.model,
                 screenStore,
                 secondaryDictionaryFilter,
               );
-              dataSource = this.dictionaryToolsService
+              dataSource = this.dictionaryService
                 .getDictionaries$(dictionaryType as string, this.model, secondQueryOptions)
                 .pipe(
                   map((response: CustomListGenericData<DictionaryResponse>) => ({
@@ -118,10 +118,10 @@ export class DepartmentLookupComponent
     const meta = { repeatedWithNoFilters: index > 0 };
 
     if (options) {
-      return this.dictionaryToolsService.getDictionaries$(dictionaryType, component, options).pipe(
+      return this.dictionaryService.getDictionaries$(dictionaryType, component, options).pipe(
         take(1),
         concatMap((value: CustomListGenericData<DictionaryResponse>) => {
-          if (value.data.items.length === 0 && filters[newIndex]) {
+          if (value.data?.items.length === 0 && filters[newIndex]) {
             return this.dictionaryFiltersLoader(
               component,
               screenStore,

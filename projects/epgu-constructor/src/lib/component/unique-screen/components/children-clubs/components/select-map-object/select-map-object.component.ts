@@ -23,8 +23,9 @@ import { merge, Observable } from 'rxjs';
 import { FooterService } from '@epgu/ui/services/footer';
 import { StateService } from '../../services/state/state.service';
 import { ProgramListService } from '../../services/program-list/program-list.service';
-import { ContentModalComponent } from '../base/components/content-modal/content-modal.component';
+
 import { BaseProgram, financingTypes } from '../../models/children-clubs.types';
+import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-cc-select-map-object',
@@ -149,10 +150,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private openModal(title: string, text: string): Observable<unknown> {
-    return this.modalService.openModal(ContentModalComponent, {
+    return this.modalService.openModal(ConfirmationModalComponent, {
       title,
       text,
-      modalId: 'modalError',
+      subModal: true,
     });
   }
 

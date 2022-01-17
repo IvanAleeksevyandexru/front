@@ -4,7 +4,6 @@ import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import { ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { StateService } from '../../../../services/state/state.service';
 import { GroupListService } from '../../../../services/group-list/group-list.service';
-import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
 import { GroupFiltersFormComponent } from '../../../base/components/group-filters-form/group-filters-form.component';
 import {
   FindOptionsGroup,
@@ -14,6 +13,7 @@ import {
 } from '../../../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { countFilters } from '../../../../services/helpers/helpers';
+import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
 
 @Component({
   selector: 'epgu-constructor-group-list-container',
@@ -39,7 +39,7 @@ export class GroupListContainerComponent implements OnInit {
   constructor(
     private stateService: StateService,
     private groupListService: GroupListService,
-    private dictionaryService: DictionaryCcService,
+    private dictionaryService: DictionaryService,
     private ngUnsubscribe$: UnsubscribeService,
     private modalService: ModalService,
     private screenService: ScreenService,

@@ -14,10 +14,11 @@ import { MockModule } from 'ng-mocks';
 import { StateService } from '../../../../services/state/state.service';
 import { ProgramListModule } from '../../program-list.module';
 import { ItemComponent } from './item.component';
-import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
 import { baseProgramStub } from '../../../../stubs/projects.stub';
 import { ProgramListService } from '../../../../services/program-list/program-list.service';
 import { ProgramListServiceStub } from '../../../../services/program-list/program-list.stub';
+import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary.service.stub';
 
 describe('ViewComponent', () => {
   let component: ItemComponent;
@@ -29,13 +30,13 @@ describe('ViewComponent', () => {
       declarations: [],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: ProgramListService, useClass: ProgramListServiceStub },
         { provide: MicroAppNavigationService, useClass: MicroAppNavigationServiceStub },
         StateService,
         MicroAppStateStore,
         MicroAppStateStore,
         MicroAppStateQuery,
-        DictionaryCcService,
       ],
       imports: [LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, ProgramListModule],
     }).compileComponents();

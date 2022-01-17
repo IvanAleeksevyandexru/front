@@ -11,7 +11,6 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockModule } from 'ng-mocks';
 import { StateService } from '../../../../services/state/state.service';
-import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
 import { GroupListService } from '../../../../services/group-list/group-list.service';
 import { GroupListContainerComponent } from './group-list-container.component';
 import { GroupListModule } from '../../group-list.module';
@@ -20,6 +19,8 @@ import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 import { ComponentDto } from '@epgu/epgu-constructor-types/src';
 import { GroupListServiceStub } from '../../../../services/group-list/group-list.service.stub';
+import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary.service.stub';
 
 describe('GroupListContainerComponent', () => {
   let component: GroupListContainerComponent;
@@ -42,12 +43,12 @@ describe('GroupListContainerComponent', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: GroupListService, useClass: GroupListServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         StateService,
         UnsubscribeService,
         MicroAppStateStore,
         MicroAppStateStore,
         MicroAppStateQuery,
-        DictionaryCcService,
       ],
       imports: [LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, GroupListModule],
     }).compileComponents();

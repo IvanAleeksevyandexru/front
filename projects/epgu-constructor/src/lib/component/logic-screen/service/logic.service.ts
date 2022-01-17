@@ -79,7 +79,7 @@ export class LogicService {
         : {}),
     };
 
-    return (this.dictionaryApiService.getDictionary(
+    return (this.dictionaryApiService.getGenericDictionary(
       dictionaryType,
       options,
       dictionaryUrlType,

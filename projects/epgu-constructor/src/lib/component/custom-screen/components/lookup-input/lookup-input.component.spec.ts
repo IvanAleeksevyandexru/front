@@ -38,6 +38,8 @@ import LookupInputModelAttrs from './LookupInputModelAttrs';
 import LookupInputModel from './LookupInputModel';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -63,7 +65,6 @@ describe('LookupInputComponent', () => {
   let component: LookupInputComponent;
   let fixture: ComponentFixture<LookupInputComponent>;
   let formService: ComponentsListFormServiceStub;
-  let dictionaryToolsService: DictionaryToolsServiceStub;
   let providerSearchSpy;
 
   beforeEach(() => {
@@ -81,6 +82,7 @@ describe('LookupInputComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
         MockProvider(JsonHelperService),
@@ -108,9 +110,6 @@ describe('LookupInputComponent', () => {
     formService = (TestBed.inject(
       ComponentsListFormService,
     ) as unknown) as ComponentsListFormServiceStub;
-    dictionaryToolsService = (TestBed.inject(
-      DictionaryToolsService,
-    ) as unknown) as DictionaryToolsServiceStub;
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
       id: new FormControl(mockComponent.id),

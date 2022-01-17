@@ -21,8 +21,6 @@ import {
 import { of } from 'rxjs';
 import { YaMapService } from '@epgu/ui/services/ya-map';
 import { HttpClientModule } from '@angular/common/http';
-import { ApiService } from '../../services/api/api.service';
-import { ApiServiceStub } from '../../services/api/api.service.stub';
 import { ProgramListService } from '../../services/program-list/program-list.service';
 import { StateService } from '../../services/state/state.service';
 import { StateServiceStub } from '../../services/state/state.service.stub';
@@ -31,6 +29,8 @@ import { SelectMapObjectCcModule } from './select-map-object.module';
 import { baseProgramStub } from '../../stubs/projects.stub';
 import { BaseProgram } from '../../models/children-clubs.types';
 import { ProgramListServiceStub } from '../../services/program-list/program-list.stub';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -54,7 +54,7 @@ describe('SelectMapObjectComponent', () => {
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         { provide: MicroAppNavigationService, useClass: MicroAppNavigationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
-        { provide: ApiService, useClass: ApiServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: ProgramListService, useClass: ProgramListServiceStub },
       ],

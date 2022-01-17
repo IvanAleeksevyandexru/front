@@ -1,6 +1,6 @@
 import { ComponentAttrsDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import { ListElement } from '@epgu/ui/models/dropdown';
-import { ComponentValue } from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { ComponentValue } from '../../../../shared/services/dictionary/dictionary.interface';
 
 export interface TimeSlotDoctorsComponentDto extends ComponentDto {
   attrs: TimeSlotDoctorsAttrs;

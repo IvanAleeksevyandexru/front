@@ -25,11 +25,13 @@ import { DictionaryToolsService } from '../../../../shared/services/dictionary/d
 import { RefRelationService } from '../../../../shared/services/ref-relation/ref-relation.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { NavigationModalServiceStub } from '../../../../core/services/navigation-modal/navigation-modal.service.stub';
-
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
 import { ScreenButtonsModule } from '../../../../shared/components/screen-buttons/screen-buttons.module';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 
 describe('ComponentListModalComponent', () => {
   let component: ComponentListModalComponent;
@@ -61,11 +63,12 @@ describe('ComponentListModalComponent', () => {
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
+        { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         CurrentAnswersService,
         CustomScreenService,
         HttpCancelService,
         DatesToolsService,
-        DictionaryToolsService,
         RefRelationService,
         DateRefService,
         JsonHelperService,
