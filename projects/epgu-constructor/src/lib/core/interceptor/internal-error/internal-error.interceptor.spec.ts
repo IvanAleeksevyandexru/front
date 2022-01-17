@@ -78,13 +78,19 @@ describe('InternalErrorInterceptor', () => {
     httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
   });
+  it('should open modal with  status 500', () => {
+    const spy = jest.spyOn(modalService, 'openModal');
+    httpClient.get('/dictionary/mzrf_regions_smev3').subscribe();
 
+    const req = httpMock.expectOne(`/dictionary/mzrf_regions_smev3`);
+
+    req.flush(data, { status: 500, statusText: '' });
+
+    expect(req.request.context.get(IS_REQUEST_USED)).toBeTruthy();
+    expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, configModal);
+  });
   it('should open modal with dictionary/mzrf_regions_smev3', () => {
     const spy = jest.spyOn(modalService, 'openModal');
-    httpMock.match((v) => {
-      console.log(v);
-      return false;
-    });
     httpClient.get('/dictionary/mzrf_regions_smev3').subscribe();
 
     const req = httpMock.expectOne(`/dictionary/mzrf_regions_smev3`);
@@ -97,10 +103,6 @@ describe('InternalErrorInterceptor', () => {
 
   it('should open modal with dictionary/mzrf_equeue_lpu', () => {
     const spy = jest.spyOn(modalService, 'openModal');
-    httpMock.match((v) => {
-      console.log(v);
-      return false;
-    });
     httpClient.get('/dictionary/mzrf_equeue_lpu').subscribe();
 
     const req = httpMock.expectOne(`/dictionary/mzrf_equeue_lpu`);
@@ -113,10 +115,6 @@ describe('InternalErrorInterceptor', () => {
 
   it('should open modal with dictionary/mzrf_lpu_equeue_smev3', () => {
     const spy = jest.spyOn(modalService, 'openModal');
-    httpMock.match((v) => {
-      console.log(v);
-      return false;
-    });
     httpClient.get('/dictionary/mzrf_lpu_equeue_smev3').subscribe();
 
     const req = httpMock.expectOne(`/dictionary/mzrf_lpu_equeue_smev3`);
@@ -129,10 +127,6 @@ describe('InternalErrorInterceptor', () => {
 
   it('should open modal with dictionary/mzrf_regions_vaccination', () => {
     const spy = jest.spyOn(modalService, 'openModal');
-    httpMock.match((v) => {
-      console.log(v);
-      return false;
-    });
     httpClient.get('/dictionary/mzrf_regions_vaccination').subscribe();
 
     const req = httpMock.expectOne(`/dictionary/mzrf_regions_vaccination`);
@@ -145,10 +139,6 @@ describe('InternalErrorInterceptor', () => {
 
   it('should open modal with dictionary/mzrf_lpu_vaccination', () => {
     const spy = jest.spyOn(modalService, 'openModal');
-    httpMock.match((v) => {
-      console.log(v);
-      return false;
-    });
     httpClient.get('/dictionary/mzrf_lpu_vaccination').subscribe();
 
     const req = httpMock.expectOne(`/dictionary/mzrf_lpu_vaccination`);
