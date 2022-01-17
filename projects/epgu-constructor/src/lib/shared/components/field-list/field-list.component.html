@@ -1,5 +1,5 @@
 <div class="data" [ngClass]="style.list">
-  <ng-container *ngFor="let groupItem of preparedData; let i = index">
+  <ng-container *ngFor="let groupItem of preparedData; let i = index; trackBy: trackGroupItemByName">
     <div *ngIf="calculateVisibility(i)" class="data__group data-group" [ngClass]="[style.group]">
       <div class="flex-row">
         <epgu-constructor-output-html
