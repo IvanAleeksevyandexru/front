@@ -12,4 +12,5 @@ export interface ErrorModal extends ConfirmationModal {
     header?: string;
     helperText?: string;
   };
+  hideTraceId: boolean;
 }
