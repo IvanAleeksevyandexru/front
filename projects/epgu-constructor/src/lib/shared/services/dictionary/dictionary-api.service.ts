@@ -94,11 +94,6 @@ export class DictionaryApiService {
     return this.post<DictionaryResponse>(path, options);
   }
 
-  public getSmevConverterData(bodyRequest): Observable<DictionaryResponse> {
-    const path = this.config.smevConverterUrl;
-    return this.http.post<DictionaryResponse>(path, bodyRequest);
-  }
-
   public getDadataSuggestions(
     qString: string,
     params?: KeyValueMap,
