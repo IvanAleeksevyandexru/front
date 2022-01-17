@@ -125,7 +125,7 @@
         !isError &&
         status !== fileStatus.uploading &&
         status !== fileStatus.downloading &&
-        !isArchive
+        !hasNoPreview
       "
       (click)="viewAction()"
       class="uploader-manager-item__button view_button"
