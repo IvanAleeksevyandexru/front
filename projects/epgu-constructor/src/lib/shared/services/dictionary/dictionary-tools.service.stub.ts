@@ -23,6 +23,14 @@ export class DictionaryToolsServiceStub {
     return {};
   }
 
+  public prepareOptions() {
+    return {};
+  }
+
+  public dictionaryFiltersCheckOptions() {
+    return {};
+  }
+
   public adaptDictionaryToListItem() {
     return {};
   }

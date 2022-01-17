@@ -15,7 +15,6 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -86,7 +85,6 @@ export class ComponentsListFormService {
     private datesToolsService: DatesToolsService,
     private datesRangeService: DateRangeService,
     private dictionaryService: DictionaryService,
-    private dictionaryToolsService: DictionaryToolsService,
     private screenService: ScreenService,
     private maskTransformService: MaskTransformService,
   ) {}

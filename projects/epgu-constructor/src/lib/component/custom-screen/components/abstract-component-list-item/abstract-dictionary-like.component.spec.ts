@@ -26,6 +26,8 @@ import { DictionaryToolsServiceStub } from '../../../../shared/services/dictiona
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 
 @Component({
   template: '<div></div>',
@@ -52,6 +54,7 @@ describe('AbstractDictionaryLikeComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
       ],
