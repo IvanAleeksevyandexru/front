@@ -14,6 +14,8 @@ const desktopIcon = require('!raw-loader!projects/epgu-constructor-ui-kit/src/as
   .default as string;
 const mobileIcon = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/photo-upload-area-mobile.svg')
   .default as string;
+const fileIcon = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/file-upload-area.svg')
+  .default as string;
 @Component({
   selector: 'epgu-constructor-photo-form-view',
   templateUrl: './photo-form-view.component.html',
@@ -28,13 +30,21 @@ export class PhotoFormViewComponent extends BaseComponent implements OnInit {
   @Output() openCameraEvent = new EventEmitter<void>();
 
   isFacePhotoMode = true;
+  uploaderAreaIcon: string;
 
   public icons = {
     desktopIcon: desktopIcon,
     mobileIcon: mobileIcon,
+    fileIcon: fileIcon,
   };
 
   ngOnInit(): void {
     this.isFacePhotoMode = !this.cropOptions || this.cropOptions.cropType === CropTypes.FACE;
+
+    this.uploaderAreaIcon = this.isFacePhotoMode
+      ? this.isDesktop
+        ? this.icons.desktopIcon
+        : this.icons.mobileIcon
+      : this.icons.fileIcon;
   }
 }
