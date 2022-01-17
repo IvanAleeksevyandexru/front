@@ -110,7 +110,7 @@
         Чтобы продолжить, оставьте в списке садов не более {{ maxKindergarten }}. Сейчас их
         {{ items.length }}
       </div>
-      <div *ngIf="!finalScreen && attrs?.finalScreenText" class="priority-additional mt-24">
+      <div *ngIf="(finalScreen === 'true') && attrs?.finalScreenText" class="priority-additional mt-24">
         {{ attrs.finalScreenText }}
       </div>
     </div>
@@ -121,7 +121,7 @@
     <ng-template #screenButtons>
       <epgu-constructor-screen-buttons
         class="screen-buttons"
-        [screenButtons]="finalScreen ? buttonFinalScreen : buttonBase"
+        [screenButtons]="(finalScreen === 'true') ? buttonFinalScreen : buttonBase"
         [disabled]="disabled || disableNextButton"
         [isLoading]="isLoading"
       ></epgu-constructor-screen-buttons>
