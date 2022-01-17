@@ -6,6 +6,7 @@ import {
   ErrorModule,
   InputErrorModule,
   ConstructorLookupComponent,
+  DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -29,6 +30,8 @@ import { ValidationTypeModule } from '../../../../shared/directives/validation-t
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 
 const mockComponent = {
   id: 'pd6',
@@ -139,7 +142,6 @@ const mockComponent = {
 
 describe('MaritalStatusInputComponent', () => {
   let formService: ComponentsListFormService;
-  let datesToolsService: DatesToolsService;
   let component: MaritalStatusInputComponent;
   let fixture: ComponentFixture<MaritalStatusInputComponent>;
   let control: FormGroup;
@@ -158,9 +160,10 @@ describe('MaritalStatusInputComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ValidationService, useClass: ValidationServiceStub },
+        { provide: DatesToolsService, useClass: DatesToolsServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         MockProvider(SuggestHandlerService),
         FormBuilder,
-        MockProvider(DatesToolsService),
         MockProvider(DictionaryToolsService),
         MockProvider(DateRestrictionsService),
       ],
@@ -180,7 +183,6 @@ describe('MaritalStatusInputComponent', () => {
 
   beforeEach(() => {
     formService = TestBed.inject(ComponentsListFormService);
-    datesToolsService = TestBed.inject(DatesToolsService);
     fixture = TestBed.createComponent(MaritalStatusInputComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;

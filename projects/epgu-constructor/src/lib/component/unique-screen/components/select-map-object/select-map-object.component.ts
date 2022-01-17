@@ -49,10 +49,7 @@ import {
   DictionaryResponseForYMap,
   DictionaryYMapItem,
 } from '../../../../shared/services/dictionary/dictionary-api.types';
-import {
-  ComponentValue,
-  DictionaryToolsService,
-} from '../../../../shared/services/dictionary/dictionary-tools.service';
+import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { arePointsEqual, getPaymentRequestOptionGIBDD } from './select-map-object.helpers';
 import {
   IFillCoordsResponse,
@@ -72,6 +69,7 @@ import {
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
+import { ComponentValue } from '../../../../shared/services/dictionary/dictionary.interface';
 
 const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 

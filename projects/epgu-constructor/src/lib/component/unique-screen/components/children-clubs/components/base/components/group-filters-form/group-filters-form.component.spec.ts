@@ -17,7 +17,6 @@ import { MockComponent } from 'ng-mocks';
 import { CommonModule } from '@angular/common';
 import { StateService } from '../../../../services/state/state.service';
 import { PaymentSelectorComponent } from '../payment-selector/payment-selector.component';
-import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
 import { BaseModule } from '../../base.module';
 import { GroupFiltersFormComponent } from './group-filters-form.component';
 import { defaultInlearnoFilters, defaultPdfoFilters } from '../../base.models';
@@ -27,6 +26,8 @@ import { ScreenServiceStub } from '../../../../../../../../screen/screen.service
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
+import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary.service.stub';
 
 describe('GroupFiltersFormComponent', () => {
   let component: GroupFiltersFormComponent;
@@ -50,11 +51,11 @@ describe('GroupFiltersFormComponent', () => {
         EventBusService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
-        DictionaryCcService,
         StateService,
         MicroAppStateService,
         MicroAppStateQuery,
         MicroAppStateStore,
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],

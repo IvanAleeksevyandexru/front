@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ConfigService, ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { tap } from 'rxjs/operators';
-import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
 import { financingTypes, Program } from '../../../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import {
@@ -10,6 +9,7 @@ import {
   PREV_STEP_ACTION,
 } from '../../../../../../../../shared/constants/actions';
 import { ActionService } from '../../../../../../../../shared/directives/action/action.service';
+import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
 import { ConfirmationModalComponent } from '../../../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
@@ -30,7 +30,7 @@ export class ViewComponent implements OnInit {
     public config: ConfigService,
     private actionService: ActionService,
     private modalService: ModalService,
-    private dictionaryService: DictionaryCcService,
+    private dictionaryService: DictionaryService,
     private screenService: ScreenService,
   ) {}
 

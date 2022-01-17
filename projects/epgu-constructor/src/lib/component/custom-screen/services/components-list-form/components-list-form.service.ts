@@ -15,7 +15,6 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import {
   CustomComponent,
   CustomComponentAttr,
@@ -41,6 +40,7 @@ import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 import { MaritalStatusInputField } from '../../components/marital-status-input/marital-status-input.types';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -84,7 +84,7 @@ export class ComponentsListFormService {
     private logger: LoggerService,
     private datesToolsService: DatesToolsService,
     private datesRangeService: DateRangeService,
-    private dictionaryToolsService: DictionaryToolsService,
+    private dictionaryService: DictionaryService,
     private screenService: ScreenService,
     private maskTransformService: MaskTransformService,
   ) {}
@@ -441,7 +441,7 @@ export class ComponentsListFormService {
       const carModelModel: DictionaryLikeModel = carModelControl.value.model;
       carModelModel
         .loadReferenceData$(
-          this.dictionaryToolsService.getDictionaries$('MODEL_TS', carModelModel, options),
+          this.dictionaryService.getDictionaries$('MODEL_TS', carModelModel, options),
         )
         .subscribe();
     }
