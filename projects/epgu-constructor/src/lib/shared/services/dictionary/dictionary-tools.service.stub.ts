@@ -23,6 +23,10 @@ export class DictionaryToolsServiceStub {
     return {};
   }
 
+  public getAdditionalParams() {
+    return [];
+  }
+
   public prepareOptions() {
     return {};
   }

@@ -29,6 +29,8 @@ import DictionaryModelAttrs from './DictionaryModelAttrs';
 import DictionaryModel from './DictionaryModel';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -40,7 +42,6 @@ const mockComponent = {
 describe('DictionaryComponent', () => {
   let component: DictionaryComponent;
   let fixture: ComponentFixture<DictionaryComponent>;
-  let dictionaryToolsService: DictionaryToolsService;
   let formService: ComponentsListFormServiceStub;
 
   beforeEach(() => {
@@ -49,6 +50,7 @@ describe('DictionaryComponent', () => {
       imports: [BaseUiModule, HttpClientModule],
       providers: [
         DictionaryToolsService,
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
@@ -73,11 +75,9 @@ describe('DictionaryComponent', () => {
   let control: FormGroup;
 
   beforeEach(() => {
-    dictionaryToolsService = TestBed.inject(DictionaryToolsService);
     formService = (TestBed.inject(
       ComponentsListFormService,
     ) as unknown) as ComponentsListFormServiceStub;
-
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
       id: new FormControl(mockComponent.id),

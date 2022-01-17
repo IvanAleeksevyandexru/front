@@ -31,6 +31,8 @@ import { ComponentsListRelationsServiceStub } from '../../services/components-li
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -56,7 +58,6 @@ describe('RestLookupInputComponent', () => {
   let component: RestLookupInputComponent;
   let fixture: ComponentFixture<RestLookupInputComponent>;
   let formService: ComponentsListFormServiceStub;
-  let restToolsService: RestToolsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -74,6 +75,7 @@ describe('RestLookupInputComponent', () => {
         MockProvider(ComponentsListToolsService),
         MockProvider(InterpolationService),
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         MockProvider(RestToolsService),
         MockProvider(SuggestHandlerService),
@@ -96,7 +98,6 @@ describe('RestLookupInputComponent', () => {
     formService = (TestBed.inject(
       ComponentsListFormService,
     ) as unknown) as ComponentsListFormServiceStub;
-    restToolsService = TestBed.inject(RestToolsService);
     valueControl = new FormControl(mockComponent.value);
     control = new FormGroup({
       id: new FormControl(mockComponent.id),
