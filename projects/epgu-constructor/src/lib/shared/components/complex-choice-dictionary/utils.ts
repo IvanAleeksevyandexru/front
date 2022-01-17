@@ -223,7 +223,7 @@ export class DynamicDatasource implements DataSource<FlatNode> {
   private getDictionaryData(node: FlatNode): Observable<ListElement[]> {
     const filterValue = this.createFilterValue(node);
     return this.dictionaryApiService
-      .getDictionary(this.dictionaryType, {
+      .getGenericDictionary(this.dictionaryType, {
         filter: filterValue,
       })
       .pipe(

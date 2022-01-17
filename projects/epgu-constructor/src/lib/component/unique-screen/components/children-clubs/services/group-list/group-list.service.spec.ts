@@ -5,14 +5,14 @@ import {
   MicroAppStateService,
   MicroAppStateServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ApiService } from '../api/api.service';
-import { ApiServiceStub } from '../api/api.service.stub';
 import { StateService } from '../state/state.service';
 import { StateServiceStub } from '../state/state.service.stub';
 import { GroupListService } from './group-list.service';
 import { ProgramListService } from '../program-list/program-list.service';
 import { groupStub } from '../../stubs/projects.stub';
 import { ChildrenClubsState } from '../../models/children-clubs.types';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 
 describe('GroupListService', () => {
   let service: GroupListService;
@@ -25,7 +25,7 @@ describe('GroupListService', () => {
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: StateService, useClass: StateServiceStub },
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
-        { provide: ApiService, useClass: ApiServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
       ],
     }).compileComponents();
     service = TestBed.inject(GroupListService);

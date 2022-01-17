@@ -172,7 +172,7 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
   private getDictionaryData(): Observable<ListElement[]> {
     this.isLoading = true;
     return this.dictionaryApiService
-      .getDictionary(this.dictionaryType, { filter: this.dictionaryFilter.filter })
+      .getGenericDictionary(this.dictionaryType, { filter: this.dictionaryFilter.filter })
       .pipe(
         delay(500),
         map((response) => {

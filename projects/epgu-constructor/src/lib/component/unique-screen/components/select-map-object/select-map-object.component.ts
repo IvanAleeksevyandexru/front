@@ -568,7 +568,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     const options = getPaymentRequestOptionGIBDD(id);
 
     return this.dictionaryApiService
-      .getDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
+      .getGenericDictionary(this.screenService.component.attrs.dictionaryGIBDD, options)
       .pipe(
         map((response) => {
           const hasAttributeValues = (): boolean =>

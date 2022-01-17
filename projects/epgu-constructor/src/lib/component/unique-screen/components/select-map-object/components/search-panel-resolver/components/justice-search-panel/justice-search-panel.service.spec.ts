@@ -105,8 +105,8 @@ describe('JusticeSearchPanelService', () => {
     );
   });
 
-  it('preparePolygons should call getDictionary', () => {
-    const spy = jest.spyOn(dictionaryApiService, 'getDictionary');
+  it('preparePolygons should call getGenericDictionary', () => {
+    const spy = jest.spyOn(dictionaryApiService, 'getGenericDictionary');
     justiceSearchPanelService.preparePolygons();
     expect(spy).toHaveBeenCalledWith('SDRF_Courts', requestOptions);
   });

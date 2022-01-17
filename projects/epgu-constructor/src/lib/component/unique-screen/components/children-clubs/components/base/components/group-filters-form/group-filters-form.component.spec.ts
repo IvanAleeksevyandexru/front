@@ -15,8 +15,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockComponent } from 'ng-mocks';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../../../services/api/api.service';
-import { ApiServiceStub } from '../../../../services/api/api.service.stub';
 import { StateService } from '../../../../services/state/state.service';
 import { PaymentSelectorComponent } from '../payment-selector/payment-selector.component';
 import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
@@ -27,6 +25,8 @@ import { VendorType } from '../../../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 
 describe('GroupFiltersFormComponent', () => {
   let component: GroupFiltersFormComponent;
@@ -55,7 +55,7 @@ describe('GroupFiltersFormComponent', () => {
         MicroAppStateService,
         MicroAppStateQuery,
         MicroAppStateStore,
-        { provide: ApiService, useClass: ApiServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
       imports: [

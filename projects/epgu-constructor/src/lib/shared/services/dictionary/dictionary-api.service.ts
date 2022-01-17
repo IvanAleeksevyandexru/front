@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { concatMap, delayWhen, filter, finalize, tap } from 'rxjs/operators';
+import { concatMap, delayWhen, filter, finalize, map, tap } from 'rxjs/operators';
 import {
   DictionaryOptions,
   AdditionalRequestParam,
@@ -14,6 +14,26 @@ import {
   DadataSuggestionsResponse,
   DictionaryResponse,
 } from './dictionary-api.types';
+import {
+  DIRECTIONS_SUB_URL,
+  MUNICIPALITIES_SUB_URL,
+  PROGRAM_DETAIL_SUB_URL,
+  SEARCH_GROUP_SUB_URL,
+  SEARCH_PROGRAM_SUB_URL,
+} from '../../../component/unique-screen/components/children-clubs/services/health/health-handler';
+import {
+  FindOptionsProgram,
+  BaseProgram,
+  FindResponseProgram,
+  Program,
+  FindOptionsGroup,
+  Group,
+  FindResponseGroup,
+  FocusDirectionsItem,
+  DirectionsResponse,
+  Municipality,
+  MunicipalityResponse,
+} from '../../../component/unique-screen/components/children-clubs/models/children-clubs.types';
 
 @Injectable()
 export class DictionaryApiService {
@@ -37,7 +57,7 @@ export class DictionaryApiService {
    * @param dictionaryName - название справочника
    * @param options - опции для получения данных
    */
-  public getDictionary(
+  public getGenericDictionary(
     dictionaryName: string,
     options: DictionaryOptions = {},
     dictionaryUrlType: DictionaryUrlTypes = DictionaryUrlTypes.dictionary,
@@ -99,7 +119,7 @@ export class DictionaryApiService {
     params?: KeyValueMap,
   ): Observable<DadataSuggestionsResponse> {
     const path = `${this.config.externalApiUrl}/dadata/suggestions`;
-    return this.http.get<DadataSuggestionsResponse>(path, {
+    return this.get<DadataSuggestionsResponse>(path, {
       params: {
         q: qString,
         ...params,
@@ -109,11 +129,56 @@ export class DictionaryApiService {
 
   public getDadataNormalize(qString: string): Observable<DadataNormalizeResponse> {
     const path = `${this.config.externalApiUrl}/dadata/normalize`;
-    return this.http.get<DadataNormalizeResponse>(path, {
+    return this.get<DadataNormalizeResponse>(path, {
       params: {
         q: qString,
       },
     });
+  }
+
+  public getProgramList(options: FindOptionsProgram): Observable<BaseProgram[]> {
+    const useOptionsAsPayload = true;
+    return this.post<FindResponseProgram>(
+      `${this.config.childrenClubsApi}${SEARCH_PROGRAM_SUB_URL}`,
+      options,
+      useOptionsAsPayload,
+    ).pipe(map((result) => result?.items ?? []));
+  }
+
+  public getProgram(uuid: string, nextSchoolYear: boolean): Observable<Program> {
+    const params = new HttpParams().append('nextSchoolYear', String(nextSchoolYear));
+
+    return this.get<Program>(`${this.config.childrenClubsApi}${PROGRAM_DETAIL_SUB_URL}${uuid}`, {
+      params,
+    });
+  }
+
+  public getGroupList(uuid: string, options: FindOptionsGroup): Observable<Group[]> {
+    const useOptionsAsPayload = true;
+    return this.post<FindResponseGroup>(
+      `${this.config.childrenClubsApi}${PROGRAM_DETAIL_SUB_URL}${uuid}${SEARCH_GROUP_SUB_URL}`,
+      options,
+      useOptionsAsPayload,
+    ).pipe(map((result) => result?.items ?? []));
+  }
+
+  public getDirections(okato: string): Observable<FocusDirectionsItem[]> {
+    const params = new HttpParams().append('okato', okato);
+
+    return this.get<DirectionsResponse>(`${this.config.childrenClubsApi}${DIRECTIONS_SUB_URL}`, {
+      params,
+    }).pipe(map((result) => result?.items ?? []));
+  }
+
+  public getMunicipalities(okato: string): Observable<Municipality[]> {
+    const params = new HttpParams().append('okato', okato);
+
+    return this.get<MunicipalityResponse>(
+      `${this.config.childrenClubsApi}${MUNICIPALITIES_SUB_URL}`,
+      {
+        params,
+      },
+    ).pipe(map((result) => result?.items ?? []));
   }
 
   private hasDictionaryResponseError(response: DictionaryResponse): boolean {
@@ -129,17 +194,28 @@ export class DictionaryApiService {
     return !!(codeCheck || errorCodeCheck || errorDetailMessageCheck);
   }
 
-  private post<T>(path: string, options: DictionaryOptions): Observable<T> {
-    const excludedParams = options?.excludedParams;
-    const additionalParams = options?.additionalParams;
+  private post<T>(
+    path: string,
+    options: DictionaryOptions | FindOptionsGroup,
+    useOptionsAsPayload?: boolean,
+  ): Observable<T> {
+    if (useOptionsAsPayload) {
+      return this.http.post<T>(path, options, {
+        withCredentials: true,
+      });
+    }
+
+    const dictOptions = options as DictionaryOptions;
+    const excludedParams = dictOptions?.excludedParams;
+    const additionalParams = dictOptions?.additionalParams;
     const payload = {
-      filter: options.filter,
-      treeFiltering: options.treeFiltering || 'ONELEVEL',
-      pageNum: options.pageNum || 1,
-      pageSize: options.pageSize || '10000',
-      parentRefItemValue: options.parentRefItemValue || '',
-      selectAttributes: options.selectAttributes || ['*'],
-      tx: options.tx || '',
+      filter: dictOptions.filter,
+      treeFiltering: dictOptions.treeFiltering || 'ONELEVEL',
+      pageNum: dictOptions.pageNum || 1,
+      pageSize: dictOptions.pageSize || '10000',
+      parentRefItemValue: dictOptions.parentRefItemValue || '',
+      selectAttributes: dictOptions.selectAttributes || ['*'],
+      tx: dictOptions.tx || '',
     };
 
     if (excludedParams && Array.isArray(excludedParams)) {
@@ -157,5 +233,10 @@ export class DictionaryApiService {
     return this.http.post<T>(path, payload, {
       withCredentials: true,
     });
+  }
+
+  private get<T>(path: string, options: object): Observable<T> {
+    const newOptions = { ...options, withCredentials: true };
+    return this.http.get<T>(path, newOptions);
   }
 }

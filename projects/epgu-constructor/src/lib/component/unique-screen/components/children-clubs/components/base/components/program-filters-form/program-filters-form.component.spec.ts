@@ -18,8 +18,6 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
 import { ProgramFiltersFormComponent } from './program-filters-form.component';
-import { ApiService } from '../../../../services/api/api.service';
-import { ApiServiceStub } from '../../../../services/api/api.service.stub';
 import { StateService } from '../../../../services/state/state.service';
 import { PaymentSelectorComponent } from '../payment-selector/payment-selector.component';
 import { DictionaryCcService } from '../../../../services/dictionary/dictionary.service';
@@ -35,6 +33,8 @@ import { VendorType, OvzType, LevelType } from '../../../../models/children-club
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { DictionaryApiService } from '../../../../../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 
 describe('ProgramFiltersComponent', () => {
   let component: ProgramFiltersFormComponent;
@@ -58,7 +58,7 @@ describe('ProgramFiltersComponent', () => {
       providers: [
         EventBusService,
         { provide: ModalService, useClass: ModalServiceStub },
-        { provide: ApiService, useClass: ApiServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: DictionaryCcService, useClass: DictionaryCcServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },

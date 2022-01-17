@@ -13,9 +13,9 @@ import { PluralizeModule, ToMoneyModule } from '@epgu/ui/pipes';
 import { GroupListContainerComponent } from './components/group-list-container/group-list-container.component';
 import { BaseModule } from '../base/base.module';
 import { GroupListService } from '../../services/group-list/group-list.service';
-import { ApiService } from '../../services/api/api.service';
 import { StateService } from '../../services/state/state.service';
 import { GroupItemComponent } from './components/group-item/group-item.component';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 
 @NgModule({
   declarations: [GroupListContainerComponent, GroupItemComponent],
@@ -31,7 +31,7 @@ import { GroupItemComponent } from './components/group-item/group-item.component
     ToMoneyModule,
   ],
 
-  providers: [GroupListService, ConfigService, ModalService, ApiService, StateService],
+  providers: [GroupListService, ConfigService, ModalService, DictionaryApiService, StateService],
   exports: [GroupListContainerComponent, GroupItemComponent],
 })
 export class GroupListModule {}

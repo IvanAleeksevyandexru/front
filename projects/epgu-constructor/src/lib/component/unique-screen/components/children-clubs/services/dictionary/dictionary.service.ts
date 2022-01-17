@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 import { ListElement } from '@epgu/ui/models/dropdown';
-import { ApiService } from '../api/api.service';
 import { StateService } from '../state/state.service';
 import {
   Municipality,
@@ -10,13 +9,14 @@ import {
   FocusDirectionsItem,
   NormalizedFocusData,
 } from '../../models/children-clubs.types';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 
 @Injectable()
 export class DictionaryCcService {
   public focusData$ = this.stateService.state$.pipe(
     pluck('okato'),
     distinctUntilChanged(),
-    switchMap(() => this.apiService.getDirections(this.stateService.okato)),
+    switchMap(() => this.dictionaryApiService.getDirections(this.stateService.okato)),
     map((data) => this.normalizeFocusData(data)),
     shareReplay(1),
   );
@@ -24,7 +24,7 @@ export class DictionaryCcService {
   public municipalitiesList$ = this.stateService.state$.pipe(
     pluck('okato'),
     distinctUntilChanged(),
-    switchMap(() => this.apiService.getMunicipalities(this.stateService.okato)),
+    switchMap(() => this.dictionaryApiService.getMunicipalities(this.stateService.okato)),
     map((list: Municipality[]) =>
       list.map(
         (municipality) => ({ id: municipality.uuid, text: municipality.name } as ListElement),
@@ -37,11 +37,16 @@ export class DictionaryCcService {
     pluck('selectedProgramUUID'),
     filter((uuid) => !!uuid),
     distinctUntilChanged(),
-    switchMap((uuid: string) => this.apiService.getProgram(uuid, this.stateService.nextSchoolYear)),
+    switchMap((uuid: string) =>
+      this.dictionaryApiService.getProgram(uuid, this.stateService.nextSchoolYear),
+    ),
     shareReplay(1),
   );
 
-  constructor(private apiService: ApiService, private stateService: StateService) {}
+  constructor(
+    private dictionaryApiService: DictionaryApiService,
+    private stateService: StateService,
+  ) {}
 
   public normalizeFocusData(data: FocusDirectionsItem[]): NormalizedFocusData {
     const directions: Record<string, ListElement[]> = {};
@@ -62,6 +67,6 @@ export class DictionaryCcService {
   }
 
   public getProgram(uuid: string, nextSchoolYear: boolean): Observable<Program> {
-    return this.apiService.getProgram(uuid, nextSchoolYear);
+    return this.dictionaryApiService.getProgram(uuid, nextSchoolYear);
   }
 }
