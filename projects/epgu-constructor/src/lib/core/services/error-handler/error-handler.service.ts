@@ -70,7 +70,8 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       return throwError(httpErrorResponse);
     }
     if (error?.errorModalWindow) {
-      this.utils.showErrorModal({ ...error?.errorModalWindow, traceId });
+      const shownTraceId = error?.hideTraceId ? null : traceId;
+      this.utils.showErrorModal({ ...error?.errorModalWindow, traceId: shownTraceId });
     } else if (status === 401) {
       this.utils.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
         if (result === 'login') {
