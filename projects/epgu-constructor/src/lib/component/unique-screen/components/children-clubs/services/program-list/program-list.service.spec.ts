@@ -7,8 +7,6 @@ import {
   MicroAppStateServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from './program-list.service';
-import { ApiService } from '../api/api.service';
-import { ApiServiceStub } from '../api/api.service.stub';
 import { StateService } from '../state/state.service';
 import { StateServiceStub } from '../state/state.service.stub';
 import { baseProgramStub } from '../../stubs/projects.stub';
@@ -19,6 +17,8 @@ import { CurrentAnswersService } from '../../../../../../screen/current-answers.
 import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../../../shared/directives/action/action.service.stub';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
+import { DictionaryApiServiceStub } from '../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 
 describe('ProgramListService', () => {
   let service: ProgramListService;
@@ -31,7 +31,7 @@ describe('ProgramListService', () => {
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: StateService, useClass: StateServiceStub },
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
-        { provide: ApiService, useClass: ApiServiceStub },
+        { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },

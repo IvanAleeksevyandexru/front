@@ -158,7 +158,7 @@ describe('LogicService', () => {
         .spyOn(dictionaryToolsService, 'prepareOptions')
         .mockReturnValue({ filter: filters });
       const getDictionarySpy = jest
-        .spyOn(dictionaryApiService, 'getDictionary')
+        .spyOn(dictionaryApiService, 'getGenericDictionary')
         .mockReturnValue(of({}));
       service.fetch(componentsWithDictionary)[0].subscribe();
 

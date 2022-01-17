@@ -167,7 +167,7 @@ describe('HealthHandlerService', () => {
     it('should set error and errorMessage params for the first type of dictionaries', fakeAsync(() => {
       const spyMeasureStart = jest.spyOn(healthService, 'measureStart');
       const spyMeasureEnd = jest.spyOn(healthService, 'measureEnd');
-      dictionaryService.getDictionary(dictionaryName).subscribe((response) => {
+      dictionaryService.getGenericDictionary(dictionaryName).subscribe((response) => {
         expect(response).toBeTruthy();
       });
       const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/${dictionaryName}`);
@@ -197,7 +197,7 @@ describe('HealthHandlerService', () => {
     it('should set error and errorMessage params for the second type of dictionaries', fakeAsync(() => {
       const spyMeasureStart = jest.spyOn(healthService, 'measureStart');
       const spyMeasureEnd = jest.spyOn(healthService, 'measureEnd');
-      dictionaryService.getDictionary(dictionaryName).subscribe((response) => {
+      dictionaryService.getGenericDictionary(dictionaryName).subscribe((response) => {
         expect(response).toBeTruthy();
       });
       const requestToDictionary = httpMock.expectOne(`${config.dictionaryUrl}/${dictionaryName}`);

@@ -174,7 +174,7 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
   private fetchDictionary(): Observable<ListElement[]> {
     this.isLoading = true;
     return this.dictionaryApiService
-      .getDictionary(this.dictionaryType, { filter: this.dictionaryFilter.filter })
+      .getGenericDictionary(this.dictionaryType, { filter: this.dictionaryFilter.filter })
       .pipe(
         delay(500),
         map((response) => {

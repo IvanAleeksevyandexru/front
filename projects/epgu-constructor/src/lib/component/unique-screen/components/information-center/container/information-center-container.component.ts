@@ -98,7 +98,7 @@ export class InformationCenterContainerComponent {
     const options = this.getInfoCenterOptionsRequest(attributeName, condition, value?.id as string);
 
     this.dictionaryApiService
-      .getDictionary(this.dictionaryType, options)
+      .getGenericDictionary(this.dictionaryType, options)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
         const items = this.dictionaryToolsService.adaptDictionaryToListItem(data.items);
@@ -212,7 +212,7 @@ export class InformationCenterContainerComponent {
           value?.id as string,
         );
 
-        return this.dictionaryApiService.getDictionary(this.dictionaryType, options);
+        return this.dictionaryApiService.getGenericDictionary(this.dictionaryType, options);
       }),
     ).subscribe((response) => {
       response.forEach(({ items }, index) => {

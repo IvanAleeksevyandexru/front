@@ -178,7 +178,7 @@ export class PaymentService {
 
     const dictionaryOptions = this.createPaymentRequestOptions(attrs);
 
-    return this.dictionaryApiService.getDictionary(nsi, dictionaryOptions).pipe(
+    return this.dictionaryApiService.getGenericDictionary(nsi, dictionaryOptions).pipe(
       concatMap((response: DictionaryResponse) => {
         const { items } = response;
         return items.some((item: DictionaryItem) => {

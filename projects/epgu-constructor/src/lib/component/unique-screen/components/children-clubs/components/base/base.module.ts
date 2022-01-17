@@ -13,7 +13,6 @@ import {
   SharedModalModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramFiltersFormComponent } from './components/program-filters-form/program-filters-form.component';
-import { ApiService } from '../../services/api/api.service';
 import { StateService } from '../../services/state/state.service';
 import { FilterPanelComponent } from './components/filter-panel/filter-panel.component';
 import { PaymentSelectorComponent } from './components/payment-selector/payment-selector.component';
@@ -22,6 +21,7 @@ import { GroupFiltersFormComponent } from './components/group-filters-form/group
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-reason-title.component';
 import { ConfirmationModalModule } from '../../../../../../modal/confirmation-modal/confirmation-modal.module';
+import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,7 @@ import { ConfirmationModalModule } from '../../../../../../modal/confirmation-mo
     IconsModule,
     ConfirmationModalModule,
   ],
-  providers: [DictionaryCcService, ConfigService, ApiService, StateService],
+  providers: [DictionaryCcService, ConfigService, DictionaryApiService, StateService],
   exports: [
     NotFoundComponent,
     ProgramFiltersFormComponent,
