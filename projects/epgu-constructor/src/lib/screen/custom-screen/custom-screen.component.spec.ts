@@ -11,6 +11,8 @@ import {
   DatesToolsService,
   EventBusService,
   ScreenContainerComponent,
+  UnsubscribeService,
+  UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   ComponentDto,
@@ -94,6 +96,7 @@ describe('CustomScreenComponent', () => {
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
         EventBusService,
         CurrentAnswersService,
         CertificateEaisdoService,

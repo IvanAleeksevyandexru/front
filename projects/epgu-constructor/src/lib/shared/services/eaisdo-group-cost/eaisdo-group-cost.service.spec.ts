@@ -84,7 +84,9 @@ describe('EaisdoGroupCostService', () => {
         type: ActionType.nextStep,
         action: DTOActionAction.getNextStep,
         label: '',
-        hidden: false,
+        attrs: {
+          hidden: false,
+        },
       };
       const result = cloneDeep(button);
       service.isInformerScreen = true;
