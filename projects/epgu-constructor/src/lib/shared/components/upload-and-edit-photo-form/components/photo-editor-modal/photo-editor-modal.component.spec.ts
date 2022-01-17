@@ -12,6 +12,8 @@ import { ButtonComponent } from '@epgu/ui/base';
 import { SliderComponent } from '../slider/slider.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
 import { OutputHtmlComponent } from '../../../output-html/output-html.component';
+import { imageErrorText } from '../../upload-and-edit-photo-form.constant';
+import { CropTypes } from 'projects/epgu-constructor-types/src/base';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -167,6 +169,44 @@ describe('PhotoEditorModalComponent', () => {
 
       expect(component.modalResult.next).toHaveBeenCalledWith({ changeImage: true });
       expect(component.closeModal).toHaveBeenCalled();
+    });
+  });
+
+  describe('photoMode', () => {
+    it('should be TRUE by default', () => {
+      expect(component.isFacePhotoMode).toBeTruthy();
+    });
+
+    it('should be FALSE if cropType is set as ex."1:1"', () => {
+      component.cropOptions.cropType = CropTypes.A1TO1;
+      component.ngOnInit();
+
+      expect(component.isFacePhotoMode).toBeFalsy();
+    });
+  });
+
+  describe('custom errors', () => {
+    it('should set custom error text from attrs', () => {
+      expect(component.imageErrorText).toEqual(imageErrorText);
+      const customError = {
+        dpi: {
+          title: '2 Маленькое разрешение',
+          text: 'Кастом ошибка. Например, от',
+          textRules: '50x50 px.',
+        },
+      };
+
+      component.customImageErrorText = {
+        ...customError,
+      };
+      component.ngOnInit();
+
+      const expectedErrors = {
+        ...imageErrorText,
+        ...customError,
+      };
+
+      expect(component.imageErrorText).toEqual(expectedErrors);
     });
   });
 });

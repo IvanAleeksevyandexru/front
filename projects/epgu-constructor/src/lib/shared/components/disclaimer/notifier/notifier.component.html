@@ -3,7 +3,7 @@
   [hidden]="!notifiers || !notifiers.length"
   #notifiersList
 >
-  <div *ngFor="let notifier of notifiers" class="notifier">
+  <div *ngFor="let notifier of notifiers; trackBy: trackNotifierById" class="notifier">
     <div class="flex-container-md justify-between-md">
       <epgu-constructor-disclaimer
         [type]="notifier.type"

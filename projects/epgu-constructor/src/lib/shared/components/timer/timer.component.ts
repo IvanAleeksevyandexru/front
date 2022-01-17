@@ -94,6 +94,10 @@ export class TimerComponent {
     }
   }
 
+  trackActionsById(_index, action: TimerComponentDtoAction): string {
+    return action.id;
+  }
+
   /**
    * Проверяет нужно ли прятать таймер
    * @private

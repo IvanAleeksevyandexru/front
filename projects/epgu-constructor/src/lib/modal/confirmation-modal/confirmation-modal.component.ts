@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   Injector,
   OnInit,
 } from '@angular/core';
@@ -12,7 +13,6 @@ import { takeUntil } from 'rxjs/operators';
 import {
   ScreenButton,
   ConfirmationModal,
-  ActionType,
   Clarifications,
   LongButtonColor,
   CloseHandlerCases,
@@ -24,8 +24,8 @@ import {
   ConfirmationModalBaseButton,
   ConfigService,
   ConfirmationModalAnswerButton,
-  BusEventType,
   LocationService,
+  ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierService } from '@epgu/ui/services/notifier';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -53,6 +53,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   showCrossButton: boolean;
   isShortModal?: ConfirmationModal['isShortModal'];
   closeHandlerCase: ConfirmationModal['closeHandlerCase'];
+  subModal: ConfirmationModal['subModal'];
   backdropDismiss = true;
   blueColor = LongButtonColor.BLUE;
 
@@ -67,8 +68,20 @@ export class ConfirmationModalComponent extends ModalBaseComponent
     private cdr: ChangeDetectorRef,
     private clipboard: Clipboard,
     private notifierService: NotifierService,
+    private modalService: ModalService,
   ) {
     super(injector);
+  }
+
+  @HostListener('click', ['$event']) onClick(event: MouseEvent): void {
+    if (!this.subModal) {
+      return;
+    }
+    const targetElement = event.target as HTMLElement;
+    const targetElementModalData = this.clarifications && this.clarifications[targetElement.id];
+    if (targetElementModalData) {
+      this.showInnerModal(targetElementModalData);
+    }
   }
 
   ngOnInit(): void {
@@ -85,19 +98,17 @@ export class ConfirmationModalComponent extends ModalBaseComponent
       });
 
     this.eventBusService
-      .on(BusEventType.ScreenButtonClicked)
+      .on(`closeModalEventGlobal`)
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((button: ScreenButton) => {
-        if (button.type === ActionType.deliriumNextStep) {
-          this.closeModal();
-        }
+      .subscribe(() => {
+        this.closeModal();
       });
   }
 
   ngAfterViewInit(): void {
     this.setDefaultCloseAction();
     this.setCustomButtons();
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   setDefaultCloseAction(): void {
@@ -159,5 +170,13 @@ export class ConfirmationModalComponent extends ModalBaseComponent
       default:
         break;
     }
+  }
+
+  private showInnerModal(targetClarification: { text?: string }): void {
+    this.modalService.openModal(ConfirmationModalComponent, {
+      ...targetClarification,
+      clarifications: this.clarifications,
+      componentId: this.text,
+    });
   }
 }

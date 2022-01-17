@@ -145,6 +145,10 @@ export class NotifierDisclaimerComponent implements OnInit, OnDestroy {
     this.removeNotifier(notifier);
   }
 
+  public trackNotifierById(_index, notifier: Notifier): string {
+    return notifier.notifierId;
+  }
+
   private animationPlayer = (containerTop, offsetTop): AnimationPlayer =>
     this.animationBuilder
       .build([

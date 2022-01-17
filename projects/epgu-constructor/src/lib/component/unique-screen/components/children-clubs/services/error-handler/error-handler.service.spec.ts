@@ -13,8 +13,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { ErrorHandlerService } from './error-handler.service';
 import { PROGRAM_DETAIL_SUB_URL, SEARCH_GROUP_SUB_URL } from '../health/health-handler';
-import { ContentModalComponent } from '../../components/base/components/content-modal/content-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from './error-handler.data';
+import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 describe('ErrorHandlerService', () => {
   let service: ErrorHandlerService;
@@ -104,7 +104,7 @@ describe('ErrorHandlerService', () => {
 
       service.handleResponseError(testResponse);
 
-      expect(spy).toHaveBeenCalledWith(ContentModalComponent, { ...params });
+      expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, { ...params });
     });
   });
 });

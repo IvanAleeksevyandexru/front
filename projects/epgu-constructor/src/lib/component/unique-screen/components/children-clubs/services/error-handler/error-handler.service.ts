@@ -8,9 +8,9 @@ import {
   ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ConfirmationModal } from '@epgu/epgu-constructor-types';
-import { ContentModalComponent } from '../../components/base/components/content-modal/content-modal.component';
 import { AUTH_ERROR_MODAL_PARAMS, COMMON_ERROR_MODAL_PARAMS } from './error-handler.data';
 import { PROGRAM_DETAIL_SUB_URL, SEARCH_GROUP_SUB_URL } from '../health/health-handler';
+import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -49,6 +49,8 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
   }
 
   private showModal(params: ConfirmationModal, traceId?: string): Promise<unknown> {
-    return this.modalService.openModal(ContentModalComponent, { ...params, traceId }).toPromise();
+    return this.modalService
+      .openModal(ConfirmationModalComponent, { ...params, traceId })
+      .toPromise();
   }
 }

@@ -28,7 +28,7 @@ import {
   FormFieldsLabel,
   FormFieldsName,
 } from '../../base.models';
-import { ContentModalComponent } from '../content-modal/content-modal.component';
+import { ConfirmationModalComponent } from '../../../../../../../../modal/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'epgu-constructor-cc-payment-selector',
@@ -73,7 +73,11 @@ export class PaymentSelectorComponent implements OnInit {
 
   openAboutPayment(): void {
     this.modalService
-      .openModal(ContentModalComponent, { ...aboutPayment, modalId: 'aboutPayment' })
+      .openModal(ConfirmationModalComponent, {
+        ...aboutPayment,
+        text: 'aboutPayment',
+        subModal: true,
+      })
       .subscribe();
   }
 

@@ -214,9 +214,11 @@ export interface ComponentAttrsDto {
   clarifications?: Clarifications;
   codeLength?: CodeLength;
   components?: ComponentDto[];
+  cropOptions?: ImageCropOptions;
   cubeElements?: CubeElements;
   customUnrecLabel?: CustomUnrecLabel;
   customValidation?: CustomValidationDto;
+  customImageErrorText?: ImageErrorText;
   dateType?: DateType;
   daysToShow?: DaysToShow;
   defaultHint?: HintDto;
@@ -609,4 +611,22 @@ export interface SupportedValue {
   label: string;
   value: string;
   isDefault?: boolean;
+}
+
+interface ImageErrorText {
+  [errorType: string]: {
+    title: string;
+    text: string;
+    textRules: string;
+  };
+}
+
+export enum CropTypes {
+  FACE = 'face',
+  A1TO1 = '1:1',
+  A3TO4 = '3:4',
+}
+
+export interface ImageCropOptions {
+  cropType: CropTypes;
 }

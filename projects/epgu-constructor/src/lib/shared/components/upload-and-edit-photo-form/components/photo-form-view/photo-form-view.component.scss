@@ -11,7 +11,6 @@
   }
 
   &__uploading-container {
-    height: 100%;
     background-color: $color-white;
     border-radius: 8px;
     flex-basis: 344px;
@@ -73,6 +72,7 @@
 
   &__uploading-text {
     color: $color-text-helper;
+    margin-top: 80px;
     margin-bottom: 12px;
 
     @include typ-plain-text;
@@ -87,10 +87,6 @@
 
     &_mt-68 {
       margin-top: 68px;
-    }
-
-    &_mt-80 {
-      margin-top: 80px;
     }
   }
 
@@ -115,5 +111,15 @@
     &:focus {
       outline: 0;
     }
+  }
+}
+
+.file-upload {
+  .photo__uploading-button {
+    margin-top: 84px;
+  }
+
+  .photo__uploading-text {
+    margin-top: 96px;
   }
 }

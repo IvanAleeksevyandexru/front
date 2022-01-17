@@ -514,10 +514,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   }
 
   private getDataSource(options): Observable<DictionaryResponse> {
-    if (this.componentValue?.smevConverterRequest) {
-      return this.dictionaryApiService.getSmevConverterData(
-        this.componentValue?.smevConverterRequest,
-      );
+    if (this.componentValue?.barbarbokResponse) {
+      return of(this.componentValue.barbarbokResponse as DictionaryResponse);
     }
     return this.dictionaryApiService.getSelectMapDictionary(this.getDictionaryType(), options);
   }

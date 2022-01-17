@@ -1,7 +1,7 @@
 <div class="photo-editor-modal">
   <div class="photo-editor-modal__header">
     <a class="modal__close icon-close" (click)="closeModal()"></a>
-    <h3 class="modal__title">Отредактируйте фото</h3>
+    <h3 class="modal__title">Отредактируйте {{ isFacePhotoMode ? 'фото' : 'файл' }}</h3>
   </div>
   <div class="photo-editor-modal__body-scroll">
     <div class="photo-editor-modal__body">
@@ -14,13 +14,15 @@
             [width]="27"
             [height]="27"
           ></epgu-cf-ui-icon>
-          <span>Перетащите фото,<br />чтобы изменить<br />положение</span>
+          <span>
+            Перетащите {{ isFacePhotoMode ? 'фото' : 'файл' }},<br />чтобы изменить<br />положение
+          </span>
         </div>
         <div class="photo-editor__cropper-container" (resized)="onResized($event)">
           <div
             class="photo-editor__cropper"
-            [style.width.px]="cropConfig.width"
-            [style.height.px]="cropConfig.height"
+            [style.width.px]="cropConfig.containerSize.width"
+            [style.height.px]="cropConfig.containerSize.height"
             [class.mobile]="isPhoneSize"
           >
             <ly-img-cropper
@@ -31,6 +33,7 @@
               (ready)="imageLoaded()"
             ></ly-img-cropper>
             <epgu-constructor-output-html
+              *ngIf="isFacePhotoMode"
               class="photo-editor__mask"
               [html]="maskSrc"
             ></epgu-constructor-output-html>
@@ -66,7 +69,7 @@
           </div>
         </div>
         <div class="photo-editor__position-hints-container">
-          <div class="photo-editor__position-hint">
+          <div class="photo-editor__position-hint" *ngIf="isFacePhotoMode">
             <epgu-cf-ui-icon
               class="photo-editor__position-hint__icon"
               *ngIf="isPhoneSize"
@@ -75,7 +78,7 @@
             ></epgu-cf-ui-icon>
             <span>Голова не должна быть выше этой линии</span>
           </div>
-          <div class="photo-editor__position-hint">
+          <div class="photo-editor__position-hint" *ngIf="isFacePhotoMode">
             <epgu-cf-ui-icon
               class="photo-editor__position-hint__icon"
               *ngIf="isPhoneSize"
@@ -96,11 +99,11 @@
           </span>
         </div>
         <div class="photo-editor-modal__buttons">
-          <lib-button class="photo-editor-modal__button" color="white" (click)="takeAnotherPhoto()"
-            >Выбрать другое фото
+          <lib-button class="photo-editor-modal__button" color="white" (click)="takeAnotherPhoto()">
+            {{ isFacePhotoMode ? 'Выбрать другое фото' : 'Выбрать другой'}}
           </lib-button>
-          <lib-button class="photo-editor-modal__button" (click)="saveAndExit()"
-            >Сохранить и продолжить
+          <lib-button class="photo-editor-modal__button" (click)="saveAndExit()">
+            Сохранить и продолжить
           </lib-button>
         </div>
       </div>

@@ -45,6 +45,7 @@ const componentActionDtoSample1: ComponentActionDto = {
 describe('DefaultUniqueScreenWrapperComponent', () => {
   let component: DefaultUniqueScreenWrapperComponent;
   let fixture: ComponentFixture<DefaultUniqueScreenWrapperComponent>;
+  let screenService: ScreenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -78,6 +79,7 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
   });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
     fixture = TestBed.createComponent(DefaultUniqueScreenWrapperComponent);
     component = fixture.componentInstance;
     component.header = 'Header';
@@ -85,6 +87,7 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
     component.isLoading = false;
     component.isValid = true;
     component.showNav = true;
+    jest.spyOn(screenService, 'buttons', 'get').mockReturnValue([]);
     fixture.detectChanges();
   });
 

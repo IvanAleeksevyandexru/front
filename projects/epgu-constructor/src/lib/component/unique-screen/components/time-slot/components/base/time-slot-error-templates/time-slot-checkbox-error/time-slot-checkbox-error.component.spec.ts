@@ -25,6 +25,10 @@ import { HtmlSelectService } from '../../../../../../../../core/services/html-se
 import { HtmlSelectServiceStub } from '../../../../../../../../core/services/html-select/html-select.service.stub';
 import { ActionServiceStub } from '../../../../../../../../shared/directives/action/action.service.stub';
 import { ActionService } from '../../../../../../../../shared/directives/action/action.service';
+import { EaisdoGroupCostServiceStub } from '../../../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service.stub';
+import { EaisdoGroupCostService } from '../../../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
+import { MockProvider } from 'ng-mocks';
+import { CertificateEaisdoService } from '../../../../../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 
 const mockTemplate: ErrorTemplate = {
   header: 'test',
@@ -35,6 +39,7 @@ const mockTemplate: ErrorTemplate = {
 describe('TimeSlotCheckboxErrorComponent', () => {
   let component: TimeSlotCheckboxErrorComponent;
   let fixture: ComponentFixture<TimeSlotCheckboxErrorComponent>;
+  let screenService: ScreenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -48,6 +53,8 @@ describe('TimeSlotCheckboxErrorComponent', () => {
         { provide: HtmlSelectService, useClass: HtmlSelectServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: EaisdoGroupCostService, useClass: EaisdoGroupCostServiceStub },
+        MockProvider(CertificateEaisdoService),
         JsonHelperService,
         EventBusService,
       ],
@@ -55,9 +62,11 @@ describe('TimeSlotCheckboxErrorComponent', () => {
   });
 
   beforeEach(() => {
+    screenService = TestBed.inject(ScreenService);
     fixture = TestBed.createComponent(TimeSlotCheckboxErrorComponent);
     component = fixture.componentInstance;
     component.error = mockTemplate;
+    jest.spyOn(screenService, 'buttons', 'get').mockReturnValue([]);
   });
 
   describe('base', () => {
