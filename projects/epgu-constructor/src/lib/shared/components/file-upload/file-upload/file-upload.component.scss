@@ -2,4 +2,12 @@
 
 :host {
   display: block;
+
+  .file-upload-container {
+    display: block;
+    margin-bottom: 24px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
