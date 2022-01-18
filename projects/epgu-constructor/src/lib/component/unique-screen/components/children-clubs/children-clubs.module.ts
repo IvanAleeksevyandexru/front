@@ -11,6 +11,8 @@ import { BaseModule } from './components/base/base.module';
 import { ProgramListModule } from './components/program-list/program-list.module';
 import { SelectMapObjectCcModule } from './components/select-map-object/select-map-object.module';
 import { GroupListModule } from './components/group-list/group-list.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DisplayProjectListInterceptor } from './interceptors/display-project-list/display-project-list.interceptor';
 
 @NgModule({
   imports: [
@@ -24,6 +26,13 @@ import { GroupListModule } from './components/group-list/group-list.module';
     SharedModalModule,
     SelectMapObjectCcModule,
     NotifierModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: DisplayProjectListInterceptor,
+      multi: true,
+    },
   ],
 })
 export class ChildrenClubsModule {}
