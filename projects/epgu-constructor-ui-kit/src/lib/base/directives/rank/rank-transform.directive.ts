@@ -53,6 +53,7 @@ export class RankTransformDirective implements OnInit {
   }
 
   private normalizeDecimal(value: string): string {
-    return this.decimalPipe.transform(value.substring(0, 10), '0.0-0');
+    //TODO Если больше 16, то JS начинает коверкать числа. Хотели больше 16 символов. Нужно решение.
+    return this.decimalPipe.transform(value.substring(0, 16), '0.0-0');
   }
 }
