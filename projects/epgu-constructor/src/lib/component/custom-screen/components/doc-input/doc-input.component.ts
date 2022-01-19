@@ -257,7 +257,6 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
       emitterControl.markAllAsTouched();
       emitterControl.markAsDirty();
       emitterControl.updateValueAndValidity();
-      emitterControl.setErrors(null);
     }
 
     if (issueIdControl.value) {
