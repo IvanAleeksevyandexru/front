@@ -58,6 +58,5 @@ import { DenyReasonTitleComponent } from './components/deny-reason-title/deny-re
     DenyReasonTitleComponent,
     BaseUiModule,
   ],
-  entryComponents: [GroupFiltersFormComponent, ProgramFiltersFormComponent, ContentModalComponent],
 })
 export class BaseModule {}

@@ -7,6 +7,8 @@ import { DateRefService } from '../../../core/services/date-ref/date-ref.service
 import { DateRestriction } from '../../../component/custom-screen/components-list.types';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '../dictionary/dictionary-tools.service.stub';
+import { MockProvider } from 'ng-mocks';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('DateRestrictionsService', () => {
   let service: DateRestrictionsService;
@@ -21,6 +23,7 @@ describe('DateRestrictionsService', () => {
         LoggerService,
         DateRefService,
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
+        MockProvider(HelperService),
       ],
       imports: [HttpClientTestingModule],
     });

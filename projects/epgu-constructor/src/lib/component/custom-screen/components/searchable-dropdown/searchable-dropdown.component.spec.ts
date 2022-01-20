@@ -26,6 +26,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import SearchableDropdownModelAttrs from './SearchableDropdownModelAttrs';
 import SearchableDropdownModel from './SearchableDropdownModel';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('SearchableDropdownComponent', () => {
   let component: SearchableDropdownComponent;
@@ -46,6 +47,7 @@ describe('SearchableDropdownComponent', () => {
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         MockProvider(ComponentsListRelationsService),
+        MockProvider(HelperService),
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         ConfigService,
         LoggerService,

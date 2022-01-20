@@ -32,6 +32,7 @@ import {
   createComponentMockWithNoRel,
 } from './components-list-relations.mock';
 import { RelationResolverService } from './relation-resolver.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ComponentsListRelationsService', () => {
   let service: ComponentsListRelationsService;
@@ -61,6 +62,7 @@ describe('ComponentsListRelationsService', () => {
         FormBuilder,
         MockProvider(DateRestrictionsService),
         MockProvider(RelationResolverService),
+        MockProvider(HelperService),
       ],
     });
   });

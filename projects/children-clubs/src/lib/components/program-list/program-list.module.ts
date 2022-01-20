@@ -38,9 +38,7 @@ import { ToggleTextComponent } from './components/toggle-text/toggle-text.compon
     SelectMapObjectModule,
     PluralizeModule,
   ],
-
   providers: [ProgramListService, ModalService, ConfigService, ApiService, StateService],
   exports: [ProgramListContainerComponent, ViewComponent],
-  entryComponents: [ProgramListContainerComponent],
 })
 export class ProgramListModule {}

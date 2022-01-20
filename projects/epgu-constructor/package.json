@@ -8,12 +8,12 @@
     "lint:fix": "cd ../../ && ng lint epgu-constructor --fix"
   },
   "peerDependencies": {
-    "@angular/animations": "12.2.5",
-    "@angular/cdk": "12.2.5",
-    "@angular/common": "12.2.5",
-    "@angular/core": "12.2.5",
-    "@angular/forms": "12.2.5",
-    "@epgu/ui": "3.0.395-2-front",
+    "@angular/animations": "13.1.1",
+    "@angular/cdk": "13.1.1",
+    "@angular/common": "13.1.1",
+    "@angular/core": "13.1.1",
+    "@angular/forms": "13.1.1",
+    "@epgu/ui": "1.0.232",
     "@ngx-translate/http-loader": "6.0.0",
     "@nicky-lenaers/ngx-scroll-to": "^9.0.0",
     "@squadette/hammerjs": "^2.1.0-pre3",
@@ -38,6 +38,6 @@
     "node-fetch": "2.6.1",
     "raw-loader": "^4.0.2",
     "os": "0.1.1",
-    "tslib": "2.1.0"
+    "tslib": "2.3.1"
   }
 }

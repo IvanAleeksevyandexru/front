@@ -9,6 +9,5 @@ import { BaseModule } from '../../../../shared/base.module';
   providers: [],
   exports: [TimeSlotResolverVersionComponent],
   imports: [BaseModule, TimeSlotsModule, TimeSlotModule],
-  entryComponents: [TimeSlotResolverVersionComponent],
 })
 export class TimeSlotResolverVersionModule {}

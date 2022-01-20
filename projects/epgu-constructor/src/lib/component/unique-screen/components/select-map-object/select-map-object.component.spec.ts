@@ -16,7 +16,7 @@ import {
   PrevButtonModule,
   IconsModule,
 } from '@epgu/epgu-constructor-ui-kit';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { YaMapService } from '@epgu/ui/services/ya-map';
@@ -49,6 +49,7 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
 import { MapSidebarComponent } from './components/map-sidebar/map-sidebar.component';
 import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipeable-wrapper.component';
 import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -85,6 +86,7 @@ describe('SelectMapObjectComponent', () => {
         IconsModule,
         ForTestsOnlyModule,
       ],
+      providers: [MockProvider(HelperService)],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: { entryComponents: [CommonBalloonContentComponent, CommonSearchPanelComponent] },

@@ -4,7 +4,6 @@ import {
   ConfigService,
   ConfigServiceStub,
   DatesToolsService,
-  DatesToolsServiceStub,
   EventBusService,
   HttpCancelService,
   ModalService,
@@ -12,7 +11,7 @@ import {
   ScreenPadModule,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TimeSlotSmev2Component } from './time-slot-smev2.component';
@@ -22,7 +21,6 @@ import { TimeSlotSmev2Service } from '../../../services/smev2/time-slot-smev2.se
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ActionService } from '../../../../../../../shared/directives/action/action.service';
 import { TimeSlotErrorService } from '../../../services/error/time-slot-error.service';
-import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-state.service.stub';
 import { TimeSlotSmev2ServiceStub } from '../../../services/smev2/time-slot-smev2.service.stub';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
 import { ActionServiceStub } from '../../../../../../../shared/directives/action/action.service.stub';
@@ -35,6 +33,7 @@ import { BaseModule } from '../../../../../../../shared/base.module';
 import { Slot } from '../../../typings';
 import { CurrentAnswersService } from '../../../../../../../screen/current-answers.service';
 import { CurrentAnswersServiceStub } from '../../../../../../../screen/current-answers-service.stub';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const createMockSlot = (id: string, date: string) =>
   ({
@@ -78,6 +77,7 @@ describe('TimeSlotSmev2Component', () => {
         { provide: TimeSlotErrorService, useClass: TimeSlotErrorServiceStub },
         TimeSlotCalendarService,
         DatesToolsService,
+        MockProvider(HelperService),
       ],
     }).compileComponents();
   });

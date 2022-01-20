@@ -72,10 +72,5 @@ const COMPONENTS = [
     ScreenPadModule,
     DefaultUniqueScreenWrapperModule,
   ],
-  entryComponents: [
-    CarInfoContainerComponent,
-    CarOwnerInfoContainerComponent,
-    CarDetailInfoContainerComponent,
-  ],
 })
 export class CarInfoModule {}

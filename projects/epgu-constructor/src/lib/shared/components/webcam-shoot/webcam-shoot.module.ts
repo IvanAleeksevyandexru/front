@@ -7,6 +7,5 @@ import { WebcamShootComponent } from './webcam-shoot.component';
   declarations: [WebcamShootComponent],
   imports: [CommonModule, WebcamModule],
   exports: [WebcamShootComponent],
-  entryComponents: [WebcamShootComponent],
 })
 export class WebcamShootModule {}

@@ -7,6 +7,8 @@ import { By } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ConstructorLookupComponent } from './constructor-lookup.component';
 import { BaseUiModule } from '../../base-ui.module';
+import { MockProvider } from 'ng-mocks';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ConstructorLookupComponent', () => {
   let component: ConstructorLookupComponent;
@@ -16,7 +18,7 @@ describe('ConstructorLookupComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ConstructorLookupComponent],
       imports: [BaseUiModule, HttpClientModule],
-      providers: [],
+      providers: [MockProvider(HelperService)],
     }).compileComponents();
   });
 

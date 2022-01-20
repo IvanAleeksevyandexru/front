@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import {
   LoggerService,
   ConfigService,
@@ -43,6 +43,7 @@ import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -105,6 +106,7 @@ describe('CustomScreenComponent', () => {
         ConfigService,
         LoggerService,
         EaisdoGroupCostService,
+        MockProvider(HelperService),
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).overrideComponent(CustomScreenComponent, {

@@ -27,6 +27,5 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
     DisclaimerModule,
   ],
   exports: [DatePeriodContainerComponent, DatePeriodComponent],
-  entryComponents: [DatePeriodContainerComponent],
 })
 export class DatePeriodModule {}

@@ -21,6 +21,5 @@ import { BaseModule } from '../../../../shared/base.module';
     PluralizeModule,
     BaseModule,
   ],
-  entryComponents: [PaymentWayContainerComponent],
 })
 export class PaymentWayModule {}

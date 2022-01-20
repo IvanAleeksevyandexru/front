@@ -58,6 +58,7 @@ import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group
 import { KindergartenService, KindergartenStates } from './kindergarten.service';
 import { By } from '@angular/platform-browser';
 import { PriorityScreenComponent } from '../select-map-object/components/priority-screen/priority-screen.component';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('KindergartenComponent', () => {
   let component: KindergartenComponent;
@@ -100,6 +101,7 @@ describe('KindergartenComponent', () => {
         MockProvider(DateRefService),
         MockProvider(AnimationBuilder),
         MockProvider(HtmlSelectService),
+        MockProvider(HelperService),
         PrepareComponentsService,
         CertificateEaisdoService,
         ScreenService,

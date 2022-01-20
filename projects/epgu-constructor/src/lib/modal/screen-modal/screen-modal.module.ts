@@ -15,6 +15,5 @@ import { ComponentListModalModule } from './components/component-list-modal/comp
     InfoComponentModalModule,
     ComponentListModalModule,
   ],
-  entryComponents: [ScreenModalComponent],
 })
 export class ScreenModalModule {}

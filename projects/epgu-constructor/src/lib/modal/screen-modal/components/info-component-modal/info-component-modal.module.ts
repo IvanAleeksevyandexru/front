@@ -8,6 +8,5 @@ import { ScreenButtonsModule } from '../../../../shared/components/screen-button
   declarations: [InfoComponentModalComponent],
   exports: [InfoComponentModalComponent],
   imports: [BaseModule, InfoScreenBodyModule, ScreenButtonsModule],
-  entryComponents: [InfoComponentModalComponent],
 })
 export class InfoComponentModalModule {}

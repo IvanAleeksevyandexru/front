@@ -9,6 +9,5 @@ import { FieldListModule } from '../../../../shared/components/field-list/field-
   declarations: [FieldListScreenComponent],
   imports: [CommonModule, DefaultUniqueScreenWrapperModule, ScreenPadModule, FieldListModule],
   exports: [FieldListScreenComponent],
-  entryComponents: [FieldListScreenComponent],
 })
 export class FieldListScreenModule {}

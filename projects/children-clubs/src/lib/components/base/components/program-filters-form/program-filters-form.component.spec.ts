@@ -5,15 +5,16 @@ import {
   ErrorModule,
   EventBusService,
   MicroAppStateQuery,
+  MicroAppStateQueryStub,
   MicroAppStateService,
-  MicroAppStateStore,
+  MicroAppStateServiceStub,
   ModalService,
   ModalServiceStub,
   SharedModalModule,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockProvider } from 'ng-mocks';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
@@ -24,19 +25,15 @@ import { StateService } from '../../../../services/state/state.service';
 import { PaymentSelectorComponent } from '../payment-selector/payment-selector.component';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 import { BaseModule } from '../../base.module';
-import {
-  defaultInlearnoFilters,
-  defaultPdfoFilters,
-  HealthListElements,
-  LevelListElements,
-} from '../../base.models';
-import { LevelType, OvzType, VendorType } from '../../../../typings';
+import { defaultInlearnoFilters, HealthListElements, LevelListElements } from '../../base.models';
+import { LevelType, OvzType } from '../../../../typings';
+import { StateServiceStub } from '../../../../services/state/state.service.stub';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ProgramFiltersComponent', () => {
   let component: ProgramFiltersFormComponent;
   let fixture: ComponentFixture<ProgramFiltersFormComponent>;
   let eventBusService: EventBusService;
-  let state: StateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -44,15 +41,14 @@ describe('ProgramFiltersComponent', () => {
       providers: [
         EventBusService,
         { provide: ModalService, useClass: ModalServiceStub },
-        { provide: ApiService, useClass: ApiServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
+        { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
+        { provide: ApiService, useClass: ApiServiceStub },
+        { provide: StateService, useClass: StateServiceStub },
         DictionaryService,
-        StateService,
-        MicroAppStateService,
-        MicroAppStateQuery,
-        MicroAppStateStore,
         UnsubscribeService,
-        DictionaryService,
+        MockProvider(HelperService),
       ],
       imports: [
         CommonModule,
@@ -67,12 +63,10 @@ describe('ProgramFiltersComponent', () => {
   });
 
   beforeEach(() => {
-    state = TestBed.inject(StateService);
-    state.changeState({ programFilters: {} });
     eventBusService = TestBed.inject(EventBusService);
     fixture = TestBed.createComponent(ProgramFiltersFormComponent);
     component = fixture.componentInstance;
-    jest.spyOn((component as any).cdr, 'detectChanges').mockReturnValue(null);
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -80,47 +74,14 @@ describe('ProgramFiltersComponent', () => {
   });
 
   describe('OnInit', () => {
-    it('should set form value to defaultPdfoFilters', () => {
-      component.ngOnInit();
-
-      expect(component.form.get('pfdoPayments').value).toEqual(defaultPdfoFilters);
-    });
-
-    it('should set form value to state PdfoFilters', () => {
-      const testFilters = {} as any;
-      state.programFilters = { pfdoPayments: testFilters };
-      fixture = TestBed.createComponent(ProgramFiltersFormComponent);
-      component = fixture.componentInstance;
-
-      component.ngOnInit();
-
-      expect(component.form.get('pfdoPayments').value).toEqual(testFilters);
-    });
-
     it('should set form value to defaultInlearnoFilters', () => {
-      state.changeState({ vendor: VendorType.inlearno });
-      fixture = TestBed.createComponent(ProgramFiltersFormComponent);
-      component = fixture.componentInstance;
-
       component.ngOnInit();
 
       expect(component.form.get('inlearnoPayments').value).toEqual(defaultInlearnoFilters);
     });
 
-    it('should set form value to state InlearnoFilters', () => {
-      state.changeState({ vendor: VendorType.inlearno });
-      const testFilters = {} as any;
-      state.programFilters = { inlearnoPayments: testFilters };
-      fixture = TestBed.createComponent(ProgramFiltersFormComponent);
-      component = fixture.componentInstance;
-
-      component.ngOnInit();
-
-      expect(component.form.get('inlearnoPayments').value).toEqual(testFilters);
-    });
-
     it('should set form values to passed to filters values', () => {
-      state.programFilters = {
+      const programFilters = {
         maxPrice: 300,
         age: 54,
         municipality: 'ррр',
@@ -130,7 +91,7 @@ describe('ProgramFiltersComponent', () => {
         level: LevelType.initial,
       };
 
-      component.ngOnInit();
+      component.initForm(programFilters);
 
       expect(component.form.get('maxPrice').value).toEqual(300);
       expect(component.form.get('municipality').value).toEqual('ррр');
@@ -152,25 +113,16 @@ describe('ProgramFiltersComponent', () => {
   });
 
   describe('setFocusList', () => {
-    it('should set directions list to initial focus', () => {
-      jest.useFakeTimers();
-
-      state.programFilters = {
-        focus: {
-          id: 'fizkulturno-sportivnoe',
-          text: 'Физкультурно-спортивная',
-        },
-      };
-      const testDirections = [];
+    it('should set directions to the focusMap field', () => {
       component.initForm({});
 
+      const directions = { 'fizkulturno-sportivnoe': [] };
       component.setFocusList({
-        directions: { 'fizkulturno-sportivnoe': testDirections },
+        directions,
         focus: null,
       });
-      jest.runAllTimers();
 
-      expect(component.directionList.getValue()).toBe(testDirections);
+      expect(component.focusMap).toBe(directions);
     });
 
     it('should set directions list to empty item', () => {
@@ -186,18 +138,6 @@ describe('ProgramFiltersComponent', () => {
       jest.runAllTimers();
 
       expect(component.directionList.getValue()[0].originalItem.id).toBe('empty-item');
-    });
-
-    it('should set new values to form based on filters value', () => {
-      jest.useFakeTimers();
-      state.programFilters = { focus: 'hudozhestvennoe', direction: 'test' };
-      component.initForm({});
-
-      component.setFocusList({ focus: null, directions: {} });
-      jest.runAllTimers();
-
-      expect(component.form.get('focus').value).toEqual('hudozhestvennoe');
-      expect(component.form.get('direction').value).toEqual('test');
     });
   });
 

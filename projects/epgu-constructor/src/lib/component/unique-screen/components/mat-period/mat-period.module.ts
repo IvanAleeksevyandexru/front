@@ -50,6 +50,5 @@ import { LabelPipe } from './pipe/label.pipe';
     ToMoneyModule,
   ],
   providers: [DurationService],
-  entryComponents: [MatPeriodContainerComponent],
 })
 export class MatPeriodModule {}

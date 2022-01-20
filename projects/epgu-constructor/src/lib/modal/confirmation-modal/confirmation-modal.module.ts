@@ -27,6 +27,5 @@ import { AnswerButtonModule } from '../../shared/components/answer-button/answer
     AnswerButtonModule,
     IconsModule,
   ],
-  entryComponents: [ConfirmationModalComponent],
 })
 export class ConfirmationModalModule {}

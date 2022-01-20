@@ -7,7 +7,7 @@ import {
   ModalService,
   ModalServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { MockDirective, MockProvider } from 'ng-mocks';
+import { MockDirective, MockProviders } from 'ng-mocks';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -32,6 +32,7 @@ import { TerraByteApiService } from '../../../../core/services/terra-byte-api/te
 import { TerraByteApiServiceStub } from '../../../../core/services/terra-byte-api/terra-byte-api.service.stub';
 import { AutocompletePrepareService } from '../../../../core/services/autocomplete/autocomplete-prepare.service';
 import { UniqueScreenService } from '../../unique-screen.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const componentMock = {
   id: 'id',
@@ -56,7 +57,7 @@ describe('IdentificationUploadScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
-        MockProvider(AutocompletePrepareService),
+        MockProviders(AutocompletePrepareService, HelperService),
         EventBusService,
         CertificateEaisdoService,
         CurrentAnswersService,

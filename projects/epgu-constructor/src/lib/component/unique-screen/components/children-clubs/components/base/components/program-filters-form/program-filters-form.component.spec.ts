@@ -13,7 +13,7 @@ import {
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockProvider } from 'ng-mocks';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { of } from 'rxjs';
@@ -35,6 +35,7 @@ import { DictionaryApiService } from '../../../../../../../../shared/services/di
 import { DictionaryApiServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary.service.stub';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ProgramFiltersComponent', () => {
   let component: ProgramFiltersFormComponent;
@@ -67,6 +68,7 @@ describe('ProgramFiltersComponent', () => {
         MicroAppStateQuery,
         MicroAppStateStore,
         UnsubscribeService,
+        MockProvider(HelperService),
       ],
       imports: [
         CommonModule,
@@ -89,7 +91,7 @@ describe('ProgramFiltersComponent', () => {
     eventBusService = TestBed.inject(EventBusService);
     fixture = TestBed.createComponent(ProgramFiltersFormComponent);
     component = fixture.componentInstance;
-    jest.spyOn((component as any).cdr, 'detectChanges').mockReturnValue(null);
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -102,6 +104,7 @@ describe('ProgramFiltersComponent', () => {
       screenService.component.arguments.vendor = VendorType.pfdo;
       fixture = TestBed.createComponent(ProgramFiltersFormComponent);
       component = fixture.componentInstance;
+      fixture.detectChanges();
 
       component.ngOnInit();
 
@@ -113,6 +116,7 @@ describe('ProgramFiltersComponent', () => {
       state.programFilters = { pfdoPayments: testFilters };
       fixture = TestBed.createComponent(ProgramFiltersFormComponent);
       component = fixture.componentInstance;
+      fixture.detectChanges();
 
       component.ngOnInit();
 
@@ -124,7 +128,7 @@ describe('ProgramFiltersComponent', () => {
       screenService.component.arguments.vendor = VendorType.inlearno;
       fixture = TestBed.createComponent(ProgramFiltersFormComponent);
       component = fixture.componentInstance;
-
+      fixture.detectChanges();
       component.ngOnInit();
 
       expect(component.form.get('inlearnoPayments').value).toEqual(defaultInlearnoFilters);
@@ -136,6 +140,7 @@ describe('ProgramFiltersComponent', () => {
       state.programFilters = { inlearnoPayments: testFilters };
       fixture = TestBed.createComponent(ProgramFiltersFormComponent);
       component = fixture.componentInstance;
+      fixture.detectChanges();
 
       component.ngOnInit();
 
@@ -176,6 +181,7 @@ describe('ProgramFiltersComponent', () => {
 
   describe('setFocusList', () => {
     it('should set directions list to initial focus', () => {
+      jest.spyOn((component as any).cdr, 'detectChanges').mockReturnValue(null);
       jest.useFakeTimers();
 
       state.programFilters = {
@@ -197,8 +203,6 @@ describe('ProgramFiltersComponent', () => {
     });
 
     it('should set directions list to empty item', () => {
-      jest.useFakeTimers();
-
       const testDirections = [];
       component.initForm({});
 
@@ -206,18 +210,15 @@ describe('ProgramFiltersComponent', () => {
         directions: { 'fizkulturno-sportivnoe': testDirections },
         focus: null,
       });
-      jest.runAllTimers();
-
       expect(component.directionList.getValue()[0].originalItem.id).toBe('empty-item');
     });
 
     it('should set new values to form based on filters value', () => {
-      jest.useFakeTimers();
+      jest.spyOn((component as any).cdr, 'detectChanges').mockReturnValue(null);
       state.programFilters = { focus: 'hudozhestvennoe', direction: 'test' };
       component.initForm({});
 
       component.setFocusList({ focus: null, directions: {} });
-      jest.runAllTimers();
 
       expect(component.form.get('focus').value).toEqual('hudozhestvennoe');
       expect(component.form.get('direction').value).toEqual('test');

@@ -36,6 +36,5 @@ const COMPONENTS = [FileUploadComponent, FileUploadPreviewComponent, FileUploadS
     IconsModule,
   ],
   providers: [],
-  entryComponents: [...COMPONENTS],
 })
 export class FileUploadModule {}

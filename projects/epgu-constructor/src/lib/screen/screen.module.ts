@@ -8,24 +8,17 @@ import { CachedAnswersService } from '../shared/services/cached-answers/cached-a
 import { HtmlRemoverService } from '../shared/services/html-remover/html-remover.service';
 import { PrepareComponentsService } from '../shared/services/prepare-components/prepare-components.service';
 import { CurrentAnswersService } from './current-answers.service';
-import { CustomScreenComponent } from './custom-screen/custom-screen.component';
 import { CustomScreenModule } from './custom-screen/custom-screen.module';
-import { EmptyScreenComponent } from './empty-screen/empty-screen.component';
 import { EmptyScreenModule } from './empty-screen/empty-screen.module';
-import { InfoScreenComponent } from './info-screen/info-screen.component';
 import { InfoScreenModule } from './info-screen/info-screen.module';
-import { InvitationErrorScreenComponent } from './invitation-error-screen/invitation-error-screen.component';
 import { InvitationErrorScreenModule } from './invitation-error-screen/invitation-error-screen.module';
-import { QuestionsScreenComponent } from './questions-screen/questions-screen.component';
 import { QuestionsScreenModule } from './questions-screen/questions-screen.module';
 import { ScreenResolverComponent } from './screen-resolver/screen-resolver.component';
 import { ScreenService } from './screen.service';
-import { UniqueScreenComponent } from './unique-screen/unique-screen.component';
 import { UniqueScreenModule } from './unique-screen/unique-screen.module';
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 import { RepeatableScreenModule } from './repeatable-screen/repeatable-screen.module';
 import { AppScreenModule } from './app-screen/app-screen.module';
-import { AppScreenComponent } from './app-screen/app-screen.component';
 import { UniquenessErrorsService } from '../shared/services/uniqueness-errors/uniqueness-errors.service';
 import { EaisdoGroupCostService } from '../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../shared/services/certificate-eaisdo/certificate-eaisdo.service';
@@ -64,16 +57,6 @@ import { InterpolationService } from '../shared/services/interpolation/interpola
     UniquenessErrorsService,
   ],
   exports: [ScreenResolverComponent],
-  entryComponents: [
-    AppScreenComponent,
-    CustomScreenComponent,
-    EmptyScreenComponent,
-    InfoScreenComponent,
-    InvitationErrorScreenComponent,
-    QuestionsScreenComponent,
-    ScreenResolverComponent,
-    UniqueScreenComponent,
-  ],
 })
 export class ScreenModule {
   static rootEntry = ScreenResolverComponent;

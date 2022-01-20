@@ -5,13 +5,14 @@ import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { ConstructorDatePickerComponent } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 import { BaseModule } from '../../../../shared/base.module';
-import { MockComponents } from 'ng-mocks';
+import { MockComponents, MockProvider } from 'ng-mocks';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const mockComponent = {
   id: 'cl11_4',
@@ -99,7 +100,10 @@ describe('DateInputComponent', () => {
         DateInputComponent,
         MockComponents(ComponentItemComponent, ConstructorDatePickerComponent),
       ],
-      providers: [{ provide: DictionaryService, useClass: DictionaryServiceStub }],
+      providers: [
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
+        MockProvider(HelperService),
+      ],
     }).compileComponents();
   });
 

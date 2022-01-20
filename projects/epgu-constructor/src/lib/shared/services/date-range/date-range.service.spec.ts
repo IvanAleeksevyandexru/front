@@ -13,6 +13,8 @@ import { DateRangeAttrs } from './date-range.models';
 import { DictionaryApiService } from '../dictionary/dictionary-api.service';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { createComponentMock } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.mock';
+import { MockProvider } from 'ng-mocks';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('DateRangeService', () => {
   let service: DateRangeService;
@@ -51,6 +53,7 @@ describe('DateRangeService', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         ConfigService,
         LoggerService,
+        MockProvider(HelperService),
       ],
       imports: [HttpClientTestingModule],
     });

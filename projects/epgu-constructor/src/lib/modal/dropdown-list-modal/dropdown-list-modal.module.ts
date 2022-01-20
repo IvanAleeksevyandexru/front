@@ -11,6 +11,5 @@ import { ConfirmationModalModule } from '../confirmation-modal/confirmation-moda
   declarations: [DropdownListModalComponent, DropdownListComponent, FilterPipe],
   imports: [BaseModule, ConfirmationModalModule, HighlightModule],
   exports: [DropdownListModalComponent],
-  entryComponents: [DropdownListModalComponent],
 })
 export class DropdownListModalModule {}

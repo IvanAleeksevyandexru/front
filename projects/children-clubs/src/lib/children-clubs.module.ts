@@ -92,11 +92,5 @@ const APP_CONFIG: MicroAppUiConfig = {
     },
   ],
   exports: [ChildrenClubsAppComponent],
-  entryComponents: [
-    ProjectGroupComponent,
-    ChildrenClubsAppComponent,
-    ProjectListComponent,
-    ProjectViewComponent,
-  ],
 })
 export class ChildrenClubsModule {}

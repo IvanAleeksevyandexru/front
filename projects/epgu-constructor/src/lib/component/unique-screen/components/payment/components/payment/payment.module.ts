@@ -11,6 +11,5 @@ import { PriorPrefixModule } from '../../../../../../shared/pipes/prior-prefix/p
   exports: [PaymentComponent],
   providers: [PaymentService],
   imports: [BaseModule, BaseComponentsModule, PriorPrefixModule, ScreenContainerModule],
-  entryComponents: [PaymentComponent],
 })
 export class PaymentModule {}

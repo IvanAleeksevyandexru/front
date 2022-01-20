@@ -23,6 +23,7 @@ import { RefRelationService } from '../../../services/ref-relation/ref-relation.
 import { DateRestrictionsService } from '../../../services/date-restrictions/date-restrictions.service';
 import { ConfirmationModalModule } from '../../../../modal/confirmation-modal/confirmation-modal.module';
 import { DateRefService } from '../../../../core/services/date-ref/date-ref.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('MultiChoiceDictionaryModalComponent', () => {
   let component: MultiChoiceDictionaryModalComponent;
@@ -66,6 +67,7 @@ describe('MultiChoiceDictionaryModalComponent', () => {
       imports: [MockModule(ConfirmationModalModule), MockModule(BaseModule), HttpClientModule],
       providers: [
         MockProvider(DateRestrictionsService),
+        MockProvider(HelperService),
         FormBuilder,
         UnsubscribeService,
         EventBusService,

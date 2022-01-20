@@ -52,6 +52,5 @@ const COMPONENTS = [TimeSlotDoctorsContainerComponent, TimeSlotDoctorsComponent]
     DisclaimerModule,
     ConstructorCheckboxModule,
   ],
-  entryComponents: [TimeSlotDoctorsContainerComponent],
 })
 export class TimeSlotDoctorsModule {}

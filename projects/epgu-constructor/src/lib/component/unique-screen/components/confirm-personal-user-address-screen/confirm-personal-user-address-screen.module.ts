@@ -21,6 +21,5 @@ import { ConstructorDatePickerModule } from '../../../../shared/components/const
     ConstructorDatePickerModule,
   ],
   providers: [DatePipe],
-  entryComponents: [ConfirmPersonalUserAddressComponent],
 })
 export class ConfirmPersonalUserAddressScreenModule {}

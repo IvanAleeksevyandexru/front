@@ -32,6 +32,5 @@ import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-sc
     InformationCenterSimpleComponent,
     InformationCenterFullComponent,
   ],
-  entryComponents: [InformationCenterContainerComponent],
 })
 export class InformationCenterModule {}

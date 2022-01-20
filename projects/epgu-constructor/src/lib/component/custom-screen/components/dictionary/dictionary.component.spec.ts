@@ -31,6 +31,7 @@ import { ComponentsListRelationsServiceStub } from '../../services/components-li
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -61,6 +62,7 @@ describe('DictionaryComponent', () => {
         MockProvider(UnsubscribeService),
         MockProvider(ConfigService),
         MockProvider(LoggerService),
+        MockProvider(HelperService),
       ],
     })
       .overrideComponent(DictionaryComponent, {

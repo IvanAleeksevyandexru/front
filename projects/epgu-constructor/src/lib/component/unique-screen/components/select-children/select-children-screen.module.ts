@@ -41,6 +41,5 @@ const COMPONENTS = [
   ],
   exports: [...COMPONENTS],
   providers: [ScreenService, CachedAnswersService, EventBusService],
-  entryComponents: [SelectChildrenScreenContainerComponent],
 })
 export class SelectChildrenScreenModule {}

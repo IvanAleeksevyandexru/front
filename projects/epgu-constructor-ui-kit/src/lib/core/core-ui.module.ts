@@ -94,3 +94,9 @@ import { JsonHelperService } from './services/json-helper/json-helper.service';
   ],
 })
 export class CoreUiModule {}
+
+declare global {
+  interface Window {
+    MSStream?: string;
+  }
+}
