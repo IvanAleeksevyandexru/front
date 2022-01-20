@@ -18,7 +18,7 @@
           <epgu-constructor-output-html
             *ngIf="field?.label"
             class="data-item__label"
-            [html]="field.label"
+            [html]="field.label | rank: field?.rank"
             [clarifications]="data.attrs?.clarifications"
             [ngClass]="style.label"
           ></epgu-constructor-output-html>
