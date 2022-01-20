@@ -1,6 +1,6 @@
 {
   "name": "@epgu/children-clubs",
-  "version": "395.9.3",
+  "version": "398.4.0",
   "scripts": {
     "build": "cd ../../ && ng build children-clubs --prod",
     "lint": "cd ../../ && ng lint children-clubs",
@@ -16,8 +16,8 @@
     "ngx-perfect-scrollbar": "8.0.0"
   },
   "dependencies": {
-    "@epgu/epgu-constructor-types": "395.9.3",
-    "@epgu/epgu-constructor-ui-kit": "395.9.3",
+    "@epgu/epgu-constructor-types": "398.4.0",
+    "@epgu/epgu-constructor-ui-kit": "398.4.0",
     "tslib": "^2.3.1"
   }
 }
