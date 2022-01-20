@@ -61,6 +61,5 @@ registerLocaleData(localeRu);
     },
   ],
   exports: [FormPlayerComponent],
-  entryComponents: [FormPlayerComponent],
 })
 export class FormPlayerModule {}

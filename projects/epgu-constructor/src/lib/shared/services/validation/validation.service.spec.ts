@@ -23,6 +23,7 @@ import { DateRefService } from '../../../core/services/date-ref/date-ref.service
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '../dictionary/dictionary-tools.service.stub';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ValidationService', () => {
   let service: ValidationService;
@@ -131,6 +132,7 @@ describe('ValidationService', () => {
         DatesToolsService,
         DateRestrictionsService,
         MockProvider(DateRefService),
+        MockProvider(HelperService),
         ConfigService,
         LoggerService,
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },

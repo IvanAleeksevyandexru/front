@@ -10,7 +10,6 @@ import { UploadAndEditPhotoFormModule } from '../../../../shared/components/uplo
 import { ClickableLabelModule } from '../../../../shared/directives/clickable-label/clickable-label.module';
 
 @NgModule({
-  entryComponents: [UploadAndEditPhotoContainerComponent],
   declarations: [UploadAndEditPhotoContainerComponent, PhotoDescriptionComponent],
   imports: [
     BaseModule,

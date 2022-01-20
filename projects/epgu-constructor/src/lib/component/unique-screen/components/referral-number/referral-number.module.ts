@@ -24,6 +24,5 @@ import { Smev3ErrorMessageModule } from '../../../../shared/pipes/smev-3-error-m
   ],
   providers: [CookieService],
   exports: [ReferralNumberComponent],
-  entryComponents: [ReferralNumberComponent],
 })
 export class ReferralNumberModule {}

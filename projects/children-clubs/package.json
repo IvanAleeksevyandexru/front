@@ -7,17 +7,17 @@
     "lint:fix": "cd ../../ && ng lint children-clubs --fix"
   },
   "peerDependencies": {
-    "@angular/common": "12.2.5",
-    "@angular/core": "12.2.5",
-    "@angular/forms": "12.2.5",
-    "@angular/cdk": "12.2.5",
-    "@epgu/ui": "3.0.395-2-front",
+    "@angular/common": "13.1.1",
+    "@angular/core": "13.1.1",
+    "@angular/forms": "13.1.1",
+    "@angular/cdk": "13.1.1",
+    "@epgu/ui": "1.0.232",
     "rxjs": "6.6.7",
     "ngx-perfect-scrollbar": "8.0.0"
   },
   "dependencies": {
     "@epgu/epgu-constructor-types": "395.9.3",
     "@epgu/epgu-constructor-ui-kit": "395.9.3",
-    "tslib": "^2.0.0"
+    "tslib": "^2.3.1"
   }
 }

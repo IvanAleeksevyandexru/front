@@ -31,6 +31,5 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
     IconsModule,
   ],
   providers: [DatePipe],
-  entryComponents: [ConfirmPersonalUserAddressReadonlyComponent],
 })
 export class ConfirmPersonalUserAddressReadonlyScreenModule {}

@@ -29,6 +29,7 @@ import { ValidationService } from '../../../../shared/services/validation/valida
 import { DropDownUpdateTypes } from './dropdown.interface';
 import DropdownModelAttrs from './DropdownModelAttrs';
 import DropdownModel from './DropdownModel';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const mockComponentId = 'mockComponentID';
 
@@ -121,6 +122,7 @@ describe('DropdownComponent', () => {
           SuggestHandlerService,
           ValidationService,
           EventBusService,
+          HelperService,
         ),
       ],
     })

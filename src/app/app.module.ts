@@ -42,7 +42,6 @@ import { FormPlayerModule } from '@epgu/epgu-constructor';
     LoadService,
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ConfigComponent],
 })
 export class AppModule {
   constructor(private loadService: LoadService) {

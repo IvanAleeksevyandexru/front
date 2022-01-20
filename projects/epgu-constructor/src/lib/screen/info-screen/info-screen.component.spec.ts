@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { MockComponents, MockDirective } from 'ng-mocks';
+import { MockComponents, MockDirective, MockProvider } from 'ng-mocks';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
@@ -43,6 +43,7 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -101,6 +102,7 @@ describe('InfoScreenComponent', () => {
         CertificateEaisdoService,
         CurrentAnswersService,
         EaisdoGroupCostService,
+        MockProvider(HelperService),
       ],
     })
       .overrideComponent(InfoScreenComponent, {

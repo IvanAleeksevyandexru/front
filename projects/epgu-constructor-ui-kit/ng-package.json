@@ -11,12 +11,6 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "cssUrl": "inline",
-    "styleIncludePaths": ["."],
-    "umdModuleIds": {
-      "@epgu/epgu-constructor-types": "@epgu/epgu-constructor-types",
-      "@epgu/zipkin": "@epgu/zipkin",
-      "zipkin-transport-http": "zipkin-transport-http",
-      "ismobilejs": "ismobilejs"
-    }
+    "styleIncludePaths": ["."]
   }
 }

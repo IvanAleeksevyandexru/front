@@ -26,6 +26,5 @@ const COMPONENTS = [
     DefaultUniqueScreenWrapperModule,
   ],
   exports: [...COMPONENTS],
-  entryComponents: [InformationCenterMvdContainerComponent],
 })
 export class InformationCenterMvdModule {}

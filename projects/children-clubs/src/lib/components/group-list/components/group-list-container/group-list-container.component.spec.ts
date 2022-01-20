@@ -11,13 +11,14 @@ import {
   ModalServiceStub,
   ModalService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { MockModule } from 'ng-mocks';
+import { MockModule, MockProvider } from 'ng-mocks';
 import { StateService } from '../../../../services/state/state.service';
 import { DictionaryService } from '../../../../services/dictionary/dictionary.service';
 import { GroupListService } from '../../../../services/group-list/group-list.service';
 import { GroupListContainerComponent } from './group-list-container.component';
 import { GroupListModule } from '../../group-list.module';
 import { FindOptionsGroup } from '../../../../typings';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('GroupListContainerComponent', () => {
   let component: GroupListContainerComponent;
@@ -36,6 +37,7 @@ describe('GroupListContainerComponent', () => {
         MicroAppStateQuery,
         DictionaryService,
         GroupListService,
+        MockProvider(HelperService),
       ],
       imports: [LongButtonModule, MockModule(CoreUiModule), ScreenPadModule, GroupListModule],
     }).compileComponents();

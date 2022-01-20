@@ -6,6 +6,8 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BaseUiModule } from '../../base-ui.module';
 import { ConstructorDropdownComponent } from './constructor-dropdown.component';
+import { MockProvider } from 'ng-mocks';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ConstructorDropdownComponent', () => {
   let component: ConstructorDropdownComponent;
@@ -15,7 +17,7 @@ describe('ConstructorDropdownComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ConstructorDropdownComponent],
       imports: [BaseUiModule, HttpClientModule],
-      providers: [],
+      providers: [MockProvider(HelperService)],
     })
       .overrideComponent(ConstructorDropdownComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

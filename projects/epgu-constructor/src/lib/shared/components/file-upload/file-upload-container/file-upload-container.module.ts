@@ -33,6 +33,5 @@ const COMPONENTS = [FileUploadItemComponent, FileUploadContainerComponent];
     UploaderProcessService,
     UploaderStatService,
   ],
-  entryComponents: [...COMPONENTS],
 })
 export class FileUploadContainerModule {}

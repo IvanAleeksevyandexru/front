@@ -19,7 +19,6 @@ import { UploadService } from './service/upload/upload.service';
 import { BaseModule } from '../../base.module';
 
 @NgModule({
-  entryComponents: [PhotoErrorModalComponent, PhotoEditorModalComponent],
   declarations: [
     PhotoErrorModalComponent,
     PhotoEditorModalComponent,
@@ -46,7 +45,7 @@ import { BaseModule } from '../../base.module';
     [StyleRenderer],
     // Theme that will be applied to this module
     { provide: LY_THEME_NAME, useValue: 'minima-light' },
-    { provide: LY_THEME, useClass: MinimaLight, multi: true }, // name: `minima-light`
+    { provide: LY_THEME, useClass: MinimaLight, multi: true },
     { provide: LY_THEME, useClass: MinimaDark, multi: true },
   ],
 })

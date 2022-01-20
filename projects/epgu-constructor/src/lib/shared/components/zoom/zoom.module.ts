@@ -8,6 +8,5 @@ import { ZoomComponent } from './zoom.component';
   declarations: [ZoomComponent],
   imports: [CommonModule, HammerModule, SafeModule],
   exports: [ZoomComponent],
-  entryComponents: [],
 })
 export class ZoomModule {}

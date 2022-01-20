@@ -24,6 +24,5 @@ import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.
     ScrollToModule.forRoot(),
   ],
   exports: [RepeatableScreenComponent],
-  entryComponents: [RepeatableScreenComponent],
 })
 export class RepeatableScreenModule {}

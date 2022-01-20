@@ -8,6 +8,5 @@ import { ConfirmationModalModule } from '../confirmation-modal/confirmation-moda
   declarations: [AttachUploadedFilesModalComponent],
   imports: [BaseModule, ConfirmationModalModule],
   exports: [AttachUploadedFilesModalComponent],
-  entryComponents: [AttachUploadedFilesModalComponent],
 })
 export class AttachUploadedFilesModalModule {}

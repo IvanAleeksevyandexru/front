@@ -28,6 +28,7 @@ import { CustomComponentRef } from '../../../component/custom-screen/components-
 import { RefRelationService } from '../ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../date-restrictions/date-restrictions.service';
 import { DateRefService } from '../../../core/services/date-ref/date-ref.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('PrepareComponentsService', () => {
   let service: PrepareComponentsService;
@@ -52,6 +53,7 @@ describe('PrepareComponentsService', () => {
         DateRangeService,
         RefRelationService,
         MockProvider(DateRestrictionsService),
+        MockProvider(HelperService),
         JsonHelperService,
         DateRefService,
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },

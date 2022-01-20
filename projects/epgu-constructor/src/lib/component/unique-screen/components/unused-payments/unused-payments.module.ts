@@ -10,6 +10,5 @@ import { DefaultUniqueScreenWrapperModule } from '../../shared/default-unique-sc
   declarations: [UnusedPaymentsContainerComponent, UnusedPaymentsComponent],
   exports: [UnusedPaymentsContainerComponent],
   imports: [BaseModule, RadioTaxModule, DefaultUniqueScreenWrapperModule],
-  entryComponents: [UnusedPaymentsContainerComponent],
 })
 export class UnusedPaymentsModule {}

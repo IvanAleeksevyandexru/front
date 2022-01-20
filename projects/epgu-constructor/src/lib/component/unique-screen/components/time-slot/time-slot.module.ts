@@ -120,18 +120,5 @@ import { TimeSlotCheckboxErrorComponent } from './components/base/time-slot-erro
     ScreenButtonsModule,
     ConstructorCheckboxModule,
   ],
-  entryComponents: [
-    TimeSlotResolverComponent,
-    TimeSlotDivorceComponent,
-    TimeSlotDoctorComponent,
-    TimeSlotGibddComponent,
-    TimeSlotMarriageComponent,
-    TimeSlotMvdComponent,
-    TimeSlotVaccinationComponent,
-    TimeSlotScreenComponent,
-    TimeSlotSmev3Component,
-    TimeSlotEmptyErrorComponent,
-    TimeSlotCheckboxErrorComponent,
-  ],
 })
 export class TimeSlotModule {}

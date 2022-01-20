@@ -47,8 +47,6 @@ import { CheckboxInputComponent } from './components/checkbox-input/checkbox-inp
 import { SuggestHandlerService } from '../../shared/services/suggest-handler/suggest-handler.service';
 import { TimerItemComponent } from './components/timer-item/timer-item.component';
 import { FieldListItemComponent } from './components/field-list-item/field-list-item.component';
-import { DocInputComponent } from './components/doc-input/doc-input.component';
-import { CheckboxListComponent } from './components/checkbox-list/checkbox-list.component';
 import { AbstractComponentListItemComponent } from './components/abstract-component-list-item/abstract-component-list-item.component';
 import { CityInputComponent } from './components/city-input/city-input.component';
 import { AddressInputComponent } from './components/address-input/address-input.component';
@@ -74,7 +72,6 @@ import { FormDisclaimerComponent } from './components/form-disclaimer/form-discl
 import { DisclaimerModule } from '../../shared/components/disclaimer/disclaimer.module';
 import { SignAppLinkComponent } from './components/sign-app-link/sign-app-link.component';
 import { ConfirmPersonalPolicyChangeModule } from './components/confirm-personal-policy-change/confirm-personal-policy-change.module';
-import { ConfirmPersonalPolicyChangeComponent } from './components/confirm-personal-policy-change/confirm-personal-policy-change.component';
 import { MaritalStatusInputModule } from './components/marital-status-input/marital-status-input.module';
 import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-draft-handler/kinder-garten-draft-handler.component';
 import { RelationResolverService } from './services/components-list-relations/relation-resolver.service';
@@ -164,40 +161,6 @@ import { CheckboxCubeModule } from '../../shared/components/checkbox-cube/checkb
     RestToolsService,
     InterpolationService,
     RelationResolverService,
-  ],
-  entryComponents: [
-    AddressInputComponent,
-    CheckboxCubeItemComponent,
-    CheckboxInputComponent,
-    CheckboxListComponent,
-    CityInputComponent,
-    ConfirmPersonalPolicyChangeComponent,
-    DateInputComponent,
-    CalendarInputComponent,
-    DepartmentLookupComponent,
-    DictionaryComponent,
-    DocInputComponent,
-    DropdownComponent,
-    CertificateEaisdoComponent,
-    EaisdoGroupCostComponent,
-    FieldListItemComponent,
-    FileUploadFormComponent,
-    FormDisclaimerComponent,
-    FormOutputHtmlComponent,
-    LookupInputComponent,
-    MaskedAndPlainInputComponent,
-    MonthPickerComponent,
-    MultiChoiceDictionaryComponent,
-    ComplexityChoiceDictionaryComponent,
-    MvdGiacLookupComponent,
-    PassportLookupComponent,
-    RadioInputComponent,
-    RestLookupInputComponent,
-    SearchableDropdownComponent,
-    SignAppLinkComponent,
-    TextAreaComponent,
-    TimerItemComponent,
-    KinderGartenDraftHandlerComponent,
   ],
 })
 export class ComponentsListModule {}

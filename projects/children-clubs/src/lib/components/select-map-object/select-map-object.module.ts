@@ -26,6 +26,5 @@ import { SelectMapObjectComponent } from './select-map-object.component';
     YandexMapModule,
     PluralizeModule,
   ],
-  entryComponents: [SelectMapObjectComponent],
 })
 export class SelectMapObjectModule {}

@@ -27,6 +27,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import MvdGiacLookupModelAttrs from './MvdGiacLookupModelAttrs';
 import MvdGiacLookupModel from './MvdGiacLookupModel';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('MvdGiacLookupComponent', () => {
   let component: MvdGiacLookupComponent;
@@ -47,6 +48,7 @@ describe('MvdGiacLookupComponent', () => {
         MockProvider(ComponentsListRelationsService),
         MockProvider(ConfigService),
         MockProvider(LoggerService),
+        MockProvider(HelperService),
         JsonHelperService,
         DatesToolsService,
       ],

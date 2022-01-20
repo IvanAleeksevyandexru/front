@@ -20,6 +20,5 @@ import { IdentificationApiService } from '../../shared/identification-api/identi
     ScreenButtonsModule,
   ],
   providers: [IdentificationApiService],
-  entryComponents: [IdentificationUploadScreenComponent],
 })
 export class IdentificationUploadScreenModule {}

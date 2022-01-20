@@ -10,15 +10,15 @@
     "lint:fix": "cd ../../ && ng lint epgu-constructor-docs --fix"
   },
   "dependencies": {
-    "@angular/common": "12.2.5",
-    "@angular/compiler": "12.2.5",
-    "@angular/core": "12.2.5",
-    "@angular/forms": "12.2.5",
-    "@angular/localize": "12.2.5",
+    "@angular/common": "13.1.1",
+    "@angular/compiler": "13.1.1",
+    "@angular/core": "13.1.1",
+    "@angular/forms": "13.1.1",
+    "@angular/localize": "13.1.1",
     "@datorama/akita": "6.2.0",
     "@epgu/epgu-constructor-types": "395.9.3",
     "@epgu/epgu-constructor-ui-kit": "395.9.3",
-    "@epgu/ui": "3.0.395-2-front",
+    "@epgu/ui": "1.0.232",
     "@taiga-ui/addon-doc": "2.11.2",
     "@taiga-ui/addon-mobile": "2.11.2",
     "@taiga-ui/cdk": "2.11.2",
@@ -34,9 +34,9 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "11.1.0",
+    "@angular/compiler-cli": "13.1.1",
     "raw-loader": "^4.0.2",
     "tslint": "^6.1.3",
-    "typescript": "4.3.5"
+    "typescript": "4.5.4"
   }
 }

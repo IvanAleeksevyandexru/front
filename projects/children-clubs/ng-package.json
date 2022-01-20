@@ -6,10 +6,6 @@
   "lib": {
     "cssUrl": "inline",
     "entryFile": "src/public-api.ts",
-    "umdModuleIds": {
-      "@epgu/epgu-constructor-ui-kit": "@epgu/epgu-constructor-ui-kit",
-      "@epgu/epgu-constructor-types": "@epgu/epgu-constructor-types"
-    },
     "styleIncludePaths": ["."]
   }
 }

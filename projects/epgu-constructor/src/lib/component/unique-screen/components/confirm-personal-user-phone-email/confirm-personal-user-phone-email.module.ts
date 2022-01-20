@@ -17,6 +17,5 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
     FormatPhoneModule,
     IconsModule,
   ],
-  entryComponents: [ConfirmPersonalUserPhoneEmailComponent],
 })
 export class ConfirmPersonalUserPhoneEmailModule {}

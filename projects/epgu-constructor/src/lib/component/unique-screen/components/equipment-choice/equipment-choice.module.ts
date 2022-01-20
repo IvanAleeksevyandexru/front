@@ -22,6 +22,5 @@ import { ConstructorPlainInputModule } from '../../../../shared/components/const
     MultipleChoiceDictionaryModule,
     ConstructorPlainInputModule,
   ],
-  entryComponents: [EquipmentChoiceContainerComponent],
 })
 export class EquipmentChoiceModule {}
