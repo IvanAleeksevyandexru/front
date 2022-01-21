@@ -5,7 +5,7 @@ import { ItemsErrorResponse } from '@epgu/epgu-constructor-types';
 import { DictionaryResponseError } from '../../../shared/services/dictionary/dictionary-api.types';
 import { BaseInterceptor } from '../base/base.interceptor';
 import { InterceptorUtilsService } from '../../services/interceptor-utils/interceptor-utils.service';
-import { STATIC_ERROR_MODAL } from '../../services/error-handler/error-handler';
+import { INTERNAL_ERROR_MODAL } from '../../services/error-handler/error-handler';
 import {
   INTERNAL_ERROR_TEXT,
   INTERNAL_ERROR_TITLE,
@@ -35,9 +35,10 @@ export class InternalErrorInterceptor extends BaseInterceptor {
 
   handle(): void {
     const config = {
-      ...STATIC_ERROR_MODAL,
-      title: INTERNAL_ERROR_TITLE,
-      text: STATIC_ERROR_MODAL.text.replace(/\{textAsset\}?/g, INTERNAL_ERROR_TEXT),
+      ...INTERNAL_ERROR_MODAL,
+      text: INTERNAL_ERROR_MODAL.text
+        .replace(/\{textAsset\}?/g, INTERNAL_ERROR_TEXT)
+        .replace(/\{titleAsset\}?/g, INTERNAL_ERROR_TITLE),
     };
     this.utils.showModal(config);
   }

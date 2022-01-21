@@ -91,6 +91,12 @@ const STATIC_ERROR_MESSAGE_TEXT = `<div class="text_modal_error">
 <span>{textAsset}</span>
 </div>`;
 
+const INTERNAL_ERROR_MESSAGE_TEXT = `<div class="text_modal_error">
+<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
+<h4>{titleAsset}</h4>
+<span>{textAsset}</span>
+</div>`;
+
 const RESOURCE_NOT_AVAILABLE_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Ошибка услуга недоступна</h4>
@@ -426,6 +432,27 @@ export const GET_SLOT_RESPONSE_TIMEOUT: ConfirmationModal = {
 
 export const STATIC_ERROR_MODAL: ConfirmationModal = {
   text: STATIC_ERROR_MESSAGE_TEXT,
+  title: '',
+  showCloseButton: false,
+  showCrossButton: false,
+  buttons: [
+    {
+      label: 'Начать заново',
+      closeModal: true,
+      color: 'white',
+      value: 'init',
+    },
+    {
+      label: 'Попробовать ещё раз',
+      value: 'prevStep',
+      closeModal: true,
+    },
+  ],
+  isShortModal: true,
+};
+
+export const INTERNAL_ERROR_MODAL: ConfirmationModal = {
+  text: INTERNAL_ERROR_MESSAGE_TEXT,
   title: '',
   showCloseButton: false,
   showCrossButton: false,

@@ -1,7 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { STATIC_ERROR_MODAL } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
+import {
+  INTERNAL_ERROR_MODAL,
+  STATIC_ERROR_MODAL,
+} from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
 import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
 import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
 import { FormPlayerApiService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
@@ -37,9 +40,10 @@ const data = {
   },
 };
 const configModal = {
-  ...STATIC_ERROR_MODAL,
-  title: INTERNAL_ERROR_TITLE,
-  text: STATIC_ERROR_MODAL.text.replace(/\{textAsset\}?/g, INTERNAL_ERROR_TEXT),
+  ...INTERNAL_ERROR_MODAL,
+  text: INTERNAL_ERROR_MODAL.text
+    .replace(/\{textAsset\}?/g, INTERNAL_ERROR_TEXT)
+    .replace(/\{titleAsset\}?/g, INTERNAL_ERROR_TITLE),
 };
 
 describe('InternalErrorInterceptor', () => {
