@@ -52,6 +52,7 @@
 * Поправлена работа подсказок в полях "Серия" и "Номер" в PassportLookup (s112) [EPGUCORE-82734]
 * Поправлена верстка моб. версии info-screen--deadlock [EPGUCORE-82820]
 * Актуализированы иконки, используемые на экранах "Загрузите документы"/"Заявление создано" [EPGUCORE-83584]
+* Поправлен текст ошибки в обработке INTERNAL_ERROR [EPGUCORE-82540]
 
 
 ### Tests
@@ -66,3 +67,5 @@
 * Написание тестов на компонент UploaderStatService [EPGUCORE-76621]
 * Написание тестов на компонент ZoomComponent [EPGUCORE-76622]
 * Написание тестов на компонент DateRangeService [EPGUCORE-76623]
+* Починка сломанных тестов в DictionaryService [EPGUCORE-85293]
+* Добавлены тесты для InterceptorUtilsService [EPGUCORE-85300]
