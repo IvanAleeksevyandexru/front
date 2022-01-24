@@ -124,7 +124,7 @@ export class ActionService {
         this.navService.redirectToLKAccount();
         break;
       case ActionType.copyToClipboard:
-        this.actionToolsService.copyToClipboard(action);
+        this.actionToolsService.copyToClipboard(action, targetElement);
         break;
     }
   }
