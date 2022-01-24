@@ -4,49 +4,74 @@ include:
 
 image: node:14
 
-cache: &global_cache
-  key: cache-${CI_COMMIT_REF_SLUG}
+cache:
+  key:
+    files:
+      - yarn.lock
   paths:
-    - node_modules/
-    - dist/
-    - projects/epgu-constructor/node_modules
-    - projects/epgu-constructor-types/node_modules
-    - projects/epgu-constructor-types/dist
+    - .yarn
+    - .yarn-cache/
+    - node_modules
+    - 'projects/*/node_modules'
+  policy: pull
+  untracked: true
 
 stages:
   - install
-  - postinstall
+  - types-build
   - code-quality
   - ui-kit-build
   - children-clubs-build
-  - library-build
-  - library-publish
-  - build
+  - form-player-build
+  - emulator-build
   - portal-build
   - image
   - deploy
   - code_check
+
 Install:
   stage: install
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
-  before_script:
-    - rm -rf dist
   script:
-    - yarn install
+    - echo 'Warming the cache'
+    - test -d node_modules || yarn install --frozen-lockfile --no-progress
+  cache:
+    key:
+      files:
+        - yarn.lock
+    policy: pull-push
+    paths:
+      - .yarn
+      - .yarn-cache/
+      - node_modules
+      - 'projects/*/node_modules'
   only:
     - merge_requests
     - master
     - stage
 
-Pre-build:
-  stage: postinstall
+Types-build:
+  stage: types-build
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
   cache:
-    <<: *global_cache
+    - key:
+        files:
+          - yarn.lock
+      policy: pull
+      paths:
+        - .yarn
+        - .yarn-cache/
+        - node_modules
+        - 'projects/*/node_modules'
+    - key: cache-${CI_COMMIT_REF_SLUG}
+      policy: push
+      paths:
+        - dist
+        - projects/epgu-constructor-types/dist
   script:
     - yarn build:types
   only:
@@ -59,9 +84,6 @@ Lint:
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
-  cache:
-    <<: *global_cache
-    policy: pull
   script:
     - echo -e "##########\nlint\n##########"
     - yarn lint
@@ -77,9 +99,6 @@ Test:
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
-  cache:
-    <<: *global_cache
-    policy: pull
   script:
     - echo -e "##########\ntest\n##########"
     - yarn test:coverage
@@ -93,23 +112,26 @@ Test:
     - master
     - stage
 
-Children-clubs-build:
-  stage: children-clubs-build
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
-  script:
-    - yarn build:children-clubs
-  only:
-    - merge_requests
-    - master
-    - stage
-
 Ui-kit-build:
   stage: ui-kit-build
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    - key:
+        files:
+          - yarn.lock
+      policy: pull
+      paths:
+        - .yarn
+        - .yarn-cache/
+        - node_modules
+        - 'projects/*/node_modules'
+    - key: cache-${CI_COMMIT_REF_SLUG}
+      policy: pull-push
+      paths:
+        - dist
+        - projects/epgu-constructor-types/dist
   script:
     - yarn build:ui-kit
   only:
@@ -117,11 +139,53 @@ Ui-kit-build:
     - master
     - stage
 
-Library-build:
-  stage: library-build
+Children-clubs-build:
+  stage: children-clubs-build
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    - key:
+        files:
+          - yarn.lock
+      policy: pull
+      paths:
+        - .yarn
+        - .yarn-cache/
+        - node_modules
+        - 'projects/*/node_modules'
+    - key: cache-${CI_COMMIT_REF_SLUG}
+      policy: pull-push
+      paths:
+        - dist
+        - projects/epgu-constructor-types/dist
+  script:
+    - yarn build:children-clubs
+  only:
+    - merge_requests
+    - master
+    - stage
+
+Form-player-build:
+  stage: form-player-build
+  except:
+    variables:
+      - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    - key:
+        files:
+          - yarn.lock
+      policy: pull
+      paths:
+        - .yarn
+        - .yarn-cache/
+        - node_modules
+        - 'projects/*/node_modules'
+    - key: cache-${CI_COMMIT_REF_SLUG}
+      policy: pull-push
+      paths:
+        - dist
+        - projects/epgu-constructor-types/dist
   script:
     - yarn build:cf
   only:
@@ -129,14 +193,28 @@ Library-build:
     - master
     - stage
 
-Build:
-  stage: build
+Emulator-build:
+  stage: emulator-build
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    - key:
+        files:
+          - yarn.lock
+      policy: pull
+      paths:
+        - .yarn
+        - .yarn-cache/
+        - node_modules
+        - 'projects/*/node_modules'
+    - key: cache-${CI_COMMIT_REF_SLUG}
+      policy: pull-push
+      paths:
+        - dist
+        - projects/epgu-constructor-types/dist
   script:
     - yarn build:emulator
-  #    - /devops/notify/notify.sh fronted_new_master_available
   only:
     - merge_requests
 
@@ -145,6 +223,16 @@ Portal-build:
   except:
     variables:
       - $GITLAB_USER_LOGIN == $CI_USER
+  cache:
+    - key:
+        files:
+          - yarn.lock
+      policy: pull
+      paths:
+        - .yarn
+        - .yarn-cache/
+        - node_modules
+        - 'projects/*/node_modules'
   script:
     - yarn install
     - yarn build:portal
