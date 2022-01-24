@@ -56,6 +56,7 @@
 * Поправлен текст ошибки в обработке INTERNAL_ERROR [EPGUCORE-82540]
 * Поправлен символ рубля в PaymentComponent [EPGUCORE-83335]
 * Исправлено ложное срабатывание notify при clipboard для ios [EPGUCORE-85543]
+* Поправлены стили для списков, если они находятся внутри background-white [EPGUCORE-83336]
 
 ### Tests
 
