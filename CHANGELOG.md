@@ -53,7 +53,8 @@
 * Поправлена верстка моб. версии info-screen--deadlock [EPGUCORE-82820]
 * Актуализированы иконки, используемые на экранах "Загрузите документы"/"Заявление создано" [EPGUCORE-83584]
 * Поправлен текст ошибки в обработке INTERNAL_ERROR [EPGUCORE-82540]
-
+* Поправлен символ рубля в PaymentComponent [EPGUCORE-83335]
+* Исправлено ложное срабатывание notify при clipboard для ios [EPGUCORE-85543]
 
 ### Tests
 
@@ -69,3 +70,4 @@
 * Написание тестов на компонент DateRangeService [EPGUCORE-76623]
 * Починка сломанных тестов в DictionaryService [EPGUCORE-85293]
 * Добавлены тесты для InterceptorUtilsService [EPGUCORE-85300]
+* Добавлены тесты PaymentSelectorComponent [EPGUCORE-85302]
