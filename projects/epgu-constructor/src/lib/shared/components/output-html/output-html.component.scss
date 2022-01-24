@@ -123,12 +123,14 @@
   }
 }
 
-:host-context(.gray-theme)::ng-deep ul:not(li ul):not(.dashed) {
-  background-color: $color-white;
-  border-radius: 8px;
-  @include shadow-main();
-  margin-left: 0;
-  padding: 24px;
+:host-context(.gray-theme)::ng-deep {
+  div:not(.background-white) > ul:not(li ul):not(.dashed) {
+    background-color: $color-white;
+    border-radius: 8px;
+    @include shadow-main();
+    margin-left: 0;
+    padding: 24px;
+  }
 }
 
 :host-context(.quiz__description)::ng-deep {
