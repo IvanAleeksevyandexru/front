@@ -11,6 +11,8 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { FlatTreeControl } from '@angular/cdk/tree';
 
+import { uniqBy } from 'lodash';
+
 import { ListElement } from '@epgu/ui/models/dropdown';
 
 import {
@@ -108,13 +110,19 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
   }
 
   onClose(): void {
+    let selectedItems = [...this.selectedItems];
     const items = Object.entries(this.form.get(this.formField.checkboxGroup).value)
-      .filter(([, value]) => value)
+      .filter(([checkboxId, value]) => {
+        // Убираем элементы, у которых сняли выделение с чекбокса
+        selectedItems = selectedItems.filter(({ id }) => (id === checkboxId ? value : true));
+        return value;
+      })
       .reduce<ListElement[]>((acc, [key, value]) => {
         const selectedItem = value && this.items.find((item) => item.id === key);
         return [...acc, selectedItem];
       }, []);
-    this.closeModal([...items, ...this.selectedItems]);
+    const arr = uniqBy([...items, ...selectedItems], 'id');
+    this.closeModal(arr);
   }
 
   private initializeForm(items: ListElement[]): void {
