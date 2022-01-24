@@ -83,7 +83,9 @@ export class ComponentItemComponent implements OnInit, OnChanges {
 
   private checkItemHasErrors(): void {
     this.hasUiError =
-      this.control.invalid && this.control.touched ? this.control.hasError('msg') : false;
+      this.control.invalid && (this.control.touched || this.control.value)
+        ? this.control.hasError('msg')
+        : false;
     this.hasServerError = this.control.hasError('serverError');
     this.hasErrors = !this.disableError && (this.hasUiError || this.hasServerError);
   }

@@ -29,6 +29,8 @@ import {
 import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
 import { OutputHtmlComponent } from '../../../output-html/output-html.component';
+import { ComponentDto } from '@epgu/epgu-constructor-types/src';
+import { of } from 'rxjs';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
