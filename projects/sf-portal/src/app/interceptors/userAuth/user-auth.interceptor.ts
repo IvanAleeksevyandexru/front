@@ -20,6 +20,7 @@ export class UserAuthInterceptor implements HttpInterceptor {
         return event;
       }),
       catchError((error: HttpErrorResponse) => {
+        console.error(error);
         // обрабатываем 401 и 624 статусы и ведем на авторизацию
         if (error.status === 401 || error.status === 624) {
           window.location.href = AppConfig.settings.authProviderUrl + btoa(window.location.href);
