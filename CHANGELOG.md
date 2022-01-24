@@ -19,6 +19,7 @@
 * Добавлена поддержка BarbarbokMapServiceComponent [EPGUCORE-84361]
 * Добавлена поддержка новых иконок в PhotoUploadComponent [EPGUCORE-84494]
 * Добавлен управляющий флаг error.hideTraceId для скрытия/показа traceId в errorModalWindow [EPGUCORE-84975]
+* Добавлены новые иконки [EPGUCORE-85096]
 
 ### Refactor
 
