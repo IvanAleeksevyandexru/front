@@ -27,6 +27,7 @@ export class OutputHtmlComponent implements AfterViewInit {
     ) as HTMLElement;
     const actionType = element?.getAttribute('data-action-type') as ActionType;
     if (actionType === ActionType.copyToClipboard) {
+      element.setAttribute('data-notify', 'false');
       element.click();
     }
   }
