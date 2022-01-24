@@ -18,7 +18,7 @@
     "@datorama/akita": "6.2.0",
     "@epgu/epgu-constructor-types": "398.4.0",
     "@epgu/epgu-constructor-ui-kit": "398.4.0",
-    "@epgu/ui": "1.0.232",
+    "@epgu/ui": "3.0.399-1-front",
     "@taiga-ui/addon-doc": "2.11.2",
     "@taiga-ui/addon-mobile": "2.11.2",
     "@taiga-ui/cdk": "2.11.2",

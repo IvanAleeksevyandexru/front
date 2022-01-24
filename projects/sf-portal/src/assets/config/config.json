@@ -44,6 +44,6 @@
   "yandexMapsApiKey": "f2172dc7-9535-4284-9b8d-fd79474265af",
   "psoOnlyRobomaxIco": true,
   "showNewDesignPsoHelp": true,
-  "psoDomain": "//ssp-dev.test.gosuslugi.ru"
+  "psoDomain": "//ssp-dev.test.gosuslugi.ru",
   "excludePsoFromMain": false
 }

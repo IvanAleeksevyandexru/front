@@ -114,7 +114,7 @@
     "@epgu/children-clubs": "398.4.0",
     "@epgu/epgu-constructor-types": "398.4.0",
     "@epgu/epgu-constructor-ui-kit": "398.4.0",
-    "@epgu/ui": "1.0.232",
+    "@epgu/ui": "3.0.399-1-front",
     "@epgu/zipkin": "0.0.3",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
