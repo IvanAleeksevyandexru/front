@@ -1,6 +1,6 @@
 # Release Notes
 
-## [399.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.0.0) (2022-01-20)
+## [399.1.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.0.0) (2022-01-25)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -57,6 +57,8 @@
 * Поправлен символ рубля в PaymentComponent [EPGUCORE-83335]
 * Исправлено ложное срабатывание notify при clipboard для ios [EPGUCORE-85543]
 * Поправлены стили для списков, если они находятся внутри background-white [EPGUCORE-83336]
+* Поправлены шрифты woff2 для корректной работы в Safaria [EPGUCORE-85708]
+* Поправлена работа шторки карты для айфона [EPGUCORE-85433]
 
 ### Tests
 
@@ -73,3 +75,4 @@
 * Починка сломанных тестов в DictionaryService [EPGUCORE-85293]
 * Добавлены тесты для InterceptorUtilsService [EPGUCORE-85300]
 * Добавлены тесты PaymentSelectorComponent [EPGUCORE-85302]
+* Добавлены тесты на LogicResolver [EPGUCORE-85307]
