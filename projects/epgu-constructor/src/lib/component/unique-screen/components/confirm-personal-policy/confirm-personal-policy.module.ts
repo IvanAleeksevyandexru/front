@@ -15,6 +15,5 @@ import { ConfirmPersonalPolicyComponent } from './confirm-personal-policy.compon
     DisclaimerModule,
     IconsModule,
   ],
-  entryComponents: [ConfirmPersonalPolicyComponent],
 })
 export class ConfirmPersonalPolicyModule {}

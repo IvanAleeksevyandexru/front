@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable, PLATFORM_ID, Optional } from '@angular/core';
+import { Injectable, PLATFORM_ID, Optional, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { LoadService } from '@epgu/ui/services/load';
 import { CookieService } from 'ngx-cookie';
 import isMobile from 'ismobilejs';
-import { Inject } from '@angular/core';
 import { LocationService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { isPlatformServer } from '@angular/common';
 import { HOST_URL } from './tokens/host-url.token';

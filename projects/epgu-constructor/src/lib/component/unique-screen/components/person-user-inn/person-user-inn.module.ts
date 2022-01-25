@@ -16,6 +16,5 @@ import { DisclaimerModule } from '../../../../shared/components/disclaimer/discl
     DisclaimerModule,
   ],
   exports: [PersonUserInnComponent],
-  entryComponents: [PersonUserInnComponent],
 })
 export class PersonUserInnModule {}

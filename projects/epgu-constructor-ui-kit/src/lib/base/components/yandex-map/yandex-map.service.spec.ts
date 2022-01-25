@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { filter } from 'rxjs/operators';
@@ -9,14 +10,21 @@ import { DeviceDetectorServiceStub } from '../../../core/services/device-detecto
 import { UnsubscribeService } from '../../../core/services/unsubscribe/unsubscribe.service';
 import { Icons } from './constants';
 import { mockItemsWithEmptyCoords } from './mocks/mock-items';
-import { mockBrakCluster, mockExpandedPoint, mockPointWithoutCoords } from './mocks/mock-points';
+import {
+  mockBrakCluster,
+  mockExpandedPoint,
+  mockPointWithCoords,
+  mockPointWithoutCoords,
+} from './mocks/mock-points';
 import { electionSinglePoint } from './mocks/mock-select-map-elections';
 import { IClusterItem, IFeatureItem } from './yandex-map.interface';
 import { YandexMapService } from './yandex-map.service';
 import { MapAnimationService } from './yandex-map-animation/map-animation.service';
+import { YaMapService } from '@epgu/ui/services/ya-map';
 
 describe('YandexMapService', () => {
   let yandexMapService: YandexMapService;
+  let yaMapService: YaMapService;
   let icons: Icons;
 
   beforeEach(() => {
@@ -36,6 +44,7 @@ describe('YandexMapService', () => {
 
   beforeEach(() => {
     yandexMapService = TestBed.inject(YandexMapService);
+    yaMapService = TestBed.inject(YaMapService);
     icons = TestBed.inject(Icons);
     yandexMapService.objectManager = {
       objects: {
@@ -54,6 +63,10 @@ describe('YandexMapService', () => {
         getAll: () => [],
         setClusterProperties: () => [],
       },
+    };
+    // TODO когда-нибудь придумать заглушку для map яндекса
+    yaMapService.map = {
+      setCenter: () => '',
     };
   });
 
@@ -74,6 +87,52 @@ describe('YandexMapService', () => {
     );
 
     expect(yandexMapService.selectedValue$.getValue()).toBeNull();
+  });
+
+  it('centeredPlaceMark should call setCenter for feature with needSetCenter flag', () => {
+    const spy = jest.spyOn(yaMapService.map, 'setCenter');
+
+    yandexMapService.centeredPlaceMark((mockPointWithCoords as unknown) as IFeatureItem<unknown>);
+
+    expect(spy).toBeCalled();
+  });
+
+  it('selectMapObject should call centeredPlaceMark', () => {
+    const spy = jest.spyOn(yandexMapService, 'centeredPlaceMark').mockImplementation(() => '');
+    jest.spyOn(yandexMapService, 'centerAllPoints').mockImplementation(() => '');
+
+    yandexMapService.selectMapObject({});
+
+    expect(spy).toBeCalled();
+  });
+
+  it('getBoundsByCoords should work', () => {
+    const result = yandexMapService.getBoundsByCoords([
+      [37.617644, 57.755819],
+      [39.617644, 53.755819],
+    ]);
+
+    expect(result).toStrictEqual([
+      [37.617644, 53.755819],
+      [39.617644, 57.755819],
+    ]);
+  });
+
+  it('getPinStyle should work', () => {
+    let mapObj = {
+      properties: {
+        isActive: true,
+        res: { isSelected: true },
+      },
+    };
+    let res = yandexMapService['getPinStyle'](mapObj);
+    expect(res).toEqual('pin-red');
+    mapObj.properties.isActive = false;
+    res = yandexMapService['getPinStyle'](mapObj);
+    expect(res).toEqual('pin-red-checked');
+    mapObj.properties.res.isSelected = false;
+    res = yandexMapService['getPinStyle'](mapObj);
+    expect(res).toEqual('pin-blue');
   });
 
   it('centeredPlaceMark should proceed checking placemark if ids are equal and default logic is faklse', () => {

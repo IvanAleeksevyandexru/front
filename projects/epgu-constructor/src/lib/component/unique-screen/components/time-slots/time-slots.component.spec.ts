@@ -67,6 +67,7 @@ import {
   ITEMS_FAILURE,
   SERVICE_OR_SPEC_SESSION_TIMEOUT,
 } from '../../../../core/services/error-handler/error-handler';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('TimeSlotsComponent', () => {
   let component: TimeSlotsComponent;
@@ -110,6 +111,7 @@ describe('TimeSlotsComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         MockProvider(DictionaryToolsService),
+        MockProvider(HelperService),
         CurrentAnswersService,
         TimeSlotsConstants,
         DatesToolsService,

@@ -7,6 +7,8 @@ import { ValidationService } from '../../../../../shared/services/validation/val
 import { ScreenService } from '../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../screen/screen.service.stub';
 import { DateRangeService } from '../../../../../shared/services/date-range/date-range.service';
+import { MockProvider } from 'ng-mocks';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('DurationService', () => {
   let service: DurationService;
@@ -21,6 +23,7 @@ describe('DurationService', () => {
         { provide: ScreenService, use: ScreenServiceStub },
         ConfigService,
         LoggerService,
+        MockProvider(HelperService),
       ],
       imports: [HttpClientTestingModule],
     });

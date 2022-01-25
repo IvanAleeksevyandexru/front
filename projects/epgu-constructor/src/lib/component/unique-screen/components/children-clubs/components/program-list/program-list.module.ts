@@ -7,6 +7,7 @@ import {
   SharedModalModule,
   ScreenContainerModule,
   ConfigService,
+  ToggleTextModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { PluralizeModule } from '@epgu/ui/pipes';
 import { ProgramListContainerComponent } from './container/program-list-container.component';
@@ -17,17 +18,10 @@ import { ViewComponent } from './components/view/view.component';
 import { BaseModule } from '../base/base.module';
 import { StateService } from '../../services/state/state.service';
 import { SelectMapObjectCcModule } from '../select-map-object/select-map-object.module';
-import { ToggleTextComponent } from './components/toggle-text/toggle-text.component';
 import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 
 @NgModule({
-  declarations: [
-    ProgramListContainerComponent,
-    ListComponent,
-    ItemComponent,
-    ViewComponent,
-    ToggleTextComponent,
-  ],
+  declarations: [ProgramListContainerComponent, ListComponent, ItemComponent, ViewComponent],
   imports: [
     BaseModule,
     CommonModule,
@@ -37,6 +31,7 @@ import { DictionaryApiService } from '../../../../../../shared/services/dictiona
     ScreenContainerModule,
     SelectMapObjectCcModule,
     PluralizeModule,
+    ToggleTextModule,
   ],
 
   providers: [ProgramListService, ModalService, ConfigService, DictionaryApiService, StateService],

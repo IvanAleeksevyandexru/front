@@ -7,6 +7,5 @@ import { KindergartenComponent } from './kindergarten.component';
   declarations: [KindergartenComponent],
   exports: [KindergartenComponent],
   imports: [BaseModule, SelectMapObjectModule],
-  entryComponents: [KindergartenComponent],
 })
 export class KindergartenModule {}

@@ -5,6 +5,7 @@
     "lib": ["es6", "dom"],
     "target": "es6",
     "typeRoots": ["node_modules/@types"],
+    "types": ["offscreencanvas"],
     "experimentalDecorators": true,
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],

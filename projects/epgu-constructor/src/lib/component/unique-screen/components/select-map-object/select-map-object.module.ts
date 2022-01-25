@@ -109,18 +109,5 @@ import { InternalErrorInterceptor } from '../../../../core/interceptor/internal-
     IconsModule,
     SmoothHeightAnimationDirectiveModule,
   ],
-  entryComponents: [
-    SelectMapObjectComponent,
-    SearchPanelResolverComponent,
-    CommonSearchPanelComponent,
-    ElectionsSearchPanelComponent,
-    KindergartenSearchPanelComponent,
-    JusticeSearchPanelComponent,
-    BalloonContentResolverComponent,
-    CommonBalloonContentComponent,
-    ElectionsBalloonContentComponent,
-    KindergartenContentComponent,
-    PriorityScreenComponent,
-  ],
 })
 export class SelectMapObjectModule {}

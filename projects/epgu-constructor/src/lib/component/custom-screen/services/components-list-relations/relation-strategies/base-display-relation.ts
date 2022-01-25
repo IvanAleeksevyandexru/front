@@ -46,8 +46,10 @@ export abstract class BaseDisplayRelation extends BaseRelation {
       return (
         shownElements[reference.relatedRel]?.isShown &&
         this.refRelationService.isValueEquals(
-          reference.path ? get(this.getRefValue(reference.val), reference.path) : reference.val,
-          this.getControlValueById(reference.relatedRel, form),
+          this.getRefValue(reference.val) as string | string[] | boolean,
+          reference.path
+            ? get(this.getControlValueById(reference.relatedRel, form), reference.path)
+            : this.getControlValueById(reference.relatedRel, form),
         )
       );
     }

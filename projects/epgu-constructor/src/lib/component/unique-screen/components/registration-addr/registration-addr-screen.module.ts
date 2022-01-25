@@ -29,6 +29,5 @@ import { ValidationService } from '../../../../shared/services/validation/valida
     DisclaimerModule,
   ],
   providers: [DatesToolsService, ValidationService],
-  entryComponents: [RegistrationAddrComponent, RegistrationAddrReadonlyComponent],
 })
 export class RegistrationAddrScreenModule {}

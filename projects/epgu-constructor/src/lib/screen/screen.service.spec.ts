@@ -30,6 +30,7 @@ import { DictionaryToolsService } from '../shared/services/dictionary/dictionary
 import { RefRelationService } from '../shared/services/ref-relation/ref-relation.service';
 import { DateRestrictionsService } from '../shared/services/date-restrictions/date-restrictions.service';
 import { DateRefService } from '../core/services/date-ref/date-ref.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const makeScreenStoreSample = (): ScreenStore => ({
   orderId: 653920,
@@ -116,6 +117,7 @@ describe('ScreenService', () => {
         DateRangeService,
         RefRelationService,
         MockProvider(DateRestrictionsService),
+        MockProvider(HelperService),
         JsonHelperService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: LocalStorageService, useClass: LocalStorageServiceStub },

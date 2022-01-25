@@ -8,6 +8,5 @@ import { BaseModule } from '../../shared/base.module';
   providers: [ModalService],
   exports: [UsePaymentsModalComponent],
   imports: [BaseModule],
-  entryComponents: [UsePaymentsModalComponent],
 })
 export class UsePaymentsModalModule {}

@@ -15,11 +15,5 @@ import { CtaModalComponent } from './cta-modal/cta-modal.component';
   ],
   exports: [CommonModalComponent, ModalContainerComponent, ModalBaseComponent, CtaModalComponent],
   imports: [BaseUiModule, A11yModule],
-  entryComponents: [
-    ModalBaseComponent,
-    ModalContainerComponent,
-    CommonModalComponent,
-    CtaModalComponent,
-  ],
 })
 export class SharedModalModule {}

@@ -18,7 +18,6 @@ import {
   JsonHelperService,
   NumberMaskOptions,
   DatesToolsService,
-  DatesToolsServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -49,6 +48,7 @@ import { ComponentsListRelationsServiceStub } from '../components-list-relations
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ComponentsListFormService', () => {
   const componentsGroupIndex = 1;
@@ -162,6 +162,7 @@ describe('ComponentsListFormService', () => {
         HttpHandler,
         RefRelationService,
         MockProvider(DateRestrictionsService),
+        MockProvider(HelperService),
         ConfigService,
         MaskTransformService,
         DecimalPipe,

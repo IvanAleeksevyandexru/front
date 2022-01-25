@@ -13,6 +13,8 @@ import { DictionaryApiService } from '../../../../../../../../shared/services/di
 import { AddressHelperService } from '../../../../../../../../shared/services/address-helper/address-helper.service';
 import { KindergartenSearchPanelService } from '../kindergarten-search-panel/kindergarten-search-panel.service';
 import { ForTestsOnlyModule } from '../../../../../../../../core/for-tests-only.module';
+import { MockProvider } from 'ng-mocks';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('ElectionsSearchPanelComponent', () => {
   let addressHelperService: AddressHelperService;
@@ -43,7 +45,7 @@ describe('ElectionsSearchPanelComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ElectionsSearchPanelComponent],
-      providers: [KindergartenSearchPanelService],
+      providers: [KindergartenSearchPanelService, MockProvider(HelperService)],
       imports: [HttpClientTestingModule, ForTestsOnlyModule, ConstructorLookupModule],
     });
   });

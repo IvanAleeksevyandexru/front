@@ -7,6 +7,8 @@ import { MainContainerComponent } from './main-container.component';
 import { BaseUiModule } from '../../base-ui.module';
 import { SharedModalModule } from '../../../modal/shared/shared-modal.module';
 import { ModalService } from '../../../modal/modal.service';
+import { MockProvider } from 'ng-mocks';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const textMock = 'Opa gangnam style!!!';
 
@@ -32,7 +34,7 @@ describe('MainContainerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [WrapperTestComponent, TestContentComponent, MainContainerComponent],
       imports: [BaseUiModule, SharedModalModule, HttpClientModule],
-      providers: [ModalService],
+      providers: [ModalService, MockProvider(HelperService)],
     }).compileComponents();
   });
 

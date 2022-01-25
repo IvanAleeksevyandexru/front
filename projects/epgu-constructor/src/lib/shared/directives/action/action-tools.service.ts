@@ -235,18 +235,21 @@ export class ActionToolsService {
     this.bufferData = value;
   }
 
-  public copyToClipboard(action: ComponentActionDto): void {
+  public copyToClipboard(action: ComponentActionDto, targetElement?: HTMLElement): void {
     // Для того чтобы не было проблем с копированием в буффер обмена на IOS подгружаем данные для буффера заранее
     if (this.bufferData) {
-      this.copyAndNotify(this.bufferData);
+      this.copyAndNotify(this.bufferData, targetElement?.getAttribute('data-notify') !== 'false');
     } else {
       this.loadClipboardData(action);
     }
   }
 
-  private copyAndNotify(value: string): void {
+  private copyAndNotify(value: string, isNotify: boolean): void {
     this.clipboard.copy(value);
-    this.notifierService.success({ message: `${value}` });
+
+    if (isNotify) {
+      this.notifierService.success({ message: `${value}` });
+    }
   }
 
   private prepareNavigationData(action: ComponentActionDto, componentId: string): Navigation {

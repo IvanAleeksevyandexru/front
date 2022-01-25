@@ -6,6 +6,8 @@ import { By } from '@angular/platform-browser';
 import { ListItem } from '@epgu/ui/models/dropdown';
 import { BaseModule } from '../../../../base.module';
 import { MonthSelectorComponent } from './month-selector.component';
+import { MockProvider } from 'ng-mocks';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('MonthSelectorComponent', () => {
   let component: MonthSelectorComponent;
@@ -15,7 +17,11 @@ describe('MonthSelectorComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MonthSelectorComponent],
-      providers: [DatesToolsService, { provide: ConfigService, useClass: ConfigServiceStub }],
+      providers: [
+        DatesToolsService,
+        { provide: ConfigService, useClass: ConfigServiceStub },
+        MockProvider(HelperService),
+      ],
       imports: [BaseModule, FormsModule, HttpClientTestingModule],
     }).compileComponents();
   });

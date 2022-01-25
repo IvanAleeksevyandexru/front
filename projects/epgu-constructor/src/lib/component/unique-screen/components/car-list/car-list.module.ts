@@ -27,6 +27,5 @@ const COMPONENTS = [CarListComponent, CarListContainerComponent];
     ConstructorLookupModule,
     ScreenButtonsModule,
   ],
-  entryComponents: [CarListContainerComponent],
 })
 export class CarListModule {}

@@ -23,6 +23,5 @@ import { DateTimePeriodComponent } from './components/date-time-period/date-time
     InputErrorModule,
   ],
   exports: [DateTimePeriodContainerComponent, DateTimePeriodComponent],
-  entryComponents: [DateTimePeriodContainerComponent],
 })
 export class DateTimePeriodModule {}

@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-constructor",
-  "version": "395.9.3",
+  "version": "398.4.0",
   "scripts": {
     "build": "cd ../../ && ng build epgu-constructor --prod",
     "watch": "cd ../../ && ng build epgu-constructor --watch",
@@ -8,12 +8,12 @@
     "lint:fix": "cd ../../ && ng lint epgu-constructor --fix"
   },
   "peerDependencies": {
-    "@angular/animations": "12.2.5",
-    "@angular/cdk": "12.2.5",
-    "@angular/common": "12.2.5",
-    "@angular/core": "12.2.5",
-    "@angular/forms": "12.2.5",
-    "@epgu/ui": "3.0.395-2-front",
+    "@angular/animations": "13.1.1",
+    "@angular/cdk": "13.1.1",
+    "@angular/common": "13.1.1",
+    "@angular/core": "13.1.1",
+    "@angular/forms": "13.1.1",
+    "@epgu/ui": "3.0.399-1-front",
     "@ngx-translate/http-loader": "6.0.0",
     "@nicky-lenaers/ngx-scroll-to": "^9.0.0",
     "@squadette/hammerjs": "^2.1.0-pre3",
@@ -31,13 +31,13 @@
   },
   "dependencies": {
     "@alyle/ui": "10.5.1",
-    "@epgu/epgu-constructor-types": "395.9.3",
-    "@epgu/epgu-constructor-ui-kit": "395.9.3",
+    "@epgu/epgu-constructor-types": "398.4.0",
+    "@epgu/epgu-constructor-ui-kit": "398.4.0",
     "@tanker/file-ponyfill": "2.6.3",
     "ics": "2.24.0",
     "node-fetch": "2.6.1",
     "raw-loader": "^4.0.2",
     "os": "0.1.1",
-    "tslib": "2.1.0"
+    "tslib": "2.3.1"
   }
 }

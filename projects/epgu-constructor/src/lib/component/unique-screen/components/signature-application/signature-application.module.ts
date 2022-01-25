@@ -9,6 +9,5 @@ import { BaseModule } from '../../../../shared/base.module';
   declarations: [SignatureApplicationComponent, SignatureApplicationContainerComponent],
   exports: [SignatureApplicationComponent, SignatureApplicationContainerComponent],
   imports: [BaseModule, BaseComponentsModule, ScreenContainerModule],
-  entryComponents: [SignatureApplicationContainerComponent],
 })
 export class SignatureApplicationModule {}

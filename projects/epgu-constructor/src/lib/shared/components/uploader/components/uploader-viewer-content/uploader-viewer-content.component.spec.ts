@@ -11,7 +11,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { MockComponent, MockModule } from 'ng-mocks';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { HttpClientModule } from '@angular/common/http';
 import { FileSizeModule } from '@epgu/ui/pipes';
 import { ZoomModule } from '../../../zoom/zoom.module';
@@ -29,6 +29,9 @@ import {
 import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
 import { OutputHtmlComponent } from '../../../output-html/output-html.component';
+import { ComponentDto } from 'projects/epgu-constructor-types/src/base';
+import { of } from 'rxjs';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -105,6 +108,7 @@ describe('UploaderViewerContentComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         SuggestMonitorService,
+        MockProvider(HelperService),
       ],
     })
       .overrideComponent(UploaderViewerContentComponent, {

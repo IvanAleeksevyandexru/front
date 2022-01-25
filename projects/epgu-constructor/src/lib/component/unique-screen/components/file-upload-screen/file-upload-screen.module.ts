@@ -24,7 +24,6 @@ import { UniqueScreenService } from '../../unique-screen.service';
     PluralizeModule,
     FileSizeModule,
   ],
-  entryComponents: [FileUploadScreenComponent],
   providers: [UploaderScreenService, UniqueScreenService],
 })
 export class FileUploadScreenModule {}

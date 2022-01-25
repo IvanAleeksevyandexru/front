@@ -2,7 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { HttpClientModule } from '@angular/common/http';
 import { ChangeDetectionStrategy, QueryList } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { MockComponent } from 'ng-mocks';
+import { MockComponent, MockProvider } from 'ng-mocks';
 
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import {
@@ -19,6 +19,7 @@ import { BaseModule } from '../../../shared/base.module';
 import { HookService } from '../../../core/services/hook/hook.service';
 import { HookServiceStub } from '../../../core/services/hook/hook.service.stub';
 import { LogicComponentResolverComponent } from '../component-list-resolver/logic-component-resolver.component';
+import { HelperService } from '@epgu/ui/services/helper';
 
 const componentsMock: LogicComponents[] = [
   {
@@ -110,6 +111,7 @@ describe('LogicComponentsContainerComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: HookService, useClass: HookServiceStub },
         UnsubscribeService,
+        MockProvider(HelperService),
       ],
     })
       .overrideComponent(LogicComponentsContainerComponent, {

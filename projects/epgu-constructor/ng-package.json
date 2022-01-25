@@ -15,29 +15,6 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "cssUrl": "inline",
-    "umdModuleIds": {
-      "ru-validation-codes": "ru-validation-codes",
-      "ngx-cookie-service": "ngx-cookie-service",
-      "uuid": "uuid",
-      "ngx-webcam": "ngx-webcam",
-      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
-      "@epgu/ui": "@epgu/ui",
-      "@epgu/epgu-constructor-types": "@epgu/epgu-constructor-types",
-      "@epgu/epgu-constructor-ui-kit": "@epgu/epgu-constructor-ui-kit",
-      "ics": "ics",
-      "@alyle/ui": "@alyle/ui",
-      "@alyle/ui/image-cropper": "i4$1",
-      "@alyle/ui/themes/minima": "minima",
-      "angular-resize-event": "angular-resize-event",
-      "angular2-text-mask": "angular2-text-mask",
-      "@tanker/file-ponyfill": "@tanker/file-ponyfill",
-      "file-saver": "file-saver",
-      "date-fns": "date-fns",
-      "date-fns/locale": "locale",
-      "lodash": "lodash",
-      "@nicky-lenaers/ngx-scroll-to": "@nicky-lenaers/ngx-scroll-to",
-      "raw-loader": "raw-loader"
-    },
     "styleIncludePaths": ["."]
   }
 }

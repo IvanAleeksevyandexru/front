@@ -6,7 +6,7 @@
     [component]="component"
     [invalid]="control.invalid"
     [hidden]="component?.attrs?.hidden"
-    [largeFontSize]="true"
+    [largeFontSize]="component?.attrs?.largeFontSize === false ? false : true"
   >
     <div
       class="form__radio"

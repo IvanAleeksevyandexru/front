@@ -9,6 +9,7 @@ import {
   DatesToolsService,
   InputErrorComponent,
   ScreenPadComponent,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   AbstractControl,
@@ -81,6 +82,7 @@ describe('DateTimePeriodComponent', () => {
         MockProvider(HttpClient),
         MockProvider(ActivatedRoute),
         MockProvider(DateRestrictionsService),
+        MockProvider(HealthService),
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         CurrentAnswersService,

@@ -38,6 +38,5 @@ import { ScreenButtonsModule } from '../../../../shared/components/screen-button
     ScreenButtonsModule,
     ConstructorCheckboxModule,
   ],
-  entryComponents: [TimeSlotsComponent],
 })
 export class TimeSlotsModule {}

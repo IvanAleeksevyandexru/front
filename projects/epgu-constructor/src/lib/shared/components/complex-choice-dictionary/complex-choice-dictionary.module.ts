@@ -31,6 +31,5 @@ import { DropdownListModalModule } from '../../../modal/dropdown-list-modal/drop
   ],
   providers: [ModalService],
   exports: [ComplexChoiceDictionaryComponent],
-  entryComponents: [ComplexChoiceDictionaryModalComponent],
 })
 export class ComplexChoiceDictionaryModule {}

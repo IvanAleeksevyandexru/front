@@ -36,6 +36,27 @@ export const mockPointWithoutCoords = {
   id_16278971881063469: '7144',
 };
 
+export const mockPointWithCoords = {
+  type: IFeatureTypes.Feature,
+  id: '4504034394378_50',
+  geometry: {
+    type: 'Point',
+    coordinates: [2, 3],
+  },
+  properties: {
+    res: {
+      balloonContentHeader: 'Участковая избирательная комиссия №3936',
+      pollStationNumber: 3936,
+      pollStationRegion: 50,
+      expanded: false,
+    },
+  },
+  options: {
+    iconImageHref: '/assets/icons/svg/point_blue.svg',
+  },
+  id_16278971881063469: '7144',
+};
+
 export const mockBrakCluster = {
   id: '10967',
   type: 'Cluster',

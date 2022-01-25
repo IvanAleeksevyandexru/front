@@ -35,6 +35,5 @@ const COMPONENTS = [MedicalReferralsListContainerComponent, MedicalReferralsList
     AnswerButtonModule,
     DisclaimerModule,
   ],
-  entryComponents: [MedicalReferralsListContainerComponent],
 })
 export class MedicalReferralsListModule {}

@@ -66,6 +66,9 @@ export * from './lib/base/components/prev-button/prev-button.component';
 export * from './lib/base/components/screen-container/screen-container.module';
 export * from './lib/base/components/screen-container/screen-container.component';
 
+export * from './lib/base/components/toggle-text/toggle-text.module';
+export * from './lib/base/components/toggle-text/toggle-text.component';
+
 export * from './lib/base/components/yandex-map/yandex-map.module';
 export * from './lib/base/components/yandex-map/yandex-map.component';
 export * from './lib/base/components/yandex-map/yandex-map.service';

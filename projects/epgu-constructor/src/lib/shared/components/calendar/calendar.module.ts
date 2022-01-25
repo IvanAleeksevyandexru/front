@@ -14,6 +14,5 @@ import { BaseComponentsModule } from '../base-components/base-components.module'
   exports: [DaySelectorComponent, MonthSelectorComponent, TimeSelectorComponent],
   providers: [],
   imports: [BaseModule, BaseComponentsModule, FormsModule],
-  entryComponents: [],
 })
 export class CalendarModule {}

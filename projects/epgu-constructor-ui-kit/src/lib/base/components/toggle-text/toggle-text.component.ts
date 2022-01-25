@@ -1,8 +1,8 @@
 import { Component, ElementRef, HostListener, Inject, Input, OnChanges } from '@angular/core';
-import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
+import { WINDOW } from '../../../core/providers/window.provider';
 
 @Component({
-  selector: 'epgu-constructor-toggle-text',
+  selector: 'epgu-cf-ui-constructor-toggle-text',
   templateUrl: './toggle-text.component.html',
   styleUrls: ['./toggle-text.component.scss'],
 })

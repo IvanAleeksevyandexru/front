@@ -1,6 +1,7 @@
 require('jest-preset-angular/ngcc-jest-processor');
 
 module.exports = {
+  preset: 'jest-preset-angular',
   modulePaths: ['<rootDir>'],
   moduleDirectories: ['node_modules'],
   setupFiles: ['<rootDir>/configs/jest/setup-jest.ts', 'jest-canvas-mock'],
@@ -28,14 +29,16 @@ module.exports = {
   testEnvironment: 'jsdom',
   transform: {
     '\\.svg': '<rootDir>/asset-transformer.js',
-    '^.+\\.(ts|js|html)$': 'jest-preset-angular',
+    '^.+\\.(ts|js|mjs|html)$': 'jest-preset-angular',
   },
-  moduleFileExtensions: ['ts', 'html', 'js', 'json', 'svg'],
+  moduleFileExtensions: ['ts', 'html', 'js', 'json', 'svg', 'mjs'],
+  extensionsToTreatAsEsm: ['.ts'],
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
       isolatedModules: true,
       stringifyContentPathRegex: '\\.html$',
+      useESM: true
     },
   },
   testEnvironmentOptions: {
@@ -43,4 +46,5 @@ module.exports = {
       window.scroll = () => { };
     },
   },
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!.*\\.mjs$|date-fns|@epgu/ui/node_modules/date-fns)'],
 };

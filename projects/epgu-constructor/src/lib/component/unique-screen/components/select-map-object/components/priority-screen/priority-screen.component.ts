@@ -50,11 +50,11 @@ export class PriorityScreenComponent {
   plural = ['сад', 'сада', 'садов'];
   hasUnavailable: boolean;
 
-  finalScreen = (this.screenService.component?.arguments?.finalScreen as boolean) || false;
+  finalScreen = this.screenService.component?.arguments?.finalScreen || 'false';
 
   buttonBase = [
     {
-      label: 'Сохранить заявление',
+      label: 'Продолжить',
       type: 'nextStep',
       action: DTOActionAction.getNextStep,
     } as ScreenButton,
@@ -62,7 +62,7 @@ export class PriorityScreenComponent {
 
   buttonFinalScreen = [
     {
-      label: 'Продолжить',
+      label: 'Отправить заявление',
       type: 'nextStep',
       action: DTOActionAction.getNextStep,
     } as ScreenButton,

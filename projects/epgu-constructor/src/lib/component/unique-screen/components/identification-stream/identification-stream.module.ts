@@ -26,6 +26,5 @@ import { VideoModalComponent } from './components/video-modal/video-modal.compon
     IconsModule,
   ],
   providers: [IdentificationApiService, IdentificationStreamService, TerraByteApiService],
-  entryComponents: [IdentificationStreamComponent, VideoModalComponent],
 })
 export class IdentificationStreamModule {}

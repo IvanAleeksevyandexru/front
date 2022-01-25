@@ -19,7 +19,7 @@ import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from '../environments/environment';
 import { NewSfPlayerComponent } from './components/new-sf-player/new-sf-player.component';
-import { LocationSelectComponent, LocationSelectModule } from '@epgu/ui/components/location-select';
+import { LocationSelectModule } from '@epgu/ui/components/location-select';
 import { FormPlayerModule } from '@epgu/epgu-constructor';
 import { FrameModule } from '@epgu/ui/components/frame';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -81,7 +81,6 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     },
     { provide: LOCALE_ID, useValue: 'ru' },
   ],
-  entryComponents: [LocationSelectComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

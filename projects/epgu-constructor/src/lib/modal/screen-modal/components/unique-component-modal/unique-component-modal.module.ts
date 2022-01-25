@@ -18,6 +18,5 @@ import { ConfirmWithCodeComponent } from './confirm-with-phone/confirm-with-code
     FormatPhoneModule,
     FormatTimeModule,
   ],
-  entryComponents: [UniqueComponentModalComponent],
 })
 export class UniqueComponentModalModule {}

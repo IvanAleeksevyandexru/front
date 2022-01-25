@@ -22,10 +22,8 @@ import { UploaderViewerContentComponent } from './components/uploader-viewer-con
     UploaderViewerComponent,
     UploaderViewerContentComponent,
   ],
-
   providers: [ModalService, ViewerService, SuggestMonitorService],
   imports: [CommonModule, FileSizeModule, BaseModule, ZoomModule, IconsModule],
   exports: [UploaderComponent, UploaderButtonComponent, UploaderManagerComponent],
-  entryComponents: [UploaderViewerComponent],
 })
 export class UploaderModule {}

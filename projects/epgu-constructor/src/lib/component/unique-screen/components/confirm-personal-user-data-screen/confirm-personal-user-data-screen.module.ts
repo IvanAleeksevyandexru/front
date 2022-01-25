@@ -24,6 +24,5 @@ import { ConfirmPersonalUserDataPipe } from './confirm-personal-user-data.pipe';
     DisclaimerModule,
     IconsModule,
   ],
-  entryComponents: [ConfirmPersonalUserDataComponent, ConfirmPersonalUserLegalDataComponent],
 })
 export class ConfirmPersonalUserDataScreenModule {}
