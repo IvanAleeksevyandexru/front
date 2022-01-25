@@ -28,7 +28,7 @@ const testResult = {
   ...errorModal,
   text:
     // eslint-disable-next-line max-len
-    '<div class="text_modal_error"><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg"><h4>header</h4><span>helperText</span></div>',
+    '<div class="text_modal_error "><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg"><h4>header</h4><span>helperText</span></div>',
 };
 
 describe('InterceptorUtilsService', () => {
@@ -60,7 +60,10 @@ describe('InterceptorUtilsService', () => {
 
   it('should be getConfirmationModalParamsFromErrorModalParams', () => {
     expect(
-      service.getConfirmationModalParamsFromErrorModalParams((errorModal as unknown) as ErrorModal),
+      service.getConfirmationModalParamsFromErrorModalParams(
+        (errorModal as unknown) as ErrorModal,
+        false,
+      ),
     ).toEqual(testResult);
   });
 
