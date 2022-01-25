@@ -194,6 +194,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
        * чтобы файлы потом корректно загружались в ЛК
        */
       file.setAttached(true);
+      file.item.mnemonic = this.uploader.getMnemonic();
       this.terabyteService.downloadFile(file.createUploadedParams()).subscribe((blob: Blob) => {
         const rawFile = new File([blob], file.item.fileName);
         const newFile = new FileItem(
