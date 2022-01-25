@@ -84,7 +84,3 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
-declare global {
-  type MediaStreamError = Error;
-}
