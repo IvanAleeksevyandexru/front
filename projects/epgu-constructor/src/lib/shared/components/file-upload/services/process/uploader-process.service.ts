@@ -184,7 +184,7 @@ export class UploaderProcessService {
     const options = item.createUploadOptions(
       this.uploader.objectId,
       UPLOAD_OBJECT_TYPE,
-      this.uploader.getMnemonic(),
+      item.item.mnemonic,
     );
 
     return of(item).pipe(
