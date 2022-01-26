@@ -110,18 +110,13 @@ export class TimeSlotsService {
     public dictionaryTools: DictionaryToolsService,
   ) {}
 
-  checkBooking(
-    selectedSlot: SlotInterface,
-    isServiceSpecific?: boolean,
-  ): Observable<SmevBookResponseInterface> {
+  checkBooking(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = null;
 
     // Если есть забуканный слот и (сменился загс или слот просрочен)
     const timeSlotsForCancel = this.getTimeSlotsForCancel();
     if (timeSlotsForCancel.length) {
-      return forkJoin(
-        timeSlotsForCancel.map((timeSlot) => this.cancelSlot(timeSlot.bookId, isServiceSpecific)),
-      ).pipe(
+      return forkJoin(timeSlotsForCancel.map((timeSlot) => this.cancelSlot(timeSlot.bookId))).pipe(
         switchMap((responses: CancelSlotResponseInterface[]) => {
           if (responses.some((res) => res.error && res.error.errorDetail.errorCode !== 0)) {
             this.errorMessage = this.getErrorCancelMessage(responses);
@@ -139,25 +134,20 @@ export class TimeSlotsService {
     return this.book(selectedSlot);
   }
 
-  book(
-    selectedSlot: SlotInterface,
-    isServiceSpecific?: boolean,
-  ): Observable<SmevBookResponseInterface> {
+  book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = null;
-    return this.smev3TimeSlotsRestService
-      .bookTimeSlot(this.getBookRequest(selectedSlot), isServiceSpecific)
-      .pipe(
-        tap((response) => {
-          this.bookedSlot = selectedSlot;
-          this.bookId = response.bookId;
-          this.activeMonthNumber = selectedSlot.slotTime.getMonth();
-          this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-        }),
-        catchError((error: SmevBookResponseInterface) => {
-          this.errorMessage = error.error.errorDetail.errorMessage;
-          return throwError(error);
-        }),
-      );
+    return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
+      tap((response) => {
+        this.bookedSlot = selectedSlot;
+        this.bookId = response.bookId;
+        this.activeMonthNumber = selectedSlot.slotTime.getMonth();
+        this.activeYearNumber = selectedSlot.slotTime.getFullYear();
+      }),
+      catchError((error: SmevBookResponseInterface) => {
+        this.errorMessage = error.error.errorDetail.errorMessage;
+        return throwError(error);
+      }),
+    );
   }
 
   isDateLocked(date: Date, areadId?: string | number): boolean {
@@ -466,20 +456,14 @@ export class TimeSlotsService {
     );
   }
 
-  private cancelSlot(
-    bookId: string,
-    isServiceSpecific?: boolean,
-  ): Observable<CancelSlotResponseInterface> {
+  private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
     const { eserviceId } = this.configService.timeSlots[this.timeSlotsType];
 
     return this.smev3TimeSlotsRestService
-      .cancelSlot(
-        {
-          eserviceId: (this.config.eserviceId as string) || eserviceId,
-          bookId,
-        },
-        isServiceSpecific,
-      )
+      .cancelSlot({
+        eserviceId: (this.config.eserviceId as string) || eserviceId,
+        bookId,
+      })
       .pipe(
         tap((response) => {
           if (response.error && response.error.errorDetail.errorCode !== 0) {

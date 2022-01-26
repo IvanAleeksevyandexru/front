@@ -1,6 +1,8 @@
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { waitForAsync, TestBed, fakeAsync } from '@angular/core/testing';
 import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { brakBookRequest } from './mocks/mock-time-slots';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 
@@ -25,6 +27,7 @@ describe('FormPlayerApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         Smev3TimeSlotsRestService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });

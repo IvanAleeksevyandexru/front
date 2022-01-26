@@ -10,6 +10,7 @@ import {
   SmevSlotsResponseInterface,
   TimeSlotReq,
 } from './time-slots.types';
+import { ScreenService } from '../../../../screen/screen.service';
 
 @Injectable()
 export class Smev3TimeSlotsRestService {
@@ -17,24 +18,24 @@ export class Smev3TimeSlotsRestService {
     ? `${this.config.mockUrl}/lk/v1/equeue`
     : this.config.timeSlotApiUrl;
 
-  constructor(private http: HttpClient, private config: ConfigService) {}
+  private isServiceSpecific = this.screenService.component?.attrs?.isServiceSpecific || false;
 
-  public getTimeSlots(
-    requestBody: TimeSlotReq,
-    isServiceSpecific?: boolean,
-  ): Observable<SmevSlotsResponseInterface> {
+  constructor(
+    private http: HttpClient,
+    private config: ConfigService,
+    private screenService: ScreenService, // TODO: вынести из сервиса скоуп screenService
+  ) {}
+
+  public getTimeSlots(requestBody: TimeSlotReq): Observable<SmevSlotsResponseInterface> {
     const path = `${this.urlPrefix}/${
-      isServiceSpecific ? requestBody.eserviceId + '/agg' : 'agg'
+      this.isServiceSpecific ? requestBody.eserviceId + '/agg' : 'agg'
     }/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody, { withCredentials: true });
   }
 
-  public bookTimeSlot(
-    requestBody: BookTimeSlotReq,
-    isServiceSpecific?: boolean,
-  ): Observable<SmevBookResponseInterface> {
+  public bookTimeSlot(requestBody: BookTimeSlotReq): Observable<SmevBookResponseInterface> {
     const path = `${this.urlPrefix}/${
-      isServiceSpecific ? requestBody.eserviceId + '/agg' : 'agg'
+      this.isServiceSpecific ? requestBody.eserviceId + '/agg' : 'agg'
     }/book?srcSystem=BETA`;
     return this.http
       .post<SmevBookResponseInterface>(path, requestBody, { withCredentials: true })
@@ -43,12 +44,9 @@ export class Smev3TimeSlotsRestService {
       );
   }
 
-  public cancelSlot(
-    requestBody: BookTimeSlotReq,
-    isServiceSpecific?: boolean,
-  ): Observable<CancelSlotResponseInterface> {
+  public cancelSlot(requestBody: BookTimeSlotReq): Observable<CancelSlotResponseInterface> {
     const path = `${this.urlPrefix}/${
-      isServiceSpecific ? requestBody.eserviceId + '/agg' : 'agg'
+      this.isServiceSpecific ? requestBody.eserviceId + '/agg' : 'agg'
     }/cancel`;
     return this.http.post<CancelSlotResponseInterface>(path, requestBody, {
       withCredentials: true,
