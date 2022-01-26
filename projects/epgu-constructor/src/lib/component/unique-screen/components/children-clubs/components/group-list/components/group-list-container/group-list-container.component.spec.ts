@@ -107,13 +107,4 @@ describe('GroupListContainerComponent', () => {
       expect(component.filtersCount$$.getValue()).toBe(4);
     });
   });
-
-  describe('search', () => {
-    it('should reinit list', () => {
-      const spy = jest.spyOn(component, 'init');
-      component.search('тестик');
-
-      expect(spy).toBeCalled();
-    });
-  });
 });
