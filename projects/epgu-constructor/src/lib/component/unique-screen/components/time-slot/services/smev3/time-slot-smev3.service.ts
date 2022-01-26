@@ -68,6 +68,7 @@ export class TimeSlotSmev3Service {
   store$ = combineLatest([
     this.smev3.value$,
     this.smev3.config$,
+    this.smev3.isServiceSpecific$,
     this.smev3.ignoreRootParams$,
     this.smev3.timeSlotRequestAttrs$,
     this.requestListParams$$.pipe(filter((value) => value !== undefined)),
@@ -77,16 +78,20 @@ export class TimeSlotSmev3Service {
     tap(() => this.calendar.isVisibleDays$$.next(true)),
     tap(() => this.state.startLoaded$$.next(false)),
     switchMap(
-      ([data, config, ignoreRootParams, attributes, params]: [
+      ([data, config, isServiceSpecific, ignoreRootParams, attributes, params]: [
         TimeSlotValueInterface,
         TimeSlotsApiItem,
+        boolean,
         string[],
         TimeSlotAttribute[],
         Partial<TimeSlotRequest>,
         null,
       ]) =>
         this.api
-          .getList(this.createRequest(data, config, ignoreRootParams, attributes, params))
+          .getList(
+            this.createRequest(data, config, ignoreRootParams, attributes, params),
+            isServiceSpecific,
+          )
           .pipe(
             catchError(() => {
               this.calendar.isVisibleDays$$.next(false);
@@ -174,16 +179,19 @@ export class TimeSlotSmev3Service {
     concatMap(({ slotList, result }) =>
       iif(
         () => slotList.length > 0,
-        combineLatest([this.smev3.value$, this.smev3.config$]).pipe(
+        combineLatest([this.smev3.value$, this.smev3.config$, this.smev3.isServiceSpecific$]).pipe(
           take(1),
-          concatMap(([data, config]) =>
+          concatMap(([data, config, isServiceSpecific]) =>
             forkJoin(
               slotList.map(({ bookId }) =>
                 this.api
-                  .cancel({
-                    bookId,
-                    eserviceId: (data.eserviceId as string) || config.eserviceId,
-                  })
+                  .cancel(
+                    {
+                      bookId,
+                      eserviceId: (data.eserviceId as string) || config.eserviceId,
+                    },
+                    isServiceSpecific,
+                  )
                   .pipe(catchError((err) => of(err))),
               ),
             ).pipe(
@@ -227,6 +235,7 @@ export class TimeSlotSmev3Service {
         this.smev3.waitingTimeExpired$,
         this.smev3.value$,
         this.smev3.config$,
+        this.smev3.isServiceSpecific$,
         this.smev3.department$,
         this.smev3.attributeNameWithAddress$,
         this.smev3.ignoreRootParams$,
@@ -241,6 +250,7 @@ export class TimeSlotSmev3Service {
             waitingTimeExpired,
             value,
             config,
+            isServiceSpecific,
             department,
             attributeNameWithAddress,
             ignoreRootParams,
@@ -252,6 +262,7 @@ export class TimeSlotSmev3Service {
             boolean,
             TimeSlotValueInterface,
             TimeSlotsApiItem,
+            boolean,
             DepartmentInterface,
             string,
             string[],
@@ -273,6 +284,7 @@ export class TimeSlotSmev3Service {
                   attributes,
                   params,
                 ),
+                isServiceSpecific,
               )
               .pipe(
                 catchError((err) => {
