@@ -17,6 +17,7 @@ import {
   UploadedFile,
 } from '../../../../../core/services/terra-byte-api/terra-byte-api.types';
 import { BehaviorSubject, of, timer } from 'rxjs';
+import { ForTestsOnlyModule } from '../../../../../core/for-tests-only.module';
 
 const createUploadedFileMock = (options: Partial<TerraUploadFileOptions> = {}): UploadedFile => {
   return {
@@ -76,15 +77,7 @@ describe('UploaderProcessService', () => {
   let testNumber = 5;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
-        UploaderProcessService,
-        { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
-        { provide: UploaderStoreService, useClass: UploaderStoreServiceStub },
-        { provide: UploaderManagerService, useClass: UploaderManagerServiceStub },
-        { provide: UploaderStatService, useClass: UploaderStatServiceStub },
-        { provide: UploaderValidationService, useClass: UploaderValidationServiceStub },
-      ],
+      imports: [HttpClientTestingModule, ForTestsOnlyModule],
     });
   });
 
