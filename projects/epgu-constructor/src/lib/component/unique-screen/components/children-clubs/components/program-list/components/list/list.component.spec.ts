@@ -61,9 +61,8 @@ describe('ListComponent', () => {
       element.offsetHeight = 20;
       element.scrollHeight = 30;
       programListService.autoScroll$$.next(true);
-      programListService.isFinish$$.next(false);
-      programListService.fullLoading$$.next(false);
-      programListService.loading$$.next(false);
+      programListService.isFinished.next(false);
+      programListService.isLoading.next(false);
       component.loadPercentScroll = 99;
     });
 
@@ -85,7 +84,7 @@ describe('ListComponent', () => {
     });
 
     it('should return if isFinish', () => {
-      programListService.isFinish$$.next(true);
+      programListService.isFinished.next(true);
       const spy = jest.spyOn(component.addItemsEvent, 'emit');
 
       component.handleScroll(element);
@@ -94,7 +93,7 @@ describe('ListComponent', () => {
     });
 
     it('should return if fullLoading', () => {
-      programListService.isFinish$$.next(true);
+      programListService.isFinished.next(true);
       const spy = jest.spyOn(component.addItemsEvent, 'emit');
 
       component.handleScroll(element);
@@ -103,7 +102,7 @@ describe('ListComponent', () => {
     });
 
     it('should return if Loading', () => {
-      programListService.isFinish$$.next(true);
+      programListService.isFinished.next(true);
       const spy = jest.spyOn(component.addItemsEvent, 'emit');
 
       component.handleScroll(element);

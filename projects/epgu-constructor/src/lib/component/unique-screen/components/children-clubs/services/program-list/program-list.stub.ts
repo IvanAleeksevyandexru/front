@@ -12,23 +12,15 @@ export class ProgramListServiceStub {
     return this.fullLoading$$.getValue();
   }
 
-  public loading$$ = new BehaviorSubject<boolean>(false);
+  public isLoading = new BehaviorSubject<boolean>(false);
 
-  public loading$ = this.loading$$.asObservable();
-
-  public get loading(): boolean {
-    return this.loading$$.getValue();
-  }
+  public isLoading$ = this.isLoading.asObservable();
 
   public page$$ = new BehaviorSubject<number>(0);
 
-  public isFinish$$ = new BehaviorSubject<boolean>(false);
+  public isFinished = new BehaviorSubject<boolean>(false);
 
-  public isFinish$ = this.isFinish$$.asObservable();
-
-  public get isFinish(): boolean {
-    return this.isFinish$$.getValue();
-  }
+  public isFinished$ = this.isFinished.asObservable();
 
   public pageSize: number;
 
@@ -63,4 +55,10 @@ export class ProgramListServiceStub {
   public load$: Observable<null> = of(null);
 
   public selectProgram = (uuid: string) => of(uuid);
+
+  public subscribeOnFiltersChange(): void {}
+
+  get disableAutoscroll(): boolean {
+    return this.isFinished.getValue() || this.isLoading.getValue();
+  }
 }

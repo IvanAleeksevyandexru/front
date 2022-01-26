@@ -17,8 +17,8 @@ import { ProgramListService } from '../../../../services/program-list/program-li
 export class ListComponent {
   @Output() addItemsEvent = new EventEmitter<string>();
 
-  loading$ = this.programListService.loading$;
-  isShowButton$ = this.programListService.isFinish$.pipe(map((status) => !status));
+  loading$ = this.programListService.isLoading$;
+  isShowButton$ = this.programListService.isFinished$.pipe(map((status) => !status));
 
   loadPercentScroll = 80;
 
@@ -34,9 +34,7 @@ export class ListComponent {
       !this.programListService.autoScroll ||
       scrollElement.clientHeight === scrollElement.scrollHeight ||
       this.getScrollPosition(scrollElement) < this.loadPercentScroll ||
-      this.programListService.isFinish ||
-      this.programListService.fullLoading ||
-      this.programListService.loading
+      this.programListService.disableAutoscroll
     ) {
       return;
     }
