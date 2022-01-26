@@ -24,6 +24,7 @@
 * Добавлены clarifications для MvdGias [EPGUCORE-86017]
 * Добавлена поддержка ConfirmCode в errorModalWindow [EPGUCORE-85581]
 * Добавлена блокировка кнопки "Продолжить" пока идет загрузка файлов [EPGUCORE-85133]
+
 ### Refactor
 
 * Миграция c Angular 12.2.5 на Angular 13.1.1 [EPGUCORE-81636]
