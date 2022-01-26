@@ -20,6 +20,9 @@
 * Добавлена поддержка новых иконок в PhotoUploadComponent [EPGUCORE-84494]
 * Добавлен управляющий флаг error.hideTraceId для скрытия/показа traceId в errorModalWindow [EPGUCORE-84975]
 * Добавлены новые иконки [EPGUCORE-85096]
+* Добавлены clarifications для DateInput [EPGUCORE-86015]
+* Добавлены clarifications для MvdGias [EPGUCORE-86017]
+* Добавлена поддержка ConfirmCode в errorModalWindow [EPGUCORE-85581]
 
 ### Refactor
 
@@ -35,6 +38,7 @@
 * Оптимизация: рефактор ApiService из children-clubs в КФ [EPGUCORE-84530]
 * Оптимизация: упразднен ContentModal в пользу ConfirmationModal из children-clubs в КФ [EPGUCORE-84534]
 * Улучшение сборки: изменен принцип генерации кэша для gitlab-ci [EPGUCORE-85542]
+* Оптимизация: рефактор сервисов GroupListService и ProgramListService [EPGUCORE-85313]
 
 ### Bug Fixes
 
@@ -62,6 +66,8 @@
 * Поправлена работа шторки карты для айфона [EPGUCORE-85433]
 * Поправлена генерация mnemonic у файлов из suggests в FileUploadItemComponent [EPGUCORE-85706]
 * Поправлено отображание ошибок валидации при автокомплите [EPGUCORE-80775]
+* Откат фичи с raw-loader иконок для починки продуктовой сборки [EPGUCORE-86260]
+* Исправлен дизайн для ошибок в ConfirmPersonalUserEmail [EPGUCORE-85793]
 
 ### Tests
 
