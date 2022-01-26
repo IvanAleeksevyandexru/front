@@ -14,7 +14,6 @@ import {
   createDownloadEvent,
   BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import {
   CancelAction,
   ErrorActions,
@@ -25,7 +24,6 @@ import {
   viewableFileTypes,
 } from '../../../file-upload/data';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
-
 import { iconsTypes, SuggestAction } from '../../data';
 
 @Component({
@@ -87,15 +85,15 @@ export class UploaderManagerItemComponent extends BaseComponent {
   fileItem: FileItem;
 
   statusText = FileItemStatusText;
-  basePath = `${this.config.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
+  basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
   errorIcon = 'Error';
 
   iconsType = iconsTypes;
 
   constructor(
-    private teraService: TerraByteApiService,
-    public config: ConfigService,
+    public configService: ConfigService,
     public deviceDetector: DeviceDetectorService,
+    private teraService: TerraByteApiService,
     private smu: SmuEventsService,
   ) {
     super();
