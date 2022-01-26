@@ -41,7 +41,7 @@
     width: 100%;
     position: relative;
 
-    &::ng-deep  svg {
+    & > img {
       width: 100%;
     }
   }

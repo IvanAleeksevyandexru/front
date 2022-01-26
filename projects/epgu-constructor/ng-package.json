@@ -9,8 +9,7 @@
     "@alyle/ui",
     "@tanker/file-ponyfill",
     "node-fetch",
-    "os",
-    "raw-loader"
+    "os"
   ],
   "lib": {
     "entryFile": "src/public-api.ts",
