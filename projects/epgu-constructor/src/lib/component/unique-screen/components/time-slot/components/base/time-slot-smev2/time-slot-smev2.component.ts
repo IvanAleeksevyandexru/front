@@ -11,16 +11,12 @@ import {
 import { Observable, Subscription } from 'rxjs';
 import { BaseTimeSlotComponent } from '../base-time-slot.component';
 import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
-
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
-
 import { TimeSlotSmev2Service } from '../../../services/smev2/time-slot-smev2.service';
-
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ActionService } from '../../../../../../../shared/directives/action/action.service';
 import { getConfirmModalParams, templateList } from './data';
 import { Slot } from '../../../typings';
-
 import { TimeSlotErrorService } from '../../../services/error/time-slot-error.service';
 import { LockProvider } from '../../../../../../../shared/components/calendar/typings';
 

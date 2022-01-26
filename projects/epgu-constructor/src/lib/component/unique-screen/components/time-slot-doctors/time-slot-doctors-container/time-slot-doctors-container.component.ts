@@ -78,6 +78,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
 
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
+  isServiceSpecific = this.screenService.component?.attrs?.isServiceSpecific || false;
 
   slotsLoadingStatus$$ = new BehaviorSubject<boolean>(false);
   doctorWasChosen$$ = new BehaviorSubject<boolean>(false);
@@ -375,7 +376,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
 
   bookTimeSlot(): void {
     this.inBookingProgress = true;
-    this.timeSlotDoctorService.checkBooking(this.currentSlot).subscribe(
+    this.timeSlotDoctorService.checkBooking(this.currentSlot, this.isServiceSpecific).subscribe(
       (response) => {
         this.inBookingProgress = false;
         if (this.timeSlotDoctorService.hasError()) {
