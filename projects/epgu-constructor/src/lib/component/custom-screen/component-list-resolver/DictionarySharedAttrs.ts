@@ -1,5 +1,6 @@
 import {
   Add,
+  Clarifications,
   ComponentDictionaryFilterDto,
   ComponentFilterDto,
   CustomComponentRefRelation,
@@ -58,6 +59,8 @@ export default class DictionarySharedAttrs extends GenericAttrs {
 
   readonly lookupFilterPath: LookupFilterPath;
 
+  readonly clarifications: Clarifications;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.dictionaryType = attrs.dictionaryType;
@@ -77,6 +80,7 @@ export default class DictionarySharedAttrs extends GenericAttrs {
     this.dictionaryList = attrs.dictionaryList;
     this.mappingParams = attrs.mappingParams;
     this.lookupFilterPath = attrs.lookupFilterPath;
+    this.clarifications = attrs.clarifications;
   }
 
   public isLoadingNeeded(): boolean {
