@@ -1,6 +1,6 @@
 # Release Notes
 
-## [399.1.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.0.0) (2022-01-25)
+## [399.1.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.1.0) (2022-01-25)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -34,6 +34,7 @@
 * Оптимизация: рефактор DictionaryService из children-clubs в КФ [EPGUCORE-84528]
 * Оптимизация: рефактор ApiService из children-clubs в КФ [EPGUCORE-84530]
 * Оптимизация: упразднен ContentModal в пользу ConfirmationModal из children-clubs в КФ [EPGUCORE-84534]
+* Улучшение сборки: изменен принцип генерации кэша для gitlab-ci [EPGUCORE-85542]
 
 ### Bug Fixes
 
@@ -59,6 +60,8 @@
 * Поправлены стили для списков, если они находятся внутри background-white [EPGUCORE-83336]
 * Поправлены шрифты woff2 для корректной работы в Safaria [EPGUCORE-85708]
 * Поправлена работа шторки карты для айфона [EPGUCORE-85433]
+* Поправлена генерация mnemonic у файлов из suggests в FileUploadItemComponent [EPGUCORE-85706]
+* Поправлено отображание ошибок валидации при автокомплите [EPGUCORE-80775]
 
 ### Tests
 

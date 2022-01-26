@@ -29,7 +29,7 @@ import {
 import { FileItem, FileItemError, FileItemStatus } from '../../../file-upload/data';
 import { FilesCollection, ViewerInfo } from '../../data';
 import { OutputHtmlComponent } from '../../../output-html/output-html.component';
-import { ComponentDto } from 'projects/epgu-constructor-types/src/base';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { of } from 'rxjs';
 import { HelperService } from '@epgu/ui/services/helper';
 
