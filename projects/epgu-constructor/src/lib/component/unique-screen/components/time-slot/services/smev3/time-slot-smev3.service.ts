@@ -49,11 +49,9 @@ import {
   TimeSlotValueInterface,
   TIMEZONE_STR_OFFSET,
 } from '../../typings';
-
 import { Smev3RestApiService } from '../api/smev3/smev3-rest-api.service';
 import { TimeSlotStateService } from '../state/time-slot-state.service';
 import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.service';
-
 import { TimeSlotErrorService } from '../error/time-slot-error.service';
 import { TimeSlotCalendarService } from '../calendar/time-slot-calendar.service';
 

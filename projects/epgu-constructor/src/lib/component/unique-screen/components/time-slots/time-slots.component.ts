@@ -65,6 +65,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   data$: Observable<DisplayDto> = this.screenService.display$;
   slotsNotFoundTemplate = this.screenService.component.attrs?.slotsNotFoundTemplate || null;
   isSmev2 = this.screenService.component.attrs?.isSmev2 || false;
+  isServiceSpecific = this.screenService.component?.attrs?.isServiceSpecific || false;
 
   public date: Date = null;
   public label: string;
@@ -422,7 +423,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   public bookTimeSlot(): void {
     this.inProgress = true;
-    this.timeSlotsService.checkBooking(this.currentSlot).subscribe(
+    this.timeSlotsService.checkBooking(this.currentSlot, this.isServiceSpecific).subscribe(
       (response) => {
         if (this.timeSlotsService.hasError()) {
           this.errorMessage = this.timeSlotsService.getErrorMessage();
