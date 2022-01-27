@@ -46,6 +46,8 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
   private readonly routeNumber: string = this.route.snapshot.queryParamMap.get('routeNumber');
   private readonly formId: string = this.router.url?.split('/').pop().split('?').shift();
 
+  private hasIframe: boolean;
+
   constructor(
     public route: ActivatedRoute,
     public cardsFormsService: CardsFormsService,
@@ -57,43 +59,55 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.document.querySelector('.main-container')?.classList.add('new-sf-player');
-    const params = new GetServiceRequest(this.passportId, this.targetId, false, false, true);
-    this.isEmbedded = this.cardsFormsService.checkIsEmbedded(this.route.snapshot.data);
-    this.locationService.savedDetectRegion$
-      .pipe(
-        filter((region) => region !== null),
-        take(1),
-        switchMap((data) => {
-          this.region = data;
-          this.loadService.attributes.selectedRegion = this.region.code;
-          return this.cardsFormsService.getService(params).pipe(
-            filter((service) => service !== null),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            switchMap(
-              (service): ObservableInput<any> => {
-                this.service = service;
-                return this.checkPermissionsAndRegion();
-              },
-            ),
-          );
-        }),
-      )
-      .subscribe(
-        (res: [Array<ServicePermission>, RegionServiceCheck]) => {
-          if (res[0] && res[0].length) {
-            [[this.permissionData]] = res;
-          } else {
-            [, this.regionServiceCheck] = res;
-            this.findParamsToNewSf();
-          }
-        },
-        (error) => {
-          if (error.status === 404) {
-            window.location.href = `${this.loadService.config.betaUrl}404`;
-          }
-        },
-      );
+    this.hasIframe = (window.self !== window.top);
+    if(!this.hasIframe) {
+      this.document.querySelector('.main-container')?.classList.add('new-sf-player');
+      const params = new GetServiceRequest(this.passportId, this.targetId, false, false, true);
+      this.isEmbedded = this.cardsFormsService.checkIsEmbedded(this.route.snapshot.data);
+      this.locationService.savedDetectRegion$
+        .pipe(
+          filter((region) => region !== null),
+          take(1),
+          switchMap((data) => {
+            this.region = data;
+            this.loadService.attributes.selectedRegion = this.region.code;
+            return this.cardsFormsService.getService(params).pipe(
+              filter((service) => service !== null),
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              switchMap(
+                (service): ObservableInput<any> => {
+                  this.service = service;
+                  return this.checkPermissionsAndRegion();
+                },
+              ),
+            );
+          }),
+        )
+        .subscribe(
+          (res: [Array<ServicePermission>, RegionServiceCheck]) => {
+            if (res[0] && res[0].length) {
+              [[this.permissionData]] = res;
+            } else {
+              [, this.regionServiceCheck] = res;
+              this.findParamsToNewSf();
+            }
+          },
+          (error) => {
+            if (error.status === 404) {
+              window.location.href = `${this.loadService.config.betaUrl}404`;
+            }
+          },
+        );
+    } else {
+      if (this.hasIframe) {
+        window.parent.postMessage('init');
+        if (window.addEventListener) {
+          window.addEventListener('message', this.handleMessage.bind(this), false);
+        } else if (window['attachEvent']) {
+          window['attachEvent']('onmessage', this.handleMessage.bind(this));
+        }
+      }
+    }
   }
 
   public ngOnDestroy(): void {
@@ -222,5 +236,12 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
       return { id: targetState.id, title: targetState.title };
     }
     return null;
+  }
+
+  private handleMessage(event: MessageEvent<ServerFormData>): void {
+    if(typeof event.data === 'object' && 'serviceId' in event.data && 'targetId' in event.data) {
+      this.newSfService = event.data;
+      this.checkInProgress = false;
+    }
   }
 }

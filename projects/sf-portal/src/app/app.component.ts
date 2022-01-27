@@ -19,6 +19,13 @@ import { MetaTagGeneratorService } from './services/meta-tag-generator/meta-tag-
 export class AppComponent implements OnInit {
   public loaded = false;
   public isServer = isPlatformServer(this.platformId);
+  public get hasIframe(): boolean {
+    try {
+      return this.window.self !== this.window.top;
+    } catch (e) {
+      return true;
+    }
+  }
 
   constructor(
     public router: Router,
