@@ -1,6 +1,6 @@
 {
   "name": "sf-portal",
-  "version": "397.1.0",
+  "version": "398.13.0",
   "private": true,
   "scripts": {
     "build": "cd ../../ && ng build sf-portal --prod",

@@ -127,6 +127,7 @@ type IsNeedToCheckGIBDDPayment = boolean;
 type IsNeedToGroupErrors = boolean;
 type IsSelectButtonHidden = boolean;
 type IsSmev2 = boolean;
+type IsServiceSpecific = boolean;
 type KeepVariables = boolean;
 type Label = string;
 type LabelHint = string;
@@ -280,6 +281,7 @@ export interface ComponentAttrsDto {
   isNeedToGroupErrors?: IsNeedToGroupErrors;
   isSelectButtonHidden?: IsSelectButtonHidden;
   isSmev2?: IsSmev2;
+  isServiceSpecific?: IsServiceSpecific;
   keepVariables?: KeepVariables;
   label?: Label;
   labelHint?: LabelHint;
