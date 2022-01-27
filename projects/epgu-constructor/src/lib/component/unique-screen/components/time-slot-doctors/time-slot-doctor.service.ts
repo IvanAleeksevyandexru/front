@@ -10,9 +10,7 @@ import {
   SlotInterface,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { get } from 'lodash';
-
 import { ScreenService } from '../../../../screen/screen.service';
 import { Smev3TimeSlotsRestService } from '../time-slots/smev3-time-slots-rest.service';
 import {

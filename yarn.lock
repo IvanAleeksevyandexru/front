@@ -2817,21 +2817,6 @@
     "@babel/runtime-corejs3" "^7.9.0"
     "@tanker/global-this" "2.6.3"
 
-"@tanker/file-ponyfill@^2.6.3":
-  version "2.26.0"
-  resolved "https://registry.yarnpkg.com/@tanker/file-ponyfill/-/file-ponyfill-2.26.0.tgz#05db151e0e659994e16f167ad733aef04540ccf7"
-  integrity sha512-QmIF0GXl/prIFLWSq3MmeLE9PKDUh3H3IixEwgQdSYrNeBh/vnIxvbU+CMCyl3tDW2XNxmMD8eY66BBiNCH78g==
-  dependencies:
-    "@tanker/global-this" "2.26.0"
-    tslib "^2.3.1"
-
-"@tanker/global-this@2.26.0":
-  version "2.26.0"
-  resolved "https://registry.yarnpkg.com/@tanker/global-this/-/global-this-2.26.0.tgz#96e473f7f540898e653dccfe20e89c305d371145"
-  integrity sha512-qIbOVHim7Rw/pxXkhK1LA/bZSsCnewXWWa7/9Oz2K2gGl3yO/GhlixWxpw82trEF6yil9osmnQNgPna3rgENrw==
-  dependencies:
-    tslib "^2.3.1"
-
 "@tanker/global-this@2.6.3":
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/@tanker/global-this/-/global-this-2.6.3.tgz#e163ea798b4918bb4ce202294674f05b02459161"

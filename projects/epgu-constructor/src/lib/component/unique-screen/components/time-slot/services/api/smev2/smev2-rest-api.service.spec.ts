@@ -36,10 +36,11 @@ describe('Smev2RestApiService', () => {
       expect(service.hasError({ errorDetail: detail })).toBe(true);
     });
     it('should be getList', () => {
+      const url = `${service.urlPrefix}/agg/${service.additionalPath}`;
       service.getList({}).subscribe((v) => {
         expect(v).toEqual([]);
       });
-      httpTestingController.expectOne(service.path).flush({ items: [] });
+      httpTestingController.expectOne(url).flush({ items: [] });
     });
   });
 });
