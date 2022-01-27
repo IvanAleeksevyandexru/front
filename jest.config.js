@@ -12,7 +12,6 @@ module.exports = {
     '@ifc/common': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js',
     '@epgu/epgu-constructor-ui-kit': '<rootDir>/projects/epgu-constructor-ui-kit/src/public-api',
     '@epgu/epgu-constructor-types': '<rootDir>/projects/epgu-constructor-types/src',
-    '^!raw-loader!.*': 'jest-raw-loader',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   coverageReporters: ['text', 'cobertura', 'html'],

@@ -26,6 +26,11 @@ export class TimeSlotSmev3StateService {
     map((value) => value ?? []),
   );
 
+  isServiceSpecific$: Observable<boolean> = this.screenService.component$.pipe(
+    pluck('attrs'),
+    pluck('isServiceSpecific'),
+  );
+
   slotsNotFoundTemplate$: Observable<SlotsNotFoundTemplate> = this.screenService.component$.pipe(
     pluck('attrs'),
     pluck('slotsNotFoundTemplate'),

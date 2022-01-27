@@ -12,7 +12,7 @@ export class GroupListServiceStub {
 
   isFinish$$ = new BehaviorSubject<boolean>(false);
 
-  isFinish$ = this.isFinish$$.asObservable();
+  isFinished$ = this.isFinish$$.asObservable();
 
   pageSize = 10;
 

@@ -47,10 +47,7 @@ export class Smev3TimeSlotsRestServiceStub {
     });
   }
 
-  public cancelSlot(requestBody: {
-    eserviceId: string;
-    bookId: string;
-  }): Observable<CancelSlotResponseInterface> {
+  public cancelSlot(requestBody?: BookTimeSlotReq): Observable<CancelSlotResponseInterface> {
     return of({
       bookId: '',
       error: {

@@ -22,7 +22,6 @@ import {
 } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import { BaseTimeSlotComponent } from '../base-time-slot.component';
-
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
 import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
 import { ScreenService } from '../../../../../../../screen/screen.service';
@@ -195,6 +194,7 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
     ),
   );
   isVisibleDays$ = this.calendar.isVisibleDays$;
+  isServiceSpecific = this.screenService.component?.attrs?.isServiceSpecific || false;
 
   constructor(
     public state: TimeSlotStateService,

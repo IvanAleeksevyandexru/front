@@ -1,79 +1,37 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { Group, FindOptionsGroup } from '../../models/children-clubs.types';
-import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, pluck } from 'rxjs/operators';
+import { Group, FindOptionsGroup, VendorType } from '../../models/children-clubs.types';
+import BaseListService from '../base-list.service';
+import { isEqual } from 'lodash';
+import { Injectable, Injector } from '@angular/core';
 
 @Injectable()
-export class GroupListService {
-  loading$$ = new BehaviorSubject<boolean>(true);
+export class GroupListService extends BaseListService<Group, FindOptionsGroup> {
+  protected refetchSubscribtion = this.stateService.state$.pipe(
+    distinctUntilChanged((prev, next) => isEqual(prev?.groupFilters, next?.groupFilters)),
+    pluck('groupFilters'),
+  );
 
-  loading$ = this.loading$$.asObservable();
+  protected _args: { uuid: string; vendor: VendorType };
 
-  page$$ = new BehaviorSubject<number>(0);
-
-  isFinish$$ = new BehaviorSubject<boolean>(false);
-
-  isFinish$ = this.isFinish$$.asObservable();
-
-  pageSize = 10;
-
-  allData$$ = new BehaviorSubject<Group[]>([]);
-
-  data$$ = new BehaviorSubject<Group[]>([]);
-
-  data$ = this.data$$.asObservable();
-
-  get data(): Group[] {
-    return this.data$$.getValue();
+  constructor(protected injector: Injector) {
+    super(injector);
   }
 
-  constructor(private dictionaryApiService: DictionaryApiService) {}
-
-  public getGroupList(uuid: string, groupFilters: FindOptionsGroup): Observable<Group[]> {
-    if (groupFilters?.query?.length === 0) {
-      delete groupFilters.query;
-    }
-    return this.dictionaryApiService.getGroupList(uuid, groupFilters).pipe(
-      catchError((_) => of([])),
-      tap((data) => this.setGroupList(data)),
-      tap(() => this.loading$$.next(false)),
-    );
+  protected fetchData(filters: FindOptionsGroup): Observable<Group[]> {
+    const { uuid } = this._args;
+    return this.apiService.getGroupList(uuid, filters);
   }
 
-  // TODO: сервисы GroupListService и ProgramListService во многом похожи, подумать над объединением
-  public next(): void {
-    const page = this.page$$.getValue() + 1;
-    const data = this.allData$$.getValue();
-    const size = page * this.pageSize;
-    const { length } = data;
-    let result: Group[] = [];
-    if (size > length) {
-      if (size - length > 0) {
-        result = data.slice(size - this.pageSize, length);
-      }
-      this.isFinish$$.next(true);
+  protected processFilters(filters: FindOptionsGroup): FindOptionsGroup {
+    if (this._args.vendor === VendorType.inlearno) {
+      delete filters?.pfdoPayments;
     } else {
-      result = data.slice(size - this.pageSize, size);
+      delete filters?.inlearnoPayments;
     }
-    this.data$$.next(this.data$$.getValue().concat(result));
-    this.page$$.next(page);
-  }
-
-  public reset(): void {
-    this.loading$$.next(true);
-    this.isFinish$$.next(false);
-    this.resetPagination();
-    this.data$$.next([]);
-    this.allData$$.next([]);
-  }
-
-  private setGroupList(groupList: Group[]): void {
-    this.allData$$.next(groupList);
-    this.next();
-  }
-
-  private resetPagination(): void {
-    this.page$$.next(0);
+    if (filters?.query?.length === 0) {
+      delete filters.query;
+    }
+    return filters;
   }
 }

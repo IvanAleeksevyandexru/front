@@ -6,14 +6,12 @@ import { MockComponent, MockModule } from 'ng-mocks';
 import { isBoolean } from 'lodash';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
-
-import { ConfigService, ConfigServiceStub, IconsModule } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
 import { ButtonComponent } from '@epgu/ui/base';
 import { SliderComponent } from '../slider/slider.component';
 import { PhotoEditorModalComponent } from './photo-editor-modal.component';
-import { OutputHtmlComponent } from '../../../output-html/output-html.component';
 import { imageErrorText } from '../../upload-and-edit-photo-form.constant';
-import { CropTypes } from 'projects/epgu-constructor-types/src/base';
+import { CropTypes } from '@epgu/epgu-constructor-types';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -28,6 +26,7 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+
 describe('PhotoEditorModalComponent', () => {
   let component: PhotoEditorModalComponent;
   let fixture: ComponentFixture<PhotoEditorModalComponent>;
@@ -38,9 +37,8 @@ describe('PhotoEditorModalComponent', () => {
         PhotoEditorModalComponent,
         MockComponent(SliderComponent),
         MockComponent(ButtonComponent),
-        MockComponent(OutputHtmlComponent),
       ],
-      imports: [MockModule(LyImageCropperModule), IconsModule],
+      imports: [MockModule(LyImageCropperModule)],
       providers: [
         { provide: ConfigService, useClass: ConfigServiceStub },
         [LyTheme2],
@@ -134,6 +132,7 @@ describe('PhotoEditorModalComponent', () => {
     it('should be set cropped size', () => {
       component.onResized({ newWidth: 100, oldWidth: 50, newHeight: 100, oldHeight: 50 });
       expect(component.isPhoneSize).toBeFalsy();
+      expect(component.maskSrc).toBe('/assets/icons/svg/photo-mask-desktop.svg');
     });
 
     it('should be fit image to crop area', () => {
