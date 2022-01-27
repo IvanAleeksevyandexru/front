@@ -4,6 +4,7 @@ import { RouterModule, Routes, UrlMatchResult, UrlSegment } from '@angular/route
 import { NewSfPlayerComponent } from './components/new-sf-player/new-sf-player.component';
 import { AuthGuard } from './interceptors/auth/auth.guard';
 import { EmbeddedService } from './components/new-sf-player/embedded.service';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export function routeMatcherByRegex(
   url: UrlSegment[],
@@ -119,7 +120,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/404',
+    component: NotFoundComponent,
   },
 ];
 
