@@ -137,25 +137,20 @@ export class TimeSlotsService {
     return this.book(selectedSlot);
   }
 
-  book(
-    selectedSlot: SlotInterface,
-    isServiceSpecific?: boolean,
-  ): Observable<SmevBookResponseInterface> {
+  book(selectedSlot: SlotInterface): Observable<SmevBookResponseInterface> {
     this.errorMessage = null;
-    return this.smev3TimeSlotsRestService
-      .bookTimeSlot(this.getBookRequest(selectedSlot), isServiceSpecific)
-      .pipe(
-        tap((response) => {
-          this.bookedSlot = selectedSlot;
-          this.bookId = response.bookId;
-          this.activeMonthNumber = selectedSlot.slotTime.getMonth();
-          this.activeYearNumber = selectedSlot.slotTime.getFullYear();
-        }),
-        catchError((error: SmevBookResponseInterface) => {
-          this.errorMessage = error.error.errorDetail.errorMessage;
-          return throwError(error);
-        }),
-      );
+    return this.smev3TimeSlotsRestService.bookTimeSlot(this.getBookRequest(selectedSlot)).pipe(
+      tap((response) => {
+        this.bookedSlot = selectedSlot;
+        this.bookId = response.bookId;
+        this.activeMonthNumber = selectedSlot.slotTime.getMonth();
+        this.activeYearNumber = selectedSlot.slotTime.getFullYear();
+      }),
+      catchError((error: SmevBookResponseInterface) => {
+        this.errorMessage = error.error.errorDetail.errorMessage;
+        return throwError(error);
+      }),
+    );
   }
 
   isDateLocked(date: Date, areadId?: string | number): boolean {
@@ -464,20 +459,14 @@ export class TimeSlotsService {
     );
   }
 
-  private cancelSlot(
-    bookId: string,
-    isServiceSpecific?: boolean,
-  ): Observable<CancelSlotResponseInterface> {
+  private cancelSlot(bookId: string): Observable<CancelSlotResponseInterface> {
     const { eserviceId } = this.configService.timeSlots[this.timeSlotsType];
 
     return this.smev3TimeSlotsRestService
-      .cancelSlot(
-        {
-          eserviceId: (this.config.eserviceId as string) || eserviceId,
-          bookId,
-        },
-        isServiceSpecific,
-      )
+      .cancelSlot({
+        eserviceId: (this.config.eserviceId as string) || eserviceId,
+        bookId,
+      })
       .pipe(
         tap((response) => {
           if (response.error && response.error.errorDetail.errorCode !== 0) {
