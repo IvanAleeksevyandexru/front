@@ -24,6 +24,8 @@
 * Добавлены clarifications для MvdGias [EPGUCORE-86017]
 * Добавлена поддержка ConfirmCode в errorModalWindow [EPGUCORE-85581]
 * Добавлена блокировка кнопки "Продолжить" пока идет загрузка файлов [EPGUCORE-85133]
+* Добавлена поддержка isServiceSpecific для TimeSlot компонентов [EPGUCORE-86300]
+* Добавлен компонент not-found в sf-portal [EPGUCORE-85703]
 
 ### Refactor
 
@@ -69,6 +71,7 @@
 * Поправлено отображание ошибок валидации при автокомплите [EPGUCORE-80775]
 * Откат фичи с raw-loader иконок для починки продуктовой сборки [EPGUCORE-86260]
 * Исправлен дизайн для ошибок в ConfirmPersonalUserEmail [EPGUCORE-85793]
+* Даунгрейд полифила FilePonyfill для починки FileUploadItemComponent [EPGUCORE-86444]
 
 ### Tests
 
