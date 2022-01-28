@@ -72,6 +72,7 @@
 * Откат фичи с raw-loader иконок для починки продуктовой сборки [EPGUCORE-86260]
 * Исправлен дизайн для ошибок в ConfirmPersonalUserEmail [EPGUCORE-85793]
 * Даунгрейд полифила FilePonyfill для починки FileUploadItemComponent [EPGUCORE-86444]
+* Поправлено отображение балуна на картах [EPGUCORE-85732]
 
 ### Tests
 
