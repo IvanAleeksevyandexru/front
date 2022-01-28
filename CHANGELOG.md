@@ -1,6 +1,28 @@
 # Release Notes
 
-## [399.1.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.1.0) (2022-01-25)
+## [400.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.0) (2022-01-28)
+
+### BREAKING CHANGES
+
+*
+
+### Features
+
+*
+
+### Refactor
+
+* Переименованы параметры в методах ComponentsListFormService и DateRangeService [EPGUCORE-85318]
+
+### Bug Fixes
+
+*
+
+### Tests
+
+*
+
+## [399.4.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.4.0) (2022-01-28)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -73,6 +95,7 @@
 * Исправлен дизайн для ошибок в ConfirmPersonalUserEmail [EPGUCORE-85793]
 * Даунгрейд полифила FilePonyfill для починки FileUploadItemComponent [EPGUCORE-86444]
 * Поправлено отображение балуна на картах [EPGUCORE-85732]
+* Поправлен дефект, связанный с добавлением isServiceSpecific в TimeSlot [EPGUCORE-86543]
 
 ### Tests
 
@@ -90,3 +113,25 @@
 * Добавлены тесты для InterceptorUtilsService [EPGUCORE-85300]
 * Добавлены тесты PaymentSelectorComponent [EPGUCORE-85302]
 * Добавлены тесты на LogicResolver [EPGUCORE-85307]
+
+## [0.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v0.0.0) (2022-01-01)
+
+### BREAKING CHANGES
+
+*
+
+### Features
+
+*
+
+### Refactor
+
+*
+
+### Bug Fixes
+
+*
+
+### Tests
+
+*
