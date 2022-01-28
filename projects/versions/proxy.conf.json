@@ -1,0 +1,32 @@
+{
+  "/uat-service/*": {
+    "target": "http://pgu-uat-fednlb.test.gosuslugi.ru",
+    "pathRewrite": {"^/uat-service" : ""},
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/devL11-service/*": {
+    "target": "https://dev-l11.pgu2-pub.test.gosuslugi.ru",
+    "pathRewrite": {"^/devL11-service" : ""},
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/dev01-service/*": {
+    "target": "https://dev01.pgu2-pub.test.gosuslugi.ru",
+    "pathRewrite": {"^/dev01-service" : ""},
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/dev02-service/*": {
+    "target": "https://dev02.pgu2-pub.test.gosuslugi.ru",
+    "pathRewrite": {"^/dev02-service" : ""},
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/prodLike-service/*": {
+    "target": "https://prodlike.pgu2-pub.test.gosuslugi.ru",
+    "pathRewrite": {"^/prodLike-service" : ""},
+    "secure": false,
+    "changeOrigin": true
+  }
+}

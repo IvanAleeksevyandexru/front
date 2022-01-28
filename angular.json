@@ -554,7 +554,7 @@
             "index": "projects/versions/src/index.html",
             "main": "projects/versions/src/main.ts",
             "polyfills": "projects/versions/src/polyfills.ts",
-            "tsConfig": "projects/versions/tsconfig.app.json",
+            "tsConfig": "projects/versions/tsconfig.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/versions/src/favicon.ico",
@@ -606,6 +606,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "projects/versions/proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "browserTarget": "versions:build:production"
@@ -624,6 +627,16 @@
         },
         "test": {
           "builder": "@angular-builders/jest:run"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": "projects/versions/.eslintrc.js",
+            "lintFilePatterns": [
+              "projects/versions/src/**/*.ts",
+              "projects/versions/src/**/*.spec.ts"
+            ]
+          }
         }
       }
     }

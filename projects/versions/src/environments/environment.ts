@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  uatServiceApi: 'uat-service',
+  devL11ServiceApi: 'devL11-service',
+  dev01ServiceApi: 'dev01-service',
+  dev02ServiceApi: 'dev02-service',
+  prodLikeServiceApi: 'prodLike-service',
 };
 
 /*
