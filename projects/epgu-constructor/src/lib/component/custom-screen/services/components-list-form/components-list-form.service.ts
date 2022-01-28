@@ -239,13 +239,13 @@ export class ComponentsListFormService {
     return String(value).match(params);
   }
 
-  private relationMinDate(value: string | Date, params: string): boolean {
-    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
+  private relationMinDate(value: string | Date, conditionDate: string): boolean {
+    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, conditionDate);
     return this.datesToolsService.isSameOrAfter(dateLeft, dateRight);
   }
 
-  private relationMaxDate(value: string | Date, params: string): boolean {
-    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
+  private relationMaxDate(value: string | Date, conditionDate: string): boolean {
+    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, conditionDate);
     return this.datesToolsService.isSameOrBefore(dateLeft, dateRight);
   }
 
