@@ -88,6 +88,12 @@
       }
     }
   }
+  &__checkbox {
+    margin-top: -8px;
+    @include phones-down {
+      margin-top: 0;
+    }
+  }
   p.find-item {
     display: none;
   }
