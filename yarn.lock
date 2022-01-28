@@ -1870,44 +1870,43 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.6.tgz#d5e0706cf8c6acd8c6032f8d54070af261bbbb2f"
   integrity sha512-ws57AidsDvREKrZKYffXddNkyaF14iHNHm8VQnZH6t99E8gczjNN0GpvcGny0imC80yQ0tHz1xVUKk/KFQSUyA==
 
-"@epgu/children-clubs@399.1.3":
-  version "399.1.3"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/children-clubs/-/children-clubs-399.1.3.tgz#18119bb6c18f3fc2d3f5cc73df60549c200a2d65"
-  integrity sha512-blMH+rlGka9Dc8pbgkYfBqjqXmVVXFNwh514btv0dFsMu2Z/wn407urHXmw8nmmsL0slkfoSVN1OgXRp+EEyoQ==
+"@epgu/children-clubs@399.3.0":
+  version "399.3.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/children-clubs/-/children-clubs-399.3.0.tgz#0cba613a4ced57cc2ff16dd88d0ebb423b6fd4fc"
+  integrity sha512-tME1A1dQ5XmHhnn6G/LZ26SyKbVQYc/gjyM46cIFbgND25GRQxOy1jAQAc2Pev9eTkog6oc1IB1Zn8x87/9FaQ==
   dependencies:
-    "@epgu/epgu-constructor-types" "399.1.3"
-    "@epgu/epgu-constructor-ui-kit" "399.1.3"
+    "@epgu/epgu-constructor-types" "399.3.0"
+    "@epgu/epgu-constructor-ui-kit" "399.3.0"
     tslib "^2.3.1"
 
-"@epgu/epgu-constructor-types@399.1.3":
-  version "399.1.3"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-399.1.3.tgz#6328d763bd075ed8226d5f324d0666df380b1d67"
-  integrity sha512-883IvxPg5VQuShUpmDoNpOF6F3dCIb0pcBlh5/+3nA/JWPUtiDEusbi+4+xxgYcSQIzkvREmDC00PdJtr63ffg==
+"@epgu/epgu-constructor-types@399.3.0":
+  version "399.3.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-399.3.0.tgz#1c3eeae4df179be151412fb3eefb3e2a8f2de915"
+  integrity sha512-AgqfIbX+TmAnTx+MIWxtpgDa8AxcO+ewoyoM4WHRCkOS3Zsr3NNR3F6AzfT7gkuWFGVfPJzXtsXEZADBymUijw==
 
-"@epgu/epgu-constructor-ui-kit@399.1.3":
-  version "399.1.3"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-399.1.3.tgz#b2b18599061347b9174bd4991a625a7463de3fba"
-  integrity sha512-hRekB/yBZFGaPNl59nj4WfJ4wGhl/40b6YX4PjfHsnwy79MM16sgmosPYic6E1Xp3JR2pZJ3ERXcTbwkWBi0aw==
+"@epgu/epgu-constructor-ui-kit@399.3.0":
+  version "399.3.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-399.3.0.tgz#f3d0d1877dc9da8bfbe5fab2d37ad546d10d5393"
+  integrity sha512-sevohb3h4R7DmZJRvjaVmVrxD7naMKYakH0pTYdqK+UdTLI568Vs/pnbczHjj2otuDjhwUN0mral2ssll6gw7w==
   dependencies:
-    "@epgu/epgu-constructor-types" "399.1.3"
+    "@epgu/epgu-constructor-types" "399.3.0"
     "@epgu/zipkin" "0.0.3"
     ismobilejs "^1.1.1"
     tslib "^2.0.0"
     zipkin-transport-http "0.22.0"
 
-"@epgu/epgu-constructor@399.1.3":
-  version "399.1.3"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor/-/epgu-constructor-399.1.3.tgz#da81198494d6f6242bed8c379644a4119df7fde8"
-  integrity sha512-zilXyAaJGB6Ltz37J6TeCBlf667hh7CA4HzZ60EVXVcfbPH65x482DddGLdodjSDiRK/LAbUf36H2s81el4niA==
+"@epgu/epgu-constructor@399.3.0":
+  version "399.3.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor/-/epgu-constructor-399.3.0.tgz#4be1e7e17d5b16d8dd02d4c4c881f7eb9d2393b0"
+  integrity sha512-rm8LuKcwYDR+gGjwwyzEt4XPB4TXSSHLDhfTNLcbt8K5mcesHTritOuvRQ6UCuW2Gm/x+uiYbnYzvNUOwISUEg==
   dependencies:
     "@alyle/ui" "10.5.1"
-    "@epgu/epgu-constructor-types" "399.1.3"
-    "@epgu/epgu-constructor-ui-kit" "399.1.3"
+    "@epgu/epgu-constructor-types" "399.3.0"
+    "@epgu/epgu-constructor-ui-kit" "399.3.0"
     "@tanker/file-ponyfill" "2.6.3"
     ics "2.24.0"
     node-fetch "2.6.1"
     os "0.1.1"
-    raw-loader "^4.0.2"
     tslib "2.3.1"
 
 "@epgu/ui@3.0.399-1-front":
@@ -2809,6 +2808,14 @@
     angular2-text-mask "9.0.0"
     tslib "^1.10.0"
 
+"@tanker/file-ponyfill@2.26.0":
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/@tanker/file-ponyfill/-/file-ponyfill-2.26.0.tgz#05db151e0e659994e16f167ad733aef04540ccf7"
+  integrity sha512-QmIF0GXl/prIFLWSq3MmeLE9PKDUh3H3IixEwgQdSYrNeBh/vnIxvbU+CMCyl3tDW2XNxmMD8eY66BBiNCH78g==
+  dependencies:
+    "@tanker/global-this" "2.26.0"
+    tslib "^2.3.1"
+
 "@tanker/file-ponyfill@2.6.3":
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/@tanker/file-ponyfill/-/file-ponyfill-2.6.3.tgz#4ccf21ea505f7fb3610cfb06683aacdf8f15c2ea"
@@ -2816,6 +2823,13 @@
   dependencies:
     "@babel/runtime-corejs3" "^7.9.0"
     "@tanker/global-this" "2.6.3"
+
+"@tanker/global-this@2.26.0":
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/@tanker/global-this/-/global-this-2.26.0.tgz#96e473f7f540898e653dccfe20e89c305d371145"
+  integrity sha512-qIbOVHim7Rw/pxXkhK1LA/bZSsCnewXWWa7/9Oz2K2gGl3yO/GhlixWxpw82trEF6yil9osmnQNgPna3rgENrw==
+  dependencies:
+    tslib "^2.3.1"
 
 "@tanker/global-this@2.6.3":
   version "2.6.3"

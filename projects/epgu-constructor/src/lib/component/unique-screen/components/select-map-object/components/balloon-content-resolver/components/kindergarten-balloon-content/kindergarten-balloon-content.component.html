@@ -1,4 +1,4 @@
-<div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded"></div>
+<div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded && showCrossButton"></div>
 <div class="balloon-content-wrapper">
   <h6
     [ngClass]="{

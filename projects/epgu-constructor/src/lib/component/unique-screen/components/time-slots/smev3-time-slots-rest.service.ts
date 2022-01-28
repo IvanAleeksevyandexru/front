@@ -23,7 +23,7 @@ export class Smev3TimeSlotsRestService {
   constructor(
     private http: HttpClient,
     private config: ConfigService,
-    private screenService: ScreenService, // TODO: вынести из сервиса скоуп screenService
+    private screenService: ScreenService,
   ) {}
 
   public getTimeSlots(requestBody: TimeSlotReq): Observable<SmevSlotsResponseInterface> {

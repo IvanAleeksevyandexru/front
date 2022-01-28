@@ -35,6 +35,8 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
   @Input() isSelectButtonHidden = false;
   @Input() showLoader: Observable<false>;
   @Input() mapObject;
+  @Input() showCrossButton = true;
+
   public selectObject: Function;
   public objectClick: Function;
   public collapseObject: Function;

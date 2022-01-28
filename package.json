@@ -120,7 +120,7 @@
     "@ngx-translate/http-loader": "6.0.0",
     "@nicky-lenaers/ngx-scroll-to": "9.0.0",
     "@squadette/hammerjs": "^2.1.0-pre3",
-    "@tanker/file-ponyfill": "2.6.3",
+    "@tanker/file-ponyfill": "2.26.0",
     "angular-resize-event": "^2.0.0",
     "angular2-text-mask": "9.0.0",
     "classlist.js": "^1.1.20150312",
