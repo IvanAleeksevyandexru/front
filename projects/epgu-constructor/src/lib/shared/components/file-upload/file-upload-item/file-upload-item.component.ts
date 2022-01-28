@@ -83,6 +83,8 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   processingFiles = new Subject<FileList>(); // Сюда попадают файлы на загрузку
 
+  public filesDivider: boolean;
+
   processingFiles$ = this.processingFiles.pipe(
     tap(() => this.stat.resetLimits()), // Обнуляем каунтеры перебора
     tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на uploaded статус
@@ -104,6 +106,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   files = this.store.files;
   files$ = this.files.pipe(
+    tap((files) => (this.filesDivider = !!files.length)),
     concatMap((files) =>
       from(files).pipe(
         reduce<FileItem, FileResponseToBackendUploadsItem>(this.reduceChanges.bind(this), {
@@ -266,10 +269,6 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   addUpload(file: FileItem): void {
     this.process.upload(file);
-  }
-
-  isShownDivider(): boolean {
-    return this.files.getValue().length > 0 && !!this.data.label;
   }
 
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
