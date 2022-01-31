@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import FilePonyfill from '@tanker/file-ponyfill';
+import * as FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { concatMap, filter, map, reduce, takeUntil, tap } from 'rxjs/operators';
 import { Clarifications } from '@epgu/epgu-constructor-types';
@@ -83,6 +83,8 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   processingFiles = new Subject<FileList>(); // Сюда попадают файлы на загрузку
 
+  public filesDivider: boolean;
+
   processingFiles$ = this.processingFiles.pipe(
     tap(() => this.stat.resetLimits()), // Обнуляем каунтеры перебора
     tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на uploaded статус
@@ -104,6 +106,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   files = this.store.files;
   files$ = this.files.pipe(
+    tap((files) => (this.filesDivider = !!files.length)),
     concatMap((files) =>
       from(files).pipe(
         reduce<FileItem, FileResponseToBackendUploadsItem>(this.reduceChanges.bind(this), {
@@ -268,10 +271,6 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
     this.process.upload(file);
   }
 
-  isShownDivider(): boolean {
-    return this.files.getValue().length > 0 && !!this.data.label;
-  }
-
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
     this.eventBusService.emit(BusEventType.FileUploadItemValueChangedEvent, {
       uploadId: this.uploader.data.uploadId,
@@ -327,7 +326,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
   polyfillFile(file: File): File {
     const { type, lastModified, name } = file;
 
-    return new FilePonyfill([file], extToLowerCase(name), {
+    return new FilePonyfill.default([file], extToLowerCase(name), {
       type,
       lastModified,
     });

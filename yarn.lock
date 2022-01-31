@@ -1511,7 +1511,7 @@
     "@babel/helper-validator-option" "^7.12.17"
     "@babel/plugin-transform-typescript" "^7.13.0"
 
-"@babel/runtime-corejs3@^7.10.2", "@babel/runtime-corejs3@^7.9.0":
+"@babel/runtime-corejs3@^7.10.2":
   version "7.16.8"
   resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.16.8.tgz#ea533d96eda6fdc76b1812248e9fbd0c11d4a1a7"
   integrity sha512-3fKhuICS1lMz0plI5ktOE/yEtBRMVxplzRkdn6mJQ197XiY0JnrzYV0+Mxozq3JZ8SBV9Ecurmw1XsGbwOf+Sg==
@@ -1840,49 +1840,49 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.6.tgz#d5e0706cf8c6acd8c6032f8d54070af261bbbb2f"
   integrity sha512-ws57AidsDvREKrZKYffXddNkyaF14iHNHm8VQnZH6t99E8gczjNN0GpvcGny0imC80yQ0tHz1xVUKk/KFQSUyA==
 
-"@epgu/children-clubs@399.3.0":
-  version "399.3.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/children-clubs/-/children-clubs-399.3.0.tgz#0cba613a4ced57cc2ff16dd88d0ebb423b6fd4fc"
-  integrity sha512-tME1A1dQ5XmHhnn6G/LZ26SyKbVQYc/gjyM46cIFbgND25GRQxOy1jAQAc2Pev9eTkog6oc1IB1Zn8x87/9FaQ==
+"@epgu/children-clubs@399.7.0":
+  version "399.7.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/children-clubs/-/children-clubs-399.7.0.tgz#2b71e4c23d99379407af9e3ee45ae4e430ba909a"
+  integrity sha512-66urxTnOUTz2TU9nljCF35RLfRWls7hykEr4Nv5JsXKXDr1f8kBKyIUvXnusjZF1KeG6iWIgtEc5rDKnqK8rQA==
   dependencies:
-    "@epgu/epgu-constructor-types" "399.3.0"
-    "@epgu/epgu-constructor-ui-kit" "399.3.0"
+    "@epgu/epgu-constructor-types" "399.7.0"
+    "@epgu/epgu-constructor-ui-kit" "399.7.0"
     tslib "^2.3.1"
 
-"@epgu/epgu-constructor-types@399.3.0":
-  version "399.3.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-399.3.0.tgz#1c3eeae4df179be151412fb3eefb3e2a8f2de915"
-  integrity sha512-AgqfIbX+TmAnTx+MIWxtpgDa8AxcO+ewoyoM4WHRCkOS3Zsr3NNR3F6AzfT7gkuWFGVfPJzXtsXEZADBymUijw==
+"@epgu/epgu-constructor-types@399.7.0":
+  version "399.7.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-399.7.0.tgz#440cbc4e43ef8adb6bc6bc0b12b101343a94e381"
+  integrity sha512-c+XLv1j1o9kkC8m7p3DGEEruacaGLERFnCy8NzVARuxB4cWesJY4s2wqbP/aK8GwUE5S7PqBOu7YluMfFt/nCQ==
 
-"@epgu/epgu-constructor-ui-kit@399.3.0":
-  version "399.3.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-399.3.0.tgz#f3d0d1877dc9da8bfbe5fab2d37ad546d10d5393"
-  integrity sha512-sevohb3h4R7DmZJRvjaVmVrxD7naMKYakH0pTYdqK+UdTLI568Vs/pnbczHjj2otuDjhwUN0mral2ssll6gw7w==
+"@epgu/epgu-constructor-ui-kit@399.7.0":
+  version "399.7.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-399.7.0.tgz#13640548118228bd7ede79921aa6602dbd9d195c"
+  integrity sha512-ad8zSkf10CLigyNPo3vji7CSFQ5OjT5e15fVM6GHlPKFQgYIBBj7Gpz4eQ3m7erattpdKTHipZBUXrVUgngZsw==
   dependencies:
-    "@epgu/epgu-constructor-types" "399.3.0"
+    "@epgu/epgu-constructor-types" "399.7.0"
     "@epgu/zipkin" "0.0.3"
     ismobilejs "^1.1.1"
     tslib "^2.0.0"
     zipkin-transport-http "0.22.0"
 
-"@epgu/epgu-constructor@399.3.0":
-  version "399.3.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor/-/epgu-constructor-399.3.0.tgz#4be1e7e17d5b16d8dd02d4c4c881f7eb9d2393b0"
-  integrity sha512-rm8LuKcwYDR+gGjwwyzEt4XPB4TXSSHLDhfTNLcbt8K5mcesHTritOuvRQ6UCuW2Gm/x+uiYbnYzvNUOwISUEg==
+"@epgu/epgu-constructor@399.7.0":
+  version "399.7.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor/-/epgu-constructor-399.7.0.tgz#111f042ff87f72793a6cf32a69e6948a844a5614"
+  integrity sha512-c/QG2p1mmFjBiy09WCKnvc3ygaJWRR6yU9pg5S9xe/XNgV4kyKJAYrwoetWURP7c70IWORa3WX7kBAfDojtk3A==
   dependencies:
     "@alyle/ui" "10.5.1"
-    "@epgu/epgu-constructor-types" "399.3.0"
-    "@epgu/epgu-constructor-ui-kit" "399.3.0"
-    "@tanker/file-ponyfill" "2.6.3"
+    "@epgu/epgu-constructor-types" "399.7.0"
+    "@epgu/epgu-constructor-ui-kit" "399.7.0"
+    "@tanker/file-ponyfill" "2.26.0"
     ics "2.24.0"
     node-fetch "2.6.1"
     os "0.1.1"
     tslib "2.3.1"
 
-"@epgu/ui@3.0.399-1-front":
-  version "3.0.399-1-front"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.399-1-front.tgz#77b1d97d9fe63bedec918335806125812bfd31a3"
-  integrity sha512-hvyRY+tf19Xw/1ViDKOvQZxmISapakjytR+D0MPPTTp27msGRlbIe9Pop0iQs4gO2QN8xJCFuUrHWpfwx6en1g==
+"@epgu/ui@3.0.399-2-front":
+  version "3.0.399-2-front"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.399-2-front.tgz#3f12ca7d11b5ade88fa8bbab09a278d3bc4d1d24"
+  integrity sha512-NzGUWAnP4OFTu/URKUWdUKRn4H2qDZM+NXh5QNpJlf/IhxTh7NbERULZRBDa85nYYJrWpVsvPmgEJ6uhWKxWZw==
   dependencies:
     "@epgu/zipkin" "0.0.3"
     date-fns "2.24.0"
@@ -2699,14 +2699,6 @@
     "@tanker/global-this" "2.26.0"
     tslib "^2.3.1"
 
-"@tanker/file-ponyfill@2.6.3":
-  version "2.6.3"
-  resolved "https://registry.yarnpkg.com/@tanker/file-ponyfill/-/file-ponyfill-2.6.3.tgz#4ccf21ea505f7fb3610cfb06683aacdf8f15c2ea"
-  integrity sha512-ALEE9Cuh6w6pvWevq02LFi3x0BWPTijtHAjHDi6Da+vff1YSFaC1TQc3EX+fL0GwP36sj/+0ZWQ2RW9wAWP8eA==
-  dependencies:
-    "@babel/runtime-corejs3" "^7.9.0"
-    "@tanker/global-this" "2.6.3"
-
 "@tanker/global-this@2.26.0":
   version "2.26.0"
   resolved "https://registry.yarnpkg.com/@tanker/global-this/-/global-this-2.26.0.tgz#96e473f7f540898e653dccfe20e89c305d371145"
@@ -2714,6 +2706,7 @@
   dependencies:
     tslib "^2.3.1"
 
+<<<<<<< HEAD
 "@tanker/global-this@2.6.3":
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/@tanker/global-this/-/global-this-2.6.3.tgz#e163ea798b4918bb4ce202294674f05b02459161"
@@ -2721,6 +2714,8 @@
   dependencies:
     "@babel/runtime-corejs3" "^7.9.0"
 
+=======
+>>>>>>> @{-1}
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
