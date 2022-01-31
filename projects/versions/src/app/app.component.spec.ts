@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import { GetVersionsService } from './services/get-versions.service';
+import { ErrorService } from './services/error.service';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -12,7 +13,7 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
       declarations: [AppComponent],
-      providers: [HttpClient, GetVersionsService],
+      providers: [HttpClient, GetVersionsService, ErrorService],
     }).compileComponents();
   });
 

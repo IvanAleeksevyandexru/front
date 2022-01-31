@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GetVersionsService } from './services/get-versions.service';
 import { VersionSet } from './shared/interfaces';
+import { ErrorService } from './services/error.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { VersionSet } from './shared/interfaces';
 })
 export class AppComponent implements OnInit {
   versions: VersionSet[];
-  constructor(private versionsService: GetVersionsService) {}
+  constructor(private versionsService: GetVersionsService, public errorService: ErrorService) {}
 
   ngOnInit() {
     this.versions = [

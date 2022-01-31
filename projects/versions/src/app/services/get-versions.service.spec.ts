@@ -16,6 +16,7 @@ import {
   SERVICE_VERSIONS_PROD_LIKE_URL,
   SERVICE_VERSIONS_UAT_URL,
 } from '../shared/constants';
+import { ErrorService } from './error.service';
 
 describe('GetVersionsService', () => {
   let service: GetVersionsService;
@@ -25,7 +26,7 @@ describe('GetVersionsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HttpClient, GetVersionsService],
+      providers: [HttpClient, GetVersionsService, ErrorService],
     });
     service = TestBed.inject(GetVersionsService);
     httpClient = TestBed.inject(HttpClient);

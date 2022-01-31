@@ -1,16 +1,19 @@
-<div class="container" *ngFor="let item of versions">
-  <h1>Stand: {{item.standType}}</h1>
+<div class="container">
+  <div class="main" *ngFor="let item of versions">
+      <h1>Stand: {{item.standType}}</h1>
 
-  <div class="main">
-    <div *ngIf="item.libVersions$">
-      <h3>Library Versions (FRONT)</h3>
-      <library-versions [libVersions]="item.libVersions$ | async"></library-versions>
-    </div>
+      <div class="content">
+        <div *ngIf="item.libVersions$">
+          <h3>Library Versions (FRONT)</h3>
+          <library-versions [libVersions]="item.libVersions$ | async"></library-versions>
+        </div>
 
-    <div *ngIf="item.serviceVersions$">
-      <h3>Service Versions</h3>
-      <service-versions [serviceVersions]="item.serviceVersions$ | async"></service-versions>
-    </div>
+        <div *ngIf="item.serviceVersions$">
+          <h3>Service Versions</h3>
+          <service-versions [serviceVersions]="item.serviceVersions$ | async"></service-versions>
+        </div>
+      </div>
   </div>
 
+  <error [error]="errorService.errorEmitter | async"></error>
 </div>

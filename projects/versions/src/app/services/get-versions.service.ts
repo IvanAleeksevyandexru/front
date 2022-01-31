@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { LibVersions, ServiceVersions } from '../shared/interfaces';
 import {
   LIB_VERSIONS_DEV_01_URL,
@@ -17,88 +17,137 @@ import {
   SERVICE_VERSIONS_PROD_LIKE_URL,
   SERVICE_VERSIONS_UAT_URL,
 } from '../shared/constants';
+import { ErrorService } from './error.service';
 
 @Injectable()
 export class GetVersionsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   /** Uat */
   public getLibVersionsFromUat(): Observable<LibVersions> {
-    return this.http
-      .get<LibVersions>(LIB_VERSIONS_UAT_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInLibVersions));
+    return this.http.get<LibVersions>(LIB_VERSIONS_UAT_URL).pipe(
+      map(this.trimKeysInLibVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   public getServiceVersionsFromUat(): Observable<ServiceVersions> {
-    return this.http
-      .get<ServiceVersions>(SERVICE_VERSIONS_UAT_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInServiceVersions));
+    return this.http.get<ServiceVersions>(SERVICE_VERSIONS_UAT_URL).pipe(
+      map(this.trimKeysInServiceVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   /** Uat2 */
   public getLibVersionsFromUat2(): Observable<LibVersions> {
-    return this.http
-      .get<LibVersions>(LIB_VERSIONS_UAT2_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInLibVersions));
+    return this.http.get<LibVersions>(LIB_VERSIONS_UAT2_URL).pipe(
+      map(this.trimKeysInLibVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   /** Dev-l11 */
   public getLibVersionsFromDevL11(): Observable<LibVersions> {
-    return this.http
-      .get<LibVersions>(LIB_VERSIONS_DEV_L11_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInLibVersions));
+    return this.http.get<LibVersions>(LIB_VERSIONS_DEV_L11_URL).pipe(
+      map(this.trimKeysInLibVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   public getServiceVersionsFromDevL11(): Observable<ServiceVersions> {
-    return this.http
-      .get<ServiceVersions>(SERVICE_VERSIONS_DEV_L11_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInServiceVersions));
+    return this.http.get<ServiceVersions>(SERVICE_VERSIONS_DEV_L11_URL).pipe(
+      map(this.trimKeysInServiceVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   /** Dev01 */
   public getLibVersionsFromDev01(): Observable<LibVersions> {
-    return this.http
-      .get<LibVersions>(LIB_VERSIONS_DEV_01_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInLibVersions));
+    return this.http.get<LibVersions>(LIB_VERSIONS_DEV_01_URL).pipe(
+      map(this.trimKeysInLibVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   public getServiceVersionsFromDev01(): Observable<ServiceVersions> {
-    return this.http
-      .get<ServiceVersions>(SERVICE_VERSIONS_DEV_01_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInServiceVersions));
+    return this.http.get<ServiceVersions>(SERVICE_VERSIONS_DEV_01_URL).pipe(
+      map(this.trimKeysInServiceVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   /** Dev02 */
   public getLibVersionsFromDev02(): Observable<LibVersions> {
-    return this.http
-      .get<LibVersions>(LIB_VERSIONS_DEV_02_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInLibVersions));
+    return this.http.get<LibVersions>(LIB_VERSIONS_DEV_02_URL).pipe(
+      map(this.trimKeysInLibVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   public getServiceVersionsFromDev02(): Observable<ServiceVersions> {
-    return this.http
-      .get<ServiceVersions>(SERVICE_VERSIONS_DEV_02_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInServiceVersions));
+    return this.http.get<ServiceVersions>(SERVICE_VERSIONS_DEV_02_URL).pipe(
+      map(this.trimKeysInServiceVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   /** Prod */
   public getLibVersionsFromProd(): Observable<LibVersions> {
-    return this.http
-      .get<LibVersions>(LIB_VERSIONS_PROD_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInLibVersions));
+    return this.http.get<LibVersions>(LIB_VERSIONS_PROD_URL).pipe(
+      map(this.trimKeysInLibVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   /** Prod Like */
   public getLibVersionsFromProdLike(): Observable<LibVersions> {
-    return this.http
-      .get<LibVersions>(LIB_VERSIONS_PROD_LIKE_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInLibVersions));
+    return this.http.get<LibVersions>(LIB_VERSIONS_PROD_LIKE_URL).pipe(
+      map(this.trimKeysInLibVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   public getServiceVersionsFromProdLike(): Observable<ServiceVersions> {
-    return this.http
-      .get<ServiceVersions>(SERVICE_VERSIONS_PROD_LIKE_URL)
-      .pipe(filter(Boolean), map(this.trimKeysInServiceVersions));
+    return this.http.get<ServiceVersions>(SERVICE_VERSIONS_PROD_LIKE_URL).pipe(
+      map(this.trimKeysInServiceVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
   }
 
   /** Trimming methods */
