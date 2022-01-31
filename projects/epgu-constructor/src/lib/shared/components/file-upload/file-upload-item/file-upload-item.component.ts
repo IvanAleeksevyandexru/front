@@ -7,7 +7,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import * as FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { concatMap, filter, map, reduce, takeUntil, tap } from 'rxjs/operators';
 import { Clarifications } from '@epgu/epgu-constructor-types';
@@ -29,7 +28,6 @@ import {
 import {
   beforeFilesPlural,
   ErrorActions,
-  extToLowerCase,
   FileItem,
   FileItemStatus,
   OperationType,
@@ -90,7 +88,6 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
     tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на uploaded статус
     tap(() => this.store.removeWithErrorStatus([ErrorActions.serverError])), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
-    map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
     map(
       (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
     ), // Формируем FileItem
@@ -321,15 +318,6 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
       tap((file: FileItem) => this.uploader.updateMaxFileNumber(file.item)),
       tap(() => this.stat.updateLimits()),
     );
-  }
-
-  polyfillFile(file: File): File {
-    const { type, lastModified, name } = file;
-
-    return new FilePonyfill.default([file], extToLowerCase(name), {
-      type,
-      lastModified,
-    });
   }
 
   openGalleryFilesModal(): void {
