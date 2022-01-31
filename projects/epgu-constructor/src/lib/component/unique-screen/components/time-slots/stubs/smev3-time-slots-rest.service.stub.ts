@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@epgu/epgu-constructor-ui-kit';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   TimeSlotReq,
   SmevSlotsResponseInterface,
@@ -9,17 +9,26 @@ import {
   SmevBookResponseInterface,
   CancelSlotResponseInterface,
 } from '../time-slots.types';
+import { ScreenService } from '../../../../../screen/screen.service';
 
 @Injectable()
 export class Smev3TimeSlotsRestServiceStub {
   private urlPrefix = this.config.mocks.includes('timeSlot')
-    ? `${this.config.mockUrl}/lk/v1/equeue/agg`
+    ? `${this.config.mockUrl}/lk/v1/equeue`
     : this.config.timeSlotApiUrl;
 
-  constructor(private http: HttpClient, private config: ConfigService) {}
+  private isServiceSpecific = this.screenService.component?.attrs?.isServiceSpecific || false;
+
+  constructor(
+    private http: HttpClient,
+    private config: ConfigService,
+    private screenService: ScreenService,
+  ) {}
 
   public getTimeSlots(requestBody: TimeSlotReq): Observable<SmevSlotsResponseInterface> {
-    const path = `${this.urlPrefix}/slots`;
+    const path = `${this.urlPrefix}/${
+      this.isServiceSpecific ? requestBody.eserviceId + '/agg' : 'agg'
+    }/slots`;
     return this.http.post<SmevSlotsResponseInterface>(path, requestBody, { withCredentials: true });
   }
 
@@ -47,10 +56,7 @@ export class Smev3TimeSlotsRestServiceStub {
     });
   }
 
-  public cancelSlot(requestBody: {
-    eserviceId: string;
-    bookId: string;
-  }): Observable<CancelSlotResponseInterface> {
+  public cancelSlot(requestBody?: BookTimeSlotReq): Observable<CancelSlotResponseInterface> {
     return of({
       bookId: '',
       error: {

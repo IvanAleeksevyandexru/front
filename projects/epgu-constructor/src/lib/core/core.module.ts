@@ -71,7 +71,6 @@ import { InterceptorUtilsService } from './services/interceptor-utils/intercepto
   ],
 })
 export class CoreModule {}
-
 declare global {
   type MediaStreamError = Error;
 }

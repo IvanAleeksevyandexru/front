@@ -64,6 +64,17 @@ import { ComponentsListRelationsService } from '../component/custom-screen/servi
 import { RelationResolverService } from '../component/custom-screen/services/components-list-relations/relation-resolver.service';
 import { MaskTransformService } from '../shared/services/mask-transform/mask-transform.service';
 import { DecimalPipe } from '@angular/common';
+import { TerraByteApiService } from './services/terra-byte-api/terra-byte-api.service';
+import { TerraByteApiServiceStub } from './services/terra-byte-api/terra-byte-api.service.stub';
+import { UploaderProcessService } from '../shared/components/file-upload/services/process/uploader-process.service';
+import { UploaderStoreServiceStub } from '../shared/components/file-upload/services/store/uploader-store.service.stub';
+import { UploaderStoreService } from '../shared/components/file-upload/services/store/uploader-store.service';
+import { UploaderManagerServiceStub } from '../shared/components/file-upload/services/manager/uploader-manager.service.stub';
+import { UploaderManagerService } from '../shared/components/file-upload/services/manager/uploader-manager.service';
+import { UploaderStatService } from '../shared/components/file-upload/services/stat/uploader-stat.service';
+import { UploaderStatServiceStub } from '../shared/components/file-upload/services/stat/uploader-stat.service.stub';
+import { UploaderValidationServiceStub } from '../shared/components/file-upload/services/validation/uploader-validation.service.stub';
+import { UploaderValidationService } from '../shared/components/file-upload/services/validation/uploader-validation.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -77,6 +88,11 @@ import { DecimalPipe } from '@angular/common';
     { provide: LocationService, useClass: LocationServiceStub },
     { provide: NavigationService, useClass: NavigationServiceStub },
     { provide: ScreenService, useClass: ScreenServiceStub },
+    { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
+    { provide: UploaderManagerService, useClass: UploaderManagerServiceStub },
+    { provide: UploaderStatService, useClass: UploaderStatServiceStub },
+    { provide: UploaderStoreService, useClass: UploaderStoreServiceStub },
+    { provide: UploaderValidationService, useClass: UploaderValidationServiceStub },
     { provide: WINDOW, useValue: window },
     AddressesToolsService,
     AddressHelperService,
@@ -123,6 +139,7 @@ import { DecimalPipe } from '@angular/common';
     SessionStorageService,
     TypeCastService,
     UnsubscribeService,
+    UploaderProcessService,
     ValidationService,
     YandexMapService,
   ],

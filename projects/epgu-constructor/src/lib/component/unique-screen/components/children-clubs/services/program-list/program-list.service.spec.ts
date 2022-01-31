@@ -5,12 +5,13 @@ import {
   MicroAppStateQueryStub,
   MicroAppStateService,
   MicroAppStateServiceStub,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from './program-list.service';
 import { StateService } from '../state/state.service';
 import { StateServiceStub } from '../state/state.service.stub';
 import { baseProgramStub } from '../../stubs/projects.stub';
-import { ChildrenClubsState } from '../../models/children-clubs.types';
+import { Filters } from '../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
@@ -35,6 +36,7 @@ describe('ProgramListService', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        UnsubscribeService,
       ],
     }).compileComponents();
     service = TestBed.inject(ProgramListService);
@@ -51,96 +53,73 @@ describe('ProgramListService', () => {
 
   const programsArray = new Array(13).fill(baseProgramStub);
 
-  it('should fill data behavior subject on subscribe', (done) => {
-    const spyAdd = jest.spyOn(service, 'add');
-
-    service.load$.subscribe(() => {
-      expect(spyAdd).toHaveBeenCalled();
-      expect(service.loading$$.getValue()).toBe(false);
-      expect(service.data$$.getValue().length).toBe(18);
-      done();
+  it('should fill data behavior subject on subscribe', () => {
+    service.subscribeOnFiltersChange();
+    service.fullData$.subscribe((value) => {
+      if (value) {
+        expect(value.length).toBe(18);
+        expect(service.isLoading.getValue()).toBeFalsy();
+      }
     });
   });
 
   describe('getNextPage()', () => {
     it('should increase page number', () => {
-      service.getNextPage();
+      service.nextPage();
 
-      expect(service.page$$.getValue()).toBe(1);
+      expect(service.currentPage).toBe(1);
     });
 
     it('should return paginated data according to amount of page opened', () => {
-      service.data$$.next(programsArray);
+      service.fullData.next(programsArray);
 
-      service.getNextPage();
-      service.getNextPage();
+      service.nextPage();
+      service.nextPage();
 
-      expect(service.paginatedData$.getValue().length).toBe(6);
-      expect(service.isFinish$$.getValue()).toBe(false);
+      expect(service.paginatedData.getValue().length).toBe(6);
+      expect(service.isFinished.getValue()).toBe(false);
     });
 
     it('should set isFinish to true when all data is loaded', () => {
-      service.data$$.next(programsArray);
+      service.fullData.next(programsArray);
 
-      service.getNextPage();
-      service.getNextPage();
-      service.getNextPage();
-      service.getNextPage();
-      service.getNextPage();
+      service.nextPage();
+      service.nextPage();
+      service.nextPage();
+      service.nextPage();
+      service.nextPage();
 
-      expect(service.paginatedData$.getValue().length).toBe(13);
-      expect(service.isFinish$$.getValue()).toBe(true);
+      expect(service.paginatedData.getValue().length).toBe(13);
+      expect(service.isFinished.getValue()).toBe(true);
     });
   });
 
-  describe('resetPagination()', () => {
-    it('should reset page number and subject array', () => {
-      service.data$$.next(programsArray);
-      service.getNextPage();
-
-      service.resetPagination();
-
-      expect(service.page$$.getValue()).toBe(0);
-      expect(service.paginatedData$.getValue().length).toBe(0);
-    });
-  });
-
-  describe('reset()', () => {
+  describe('resetData()', () => {
     it('should reset specific fields', () => {
-      service.reset();
+      service.resetData();
 
-      expect(service.page$$.getValue()).toBe(0);
-      expect(service.paginatedData$.getValue()).toEqual([]);
+      expect(service.currentPage).toBe(0);
+      expect(service.paginatedData.getValue()).toEqual([]);
       expect(service.autoScroll).toBe(false);
-      expect(service.isFinish$$.getValue()).toBe(false);
-      expect(service.fullLoading$$.getValue()).toBe(true);
-      expect(service.data$$.getValue()).toEqual([]);
+      expect(service.isFinished.getValue()).toBe(false);
+      expect(service.isLoading.getValue()).toBe(true);
+      expect(service.fullData.getValue()).toEqual([]);
     });
   });
 
-  describe('finish()', () => {
-    it('should set finish to true', () => {
-      service.isFinish$$.next(false);
-
-      service.finish();
-
-      expect(service.isFinish$$.getValue()).toBe(true);
-    });
-  });
-
-  describe('add()', () => {
+  describe('setData()', () => {
     it('should set full loading to false if current data is empty ', () => {
-      service.data$$.next([]);
+      service.fullData.next([]);
 
-      service.add([]);
+      service.setData([]);
 
-      expect(service.fullLoading$$.getValue()).toBe(false);
+      expect(service.isLoading.getValue()).toBe(false);
     });
 
     it('should call next page ', () => {
-      const spy = jest.spyOn(service, 'getNextPage');
+      const spy = jest.spyOn(service, 'nextPage');
 
-      service.add([]);
+      service.setData([]);
 
       expect(spy).toHaveBeenCalled();
     });
@@ -148,17 +127,17 @@ describe('ProgramListService', () => {
     it('should set isFinish to true', () => {
       const baseProgramsArray = new Array(3).fill(baseProgramStub);
 
-      service.add(baseProgramsArray);
+      service.setData(baseProgramsArray);
 
-      expect(service.isFinish$$.getValue()).toBeTruthy();
+      expect(service.isFinished.getValue()).toBeTruthy();
     });
 
     it('should not set isFinish to true', () => {
       const baseProgramsArray = new Array(4).fill(baseProgramStub);
 
-      service.add(baseProgramsArray);
+      service.setData(baseProgramsArray);
 
-      expect(service.isFinish$$.getValue()).toBeFalsy();
+      expect(service.isFinished.getValue()).toBeFalsy();
     });
   });
 
@@ -168,7 +147,7 @@ describe('ProgramListService', () => {
         programFilters: { focus: { id: 'hudozhestvennoe' } },
       };
 
-      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
+      const filters = service.processFilters((state.programFilters as unknown) as Filters);
 
       expect(filters.focus).toBe('hudozhestvennoe');
     });
@@ -178,7 +157,7 @@ describe('ProgramListService', () => {
         programFilters: { focus: { id: null } },
       };
 
-      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
+      const filters = service.processFilters((state.programFilters as unknown) as Filters);
 
       expect(filters.hasOwnProperty('focus')).toBe(false);
     });
@@ -188,7 +167,7 @@ describe('ProgramListService', () => {
         programFilters: { municipality: { id: '15' } },
       };
 
-      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
+      const filters = service.processFilters((state.programFilters as unknown) as Filters);
 
       expect(filters.municipality).toBe('15');
     });
@@ -198,7 +177,7 @@ describe('ProgramListService', () => {
         programFilters: { direction: { id: null } },
       };
 
-      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
+      const filters = service.processFilters((state.programFilters as unknown) as Filters);
 
       expect(filters.hasOwnProperty('direction')).toBe(false);
     });
@@ -208,7 +187,7 @@ describe('ProgramListService', () => {
         programFilters: { direction: { id: '3' } },
       };
 
-      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
+      const filters = service.processFilters((state.programFilters as unknown) as Filters);
 
       expect(filters.direction).toBe('3');
     });
@@ -218,7 +197,7 @@ describe('ProgramListService', () => {
         programFilters: { query: '' },
       };
 
-      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
+      const filters = service.processFilters((state.programFilters as unknown) as Filters);
 
       expect(filters.hasOwnProperty('query')).toBe(false);
     });
@@ -228,7 +207,7 @@ describe('ProgramListService', () => {
         programFilters: { query: '1' },
       };
 
-      const { filters } = service.processFilters((state as unknown) as ChildrenClubsState);
+      const filters = service.processFilters((state.programFilters as unknown) as Filters);
 
       expect(filters.hasOwnProperty('query')).toBe(true);
     });

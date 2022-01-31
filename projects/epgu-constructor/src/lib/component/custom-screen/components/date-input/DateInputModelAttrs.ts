@@ -1,6 +1,7 @@
 import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { CustomComponentAttr, DateRestriction } from '../../components-list.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 
 export default class DateInputModelAttrs extends GenericAttrs {
   readonly readonly: boolean;
@@ -29,6 +30,8 @@ export default class DateInputModelAttrs extends GenericAttrs {
 
   readonly customUnrecLabel: string;
 
+  readonly clarifications: Clarifications;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.readonly = attrs.readonly;
@@ -44,5 +47,6 @@ export default class DateInputModelAttrs extends GenericAttrs {
     this.hidden = attrs.hidden;
     this.hint = attrs.hint;
     this.customUnrecLabel = attrs.customUnrecLabel;
+    this.clarifications = attrs.clarifications;
   }
 }

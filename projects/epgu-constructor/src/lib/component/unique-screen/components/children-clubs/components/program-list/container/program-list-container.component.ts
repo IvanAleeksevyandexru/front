@@ -1,16 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
-import { ModalService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { filter } from 'rxjs/operators';
+import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from '../../../services/program-list/program-list.service';
 import { ProgramFiltersFormComponent } from '../../base/components/program-filters-form/program-filters-form.component';
 import { StateService } from '../../../services/state/state.service';
-import {
-  BaseProgram,
-  Filters,
-  GroupFiltersModes,
-  VendorType,
-} from '../../../models/children-clubs.types';
+import { BaseProgram, Filters, GroupFiltersModes } from '../../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { countFilters } from '../../../services/helpers/helpers';
 
@@ -19,20 +14,17 @@ import { countFilters } from '../../../services/helpers/helpers';
   templateUrl: './program-list-container.component.html',
   styleUrls: ['./program-list-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [UnsubscribeService],
 })
 export class ProgramListContainerComponent implements OnInit {
-  public fullLoading$: Observable<boolean> = this.programListService.fullLoading$;
+  public fullLoading$: Observable<boolean> = this.programListService.isLoading$;
   public filtersCount$$ = new BehaviorSubject<number>(0);
   public filtersCount$ = this.filtersCount$$.asObservable();
   public data$: Observable<BaseProgram[]> = this.programListService.paginatedData$;
   public initFilter: string;
-  private vendor: VendorType = this.screenService.component?.arguments?.vendor as VendorType;
 
   constructor(
     public programListService: ProgramListService,
     private modalService: ModalService,
-    private ngUnsubscribe$: UnsubscribeService,
     private stateService: StateService,
     private screenService: ScreenService,
   ) {}
@@ -43,20 +35,16 @@ export class ProgramListContainerComponent implements OnInit {
     this.stateService.groupFiltersMode =
       this.stateService.groupFiltersMode || GroupFiltersModes.list;
     const filters = this.stateService.programFilters;
-    if (this.vendor === VendorType.inlearno) {
-      delete filters?.pfdoPayments;
-    } else {
-      delete filters?.inlearnoPayments;
-    }
+    this.programListService.args = this.screenService.component?.arguments;
     this.stateService.programFilters = filters;
-    this.programListService.load$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+    this.programListService.subscribeOnFiltersChange();
     this.programListService.programFilters$.subscribe((programFilters: Filters) =>
       this.countingFilters(programFilters),
     );
   }
 
   public nextPage(): void {
-    this.programListService.getNextPage();
+    this.programListService.nextPage();
   }
 
   public search(text: string): void {

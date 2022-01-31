@@ -1,7 +1,8 @@
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { waitForAsync, TestBed, fakeAsync } from '@angular/core/testing';
 import { ConfigService, ConfigServiceStub } from '@epgu/epgu-constructor-ui-kit';
-
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { brakBookRequest } from './mocks/mock-time-slots';
 import { Smev3TimeSlotsRestService } from './smev3-time-slots-rest.service';
 
@@ -26,6 +27,7 @@ describe('FormPlayerApiService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         Smev3TimeSlotsRestService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
       ],
     });
@@ -42,7 +44,7 @@ describe('FormPlayerApiService', () => {
       smevService.getTimeSlots(slotReqBody).subscribe((response) => {
         expect(response).toBe(responseMock);
       });
-      const req = http.expectOne('/slots');
+      const req = http.expectOne('/agg/slots');
       expect(req.request.method).toBe('POST');
       req.flush(responseMock);
     }));
@@ -51,7 +53,7 @@ describe('FormPlayerApiService', () => {
       smevService
         .getTimeSlots(slotReqBody)
         .subscribe((response) => expect(response).toBe(responseMock));
-      const req = http.expectOne('/slots');
+      const req = http.expectOne('/agg/slots');
       const { body } = req.request;
       expect(body).toEqual(slotReqBody);
       req.flush(responseMock);
@@ -63,7 +65,7 @@ describe('FormPlayerApiService', () => {
       smevService.bookTimeSlot(brakBookRequest).subscribe((response) => {
         expect(response).toBe(responseMock);
       });
-      const req = http.expectOne('/book?srcSystem=BETA');
+      const req = http.expectOne('/agg/book?srcSystem=BETA');
       expect(req.request.method).toBe('POST');
       req.flush(responseMock);
     }));
@@ -72,7 +74,7 @@ describe('FormPlayerApiService', () => {
       smevService
         .bookTimeSlot(brakBookRequest)
         .subscribe((response) => expect(response).toBe(responseMock));
-      const req = http.expectOne('/book?srcSystem=BETA');
+      const req = http.expectOne('/agg/book?srcSystem=BETA');
       const { body } = req.request;
       expect(body).toEqual(brakBookRequest);
       req.flush(responseMock);
@@ -88,7 +90,7 @@ describe('FormPlayerApiService', () => {
       smevService.cancelSlot(cancelRequestBody).subscribe((response) => {
         expect(response).toBe(responseMock);
       });
-      const req = http.expectOne('/cancel');
+      const req = http.expectOne('/agg/cancel');
       expect(req.request.method).toBe('POST');
       req.flush(responseMock);
     }));
@@ -97,7 +99,7 @@ describe('FormPlayerApiService', () => {
       smevService
         .cancelSlot(cancelRequestBody)
         .subscribe((response) => expect(response).toBe(responseMock));
-      const req = http.expectOne('/cancel');
+      const req = http.expectOne('/agg/cancel');
       const { body } = req.request;
       expect(body).toEqual(cancelRequestBody);
       req.flush(responseMock);

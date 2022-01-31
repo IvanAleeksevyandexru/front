@@ -9,16 +9,8 @@
     {{ description }}
   </div>
   <div [ngClass]="{ 'file-viewer__image': imageURL }" class="file-viewer">
-    <button (click)="prevAction()" class="prev">
-      <epgu-constructor-output-html
-        [html]="arrowIcon"
-      ></epgu-constructor-output-html>
-    </button>
-    <button (click)="nextAction()" class="next">
-      <epgu-constructor-output-html
-        [html]="arrowIcon"
-      ></epgu-constructor-output-html>
-    </button>
+    <button (click)="prevAction()" class="prev"><img [src]="arrowIcon" /></button>
+    <button (click)="nextAction()" class="next"><img [src]="arrowIcon" /></button>
     <a
       *ngIf="!imageURL && !isError"
       [ngClass]="{ 'file-viewer__file_link': isPDF }"

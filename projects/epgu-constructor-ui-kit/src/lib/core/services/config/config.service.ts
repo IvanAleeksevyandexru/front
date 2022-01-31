@@ -311,7 +311,7 @@ export class ConfigService implements Config {
     this._lkApi = config.lkApi ?? `${this.loadService.config.lkApi}`;
     this._childrenClubsApi = config.childrenClubsApi;
     this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.paymentUrl}`;
-    this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue/agg`;
+    this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue`;
     this._listPaymentsApiUrl =
       config.listPaymentsApiUrl ?? `${this.loadService.config.lkApiUrl}orders/listpaymentsinfo`;
     this._uinApiUrl = config.uinApiUrl ?? `${this.loadService.config.lkApiUrl}paygate/uin`;

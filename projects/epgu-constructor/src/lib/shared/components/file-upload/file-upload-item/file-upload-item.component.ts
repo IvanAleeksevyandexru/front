@@ -7,7 +7,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { concatMap, filter, map, reduce, takeUntil, tap } from 'rxjs/operators';
 import { Clarifications } from '@epgu/epgu-constructor-types';
@@ -29,7 +28,6 @@ import {
 import {
   beforeFilesPlural,
   ErrorActions,
-  extToLowerCase,
   FileItem,
   FileItemStatus,
   OperationType,
@@ -83,12 +81,13 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   processingFiles = new Subject<FileList>(); // Сюда попадают файлы на загрузку
 
+  public filesDivider: boolean;
+
   processingFiles$ = this.processingFiles.pipe(
     tap(() => this.stat.resetLimits()), // Обнуляем каунтеры перебора
     tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на uploaded статус
     tap(() => this.store.removeWithErrorStatus([ErrorActions.serverError])), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
-    map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
     map(
       (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
     ), // Формируем FileItem
@@ -104,6 +103,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   files = this.store.files;
   files$ = this.files.pipe(
+    tap((files) => (this.filesDivider = !!files.length)),
     concatMap((files) =>
       from(files).pipe(
         reduce<FileItem, FileResponseToBackendUploadsItem>(this.reduceChanges.bind(this), {
@@ -194,6 +194,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
        * чтобы файлы потом корректно загружались в ЛК
        */
       file.setAttached(true);
+      file.item.mnemonic = this.uploader.getMnemonic();
       this.terabyteService.downloadFile(file.createUploadedParams()).subscribe((blob: Blob) => {
         const rawFile = new File([blob], file.item.fileName);
         const newFile = new FileItem(
@@ -267,10 +268,6 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
     this.process.upload(file);
   }
 
-  isShownDivider(): boolean {
-    return this.files.getValue().length > 0 && !!this.data.label;
-  }
-
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
     this.eventBusService.emit(BusEventType.FileUploadItemValueChangedEvent, {
       uploadId: this.uploader.data.uploadId,
@@ -321,15 +318,6 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
       tap((file: FileItem) => this.uploader.updateMaxFileNumber(file.item)),
       tap(() => this.stat.updateLimits()),
     );
-  }
-
-  polyfillFile(file: File): File {
-    const { type, lastModified, name } = file;
-
-    return new FilePonyfill([file], extToLowerCase(name), {
-      type,
-      lastModified,
-    });
   }
 
   openGalleryFilesModal(): void {

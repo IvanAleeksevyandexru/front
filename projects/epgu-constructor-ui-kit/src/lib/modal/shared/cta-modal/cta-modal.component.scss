@@ -118,14 +118,20 @@ $closeBtnWidth: 24px;
 }
 
 ::ng-deep .text_modal_error {
+  span {
+    color: $color-text-helper;
+  }
+  &.confirm_code {
+    span {
+      font-size: 14px;
+      line-height: 20px;
+    }
+    padding: 0 24px;
+  }
   text-align: center;
 
   h4 {
     margin-bottom: 8px;
-  }
-
-  span {
-    color: $color-text-helper;
   }
 
   &__img {

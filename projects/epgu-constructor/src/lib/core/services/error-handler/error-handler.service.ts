@@ -71,7 +71,8 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
     if (error?.errorModalWindow) {
       const shownTraceId = error?.hideTraceId ? null : traceId;
-      this.utils.showErrorModal({ ...error?.errorModalWindow, traceId: shownTraceId });
+      const isConfirm = url.includes('confirmSmsCode') || url.includes('confirmEmailCode');
+      this.utils.showErrorModal({ ...error?.errorModalWindow, traceId: shownTraceId }, isConfirm);
     } else if (status === 401) {
       this.utils.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
         if (result === 'login') {

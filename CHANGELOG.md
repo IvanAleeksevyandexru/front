@@ -1,6 +1,6 @@
 # Release Notes
 
-## [399.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.0.0) (2022-01-20)
+## [399.1.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.1.0) (2022-01-25)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -20,6 +20,12 @@
 * Добавлена поддержка новых иконок в PhotoUploadComponent [EPGUCORE-84494]
 * Добавлен управляющий флаг error.hideTraceId для скрытия/показа traceId в errorModalWindow [EPGUCORE-84975]
 * Добавлены новые иконки [EPGUCORE-85096]
+* Добавлены clarifications для DateInput [EPGUCORE-86015]
+* Добавлены clarifications для MvdGias [EPGUCORE-86017]
+* Добавлена поддержка ConfirmCode в errorModalWindow [EPGUCORE-85581]
+* Добавлена блокировка кнопки "Продолжить" пока идет загрузка файлов [EPGUCORE-85133]
+* Добавлена поддержка isServiceSpecific для TimeSlot компонентов [EPGUCORE-86300]
+* Добавлен компонент not-found в sf-portal [EPGUCORE-85703]
 
 ### Refactor
 
@@ -34,6 +40,8 @@
 * Оптимизация: рефактор DictionaryService из children-clubs в КФ [EPGUCORE-84528]
 * Оптимизация: рефактор ApiService из children-clubs в КФ [EPGUCORE-84530]
 * Оптимизация: упразднен ContentModal в пользу ConfirmationModal из children-clubs в КФ [EPGUCORE-84534]
+* Улучшение сборки: изменен принцип генерации кэша для gitlab-ci [EPGUCORE-85542]
+* Оптимизация: рефактор сервисов GroupListService и ProgramListService [EPGUCORE-85313]
 
 ### Bug Fixes
 
@@ -57,6 +65,14 @@
 * Поправлен символ рубля в PaymentComponent [EPGUCORE-83335]
 * Исправлено ложное срабатывание notify при clipboard для ios [EPGUCORE-85543]
 * Поправлены стили для списков, если они находятся внутри background-white [EPGUCORE-83336]
+* Поправлены шрифты woff2 для корректной работы в Safaria [EPGUCORE-85708]
+* Поправлена работа шторки карты для айфона [EPGUCORE-85433]
+* Поправлена генерация mnemonic у файлов из suggests в FileUploadItemComponent [EPGUCORE-85706]
+* Поправлено отображание ошибок валидации при автокомплите [EPGUCORE-80775]
+* Откат фичи с raw-loader иконок для починки продуктовой сборки [EPGUCORE-86260]
+* Исправлен дизайн для ошибок в ConfirmPersonalUserEmail [EPGUCORE-85793]
+* Даунгрейд полифила FilePonyfill для починки FileUploadItemComponent [EPGUCORE-86444]
+* Поправлено отображение балуна на картах [EPGUCORE-85732]
 
 ### Tests
 
@@ -73,3 +89,4 @@
 * Починка сломанных тестов в DictionaryService [EPGUCORE-85293]
 * Добавлены тесты для InterceptorUtilsService [EPGUCORE-85300]
 * Добавлены тесты PaymentSelectorComponent [EPGUCORE-85302]
+* Добавлены тесты на LogicResolver [EPGUCORE-85307]
