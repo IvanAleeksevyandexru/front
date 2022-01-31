@@ -2706,16 +2706,6 @@
   dependencies:
     tslib "^2.3.1"
 
-<<<<<<< HEAD
-"@tanker/global-this@2.6.3":
-  version "2.6.3"
-  resolved "https://registry.yarnpkg.com/@tanker/global-this/-/global-this-2.6.3.tgz#e163ea798b4918bb4ce202294674f05b02459161"
-  integrity sha512-+a0SStP6HUNb4fEYRQdSCbQpiau1LGScyRyngN6kUO2fulhg6TOs2mr9F1os23tp9hIELBy4lubMhxV7NhAMQQ==
-  dependencies:
-    "@babel/runtime-corejs3" "^7.9.0"
-
-=======
->>>>>>> @{-1}
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
