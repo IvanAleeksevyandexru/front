@@ -1,6 +1,6 @@
 # Release Notes
 
-## [399.1.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.1.0) (2022-01-25)
+## [399.7.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.7.1) (2022-01-31)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -71,8 +71,10 @@
 * Поправлено отображание ошибок валидации при автокомплите [EPGUCORE-80775]
 * Откат фичи с raw-loader иконок для починки продуктовой сборки [EPGUCORE-86260]
 * Исправлен дизайн для ошибок в ConfirmPersonalUserEmail [EPGUCORE-85793]
-* Даунгрейд полифила FilePonyfill для починки FileUploadItemComponent [EPGUCORE-86444]
+* Удален FilePonyfill (поддержка IE11) для починки FileUploadItemComponent [EPGUCORE-86444]
 * Поправлено отображение балуна на картах [EPGUCORE-85732]
+* Поправлен дизайн разделителей на загрузке файлов [EPGUCORE-85749]
+* Поправлен цвет фона для NotFoundComponent [EPGUCORE-85703]
 
 ### Tests
 
