@@ -45,6 +45,7 @@ export class ComplexChoiceDictionaryComponent implements ControlValueAccessor, O
   @Input() dictionaryType?: string;
   @Input() isReadonly?: boolean;
   @Input() tip?: string;
+  @Input() limit?: string | number;
 
   selectedItems = { list: [], amount: 0 };
 
@@ -66,6 +67,7 @@ export class ComplexChoiceDictionaryComponent implements ControlValueAccessor, O
         dictionaryType: this.dictionaryType,
         selectedItems: this.selectedItems.list,
         dictionaryList: this.dictionaryList,
+        limit: this.limit,
       })
       .pipe(
         switchMap((items) => {
