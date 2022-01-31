@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import FilePonyfill from '@tanker/file-ponyfill';
+import * as FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { concatMap, filter, map, reduce, takeUntil, tap } from 'rxjs/operators';
 import { Clarifications } from '@epgu/epgu-constructor-types';
@@ -326,7 +326,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
   polyfillFile(file: File): File {
     const { type, lastModified, name } = file;
 
-    return new FilePonyfill([file], extToLowerCase(name), {
+    return new FilePonyfill.default([file], extToLowerCase(name), {
       type,
       lastModified,
     });
