@@ -89,9 +89,15 @@
     }
   }
   &__checkbox {
-    margin-top: -8px;
-    @include phones-down {
+    &_after-item {
+      margin-top: -8px;
+      @include phones-down {
+        margin-top: 0;
+      }
+    }
+    &_solo {
       margin-top: 0;
+      margin-bottom: -6px;
     }
   }
   p.find-item {

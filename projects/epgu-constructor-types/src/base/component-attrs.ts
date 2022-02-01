@@ -188,6 +188,7 @@ type VisibleComponents = string[];
 type Visited = boolean;
 type WritableComponents = string[];
 type Years = number;
+type IsSoloCheckBox = boolean;
 
 export interface ComponentAttrsDto {
   accuracy?: Accuracy;
@@ -362,6 +363,7 @@ export interface ComponentAttrsDto {
   visited?: Visited;
   writableComponents?: WritableComponents;
   years?: Years;
+  isSoloCheckBox?: IsSoloCheckBox;
 }
 
 export interface SlotsNotFoundTemplate {

@@ -7,9 +7,12 @@ export default class CheckboxInputModelAttrs extends GenericAttrs {
 
   readonly clarifications: Clarifications;
 
+  readonly isSoloCheckBox: boolean;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.clarifications = attrs.clarifications;
     this.hint = attrs.hint;
+    this.isSoloCheckBox = attrs.isSoloCheckBox;
   }
 }
