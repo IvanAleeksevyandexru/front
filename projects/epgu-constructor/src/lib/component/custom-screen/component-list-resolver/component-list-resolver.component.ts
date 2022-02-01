@@ -37,6 +37,8 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
   @Input() componentsGroupIndex = 0;
   @Input() componentType: ComponentTypes;
   @Input() limit?: number | string;
+  @Input() parentFirst?: boolean;
+  @Input() parentLast?: boolean;
   componentRef: ComponentRef<ScreenComponentTypes>;
 
   constructor(
@@ -47,10 +49,19 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.componentRef && (changes.componentsGroupIndex || changes.componentIndex)) {
+    if (
+      this.componentRef &&
+      (changes.componentsGroupIndex ||
+        changes.componentIndex ||
+        changes.limit ||
+        changes.parentFirst ||
+        changes.parentLast)
+    ) {
       this.componentRef.instance.componentIndex = this.componentIndex;
       this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
       this.componentRef.instance.limit = this.limit;
+      this.componentRef.instance.parentFirst = this.parentFirst;
+      this.componentRef.instance.parentLast = this.parentLast;
     }
   }
 
@@ -94,6 +105,8 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
     // @ts-ignore
     this.componentRef.instance.componentsGroupIndex = this.componentsGroupIndex;
     this.componentRef.instance.limit = this.limit;
+    this.componentRef.instance.parentFirst = this.parentFirst;
+    this.componentRef.instance.parentLast = this.parentLast;
   }
 
   private getComponentByType(cmpType: ComponentTypes): Type<ScreenComponentTypes> {
