@@ -35,7 +35,7 @@ import { HelperService } from '@epgu/ui/services/helper';
 
 const mockComponent = {
   id: 'mockComponentID',
-  attrs: new DictionaryModelAttrs({ dictionaryType: 'someDictionaryType' }),
+  attrs: new DictionaryModelAttrs({ dictionaryType: 'someDictionaryType', isClearable: false }),
   value: 'dictionaryValue',
   required: false,
 };
