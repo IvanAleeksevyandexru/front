@@ -17,7 +17,7 @@
       ></epgu-constructor-disclaimer>
     </ng-container>
 
-    <div class="common-error" *ngIf="(commonError$ | async)?.hasError">
+    <div class="common-error" *ngIf="(commonError$ | async)?.message">
       <small>
         {{ (commonError$ | async)?.message }}
       </small>
