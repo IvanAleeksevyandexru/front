@@ -5,6 +5,9 @@
 .component-item {
   display: block;
   margin-bottom: $screen-pad-24;
+  &.last_elem {
+    margin-bottom: 0;
+  }
 }
 
 .form {
