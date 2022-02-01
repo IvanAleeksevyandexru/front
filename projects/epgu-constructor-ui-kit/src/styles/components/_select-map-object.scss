@@ -178,6 +178,10 @@
   .widget-form__bottom-label {
     margin-top: 12px;
     display: block;
+
+    @include tablets-down() {
+      margin-bottom: 12px;
+    }
   }
 
   .widget {
@@ -210,7 +214,6 @@
 
     .widget-form__title {
       display: block;
-      margin: 0 12px;
     }
 
     .widget-form__input {
