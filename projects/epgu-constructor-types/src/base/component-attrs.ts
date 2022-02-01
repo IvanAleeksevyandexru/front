@@ -362,6 +362,8 @@ export interface ComponentAttrsDto {
   visited?: Visited;
   writableComponents?: WritableComponents;
   years?: Years;
+  parentFirst?: boolean;
+  parentLast?: boolean;
 }
 
 export interface SlotsNotFoundTemplate {
