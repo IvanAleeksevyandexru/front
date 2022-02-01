@@ -32,7 +32,10 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { PluralizePipe } from '@epgu/ui/pipes';
 import { differenceInCalendarMonths, differenceInCalendarYears, format } from 'date-fns';
-import { CustomComponentOutputData } from '../../../../../custom-screen/components-list.types';
+import {
+  CustomComponentOutputData,
+  CustomScreenComponentTypes,
+} from '../../../../../custom-screen/components-list.types';
 import { CachedValue, ChildI, ClearEvent, ItemStatus } from '../../select-children.models';
 
 @Component({
@@ -337,9 +340,13 @@ export class SelectChildrenComponent implements OnInit {
    */
   private prepareItemComponents(child: ChildI = {}): ComponentDto[] {
     return this.component?.attrs?.components.map((component) => {
+      const value =
+        component.type === CustomScreenComponentTypes.SnilsInput
+          ? child[component.id].snils
+          : child[component.id];
       return {
         ...component,
-        value: <string>child[component.id],
+        value,
       };
     });
   }
