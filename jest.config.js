@@ -14,6 +14,7 @@ module.exports = {
     '@epgu/epgu-constructor-types': '<rootDir>/projects/epgu-constructor-types/src',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
+  cacheDirectory: '<rootDir>/.jest-cache',
   coverageReporters: ['text', 'cobertura', 'html'],
   collectCoverageFrom: [
     'projects/**/*.service.ts',
