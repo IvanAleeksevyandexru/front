@@ -1,6 +1,6 @@
 # Release Notes
 
-## [400.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.0) (2022-01-28)
+## [400.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.0) (2022-02-01)
 
 ### BREAKING CHANGES
 
@@ -8,21 +8,25 @@
 
 ### Features
 
-*
+* Доработка компонента ComplexChoiceDictionary в части выбора только одного чек-бокса [EPGUCORE-85236]
+* Добавлено isClearable и defaultLabelList для DictionaryComponent [EPGUCORE-86314]
 
 ### Refactor
 
 * Переименованы параметры в методах ComponentsListFormService и DateRangeService [EPGUCORE-85318]
+* Добавлен поиск parentFirst и parentLast из дочерних компонент [EPGUCORE-79609]
 
 ### Bug Fixes
 
 * Исправлена работа suggests в SnilsInput [EPGUCORE-86706]
+* Поправлена работа скролла контента под модальными окнами [EPGUCORE-84462]
+* Чинит скролл в окне выбора подразделений [EPGUCORE-86114]
 
 ### Tests
 
-*
+* Написаны тесты для PriorityScreenComponent [EPGUCORE-85301]
 
-## [399.7.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.7.1) (2022-01-31)
+## [399.7.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.7.3) (2022-01-31)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
