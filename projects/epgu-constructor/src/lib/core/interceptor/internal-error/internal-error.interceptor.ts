@@ -40,7 +40,7 @@ export class InternalErrorInterceptor extends BaseInterceptor {
         .replace(/\{textAsset\}?/g, INTERNAL_ERROR_TEXT)
         .replace(/\{titleAsset\}?/g, INTERNAL_ERROR_TITLE),
     };
-    this.utils.showModal(config);
+    this.utils.showModal(config).then((value) => this.utils.handleModalAction(value));
   }
 
   protected checkStatus(status: number): boolean {
