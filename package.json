@@ -66,7 +66,7 @@
     "stylelint:fix": "stylelint \"**/*.scss\" --config .stylelintrc.json --fix",
     "stylelint": "stylelint \"**/*.scss\" --config .stylelintrc.json",
     "test": "node --no-compilation-cache --expose-gc ./node_modules/jest/bin/jest.js --logHeapUsage --ci",
-    "test:ci": "node --no-compilation-cache --expose-gc ./node_modules/jest/bin/jest.js --logHeapUsage --ci --no-cache",
+    "test:ci": "node --no-compilation-cache --expose-gc ./node_modules/jest/bin/jest.js --logHeapUsage --ci --no-cache --runInBand",
     "test:clear": "node  ./node_modules/jest/bin/jest.js --clearCache",
     "test:dev": "node --no-compilation-cache --expose-gc ./node_modules/jest/bin/jest.js --logHeapUsage --runInBand --watch -o",
     "test:dry:dev": "jscpd projects/epgu-constructor --reporters json,html,console --blame --ignore \"**/*.min.js,**/*.map,**/*.spec.ts,**/*.module.ts,**/*.stub.ts\" --format \"javascript,scss,typescript\" --threshold 0",
