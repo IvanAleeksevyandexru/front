@@ -1,7 +1,9 @@
 require('jest-preset-angular/ngcc-jest-processor');
+const { pathsToModuleNameMapper } = require('ts-jest/utils');
+const { paths } = require('./tsconfig.json').compilerOptions;
 
 module.exports = {
-  preset: 'jest-preset-angular',
+  preset: 'jest-preset-angular/presets/defaults-esm',
   modulePaths: ['<rootDir>'],
   moduleDirectories: ['node_modules'],
   setupFiles: ['<rootDir>/configs/jest/setup-jest.ts', 'jest-canvas-mock'],
@@ -11,7 +13,9 @@ module.exports = {
     '@ifc/plugin': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js',
     '@ifc/common': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js',
     '@epgu/epgu-constructor-ui-kit': '<rootDir>/projects/epgu-constructor-ui-kit/src/public-api',
-    '@epgu/epgu-constructor-types': '<rootDir>/projects/epgu-constructor-types/src',
+    // ...paths,
+    // ...pathsToModuleNameMapper(paths, { prefix: '<rootDir>' }),
+    // 'tslib': '<rootDir>/node_modules/tslib/tslib.es6.js',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   // cacheDirectory: '<rootDir>/.jest-cache',
@@ -32,12 +36,13 @@ module.exports = {
     '^.+\\.(ts|js|mjs|html)$': 'jest-preset-angular',
   },
   moduleFileExtensions: ['ts', 'html', 'js', 'json', 'svg', 'mjs'],
+  resolver: 'jest-preset-angular/build/resolvers/ng-jest-resolver.js',
   extensionsToTreatAsEsm: ['.ts'],
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
-      isolatedModules: true,
-      stringifyContentPathRegex: '\\.html$',
+      isolatedModules: false,
+      stringifyContentPathRegex: '\\.(html|svg)$',
       useESM: true
     },
   },
@@ -46,5 +51,5 @@ module.exports = {
       window.scroll = () => { };
     },
   },
-  transformIgnorePatterns: ['<rootDir>/node_modules/(?!.*\\.mjs$|date-fns|@epgu/ui/node_modules/date-fns)'],
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!.*\\.mjs$|date-fns|tslib|@epgu/ui/node_modules/date-fns)'],
 };
