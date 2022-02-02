@@ -10,6 +10,7 @@
 
 * Доработка компонента ComplexChoiceDictionary в части выбора только одного чек-бокса [EPGUCORE-85236]
 * Добавлено isClearable и defaultLabelList для DictionaryComponent [EPGUCORE-86314]
+* Добавлено приложение versions [EPGUCORE-85909]
 
 ### Refactor
 
@@ -21,10 +22,13 @@
 * Исправлена работа suggests в SnilsInput [EPGUCORE-86706]
 * Поправлена работа скролла контента под модальными окнами [EPGUCORE-84462]
 * Чинит скролл в окне выбора подразделений [EPGUCORE-86114]
+* Стилевые правки по верстке в компонентах карты [EPGUCORE-85778]
+* Блок фокуса при нажатии на tab в DropdownListComponent [EPGUCORE-75278]
 
 ### Tests
 
 * Написаны тесты для PriorityScreenComponent [EPGUCORE-85301]
+* Поправлены тесты MonthPicker [EPGUCORE-76608]
 
 ## [399.7.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.7.3) (2022-01-31)
 
