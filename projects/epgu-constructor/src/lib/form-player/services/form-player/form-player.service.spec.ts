@@ -7,7 +7,6 @@ import {
   EventBusService,
   BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import {
   FormPlayerApiResponse,
   FormPlayerApiSuccessResponse,
@@ -30,7 +29,7 @@ declare global {
   }
 }
 
-const response = new FormPlayerServiceStub()._store;
+const response = new FormPlayerServiceStub()['_store'];
 
 describe('FormPlayerService', () => {
   let service: FormPlayerService;
@@ -38,7 +37,6 @@ describe('FormPlayerService', () => {
   let formPlayerApiService: FormPlayerApiService;
   let logger: LoggerService;
   let eventBusService: EventBusService;
-  let location: Location;
   let orderId: number;
   let navigation: Navigation;
   beforeEach(() => {
@@ -51,12 +49,11 @@ describe('FormPlayerService', () => {
     global.window.scroll = jest.fn();
     service = TestBed.inject(FormPlayerService);
     screenService = TestBed.inject(ScreenService);
-    location = TestBed.inject(Location);
     logger = TestBed.inject(LoggerService);
     formPlayerApiService = TestBed.inject(FormPlayerApiService);
     eventBusService = TestBed.inject(EventBusService);
     orderId = 1234;
-    service._store = JSON.parse(JSON.stringify(response));
+    service['_store'] = JSON.parse(JSON.stringify(response));
   });
 
   describe('checkIfOrderExist()', () => {
@@ -80,7 +77,7 @@ describe('FormPlayerService', () => {
     it('should call updateLoading with true param', () => {
       jest.spyOn<any, string>(service, 'updateLoading');
       service.initData();
-      expect(service.updateLoading).toHaveBeenCalled();
+      expect(service['updateLoading']).toHaveBeenCalled();
     });
 
     it("should call getOrderData with orderId when isNeedToShowLastScreen return false and hasn't invited case", () => {
@@ -115,7 +112,7 @@ describe('FormPlayerService', () => {
         .mockReturnValue(throwError(errorResponse));
       jest.spyOn<any, string>(service, 'sendDataError');
       service.getOrderData(orderId);
-      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call getOrderData', () => {
@@ -130,14 +127,14 @@ describe('FormPlayerService', () => {
     it('should call updateLoading with false true', () => {
       jest.spyOn<any, string>(service, 'updateLoading');
       service.navigate({}, FormPlayerNavigation.NEXT);
-      expect(service.updateLoading).toHaveBeenCalled();
+      expect(service['updateLoading']).toHaveBeenCalled();
     });
 
     it('should call updateRequest with prev-button param', () => {
       const testNavigation = {};
       jest.spyOn<any, string>(service, 'updateRequest');
       service.navigate(testNavigation, FormPlayerNavigation.NEXT);
-      expect(service.updateRequest).toHaveBeenCalledWith(testNavigation);
+      expect(service['updateRequest']).toHaveBeenCalledWith(testNavigation);
     });
 
     it('should call navigate of formPlayerApiService with params when call navigate', () => {
@@ -167,7 +164,7 @@ describe('FormPlayerService', () => {
         .mockReturnValue(throwError(errorResponse));
       jest.spyOn<any, string>(service, 'sendDataError');
       service.navigate(testNavigation, FormPlayerNavigation.NEXT);
-      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call navigate', () => {
@@ -175,7 +172,7 @@ describe('FormPlayerService', () => {
       jest.spyOn<any, string>(formPlayerApiService, 'navigate').mockReturnValue(of(response));
       jest.spyOn<any, string>(service, 'updateLoading');
       service.navigate(testNavigation, FormPlayerNavigation.NEXT);
-      expect(service.updateLoading).toHaveBeenCalled();
+      expect(service['updateLoading']).toHaveBeenCalled();
     });
   });
 
@@ -183,7 +180,7 @@ describe('FormPlayerService', () => {
     it('should call updateLoading with false true', () => {
       jest.spyOn<any, string>(service, 'updateLoading');
       service.getBooking();
-      expect(service.updateLoading).toHaveBeenCalled();
+      expect(service['updateLoading']).toHaveBeenCalled();
     });
 
     it('should call getBooking of formPlayerApiService', () => {
@@ -210,14 +207,14 @@ describe('FormPlayerService', () => {
         .mockReturnValue(throwError(errorResponse));
       jest.spyOn<any, string>(service, 'sendDataError');
       service.getBooking();
-      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call navigate', () => {
       jest.spyOn<any, string>(formPlayerApiService, 'getBooking').mockReturnValue(of(response));
       jest.spyOn<any, string>(service, 'updateLoading');
       service.getBooking();
-      expect(service.updateLoading).toHaveBeenCalled();
+      expect(service['updateLoading']).toHaveBeenCalled();
     });
   });
 
@@ -225,7 +222,7 @@ describe('FormPlayerService', () => {
     it('should call updateLoading with false true', () => {
       jest.spyOn<any, string>(service, 'updateLoading');
       service.patchStore({});
-      expect(service.updateLoading).toHaveBeenCalled();
+      expect(service['updateLoading']).toHaveBeenCalled();
     });
 
     it('should call processResponse with new state', () => {
@@ -272,7 +269,7 @@ describe('FormPlayerService', () => {
       const quiz = { ...response, serviceId: '', targetId: '', answerServicePrefix: '' };
       jest.spyOn<any, string>(service, 'updateLoading');
       service.initPlayerFromQuiz(quiz);
-      expect(service.updateLoading).toHaveBeenCalled();
+      expect(service['updateLoading']).toHaveBeenCalled();
     });
 
     it('should call navigate of formPlayerApiService with params when call navigate', () => {
@@ -294,7 +291,7 @@ describe('FormPlayerService', () => {
         .mockReturnValue(throwError(errorResponse));
       jest.spyOn<any, string>(service, 'sendDataError');
       service.initPlayerFromQuiz(quiz);
-      expect(service.sendDataError).toHaveBeenCalledWith(errorResponse);
+      expect(service['sendDataError']).toHaveBeenCalledWith(errorResponse);
     });
 
     it('should call updateLoading with false param when call navigate', () => {
@@ -302,7 +299,7 @@ describe('FormPlayerService', () => {
       jest.spyOn<any, string>(formPlayerApiService, 'navigate').mockReturnValue(of(response));
       jest.spyOn<any, string>(service, 'updateLoading');
       service.initPlayerFromQuiz(quiz);
-      expect(service.updateLoading).toHaveBeenCalled();
+      expect(service['updateLoading']).toHaveBeenCalled();
     });
   });
 
@@ -319,8 +316,8 @@ describe('FormPlayerService', () => {
 
       service.initPlayerFromOrder({});
 
-      expect(service.updateLoading).toHaveBeenCalledTimes(1);
-      expect(service.updateLoading).toHaveBeenCalledWith(true);
+      expect(service['updateLoading']).toHaveBeenCalledTimes(1);
+      expect(service['updateLoading']).toHaveBeenCalledWith(true);
     });
 
     it('should handle error', (done) => {
@@ -339,18 +336,18 @@ describe('FormPlayerService', () => {
         (err) => {
           expect(err).toBe('some error');
 
-          expect(service.sendDataError).toBeCalledTimes(1);
-          expect(service.sendDataError).toBeCalledWith('some error');
+          expect(service['sendDataError']).toBeCalledTimes(1);
+          expect(service['sendDataError']).toBeCalledWith('some error');
           done();
         },
       );
 
-      (service.updateLoading as jest.Mock).mockReset();
+      (service['updateLoading'] as jest.Mock).mockReset();
 
       getServiceDataSubject.error('some error');
 
-      expect(service.updateLoading).toBeCalledTimes(1);
-      expect(service.updateLoading).toBeCalledWith(false);
+      expect(service['updateLoading']).toBeCalledTimes(1);
+      expect(service['updateLoading']).toBeCalledWith(false);
     });
 
     it('should handle success', (done) => {
@@ -389,28 +386,28 @@ describe('FormPlayerService', () => {
     it('should call hasError with response param', () => {
       jest.spyOn<any, string>(service, 'hasError');
       service.processResponse(response);
-      expect(service.hasError).toHaveBeenCalledWith(response);
+      expect(service['hasError']).toHaveBeenCalledWith(response);
     });
 
     it('should call sendDataError with response param when hasError return true', () => {
       jest.spyOn<any, string>(service, 'hasError').mockReturnValue(true);
       jest.spyOn<any, string>(service, 'sendDataError');
       service.processResponse(response);
-      expect(service.sendDataError).toHaveBeenCalledWith(response);
+      expect(service['sendDataError']).toHaveBeenCalledWith(response);
     });
 
     it('should call sendDataSuccess with response param when hasError return false', () => {
       jest.spyOn<any, string>(service, 'hasError').mockReturnValue(false);
       jest.spyOn<any, string>(service, 'sendDataSuccess');
       service.processResponse(response);
-      expect(service.sendDataSuccess).toHaveBeenCalledWith(response);
+      expect(service['sendDataSuccess']).toHaveBeenCalledWith(response);
     });
 
     it('should call resetViewByChangeScreen with response param when hasError return false', () => {
       jest.spyOn<any, string>(service, 'hasError').mockReturnValue(false);
       jest.spyOn<any, string>(service, 'resetViewByChangeScreen');
       service.processResponse(response);
-      expect(service.resetViewByChangeScreen).toHaveBeenCalled();
+      expect(service['resetViewByChangeScreen']).toHaveBeenCalled();
     });
 
     it('should eventBusService.emit CloseModalEventGlobal event when hasError return false', () => {
@@ -424,28 +421,28 @@ describe('FormPlayerService', () => {
     it('should call scroll method of window  with (0, 0) params', () => {
       const window = TestBed.inject(WINDOW);
       jest.spyOn<any, string>(window, 'scroll');
-      service.resetViewByChangeScreen();
-      expect(window.scroll).toHaveBeenCalledWith(0, 0);
+      service['resetViewByChangeScreen']();
+      expect(window['scroll']).toHaveBeenCalledWith(0, 0);
     });
   });
 
   describe('hasError()', () => {
     it('should return true if hasRequestErrors', () => {
       jest.spyOn<any, string>(service, 'hasRequestErrors').mockReturnValue(true);
-      const hasError = service.hasError(response);
+      const hasError = service['hasError'](response);
       expect(hasError).toBeTruthy();
     });
 
     it('should return true if hasBusinessErrors', () => {
       jest.spyOn<any, string>(service, 'hasBusinessErrors').mockReturnValue(true);
-      const hasError = service.hasError(response);
+      const hasError = service['hasError'](response);
       expect(hasError).toBeTruthy();
     });
 
     it('should return false if not hasRequestErrors and not hasBusinessErrors', () => {
       jest.spyOn<any, string>(service, 'hasRequestErrors').mockReturnValue(false);
       jest.spyOn<any, string>(service, 'hasBusinessErrors').mockReturnValue(false);
-      const hasError = service.hasError(response);
+      const hasError = service['hasError'](response);
       expect(hasError).toBeFalsy();
     });
   });
@@ -457,12 +454,12 @@ describe('FormPlayerService', () => {
         message: 'oooh some error here',
         status: FormPlayerApiErrorStatuses.badRequest,
       };
-      const hasRequestErrors = service.hasRequestErrors(errorResponse);
+      const hasRequestErrors = service['hasRequestErrors'](errorResponse);
       expect(hasRequestErrors).toBeTruthy();
     });
 
     it("should return false if response haven't any error status", () => {
-      const hasRequestErrors = service.hasError(response);
+      const hasRequestErrors = service['hasError'](response);
       expect(hasRequestErrors).toBeFalsy();
     });
   });
@@ -471,12 +468,12 @@ describe('FormPlayerService', () => {
     it('should return true if response have business errors', () => {
       const errorResponse = JSON.parse(JSON.stringify(response));
       errorResponse.scenarioDto.errors = { error: 'error message here' };
-      const hasBusinessErrors = service.hasBusinessErrors(errorResponse);
+      const hasBusinessErrors = service['hasBusinessErrors'](errorResponse);
       expect(hasBusinessErrors).toBeTruthy();
     });
 
     it("should return false if response haven't any business error", () => {
-      const hasBusinessErrors = service.hasBusinessErrors(response);
+      const hasBusinessErrors = service['hasBusinessErrors'](response);
       expect(hasBusinessErrors).toBeFalsy();
     });
   });
@@ -497,27 +494,27 @@ describe('FormPlayerService', () => {
 
     it('should call log of loggerService', () => {
       jest.spyOn<any, string>(logger, 'log');
-      service.updateRequest(testNavigation);
+      service['updateRequest'](testNavigation);
       expect(logger.log).toBeCalled();
     });
 
     it('should call isEmptyNavigationPayload with param', () => {
       jest.spyOn<any, string>(service, 'isEmptyNavigationPayload');
-      service.updateRequest(testNavigation);
-      expect(service.isEmptyNavigationPayload).toBeCalledWith(testNavigation.payload);
+      service['updateRequest'](testNavigation);
+      expect(service['isEmptyNavigationPayload']).toBeCalledWith(testNavigation.payload);
     });
 
     it('should call setDefaultCurrentValue when isEmptyNavigationPayload return true', () => {
       jest.spyOn<any, string>(service, 'isEmptyNavigationPayload').mockReturnValue(true);
       jest.spyOn<any, string>(service, 'setDefaultCurrentValue');
-      service.updateRequest(testNavigation);
-      expect(service.setDefaultCurrentValue).toBeCalled();
+      service['updateRequest'](testNavigation);
+      expect(service['setDefaultCurrentValue']).toBeCalled();
     });
 
     it('should set prev-button.payload as currentValue when isEmptyNavigationPayload return false', () => {
       jest.spyOn<any, string>(service, 'isEmptyNavigationPayload').mockReturnValue(false);
-      service.updateRequest(testNavigation);
-      expect(service._store.scenarioDto.currentValue).toBe(testNavigation.payload);
+      service['updateRequest'](testNavigation);
+      expect(service['_store'].scenarioDto.currentValue).toBe(testNavigation.payload);
     });
 
     it('should update store when prev-button.options has store', () => {
@@ -528,8 +525,8 @@ describe('FormPlayerService', () => {
         },
       };
       jest.spyOn<any, string>(service, 'isEmptyNavigationPayload').mockReturnValue(false);
-      service.updateRequest(testNavigation);
-      expect(service._store).toBe(testNavigation.options.store);
+      service['updateRequest'](testNavigation);
+      expect(service['_store']).toBe(testNavigation.options.store);
     });
   });
 
@@ -542,27 +539,27 @@ describe('FormPlayerService', () => {
           visited: true,
         },
       };
-      service.setDefaultCurrentValue();
-      expect(service._store.scenarioDto.currentValue).toEqual(defaultCurrentValue);
+      service['setDefaultCurrentValue']();
+      expect(service['_store'].scenarioDto.currentValue).toEqual(defaultCurrentValue);
     });
   });
 
   describe('isEmptyNavigationPayload()', () => {
     it("should return true if hasn't payload with keys", () => {
       navigation = { payload: {} };
-      const isEmptyNavigationPayload = service.isEmptyNavigationPayload(navigation.payload);
+      const isEmptyNavigationPayload = service['isEmptyNavigationPayload'](navigation.payload);
       expect(isEmptyNavigationPayload).toBeTruthy();
     });
 
     it("should return true if hasn't payload with keys", () => {
       navigation = {};
-      const isEmptyNavigationPayload = service.isEmptyNavigationPayload(navigation.payload);
+      const isEmptyNavigationPayload = service['isEmptyNavigationPayload'](navigation.payload);
       expect(isEmptyNavigationPayload).toBeTruthy();
     });
 
     it("should return false if hasn't payload with keys", () => {
       navigation = { payload: { k1: { value: '', visited: true } } };
-      const isEmptyNavigationPayload = service.isEmptyNavigationPayload(navigation.payload);
+      const isEmptyNavigationPayload = service['isEmptyNavigationPayload'](navigation.payload);
       expect(isEmptyNavigationPayload).toBeFalsy();
     });
   });
@@ -570,14 +567,14 @@ describe('FormPlayerService', () => {
   describe('sendDataSuccess()', () => {
     it('should call log of loggerService', () => {
       jest.spyOn<any, string>(logger, 'log');
-      service.sendDataSuccess(response);
+      service['sendDataSuccess'](response);
       expect(logger.log).toBeCalled();
     });
 
     it('should call initResponse with response param', () => {
       jest.spyOn<any, string>(service, 'initResponse');
-      service.sendDataSuccess(response);
-      expect(service.initResponse).toBeCalledWith(response);
+      service['sendDataSuccess'](response);
+      expect(service['initResponse']).toBeCalledWith(response);
     });
   });
 
@@ -591,14 +588,14 @@ describe('FormPlayerService', () => {
 
     it('should call error of loggerService', () => {
       jest.spyOn<any, string>(logger, 'error');
-      service.sendDataError(errorResponse);
+      service['sendDataError'](errorResponse);
       expect(logger.error).toBeCalled();
     });
 
     it('should call initResponse with response param when response has business errors', () => {
       jest.spyOn<any, string>(service, 'initResponse');
-      service.sendDataError(errorResponse);
-      expect(service.initResponse).toBeCalledWith(errorResponse);
+      service['sendDataError'](errorResponse);
+      expect(service['initResponse']).toBeCalledWith(errorResponse);
     });
 
     it("shouldn't call initResponse with response param when response error status", () => {
@@ -609,46 +606,46 @@ describe('FormPlayerService', () => {
       };
       jest.spyOn<any, string>(service, 'initResponse');
       // @ts-ignore
-      service.sendDataError(testErrorResponse);
-      expect(service.initResponse).not.toBeCalled();
+      service['sendDataError'](testErrorResponse);
+      expect(service['initResponse']).not.toBeCalled();
     });
 
     it('should call updateLoading with false param', () => {
       jest.spyOn<any, string>(service, 'updateLoading');
-      service.sendDataError(errorResponse);
-      expect(service.updateLoading).toBeCalledWith(false);
+      service['sendDataError'](errorResponse);
+      expect(service['updateLoading']).toBeCalledWith(false);
     });
   });
 
   describe('initResponse()', () => {
     it('should call handleInvalidResponse when empty response', () => {
       jest.spyOn<any, string>(service, 'handleInvalidResponse');
-      service.initResponse(null);
-      expect(service.handleInvalidResponse).toBeCalled();
+      service['initResponse'](null);
+      expect(service['handleInvalidResponse']).toBeCalled();
     });
 
     it('should set store from response', () => {
       const newResponse = JSON.parse(JSON.stringify(response));
       jest.spyOn<any, string>(service, 'initResponse');
-      service.initResponse(newResponse);
-      expect(service._store).toBe(newResponse);
+      service['initResponse'](newResponse);
+      expect(service['_store']).toBe(newResponse);
     });
 
     it('should call initScreenStore with scenarioDto param', () => {
       jest.spyOn<any, string>(service, 'initScreenStore');
-      service.initResponse(response);
-      expect(service.initScreenStore).toBeCalledWith(response.scenarioDto);
+      service['initResponse'](response);
+      expect(service['initScreenStore']).toBeCalledWith(response.scenarioDto);
     });
 
     it('should call updatePlayerLoaded with true param', () => {
       jest.spyOn<any, string>(service, 'updatePlayerLoaded');
-      service.initResponse(response);
-      expect(service.updatePlayerLoaded).toBeCalledWith(true);
+      service['initResponse'](response);
+      expect(service['updatePlayerLoaded']).toBeCalledWith(true);
     });
 
     it('should call log of loggerService', () => {
       jest.spyOn<any, string>(logger, 'log');
-      service.initResponse(response);
+      service['initResponse'](response);
       expect(logger.log).toBeCalled();
     });
   });
@@ -656,7 +653,7 @@ describe('FormPlayerService', () => {
   describe('handleInvalidResponse()', () => {
     it('should call error of loggerService', () => {
       jest.spyOn<any, string>(logger, 'error');
-      service.handleInvalidResponse();
+      service['handleInvalidResponse']();
       expect(logger.error).toBeCalled();
     });
   });
@@ -664,47 +661,47 @@ describe('FormPlayerService', () => {
   describe('get store()', () => {
     it('should return store', () => {
       const { store } = service;
-      expect(store).toBe(service._store);
+      expect(store).toBe(service['_store']);
     });
   });
 
   describe('initScreenStore()', () => {
     it('should call initScreenStore of screenService with scenarioDto', () => {
       jest.spyOn<any, string>(screenService, 'initScreenStore');
-      service.initScreenStore(response.scenarioDto);
+      service['initScreenStore'](response.scenarioDto);
       expect(screenService.initScreenStore).toBeCalledWith(response.scenarioDto);
     });
   });
 
   describe('updateLoading()', () => {
     it('should set isLoading by new value', () => {
-      service.updateLoading(true);
-      expect(service.isLoading).toBe(true);
+      service['updateLoading'](true);
+      expect(service['isLoading']).toBe(true);
     });
 
     it('should call isLoadingSubject next with new value', () => {
-      jest.spyOn<any, string>(service.isLoadingSubject, 'next');
-      service.updateLoading(true);
-      expect(service.isLoadingSubject.next).toBeCalledWith(true);
+      jest.spyOn<any, string>(service['isLoadingSubject'], 'next');
+      service['updateLoading'](true);
+      expect(service['isLoadingSubject'].next).toBeCalledWith(true);
     });
 
     it('should call updateLoading of screenService with new value', () => {
       jest.spyOn<any, string>(screenService, 'updateLoading');
-      service.updateLoading(true);
+      service['updateLoading'](true);
       expect(screenService.updateLoading).toBeCalledWith(true);
     });
   });
 
   describe('updatePlayerLoaded()', () => {
     it('should set playerLoaded by new value', () => {
-      service.updatePlayerLoaded(true);
-      expect(service.playerLoaded).toBe(true);
+      service['updatePlayerLoaded'](true);
+      expect(service['playerLoaded']).toBe(true);
     });
 
     it('should call playerLoadedSubject next with new value', () => {
-      jest.spyOn<any, string>(service.playerLoadedSubject, 'next');
-      service.updatePlayerLoaded(true);
-      expect(service.playerLoadedSubject.next).toBeCalledWith(true);
+      jest.spyOn<any, string>(service['playerLoadedSubject'], 'next');
+      service['updatePlayerLoaded'](true);
+      expect(service['playerLoadedSubject'].next).toBeCalledWith(true);
     });
   });
 
@@ -714,7 +711,7 @@ describe('FormPlayerService', () => {
         scenarioDto: { display: 'id' },
       } as unknown) as FormPlayerApiSuccessResponse;
       const otherScenario = { finishedAndCurrentScreens: ['id1', 'id2'] };
-      service.augmentDisplayId(successResponse, otherScenario);
+      service['augmentDisplayId'](successResponse, otherScenario);
       expect(successResponse.scenarioDto.display.id).toBe('id2');
     });
   });
