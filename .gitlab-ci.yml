@@ -104,7 +104,7 @@ Test:
       - $GITLAB_USER_LOGIN == $CI_USER
   script:
     - echo -e "##########\ntest\n##########"
-    - yarn test
+    - yarn test:ci
     - echo -e "##########\ndone\n##########"
   interruptible: true
   only:
