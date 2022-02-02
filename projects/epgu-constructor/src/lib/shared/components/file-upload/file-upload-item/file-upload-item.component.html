@@ -2,7 +2,7 @@
   <div *ngIf="data.title" class="title">
     {{ data.title }}
   </div>
-  <div class="file__bottom" [ngClass]="{ 'file__bottom--divider': isShownDivider() }">
+  <div *ngIf="data.label" class="label--divider">
     <epgu-constructor-output-html
       class="info__text"
       [html]="data.label"
@@ -10,6 +10,7 @@
     >
     </epgu-constructor-output-html>
   </div>
+  <div *ngIf="filesDivider" class="file__bottom--divider"></div>
 
   <epgu-constructor-uploader-manager
     (update)="update($event)"

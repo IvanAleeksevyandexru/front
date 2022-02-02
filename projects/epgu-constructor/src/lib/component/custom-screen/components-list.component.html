@@ -25,6 +25,8 @@
         [componentType]="componentData.value?.type"
         [limit]="componentData.value?.attrs?.limit"
         class="component-list-resolver"
+        [parentFirst]="idxFirstShownElement === idx"
+        [parentLast]="idxLastShownElement === idx"
       ></epgu-constructor-component-list-resolver>
     </div>
   </ng-container>

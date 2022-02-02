@@ -42,8 +42,11 @@ export class ModalBaseComponent extends BaseComponent {
   }
 
   closeModal(value?: unknown): void {
-    document.body.style.overflow = null;
-    document.body.style.height = null;
+    // Если открыто несколько модальных окон одновременно
+    const modalContainer = document.getElementById('modal-container');
+    if (modalContainer?.childNodes.length === 1) {
+      document.body.style.overflow = null;
+    }
     if (HelperService.isTouchDevice()) {
       const screenResolver = document.querySelector<HTMLElement>(
         'epgu-constructor-screen-resolver',

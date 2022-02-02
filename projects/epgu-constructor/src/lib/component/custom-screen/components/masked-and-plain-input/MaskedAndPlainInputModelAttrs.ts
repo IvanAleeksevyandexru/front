@@ -29,6 +29,8 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
 
   readonly rank: boolean;
 
+  readonly suggestionPath: string;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.customUnrecLabel = attrs.customUnrecLabel;
@@ -40,6 +42,7 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
     this.maskOptions = attrs.maskOptions;
     this.showMaskSymbols = attrs.showMaskSymbols;
     this.showPlaceholderOnFocus = attrs.showPlaceholderOnFocus;
+    this.suggestionPath = attrs.suggestionPath;
     this.hint = attrs.hint;
     this.clarifications = attrs.clarifications;
     this.disabledByCheckbox = attrs.disabledByCheckbox;

@@ -364,6 +364,8 @@ export interface ComponentAttrsDto {
   writableComponents?: WritableComponents;
   years?: Years;
   isSoloCheckBox?: IsSoloCheckBox;
+  parentFirst?: boolean;
+  parentLast?: boolean;
 }
 
 export interface SlotsNotFoundTemplate {

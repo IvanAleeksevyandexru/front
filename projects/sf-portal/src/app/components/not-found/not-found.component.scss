@@ -1,103 +1,53 @@
 //  TODO: причесать стили и избавиться от лишних классов
-a {
-  height: 56px;
-  background-color: rgb(255, 255, 255);
-  padding: 0 24px;
-  font-size: 16px;
-  line-height: 56px;
-  vertical-align: middle;
+
+#content-wrapper {
+  min-height: 250px;
   font-family: Helvetica, Arial, sans-serif;
-  color: rgb(86, 86, 86);
-  border-radius: 4px;
-  border: 1px solid rgb(205, 209, 212);
-  display: inline-block;
-  text-decoration: none;
-  cursor: pointer;
-}
 
-a.to-main-btn:before {
-  width: 8px;
-  height: 12px;
-  background: url(../../../assets/svg/arrow_back.svg) 0 0 no-repeat;
-  margin-right: 8px;
-  content: '';
-  display: inline-block;
-  vertical-align: middle;
-}
-
-a:hover {
-  background-color: rgb(245, 245, 245) !important;
-  border: 1px solid rgb(205, 207, 209) !important;
-  color: rgb(86, 86, 86) !important;
-}
-
-.err-msg-btn {
-  margin-left: 23px;
-}
-
-#content-wrapper.tab {
-  .error-img img {
-    max-width: 250px;
-  }
-
-  .error-info {
-    h1 {
-      font-size: 30px;
-      line-height: 34px;
-    }
-  }
-
-  .error-info p {
-    margin: 30px 0 0;
-  }
-}
-
-#content-wrapper.mob {
   a {
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 0 15px;
-    font-size: 15px;
-    line-height: 50px;
-    height: 50px;
+    height: 56px;
+    background-color: rgb(255, 255, 255);
+    padding: 0 24px;
+    font-size: 16px;
+    line-height: 56px;
     vertical-align: middle;
+    font-family: Helvetica, Arial, sans-serif;
     color: rgb(86, 86, 86);
     border-radius: 4px;
     border: 1px solid rgb(205, 209, 212);
+    display: inline-block;
     text-decoration: none;
     cursor: pointer;
   }
 
+  a.to-main-btn:before {
+    width: 8px;
+    height: 12px;
+    background: url(../../../assets/svg/arrow_back.svg) 0 0 no-repeat;
+    margin-right: 8px;
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  a:hover {
+    background-color: rgb(245, 245, 245) !important;
+    border: 1px solid rgb(205, 207, 209) !important;
+    color: rgb(86, 86, 86) !important;
+  }
+
+  .error-text {
+    color: rgb(0, 0, 0);
+    font-size: 14px;
+  }
+
   .err-msg-btn {
-    margin-top: 20px;
-    margin-left: 0;
-  }
-
-  .error-img img {
-    max-width: 200px;
-  }
-
-  .error-info {
-    h1 {
-      font-size: 22px;
-      line-height: 25px;
-    }
-  }
-
-  .error-info p {
-    margin: 20px 0 0;
+    margin-left: 23px;
   }
 }
 
-#content-wrapper.dk {
-  box-shadow: none;
-  min-height: 250px;
-  position: relative;
-  font-size: 14px;
-  font-family: Helvetica, Arial, sans-serif;
-  color: rgb(0, 0, 0);
-
+// Для десктопных экранов
+@media (min-width: 1100px) {
   #content {
     padding-bottom: 50px;
     position: relative;
@@ -110,7 +60,7 @@ a:hover {
       .error-content {
         margin: 160px 0 40px 0;
 
-        .error-info {
+        .error-text {
           width: 52%;
           float: left;
 
@@ -147,11 +97,66 @@ a:hover {
   }
 }
 
-#content-wrapper.mob, #content-wrapper.tab {
-  font-size: 14px;
-  font-family: Helvetica, Arial, sans-serif;
-  color: rgb(0, 0, 0);
+// Для планшетов
+@media (min-width: 737px) and (max-width: 1099px) {
+  .error-img img {
+    max-width: 250px;
+  }
 
+  .error-text {
+    h1 {
+      font-size: 30px;
+      line-height: 34px;
+    }
+
+    p {
+      margin: 30px 0 0;
+    }
+  }
+}
+
+// Для мобильных устройств
+@media (max-width: 736px) {
+  a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0 15px;
+    font-size: 15px;
+    line-height: 50px;
+    height: 50px;
+    vertical-align: middle;
+    color: rgb(86, 86, 86);
+    border-radius: 4px;
+    border: 1px solid rgb(205, 209, 212);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .err-msg-btn {
+    margin-top: 20px;
+    margin-left: 0 !important;
+  }
+
+  .error-img img {
+    max-width: 200px;
+  }
+
+  .error-text {
+    h1 {
+      font-size: 22px;
+      line-height: 25px;
+    }
+
+    p {
+      margin: 20px 0 0;
+
+    }
+  }
+}
+
+// Общие стили для планшетов и моб. устройств
+@media (max-width: 1099px) {
   #content {
     padding-bottom: 64px;
 
@@ -164,22 +169,31 @@ a:hover {
       .error-content {
         padding: 0 20px;
 
-        .error-img {
-          text-align: center;
-        }
-
         .error-info {
-          margin-bottom: 80px;
-          text-align: center;
+          display: flex;
+          flex-direction: column-reverse;
 
-          h1 {
-            margin-top: 0;
-            font-family: system-ui;
-            font-weight: 100;
+          .error-img, .error-text {
+            height: auto;
           }
 
-          p {
-            line-height: 1.5em;
+          .error-img {
+            text-align: center;
+          }
+
+          .error-text {
+            margin-bottom: 80px;
+            text-align: center;
+
+            h1 {
+              margin-top: 0;
+              font-family: system-ui;
+              font-weight: 100;
+            }
+
+            p {
+              line-height: 1.5em;
+            }
           }
         }
 

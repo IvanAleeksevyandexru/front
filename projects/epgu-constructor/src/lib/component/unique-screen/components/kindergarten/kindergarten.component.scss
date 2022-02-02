@@ -14,7 +14,8 @@
     left: 0;
     right: 0;
     @include tablets-down() {
-      bottom: 115px;
+      bottom: 19px;
+      padding: 0 16px;
     }
   }
 }

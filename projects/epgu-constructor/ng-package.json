@@ -7,7 +7,6 @@
     "@epgu/epgu-constructor-ui-kit",
     "ics",
     "@alyle/ui",
-    "@tanker/file-ponyfill",
     "node-fetch",
     "os"
   ],

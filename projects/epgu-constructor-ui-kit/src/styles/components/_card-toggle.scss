@@ -54,6 +54,7 @@ $color-highlighted: rgba(153, 177, 230, 0.5);
     }
   }
   &-content {
+    visibility: hidden;
     max-height: 0;
     transition: all 0.35s;
     @include typ-plain-text();
@@ -77,6 +78,7 @@ $color-highlighted: rgba(153, 177, 230, 0.5);
       transform: rotate(-90deg);
     }
     ~ .card-toggle-content {
+      visibility: visible;
       max-height: initial;
       height: auto;
       padding-top: 12px;

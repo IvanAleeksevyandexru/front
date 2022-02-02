@@ -1,0 +1,28 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#versions {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#versions td, #versions th {
+  border: 1px solid rgb(221, 221, 221);
+  padding: 8px;
+}
+
+#versions tr:nth-child(even) {
+  background-color: rgb(242, 242, 242);
+}
+
+#versions th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgb(98, 116, 221);
+  color: rgb(255, 255, 255);
+}
+
