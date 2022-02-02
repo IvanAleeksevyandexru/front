@@ -1,6 +1,6 @@
 # Release Notes
 
-## [399.7.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.7.1) (2022-01-31)
+## [399.8.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.8.1) (2022-02-01)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
