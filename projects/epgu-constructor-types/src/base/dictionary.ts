@@ -83,10 +83,19 @@ export enum DictionaryValueTypes {
 }
 
 export enum DictionaryConditions {
-  EQUALS = 'EQUALS',
-  CONTAINS = 'CONTAINS',
+  ADDRESS = 'ADDRESS', // строку адреса преобразует(пытается) в fias код и подставляет в запрос
+  CONTAINS = 'CONTAINS', // like '%STRING%'
+  ENDS_WITH = 'ENDS_WITH', // like 'STRING%'
+  EQUALS = 'EQUALS', // = 'STRING'
+  EXISTS = 'EXISTS',
+  FIAS = 'FIAS',
+  GREATER_THAN = 'GREATER_THAN',
   GREATER_THAN_OR_EQUALS = 'GREATER_THAN_OR_EQUALS',
+  IN = 'IN',
+  LESS_THAN = 'LESS_THAN',
   LESS_THAN_OR_EQUALS = 'LESS_THAN_OR_EQUALS',
+  NOT_EQUALS = 'NOT_EQUALS', // <> 'STRING'
+  STARTS_WITH = 'STARTS_WITH', // like 'STRING%'
 }
 
 export type DisabledByCheckbox = string;
