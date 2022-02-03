@@ -15,6 +15,8 @@ import MonthPickerModelAttrs from './MonthPickerModelAttrs';
 
 import { ConstructorMonthPickerComponent } from '../../../../shared/components/constructor-month-picker/constructor-month-picker.component';
 import { By } from '@angular/platform-browser';
+import { MonthYear } from '@epgu/ui/models/date-time';
+import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -87,9 +89,12 @@ describe('MonthPickerComponent', () => {
 
   it('should be init minDate and maxDate not with years', () => {
     fixture.detectChanges();
-    expect(component.minMonth?.year).toBe(2020);
-    expect(component.minMonth?.month).toBe(11);
-    expect(component.maxMonth?.year).toBe(2021);
-    expect(component.maxMonth?.month).toBe(11);
+    const attrs = (control.controls.attrs.value as unknown) as MonthPickerModelAttrs;
+
+    const minMonth = MonthYear.fromDate(DatesHelperService.relativeOrFixedToFixed(attrs?.minDate));
+    const maxMonth = MonthYear.fromDate(DatesHelperService.relativeOrFixedToFixed(attrs?.maxDate));
+
+    expect(component.minMonth).toEqual(minMonth);
+    expect(component.maxMonth).toEqual(maxMonth);
   });
 });
