@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { ServiceVersions } from '../../shared/interfaces';
+import { ServiceVersions } from '../../../shared/interfaces';
 
 @Component({
   selector: 'service-versions',

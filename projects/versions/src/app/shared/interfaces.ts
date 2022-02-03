@@ -16,3 +16,18 @@ export interface VersionSet {
   libVersions$?: Observable<LibVersions>;
   serviceVersions$?: Observable<ServiceVersions>;
 }
+
+export interface UrlsOfStand {
+  libVersions: string;
+  serviceVersions?: string;
+}
+
+export interface UrlsOfStands {
+  Uat: UrlsOfStand;
+  Uat2: UrlsOfStand;
+  DevL11: UrlsOfStand;
+  Dev01: UrlsOfStand;
+  Dev02: UrlsOfStand;
+  Prod: UrlsOfStand;
+  ProdLike: UrlsOfStand;
+}
