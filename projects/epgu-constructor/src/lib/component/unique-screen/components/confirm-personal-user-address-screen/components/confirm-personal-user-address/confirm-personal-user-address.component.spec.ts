@@ -19,7 +19,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 
 import { DadataWidgetComponent, PlainInputComponent } from '@epgu/ui/controls';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ConfirmPersonalUserAddressComponent } from './confirm-personal-user-address.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
@@ -39,6 +39,7 @@ import { SuggestMonitorService } from '../../../../../../shared/services/suggest
 import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
 import { ValidationServiceStub } from '../../../../../../shared/services/validation/validation.service.stub';
+import { ScreenContent } from '../../../../../../screen/screen-content';
 
 const mockData = {
   attrs: {
@@ -58,7 +59,80 @@ const mockData = {
   value: '{}',
   type: UniqueScreenComponentTypes.confirmPersonalUserRegAddr,
   required: true,
+  errors: ' ',
 };
+
+const mockErrors = {
+  house: {
+    desc: 'Неверный номер дома 1',
+    icon: 'red-line',
+    title: 'Ошибка дома',
+    type: 'error',
+  },
+  houseTitleClone: {
+    desc: 'Неверный номер дома 2',
+    icon: 'red-line',
+    title: 'Ошибка дома',
+    type: 'error',
+  },
+  apartment: {
+    desc: 'Неверный номер квартиры',
+    icon: 'red-line',
+    title: 'Ошибка квартиры',
+    type: 'error',
+  },
+  apartmentFullClone: {
+    desc: 'Неверный номер квартиры',
+    icon: 'red-line',
+    title: 'Ошибка квартиры',
+    type: 'error',
+  },
+};
+
+const mockGroupedErrors = [
+  {
+    desc: `Неверный номер дома 1 <br> Неверный номер дома 2`,
+    icon: 'red-line',
+    title: 'Ошибка дома',
+    type: 'error',
+  },
+  {
+    desc: 'Неверный номер квартиры',
+    icon: 'red-line',
+    title: 'Ошибка квартиры',
+    type: 'error',
+  },
+];
+
+const mockUniqueErrors = {
+  house: {
+    desc: 'Неверный номер дома',
+    icon: 'red-line',
+    title: 'Ошибка дома',
+    type: 'error',
+  },
+  apartment: {
+    desc: 'Неверный номер квартиры',
+    icon: 'red-line',
+    title: 'Ошибка квартиры',
+    type: 'error',
+  },
+};
+
+const mockGroupedUniqueErrors = [
+  {
+    desc: 'Неверный номер дома',
+    icon: 'red-line',
+    title: 'Ошибка дома',
+    type: 'error',
+  },
+  {
+    desc: 'Неверный номер квартиры',
+    icon: 'red-line',
+    title: 'Ошибка квартиры',
+    type: 'error',
+  },
+];
 
 describe('ConfirmPersonalUserAddressComponent', () => {
   let component: ConfirmPersonalUserAddressComponent;
@@ -187,6 +261,64 @@ describe('ConfirmPersonalUserAddressComponent', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
 
       expect(debugEl).toBeTruthy();
+    });
+  });
+
+  describe('getGroupedErrors()', () => {
+    it('should return grouped errors by title and deleted non-unique errors by title and desc', () => {
+      const groupedErrors = (component as any).getGroupedErrors(Object.values(mockErrors));
+
+      expect(groupedErrors).toEqual(mockGroupedErrors);
+    });
+
+    it('should return same errors if they are unique', () => {
+      const groupedErrors = (component as any).getGroupedErrors(Object.values(mockUniqueErrors));
+
+      expect(groupedErrors).toEqual(mockGroupedUniqueErrors);
+    });
+  });
+
+  describe('setErrors()', () => {
+    it('should set string error', () => {
+      expect(component.stringError).toEqual('');
+      expect(component.groupedErrors).toEqual([]);
+
+      (component as any).setErrors('Error');
+
+      expect(component.stringError).toEqual('Error');
+      expect(component.groupedErrors).toEqual([]);
+    });
+
+    it('should set grouped errors', () => {
+      expect(component.stringError).toEqual('');
+      expect(component.groupedErrors).toEqual([]);
+
+      (component as any).setErrors(JSON.stringify(mockErrors));
+
+      expect(component.stringError).toEqual('');
+      expect(component.groupedErrors).toEqual(mockGroupedErrors);
+    });
+
+    it('should reset errors', () => {
+      (component as any).setErrors('Error');
+
+      expect(component.stringError).toEqual('Error');
+      expect(component.groupedErrors).toEqual([]);
+
+      (component as any).setErrors(JSON.stringify(mockErrors));
+
+      expect(component.stringError).toEqual('');
+      expect(component.groupedErrors).toEqual(mockGroupedErrors);
+
+      (component as any).setErrors('Error');
+
+      expect(component.stringError).toEqual('Error');
+      expect(component.groupedErrors).toEqual([]);
+
+      (component as any).setErrors('');
+
+      expect(component.stringError).toEqual('');
+      expect(component.groupedErrors).toEqual([]);
     });
   });
 });
