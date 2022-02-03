@@ -14,6 +14,8 @@ export class AbstractComponentListItemComponent<T> implements OnInit {
   @Input() componentIndex: number;
   @Input() componentsGroupIndex: number;
   @Input() limit?: number | string;
+  @Input() parentFirst = false;
+  @Input() parentLast = false;
 
   public formService: ComponentsListFormService;
   public control: AbstractControl;

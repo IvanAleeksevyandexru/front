@@ -1,24 +1,19 @@
-<div id="content-wrapper" [ngClass]="{'dk': deviceType === 'desk', 'mob': deviceType === 'mob', 'tab': deviceType === 'tablet'}">
+<div id="content-wrapper">
   <div id="content">
-    <div>
       <div class="content-center-box">
         <div class="error-content">
-          <ng-container *ngTemplateOutlet="deviceType === 'desk' ? ErrorInfo : ErrorImg"></ng-container>
-          <ng-container *ngTemplateOutlet="deviceType === 'desk' ? ErrorImg : ErrorInfo"></ng-container>
 
-          <ng-template #ErrorInfo>
-            <div class="error-info">
+          <div class="error-info">
+            <div class="error-text">
               <h1>Неверный адрес страницы</h1>
               <p>Проверьте, правильно ли вы ввели его. Если данные верны, пожалуйста, сообщите нам об
                 ошибке.</p>
             </div>
-          </ng-template>
 
-          <ng-template #ErrorImg>
             <div class="error-img">
               <img alt="" src="assets/gif/sad_face.gif">
             </div>
-          </ng-template>
+          </div>
 
           <div class="error-nav">
             <a href="/" class="to-main-btn"><span>На главную</span></a>
@@ -26,6 +21,5 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 </div>

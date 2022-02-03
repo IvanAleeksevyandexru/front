@@ -1,28 +1,32 @@
 # Release Notes
 
-## [400.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.0) (2022-01-28)
-
-### BREAKING CHANGES
-
-*
+## [400.0.2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.2) (2022-02-02)
 
 ### Features
 
-*
+* Доработка компонента ComplexChoiceDictionary в части выбора только одного чек-бокса [EPGUCORE-85236]
+* Добавлено isClearable и defaultLabelList для DictionaryComponent [EPGUCORE-86314]
+* Добавлено приложение versions [EPGUCORE-85909]
 
 ### Refactor
 
 * Переименованы параметры в методах ComponentsListFormService и DateRangeService [EPGUCORE-85318]
+* Добавлен поиск parentFirst и parentLast из дочерних компонент [EPGUCORE-79609]
 
 ### Bug Fixes
 
-*
+* Исправлена работа suggests в SnilsInput [EPGUCORE-86706]
+* Поправлена работа скролла контента под модальными окнами [EPGUCORE-84462]
+* Чинит скролл в окне выбора подразделений [EPGUCORE-86114]
+* Стилевые правки по верстке в компонентах карты [EPGUCORE-85778]
+* Блок фокуса при нажатии на tab в DropdownListComponent [EPGUCORE-75278]
 
 ### Tests
 
-*
+* Написаны тесты для PriorityScreenComponent [EPGUCORE-85301]
+* Поправлены тесты MonthPicker [EPGUCORE-76608]
 
-## [399.4.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.4.0) (2022-01-28)
+## [399.8.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.8.1) (2022-02-01)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -93,9 +97,11 @@
 * Поправлено отображание ошибок валидации при автокомплите [EPGUCORE-80775]
 * Откат фичи с raw-loader иконок для починки продуктовой сборки [EPGUCORE-86260]
 * Исправлен дизайн для ошибок в ConfirmPersonalUserEmail [EPGUCORE-85793]
-* Даунгрейд полифила FilePonyfill для починки FileUploadItemComponent [EPGUCORE-86444]
+* Удален FilePonyfill (поддержка IE11) для починки FileUploadItemComponent [EPGUCORE-86444]
 * Поправлено отображение балуна на картах [EPGUCORE-85732]
 * Поправлен дефект, связанный с добавлением isServiceSpecific в TimeSlot [EPGUCORE-86543]
+* Поправлен дизайн разделителей на загрузке файлов [EPGUCORE-85749]
+* Поправлен цвет фона для NotFoundComponent [EPGUCORE-85703]
 
 ### Tests
 

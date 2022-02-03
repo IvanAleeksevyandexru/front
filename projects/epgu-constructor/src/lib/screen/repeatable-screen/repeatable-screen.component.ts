@@ -7,8 +7,8 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { delay, filter, map, pairwise, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import {
   ComponentAttrsDto,
   DisclaimerDto,
@@ -17,7 +17,6 @@ import {
   ScreenTypes,
 } from '@epgu/epgu-constructor-types';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
-import { isEqual } from 'lodash';
 import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
@@ -30,7 +29,6 @@ import {
   defaultScreensAmount,
   prepareDataToSendForRepeatableFieldsComponent,
   removeItemFromArrByIndex,
-  StateStatus,
 } from './repeatable-screen.constant';
 import { CachedAnswersService } from '../../shared/services/cached-answers/cached-answers.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
@@ -85,27 +83,20 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   );
   state$ = new BehaviorSubject<Record<string, string>[]>([]);
 
-  commonError$ = combineLatest([
-    this.screenService.componentErrors$,
-    this.screenService.component$,
-    this.getStateStatus$(),
-  ]).pipe(
-    filter(([componentErrors, component]) => !!componentErrors[component.id]),
-    delay(0),
-    map(([componentErrors, component, statusState]) => {
+  commonError$ = this.screenService.componentError$.pipe(
+    filter((componentError) => !!componentError),
+    map((componentError) => {
       let message = '';
       let errors: ScenarioErrorsDto[] = [];
       try {
         errors =
-          this.uniquenessErrorsService.preparedUniquenessErrors ||
-          JSON.parse(componentErrors[component.id]);
+          this.uniquenessErrorsService.preparedUniquenessErrors || JSON.parse(componentError);
       } catch (e) {
-        message = componentErrors[component.id];
+        message = componentError;
         errors = [];
       }
 
       return {
-        hasError: statusState !== 'change',
         message,
         errors,
       };
@@ -213,22 +204,6 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     if (this.cacheRepeatableFieldsAnswersLocally && this.isRecording) {
       this.cachedAnswersService.setValueToLocalStorage(this.parentComponentId, state);
     }
-  }
-
-  getStateStatus$(): Observable<StateStatus> {
-    // TODO: refactor когда бэк сделает вывод ошибки для конкректной формы
-    return this.state$.pipe(
-      pairwise(),
-      map(([prev, curr]) => {
-        const prevLength = prev.length;
-        const currLength = curr.length;
-        if (prevLength === 0 || currLength === 0 || prevLength < currLength) {
-          return 'init';
-        }
-
-        return isEqual(prev, curr) ? 'noChange' : 'change';
-      }),
-    );
   }
 
   private initScreens(attrs: ComponentAttrsDto): void {
