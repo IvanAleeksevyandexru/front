@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { ConfirmationModal, OrderDto } from '@epgu/epgu-constructor-types';
 import {
   DatesToolsService,
   DATE_TIME_HUMAN_FORMAT,
@@ -37,7 +37,7 @@ export class ContinueOrderModalService {
     });
   }
 
-  public openSelectOrderModal(orders, limitOrders): Observable<string> {
+  public openSelectOrderModal(orders: OrderDto[], limitOrders: number): Observable<string> {
     const defaultText = `<div><img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/order_80.svg">
       <h4 style="text-align: center">У вас есть черновики заявления</h4>
       <p class="helper-text" style="text-align: center; margin-top: 8px;">
@@ -51,9 +51,7 @@ export class ContinueOrderModalService {
 
     const hasLimitedCase = orders && limitOrders <= orders.length;
 
-    const text = defaultText;
-    const limitedCaseText = defaultLimitedCaseText;
-    const textResult = hasLimitedCase ? limitedCaseText : text;
+    const textResult = hasLimitedCase ? defaultLimitedCaseText : defaultText;
 
     const answerButtons = [];
 
