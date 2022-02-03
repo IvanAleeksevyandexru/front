@@ -240,6 +240,7 @@ describe('TimeSlotsComponent', () => {
   it('cachedAnswer is not empty', () => {
     fixture.detectChanges();
     const { cachedAnswer } = component;
+
     expect(cachedAnswer?.department?.value).toBe('R7700028');
   });
 

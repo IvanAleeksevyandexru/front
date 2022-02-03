@@ -72,12 +72,16 @@
   </div>
   <div class="screen-footer" *ngIf="weeks.length">
     <div class="screen-footer--time-slots">
-      <span *ngIf="isChosenTimeStrVisible" class="time">
-        Вы забронировали:
-        <span class="time--bold">
-          {{ chosenTimeStr }}
-        </span>
-      </span>
+      <div *ngIf="isChosenTimeStrVisible" class="time">
+        Забронировано: {{ chosenTimeStr }}
+        <div class="mt-8" *ngIf="chosenTimeStrNewBooking.length > 0">
+          Вы выбрали новое время: <span class="time--bold">{{ chosenTimeStrNewBooking }}</span>
+        </div>
+        <div *ngIf="chosenTimeStrNewBooking.length === 0" class="time-helper mt-8">
+          Если нужно записаться на другое время — данная запись будет отменена
+        </div>
+      </div>
+
       <lib-button
         [showLoader]="(isLoading$ | async) || inProgress"
         (click)="clickSubmit()"
