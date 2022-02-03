@@ -77,6 +77,7 @@ import { KinderGartenDraftHandlerComponent } from './components/kinder-garten-dr
 import { RelationResolverService } from './services/components-list-relations/relation-resolver.service';
 import { CheckboxCubeItemComponent } from './components/checkbox-cube-item/checkbox-cube-item.component';
 import { CheckboxCubeModule } from '../../shared/components/checkbox-cube/checkbox-cube.module';
+import { SelectFromListComponent } from './components/select-from-list/select-from-list.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +109,7 @@ import { CheckboxCubeModule } from '../../shared/components/checkbox-cube/checkb
     RestLookupInputComponent,
     SearchableDropdownComponent,
     SignAppLinkComponent,
+    SelectFromListComponent,
     ShowComponentPipe,
     TextAreaComponent,
     TimerItemComponent,

@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, pluck } from 'rxjs/operators';
 import { Group, FindOptionsGroup, VendorType } from '../../models/children-clubs.types';
-import BaseListService from '../base-list.service';
+import ChildrenClubsListService from '../children-clubs-list.service';
 import { isEqual } from 'lodash';
 import { Injectable, Injector } from '@angular/core';
 
 @Injectable()
-export class GroupListService extends BaseListService<Group, FindOptionsGroup> {
+export class GroupListService extends ChildrenClubsListService<Group, FindOptionsGroup> {
   protected refetchSubscribtion = this.stateService.state$.pipe(
     distinctUntilChanged((prev, next) => isEqual(prev?.groupFilters, next?.groupFilters)),
     pluck('groupFilters'),

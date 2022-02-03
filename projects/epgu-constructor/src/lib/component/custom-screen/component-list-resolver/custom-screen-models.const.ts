@@ -39,6 +39,7 @@ import ComplexChoiceDictionary from '../components/form-complex-choice-dictionar
 import ConfirmPersonalPolicyChangeModel from '../components/confirm-personal-policy-change/ConfirmPersonalPolicyChangeModel';
 import KinderGartenDraftHandlerModel from '../components/kinder-garten-draft-handler/KinderGartenDraftHandlerModel';
 import CheckboxCubeItemModel from '../components/checkbox-cube-item/CheckboxCubeItemModel';
+import SelectFromListModel from '../components/select-from-list/SelectFromListModel';
 
 export const CUSTOM_SCREEN_MODELS = {
   AddressInput: AddressInputModel,
@@ -83,4 +84,5 @@ export const CUSTOM_SCREEN_MODELS = {
   StringInput: StringInputModel,
   TextArea: TextAreaModel,
   Timer: TimerItemModel,
+  SelectFromList: SelectFromListModel,
 };
