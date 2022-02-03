@@ -5,7 +5,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { ChangeDetectionStrategy } from '@angular/core';
-
 import {
   ObjectHelperService,
   UnsubscribeService,
@@ -19,14 +18,11 @@ import {
   ConfigService,
   ConfigServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../../../../core/services/webcam/webcam.service';
-
 import { ValidationService } from '../../service/validation/validation.service';
 import { UploadService } from '../../service/upload/upload.service';
 import { PhotoFormViewComponent } from '../photo-form-view/photo-form-view.component';
-
 import { PhotoFormComponent } from './photo-form.component';
 import { CompressionService } from '../../service/compression/compression.service';
 
