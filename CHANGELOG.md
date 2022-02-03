@@ -1,17 +1,27 @@
 # Release Notes
 
-## [400.0.2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.2) (2022-02-02)
+## [400.0.4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.4) (2022-02-03)
 
 ### Features
 
 * Доработка компонента ComplexChoiceDictionary в части выбора только одного чек-бокса [EPGUCORE-85236]
 * Добавлено isClearable и defaultLabelList для DictionaryComponent [EPGUCORE-86314]
 * Добавлено приложение versions [EPGUCORE-85909]
+* Добавлен customUnrecLabel в MultipleChoiceDictionary [EPGUCORE-86325]
+* Добавлен customUnrecLabel в компонент textArea [EPGUCORE-85567]
+* Поддержка grey цвета для css-класса divider [EPGUCORE-85720]
+* Добавлена валидация адреса в ConfirmPersonalUserAddress [EPGUCORE-84772]
+* Добавлена возможность скрывать компоненты по дате через ref [EPGUCORE-85769]
+* Добавлен новый компонент SelectFromList [EPGUCORE-85018]
+* Добавлено скрытие header/footer/робот Макс для МП [EPGUCORE-86689]
 
 ### Refactor
 
 * Переименованы параметры в методах ComponentsListFormService и DateRangeService [EPGUCORE-85318]
 * Добавлен поиск parentFirst и parentLast из дочерних компонент [EPGUCORE-79609]
+* Правка лишней проверки в config.component.html [EPGUCORE-84013]
+* Оптимизация ConfirmPersonalUserData, добавление в ScreenService screenStore$ [EPGUCORE-84010]
+* Добавлена возможность скрывать/открывать панели стендов в versions. Добавлен config.json для API. Рефакторинг кода и стилей. [EPGUCORE-85909]
 
 ### Bug Fixes
 
@@ -20,6 +30,11 @@
 * Чинит скролл в окне выбора подразделений [EPGUCORE-86114]
 * Стилевые правки по верстке в компонентах карты [EPGUCORE-85778]
 * Блок фокуса при нажатии на tab в DropdownListComponent [EPGUCORE-75278]
+* Поправлено присвоение значения атрибута hideHouseCheckbox в AddressInputModelAttrs [EPGUCORE-86568]
+* Поправлен smev2 для новой версии timeslot [EPGUCORE-81819]
+* Поправлен вывод информации о booking timeslot [EPGUCORE-67487]
+* Исправлено восстановление snils для children из cachedAnswers [EPGUCORE-86787]
+* Изменены стили и набор атрибутов компонента Checkbox [EPGUCORE-75228]
 
 ### Tests
 
