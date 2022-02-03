@@ -14,8 +14,8 @@ describe('AppComponent', () => {
       declarations: [AppComponent],
       providers: [
         { provide: WINDOW, useValue: Window },
-        { provide: YaMetricService, useValue: {init: () => null} },
-      ]
+        { provide: YaMetricService, useValue: { init: () => null } },
+      ],
     }).compileComponents();
   });
 
@@ -27,5 +27,4 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
-
 });
