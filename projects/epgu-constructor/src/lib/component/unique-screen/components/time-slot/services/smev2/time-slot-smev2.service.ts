@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, finalize, map, pluck, switchMap, tap } from 'rxjs/operators';
+import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import {
   DictionaryConditions,
@@ -39,10 +39,7 @@ export class TimeSlotSmev2Service {
   getList(date: Date): Observable<Slot[]> {
     return of(date).pipe(
       tap(() => this.state.progressStart()),
-      switchMap(() =>
-        this.api.getList(this.getOptions(date)).pipe(catchError(() => of({ items: [] }))),
-      ),
-      pluck('items'),
+      switchMap(() => this.api.getList(this.getOptions(date)).pipe(catchError(() => of([])))),
       tap(() => this.resetCache()),
       map((items: DictionaryItem[]) => items.map((item) => this.createSlot(item))),
       finalize(() => this.state.progressEnd()),
