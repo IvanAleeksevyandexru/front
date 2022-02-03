@@ -1,6 +1,6 @@
 <ng-container *ngIf="list$ | async as list">
   <ng-container *ngIf="list?.length > 0">
-    <div class="divider"></div>
+    <div class="divider mt-20 mb-24"></div>
     <epgu-constructor-time-selector
       [list]="list"
       [current]="current$ | async"

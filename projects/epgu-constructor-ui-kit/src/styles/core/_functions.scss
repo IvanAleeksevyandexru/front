@@ -137,10 +137,13 @@
 }
 
 @mixin divider {
-  // для header в модалках
-  border-bottom: 1px solid $color-divider;
+  border: none;
+  border-top: 1px solid $color-divider;
   padding-bottom: 24px;
   margin-bottom: 24px;
+  &.grey {
+    border-top: 1px solid $color-ciottoli;
+  }
 }
 
 // Миксин для установки высоты контента для модалок чтоб на таблетках и мобилке кнопки были внизу

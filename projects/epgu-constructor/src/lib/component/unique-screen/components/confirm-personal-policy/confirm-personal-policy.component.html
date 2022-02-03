@@ -16,9 +16,9 @@
 
     <ng-container *ngIf="!this.errors?.length; else errorTemplate">
       <ng-container *ngFor="let field of fields; let last = last">
-        <div [ngClass]="{'mb-16': !last}" *ngIf="field.label && field.value">
-          <div class="label-helper mb-4">{{field.label}}</div>
-          <div class="text-helper">{{field.value}}</div>
+        <div [ngClass]="{ 'mb-16': !last }" *ngIf="field.label && field.value">
+          <div class="label-helper mb-4">{{ field.label }}</div>
+          <div class="text-helper">{{ field.value }}</div>
         </div>
       </ng-container>
     </ng-container>
@@ -34,7 +34,7 @@
     </ng-template>
 
     <div class="footer" *ngIf="screenService.action$ | async as action">
-      <div class="divider"></div>
+      <div class="divider mb-24"></div>
       <button
         class="btn-edit"
         epgu-constructor-action

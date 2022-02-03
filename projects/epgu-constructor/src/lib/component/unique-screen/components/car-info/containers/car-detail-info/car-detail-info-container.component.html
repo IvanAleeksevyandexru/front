@@ -56,7 +56,7 @@
             }
           "
         ></ng-container>
-        <div class="divider info-list-divider"></div>
+        <div class="divider mt-24 mb-24"></div>
       </ng-template>
     </ng-container>
 
@@ -82,7 +82,7 @@
       </ng-template>
     </ng-container>
     <ng-container *ngIf="(data$ | async).attrs.helperText as helperText">
-      <div class="divider info-list-divider"></div>
+      <div class="divider mt-24 mb-24"></div>
       <epgu-constructor-output-html [html]="helperText"></epgu-constructor-output-html>
     </ng-container>
   </epgu-cf-ui-constructor-screen-pad>
@@ -114,7 +114,7 @@
 
 <ng-template #vehicleInfoLoading>
   <ng-container *ngTemplateOutlet="loader; context: { title: 'Регистрация ТС' }"></ng-container>
-  <div class="divider info-list-divider"></div>
+  <div class="divider mt-24 mb-24"></div>
 </ng-template>
 
 <ng-template #notaryInfoLoading>
