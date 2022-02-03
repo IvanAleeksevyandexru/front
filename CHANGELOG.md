@@ -38,7 +38,8 @@
 
 ### Tests
 
-* Написаны тесты для PriorityScreenComponent [EPGUCORE-85301]
+* Добавлены тесты для PriorityScreenComponent [EPGUCORE-85301]
+* Добавлены тесты ContinueOrderModalService [EPGUCORE-85299]
 * Поправлены тесты MonthPicker [EPGUCORE-76608]
 
 ## [399.8.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.8.1) (2022-02-01)
