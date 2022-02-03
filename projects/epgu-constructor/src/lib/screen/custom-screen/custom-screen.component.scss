@@ -17,5 +17,8 @@
     flex-direction: column;
   }
 }
-
+.disabled-white-bg {
+  background-color: transparent;
+  box-shadow: none;
+}
 @include screen-buttons-margin;

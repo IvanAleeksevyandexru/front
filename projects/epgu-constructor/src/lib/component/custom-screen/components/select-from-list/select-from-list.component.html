@@ -1,0 +1,46 @@
+<epgu-constructor-component-item
+  [control]="control.get('value')"
+  [component]="control.value"
+  [invalid]="control.invalid"
+>
+  <div class="select-from-list-container" *ngIf="paginatedData$ | async as paginatedData">
+
+    <div
+      *ngFor="let item of paginatedData"
+      class="select-from-list-element"
+      (click)="selectItem(item)"
+    >
+      <div class="select-from-list-element__container">
+      <lib-radio
+        class="select-from-list-element__radio"
+        [checked]="item.checked"
+        (changed)="selectItem(item)"
+      >
+      </lib-radio>
+      <div>
+        <h6 [innerHTML]="item.label"></h6>
+        <p class="select-from-list-element__description select-from-list-element__description__desktop" [innerHTML]="item.description"></p>
+      </div>
+      </div>
+      <p class="select-from-list-element__description select-from-list-element__description__mobile" [innerHTML]="item.description"></p>
+    </div>
+
+    <div class="buttons-container">
+      <button
+        (click)="nextPage()"
+        *ngIf="(isFinished$ | async) === false"
+        class="link-btn mt-24 select-from-list-element__button"
+      >
+        Показать еще {{ leftElementCount$ | async }}
+      </button>
+      <button
+        (click)="resetData()"
+        *ngIf="paginatedData.length > attrs.listInitLength"
+        class="link-btn mt-24 select-from-list-element__button"
+      >
+        Свернуть все
+      </button>
+    </div>
+
+  </div>
+</epgu-constructor-component-item>

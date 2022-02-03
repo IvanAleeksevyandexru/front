@@ -40,7 +40,7 @@ describe('ProgramListService', () => {
       ],
     }).compileComponents();
     service = TestBed.inject(ProgramListService);
-    service.pageSize = 3;
+    service._pageSize = 3;
   });
 
   it('should be created', () => {

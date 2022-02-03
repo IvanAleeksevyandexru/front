@@ -6,7 +6,10 @@
   <div class="screen-body" *ngIf="data$ | async as data">
     <epgu-constructor-page-name>{{ screenService.header$ | async }} </epgu-constructor-page-name>
 
-    <epgu-cf-ui-constructor-screen-pad class="body">
+    <epgu-cf-ui-constructor-screen-pad
+      class="body"
+      [ngClass]="{'disabled-white-bg': disableWhiteBackground}"
+    >
       <epgu-constructor-components-list
         [components]="$any(data?.components)"
         [errors]="screenService.componentErrors$ | async"
