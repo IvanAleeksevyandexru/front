@@ -1,5 +1,9 @@
 import { BaseRelation } from './base-relation';
-import { CustomComponentRefRelation, KeyValueMap } from '@epgu/epgu-constructor-types';
+import {
+  CustomComponentRefRelation,
+  KeyValueMap,
+  TimeRelatedValue,
+} from '@epgu/epgu-constructor-types';
 import {
   CustomComponent,
   CustomComponentRef,
@@ -10,10 +14,20 @@ import { CachedAnswers } from '../../../../../screen/screen.types';
 import { get } from 'lodash';
 import BaseModel from '../../../component-list-resolver/BaseModel';
 import GenericAttrs from '../../../component-list-resolver/GenericAttrs';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export abstract class BaseDisplayRelation extends BaseRelation {
+  private timeOutEnabled = false;
+
+  private datesToolsService: DatesToolsService;
+
+  constructor(protected injector: Injector) {
+    super(injector);
+    this.datesToolsService = injector.get(DatesToolsService);
+  }
+
   public handleRelation(
     dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
     _reference: CustomComponentRef,
@@ -40,8 +54,19 @@ export abstract class BaseDisplayRelation extends BaseRelation {
     form: FormArray,
     cachedAnswers: CachedAnswers,
   ): boolean {
+    const cachedValue = cachedAnswers[reference.relatedRel]?.value;
+    const listOfDateValue: string[] = [
+      TimeRelatedValue.dateTimeAfter,
+      TimeRelatedValue.dateTimeBefore,
+    ];
+    if (
+      typeof reference.val === 'string' &&
+      listOfDateValue.includes(reference.val) &&
+      form.controls.length
+    ) {
+      return this.calculateTimeRelatedValue(reference.val, reference.path, form, cachedValue);
+    }
     const isOnCurrentScreen = this.hasControlWithIdOnForm(reference.relatedRel, form);
-
     if (isOnCurrentScreen) {
       return (
         shownElements[reference.relatedRel]?.isShown &&
@@ -54,12 +79,35 @@ export abstract class BaseDisplayRelation extends BaseRelation {
       );
     }
 
-    const cachedValue = cachedAnswers[reference.relatedRel]?.value;
-
     return this.refRelationService.isValueEquals(
       reference.val,
       get(this.getRefValue(cachedValue), reference.path) || cachedValue,
     );
+  }
+
+  protected calculateTimeRelatedValue(
+    referenceValue: string,
+    path: string,
+    form: FormArray,
+    cachedValue: string,
+  ): boolean {
+    const currentDate = new Date();
+    const targetDate = new Date(get(this.getRefValue(cachedValue), path));
+    const currentIsGreaterOrEqual = currentDate >= targetDate;
+    let shouldShow;
+    if (referenceValue === 'dateTimeAfter') {
+      shouldShow = currentIsGreaterOrEqual;
+    } else if (referenceValue === 'dateTimeBefore') {
+      shouldShow = !currentIsGreaterOrEqual;
+    }
+    if (!currentIsGreaterOrEqual && !this.timeOutEnabled) {
+      const diff = this.datesToolsService.diff(targetDate, currentDate);
+      setTimeout(() => {
+        form.controls[0].updateValueAndValidity({ onlySelf: false, emitEvent: true });
+      }, diff);
+      this.timeOutEnabled = true;
+    }
+    return shouldShow;
   }
 
   protected abstract isCurrentRelation(relation: CustomComponentRefRelation): boolean;

@@ -64,6 +64,7 @@ export class ComponentsListRelationsService {
     initInitialValues = false,
     screenService: ScreenService,
     componentsGroupIndex?: number,
+    isEqual?: boolean,
   ): CustomListStatusElements {
     this.getDependentComponents(components, <CustomComponent>component).forEach(
       (dependentComponent: CustomComponent) => {
@@ -101,16 +102,18 @@ export class ComponentsListRelationsService {
         this.updateReferenceLimitDate(dependentComponent, component, form, screenService);
       },
     );
-
-    this.updateLimitDatesByDateRestrictions(
-      components,
-      component,
-      form,
-      screenService.applicantAnswers,
-      initInitialValues,
-      componentsGroupIndex,
-    );
-
+    // TODO: флаг предотвращает бесконечный триггер в СalendarInput.
+    //  Возможно, там были проблемы с дизайном компонента.
+    if (!isEqual) {
+      this.updateLimitDatesByDateRestrictions(
+        components,
+        component,
+        form,
+        screenService.applicantAnswers,
+        initInitialValues,
+        componentsGroupIndex,
+      );
+    }
     return this.calculateVisibility(components, screenService.cachedAnswers, form, shownElements);
   }
 
