@@ -22,6 +22,8 @@ export class ScreenService extends ScreenContent {
 
   private screenStore: ScreenStore = {};
 
+  private screenStore$ = new BehaviorSubject<ScreenStore>({});
+
   private isLoading = false;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
@@ -40,6 +42,10 @@ export class ScreenService extends ScreenContent {
    */
   public getStore(): ScreenStore {
     return this.screenStore;
+  }
+
+  public getStore$(): Observable<ScreenStore> {
+    return this.screenStore$.asObservable();
   }
 
   public getCompFromDisplay(componentId: string = this.component.id): ScreenStoreComponentDtoI {
@@ -81,6 +87,7 @@ export class ScreenService extends ScreenContent {
    */
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
+    this.screenStore$.next(this.screenStore);
     this.prepareComponents();
     this.initComponentStateService();
     this.updateScreenContent(store, this.deviceDetectorService.isWebView);
@@ -93,6 +100,7 @@ export class ScreenService extends ScreenContent {
    */
   public updateScreenStore(newState: ScreenStore): void {
     this.screenStore = { ...this.screenStore, ...newState };
+    this.screenStore$.next(this.screenStore);
     this.updateScreenContent(this.screenStore, this.deviceDetectorService.isWebView);
   }
 
@@ -167,6 +175,7 @@ export class ScreenService extends ScreenContent {
 
     if (screenStoreComponent.length) {
       this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };
+      this.screenStore$.next(this.screenStore);
     }
   }
 }
