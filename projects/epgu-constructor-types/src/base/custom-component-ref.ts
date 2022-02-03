@@ -35,3 +35,7 @@ export enum CustomComponentRefRelation {
   formatOn = 'formatOn',
   updateRestLookupOn = 'updateRestLookupOn',
 }
+export enum TimeRelatedValue {
+  dateTimeBefore = 'dateTimeBefore',
+  dateTimeAfter = 'dateTimeAfter',
+}
