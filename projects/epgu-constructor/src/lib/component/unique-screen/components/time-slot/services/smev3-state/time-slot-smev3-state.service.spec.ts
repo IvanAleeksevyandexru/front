@@ -19,6 +19,7 @@ const mockTimeSlotValue = ({
   slotsPeriod: {
     value: '2021-10-01',
   },
+
   waitingTimeExpired: false,
 } as unknown) as TimeSlotValueInterface;
 
@@ -33,6 +34,7 @@ const mockComponent = ({
     slotsNotFoundTemplate: {
       header: 't',
     },
+    isInvite: true,
   },
 } as unknown) as ComponentDto;
 
@@ -69,6 +71,12 @@ describe('TimeSlotSmev3StateService', () => {
     it('should be check value$', (done) => {
       service.value$.subscribe((value) => {
         expect(value).toBe(mockTimeSlotValue);
+        done();
+      });
+    });
+    it('should be check isInvite$', (done) => {
+      service.isInvite$.subscribe((value) => {
+        expect(value).toBe(mockComponent.attrs.isInvite);
         done();
       });
     });
