@@ -196,7 +196,7 @@ Form-player-build:
   script:
     - yarn build:cf
   interruptible: true
-  needs: ["Ui-kit-build"]
+  needs: ["Children-clubs-build"]
   only:
     - merge_requests
     - master
@@ -225,7 +225,7 @@ Emulator-build:
   script:
     - yarn build:emulator
   interruptible: true
-  needs: ["Children-clubs-build", "Form-player-build"]
+  needs: ["Form-player-build"]
   only:
     - merge_requests
 
