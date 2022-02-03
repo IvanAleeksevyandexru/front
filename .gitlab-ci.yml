@@ -76,6 +76,7 @@ Types-build:
   script:
     - yarn build:types
   interruptible: true
+  needs: ["Install"]
   only:
     - merge_requests
     - master
@@ -92,6 +93,7 @@ Lint:
     - yarn stylelint
     - echo -e "##########\ndone\n##########"
   interruptible: true
+  needs: ["Install"]
   only:
     - merge_requests
     - master
@@ -107,6 +109,7 @@ Test:
     - yarn test:ci
     - echo -e "##########\ndone\n##########"
   interruptible: true
+  needs: ["Install"]
   only:
     - merge_requests
     - master
@@ -135,6 +138,7 @@ Ui-kit-build:
   script:
     - yarn build:ui-kit
   interruptible: true
+  needs: ["Install", "Types-build"]
   only:
     - merge_requests
     - master
