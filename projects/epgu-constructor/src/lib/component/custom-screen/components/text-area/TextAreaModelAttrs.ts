@@ -10,8 +10,11 @@ export default class TextAreaModelAttrs extends GenericAttrs {
 
   readonly hint?: string;
 
+  readonly customUnrecLabel: string;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
+    this.customUnrecLabel = attrs.customUnrecLabel;
     this.charsAmount = attrs.charsAmount;
     this.readonly = attrs.readonly;
     this.labelHint = attrs.labelHint;
