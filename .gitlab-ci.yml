@@ -47,6 +47,7 @@ Install:
       - .yarn-cache/
       - node_modules
       - 'projects/*/node_modules'
+  interruptible: true
   only:
     - merge_requests
     - master
@@ -74,6 +75,8 @@ Types-build:
         - projects/epgu-constructor-types/dist
   script:
     - yarn build:types
+  interruptible: true
+  needs: ["Install"]
   only:
     - merge_requests
     - master
@@ -89,6 +92,8 @@ Lint:
     - yarn lint
     - yarn stylelint
     - echo -e "##########\ndone\n##########"
+  interruptible: true
+  needs: ["Install"]
   only:
     - merge_requests
     - master
@@ -101,12 +106,10 @@ Test:
       - $GITLAB_USER_LOGIN == $CI_USER
   script:
     - echo -e "##########\ntest\n##########"
-    - yarn test:coverage
+    - yarn test:ci
     - echo -e "##########\ndone\n##########"
-  artifacts:
-    reports:
-      cobertura: coverage/jest/cobertura-coverage.xml
-      junit: coverage/junit/test-results.xml
+  interruptible: true
+  needs: ["Install"]
   only:
     - merge_requests
     - master
@@ -134,6 +137,8 @@ Ui-kit-build:
         - projects/epgu-constructor-types/dist
   script:
     - yarn build:ui-kit
+  interruptible: true
+  needs: ["Install", "Types-build"]
   only:
     - merge_requests
     - master
@@ -161,6 +166,8 @@ Children-clubs-build:
         - projects/epgu-constructor-types/dist
   script:
     - yarn build:children-clubs
+  interruptible: true
+  needs: ["Ui-kit-build"]
   only:
     - merge_requests
     - master
@@ -188,6 +195,8 @@ Form-player-build:
         - projects/epgu-constructor-types/dist
   script:
     - yarn build:cf
+  interruptible: true
+  needs: ["Ui-kit-build"]
   only:
     - merge_requests
     - master
@@ -215,6 +224,8 @@ Emulator-build:
         - projects/epgu-constructor-types/dist
   script:
     - yarn build:emulator
+  interruptible: true
+  needs: ["Children-clubs-build", "Form-player-build"]
   only:
     - merge_requests
 
@@ -234,8 +245,10 @@ Portal-build:
         - node_modules
         - 'projects/*/node_modules'
   script:
-    - yarn install
+    - test -d node_modules || yarn install --frozen-lockfile --no-progress
     - yarn build:portal
+  interruptible: true
+  needs: ["Install"]
   only:
     - merge_requests
     - master
