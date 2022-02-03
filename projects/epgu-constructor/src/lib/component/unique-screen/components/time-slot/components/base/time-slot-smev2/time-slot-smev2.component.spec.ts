@@ -97,6 +97,8 @@ describe('TimeSlotSmev2Component', () => {
     jest.spyOn(smev2Service, 'getList').mockReturnValue(of(testCase));
     jest.spyOn(stateService, 'setMonths');
     jest.spyOn(stateService, 'setList');
+    errorService.error$ = of();
+    errorService.errorHandling$ = of();
     fixture = TestBed.createComponent(TimeSlotSmev2Component);
     component = fixture.componentInstance;
     stateService.slot = createMockSlot('d1', '2012-12-12');

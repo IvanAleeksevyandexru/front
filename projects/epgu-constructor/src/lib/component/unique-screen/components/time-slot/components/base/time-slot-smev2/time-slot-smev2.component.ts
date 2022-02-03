@@ -76,7 +76,27 @@ export class TimeSlotSmev2Component extends BaseTimeSlotComponent implements OnI
 
   ngOnInit(): void {
     this.error.setAllTemplates(templateList);
+    this.state.startLoaded$$.next(true);
+    this.state.setAdditionalDisplayingButton(true);
+
     super.ngOnInit();
+
+    this.error.errorHandling$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+    this.error.error$
+      .pipe(
+        tap((error) => {
+          if (error) {
+            this.state.setList([]);
+          }
+        }),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe();
+  }
+
+  changeDayAction(day: Date): void {
+    this.state.clearSlot();
+    super.changeDayAction(day);
   }
 
   changeSlot(slot: Slot): void {
