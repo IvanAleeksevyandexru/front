@@ -20,6 +20,7 @@ import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import {
+  ConfirmAddressErrorsInterface,
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
 } from '../../interface/confirm-address.interface';
@@ -49,10 +50,12 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   >;
   public fields$: Observable<AddressFields[]> = this.data$.pipe(
     map(({ attrs }) => {
-      return attrs.fields.map((field) => ({
-        ...field,
-        isDate: this.isDate(field.fieldName),
-      }));
+      return attrs.fields
+        .filter((field) => !field.attrs?.isOnlyForValidation)
+        .map((field) => ({
+          ...field,
+          isDate: this.isDate(field.fieldName),
+        }));
     }),
   );
   public classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
@@ -60,6 +63,9 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   public isRequired: boolean;
   public strategy = BrokenDateFixStrategy.RESET;
   public readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
+
+  public groupedErrors: ConfirmAddressErrorsInterface[] = [];
+  public stringError: string = '';
 
   public constructor(
     public config: ConfigService,
@@ -88,6 +94,10 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
           true,
         );
       });
+
+    this.screenService.componentError$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((errors) => {
+      this.setErrors(errors);
+    });
   }
 
   public ngAfterViewInit(): void {
@@ -102,6 +112,10 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
   public createForm(data: ConfirmAddressInterface): void {
     const { attrs, value } = data;
     const form = attrs.fields.reduce((acc, field, fieldIndex) => {
+      if (field.attrs?.isOnlyForValidation) {
+        return acc;
+      }
+
       return {
         ...acc,
         [field.fieldName]: new FormControl(
@@ -181,5 +195,39 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
 
   private getAddress(regAddr: string | { fullAddress: string }): string {
     return typeof regAddr === 'string' ? regAddr : regAddr.fullAddress;
+  }
+
+  private getGroupedErrors(errors): ConfirmAddressErrorsInterface[] {
+    return Object.values(
+      errors.reduce((accumulator, { desc, icon, title, type }) => {
+        accumulator[title] = {
+          desc:
+            title in accumulator && accumulator[title].desc !== desc
+              ? `${accumulator[title].desc} <br> ${desc}`
+              : desc,
+          icon,
+          title,
+          type,
+        };
+
+        return accumulator;
+      }, {}),
+    );
+  }
+
+  private setErrors(errors: string): void {
+    if (!errors) {
+      this.stringError = '';
+      this.groupedErrors = [];
+      return;
+    }
+
+    try {
+      this.groupedErrors = this.getGroupedErrors(Object.values(JSON.parse(errors)));
+      this.stringError = '';
+    } catch (err) {
+      this.stringError = errors;
+      this.groupedErrors = [];
+    }
   }
 }

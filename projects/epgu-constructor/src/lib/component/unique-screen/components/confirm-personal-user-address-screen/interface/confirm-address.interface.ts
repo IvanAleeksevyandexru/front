@@ -48,7 +48,17 @@ export interface ConfirmAddressActionsInterface {
 export interface ConfirmAddressFieldsInterface {
   fieldName: FieldNames;
   label: string;
-  attrs?: { labelHint?: string };
+  attrs?: {
+    isOnlyForValidation?: boolean;
+    labelHint?: string;
+  };
   hint?: string;
   nonPresetable?: boolean;
+}
+
+export interface ConfirmAddressErrorsInterface {
+  desc?: string;
+  icon?: string;
+  title?: string;
+  type?: string;
 }

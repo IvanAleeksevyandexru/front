@@ -9,9 +9,19 @@
     <ng-container *ngTemplateOutlet="formTmpl; context: { $implicit: data$ | async }">
     </ng-container>
 
-    <div class="error" *ngIf="screenService.componentError$ | async as error">
-      <small>{{ error }}</small>
+    <div class="error" *ngIf="stringError">
+      <small>{{ stringError }}</small>
     </div>
+
+    <ng-container *ngFor="let error of groupedErrors">
+      <div class="error error--grouped" *ngIf="error">
+        <p class="title"><span [class]="error.icon"></span>{{ error.title }}</p>
+        <epgu-constructor-output-html
+          class="description"
+          [html]="error.desc"
+        ></epgu-constructor-output-html>
+      </div>
+    </ng-container>
   </epgu-cf-ui-constructor-screen-pad>
   <div
     *ngIf="!(currentAnswersService.isValid$ | async) && (data$ | async)?.attrs?.emptyFieldsErrorMsg"
