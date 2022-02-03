@@ -107,9 +107,12 @@ blockquote {
   border-radius: $border-md;
 }
 
-.divider {
-  background: $color-divider;
+hr, .divider {
+  border: none;
   border-top: 1px solid $color-divider;
+  &.grey {
+    border-top: 1px solid $color-ciottoli;
+  }
 }
 
 .submit-button {
