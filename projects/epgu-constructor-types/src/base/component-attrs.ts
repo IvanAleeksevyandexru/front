@@ -128,6 +128,7 @@ type IsNeedToGroupErrors = boolean;
 type IsSelectButtonHidden = boolean;
 type IsSmev2 = boolean;
 type IsServiceSpecific = boolean;
+type IsSoloCheckBox = boolean;
 type KeepVariables = boolean;
 type Label = string;
 type LabelHint = string;
@@ -188,7 +189,6 @@ type VisibleComponents = string[];
 type Visited = boolean;
 type WritableComponents = string[];
 type Years = number;
-type IsSoloCheckBox = boolean;
 
 export interface ComponentAttrsDto {
   accuracy?: Accuracy;
@@ -283,6 +283,7 @@ export interface ComponentAttrsDto {
   isSelectButtonHidden?: IsSelectButtonHidden;
   isSmev2?: IsSmev2;
   isServiceSpecific?: IsServiceSpecific;
+  isSoloCheckBox?: IsSoloCheckBox;
   keepVariables?: KeepVariables;
   label?: Label;
   labelHint?: LabelHint;
@@ -363,7 +364,6 @@ export interface ComponentAttrsDto {
   visited?: Visited;
   writableComponents?: WritableComponents;
   years?: Years;
-  isSoloCheckBox?: IsSoloCheckBox;
 }
 
 export interface SlotsNotFoundTemplate {

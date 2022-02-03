@@ -90,14 +90,14 @@
   }
   &__checkbox {
     &_after-item {
-      margin-top: -8px;
+      margin-top: -8px; // TODO: подумать как лучше избавиться от отрцительных марджинов.
       @include phones-down {
         margin-top: 0;
       }
     }
     &_solo {
       margin-top: 0;
-      margin-bottom: -6px;
+      margin-bottom: -6px; // TODO: подумать как лучше избавиться от отрцительных марджинов.
     }
   }
   p.find-item {
