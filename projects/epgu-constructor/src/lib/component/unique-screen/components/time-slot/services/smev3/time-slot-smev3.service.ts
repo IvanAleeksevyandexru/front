@@ -30,7 +30,11 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { get } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import { KeyValueMap } from '@epgu/epgu-constructor-types';
+import {
+  DictionaryConditions,
+  DictionarySubFilter,
+  KeyValueMap,
+} from '@epgu/epgu-constructor-types';
 import {
   BookOperation,
   CancelFilterProvider,
@@ -54,6 +58,7 @@ import { TimeSlotStateService } from '../state/time-slot-state.service';
 import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.service';
 import { TimeSlotErrorService } from '../error/time-slot-error.service';
 import { TimeSlotCalendarService } from '../calendar/time-slot-calendar.service';
+import { Invite, InviteService } from '../../../../../../core/services/invite/invite.service';
 
 @Injectable()
 export class TimeSlotSmev3Service {
@@ -64,6 +69,8 @@ export class TimeSlotSmev3Service {
   reloadStore$$ = new Subject<null>();
 
   store$ = combineLatest([
+    this.smev3.cachedAnswer$,
+    this.smev3.isInvite$,
     this.smev3.value$,
     this.smev3.config$,
     this.smev3.isServiceSpecific$,
@@ -76,7 +83,18 @@ export class TimeSlotSmev3Service {
     tap(() => this.calendar.isVisibleDays$$.next(true)),
     tap(() => this.state.startLoaded$$.next(false)),
     switchMap(
-      ([data, config, isServiceSpecific, ignoreRootParams, attributes, params]: [
+      ([
+        cachedAnswer,
+        isInvite,
+        data,
+        config,
+        isServiceSpecific,
+        ignoreRootParams,
+        attributes,
+        params,
+      ]: [
+        TimeSlotsAnswerInterface,
+        boolean,
         TimeSlotValueInterface,
         TimeSlotsApiItem,
         boolean,
@@ -85,18 +103,25 @@ export class TimeSlotSmev3Service {
         Partial<TimeSlotRequest>,
         null,
       ]) =>
-        this.api
-          .getList(
-            this.createRequest(data, config, ignoreRootParams, attributes, params),
-            isServiceSpecific,
-          )
-          .pipe(
-            catchError(() => {
-              this.calendar.isVisibleDays$$.next(false);
-              return of([]);
-            }),
-            finalize(() => this.state.startLoaded$$.next(true)),
+        (isInvite
+          ? this.invite.getInvite(this.getParentOrderId(data), cachedAnswer?.timeSlot?.slotId)
+          : of(({} as unknown) as Invite)
+        ).pipe(
+          switchMap((invite) =>
+            this.api
+              .getList(
+                this.createRequest(data, config, ignoreRootParams, attributes, params, invite),
+                isServiceSpecific,
+              )
+              .pipe(
+                catchError(() => {
+                  this.calendar.isVisibleDays$$.next(false);
+                  return of([]);
+                }),
+                finalize(() => this.state.startLoaded$$.next(true)),
+              ),
           ),
+        ),
     ),
     map((result: TimeSlot[]) => this.createMap(result)),
     shareReplay(),
@@ -308,6 +333,7 @@ export class TimeSlotSmev3Service {
     private smev3: TimeSlotSmev3StateService,
     private error: TimeSlotErrorService,
     private calendar: TimeSlotCalendarService,
+    private invite: InviteService,
   ) {}
 
   reloadStore(): void {
@@ -383,6 +409,10 @@ export class TimeSlotSmev3Service {
           }
         : result,
     );
+  }
+
+  getParentOrderId(data: TimeSlotValueInterface): string {
+    return this.requestBookParams$$.getValue()?.parentOrderId || (data.orderId as string);
   }
 
   getAddress(attributeNameWithAddress: string, attributeValues: KeyValueMap): string {
@@ -475,28 +505,66 @@ export class TimeSlotSmev3Service {
     return result;
   }
 
+  setInviteToRequest(orgId: string, options: TimeSlotRequest, invite: Invite): TimeSlotRequest {
+    const result = { ...options };
+    const filters: DictionarySubFilter[] = [];
+    if (invite?.startDate) {
+      filters.push(({
+        simple: {
+          attributeName: 'DATE',
+          condition: DictionaryConditions.GREATER_THAN_OR_EQUALS,
+          value: invite?.startDate,
+          checkAllValues: true,
+        },
+      } as unknown) as DictionarySubFilter);
+    }
+    if (invite?.endDate) {
+      filters.push(({
+        simple: {
+          attributeName: 'DATE',
+          condition: DictionaryConditions.LESS_THAN_OR_EQUALS,
+          value: invite?.endDate,
+          checkAllValues: true,
+        },
+      } as unknown) as DictionarySubFilter);
+    }
+    if (filters?.length) {
+      result.filter = filters;
+    }
+    if (invite?.organizations?.length > 0) {
+      invite?.organizations.forEach((organization) => {
+        if (organization.orgId === orgId) {
+          result.areaId = organization.areas;
+        }
+      });
+    }
+    return result;
+  }
+
   createRequest(
     data: TimeSlotValueInterface,
     { serviceId, eserviceId, routeNumber }: TimeSlotsApiItem,
     ignoreRootParams: string[],
     attributes: TimeSlotAttribute[],
     params: Partial<TimeSlotRequest>,
+    invite: Invite,
   ): TimeSlotRequest {
-    const result = {
-      organizationId: [data.organizationId],
+    const orgId = data.organizationId as string;
+    const base = {
+      organizationId: [orgId],
       caseNumber: data.orderId,
       serviceId: [(data.serviceId as string) || serviceId],
       eserviceId: (data.eserviceId as string) || eserviceId,
       routeNumber,
       attributes: attributes ?? [],
     };
+
+    const result: TimeSlotRequest = params
+      ? { ...base, ...params, attributes: params?.attributes ?? attributes ?? [] }
+      : base;
+
     return <TimeSlotRequest>(
-      this.paramsFilter(
-        ignoreRootParams,
-        params
-          ? { ...result, ...params, attributes: params?.attributes ?? attributes ?? [] }
-          : result,
-      )
+      this.paramsFilter(ignoreRootParams, this.setInviteToRequest(orgId, result, invite))
     );
   }
 

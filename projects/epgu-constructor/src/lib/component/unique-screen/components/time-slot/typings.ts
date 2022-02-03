@@ -1,5 +1,10 @@
 import { BehaviorSubject } from 'rxjs';
-import { ConfirmationModal, KeyValueMap, ScreenButton } from '@epgu/epgu-constructor-types';
+import {
+  ConfirmationModal,
+  DictionarySubFilter,
+  KeyValueMap,
+  ScreenButton,
+} from '@epgu/epgu-constructor-types';
 import { Injector } from '@angular/core';
 
 export const EVENT_TIMESLOT_BOOK = 'TIMESLOT::BOOK';
@@ -180,6 +185,8 @@ export interface TimeSlotRequest {
   attributes?: TimeSlotAttribute[];
   routeNumber?: string;
   serviceCode?: string;
+  filter?: DictionarySubFilter[];
+  areaId?: string[];
 }
 
 export interface TimeSlotBookRequest {
