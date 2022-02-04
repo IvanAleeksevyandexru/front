@@ -1,6 +1,6 @@
 # Release Notes
 
-## [400.0.4](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.4) (2022-02-03)
+## [400.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.0) (2022-02-04)
 
 ### Features
 
@@ -44,6 +44,7 @@
 * Добавлены тесты для PriorityScreenComponent [EPGUCORE-85301]
 * Добавлены тесты ContinueOrderModalService [EPGUCORE-85299]
 * Поправлены тесты MonthPicker [EPGUCORE-76608]
+* Ускорен тест: заменена картинка, оптимизированы вызовы тяжелого метода в CompressionService [EPGUCORE-87310]
 
 ## [399.8.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.8.1) (2022-02-01)
 
