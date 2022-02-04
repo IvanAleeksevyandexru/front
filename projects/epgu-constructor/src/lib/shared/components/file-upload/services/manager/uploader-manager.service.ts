@@ -112,9 +112,9 @@ export class UploaderManagerService {
   /**
    * Возвращает мнемонику для файла, формируя уникальный префикс
    */
-  getMnemonic(): string {
+  getMnemonic(orderId: number): string {
     this.maxFileNumber += 1;
-    return [this.getSubMnemonicPath(), this.maxFileNumber].join('.');
+    return [this.getSubMnemonicPath(), this.maxFileNumber + orderId].join('.');
   }
 
   getError(action: ErrorActions): FileItemError {
