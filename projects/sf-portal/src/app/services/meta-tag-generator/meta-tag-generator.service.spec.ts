@@ -27,9 +27,9 @@ describe('MetaTagGeneratorService', () => {
   describe('loadData()', () => {
     it('should call httpClient.get if openGraphApiUrl exists', () => {
       const spy = jest.spyOn(httpClient, 'get').mockReturnValue(of({}));
-      service['openGraphApiUrl'] = 'url';
+      service.openGraphApiUrl = 'url';
       service.loadData();
-      expect(spy).toHaveBeenCalledWith(service['openGraphApiUrl']);
+      expect(spy).toHaveBeenCalledWith(service.openGraphApiUrl);
     });
   });
 

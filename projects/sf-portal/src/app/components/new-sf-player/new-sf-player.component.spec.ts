@@ -14,9 +14,7 @@ describe('NewSfPlayerComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, CookieModule.forRoot()],
       declarations: [NewSfPlayerComponent],
-      providers: [
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-      ],
+      providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub }],
     }).compileComponents();
   });
 
