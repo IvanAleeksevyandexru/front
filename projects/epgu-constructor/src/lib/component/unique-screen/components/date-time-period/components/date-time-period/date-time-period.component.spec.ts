@@ -10,6 +10,8 @@ import {
   InputErrorComponent,
   ScreenPadComponent,
   HealthService,
+  JsonHelperService,
+  JsonHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   AbstractControl,
@@ -85,6 +87,7 @@ describe('DateTimePeriodComponent', () => {
         MockProvider(HealthService),
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
         CurrentAnswersService,
         ValidationService,
         ScreenService,

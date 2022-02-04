@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import {
   HttpErrorResponse,
@@ -12,8 +13,6 @@ import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class UserAuthInterceptor implements HttpInterceptor {
-  constructor() {}
-
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {
