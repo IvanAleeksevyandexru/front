@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { forkJoin, ObservableInput, of } from 'rxjs';
+import { forkJoin, ObservableInput, of, TimeoutError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { catchError, concatMap, map, takeUntil, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, takeUntil, tap, timeout } from 'rxjs/operators';
 
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { LogicComponents, NavigationPayload } from '@epgu/epgu-constructor-types';
@@ -10,6 +10,8 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { LogicService } from '../../service/logic.service';
 import { HookService } from '../../../../core/services/hook/hook.service';
 import { HookTypes } from '../../../../core/services/hook/hook.constants';
+import { ModalErrorService } from '../../../../modal/modal-error.service';
+import { COMMON_ERROR_MODAL_PARAMS_TEXT } from '../../../../core/services/error-handler/error-handler';
 
 @Component({
   selector: 'epgu-constructor-rest-call',
@@ -23,6 +25,7 @@ export default class RestCallComponent extends AbstractLogicComponent {
     private logicService: LogicService,
     private unSubscribeService$: UnsubscribeService,
     private hookService: HookService,
+    private modalErrorService: ModalErrorService,
   ) {
     super();
   }
@@ -53,6 +56,14 @@ export default class RestCallComponent extends AbstractLogicComponent {
     ] as LogicComponents[];
 
     return forkJoin(this.logicService.fetch(fetchData)).pipe(
+      timeout(
+        this.screenService.trobber.timeout
+          ? this.screenService.trobber.timeout * 1000
+          : this.logicService.maxTimeout,
+      ),
+      tap(() => {
+        this.screenService.isLogicComponentLoading = true;
+      }),
       map((response) => {
         return response.reduce(
           (acc, component) => ({
@@ -63,6 +74,7 @@ export default class RestCallComponent extends AbstractLogicComponent {
         );
       }),
       tap((response) => {
+        this.screenService.isLogicComponentLoading = false;
         this.screenService.logicAnswers =
           typeof this.screenService.logicAnswers === 'object' && this.screenService.logicAnswers
             ? {
@@ -71,7 +83,13 @@ export default class RestCallComponent extends AbstractLogicComponent {
               }
             : response;
       }),
-      catchError(() => this.screenService.logicComponents$),
+      catchError((error: Error) => {
+        if (error && error instanceof TimeoutError) {
+          this.modalErrorService.showError(COMMON_ERROR_MODAL_PARAMS_TEXT);
+        }
+        this.screenService.isLogicComponentLoading = false;
+        return this.screenService.logicComponents$;
+      }),
       takeUntil(this.unSubscribeService$),
     );
   }

@@ -9,7 +9,7 @@ export const STATUS_ICON_MAP = {
     '<img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/stop.svg">',
 };
 
-const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
+export const COMMON_ERROR_MODAL_PARAMS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Не сработало</h4>
 <span>Попробуйте снова или зайдите позже. Если ничего не изменится — напишите в
