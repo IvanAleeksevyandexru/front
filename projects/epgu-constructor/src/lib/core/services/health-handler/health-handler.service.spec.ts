@@ -348,4 +348,16 @@ describe('HealthHandlerService', () => {
       );
     }));
   });
+
+  it('should return ApiSuggests2Service for /api/suggests2', () => {
+    const request = ({
+      url: 'https://pgu-uat-fed.test.gosuslugi.ru/api/suggests2?groups=reg_address',
+      body: '',
+    } as unknown) as HttpRequest<UnspecifiedDTO>;
+
+    expect(service.handleValidHttpRequestEntity(request, '')).toStrictEqual([
+      'ApiSuggests2Service',
+      'suggests2',
+    ]);
+  });
 });

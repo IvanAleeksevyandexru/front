@@ -45,6 +45,8 @@ import {
   RENDER_FORM_SERVICE_NAME,
   SlotInfo,
   UnspecifiedDTO,
+  SUGGEST2,
+  SUGGEST2_MODIFIED,
 } from './health-handler';
 
 @Injectable()
@@ -123,6 +125,7 @@ export class HealthHandlerService implements HealthHandler {
     serviceName =
       serviceName === NEXT_PREV_STEP_SERVICE_NAME ? RENDER_FORM_SERVICE_NAME : serviceName;
     serviceName = serviceName === GET_SLOTS ? GET_SLOTS_MODIFIED : serviceName;
+    serviceName = lastUrlPart === SUGGEST2 ? SUGGEST2_MODIFIED : serviceName;
 
     this.regionCode = this.getRegionCode(request?.body?.filter);
     this.startMeasureHealth(serviceName);
