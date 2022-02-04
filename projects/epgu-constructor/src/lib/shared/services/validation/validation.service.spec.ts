@@ -3,9 +3,11 @@ import { AbstractControl, FormArray, FormControl } from '@angular/forms';
 import {
   ConfigService,
   DatesToolsService,
-  LoggerService,
-  HealthServiceStub,
   HealthService,
+  HealthServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
+  LoggerService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockProvider } from 'ng-mocks';
@@ -14,7 +16,7 @@ import {
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
 import { ComponentsListToolsService } from '../../../component/custom-screen/services/components-list-tools/components-list-tools.service';
-import { ValidationService, CARD_VALIDATION_EVENT } from './validation.service';
+import { CARD_VALIDATION_EVENT, ValidationService } from './validation.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -119,6 +121,29 @@ describe('ValidationService', () => {
     required: true,
   };
 
+  const mockMultipleChoiceDictionary: CustomComponent = {
+    id: 'id',
+    type: CustomScreenComponentTypes.MultipleChoiceDictionary,
+    attrs: {
+      subLabel: 'Необходимо выбрать виды использования лесов',
+      dictionaryType: 'PGS_using_forest',
+      required: false,
+      validation: [
+        {
+          type: 'RegExp',
+          value: '^.{0,10}$',
+          ref: '',
+          dataType: '',
+          condition: '',
+          errorMsg: 'Поле может содержать не более 10 символов',
+          updateOn: 'change',
+        },
+      ],
+    },
+    value: '1',
+    visited: false,
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -136,6 +161,7 @@ describe('ValidationService', () => {
         ConfigService,
         LoggerService,
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
       ],
     });
   });
@@ -260,7 +286,7 @@ describe('ValidationService', () => {
     });
   });
 
-  describe('customValidator', () => {
+  describe('customAsyncValidator', () => {
     it('should return proper error for control value with not enought length', (done) => {
       const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
       const control = new FormControl('input');
@@ -296,6 +322,18 @@ describe('ValidationService', () => {
         expect(obj).toEqual({ msg: 'Обязательно для заполнения', textFromJson: false });
         done();
       });
+    });
+
+    it('should call isMultipleSelectedItemsValid if component.type === MultipleChoiceDictionary', (done) => {
+      const spy = jest.spyOn<any, any>(service, 'isMultipleSelectedItemsValid');
+      const customAsyncValidator = service.customAsyncValidator(mockMultipleChoiceDictionary, '');
+      const control = new FormControl('v');
+      // @ts-ignore
+      customAsyncValidator(control).subscribe((obj) => {
+        expect(spy).toHaveBeenCalledTimes(1);
+        done();
+      });
+      control.setValue('');
     });
   });
 
@@ -379,6 +417,7 @@ describe('ValidationService', () => {
       ).toBeTruthy();
     });
   });
+
   describe('checkRS', () => {
     it('should return true', () => {
       service.form = new FormArray([new FormControl({ id: 'bik', value: '044030827' })]);

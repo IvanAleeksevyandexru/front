@@ -41,15 +41,15 @@ export abstract class BaseDisplayRelation extends BaseRelation {
     cachedAnswers: CachedAnswers,
   ): boolean {
     const isOnCurrentScreen = this.hasControlWithIdOnForm(reference.relatedRel, form);
-
+    const parsedRefValue = this.getRefValue(reference.val) as string | string[] | boolean;
     if (isOnCurrentScreen) {
+      const parsedForm = this.getRefValue(this.getControlValueById(reference.relatedRel, form));
+
       return (
         shownElements[reference.relatedRel]?.isShown &&
         this.refRelationService.isValueEquals(
-          this.getRefValue(reference.val) as string | string[] | boolean,
-          reference.path
-            ? get(this.getControlValueById(reference.relatedRel, form), reference.path)
-            : this.getControlValueById(reference.relatedRel, form),
+          parsedRefValue,
+          reference.path ? get(parsedForm, reference.path) : parsedForm,
         )
       );
     }
@@ -57,7 +57,7 @@ export abstract class BaseDisplayRelation extends BaseRelation {
     const cachedValue = cachedAnswers[reference.relatedRel]?.value;
 
     return this.refRelationService.isValueEquals(
-      reference.val,
+      parsedRefValue,
       get(this.getRefValue(cachedValue), reference.path) || cachedValue,
     );
   }
