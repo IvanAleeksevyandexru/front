@@ -5,7 +5,6 @@ const endpoints = require('../../assets/config.json');
 export const URLS_OF_STANDS: UrlsOfStands = {
   Uat: {
     libVersions: `${environment.uatLibApi}/${endpoints.libVersions}`,
-    serviceVersions: `${environment.uatServiceApi}/${endpoints.serviceVersions}`,
   },
   Uat2: {
     libVersions: `${environment.uat2LibApi}/${endpoints.libVersions}`,

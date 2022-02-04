@@ -9,7 +9,7 @@ export const environment = {
   dev01ServiceApi: 'https://dev01.pgu2-pub.test.gosuslugi.ru',
   dev02LibApi: 'https://dev02-sf-portal.pgu2-pub.test.gosuslugi.ru',
   dev02ServiceApi: 'https://dev02.pgu2-pub.test.gosuslugi.ru',
-  prodLibApi: 'https://dev02-sf-portal.pgu2-pub.test.gosuslugi.ru',
+  prodLibApi: 'https://gu-st.ru',
   prodLikeLibApi: 'https://prodlike-sf-portal.pgu2-pub.test.gosuslugi.ru',
   prodLikeServiceApi: 'https://prodlike.pgu2-pub.test.gosuslugi.ru',
 };
