@@ -67,20 +67,21 @@ export abstract class BaseDisplayRelation extends BaseRelation {
       return this.calculateTimeRelatedValue(reference.val, reference.path, form, cachedValue);
     }
     const isOnCurrentScreen = this.hasControlWithIdOnForm(reference.relatedRel, form);
+    const parsedRefValue = this.getRefValue(reference.val) as string | string[] | boolean;
     if (isOnCurrentScreen) {
+      const parsedForm = this.getRefValue(this.getControlValueById(reference.relatedRel, form));
+
       return (
         shownElements[reference.relatedRel]?.isShown &&
         this.refRelationService.isValueEquals(
-          this.getRefValue(reference.val) as string | string[] | boolean,
-          reference.path
-            ? get(this.getControlValueById(reference.relatedRel, form), reference.path)
-            : this.getControlValueById(reference.relatedRel, form),
+          parsedRefValue,
+          reference.path ? get(parsedForm, reference.path) : parsedForm,
         )
       );
     }
 
     return this.refRelationService.isValueEquals(
-      reference.val,
+      parsedRefValue,
       get(this.getRefValue(cachedValue), reference.path) || cachedValue,
     );
   }

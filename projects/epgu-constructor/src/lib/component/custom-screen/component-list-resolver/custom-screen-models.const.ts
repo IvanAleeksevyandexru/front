@@ -58,6 +58,7 @@ export const CUSTOM_SCREEN_MODELS = {
   Disclaimer: DisclaimerModel,
   DocInput: DocInputModel,
   DropDown: DropdownModel,
+  MedicalBirthCertificates: DropdownModel,
   DropDownDepts: DepartmentLookupModel,
   EaisdoGroupCost: EaisdoGroupCostModel,
   FieldList: FieldListModel,
