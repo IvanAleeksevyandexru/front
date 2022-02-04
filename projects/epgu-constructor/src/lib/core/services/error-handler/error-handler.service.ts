@@ -70,7 +70,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       return throwError(httpErrorResponse);
     }
     if (error?.errorModalWindow) {
-      const shownTraceId = error?.hideTraceId ? null : traceId;
+      const shownTraceId = error.errorModalWindow.hideTraceId ? null : traceId;
       const isConfirm = url.includes('confirmSmsCode') || url.includes('confirmEmailCode');
       this.utils.showErrorModal({ ...error?.errorModalWindow, traceId: shownTraceId }, isConfirm);
     } else if (status === 401) {
