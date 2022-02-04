@@ -41,6 +41,7 @@ import { CurrentAnswersService } from '../../../../screen/current-answers.servic
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { HookTypes } from '../../../../core/services/hook/hook.constants';
 import { LogicComponentResolverComponent } from '../../component-list-resolver/logic-component-resolver.component';
+import { ModalErrorService } from '../../../../modal/modal-error.service';
 
 describe('RestCallComponent', () => {
   let component: RestCallComponent;
@@ -66,6 +67,7 @@ describe('RestCallComponent', () => {
         MockProviders(DatesToolsService, ComponentsListRelationsService, SuggestHandlerService),
         MockProvider(RestToolsService),
         MockProvider(RestService),
+        MockProvider(ModalErrorService),
         LogicService,
         UnsubscribeService,
         DictionaryToolsService,
@@ -161,6 +163,18 @@ describe('RestCallComponent', () => {
         value: 'value',
       },
     };
+    screenService.logicAfterValidationComponents = [
+      {
+        attrs: {
+          onload: {
+            trobber: {
+              message: '',
+              timeout: 0,
+            },
+          },
+        },
+      },
+    ];
     const expectedValue = screenService.logicComponents
       .filter(
         (logicComponent) =>

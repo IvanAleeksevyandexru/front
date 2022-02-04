@@ -1,5 +1,8 @@
-<div class="wrapper" *ngIf="isLoading">
-  <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+<div class="wrapper" *ngIf="isLoading || (isLoading$ | async)">
+  <div>
+    <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+    <div class="text--center" [innerHtml]="logicAfterValidationComponents()"></div>
+  </div>
 </div>
 <ng-container *ngFor="let componentDto of logicComponents$ | async">
   <epgu-constructor-logic-component-resolver [componentDto]="componentDto" #viewComponents>

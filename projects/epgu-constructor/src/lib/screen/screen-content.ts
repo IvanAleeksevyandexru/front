@@ -12,10 +12,12 @@ import {
   DisplaySubjHead,
   Gender,
   InfoComponentDto,
+  LogicAfterValidationComponents,
   LogicComponents,
   ScenarioErrorsDto,
   ScreenButton,
   ScreenTypes,
+  Trobber,
 } from '@epgu/epgu-constructor-types';
 import { ScreenStore, ServiceInfo } from './screen.types';
 import { ISuggestionItem } from '../core/services/autocomplete/autocomplete.inteface';
@@ -78,6 +80,10 @@ export class ScreenContent {
   private _cachedAnswers = new BehaviorSubject<CachedAnswersDto>(null);
 
   private _logicComponents = new BehaviorSubject<LogicComponents[]>([]);
+
+  private _logicAfterValidationComponents = new BehaviorSubject<LogicAfterValidationComponents[]>(
+    [],
+  );
 
   private _infoComponents = new BehaviorSubject<InfoComponentDto[]>(null);
 
@@ -470,6 +476,23 @@ export class ScreenContent {
     this._logicComponents.next(val);
   }
 
+  public get logicAfterValidationComponents$(): Observable<LogicAfterValidationComponents[]> {
+    return this._logicAfterValidationComponents.asObservable();
+  }
+
+  public get logicAfterValidationComponents(): LogicAfterValidationComponents[] {
+    return this._logicAfterValidationComponents.getValue();
+  }
+
+  public set logicAfterValidationComponents(value: LogicAfterValidationComponents[]) {
+    this._logicAfterValidationComponents.next(value);
+  }
+
+  public get trobber(): Trobber | null {
+    const logicAfterValidationComponents = this.logicAfterValidationComponents;
+    return logicAfterValidationComponents[0]?.attrs?.onload?.trobber;
+  }
+
   public get logicAnswers$(): Observable<ApplicantAnswersDto> {
     return this._logicAnswers.asObservable();
   }
@@ -539,6 +562,7 @@ export class ScreenContent {
       subHeader,
       type,
       components = [],
+      logicAfterValidationComponents = [],
       terminal,
       cssClass,
       buttons,
@@ -569,6 +593,7 @@ export class ScreenContent {
     this.disclaimers = disclaimers;
     this.componentError = errors[firstComponent?.id];
     this.component = firstComponent;
+    this.logicAfterValidationComponents = logicAfterValidationComponents;
     this.componentType = firstComponent?.type;
     this.componentLabel = firstComponent?.label;
     this.componentValue = this.getComponentData(firstComponent?.value);
