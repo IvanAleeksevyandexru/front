@@ -14,6 +14,9 @@
 * Добавлена возможность скрывать компоненты по дате через ref [EPGUCORE-85769]
 * Добавлен новый компонент SelectFromList [EPGUCORE-85018]
 * Добавлено скрытие header/footer/робот Макс для МП [EPGUCORE-86689]
+* Добавлен isInvite для timeslot [EPGUCORE-85384]
+* Добавлен линтер в sf-portal [EPGUCORE-87306]
+* Добавлен isInvite в MapService [EPGUCORE-85997]
 
 ### Refactor
 
