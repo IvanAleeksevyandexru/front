@@ -67,23 +67,16 @@ describe('CompressionService', () => {
   describe('imageCompression', () => {
     const testImageFile = TerraByteApiService.base64toBlob(LOAD_SUCCESS_SRC);
 
-    it('should be return file', async () => {
-      const file = await service.imageCompression(testImageFile, {});
+    it('should return file with max size 1MB and custom name and another fileType', async () => {
+      const file = await service.imageCompression(testImageFile, {
+        maxSizeMB: 1,
+        customFileName: 'customName',
+        fileType: 'png',
+      });
+
       expect(file).toBeTruthy();
-    });
-
-    it('should be return file with max size 1MB', async () => {
-      const file = await service.imageCompression(testImageFile, { maxSizeMB: 1 });
       expect(file.size).toBeLessThanOrEqual(1);
-    });
-
-    it('should be return file with custom name', async () => {
-      const file = await service.imageCompression(testImageFile, { customFileName: 'customName' });
       expect((file as File).name).toBe('customName');
-    });
-
-    it('should be return file with another fileType', async () => {
-      const file = await service.imageCompression(testImageFile, { fileType: 'png' });
       expect(file.type.includes('png')).toBeTruthy();
     });
   });
