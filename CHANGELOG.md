@@ -1,6 +1,6 @@
 # Release Notes
 
-## [399.8.1](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.8.1) (2022-02-01)
+## [399.8.2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.8.2) (2022-02-04)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -26,6 +26,8 @@
 * Добавлена блокировка кнопки "Продолжить" пока идет загрузка файлов [EPGUCORE-85133]
 * Добавлена поддержка isServiceSpecific для TimeSlot компонентов [EPGUCORE-86300]
 * Добавлен компонент not-found в sf-portal [EPGUCORE-85703]
+* Поддержка Trobber для logicAfterValidationComponents [EPGUCORE-85052]
+* Добавлен новый компонент MedicalBirthCertificates [EPGUCORE-85940]
 
 ### Refactor
 
@@ -75,6 +77,10 @@
 * Поправлено отображение балуна на картах [EPGUCORE-85732]
 * Поправлен дизайн разделителей на загрузке файлов [EPGUCORE-85749]
 * Поправлен цвет фона для NotFoundComponent [EPGUCORE-85703]
+* Поправлен путь до артибута hideTraceId в errorModalWindow [EPGUCORE-84975]
+* Исправлено "Не прикладывается второй файл из саджестов" [EPGUCORE-86946]
+* Правки по internal-error [EPGUCORE-82540]
+* Исправлено ref displayOn не срабатывает. Кнопка далее неактивна при возврате назад [EPGUCORE-86211]
 
 ### Tests
 
