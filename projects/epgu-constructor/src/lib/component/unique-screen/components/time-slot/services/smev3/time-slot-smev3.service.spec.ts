@@ -9,7 +9,7 @@ import {
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentDto } from '@epgu/epgu-constructor-types';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { isSameDay } from 'date-fns';
 import { TimeSlotSmev3Service } from './time-slot-smev3.service';
 import { Smev3RestApiService } from '../api/smev3/smev3-rest-api.service';
@@ -34,6 +34,8 @@ import {
 } from '../../typings';
 import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
+import { InviteService } from '../../../../../../core/services/invite/invite.service';
+import { InviteServiceStub } from '../../../../../../core/services/invite/invite.service.stub';
 
 const mockTimeSlotValue = {
   timeSlotType: 'BRAK',
@@ -543,6 +545,9 @@ describe('TimeSlotSmev3Service', () => {
   let smev3StateService: TimeSlotSmev3StateService;
   let apiService: Smev3RestApiService;
   let dateService: DatesToolsService;
+  let inviteService: InviteService;
+  let calendarService: TimeSlotCalendarService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -556,6 +561,8 @@ describe('TimeSlotSmev3Service', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: InviteService, useClass: InviteServiceStub },
+        { provide: TimeSlotCalendarService, useClass: TimeSlotCalendarServiceStub },
         JsonHelperService,
         TimeSlotStateService,
       ],
@@ -570,15 +577,82 @@ describe('TimeSlotSmev3Service', () => {
     smev3StateService = TestBed.inject(TimeSlotSmev3StateService);
     smev3StateService.cachedAnswer$ = of(mockAnswer);
     smev3StateService.department$ = of(mockTimeSlotValue.department as DepartmentInterface);
+    smev3StateService.isInvite$ = of(true);
     dateService = TestBed.inject(DatesToolsService);
     jest
       .spyOn(dateService, 'isSameDate')
       .mockImplementation((left: Date, right: Date) => isSameDay(left, right));
     service = TestBed.inject(TimeSlotSmev3Service);
     apiService = TestBed.inject(Smev3RestApiService);
+    inviteService = TestBed.inject(InviteService);
+    calendarService = TestBed.inject(TimeSlotCalendarService);
+
+    calendarService.isVisibleDays$$ = new BehaviorSubject<boolean>(true);
+    jest.spyOn(apiService, 'getList').mockReturnValue(of([]));
   });
 
   describe('base', () => {
+    it('should be Invite', (done) => {
+      const mockValue = {
+        endDate: '12-12-12',
+        startDate: '09-12-12',
+        id: 5,
+        orderId: 123,
+        organizations: [{ orgId: 'test', areas: ['123'] }],
+      };
+      jest.spyOn(inviteService, 'getInvite').mockReturnValue(of(mockValue));
+      jest.spyOn(service, 'createRequest');
+
+      expect(
+        service.createRequest(
+          (mockTimeSlotValue as unknown) as TimeSlotValueInterface,
+          configService.timeSlots[mockTimeSlotValue.timeSlotType],
+          ['attr'],
+          undefined,
+          null,
+          mockValue,
+        ),
+      ).toEqual({
+        areaId: ['123'],
+        attributes: [],
+        caseNumber: 1485144134,
+        eserviceId: '10000057526',
+        filter: [
+          {
+            simple: {
+              attributeName: 'DATE',
+              checkAllValues: true,
+              condition: 'GREATER_THAN_OR_EQUALS',
+              value: '09-12-12',
+            },
+          },
+          {
+            simple: {
+              attributeName: 'DATE',
+              checkAllValues: true,
+              condition: 'LESS_THAN_OR_EQUALS',
+              value: '12-12-12',
+            },
+          },
+        ],
+        organizationId: ['test'],
+        routeNumber: '45382000',
+        serviceId: ['ЗагсБрак'],
+      });
+
+      service.requestListParams$$.next(null);
+      service.store$.subscribe(() => {
+        expect(service.createRequest).toHaveBeenCalledWith(
+          mockTimeSlotValue,
+          configService.timeSlots[mockTimeSlotValue.timeSlotType],
+          ['attr'],
+          undefined,
+          null,
+          mockValue,
+        );
+        done();
+      });
+    });
     it('should be clearMessage', () => {
       expect(service.clearMessage('FAILURE:1UNKNOWN_REQUEST_DESCRIPTION:1NO_DATA:1')).toBe('111');
     });

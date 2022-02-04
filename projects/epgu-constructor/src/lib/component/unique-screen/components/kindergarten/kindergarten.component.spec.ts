@@ -59,6 +59,7 @@ import { KindergartenService, KindergartenStates } from './kindergarten.service'
 import { By } from '@angular/platform-browser';
 import { PriorityScreenComponent } from '../select-map-object/components/priority-screen/priority-screen.component';
 import { HelperService } from '@epgu/ui/services/helper';
+import { InviteService } from '../../../../core/services/invite/invite.service';
 
 describe('KindergartenComponent', () => {
   let component: KindergartenComponent;
@@ -85,6 +86,7 @@ describe('KindergartenComponent', () => {
         { provide: FormPlayerService, useClass: FormPlayerServiceStub },
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: PREV_BUTTON_NAVIGATION, useClass: PrevButtonNavigationService },
+        MockProvider(InviteService),
         MockProvider(UnsubscribeService),
         MockProvider(CurrentAnswersService),
         MockProvider(ModalErrorService),
