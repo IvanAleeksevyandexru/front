@@ -1,9 +1,8 @@
-require('jest-preset-angular/ngcc-jest-processor');
-
 module.exports = {
   preset: 'jest-preset-angular',
   modulePaths: ['<rootDir>'],
   moduleDirectories: ['node_modules'],
+  globalSetup: 'jest-preset-angular/global-setup',
   setupFiles: ['<rootDir>/configs/jest/setup-jest.ts', 'jest-canvas-mock'],
   setupFilesAfterEnv: ['<rootDir>/configs/jest/setup-jest-env.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/', '<rootDir>/projects/sf-portal'],
@@ -14,7 +13,6 @@ module.exports = {
     '@epgu/epgu-constructor-types': '<rootDir>/projects/epgu-constructor-types/src',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
-  // cacheDirectory: '<rootDir>/.jest-cache',
   coverageReporters: ['text', 'cobertura', 'html'],
   collectCoverageFrom: [
     'projects/**/*.service.ts',
