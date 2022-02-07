@@ -90,6 +90,7 @@ import { NEXT_STEP_ACTION } from '../../../../../shared/constants/actions';
 import { ComponentsListRelationsServiceStub } from '../../../../custom-screen/services/components-list-relations/components-list-relations.service.stub';
 import { DictionaryService } from '../../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../../shared/services/dictionary/dictionary.service.stub';
+import { LookupComponent } from '@epgu/ui/controls';
 
 describe('TimeSlotDoctorsContainerComponent', () => {
   let component: TimeSlotDoctorsContainerComponent;
@@ -415,6 +416,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       docLookup: {
         // eslint-disable-next-line no-empty-function
         setFocus: () => {},
+        lookupComponent: ({
+          lookupItemsOrClose: () => '',
+        } as unknown) as LookupComponent,
       } as ConstructorLookupComponent,
       specLookup: {
         // eslint-disable-next-line no-empty-function
@@ -521,8 +525,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       component.selectDate(new Date('2020-01-01T00:00:00Z'));
 
-      expect(component.clearDateSelection).not.toHaveBeenCalled();
-      expect(component.recalcDaysStyles).not.toHaveBeenCalled();
+      expect(component['clearDateSelection']).not.toHaveBeenCalled();
+      expect(component['recalcDaysStyles']).not.toHaveBeenCalled();
     });
 
     it('if the date was chosen and we click again', () => {
@@ -531,8 +535,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       component.selectDate(new Date('2020-01-01T00:00:00Z'));
 
-      expect(component.clearDateSelection).toHaveBeenCalled();
-      expect(component.recalcDaysStyles).not.toHaveBeenCalled();
+      expect(component['clearDateSelection']).toHaveBeenCalled();
+      expect(component['recalcDaysStyles']).not.toHaveBeenCalled();
     });
 
     it('if the date was changed', () => {
@@ -541,8 +545,8 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
       component.selectDate(new Date('2020-01-01T00:00:00Z'));
 
-      expect(component.clearDateSelection).not.toHaveBeenCalled();
-      expect(component.recalcDaysStyles).toHaveBeenCalled();
+      expect(component['clearDateSelection']).not.toHaveBeenCalled();
+      expect(component['recalcDaysStyles']).toHaveBeenCalled();
     });
   });
 
@@ -585,7 +589,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       component.showError('Обычная ошибка');
 
       expect(component.showModal).toHaveBeenLastCalledWith(confirmationModalParams);
-      expect(component.loadTimeSlots).toHaveBeenCalled();
+      expect(component['loadTimeSlots']).toHaveBeenCalled();
     });
 
     it('show error and not load timeslots by click on close', () => {
@@ -604,7 +608,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       component.showError('Обычная ошибка');
 
       expect(component.showModal).toHaveBeenLastCalledWith(confirmationModalParams);
-      expect(component.loadTimeSlots).not.toHaveBeenCalled();
+      expect(component['loadTimeSlots']).not.toHaveBeenCalled();
     });
   });
 
@@ -648,7 +652,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       docLookup: mockDocLookup,
     });
     expect(component.doctorWasChosen$$.value).toEqual(true);
-    expect(component.loadTimeSlots).toHaveBeenCalled();
+    expect(component['loadTimeSlots']).toHaveBeenCalled();
   });
 
   it('ngOnInit()', () => {
@@ -720,7 +724,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         areaId: '',
         slotId: '',
       };
-      component.cachedAnswer = ({ bookId: '123' } as unknown) as TimeSlotsAnswerInterface;
+      component['cachedAnswer'] = ({ bookId: '123' } as unknown) as TimeSlotsAnswerInterface;
 
       jest.spyOn(actionService, 'switchAction').mockReturnValue(null);
       jest.spyOn(component as any, 'isCachedValueChanged').mockImplementation(() => false);
@@ -1212,7 +1216,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   });
 
   it("checkDateRestrictions with mock's restrictions", () => {
-    const checkDateRestrictions = component.checkDateRestrictions.bind(component);
+    const checkDateRestrictions = component['checkDateRestrictions'].bind(component);
     let date = new Date('2020-01-01T10:00:00.000Z');
     let check = checkDateRestrictions(date);
     expect(check).toBeTruthy();
@@ -1231,7 +1235,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
   });
 
   it('getMonthsListItem()', () => {
-    const getMonthsListItem = component.getMonthsListItem.bind(component);
+    const getMonthsListItem = component['getMonthsListItem'].bind(component);
 
     const listItem = getMonthsListItem('2010-01');
 

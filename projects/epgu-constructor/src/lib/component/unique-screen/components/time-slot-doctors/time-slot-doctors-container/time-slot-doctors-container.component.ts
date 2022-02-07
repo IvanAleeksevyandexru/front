@@ -77,8 +77,6 @@ export const NO_DATA = 'В настоящее время отсутствуют 
 export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   @ViewChild('timeSlotDoctorsComponent') timeSlotDoctorsComponent: TimeSlotDoctorsComponent;
 
-  forReRenderDocLookup = true;
-
   isLoading$: Observable<boolean> = this.screenService.isLoading$;
   data$: Observable<DisplayDto> = this.screenService.display$;
 
@@ -226,18 +224,13 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
 
   handleSpecLookupValue(specLookup: ListElement): void {
     const prevState = this.timeSlotDoctorService.state$$.getValue();
-    this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup, docLookup: null });
-    this.reRenderDocLookup();
-  }
-
-  reRenderDocLookup(): void {
     this.docLookupControl.setValue('');
-    this.forReRenderDocLookup = false;
-
-    window.requestAnimationFrame(() => {
-      this.forReRenderDocLookup = true;
-      setTimeout(() => this.timeSlotDoctorsComponent.docLookup.setFocus());
-    });
+    this.timeSlotDoctorService.state$$.next({ ...prevState, specLookup, docLookup: null });
+    // 100мс потому что нельзя сразу ставить фокус после клика в первом инпуте.
+    setTimeout(() => {
+      this.timeSlotDoctorsComponent.docLookup.lookupComponent.lookupItemsOrClose(true);
+      this.timeSlotDoctorsComponent.docLookup.setFocus();
+    }, 100);
   }
 
   handleDocLookupValue(docLookup: ListElement): void {
