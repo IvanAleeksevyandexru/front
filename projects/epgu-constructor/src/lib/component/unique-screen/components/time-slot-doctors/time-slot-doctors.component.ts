@@ -35,7 +35,6 @@ export class TimeSlotDoctorsComponent {
   @Input() isDoctorNotAvailable = false;
   @Input() areSlotsNotAvailable = false;
   @Input() isDocLookupDisclaimerShown;
-  @Input() forReRenderDocLookup;
 
   @Input() monthsRange: string;
   @Input() slotList: SlotInterface[];

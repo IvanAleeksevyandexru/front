@@ -28,7 +28,6 @@
         (docLookupWasChanged)="handleDocLookupValue($event)"
         (selectDate)="selectDate($event)"
         (chooseTimeSlot)="chooseTimeSlot($event)"
-        [forReRenderDocLookup]="forReRenderDocLookup"
         [isDocLookupShown]="!!state.specLookup || this.timeSlotDoctorService.isOnlyDocLookupNeeded"
         [isMapShown]="!!state.docLookup && slotsLoadingStatus$$.getValue()"
         [isDocLookupDisclaimerShown]="!doctorWasChosen$$.getValue()"
