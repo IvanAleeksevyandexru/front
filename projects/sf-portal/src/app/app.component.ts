@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, isDevMode } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
 import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { MainPageService } from '@epgu/ui/services/main-page';
@@ -114,9 +114,11 @@ export class AppComponent implements OnInit {
   }
 
   private onRouteChange(): void {
+    const prevPath = this.document.referrer || window.location.href;
     this.router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
         this.documentScrollTop();
+        this.initMetric(prevPath);
       }
     });
   }
@@ -136,6 +138,18 @@ export class AppComponent implements OnInit {
       this.footerService.setVisible(false);
     } else {
       this.setWindowParams();
+    }
+  }
+
+  private initMetric(prevPath: string) {
+    if (!isDevMode()) {
+      this.yaMetricService.onInit().then(() => {
+        const newPath = window.location.href;
+        this.yaMetricService.ym(this.yaMetricService.counter, 'hit', newPath, {
+          referer: prevPath,
+        });
+        prevPath = newPath;
+      });
     }
   }
 }
