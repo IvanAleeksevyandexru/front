@@ -1,11 +1,8 @@
-const { pathsToModuleNameMapper } = require('ts-jest/utils');
-const { paths } = require('./tsconfig.json').compilerOptions;
-
 module.exports = {
-  globalSetup: 'jest-preset-angular/global-setup',
-  preset: 'jest-preset-angular/presets/defaults-esm',
+  preset: 'jest-preset-angular',
   modulePaths: ['<rootDir>'],
   moduleDirectories: ['node_modules'],
+  globalSetup: 'jest-preset-angular/global-setup',
   setupFiles: ['<rootDir>/configs/jest/setup-jest.ts', 'jest-canvas-mock'],
   setupFilesAfterEnv: ['<rootDir>/configs/jest/setup-jest-env.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/', '<rootDir>/projects/sf-portal'],
@@ -13,10 +10,9 @@ module.exports = {
     '@ifc/plugin': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js',
     '@ifc/common': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js',
     '@epgu/epgu-constructor-ui-kit': '<rootDir>/projects/epgu-constructor-ui-kit/src/public-api',
-    ...pathsToModuleNameMapper(paths, { prefix: '<rootDir>' }),
+    '@epgu/epgu-constructor-types': '<rootDir>/projects/epgu-constructor-types/src',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
-  // cacheDirectory: '<rootDir>/.jest-cache',
   coverageReporters: ['text', 'cobertura', 'html'],
   collectCoverageFrom: [
     'projects/**/*.service.ts',
@@ -34,13 +30,12 @@ module.exports = {
     '^.+\\.(ts|js|mjs|html)$': 'jest-preset-angular',
   },
   moduleFileExtensions: ['ts', 'html', 'js', 'json', 'svg', 'mjs'],
-  resolver: 'jest-preset-angular/build/resolvers/ng-jest-resolver.js',
   extensionsToTreatAsEsm: ['.ts'],
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
-      isolatedModules: false,
-      stringifyContentPathRegex: '\\.(html|svg)$',
+      isolatedModules: true,
+      stringifyContentPathRegex: '\\.html$',
       useESM: true
     },
   },
@@ -49,5 +44,5 @@ module.exports = {
       window.scroll = () => { };
     },
   },
-  transformIgnorePatterns: ['<rootDir>/node_modules/(?!.*\\.mjs$|date-fns|tslib|@epgu/ui/node_modules/date-fns)'],
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!.*\\.mjs$|date-fns|@epgu/ui/node_modules/date-fns)'],
 };
