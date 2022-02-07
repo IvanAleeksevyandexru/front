@@ -1,6 +1,6 @@
 # Release Notes
 
-## [400.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.0.0) (2022-02-04)
+## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-02-07)
 
 ### Features
 
@@ -25,6 +25,7 @@
 * Правка лишней проверки в config.component.html [EPGUCORE-84013]
 * Оптимизация ConfirmPersonalUserData, добавление в ScreenService screenStore$ [EPGUCORE-84010]
 * Добавлена возможность скрывать/открывать панели стендов в versions. Добавлен config.json для API. Рефакторинг кода и стилей. [EPGUCORE-85909]
+* Изменение стратегии обнаружения с Default на OnPush по проекту [EPGUCORE-84009]
 
 ### Bug Fixes
 
@@ -38,6 +39,8 @@
 * Поправлен вывод информации о booking timeslot [EPGUCORE-67487]
 * Исправлено восстановление snils для children из cachedAnswers [EPGUCORE-86787]
 * Изменены стили и набор атрибутов компонента Checkbox [EPGUCORE-75228]
+* Правка HealthService для suggest сервиса [EPGUCORE-87298]
+* Исправления для selectedItems в MultipleChoiceDictionary [EPGUCORE-86678]
 
 ### Tests
 
@@ -46,7 +49,7 @@
 * Поправлены тесты MonthPicker [EPGUCORE-76608]
 * Ускорен тест: заменена картинка, оптимизированы вызовы тяжелого метода в CompressionService [EPGUCORE-87310]
 
-## [399.8.2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.8.2) (2022-02-04)
+## [399.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.x.x) (2022-02-07)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -128,6 +131,7 @@
 * Исправлено "Не прикладывается второй файл из саджестов" [EPGUCORE-86946]
 * Правки по internal-error [EPGUCORE-82540]
 * Исправлено ref displayOn не срабатывает. Кнопка далее неактивна при возврате назад [EPGUCORE-86211]
+* Исправлена работа trobber, если не задан timeout в RestCallComponent [EPGUCORE-87527]
 
 ### Tests
 
