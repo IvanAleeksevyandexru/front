@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -38,7 +39,7 @@ import GenericAttrs from './component-list-resolver/GenericAttrs';
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
   providers: [ComponentsListFormService, UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   /**
@@ -67,6 +68,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     private eventBusService: EventBusService,
     private httpCancelService: HttpCancelService,
     private validationService: ValidationService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.changes = this.formService.changes;
   }
@@ -79,6 +81,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.formService.form.valueChanges.subscribe(() => {
       this.findShowElements();
+      this.changeDetectorRef.markForCheck();
     });
   }
 

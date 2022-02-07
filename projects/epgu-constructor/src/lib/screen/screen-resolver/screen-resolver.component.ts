@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentFactory,
   ComponentFactoryResolver,
@@ -23,7 +24,7 @@ import { NO_FOOTER_COMPONENTS } from '../../shared/constants/no-footer-component
   selector: 'epgu-constructor-screen-resolver',
   templateUrl: './screen-resolver.component.html',
   styleUrls: ['./screen-resolver.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [UnsubscribeService],
 })
 export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
@@ -35,6 +36,7 @@ export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
     private componentFactoryResolver: ComponentFactoryResolver,
     private ngUnsubscribe$: UnsubscribeService,
     private footerService: FooterService,
+    private cdRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
@@ -82,6 +84,7 @@ export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
     );
 
     this.componentRef = this.screenContainer.createComponent(componentFactory);
+    this.cdRef.detectChanges();
   }
 
   private handleFooterDisplaying(): void {
