@@ -57,7 +57,7 @@ export default class RestCallComponent extends AbstractLogicComponent {
 
     return forkJoin(this.logicService.fetch(fetchData)).pipe(
       timeout(
-        this.screenService.trobber.timeout
+        this.screenService.trobber?.timeout
           ? this.screenService.trobber.timeout * 1000
           : this.logicService.maxTimeout,
       ),
