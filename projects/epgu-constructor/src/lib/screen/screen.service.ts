@@ -22,6 +22,8 @@ export class ScreenService extends ScreenContent {
 
   private screenStore: ScreenStore = {};
 
+  private screenStore$ = new BehaviorSubject<ScreenStore>({});
+
   private isLoading = false;
 
   private isLoadingSubject = new BehaviorSubject<boolean>(this.isLoading);
@@ -42,6 +44,10 @@ export class ScreenService extends ScreenContent {
     return this.screenStore;
   }
 
+  public getStore$(): Observable<ScreenStore> {
+    return this.screenStore$.asObservable();
+  }
+
   public getCompFromDisplay(componentId: string = this.component.id): ScreenStoreComponentDtoI {
     return this.display?.components.find((comp) => comp.id === componentId);
   }
@@ -56,6 +62,14 @@ export class ScreenService extends ScreenContent {
       componentId = this.component?.id;
     }
     return cachedAnswers && cachedAnswers[componentId]?.value;
+  }
+
+  public getCompValueFromApplicantAnswers(componentId?: string): string {
+    const { applicantAnswers } = this.getStore();
+    if (!componentId) {
+      componentId = this.component?.id;
+    }
+    return applicantAnswers && applicantAnswers[componentId]?.value;
   }
 
   public setCompValueToCachedAnswer(componentId: string, value: string): void {
@@ -73,6 +87,7 @@ export class ScreenService extends ScreenContent {
    */
   public initScreenStore(store: ScreenStore): void {
     this.screenStore = store;
+    this.screenStore$.next(this.screenStore);
     this.prepareComponents();
     this.initComponentStateService();
     this.updateScreenContent(store, this.deviceDetectorService.isWebView);
@@ -85,6 +100,7 @@ export class ScreenService extends ScreenContent {
    */
   public updateScreenStore(newState: ScreenStore): void {
     this.screenStore = { ...this.screenStore, ...newState };
+    this.screenStore$.next(this.screenStore);
     this.updateScreenContent(this.screenStore, this.deviceDetectorService.isWebView);
   }
 
@@ -159,6 +175,7 @@ export class ScreenService extends ScreenContent {
 
     if (screenStoreComponent.length) {
       this.screenStore.display = { ...this.screenStore.display, components: screenStoreComponent };
+      this.screenStore$.next(this.screenStore);
     }
   }
 }

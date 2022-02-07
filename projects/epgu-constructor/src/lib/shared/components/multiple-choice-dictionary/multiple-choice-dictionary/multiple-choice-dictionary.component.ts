@@ -68,7 +68,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
           if (items instanceof Error) {
             return this.openErrorModal();
           }
-          return of(items);
+          return of(items || this.selectedItems.list);
         }),
       )
       .subscribe((items) => {

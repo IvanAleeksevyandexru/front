@@ -4,10 +4,17 @@
 
 export const environment = {
   production: false,
+  uatLibApi: 'uat-lib',
   uatServiceApi: 'uat-service',
+  uat2LibApi: 'uat2-lib',
+  devL11LibApi: 'devL11-lib',
   devL11ServiceApi: 'devL11-service',
+  dev01LibApi: 'dev01-lib',
   dev01ServiceApi: 'dev01-service',
+  dev02LibApi: 'dev02-lib',
   dev02ServiceApi: 'dev02-service',
+  prodLibApi: 'prod-lib',
+  prodLikeLibApi: 'prodLike-lib',
   prodLikeServiceApi: 'prodLike-service',
 };
 

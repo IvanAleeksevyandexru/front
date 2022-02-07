@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 import { ConfirmationModal, ItemsErrorResponse } from '@epgu/epgu-constructor-types';
 import { SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 } from '../../services/error-handler/error-handler.inteface';
@@ -14,17 +14,19 @@ export class DictionaryLoadingErrorInterceptor extends BaseInterceptor {
     super();
   }
 
-  validate(response: HttpResponse<unknown>): boolean {
-    const { url, body } = response;
-    const error = (body as ItemsErrorResponse)?.error;
-    const dictionaryError = error as DictionaryResponseError;
+  validate(response: HttpResponse<unknown> | HttpErrorResponse): boolean {
+    const { url, body } = response as HttpResponse<unknown>;
+    const { error } = response as HttpErrorResponse;
+    const errorData = (body as ItemsErrorResponse)?.error || error?.error;
+    const dictionaryError = errorData as DictionaryResponseError;
 
     return (
       (url.includes('dictionary/mzrf_lpu_equeue_smev3') ||
         url.includes('dictionary/mzrf_equeue_lpu') ||
         url.includes('dictionary/mzrf_lpu_vaccination')) &&
       !dictionaryError?.message?.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2) &&
-      dictionaryError?.code !== 0
+      dictionaryError?.code !== 0 &&
+      dictionaryError?.message !== 'Internal Error'
     );
   }
 

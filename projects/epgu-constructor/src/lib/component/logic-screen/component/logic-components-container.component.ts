@@ -69,6 +69,14 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
     });
   }
 
+  public logicAfterValidationComponents(): string {
+    const trobber = this.screenService.trobber;
+    if (trobber !== null) {
+      return trobber?.message || '';
+    }
+    return '';
+  }
+
   private resetInitSubscribe(): void {
     if (this.loadSubscription) this.loadSubscription.unsubscribe();
     this.subscribeToInitHooks();

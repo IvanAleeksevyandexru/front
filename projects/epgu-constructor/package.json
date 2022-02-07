@@ -24,7 +24,7 @@
     "file-saver": "2.0.5",
     "lodash": "4.17.21",
     "ngx-perfect-scrollbar": "8.0.0",
-    "ngx-webcam": "0.3.0",
+    "ngx-webcam": "0.4.1",
     "rxjs": "6.6.7",
     "text-mask-core": "5.1.2",
     "uuid": "8.3.0"

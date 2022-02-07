@@ -128,6 +128,7 @@ type IsNeedToGroupErrors = boolean;
 type IsSelectButtonHidden = boolean;
 type IsSmev2 = boolean;
 type IsServiceSpecific = boolean;
+type IsSoloCheckBox = boolean;
 type KeepVariables = boolean;
 type Label = string;
 type LabelHint = string;
@@ -282,6 +283,8 @@ export interface ComponentAttrsDto {
   isSelectButtonHidden?: IsSelectButtonHidden;
   isSmev2?: IsSmev2;
   isServiceSpecific?: IsServiceSpecific;
+  isInvite?: boolean;
+  isSoloCheckBox?: IsSoloCheckBox;
   keepVariables?: KeepVariables;
   label?: Label;
   labelHint?: LabelHint;
@@ -309,6 +312,8 @@ export interface ComponentAttrsDto {
   notFoundItemsMessage?: NotFoundItemsMessage;
   nsi?: Nsi;
   obliged?: Obliged;
+  parentFirst?: boolean;
+  parentLast?: boolean;
   participant?: Participant;
   path?: Path;
   payCode?: PayCode;
@@ -362,8 +367,6 @@ export interface ComponentAttrsDto {
   visited?: Visited;
   writableComponents?: WritableComponents;
   years?: Years;
-  parentFirst?: boolean;
-  parentLast?: boolean;
 }
 
 export interface SlotsNotFoundTemplate {

@@ -64,6 +64,7 @@ export enum CustomScreenComponentTypes {
   RestLookup = 'RestLookup',
   SearchableDropDown = 'SearchableDropDown',
   SignAppLink = 'SignAppLink',
+  SelectFromList = 'SelectFromList',
   SnilsInput = 'SnilsInput',
   StringInput = 'StringInput',
   TextArea = 'TextArea',
@@ -274,6 +275,8 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   validation?: CustomComponentAttrValidation[];
   wait?: Wait;
   largeFontSize?: boolean;
+  listIncrementLength?: number;
+  listInitLength?: number;
 }
 
 export interface DateRestriction {

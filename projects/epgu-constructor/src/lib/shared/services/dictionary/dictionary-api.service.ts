@@ -111,6 +111,7 @@ export class DictionaryApiService {
       ? `${this.config.mockUrl}/nsi/v1/dictionary`
       : this.config.dictionaryUrl;
     const path = `${urlPrefix}/${dictionaryName}`;
+
     return this.post<DictionaryResponse>(path, options);
   }
 
@@ -216,7 +217,11 @@ export class DictionaryApiService {
       parentRefItemValue: dictOptions.parentRefItemValue || '',
       selectAttributes: dictOptions.selectAttributes || ['*'],
       tx: dictOptions.tx || '',
-    };
+    } as DictionaryOptions;
+
+    if (dictOptions?.filterCodes) {
+      payload.filterCodes = dictOptions.filterCodes;
+    }
 
     if (excludedParams && Array.isArray(excludedParams)) {
       excludedParams.forEach((param: string) => {

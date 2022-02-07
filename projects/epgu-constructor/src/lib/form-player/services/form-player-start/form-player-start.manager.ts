@@ -202,7 +202,7 @@ export class FormPlayerStartManager {
     );
   }
 
-  private showSelectOrderModal(orders, limitOrders): void {
+  private showSelectOrderModal(orders: OrderDto[], limitOrders: number): void {
     this.continueOrderModalService
       .openSelectOrderModal(orders, limitOrders)
       .pipe(takeUntil(this.ngUnsubscribe$))

@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Injectable()
-export class ErrorService {
+export class ErrorService implements ErrorHandler {
   public errorEmitter = new Subject<Error>();
 
   public handleError(err: Error | string) {

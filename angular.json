@@ -470,6 +470,16 @@
         "test": {
           "builder": "@angular-builders/jest:run"
         },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": "projects/sf-portal/.eslintrc.js",
+            "lintFilePatterns": [
+              "projects/sf-portal/src/**/*.ts",
+              "projects/sf-portal/src/**/*.spec.ts"
+            ]
+          }
+        },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
@@ -577,7 +587,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "10mb"
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",

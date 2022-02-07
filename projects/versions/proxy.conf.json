@@ -1,31 +1,73 @@
 {
+  "/uat-lib/*": {
+    "target": "https://static-uat.egovdev.ru",
+    "pathRewrite": { "^/uat-lib": "" },
+    "secure": false,
+    "changeOrigin": true
+  },
   "/uat-service/*": {
     "target": "http://pgu-uat-fednlb.test.gosuslugi.ru",
-    "pathRewrite": {"^/uat-service" : ""},
+    "pathRewrite": { "^/uat-service": "" },
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/uat2-lib/*": {
+    "target": "https://static-uat2.egovdev.ru",
+    "pathRewrite": { "^/uat2-lib": "" },
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/devL11-lib/*": {
+    "target": "https://dev-l11-sf-portal.pgu2-pub.test.gosuslugi.ru",
+    "pathRewrite": { "^/devL11-lib": "" },
     "secure": false,
     "changeOrigin": true
   },
   "/devL11-service/*": {
     "target": "https://dev-l11.pgu2-pub.test.gosuslugi.ru",
-    "pathRewrite": {"^/devL11-service" : ""},
+    "pathRewrite": { "^/devL11-service": "" },
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/dev01-lib/*": {
+    "target": "https://dev01-sf-portal.pgu2-pub.test.gosuslugi.ru",
+    "pathRewrite": { "^/dev01-lib": "" },
     "secure": false,
     "changeOrigin": true
   },
   "/dev01-service/*": {
     "target": "https://dev01.pgu2-pub.test.gosuslugi.ru",
-    "pathRewrite": {"^/dev01-service" : ""},
+    "pathRewrite": { "^/dev01-service": "" },
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/dev02-lib/*": {
+    "target": "https://dev02-sf-portal.pgu2-pub.test.gosuslugi.ru",
+    "pathRewrite": { "^/dev02-lib": "" },
     "secure": false,
     "changeOrigin": true
   },
   "/dev02-service/*": {
     "target": "https://dev02.pgu2-pub.test.gosuslugi.ru",
-    "pathRewrite": {"^/dev02-service" : ""},
+    "pathRewrite": { "^/dev02-service": "" },
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/prod-lib/*": {
+    "target": "https://gu-st.ru",
+    "pathRewrite": { "^/prod-lib": "" },
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/prodLike-lib/*": {
+    "target": "https://prodlike-sf-portal.pgu2-pub.test.gosuslugi.ru",
+    "pathRewrite": { "^/prodLike-lib": "" },
     "secure": false,
     "changeOrigin": true
   },
   "/prodLike-service/*": {
     "target": "https://prodlike.pgu2-pub.test.gosuslugi.ru",
-    "pathRewrite": {"^/prodLike-service" : ""},
+    "pathRewrite": { "^/prodLike-service": "" },
     "secure": false,
     "changeOrigin": true
   }

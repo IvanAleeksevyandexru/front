@@ -17,9 +17,9 @@
   width: 100%;
   background-color: $color-input;
   display: flex;
-  border-top: 2px solid $color-mercury;
-  border-left: 2px solid $color-mercury;
-  border-right: 2px solid $color-mercury;
+  border-top: 2px solid $color-ciottoli;
+  border-left: 2px solid $color-ciottoli;
+  border-right: 2px solid $color-ciottoli;
   position: relative;
   &__image {
     background-color: $color-white;
@@ -190,9 +190,6 @@
       }
     }
   }
-}
-.divider {
-  margin-bottom: 24px;
 }
 
 .viewer__confirmation {

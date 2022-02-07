@@ -167,6 +167,7 @@ Children-clubs-build:
   script:
     - yarn build:children-clubs
   interruptible: true
+  needs: ["Ui-kit-build"]
   only:
     - merge_requests
     - master
@@ -195,6 +196,7 @@ Form-player-build:
   script:
     - yarn build:cf
   interruptible: true
+  needs: ["Children-clubs-build"]
   only:
     - merge_requests
     - master
@@ -223,6 +225,7 @@ Emulator-build:
   script:
     - yarn build:emulator
   interruptible: true
+  needs: ["Form-player-build"]
   only:
     - merge_requests
 
@@ -242,9 +245,10 @@ Portal-build:
         - node_modules
         - 'projects/*/node_modules'
   script:
-    - yarn install
+    - test -d node_modules || yarn install --frozen-lockfile --no-progress
     - yarn build:portal
   interruptible: true
+  needs: ["Install"]
   only:
     - merge_requests
     - master

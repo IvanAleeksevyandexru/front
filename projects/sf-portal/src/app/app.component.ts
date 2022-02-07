@@ -8,7 +8,9 @@ import { CountersService } from '@epgu/ui/services/counters';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { PsoService } from '@epgu/ui/services/pso';
 import { DOCUMENT, isPlatformServer } from '@angular/common';
-import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
+import { HeaderService } from '@epgu/ui/services/header';
+import { FooterService } from '@epgu/ui/services/footer';
+import { DeviceDetectorService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { MetaTagGeneratorService } from './services/meta-tag-generator/meta-tag-generator.service';
 
 @Component({
@@ -23,6 +25,9 @@ export class AppComponent implements OnInit {
   constructor(
     public router: Router,
     public loadService: LoadService,
+    private deviceDetectorService: DeviceDetectorService,
+    private headerService: HeaderService,
+    private footerService: FooterService,
     private mainPageService: MainPageService,
     private catalogTabsService: CatalogTabsService,
     private countersService: CountersService,
@@ -54,7 +59,7 @@ export class AppComponent implements OnInit {
     this.getMainBlocksData();
     this.initCounters();
     this.fadeOutEffect(this.document.getElementById('start-app-loader') as HTMLElement);
-    this.setWindowParams();
+    this.setWebViewUi();
   }
 
   public getMainBlocksData(): void {
@@ -122,6 +127,15 @@ export class AppComponent implements OnInit {
       window.showNewDesignPsoHelp = this.loadService.config.showNewDesignPsoHelp;
       window.betaUrl = this.loadService.config.betaUrl;
       this.psoService.loadAndRunPso();
+    }
+  }
+
+  private setWebViewUi() {
+    if (this.deviceDetectorService.isWebView) {
+      this.headerService.setVisible(false);
+      this.footerService.setVisible(false);
+    } else {
+      this.setWindowParams();
     }
   }
 }

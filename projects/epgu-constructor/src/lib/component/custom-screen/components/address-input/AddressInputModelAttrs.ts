@@ -16,7 +16,7 @@ export default class AddressInputModelAttrs extends GenericAttrs {
 
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
-    this.hideApartmentCheckbox = attrs.hideHouseCheckbox;
+    this.hideHouseCheckbox = attrs.hideHouseCheckbox;
     this.hideApartmentCheckbox = attrs.hideApartmentCheckbox;
     this.selectHouseCheckbox = attrs.selectHouseCheckbox;
     this.selectApartmentCheckbox = attrs.selectApartmentCheckbox;

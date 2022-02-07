@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { BrowserName, DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 
 export interface CompressionOptions {
   maxSizeMB?: number;
@@ -22,14 +22,6 @@ const testImageURL =
   'ABKAAEAAAAAAAAAAAAAAAAAAAALEAEAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAA' +
   'AAAAAEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/8H//2Q==';
 
-enum BrowserName {
-  CHROME = 'CHROME',
-  FIREFOX = 'FIREFOX',
-  DESKTOP_SAFARI = 'DESKTOP_SAFARI',
-  MOBILE_SAFARI = 'MOBILE_SAFARI',
-  ETC = 'ETC',
-}
-
 const MAX_SIZE = {
   [BrowserName.CHROME]: 16384,
   [BrowserName.FIREFOX]: 11180,
@@ -42,7 +34,7 @@ const MAX_SIZE = {
 export class CompressionService {
   cachedResult: BrowserName;
 
-  constructor(private detector: DeviceDetectorService) {}
+  constructor(private deviceDetectorService: DeviceDetectorService) {}
 
   isValidImageType(file: File | Blob): boolean {
     const hasImageType = /^image/.test(file?.type);
@@ -182,24 +174,7 @@ export class CompressionService {
       return this.cachedResult;
     }
 
-    let browserName = BrowserName.ETC;
-
-    const { userAgent } = navigator;
-
-    if (/Chrom(e|ium)/i.test(userAgent)) {
-      browserName = BrowserName.CHROME;
-    } else if (
-      /iP(ad|od|hone)/i.test(userAgent) &&
-      /WebKit/i.test(userAgent) &&
-      !/(CriOS|FxiOS|OPiOS|mercury)/i.test(userAgent)
-    ) {
-      browserName = BrowserName.MOBILE_SAFARI;
-    } else if (/Safari/i.test(userAgent)) {
-      browserName = BrowserName.DESKTOP_SAFARI;
-    } else if (/Firefox/i.test(userAgent)) {
-      browserName = BrowserName.FIREFOX;
-    }
-    this.cachedResult = browserName;
+    this.cachedResult = this.deviceDetectorService.browser;
     return this.cachedResult;
   }
 
@@ -302,7 +277,7 @@ export class CompressionService {
     let img: ImageBitmap | HTMLImageElement;
     try {
       if (
-        this.detector.isIOS() ||
+        this.deviceDetectorService.isIOS() ||
         [BrowserName.DESKTOP_SAFARI, BrowserName.MOBILE_SAFARI].includes(this.getBrowserName())
       ) {
         throw new Error('Skip createImageBitmap on IOS and Safari');

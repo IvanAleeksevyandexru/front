@@ -5,8 +5,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   templateUrl: './clubs.component.html',
 })
 export class ClubsComponent implements OnInit, OnDestroy {
-  constructor() {}
-
   public ngOnInit(): void {
     document.querySelector('.main-container')?.classList.add('new-sf-player');
   }

@@ -13,6 +13,8 @@ export default class MultipleChoiceDictionaryModelAttrs extends GenericAttrs {
 
   readonly dictionaryFilter: ComponentDictionaryFilterDto[];
 
+  readonly customUnrecLabel: string;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.dictionaryList = attrs.dictionaryList;
@@ -20,5 +22,6 @@ export default class MultipleChoiceDictionaryModelAttrs extends GenericAttrs {
     this.subLabel = attrs.subLabel;
     this.modalHeader = attrs.modalHeader;
     this.dictionaryFilter = attrs.dictionaryFilter;
+    this.customUnrecLabel = attrs.customUnrecLabel;
   }
 }

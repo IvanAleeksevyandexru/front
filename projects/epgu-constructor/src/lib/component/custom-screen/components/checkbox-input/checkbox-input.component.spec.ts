@@ -68,15 +68,4 @@ describe('CheckboxInputComponent', () => {
     const debugEl = fixture.debugElement.query(By.css(selector));
     expect(debugEl).toBeTruthy();
   });
-
-  it('form__radio--inline/ form__radio--block', () => {
-    expect(fixture.debugElement.query(By.css('.form__radio--block'))).toBeTruthy();
-    component.control = new FormControl({
-      ...mockCheckboxComponent,
-      attrs: { isHorizontal: true },
-    });
-    fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('.form__radio--block'))).toBeNull();
-    expect(fixture.debugElement.query(By.css('.form__radio--inline'))).toBeTruthy();
-  });
 });

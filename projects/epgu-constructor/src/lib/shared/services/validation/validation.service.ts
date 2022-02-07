@@ -14,6 +14,7 @@ import {
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -63,6 +64,7 @@ export class ValidationService {
     private currentAnswerService: CurrentAnswersService,
     private health: HealthService,
     private cookie: CookieService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public customValidator(component: CustomComponent): ValidatorFn {
@@ -425,6 +427,12 @@ export class ValidationService {
   }
 
   private isMultipleSelectedItemsValid(selectedItems: MultipleSelectedItems): boolean {
-    return selectedItems && !!selectedItems.amount;
+    const parsedValue = this.getParsedValue(selectedItems);
+    return parsedValue && !!(parsedValue as MultipleSelectedItems).amount;
+  }
+
+  private getParsedValue(value: string | unknown): unknown {
+    const isParsable = this.jsonHelperService.hasJsonStructure(value as string);
+    return isParsable ? JSON.parse(value as string) : value;
   }
 }

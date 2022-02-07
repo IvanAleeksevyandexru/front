@@ -13,7 +13,7 @@ import { ProgramListService } from '../program-list/program-list.service';
 import { groupStub } from '../../stubs/projects.stub';
 import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../../../shared/services/dictionary/dictionary-api.service.stub';
-import BaseListService from '../base-list.service';
+import ChildrenClubsListService from '../children-clubs-list.service';
 
 describe('GroupListService', () => {
   let service: GroupListService;
@@ -23,7 +23,7 @@ describe('GroupListService', () => {
       providers: [
         GroupListService,
         ProgramListService,
-        BaseListService,
+        ChildrenClubsListService,
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: StateService, useClass: StateServiceStub },
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },

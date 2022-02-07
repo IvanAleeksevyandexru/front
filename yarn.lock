@@ -11197,17 +11197,19 @@ ngx-perfect-scrollbar@8.0.0:
     perfect-scrollbar "^1.4.0"
     resize-observer-polyfill "^1.5.0"
 
-ngx-webcam@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/ngx-webcam/-/ngx-webcam-0.3.0.tgz#28bd96eec026f7807106b3226290cb0bc5a434cf"
-  integrity sha512-Cya2qBGbzoxjb2Lc3EWPD17KT2JR9NYR3c1+C82836m88a1dh9tEIwjc/SCaOZTw0VyAXO+9072QFMZp6zVfWQ==
-
 ngx-webcam@0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/ngx-webcam/-/ngx-webcam-0.3.2.tgz#5cbfecea0e0ed025b8e2bbd4b3ce09db3038c0b4"
   integrity sha512-7imKrqc8b/CtLZ9g79fenCXcEwUxsi/4mdTnoSdwdbVHtU1pUmebxUNFPBEdEitiD09awGkcv2ZcgtqmJvIi8A==
   dependencies:
     tslib "^2.0.0"
+
+ngx-webcam@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/ngx-webcam/-/ngx-webcam-0.4.1.tgz#2493b7a5b2b3acd9590c4384255f269fefc678a8"
+  integrity sha512-8WoC8GWHaN5tH+4zO0/gfUigVKg/jX7JShAewpumJIgJXFmlKhSPnPjewNNxv7OTQiOOb+5Mh6lhTo52VLlY9A==
+  dependencies:
+    tslib "^2.3.0"
 
 nice-napi@^1.0.2:
   version "1.0.2"

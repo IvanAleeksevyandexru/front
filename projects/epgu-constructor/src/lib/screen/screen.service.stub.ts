@@ -53,6 +53,14 @@ export class ScreenServiceStub extends ScreenContent {
     return cachedAnswers && cachedAnswers[componentId]?.value;
   }
 
+  public getCompValueFromApplicantAnswers(componentId?: string): string {
+    const { applicantAnswers } = this.getStore();
+    if (!componentId) {
+      componentId = this.component?.id;
+    }
+    return applicantAnswers && applicantAnswers[componentId]?.value;
+  }
+
   public setCompValueToCachedAnswer(componentId: string, value: string): void {
     const { cachedAnswers } = this.getStore();
     if (!componentId) {

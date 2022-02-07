@@ -14,7 +14,6 @@ import {
 import { fromEvent, merge, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-
 import {
   ComponentUploadedFileDto,
   ComponentValidationDto,
@@ -28,7 +27,6 @@ import {
   WordTransformService,
   BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { WebcamService } from '../../../../../core/services/webcam/webcam.service';
 import { PhotoEditorModalComponent } from '../photo-editor-modal/photo-editor-modal.component';

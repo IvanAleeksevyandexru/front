@@ -17,10 +17,10 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ActionService } from '../../../../../../shared/directives/action/action.service';
 import { NEXT_STEP_ACTION } from '../../../../../../shared/constants/actions';
-import BaseListService from '../base-list.service';
+import ChildrenClubsListService from '../children-clubs-list.service';
 
 @Injectable()
-export class ProgramListService extends BaseListService<BaseProgram, Filters> {
+export class ProgramListService extends ChildrenClubsListService<BaseProgram, Filters> {
   public autoScroll$$ = new BehaviorSubject<boolean>(false);
 
   public get autoScroll(): boolean {
@@ -71,7 +71,7 @@ export class ProgramListService extends BaseListService<BaseProgram, Filters> {
     private actionService: ActionService,
   ) {
     super(injector);
-    this.pageSize = (this.screenService.component?.arguments?.pageSize as number) || 10;
+    this._pageSize = (this.screenService.component?.arguments?.pageSize as number) || 10;
   }
 
   public selectProgram(uuid): void {

@@ -26,6 +26,11 @@ export class TimeSlotSmev3StateService {
     map((value) => value ?? []),
   );
 
+  isInvite$: Observable<boolean> = this.screenService.component$.pipe(
+    pluck('attrs'),
+    pluck('isInvite'),
+  );
+
   isServiceSpecific$: Observable<boolean> = this.screenService.component$.pipe(
     pluck('attrs'),
     pluck('isServiceSpecific'),

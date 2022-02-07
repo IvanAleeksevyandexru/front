@@ -12,6 +12,8 @@ export const PREV_EVENT_TYPE = 'getPrevStep';
 
 export const GET_SLOTS = 'equeueAggSlotsService';
 export const GET_SLOTS_MODIFIED = 'getSlots';
+export const SUGGEST2 = 'suggests2';
+export const SUGGEST2_MODIFIED = 'ApiSuggests2Service';
 
 export const DICTIONARY = 'dictionary';
 

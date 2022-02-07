@@ -395,16 +395,18 @@ export class ComponentsListFormService {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
         this.lastChangedComponent = [prev, next];
-        if (!isEqual(prev, next)) {
-          this._shownElements = this.componentsListRelationsService.processRelations(
-            components,
-            next,
-            this.shownElements,
-            this.form,
-            true,
-            this.screenService,
-            componentsGroupIndex,
-          );
+        const isEqualPrevNext = isEqual(prev, next);
+        this._shownElements = this.componentsListRelationsService.processRelations(
+          components,
+          next,
+          this.shownElements,
+          this.form,
+          true,
+          this.screenService,
+          componentsGroupIndex,
+          isEqualPrevNext,
+        );
+        if (!isEqualPrevNext) {
           // TODO: в перспективе избавиться от этой хардкодной логики
           this.checkAndFetchCarModel(next);
         }

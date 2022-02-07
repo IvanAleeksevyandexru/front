@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { LibVersions } from '../../shared/interfaces';
+import { LibVersions } from '../../../shared/interfaces';
 
 @Component({
   selector: 'library-versions',
