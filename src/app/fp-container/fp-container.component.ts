@@ -9,7 +9,7 @@ import { AppService } from '../app.service';
   selector: 'fp-container',
   templateUrl: './fp-container.component.html',
   styleUrls: ['./fp-container.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FpContainerComponent {
   service$: Observable<ServiceEntity> = this.appService.config$.pipe(

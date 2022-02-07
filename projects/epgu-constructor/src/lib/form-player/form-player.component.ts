@@ -46,7 +46,7 @@ import { DropdownListModalComponent } from '../modal/dropdown-list-modal/compone
   styleUrls: ['../../styles/index.scss'],
   providers: [UnsubscribeService, FormPlayerStartManager],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-constructor') class = true;
@@ -68,7 +68,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public loadService: LoadService,
     public screenService: ScreenService,
     public formPlayerStartService: FormPlayerStartManager,
-    private changeDetectionRef: ChangeDetectorRef,
+    public changeDetectionRef: ChangeDetectorRef,
     private autocompleteService: AutocompleteService,
     private tracingService: TracingService,
   ) {

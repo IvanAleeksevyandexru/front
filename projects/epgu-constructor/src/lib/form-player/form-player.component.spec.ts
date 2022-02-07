@@ -392,7 +392,7 @@ describe('FormPlayerComponent', () => {
   describe('render throbber', () => {
     it('should render throbber', () => {
       component.isFirstLoading$ = of(true);
-      fixture.detectChanges();
+      fixture.componentInstance.changeDetectionRef.detectChanges();
       const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
       expect(throbber).toBeTruthy();
     });
@@ -406,7 +406,7 @@ describe('FormPlayerComponent', () => {
 
     it('throbber should has big size', () => {
       component.isFirstLoading$ = of(true);
-      fixture.detectChanges();
+      fixture.componentInstance.changeDetectionRef.detectChanges();
       const throbber = fixture.debugElement.query(By.css('lib-throbber-hexagon'));
       expect(throbber.attributes.size).toBe('big');
     });
@@ -416,7 +416,7 @@ describe('FormPlayerComponent', () => {
     it('should not render screen resolver when player not loaded', () => {
       formPlayerService._playerLoaded$ = of(false);
       configService._isLoaded$ = of(true);
-      fixture.detectChanges();
+      fixture.componentInstance.changeDetectionRef.detectChanges();
       const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
       expect(screenResolver).toBeFalsy();
     });
@@ -432,7 +432,7 @@ describe('FormPlayerComponent', () => {
     it('should render screen resolver when config loaded and player loaded', () => {
       formPlayerService._playerLoaded$ = of(true);
       configService._isLoaded$ = of(true);
-      fixture.detectChanges();
+      fixture.componentInstance.changeDetectionRef.detectChanges();
       const screenResolver = fixture.debugElement.query(By.css('epgu-constructor-screen-resolver'));
       expect(screenResolver).toBeTruthy();
     });
@@ -443,7 +443,7 @@ describe('FormPlayerComponent', () => {
       component.isFirstLoading$ = of(false);
       formPlayerService._playerLoaded$ = of(true);
       configService._isLoaded$ = of(true);
-      fixture.detectChanges();
+      fixture.componentInstance.changeDetectionRef.detectChanges();
       const screenModal = fixture.debugElement.query(By.css('epgu-constructor-screen-modal'));
       expect(screenModal).toBeTruthy();
     });
@@ -459,7 +459,7 @@ describe('FormPlayerComponent', () => {
       component.isFirstLoading$ = of(false);
       formPlayerService._playerLoaded$ = of(true);
       configService._isLoaded$ = of(true);
-      fixture.detectChanges();
+      fixture.componentInstance.changeDetectionRef.detectChanges();
       const logicComponent = fixture.debugElement.query(By.css('epgu-constructor-logic-container'));
       expect(logicComponent).toBeTruthy();
     });

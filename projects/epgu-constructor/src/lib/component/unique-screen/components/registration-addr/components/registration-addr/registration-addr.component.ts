@@ -31,7 +31,7 @@ import { ValidationService } from '../../../../../../shared/services/validation/
   templateUrl: './registration-addr.component.html',
   styleUrls: ['./registration-addr.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationAddrComponent implements OnInit {
   data$: Observable<IRegistrationAddrComponent> = this.screenService.component$ as Observable<
@@ -77,6 +77,7 @@ export class RegistrationAddrComponent implements OnInit {
           suggestions[this.screenService.component.id],
           true,
         );
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -133,6 +134,7 @@ export class RegistrationAddrComponent implements OnInit {
           this.currentAnswersService.isValid = true;
           this.currentAnswersService.state = this.prepareFormValue(changes);
         }
+        this.changeDetectionRef.markForCheck();
       });
   }
 
@@ -144,6 +146,7 @@ export class RegistrationAddrComponent implements OnInit {
         if (hasCmpError) {
           this.screenService.componentError = null;
         }
+        this.changeDetectionRef.markForCheck();
       });
   }
 

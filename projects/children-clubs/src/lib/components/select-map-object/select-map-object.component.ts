@@ -33,7 +33,7 @@ import { ContentModalComponent } from '../base/components/content-modal/content-
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService, YandexMapService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   public selectedValue;
