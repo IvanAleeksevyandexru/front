@@ -40,7 +40,7 @@ import { ComponentsListComponent } from '../../component/custom-screen/component
   templateUrl: './repeatable-screen.component.html',
   styleUrls: ['./repeatable-screen.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RepeatableScreenComponent implements OnInit, AfterViewChecked, AfterViewInit {
   @ViewChild(ComponentsListComponent) cmpList: ComponentsListComponent;
@@ -129,7 +129,10 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     this.eventBusService
       .on(BusEventType.CloneButtonClickEvent)
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => this.createScreen(this.propData.components[0].attrs, true, true));
+      .subscribe(() => {
+        this.createScreen(this.propData.components[0].attrs, true, true);
+        this.cdr.detectChanges();
+      });
   }
 
   ngAfterViewInit(): void {

@@ -31,7 +31,7 @@ import { ActionService } from '../../shared/directives/action/action.service';
   templateUrl: './screen-modal.component.html',
   styleUrls: ['./screen-modal.component.scss'],
   providers: [ScreenService, ScreenModalService, CurrentAnswersService, ActionService], // Нужен отдельный инстанс для ScreenService
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
   @ViewChild('headerBlock', { static: false }) headerBlock;

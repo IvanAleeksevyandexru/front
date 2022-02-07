@@ -17,17 +17,21 @@ export class DictionaryComponent extends AbstractDictionaryLikeComponent<Diction
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   list$: Observable<ListItem[]>;
 
-  constructor(public injector: Injector) {
+  public constructor(public injector: Injector) {
     super(injector);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     super.ngOnInit();
     this.list$ = this.model.dictionary$.pipe(map((dictionary) => dictionary.list));
     this.list$.subscribe((data) => {
-      if (data?.length === 1 && data[0].id && data[0].text) {
+      if (this.isOneElement(data)) {
         defer(() => this.control.get('value').setValue(data[0]));
       }
     });
+  }
+
+  public isOneElement(items: ListItem[]): boolean {
+    return items?.length === 1 && items[0].id && items[0].text && this.attrs?.isClearable === false;
   }
 }

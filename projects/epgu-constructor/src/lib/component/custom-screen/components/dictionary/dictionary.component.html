@@ -8,7 +8,7 @@
     [invalid]="control.get('value').invalid && control.get('value').touched"
     [items]="$any(list)"
     [validationShowOn]="validationShowOn"
-    [disabled]="list?.length === 1"
+    [disabled]="isOneElement(list)"
     [formControl]="$any(control.get('value'))"
     [clearable]="attrs?.isClearable !== false"
     [placeholder]="attrs?.defaultLabelList || '&mdash;'"
