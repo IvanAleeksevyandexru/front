@@ -9,8 +9,8 @@ import { ErrorService } from './error.service';
 export class GetVersionsService {
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
-  public getLibVersions(url: string): Observable<LibVersions> {
-    const path = `${url}?${new Date().getTime()}`;
+  public getLibVersions(url: string, hasQueryParam = false): Observable<LibVersions> {
+    const path = hasQueryParam ? `${url}?${new Date().getTime()}` : url;
 
     return this.http.get<LibVersions>(path).pipe(
       filter(Boolean),
@@ -22,8 +22,8 @@ export class GetVersionsService {
     );
   }
 
-  public getServiceVersions(url: string): Observable<ServiceVersions> {
-    const path = `${url}?${new Date().getTime()}`;
+  public getServiceVersions(url: string, hasQueryParam = false): Observable<ServiceVersions> {
+    const path = hasQueryParam ? `${url}?${new Date().getTime()}` : url;
 
     return this.http.get<ServiceVersions>(path).pipe(
       filter(Boolean),

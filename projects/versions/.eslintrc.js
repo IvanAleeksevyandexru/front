@@ -140,6 +140,7 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/member-ordering': 'off',
+        '@typescript-eslint/dot-notation': 'off',
         'max-len': ['error', { code: 180, ignorePattern: '^import .*' }],
       },
     },

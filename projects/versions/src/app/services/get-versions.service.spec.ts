@@ -6,7 +6,6 @@ import { ErrorService } from './error.service';
 
 describe('GetVersionsService', () => {
   let service: GetVersionsService;
-  let httpClient: HttpClient;
   let http: HttpTestingController;
 
   beforeEach(() => {
@@ -15,7 +14,6 @@ describe('GetVersionsService', () => {
       providers: [HttpClient, GetVersionsService, ErrorService],
     });
     service = TestBed.inject(GetVersionsService);
-    httpClient = TestBed.inject(HttpClient);
     http = TestBed.inject(HttpTestingController);
   });
 
@@ -25,9 +23,9 @@ describe('GetVersionsService', () => {
 
   it('should call getLibVersions and return correct data', fakeAsync(() => {
     const url = 'sf-portal-st/assets/version.json';
-    const responseMock = { version: 1 };
+    const responseMock = { sfPortalVersion: '1' };
     service.getLibVersions(url).subscribe((response) => {
-      expect(response.version).toBe(1);
+      expect(response['sfPortal']).toBe('1');
     });
     const req = http.expectOne(url);
     req.flush(responseMock);
