@@ -63,6 +63,7 @@
     "start:types": "cd ./projects/epgu-constructor-types && yarn watch",
     "start:ui-kit": "yarn wait:types && ng build epgu-constructor-ui-kit --watch",
     "start:emulator": "ng serve --host 0.0.0.0 --disable-host-check --hmr --ssl",
+    "start:versions": "ng serve versions",
     "stylelint:fix": "stylelint \"**/*.scss\" --config .stylelintrc.json --fix",
     "stylelint": "stylelint \"**/*.scss\" --config .stylelintrc.json",
     "test": "node --no-compilation-cache --expose-gc ./node_modules/jest/bin/jest.js --logHeapUsage --silent --ci",

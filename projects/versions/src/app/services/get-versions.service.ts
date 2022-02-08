@@ -10,7 +10,9 @@ export class GetVersionsService {
   constructor(private http: HttpClient, private errorService: ErrorService) {}
 
   public getLibVersions(url: string): Observable<LibVersions> {
-    return this.http.get<LibVersions>(url).pipe(
+    const path = `${url}?${new Date().getTime()}`;
+
+    return this.http.get<LibVersions>(path).pipe(
       filter(Boolean),
       map(this.trimKeysInLibVersions),
       catchError((err) => {
@@ -21,7 +23,9 @@ export class GetVersionsService {
   }
 
   public getServiceVersions(url: string): Observable<ServiceVersions> {
-    return this.http.get<ServiceVersions>(url).pipe(
+    const path = `${url}?${new Date().getTime()}`;
+
+    return this.http.get<ServiceVersions>(path).pipe(
       filter(Boolean),
       map(this.trimKeysInServiceVersions),
       catchError((err) => {
