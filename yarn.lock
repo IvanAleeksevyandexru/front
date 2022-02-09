@@ -1881,8 +1881,8 @@
 
 "@epgu/ui@3.0.399-2-front":
   version "3.0.399-2-front"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.399-2-front.tgz#3f12ca7d11b5ade88fa8bbab09a278d3bc4d1d24"
-  integrity sha512-NzGUWAnP4OFTu/URKUWdUKRn4H2qDZM+NXh5QNpJlf/IhxTh7NbERULZRBDa85nYYJrWpVsvPmgEJ6uhWKxWZw==
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.399-2-front.tgz#1cf440ea9a92d099ab83d586389821b42fb24f55"
+  integrity sha512-vn2N+CP64TU2rzfcGszB7tHuSBagC0TPkzOVdqtuBJzft3pZ2mvWp/64N2ypaNCqPnDpshgqfZ9ZLQCcvWAPyA==
   dependencies:
     "@epgu/zipkin" "0.0.3"
     date-fns "2.24.0"
