@@ -97,7 +97,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.document.querySelector('.main').classList.remove('new-sf-player');
+    this.document.querySelector('.main')?.classList?.remove('new-sf-player');
   }
 
   /** *

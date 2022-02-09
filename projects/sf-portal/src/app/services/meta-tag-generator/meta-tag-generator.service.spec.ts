@@ -4,6 +4,8 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { Meta } from '@angular/platform-browser';
 import { MetaTagGeneratorService } from './meta-tag-generator.service';
+import { MockProvider } from 'ng-mocks';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('MetaTagGeneratorService', () => {
   let service: MetaTagGeneratorService;
@@ -13,7 +15,7 @@ describe('MetaTagGeneratorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [HttpClient, Meta],
+      providers: [HttpClient, Meta, MockProvider(HelperService)],
     });
     service = TestBed.inject(MetaTagGeneratorService);
     httpClient = TestBed.inject(HttpClient);
@@ -27,9 +29,9 @@ describe('MetaTagGeneratorService', () => {
   describe('loadData()', () => {
     it('should call httpClient.get if openGraphApiUrl exists', () => {
       const spy = jest.spyOn(httpClient, 'get').mockReturnValue(of({}));
-      service.openGraphApiUrl = 'url';
+      service['openGraphApiUrl'] = 'url';
       service.loadData();
-      expect(spy).toHaveBeenCalledWith(service.openGraphApiUrl);
+      expect(spy).toHaveBeenCalledWith(service['openGraphApiUrl']);
     });
   });
 
