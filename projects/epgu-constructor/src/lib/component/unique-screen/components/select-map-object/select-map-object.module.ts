@@ -85,7 +85,7 @@ import { InternalErrorInterceptor } from '../../../../core/interceptor/internal-
     },
     {
       provide: 'notifierSetting',
-      useValue: { singleNotifier: true },
+      useValue: { singleNotifier: false },
     },
   ],
   exports: [SelectMapObjectComponent, PriorityScreenComponent],
