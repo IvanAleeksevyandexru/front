@@ -91,6 +91,7 @@
     "zipkinMaxPayloadSize": 0,
     "zipkinEnv": "dev01",
     "isZipkinCascadeMode": false,
+    "isYaMetricDisabled": true,
     "showTraceIdOnError": true,
     "appPathMap": {
       "ChildrenClubs": "/children-clubs"
