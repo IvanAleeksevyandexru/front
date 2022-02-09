@@ -1,6 +1,7 @@
 import { ComponentDto, FieldGroup } from '@epgu/epgu-constructor-types';
 import { ConfirmPersonalUserDataPipe } from './confirm-personal-user-data.pipe';
 import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
+import { DEFAULT_FIELD_LIST } from './component/confirm-personal-user-data/default-field-list';
 
 const componentValue = {
   states: [
@@ -135,25 +136,196 @@ const componentData = {
   value: JSON.stringify(componentValue),
 } as ComponentDto;
 
+const componentDataWithFields = {
+  id: 'comp1',
+  type: 'ConfirmPersonalUser',
+  value: JSON.stringify(componentValue),
+  attrs: {
+    keepVariables: true,
+    fields: [
+      {
+        label: 'Дата рождения',
+        value: '${birthDate}',
+        fieldName: 'birthDate',
+      },
+      {
+        label: 'Место рождения',
+        value: '${birthPlace}',
+        fieldName: 'birthPlace',
+      },
+    ],
+  },
+} as ComponentDto;
+
+const componentDataWithFieldsGroup = {
+  id: 'comp1',
+  type: 'ConfirmPersonalUser',
+  value: JSON.stringify(componentValue),
+  attrs: {
+    keepVariables: true,
+    fieldGroups: [
+      {
+        groupName: '${lastName} ${firstName} ${middleName}',
+        fields: [
+          {
+            label: 'Дата рождения',
+            value: '${birthDate}',
+          },
+        ],
+      },
+      {
+        groupName: 'Паспорт гражданина РФ',
+        fields: [
+          {
+            label: 'Серия и номер',
+            value: '${rfPasportSeries} ${rfPasportNumber}',
+          },
+        ],
+      },
+    ],
+    fields: [
+      {
+        label: 'Дата рождения',
+        value: '${birthDate}',
+        fieldName: 'birthDate',
+      },
+      {
+        label: 'Место рождения',
+        value: '${birthPlace}',
+        fieldName: 'birthPlace',
+      },
+    ],
+  },
+} as ComponentDto;
+
+const resultOfRemoveFieldsOutsideJson = [
+  {
+    fields: [
+      {
+        fieldName: 'birthDate',
+        label: 'Дата рождения',
+        value: '${birthDate}',
+      },
+      {
+        fieldName: 'birthPlace',
+        label: 'Место рождения',
+        value: '${birthPlace}',
+      },
+    ],
+    groupName: '${lastName} ${firstName} ${middleName}',
+    visibilityLabel: '',
+  },
+  {
+    fields: [],
+    groupName: 'Паспорт гражданина РФ',
+    visibilityLabel: '',
+  },
+  {
+    fields: [],
+    groupName: 'Загранпаспорт гражданина РФ',
+    visibilityLabel: '',
+  },
+  {
+    fields: [],
+    groupName: 'Паспорт иностранного гражаина',
+    visibilityLabel: '',
+  },
+];
+
+const argRemoveGroupIfFieldsEmptyOrWithoutValue: FieldGroup[] = [
+  {
+    groupName: 'Иванов Иван Иванович',
+    fields: [
+      {
+        label: 'Дата рождения',
+        value: '9.9.1999',
+      },
+    ],
+  },
+  {
+    groupName: 'Паспорт гражданина РФ',
+    fields: [
+      {
+        label: 'Серия и номер',
+        value: '${undefined}',
+      },
+    ],
+  },
+  {
+    groupName: 'Паспорт инстранного гражданина',
+    fields: [
+      {
+        label: 'Серия и номер',
+        value: '-',
+      },
+    ],
+  },
+] as FieldGroup[];
+
+const resultRemoveGroupIfFieldsEmptyOrWithoutValue: FieldGroup[] = [
+  {
+    groupName: 'Иванов Иван Иванович',
+    fields: [
+      {
+        label: 'Дата рождения',
+        value: '9.9.1999',
+      },
+    ],
+  },
+] as FieldGroup[];
+
 describe('ConfirmPersonalUserDataPipe', () => {
   let pipe: ConfirmPersonalUserDataPipe;
   let service: InterpolationService;
   beforeEach(() => {
     service = ({
       interpolateRecursive: jest.fn().mockReturnValue(resultOfInterpolation),
+      variableRegExp: /\${(\w(\w|\d|_|\.)*)}/gi,
     } as unknown) as InterpolationService;
     pipe = new ConfirmPersonalUserDataPipe(service);
   });
 
-  it('should return the same value if no fieldGroup attrs', () => {
-    expect(pipe.transform(componentData)).toBe(componentData);
-    expect(service.interpolateRecursive).not.toHaveBeenCalled();
+  describe('if no fieldsGroup', () => {
+    it('should call removeFieldsOutsideJson with attrs.fields, DEFAULT_FIELD_LIST', () => {
+      const spy = jest.spyOn<any, any>(pipe, 'removeFieldsOutsideJson');
+      pipe.transform(componentDataWithFields);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith(componentDataWithFields.attrs.fields, DEFAULT_FIELD_LIST);
+      expect(DEFAULT_FIELD_LIST).toStrictEqual(resultOfRemoveFieldsOutsideJson);
+    });
+    it('should call interpolateRecursive with resultOfRemoveFieldsOutsideJson', () => {
+      pipe.transform(componentDataWithFields);
+      expect(service.interpolateRecursive).toHaveBeenCalledTimes(1);
+      expect(service.interpolateRecursive).toHaveBeenCalledWith(
+        resultOfRemoveFieldsOutsideJson,
+        componentValue.storedValues,
+        '-',
+        true,
+      );
+    });
   });
 
-  describe('when have fieldGroups', function () {
+  describe('when have fieldGroups', () => {
     const setup = (fields: FieldGroup[] = null) => {
       return { ...componentData, attrs: { ...componentData.attrs, fieldGroups: fields } };
     };
+
+    it('should not call removeFieldsOutsideJson', () => {
+      const spy = jest.spyOn<any, any>(pipe, 'removeFieldsOutsideJson');
+      pipe.transform(setup(fieldGroups));
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('should call interpolateRecursive with attrs.fieldGroups', () => {
+      pipe.transform(componentDataWithFieldsGroup);
+      expect(service.interpolateRecursive).toHaveBeenCalledTimes(1);
+      expect(service.interpolateRecursive).toHaveBeenCalledWith(
+        componentDataWithFieldsGroup.attrs.fieldGroups,
+        componentValue.storedValues,
+        '-',
+        true,
+      );
+    });
 
     it('should return the same value if no fieldGroup attrs', () => {
       const data = setup(fieldGroups);
@@ -164,7 +336,6 @@ describe('ConfirmPersonalUserDataPipe', () => {
           states: resultOfInterpolation,
         }),
       };
-
       expect(pipe.transform(data)).toStrictEqual(expected);
       expect(service.interpolateRecursive).toHaveBeenCalledTimes(1);
       expect(service.interpolateRecursive).toHaveBeenCalledWith(
@@ -173,6 +344,16 @@ describe('ConfirmPersonalUserDataPipe', () => {
         '-',
         true,
       );
+    });
+
+    it('should removeGroupIfFieldsEmptyOrWithoutValue return only groups where fields with value', () => {
+      const spy = jest.spyOn<any, any>(pipe, 'removeGroupIfFieldsEmptyOrWithoutValue');
+      pipe.transform(componentDataWithFieldsGroup);
+      expect(spy).toHaveBeenCalledWith(resultOfInterpolation);
+      const resultOfSpyMethod = (pipe as any).removeGroupIfFieldsEmptyOrWithoutValue(
+        argRemoveGroupIfFieldsEmptyOrWithoutValue,
+      );
+      expect(resultOfSpyMethod).toEqual(resultRemoveGroupIfFieldsEmptyOrWithoutValue);
     });
 
     it('should return the empty value if fieldGroup attrs and keepVariables is false', () => {
