@@ -33,6 +33,8 @@ import { LocalStorageServiceStub } from '../../services/local-storage/local-stor
 import { ErrorsInterceptor } from './errors.interceptor';
 import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
 import { InterceptorUtilsService } from '@epgu/epgu-constructor/src/lib/core/services/interceptor-utils/interceptor-utils.service';
+import { MockProvider } from 'ng-mocks';
+import { ContinueOrderModalService } from 'projects/epgu-constructor/src/lib/modal/continue-order-modal/continue-order-modal.service';
 
 const responseDto = new FormPlayerServiceStub()._store;
 
@@ -75,6 +77,9 @@ describe('ErrorsInterceptor', () => {
           provide: ERROR_HANDLER_SERVICE,
           useClass: ErrorHandlerService,
         },
+        MockProvider(LocalStorageService),
+        MockProvider(FormPlayerService),
+        MockProvider(ContinueOrderModalService),
       ],
     });
   });
