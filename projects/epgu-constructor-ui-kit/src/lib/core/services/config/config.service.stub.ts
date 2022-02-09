@@ -89,6 +89,8 @@ export class ConfigServiceStub implements Config {
 
   _appPathMap = {};
 
+  _isYaMetricDisabled = true;
+
   constructor() {
     this._timeSlots = {
       MVD: {
@@ -313,6 +315,10 @@ export class ConfigServiceStub implements Config {
     return this._identificationApiUrl;
   }
 
+  get isYaMetricDisabled(): boolean {
+    return this._isYaMetricDisabled;
+  }
+
   initCore(): void {}
 
   set config(config: Config) {
@@ -348,5 +354,6 @@ export class ConfigServiceStub implements Config {
     this._showTraceIdOnError = config.isZipkinCascadeMode || false;
     this._showTraceIdOnError = config.showTraceIdOnError || false;
     this._identificationApiUrl = config.identificationApiUrl || '';
+    this._isYaMetricDisabled = config.isYaMetricDisabled || true;
   }
 }

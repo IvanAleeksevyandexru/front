@@ -51,6 +51,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
     public cardsFormsService: CardsFormsService,
     public loadService: LoadService,
     public locationService: LocationService,
+    private appConfig: AppConfig,
     private router: Router,
     private health: HealthService,
     @Inject(DOCUMENT) private document: Document,
@@ -180,7 +181,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
       if (hasQueryParamsArrays) {
         const { url } = this.router;
 
-        if (AppConfig.settings?.isHealthErrorsOn) {
+        if (this.appConfig.config?.isHealthErrorsOn) {
           this.health.measureStart('queryParamsArrayError');
           this.health.measureEnd('queryParamsArrayError', RequestStatus.Failed, { url });
         }

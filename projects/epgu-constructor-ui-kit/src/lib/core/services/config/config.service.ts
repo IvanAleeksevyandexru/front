@@ -13,6 +13,8 @@ export class ConfigService implements Config {
 
   private _isLoaded = false;
 
+  private _isYaMetricDisabled: boolean;
+
   private _billsApiUrl: string;
 
   private _apiUrl: string;
@@ -113,6 +115,10 @@ export class ConfigService implements Config {
 
   get isLoaded(): boolean {
     return this._isLoaded;
+  }
+
+  get isYaMetricDisabled(): boolean {
+    return this._isYaMetricDisabled;
   }
 
   get apiUrl(): string {
@@ -351,6 +357,7 @@ export class ConfigService implements Config {
     this._lookupQueryTimeoutMs = config.lookupQueryTimeoutMs;
     this._appPathMap = config.appPathMap || {};
     this._quizDataApiUrl = config.quizDataApiUrl || '';
+    this._isYaMetricDisabled = config.isYaMetricDisabled || false;
     this._isLoaded = true;
     this.isLoadedSubject.next(this._isLoaded);
 

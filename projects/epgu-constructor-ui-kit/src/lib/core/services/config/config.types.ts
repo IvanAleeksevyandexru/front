@@ -51,51 +51,53 @@ export type TimeSlotsApi = Record<string, TimeSlotsApiItem>;
  * @property {boolean}isZipkinCascadeMode - делать ли каждый следующий span ребенком предыдущего через parentId, обеспечивая каскадность
  * @property {boolean}showTraceIdOnError - показывать ли traceId в модалках "Не сработало"
  * @property {string}oplataUrl - url до оплаты
+ * @property {boolean}isYaMetricDisabled - отключает инициализацию сервиса Яндекс.Метрики
  */
 export interface Config {
+  addToCalendarUrl?: string;
   apiUrl: string;
-  suggestionsApiUrl: string;
+  appPathMap: AppPathMap;
+  billsApiUrl: string;
+  childrenClubsApi: string;
   configApiUrl: string;
   configId: string;
   dictionaryUrl: string;
+  disableUnderConstructionMode?: boolean;
   externalApiUrl: string;
-  timeSlotApiUrl: string;
-  listPaymentsApiUrl: string;
-  uinApiUrl: string;
-  billsApiUrl: string;
-  paymentUrl: string;
   fileUploadApiUrl: string;
   galleryApiUrl: string;
-  quizDataApiUrl: string;
-  lkUrl: string;
-  lkApi: string;
-  childrenClubsApi: string;
   identificationApiUrl: string;
-  yandexMapsApiKey: string;
   invitationUrl: string;
-  staticDomainAssetsPath: string;
-  staticDomainContentPath: string;
+  isAutocompleteServiceDisabled?: boolean;
+  isSocialShareDisabled?: boolean;
+  isYaMetricDisabled: boolean;
+  isZipkinCascadeMode?: boolean;
+  listPaymentsApiUrl: string;
+  lkApi: string;
+  lkuipElection?: string;
+  lkUrl: string;
+  lookupQueryTimeoutMs?: number;
   mocks?: MockApi[];
   mockUrl?: string;
+  nsiSuggestDictionaryUrl?: string;
+  oplataUrl?: string;
+  paymentUrl: string;
+  quizDataApiUrl: string;
+  showTraceIdOnError?: boolean;
+  staticDomainAssetsPath: string;
+  staticDomainContentPath: string;
+  suggestionsApiUrl: string;
+  timeSlotApiUrl: string;
   timeSlots?: TimeSlotsApi;
-  disableUnderConstructionMode?: boolean;
-  isSocialShareDisabled?: boolean;
-  isAutocompleteServiceDisabled?: boolean;
-  addToCalendarUrl?: string;
+  uinApiUrl: string;
+  wsIdentificationUrl?: string;
+  yandexMapsApiKey: string;
+  zipkinEnv?: string;
   zipkinGenerationEnabled?: boolean;
+  zipkinMaxPayloadSize?: number;
   zipkinSendTraceIdToHealth?: boolean;
   zipkinSpanSendEnabled?: boolean;
   zipkinUrl?: string;
-  zipkinMaxPayloadSize?: number;
-  zipkinEnv?: string;
-  isZipkinCascadeMode?: boolean;
-  showTraceIdOnError?: boolean;
-  oplataUrl?: string;
-  lookupQueryTimeoutMs?: number;
-  nsiSuggestDictionaryUrl?: string;
-  lkuipElection?: string;
-  appPathMap: AppPathMap;
-  wsIdentificationUrl?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

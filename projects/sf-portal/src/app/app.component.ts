@@ -12,6 +12,7 @@ import { HeaderService } from '@epgu/ui/services/header';
 import { FooterService } from '@epgu/ui/services/footer';
 import { DeviceDetectorService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { MetaTagGeneratorService } from './services/meta-tag-generator/meta-tag-generator.service';
+import { AppConfig } from './app.config';
 
 @Component({
   selector: '[app-root]',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
   constructor(
     public router: Router,
     public loadService: LoadService,
+    private appConfig: AppConfig,
     private deviceDetectorService: DeviceDetectorService,
     private headerService: HeaderService,
     private footerService: FooterService,
@@ -38,7 +40,9 @@ export class AppComponent implements OnInit {
     @Inject(WINDOW) private window: Window,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
-    this.yaMetricService.init();
+    if (!this.appConfig.config?.isYaMetricDisabled) {
+      this.yaMetricService.init();
+    }
   }
 
   public ngOnInit() {
@@ -142,7 +146,7 @@ export class AppComponent implements OnInit {
   }
 
   private initMetric(prevPath: string) {
-    if (!isDevMode()) {
+    if (!isDevMode() && !this.appConfig.config?.isYaMetricDisabled) {
       this.yaMetricService.onInit().then(() => {
         const newPath = window.location.href;
         this.yaMetricService.ym(this.yaMetricService.counter, 'hit', newPath, {

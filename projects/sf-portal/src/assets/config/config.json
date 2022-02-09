@@ -19,6 +19,7 @@
     "PostmanRuntime/7.28.4"
   ],
   "isHealthErrorsOn": true,
+  "isYaMetricDisabled": true,
   "lkApiUrl": "//pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/",
   "mainBlocksData": "//pgu-dev-fed.test.gosuslugi.ru/api/mainpage/v4",
   "newSfApiUrl": "https://dev-l11.pgu2-pub.test.gosuslugi.ru/api",
