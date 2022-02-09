@@ -14,6 +14,7 @@ import { MockProvider } from 'ng-mocks';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
+  UpdateOn,
 } from '../../../component/custom-screen/components-list.types';
 import { ComponentsListToolsService } from '../../../component/custom-screen/services/components-list-tools/components-list-tools.service';
 import { CARD_VALIDATION_EVENT, ValidationService } from './validation.service';
@@ -85,7 +86,7 @@ describe('ValidationService', () => {
           dataType: '',
           condition: '',
           errorMsg: 'Поле может содержать не более 10 символов',
-          updateOn: 'change',
+          updateOn: UpdateOn.ON_CHANGE,
         },
         {
           type: 'RegExp',
@@ -95,7 +96,7 @@ describe('ValidationService', () => {
           condition: '',
           errorMsg:
             'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
-          updateOn: 'change',
+          updateOn: UpdateOn.ON_CHANGE,
         },
         {
           type: 'RegExp',
@@ -104,7 +105,7 @@ describe('ValidationService', () => {
           dataType: '',
           condition: '',
           errorMsg: 'Поле должно содержать 9 символов',
-          updateOn: 'blur',
+          updateOn: UpdateOn.ON_BLUR,
         },
         {
           type: 'RegExp',
@@ -113,7 +114,7 @@ describe('ValidationService', () => {
           dataType: '',
           condition: '',
           errorMsg: 'Поле должно содержать хотя бы одну цифру',
-          updateOn: 'blur',
+          updateOn: UpdateOn.ON_BLUR,
         },
       ],
     },
@@ -288,7 +289,7 @@ describe('ValidationService', () => {
 
   describe('customAsyncValidator', () => {
     it('should return proper error for control value with not enought length', (done) => {
-      const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
+      const customAsyncValidator = service.customAsyncValidator(mockComponent, UpdateOn.ON_BLUR);
       const control = new FormControl('input');
       control.setValue('12345678фи');
       // @ts-ignore
@@ -299,7 +300,7 @@ describe('ValidationService', () => {
     });
 
     it('should return proper error for control value without any digits', (done) => {
-      const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
+      const customAsyncValidator = service.customAsyncValidator(mockComponent, UpdateOn.ON_BLUR);
       const control = new FormControl('input');
       control.setValue('фыждлоекa');
       // @ts-ignore
@@ -313,7 +314,7 @@ describe('ValidationService', () => {
     });
 
     it('should return proper error for control empty value', (done) => {
-      const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
+      const customAsyncValidator = service.customAsyncValidator(mockComponent, UpdateOn.ON_BLUR);
       const control = new FormControl('input');
       control.setValue('');
       control.markAsTouched();
@@ -360,8 +361,11 @@ describe('ValidationService', () => {
     it('for customAsyncValidator', (done) => {
       control.markAsTouched();
       components.forEach((component) => {
-        component.attrs.validation[0].updateOn = 'blur';
-        const customAsyncValidator = service.customAsyncValidator(component as any, 'blur');
+        component.attrs.validation[0].updateOn = UpdateOn.ON_BLUR;
+        const customAsyncValidator = service.customAsyncValidator(
+          component as any,
+          UpdateOn.ON_BLUR,
+        );
         // @ts-ignore
         customAsyncValidator(control).subscribe((obj) => {
           expect(obj).toEqual({ msg: 'ошибка', textFromJson: true });

@@ -28,6 +28,7 @@ import {
   CustomComponent,
   CustomListFormGroup,
   CustomScreenComponentTypes,
+  UpdateOn,
 } from '../../components-list.types';
 import { Observable, of } from 'rxjs';
 import { Component, Input } from '@angular/core';
@@ -76,7 +77,7 @@ describe('ComponentsListFormService', () => {
           dataType: '',
           condition: '',
           errorMsg: 'Поле может содержать не более 10 символов',
-          updateOn: 'change',
+          updateOn: UpdateOn.ON_CHANGE,
         },
         {
           type: 'RegExp',
@@ -86,7 +87,7 @@ describe('ComponentsListFormService', () => {
           condition: '',
           errorMsg:
             'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
-          updateOn: 'change',
+          updateOn: UpdateOn.ON_CHANGE,
         },
         {
           type: 'RegExp',
@@ -95,7 +96,7 @@ describe('ComponentsListFormService', () => {
           dataType: '',
           condition: '',
           errorMsg: 'Поле должно содержать 9 символов',
-          updateOn: 'blur',
+          updateOn: UpdateOn.ON_BLUR,
         },
         {
           type: 'RegExp',
@@ -104,10 +105,10 @@ describe('ComponentsListFormService', () => {
           dataType: '',
           condition: '',
           errorMsg: 'Поле должно содержать хотя бы одну цифру',
-          updateOn: 'blur',
+          updateOn: UpdateOn.ON_BLUR,
         },
       ],
-      updateOnValidation: 'blur',
+      updateOnValidation: UpdateOn.ON_BLUR,
     },
     value: 'value',
     required: true,
@@ -686,20 +687,6 @@ describe('ComponentsListFormService', () => {
     it('should return observable', () => {
       // @ts-ignore
       expect(service.watchFormArray$()).toBeInstanceOf(Observable);
-    });
-  });
-
-  describe('updateOnValidation()', () => {
-    it('should return default "change" attribute of mockComponent, if updateOnValidation is not set', () => {
-      const component = JSON.parse(JSON.stringify(componentMockData));
-      delete component.attrs.updateOnValidation;
-      // @ts-ignore
-      expect(service.updateOnValidation(component)).toBe('change');
-    });
-
-    it('should return UpdateOn attribute of mockComponent', () => {
-      // @ts-ignore
-      expect(service.updateOnValidation(componentMockData)).toBe('change');
     });
   });
 });

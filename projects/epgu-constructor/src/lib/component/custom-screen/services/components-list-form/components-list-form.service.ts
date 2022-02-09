@@ -9,8 +9,8 @@ import {
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
-  DictionaryConditions,
   ComponentRelationFieldDto,
+  DictionaryConditions,
   RelationCondition,
 } from '@epgu/epgu-constructor-types';
 import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
@@ -24,8 +24,8 @@ import {
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  UpdateOn,
   Fields,
+  UpdateOn,
 } from '../../components-list.types';
 import {
   AddressHelperService,
@@ -384,7 +384,7 @@ export class ComponentsListFormService {
           validators,
         ],
       },
-      { updateOn: this.updateOnValidation() },
+      { updateOn: UpdateOn.ON_CHANGE }, // NOTE: See https://jira.egovdev.ru/browse/EPGUCORE-53355
     );
 
     if (component.attrs?.hidden) {
@@ -459,9 +459,5 @@ export class ComponentsListFormService {
 
   private watchFormArray$(): Observable<CustomListFormGroup[]> {
     return this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$));
-  }
-
-  private updateOnValidation(): UpdateOn {
-    return 'change';
   }
 }

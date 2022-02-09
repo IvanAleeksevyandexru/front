@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { RemoveMaskSymbols, ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { NumberMaskOptions } from '@epgu/epgu-constructor-ui-kit';
-import { CustomComponent } from '../../../component/custom-screen/components-list.types';
+import { CustomComponent, UpdateOn } from '../../../component/custom-screen/components-list.types';
 import {
   ISuggestionItem,
   ISuggestionItemList,
@@ -45,7 +45,7 @@ export class ConstructorMaskedInputComponent {
   readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   public onChange($event: Event): void {
-    if (this.control.updateOn === 'blur') {
+    if (this.control.updateOn === UpdateOn.ON_BLUR) {
       const input = $event.target as HTMLInputElement;
       this.control.setValue(this.removeMaskSymbolsIfNeeded(input.value));
       this.control.updateValueAndValidity();

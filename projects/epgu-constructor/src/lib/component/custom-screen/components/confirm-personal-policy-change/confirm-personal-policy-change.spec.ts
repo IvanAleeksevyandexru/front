@@ -26,6 +26,7 @@ import { ConstructorPlainInputModule } from '../../../../shared/components/const
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
+import { UpdateOn } from '../../components-list.types';
 
 const mockComponent = {
   id: 'pd6',
@@ -92,7 +93,7 @@ describe('ConfirmPersonalPolicyChangeComponent', () => {
               errorMsg: 'Номер должен быть не длиннее 20 знаков и может содержать только цифры',
               ref: '',
               type: 'RegExp',
-              updateOn: 'blur',
+              updateOn: UpdateOn.ON_BLUR,
               value: '^[0-9]{0,20}$',
             },
           ],

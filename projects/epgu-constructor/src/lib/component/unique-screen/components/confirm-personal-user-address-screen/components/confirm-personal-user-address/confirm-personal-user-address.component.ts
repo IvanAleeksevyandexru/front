@@ -32,7 +32,7 @@ import {
 } from '../../../../../../core/services/autocomplete/autocomplete.const';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
-import { CustomComponent } from '../../../../../custom-screen/components-list.types';
+import { CustomComponent, UpdateOn } from '../../../../../custom-screen/components-list.types';
 
 type AddressFields = ConfirmAddressFieldsInterface & {
   isDate: boolean | FieldNames;
@@ -126,7 +126,7 @@ export class ConfirmPersonalUserAddressComponent implements AfterViewInit, OnIni
                   (data as unknown) as CustomComponent,
                   fieldIndex,
                 ),
-                updateOn: 'change',
+                updateOn: UpdateOn.ON_CHANGE,
               }
             : null,
         ),
