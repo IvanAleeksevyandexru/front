@@ -286,7 +286,11 @@ export interface DateRestriction {
   forChild?: string;
 }
 
-export type UpdateOn = 'blur' | 'change' | 'submit';
+export enum UpdateOn {
+  ON_BLUR = 'blur',
+  ON_CHANGE = 'change',
+  ON_SUBMIT = 'submit',
+}
 
 export interface CustomComponentAttrValidation extends ComponentValidationDto {
   errorDesc?: string;

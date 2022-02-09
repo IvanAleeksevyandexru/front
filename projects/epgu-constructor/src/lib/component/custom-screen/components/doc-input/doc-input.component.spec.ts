@@ -33,6 +33,7 @@ import { ValidationTypeModule } from '../../../../shared/directives/validation-t
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
+import { UpdateOn } from '../../components-list.types';
 
 const mockComponent = {
   id: 'pd6',
@@ -119,7 +120,7 @@ describe('DocInputComponent', () => {
               dataType: '',
               condition: '',
               errorMsg: 'Поле должно содержать 4 символа',
-              updateOn: 'blur',
+              updateOn: UpdateOn.ON_BLUR,
             },
           ],
         },

@@ -29,6 +29,7 @@ import {
   CustomComponentAttrValidation,
   CustomComponentAttrValidator,
   CustomScreenComponentTypes,
+  UpdateOn,
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
 import { MultipleSelectedItems } from '../../components/multiple-choice-dictionary/multiple-choice-dictionary.models';
@@ -68,8 +69,7 @@ export class ValidationService {
   ) {}
 
   public customValidator(component: CustomComponent): ValidatorFn {
-    const componentValidations = component.attrs?.validation;
-    const validations = componentValidations;
+    const validations = component.attrs?.validation;
 
     return (control: AbstractControl): ValidationErrors => {
       if (this.typesWithoutValidation.includes(component.type)) {
@@ -110,7 +110,7 @@ export class ValidationService {
   ): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
     const onBlurValidations = componentValidations.filter(
-      (validationRule) => validationRule.updateOn === 'blur',
+      (validationRule) => validationRule.updateOn === UpdateOn.ON_BLUR,
     );
 
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -120,7 +120,7 @@ export class ValidationService {
 
       let customMessage;
 
-      if (asyncValidationType === 'blur' && onBlurValidations?.length) {
+      if (asyncValidationType === UpdateOn.ON_BLUR && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control, component);
         if (error) {
           return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));

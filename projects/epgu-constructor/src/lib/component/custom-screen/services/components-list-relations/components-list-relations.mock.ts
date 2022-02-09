@@ -2,6 +2,7 @@ import {
   CustomComponent,
   CustomComponentRef,
   CustomScreenComponentTypes,
+  UpdateOn,
 } from '../../components-list.types';
 import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
 import { isArray as _isArray, mergeWith as _mergeWith } from 'lodash';
@@ -29,7 +30,7 @@ export let componentMock: CustomComponent = {
         dataType: '',
         condition: '',
         errorMsg: 'Поле может содержать не более 10 символов',
-        updateOn: 'change',
+        updateOn: UpdateOn.ON_CHANGE,
       },
       {
         type: 'RegExp',
@@ -38,7 +39,7 @@ export let componentMock: CustomComponent = {
         dataType: '',
         condition: '',
         errorMsg: 'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
-        updateOn: 'change',
+        updateOn: UpdateOn.ON_CHANGE,
       },
       {
         type: 'RegExp',
@@ -47,7 +48,7 @@ export let componentMock: CustomComponent = {
         dataType: '',
         condition: '',
         errorMsg: 'Поле должно содержать 9 символов',
-        updateOn: 'blur',
+        updateOn: UpdateOn.ON_BLUR,
       },
       {
         type: 'RegExp',
@@ -56,7 +57,7 @@ export let componentMock: CustomComponent = {
         dataType: '',
         condition: '',
         errorMsg: 'Поле должно содержать хотя бы одну цифру',
-        updateOn: 'blur',
+        updateOn: UpdateOn.ON_BLUR,
       },
     ],
   },

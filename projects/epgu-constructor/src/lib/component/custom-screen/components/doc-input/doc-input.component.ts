@@ -28,6 +28,7 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import DocInputModelAttrs from './DocInputModelAttrs';
+import { UpdateOn } from '../../components-list.types';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -222,23 +223,23 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
         const validators = [this.validationService.customValidator(this.fields[fieldName])];
 
         const updateOnValidation = this.fields[fieldName].attrs.validation?.find(
-          (v) => v.updateOn === 'blur',
+          (v) => v.updateOn === UpdateOn.ON_BLUR,
         );
 
         if (Object.prototype.hasOwnProperty.call(seriesNumDate, fieldName)) {
           seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], {
             validators,
-            updateOn: updateOnValidation?.updateOn || 'change',
+            updateOn: updateOnValidation?.updateOn || UpdateOn.ON_CHANGE,
           });
         } else if (Object.prototype.hasOwnProperty.call(emitter, fieldName)) {
           emitter[fieldName] = new FormControl(componentValues[fieldName], {
             validators,
-            updateOn: updateOnValidation?.updateOn || 'change',
+            updateOn: updateOnValidation?.updateOn || UpdateOn.ON_CHANGE,
           });
         } else if (Object.prototype.hasOwnProperty.call(issueId, fieldName)) {
           issueId[fieldName] = new FormControl(componentValues[fieldName], {
             validators,
-            updateOn: updateOnValidation?.updateOn || 'change',
+            updateOn: updateOnValidation?.updateOn || UpdateOn.ON_CHANGE,
           });
         }
       }
@@ -297,7 +298,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
   isErrorShown(control: string | string[]): boolean {
     const updateOn = this.form.get(control).updateOn;
     return (
-      (updateOn === 'change'
+      (updateOn === UpdateOn.ON_CHANGE
         ? this.isInvalidAndTouched(control)
         : this.isInvalidAndDirty(control)) && this.form.get(control).errors.msg
     );
