@@ -28,6 +28,7 @@ import { AutocompletePrepareService } from '../../core/services/autocomplete/aut
 import { ConfirmationModalModule } from '../confirmation-modal/confirmation-modal.module';
 import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.types';
 import { TerraByteApiService } from '../../core/services/terra-byte-api/terra-byte-api.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AttachUploadedFilesModalComponent', () => {
   let component: AttachUploadedFilesModalComponent;
@@ -65,7 +66,7 @@ describe('AttachUploadedFilesModalComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AttachUploadedFilesModalComponent],
-      imports: [BaseModule, ConfirmationModalModule, HttpClientTestingModule],
+      imports: [BaseModule, ConfirmationModalModule, HttpClientTestingModule, RouterTestingModule],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

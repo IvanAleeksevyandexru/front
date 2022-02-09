@@ -50,6 +50,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
   basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
   iconsTypes = iconsTypes;
+  isLoading = true;
 
   constructor(
     public injector: Injector,
@@ -113,6 +114,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       .subscribe((galleryFilesList) => {
         this.galleryFiles = galleryFilesList;
         this.galleryFilesGroupByDate = this.getGalleryFilesGroupedByDate(this.galleryFiles);
+        this.isLoading = false;
         this.cdRef.markForCheck();
       });
 
