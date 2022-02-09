@@ -11,7 +11,7 @@ export const DOUBLE_ORDER_ERROR_DISPLAY: DisplayDto = {
       type: 'HtmlString',
       label:
         // eslint-disable-next-line max-len
-        '<div class="text--center"><img src=\'{staticDomainAssetsPath}/assets/icons/svg/warn.svg\' /></div><h4 class="text--center">Подать заявление пока нельзя</h4><p class=\'text-color--text-helper text--center mt-16\'>У вас уже есть поданное заявление по этой услуге. Чтобы <br>получить новое — дождитесь результатов обработки текущего.</p>',
+        '<div class="text--center"><img src=\'{staticDomainAssetsPath}/assets/icons/svg/warn.svg\' /></div><h4 class="text--center">Жалоба на рассмотрении</h4><p class=\'text-color--text-helper text--center mt-16\'>Вы уже подали жалобу по данному постановлению. Дождитесь её рассмотрения, за статусом можно следить в личном кабинете</p>',
       attrs: {},
       value: '',
       required: true,
