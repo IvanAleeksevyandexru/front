@@ -5,7 +5,6 @@ import {
   DeviceDetectorService,
   EventBusService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { ScreenService } from '../../../screen/screen.service';
 
 @Component({
@@ -29,15 +28,10 @@ export class ScreenButtonsComponent implements OnInit {
   constructor(
     private eventBusService: EventBusService,
     private deviceDetectorService: DeviceDetectorService,
-    private eaisdoGroupCostService: EaisdoGroupCostService,
     public screenService: ScreenService,
   ) {}
 
   public ngOnInit(): void {
-    this.screenService.buttons.forEach((button) =>
-      this.eaisdoGroupCostService.calculateVisibility(button),
-    );
-
     this.eventBusService.on(BusEventType.GetNextStepWithoutClickedButtonEvent).subscribe(() => {
       const getNextStepButton = this.shownButtons.find(
         (button) => button.type == ActionType.nextStep,
