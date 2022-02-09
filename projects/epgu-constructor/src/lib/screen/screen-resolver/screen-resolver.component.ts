@@ -84,7 +84,7 @@ export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
     );
 
     this.componentRef = this.screenContainer.createComponent(componentFactory);
-    this.cdRef.detectChanges();
+    this.cdRef.markForCheck();
   }
 
   private handleFooterDisplaying(): void {
