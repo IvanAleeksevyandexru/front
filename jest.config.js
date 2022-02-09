@@ -5,7 +5,7 @@ module.exports = {
   globalSetup: 'jest-preset-angular/global-setup',
   setupFiles: ['<rootDir>/configs/jest/setup-jest.ts', 'jest-canvas-mock'],
   setupFilesAfterEnv: ['<rootDir>/configs/jest/setup-jest-env.ts'],
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/', '<rootDir>/projects/sf-portal'],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/'],
   moduleNameMapper: {
     '@ifc/plugin': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js',
     '@ifc/common': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js',
