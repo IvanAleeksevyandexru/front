@@ -1,7 +1,7 @@
 // stylelint-disable selector-type-no-unknown
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/_select-map-object';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/components/_buttons';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/components/_select-map-object';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/components/_buttons';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 
 :host {
   position: relative;

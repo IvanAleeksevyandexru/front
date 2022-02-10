@@ -1,6 +1,6 @@
 :host::ng-deep {
-  @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
-  @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+  @import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core';
+  @import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/components';
 
   .mb-24 {
     margin-bottom: 24px;
