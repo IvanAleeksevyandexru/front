@@ -24,11 +24,19 @@ import {
   EventBusService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { DictionaryFilters } from '@epgu/epgu-constructor-types';
-import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
+import {
+  DictionaryFilters,
+  DictionaryOptions,
+  DictionaryUrlTypes,
+} from '@epgu/epgu-constructor-types';
 import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
 
 import { FormField } from '../multiple-choice-dictionary.models';
+import { DictionaryService } from '../../../services/dictionary/dictionary.service';
+import {
+  CustomComponent,
+  MappingParamsDto,
+} from '../../../../component/custom-screen/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-multi-choice-dictionary-modal',
@@ -49,6 +57,8 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
   filteredItems$: Observable<ListElement[]> = of([]);
   isSelectAll$ = new BehaviorSubject<boolean>(false);
   inputPlaceholder$ = new BehaviorSubject('Поиск по списку');
+  dictionaryOptions: DictionaryOptions;
+  mappingParams: MappingParamsDto;
   readonly formField = FormField;
   readonly buttons = [
     {
@@ -59,7 +69,7 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
 
   constructor(
     public injector: Injector,
-    private dictionaryApiService: DictionaryApiService,
+    private dictionaryService: DictionaryService,
     private dictionaryToolsService: DictionaryToolsService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -173,15 +183,31 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
 
   private fetchDictionary(): Observable<ListElement[]> {
     this.isLoading = true;
-    return this.dictionaryApiService
-      .getGenericDictionary(this.dictionaryType, { filter: this.dictionaryFilter.filter })
+    return this.dictionaryService
+      .getDictionaries$(
+        this.dictionaryType,
+        {
+          attrs: {
+            dictionaryUrlType: DictionaryUrlTypes.dictionary,
+            mappingParams: this.mappingParams,
+          },
+        } as CustomComponent,
+        {
+          filter: this.dictionaryFilter.filter,
+          ...this.dictionaryOptions,
+        },
+      )
       .pipe(
+        // TODO выяснить, нужен ли delay в этом месте
         delay(500),
         map((response) => {
-          if (response.error.code !== 0) {
+          if (response.data?.error.code !== 0) {
             throw new Error('Dictionary error');
           }
-          return this.dictionaryToolsService.adaptDictionaryToListItem(response.items);
+          return this.dictionaryToolsService.adaptDictionaryToListItem(
+            response.data.items,
+            response.component.attrs.mappingParams,
+          );
         }),
         retry(1),
         catchError(() => of([])),
