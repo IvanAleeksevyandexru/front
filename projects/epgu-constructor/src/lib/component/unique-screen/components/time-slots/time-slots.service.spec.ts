@@ -118,7 +118,7 @@ describe('TimeSlotsService', () => {
       const { component } = screenService;
       timeSlotsService.timeSlotsType = TimeSlotsTypes.RAZBRAK;
       compValue = JSON.parse(component.value);
-      cachedAnswer = screenService.getCompValueFromCachedAnswers();
+      cachedAnswer = screenService.getCompValueFromApplicantAnswers();
       if (cachedAnswer) {
         cachedAnswer = JSON.parse(cachedAnswer);
       }
@@ -147,16 +147,6 @@ describe('TimeSlotsService', () => {
           done();
         });
       });
-
-      it('if waitingTimeExpired = false', (done) => {
-        timeSlotsService.waitingTimeExpired = false;
-        const cancelSpy = jest.spyOn<any, any>(timeSlotsService, 'cancelSlot');
-        timeSlotsService.checkBooking(selectedSlot).subscribe(() => {
-          expect(cancelSpy).toHaveBeenCalledTimes(0);
-          expect(timeSlotsService.getErrorMessage()).toBeNull();
-          done();
-        });
-      });
     });
 
     describe('error for object in cancel response', () => {
@@ -174,21 +164,11 @@ describe('TimeSlotsService', () => {
         );
       });
 
-      it('if waitingTimeExpired = true', (done) => {
+      it('check cancel', (done) => {
         const cancelSpy = jest.spyOn<any, any>(timeSlotsService, 'cancelSlot');
         timeSlotsService.checkBooking(selectedSlot).subscribe(() => {
           expect(cancelSpy).toHaveBeenCalled();
           expect(timeSlotsService.getErrorMessage()).toEqual('some error');
-          done();
-        });
-      });
-
-      it('if waitingTimeExpired = false', (done) => {
-        timeSlotsService.waitingTimeExpired = false;
-        const cancelSpy = jest.spyOn<any, any>(timeSlotsService, 'cancelSlot');
-        timeSlotsService.checkBooking(selectedSlot).subscribe(() => {
-          expect(cancelSpy).toHaveBeenCalledTimes(0);
-          expect(timeSlotsService.getErrorMessage()).toBeNull();
           done();
         });
       });
@@ -206,20 +186,10 @@ describe('TimeSlotsService', () => {
         );
       });
 
-      it('if waitingTimeExpired = true', (done) => {
+      it('check cancel', (done) => {
         const cancelSpy = jest.spyOn<any, any>(timeSlotsService, 'cancelSlot');
         timeSlotsService.checkBooking(selectedSlot).subscribe(() => {
           expect(cancelSpy).toHaveBeenCalled();
-          expect(timeSlotsService.getErrorMessage()).toBeNull();
-          done();
-        });
-      });
-
-      it('if waitingTimeExpired = false', (done) => {
-        timeSlotsService.waitingTimeExpired = false;
-        const cancelSpy = jest.spyOn<any, any>(timeSlotsService, 'cancelSlot');
-        timeSlotsService.checkBooking(selectedSlot).subscribe(() => {
-          expect(cancelSpy).toHaveBeenCalledTimes(0);
           expect(timeSlotsService.getErrorMessage()).toBeNull();
           done();
         });
