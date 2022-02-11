@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "node",
     "declaration": true,
     "outDir": "dist",
     "strict": true,
     "removeComments": true
   },
-  "include": ["src/**/*"]
+  "files": [
+    "src/index.ts",
+  ]
 }

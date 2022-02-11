@@ -1,5 +1,6 @@
 {
   "extends": "./tsconfig.base.json",
+  "composite": true,
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "types": ["offscreencanvas"],
@@ -8,11 +9,15 @@
       "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
       "@epgu/epgu-constructor": ["dist/epgu-constructor"],
       "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"],
-      "@epgu/children-clubs": ["dist/children-clubs"]
+      "@epgu/children-clubs": ["dist/children-clubs"],
+      "@epgu/epgu-constructor-types": ["projects/epgu-constructor-types/src"]
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts"],
+  "exclude": [
+    "src/test.ts",
+    "src/**/*.spec.ts",
+ ],
   "angularCompilerOptions": {
     "enableIvy": true
   }
