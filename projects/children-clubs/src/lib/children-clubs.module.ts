@@ -69,7 +69,7 @@ const APP_CONFIG: MicroAppUiConfig = {
     NotifierService,
     {
       provide: 'notifierSetting',
-      useValue: { singleNotifier: true },
+      useValue: { singleNotifier: false },
     },
     {
       provide: HEALTH_SERVICE,
