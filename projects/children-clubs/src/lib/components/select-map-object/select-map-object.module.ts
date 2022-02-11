@@ -14,7 +14,7 @@ import { SelectMapObjectComponent } from './select-map-object.component';
     NotifierService,
     {
       provide: 'notifierSetting',
-      useValue: { singleNotifier: true },
+      useValue: { singleNotifier: false },
     },
   ],
   exports: [SelectMapObjectComponent],
