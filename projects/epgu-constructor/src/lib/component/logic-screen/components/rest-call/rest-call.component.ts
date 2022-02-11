@@ -62,7 +62,7 @@ export default class RestCallComponent extends AbstractLogicComponent {
           : this.logicService.maxTimeout,
       ),
       tap(() => {
-        this.screenService.isLogicComponentLoading = true;
+        this.screenService.isLogicComponentAfterValidationLoading = true;
       }),
       map((response) => {
         return response.reduce(
@@ -74,7 +74,7 @@ export default class RestCallComponent extends AbstractLogicComponent {
         );
       }),
       tap((response) => {
-        this.screenService.isLogicComponentLoading = false;
+        this.screenService.isLogicComponentAfterValidationLoading = false;
         this.screenService.logicAnswers =
           typeof this.screenService.logicAnswers === 'object' && this.screenService.logicAnswers
             ? {
@@ -87,7 +87,7 @@ export default class RestCallComponent extends AbstractLogicComponent {
         if (error && error instanceof TimeoutError) {
           this.modalErrorService.showError(COMMON_ERROR_MODAL_PARAMS_TEXT);
         }
-        this.screenService.isLogicComponentLoading = false;
+        this.screenService.isLogicComponentAfterValidationLoading = false;
         return this.screenService.logicComponents$;
       }),
       takeUntil(this.unSubscribeService$),
