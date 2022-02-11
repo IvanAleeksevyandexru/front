@@ -32,6 +32,7 @@ import { ObjectHelperService } from './services/object-helper/object-helper.serv
 import { WordTransformService } from './services/word-transform/word-transform.service';
 import { ServiceNameService } from './services/service-name/service-name.service';
 import { JsonHelperService } from './services/json-helper/json-helper.service';
+import { ValidationHelperService } from './services/validation-helper/validation-helper.service';
 
 @NgModule({
   imports: [HttpClientModule],
@@ -59,6 +60,7 @@ import { JsonHelperService } from './services/json-helper/json-helper.service';
     SessionStorageService,
     TracingService,
     UnsubscribeService,
+    ValidationHelperService,
     WordTransformService,
     WINDOW_PROVIDERS,
     {

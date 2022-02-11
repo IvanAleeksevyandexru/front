@@ -8,6 +8,8 @@ import {
   JsonHelperService,
   JsonHelperServiceStub,
   LoggerService,
+  ValidationHelperService,
+  ValidationHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockProvider } from 'ng-mocks';
@@ -152,6 +154,7 @@ describe('ValidationService', () => {
         ValidationService,
         ComponentsListToolsService,
         DateRangeService,
+        { provide: ValidationHelperService, useClass: ValidationHelperServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
         CurrentAnswersService,
