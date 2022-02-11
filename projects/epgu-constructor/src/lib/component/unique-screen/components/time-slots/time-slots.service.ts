@@ -429,8 +429,8 @@ export class TimeSlotsService {
   private getTimeSlotsForCancel(): TimeSlotsAnswerInterface[] {
     return this.cancelReservation
       .map((id) =>
-        this.screenService.getCompValueFromCachedAnswers(id)
-          ? JSON.parse(this.screenService.getCompValueFromCachedAnswers(id))
+        this.screenService.getCompValueFromApplicantAnswers(id)
+          ? JSON.parse(this.screenService.getCompValueFromApplicantAnswers(id))
           : null,
       )
       .filter((timeslot) => !!timeslot && this.isCancelCondition(timeslot));
@@ -723,7 +723,10 @@ export class TimeSlotsService {
       this.timeSlotsType !== TimeSlotsTypes.MVD &&
       (!this.getBookedDepartment(timeslotAnswer, this.department) ||
         this.waitingTimeExpired ||
-        this.timeSlotsType === TimeSlotsTypes.GIBDD)
+        this.timeSlotsType === TimeSlotsTypes.GIBDD ||
+        this.timeSlotsType === TimeSlotsTypes.BRAK ||
+        this.timeSlotsType === TimeSlotsTypes.BIRTH ||
+        this.timeSlotsType === TimeSlotsTypes.RAZBRAK)
     );
   }
 
