@@ -12,10 +12,10 @@
         formControlName="search"
         contextClass="mb-24"
       ></lib-search-bar>
-      <!-- 
+      <!--
         In case you want to change the scrolling behavior,
         just replace 'epgu-cf-ui-tree-view' component
-        with 'epgu-cf-ui-tree-virtual-scroll-view' 
+        with 'epgu-cf-ui-tree-virtual-scroll-view'
       -->
       <ng-container [formGroupName]="formField.checkboxGroup">
         <epgu-cf-ui-tree-view
@@ -30,6 +30,8 @@
               [checkboxId]="node.id"
               [labelText]="node?.text"
               [control]="form.get(formField.checkboxGroup).get(node.id)"
+              [hidden]='node.hidden'
+              [disabled]='node.disabled'
             ></epgu-cf-ui-tree-node-checkbox>
           </epgu-cf-ui-tree-node>
 
