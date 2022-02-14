@@ -367,6 +367,7 @@ export interface ComponentAttrsDto {
   visited?: Visited;
   writableComponents?: WritableComponents;
   years?: Years;
+  pageSize?: string;
 }
 
 export interface SlotsNotFoundTemplate {

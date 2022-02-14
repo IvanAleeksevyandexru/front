@@ -13,6 +13,7 @@ import {
   smoothHeight,
   YMapItem,
   DeviceDetectorService,
+  flyInOut,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
@@ -25,12 +26,12 @@ import { IBalloonContent } from '../../balloon-content-resolver.interface';
   templateUrl: './common-balloon-content.component.html',
   styleUrls: ['./common-balloon-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [rotateAndDiminish, smoothHeight],
+  animations: [rotateAndDiminish, smoothHeight, flyInOut],
 })
 export class CommonBalloonContentComponent implements IBalloonContent {
   @Input() isSelectButtonHidden = false;
   @Input() showLoader: Observable<boolean>;
-  @Input() mapObject;
+  @Input() mapObjects;
   @Input() lockAnimation = false;
   @Input() attrs: KeyValueMap = {};
   @Input() showCrossButton = true;

@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import {
   ConfigService,
+  DeviceDetectorService,
+  flyInOut,
   IYMapPoint,
   UnsubscribeService,
   YandexMapService,
@@ -15,7 +17,6 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
-import { IBalloonShowableContent } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import {
   KindergartenService,
   KindergartenStates,
@@ -29,12 +30,13 @@ import { IBalloonContent } from '../../balloon-content-resolver.interface';
   templateUrl: './kindergarten-balloon-content.component.html',
   styleUrls: ['./kindergarten-balloon-content.component.scss'],
   providers: [UnsubscribeService],
+  animations: [flyInOut],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KindergartenContentComponent implements IBalloonContent, OnInit {
   @Input() isSelectButtonHidden = false;
   @Input() showLoader: Observable<false>;
-  @Input() mapObject;
+  @Input() mapObjects;
   @Input() showCrossButton = true;
 
   public selectObject: Function;
@@ -42,6 +44,7 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
   public collapseObject: Function;
   public readonly states = KindergartenStates;
   public showAdditionalInfo = false;
+  public additionalFields;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
@@ -50,19 +53,13 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
     public kindergartenSearchPanelService: KindergartenSearchPanelService,
     public screenService: ScreenService,
     public kindergartenService: KindergartenService,
+    public deviceDetector: DeviceDetectorService,
     private ngUnsubscribe$: UnsubscribeService,
     private yandexMapService: YandexMapService,
   ) {}
 
-  get address(): string {
-    return this.mapObject.baloonContent[0].value;
-  }
-
-  get additionalInfo(): IBalloonShowableContent[] {
-    return this.mapObject.baloonContent.slice(1);
-  }
-
   public ngOnInit(): void {
+    this.fillAdditionalFields();
     this.screenService.isLoading$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       window.requestAnimationFrame(() => this.cdr.detectChanges());
     });
@@ -77,11 +74,22 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
     this.showAdditionalInfo = !this.showAdditionalInfo;
   }
 
+  // TODO разобраться почему метод вызывает срабатывание ngOnInit и обрезаение mapObjects до 1 элемента
   public expandAndCenterObject(mapObject: YMapItem<unknown>): void {
     this.objectClick(mapObject);
     if (this.selectMapObjectService.isSelectedView.getValue()) {
       const { center } = mapObject as IYMapPoint<unknown>;
       this.yandexMapService.setCenter(center);
     }
+  }
+
+  private fillAdditionalFields(): void {
+    this.additionalFields = {};
+    this.mapObjects.forEach((mapObject) => {
+      this.additionalFields[mapObject.value] = {
+        address: mapObject.baloonContent[0].value,
+        additionalInfo: mapObject.baloonContent.slice(1),
+      };
+    });
   }
 }

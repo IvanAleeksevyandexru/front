@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { DisclaimerDto, KeyValueMap } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService, YandexMapService, YMapItem } from '@epgu/epgu-constructor-ui-kit';
-import { takeUntil } from 'rxjs/operators';
+import { skip, takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { MapTypes, SelectMapObjectService } from '../../select-map-object.service';
 
@@ -99,7 +99,7 @@ export class MapSidebarComponent implements OnInit {
           if (this.activeItem) {
             this.activeItem.expanded = false;
             activeBalloonRef = this.balloonComponents.find((item) =>
-              arePointsEqual(item.mapObject, this.activeItem),
+              arePointsEqual(item.mapObjects[0], this.activeItem),
             );
             if (activeBalloonRef) {
               activeBalloonRef.balloonContentComponentRef.instance.lockAnimation = true;
@@ -114,7 +114,7 @@ export class MapSidebarComponent implements OnInit {
           this.cdr.detectChanges();
 
           const matchingBalloon = this.balloonComponents.find((item) =>
-            arePointsEqual(item.mapObject, value[0]),
+            arePointsEqual(item.mapObjects[0], value[0]),
           );
 
           if (matchingBalloon) {
@@ -141,7 +141,7 @@ export class MapSidebarComponent implements OnInit {
       });
 
     this.selectMapObjectService.isSelectedView
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe$), skip(1))
       .subscribe(() => {
         this.getBalloonItems();
         this.cdr.detectChanges();
