@@ -191,7 +191,7 @@
     "jest": "27.5.0",
     "jest-canvas-mock": "^2.3.1",
     "jest-junit": "13.0.0",
-    "jest-preset-angular": "11.1.0",
+    "jest-preset-angular": "11.1.1",
     "jscpd": "^3.3.23",
     "json-server": "^0.16.2",
     "lint-staged": "10.2.11",
