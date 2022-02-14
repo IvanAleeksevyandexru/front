@@ -61,6 +61,8 @@
 * Поправлен вывод информации о booking timeslot [EPGUCORE-67487]
 * Правка singleNotifier для отображения нескольких дисклеймеров [EPGUCORE-87879]
 * Поправлено условие отмены TimeSlot [EPGUCORE-88096]
+* Поправлен формат даты для отправки на бэк согласно контракту в MaritalStatusInputComponent [EPGUCORE-86304]
+* Сделано наличие attrs на уровне филдов необязательным в DocInput [EPGUCORE-87973]
 
 ### Tests
 
