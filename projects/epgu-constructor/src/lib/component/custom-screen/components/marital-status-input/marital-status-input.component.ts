@@ -1,7 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
-import { TextTransformService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  DatesToolsService,
+  TextTransformService,
+  UnsubscribeService,
+} from '@epgu/epgu-constructor-ui-kit';
 import { isEmpty } from 'lodash';
 import { map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
@@ -57,6 +61,7 @@ export class MaritalStatusInputComponent
     private dictionaryService: DictionaryService,
     private dictionaryToolsService: DictionaryToolsService,
     private componentList: ComponentsListFormService,
+    private datesToolsService: DatesToolsService,
   ) {
     super(injector);
   }
@@ -70,6 +75,7 @@ export class MaritalStatusInputComponent
       return accumulator;
     }, []);
     this.addFormGroupControls();
+    this.processFormValue(this.form.value);
     this.subscribeOnFormChange();
     this.updateParentIfNotValid();
 
@@ -125,26 +131,7 @@ export class MaritalStatusInputComponent
 
   public subscribeOnFormChange(): void {
     this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((formFields) => {
-      this.relationMapChanges(formFields);
-      const patchedFormFields = Object.entries(formFields).reduce<MaritalStatusInputFields>(
-        (acc: MaritalStatusInputFields, [key, value]) => {
-          if (this.fields[key]?.attrs?.fstuc) {
-            const textTransformType: TextTransform = this.fields[key].attrs.fstuc;
-            const newValue = value
-              ? this.textTransform.transform(value.toString(), textTransformType)
-              : value;
-
-            if (this.form.get(key)) {
-              this.form.get(key).setValue(newValue, { emitEvent: false });
-            }
-            return { ...acc, [key]: newValue };
-          }
-          return { ...acc, [key]: value };
-        },
-        {} as MaritalStatusInputFields,
-      );
-      this.emitToParentForm(patchedFormFields);
-      this.cdr.markForCheck();
+      this.processFormValue(formFields);
     });
   }
 
@@ -172,6 +159,32 @@ export class MaritalStatusInputComponent
 
   public getFieldByName(fieldName: string): MaritalStatusInputField | null {
     return this.fields.find((item) => item.fieldName === fieldName);
+  }
+
+  private processFormValue(formFields: Fields): void {
+    this.relationMapChanges(formFields);
+    const patchedFormFields = Object.entries(formFields).reduce<MaritalStatusInputFields>(
+      (acc: MaritalStatusInputFields, [key, value]) => {
+        if (this.fields[key]?.attrs?.fstuc) {
+          const textTransformType: TextTransform = this.fields[key].attrs.fstuc;
+          const newValue = value
+            ? this.textTransform.transform(value.toString(), textTransformType)
+            : value;
+
+          if (this.form.get(key)) {
+            this.form.get(key).setValue(newValue, { emitEvent: false });
+          }
+          return { ...acc, [key]: newValue };
+        }
+        if (value instanceof Date) {
+          value = this.datesToolsService.format(value);
+        }
+        return { ...acc, [key]: value };
+      },
+      {} as MaritalStatusInputFields,
+    );
+    this.emitToParentForm(patchedFormFields);
+    this.cdr.markForCheck();
   }
 
   private addFormGroupControls(): void {
