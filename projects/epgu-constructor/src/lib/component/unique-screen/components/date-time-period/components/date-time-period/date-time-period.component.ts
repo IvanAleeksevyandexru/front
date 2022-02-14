@@ -47,7 +47,7 @@ export class DateTimePeriodComponent implements OnInit, AfterViewInit {
   startTimeDropdownItems: ListElement[];
   endTimeDropdownItems: ListElement[];
 
-  group!: FormGroup;
+  group: FormGroup;
 
   private startTimeInitialValue = '00:00';
   private timeFormat = 'HH:mm';

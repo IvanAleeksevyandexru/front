@@ -12,16 +12,16 @@ import {
   HealthService,
   JsonHelperService,
   JsonHelperServiceStub,
+  ValidationHelperServiceStub,
+  ValidationHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   AbstractControl,
   FormGroup,
   FormGroupDirective,
-  FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
-
 import {
   ComponentAttrsDto,
   ComponentDateTimeDto,
@@ -31,8 +31,6 @@ import { ListElement } from '@epgu/ui/models/dropdown';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { addDays, addYears } from 'date-fns';
-import { DateRefService } from '../../../../../../core/services/date-ref/date-ref.service';
-import { ScreenService } from '../../../../../../screen/screen.service';
 import { DateRangeService } from '../../../../../../shared/services/date-range/date-range.service';
 import { DateRestrictionsService } from '../../../../../../shared/services/date-restrictions/date-restrictions.service';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
@@ -41,6 +39,7 @@ import { getDateTimeObject } from '../../utils/date-time-period.utils';
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { LabelComponent } from '../../../../../../shared/components/base-components/label/label.component';
 import { ConstructorDatePickerComponent } from '../../../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
+import { CurrentAnswersServiceStub } from '../../../../../../screen/current-answers-service.stub';
 
 const timeDropdownItems: ListElement[] = [];
 for (let i = 0; i < 24; i++) {
@@ -59,7 +58,6 @@ jest.useFakeTimers();
 describe('DateTimePeriodComponent', () => {
   let component: DateTimePeriodComponent;
   let fixture: ComponentFixture<DateTimePeriodComponent>;
-  let currentAnswersService: CurrentAnswersService;
 
   const initComponent = () => {
     fixture = TestBed.createComponent(DateTimePeriodComponent);
@@ -88,14 +86,12 @@ describe('DateTimePeriodComponent', () => {
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
-        CurrentAnswersService,
+        { provide: ValidationHelperService, useClass: ValidationHelperServiceStub },
+        { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         ValidationService,
-        ScreenService,
         DateRangeService,
-        DatesToolsService,
-        DateRefService,
       ],
-      imports: [FormsModule, ReactiveFormsModule],
+      imports: [ReactiveFormsModule],
     })
       .overrideComponent(DateTimePeriodComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -105,7 +101,6 @@ describe('DateTimePeriodComponent', () => {
 
   beforeEach(() => {
     initComponent();
-    currentAnswersService = TestBed.inject(CurrentAnswersService);
     fixture.detectChanges();
   });
 

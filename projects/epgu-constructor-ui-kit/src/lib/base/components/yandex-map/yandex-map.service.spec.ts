@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/dot-notation */
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { filter } from 'rxjs/operators';
@@ -16,8 +15,7 @@ import {
   mockPointWithCoords,
   mockPointWithoutCoords,
 } from './mocks/mock-points';
-import { electionSinglePoint } from './mocks/mock-select-map-elections';
-import { IClusterItem, IFeatureItem } from './yandex-map.interface';
+import { IClusterItem, IFeatureItem, IYMapPoint } from './yandex-map.interface';
 import { YandexMapService } from './yandex-map.service';
 import { MapAnimationService } from './yandex-map-animation/map-animation.service';
 import { YaMapService } from '@epgu/ui/services/ya-map';
@@ -25,7 +23,6 @@ import { YaMapService } from '@epgu/ui/services/ya-map';
 describe('YandexMapService', () => {
   let yandexMapService: YandexMapService;
   let yaMapService: YaMapService;
-  let icons: Icons;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -45,7 +42,6 @@ describe('YandexMapService', () => {
   beforeEach(() => {
     yandexMapService = TestBed.inject(YandexMapService);
     yaMapService = TestBed.inject(YaMapService);
-    icons = TestBed.inject(Icons);
     yandexMapService.objectManager = {
       objects: {
         balloon: {
@@ -80,7 +76,7 @@ describe('YandexMapService', () => {
 
   it('centeredPlaceMark should stop checking placemark if ids are equal', () => {
     yandexMapService.selectedValue$.next(null);
-    yandexMapService.activePlacemarkId = '4504034394378_50';
+    yandexMapService['activePlacemarkId'] = '4504034394378_50';
 
     yandexMapService.centeredPlaceMark(
       (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
@@ -137,7 +133,7 @@ describe('YandexMapService', () => {
 
   it('centeredPlaceMark should proceed checking placemark if ids are equal and default logic is faklse', () => {
     yandexMapService.selectedValue$.next(null);
-    yandexMapService.activePlacemarkId = '4504034394378_50';
+    yandexMapService['activePlacemarkId'] = '4504034394378_50';
 
     yandexMapService.centeredPlaceMark(
       (mockPointWithoutCoords as unknown) as IFeatureItem<unknown>,
@@ -170,13 +166,15 @@ describe('YandexMapService', () => {
 
   it('prepareFeatureCollection should ignore null coords', () => {
     const window = TestBed.inject(WINDOW) as Window;
-    window.ymaps = {
+    window['ymaps'] = {
       templateLayoutFactory: {
         createClass: () => '',
       },
     };
     yandexMapService.componentAttrs = {};
-    const result = yandexMapService.prepareFeatureCollection(mockItemsWithEmptyCoords);
+    const result = yandexMapService.prepareFeatureCollection(
+      (mockItemsWithEmptyCoords as unknown) as IYMapPoint<unknown>[],
+    );
     const cnt = result.features.filter(
       (feature) => feature.geometry.coordinates[0] && feature.geometry.coordinates[1],
     ).length;
@@ -222,7 +220,7 @@ describe('YandexMapService', () => {
     });
 
     it('should paint to bluered', () => {
-      yandexMapService.activePlacemarkId = 24;
+      yandexMapService['activePlacemarkId'] = 24;
       cluster.features[0].id = 24;
 
       yandexMapService.mapPaint();
@@ -231,7 +229,7 @@ describe('YandexMapService', () => {
     });
 
     it('should paint to bluered', () => {
-      yandexMapService.activePlacemarkId = 24;
+      yandexMapService['activePlacemarkId'] = 24;
       cluster.features[0].properties.res.objectId = 24;
 
       yandexMapService.mapPaint();
@@ -240,7 +238,7 @@ describe('YandexMapService', () => {
     });
 
     it('should paint to bluered', () => {
-      yandexMapService.activeClusterHash = '112$24';
+      yandexMapService['activeClusterHash'] = '112$24';
       cluster.features[0].id = 24;
 
       yandexMapService.mapPaint();
@@ -249,7 +247,7 @@ describe('YandexMapService', () => {
     });
 
     it('should paint to red', () => {
-      yandexMapService.activePlacemarkId = 24;
+      yandexMapService['activePlacemarkId'] = 24;
       cluster.features[0].properties.res.isSelected = false;
       cluster.features[1].properties.res.isSelected = true;
 
@@ -259,7 +257,7 @@ describe('YandexMapService', () => {
     });
 
     it('should paint to red', () => {
-      yandexMapService.activePlacemarkId = 24;
+      yandexMapService['activePlacemarkId'] = 24;
       cluster.features[0].properties.res.isSelected = true;
       cluster.features[1].properties.res.isSelected = true;
 

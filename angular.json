@@ -470,7 +470,7 @@
         "test": {
           "builder": "@angular-builders/jest:run"
         },
-        "lint": {
+        "_lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "eslintConfig": "projects/sf-portal/.eslintrc.js",
@@ -566,13 +566,8 @@
             "polyfills": "projects/versions/src/polyfills.ts",
             "tsConfig": "projects/versions/tsconfig.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/versions/src/favicon.ico",
-              "projects/versions/src/assets"
-            ],
-            "styles": [
-              "projects/versions/src/styles.scss"
-            ],
+            "assets": ["projects/versions/src/favicon.ico", "projects/versions/src/assets"],
+            "styles": ["projects/versions/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
