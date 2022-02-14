@@ -49,7 +49,7 @@
 * Поправлены тесты MonthPicker [EPGUCORE-76608]
 * Ускорен тест: заменена картинка, оптимизированы вызовы тяжелого метода в CompressionService [EPGUCORE-87310]
 
-## [399.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.x.x) (2022-02-07)
+## [399.18.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.18.0) (2022-02-14)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -77,6 +77,7 @@
 * Добавлен компонент not-found в sf-portal [EPGUCORE-85703]
 * Поддержка Trobber для logicAfterValidationComponents [EPGUCORE-85052]
 * Добавлен новый компонент MedicalBirthCertificates [EPGUCORE-85940]
+* Доработка компонента ComplexChoiceDictionary в части выбора только одного чек-бокса [EPGUCORE-85236]
 
 ### Refactor
 
@@ -132,6 +133,10 @@
 * Правки по internal-error [EPGUCORE-82540]
 * Исправлено ref displayOn не срабатывает. Кнопка далее неактивна при возврате назад [EPGUCORE-86211]
 * Исправлена работа trobber, если не задан timeout в RestCallComponent [EPGUCORE-87527]
+* Исправлен текст в модальном окне при ошибке 409 [EPGUCORE-82665]
+* Поправлен вывод информации о booking timeslot [EPGUCORE-67487]
+* Правка singleNotifier для отображения нескольких дисклеймеров [EPGUCORE-87879]
+* Исправлена работа rest call [EPGUCORE-88035]
 
 ### Tests
 
