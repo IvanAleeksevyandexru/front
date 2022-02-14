@@ -306,6 +306,18 @@ describe('MaritalStatusInputComponent', () => {
       expect(emitToParentSpy).toHaveBeenCalledWith(expectedValue);
     });
 
+    it('should process date fields according to transfer contract', () => {
+      const formValueMock = {
+        act_rec_date: new Date('2016-07-01T08:00:00.000Z'),
+      };
+      const formattingSpy = jest.spyOn(component['datesToolsService'], 'format');
+      component.form.patchValue(formValueMock);
+
+      component.ngOnInit();
+
+      expect(formattingSpy).toHaveBeenCalledTimes(1);
+    });
+
     it('should update parent if form is not VALID', () => {
       jest.spyOn(component, 'updateParentIfNotValid');
 

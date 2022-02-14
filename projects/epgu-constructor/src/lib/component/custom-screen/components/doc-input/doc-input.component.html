@@ -24,8 +24,8 @@
   <div *ngIf="!hasExpirationDate; else expireDate" class="doc-input__group">
     <div
       class="doc-input__group-item doc-input__series"
-      *ngIf="!fields[docInputFieldsTypes.series]?.attrs.hidden"
-      [class.doc-input__all-width]="fields[docInputFieldsTypes.number]?.attrs.hidden"
+      *ngIf="!fields[docInputFieldsTypes.series]?.attrs?.hidden"
+      [class.doc-input__all-width]="fields[docInputFieldsTypes.number]?.attrs?.hidden"
     >
       <epgu-constructor-label
         [tips]="fields[docInputFieldsTypes.series]?.attrs?.labelHint"
@@ -33,7 +33,7 @@
         for="series"
       ></epgu-constructor-label>
       <epgu-constructor-masked-input
-        *ngIf="fields[docInputFieldsTypes.series]?.attrs.mask; else plainInputSeries"
+        *ngIf="fields[docInputFieldsTypes.series]?.attrs?.mask; else plainInputSeries"
         [removeMaskSymbols]="RemoveMaskSymbols.PLACEHOLDERS"
         [textTransformType]="fields[docInputFieldsTypes.series]?.attrs?.fstuc"
         [id]="docInputFieldsTypes.series"
@@ -83,8 +83,8 @@
     </div>
     <div
       class="doc-input__group-item doc-input__number"
-      *ngIf="!fields[docInputFieldsTypes.number]?.attrs.hidden"
-      [class.doc-input__all-width]="fields[docInputFieldsTypes.series]?.attrs.hidden"
+      *ngIf="!fields[docInputFieldsTypes.number]?.attrs?.hidden"
+      [class.doc-input__all-width]="fields[docInputFieldsTypes.series]?.attrs?.hidden"
     >
       <epgu-constructor-label
         [tips]="fields[docInputFieldsTypes.number]?.attrs?.labelHint"
@@ -92,7 +92,7 @@
         [for]="docInputFieldsTypes.number"
       ></epgu-constructor-label>
       <epgu-constructor-masked-input
-        *ngIf="fields[docInputFieldsTypes.number]?.attrs.mask; else plainInputNumber"
+        *ngIf="fields[docInputFieldsTypes.number]?.attrs?.mask; else plainInputNumber"
         [textTransformType]="fields[docInputFieldsTypes.number]?.attrs?.fstuc"
         [id]="docInputFieldsTypes.number"
         [control]="$any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]))"
@@ -146,8 +146,8 @@
       class="doc-input__group-item doc-input__date"
       *ngIf="!fields[docInputFieldsTypes.date]?.attrs.hidden"
       [class.collapsed]="
-        fields[docInputFieldsTypes.series]?.attrs.hidden ||
-        fields[docInputFieldsTypes.number]?.attrs.hidden
+        fields[docInputFieldsTypes.series]?.attrs?.hidden ||
+        fields[docInputFieldsTypes.number]?.attrs?.hidden
       "
     >
       <epgu-constructor-label

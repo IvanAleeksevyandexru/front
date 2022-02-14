@@ -222,7 +222,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
       if (this.fields[fieldName]) {
         const validators = [this.validationService.customValidator(this.fields[fieldName])];
 
-        const updateOnValidation = this.fields[fieldName].attrs.validation?.find(
+        const updateOnValidation = this.fields[fieldName].attrs?.validation?.find(
           (v) => v.updateOn === UpdateOn.ON_BLUR,
         );
 
