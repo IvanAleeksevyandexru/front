@@ -244,11 +244,19 @@ Portal-build:
         - .yarn-cache/
         - node_modules
         - 'projects/*/node_modules'
+    - key: cache-${CI_COMMIT_REF_SLUG}
+      policy: pull
+      paths:
+        - dist
+        - projects/epgu-constructor-types/dist
   script:
-    - test -d node_modules || yarn install --frozen-lockfile --no-progress
-    - yarn build:portal
+    - test -d projects/sf-portal/node_modules || yarn install --frozen-lockfile --no-progress
+    - ls -la node_modules/@epgu
+    - ls -la projects/epgu-constructor-types
+    - ls -la projects/sf-portal/node_modules/@epgu
+    - yarn build:portal:dev
   interruptible: true
-  needs: ["Install"]
+  needs: ["Form-player-build"]
   only:
     - merge_requests
     - master

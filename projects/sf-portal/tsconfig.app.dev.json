@@ -6,24 +6,25 @@
     "outDir": "../../out-tsc/app",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "types": [],
+    "typeRoots": ["node_modules/@types"],
+    "types": ["node"],
     "inlineSources": true,
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es6",
     "lib": ["es2018", "dom"],
     "paths": {
-      "@angular/*": ["node_modules/@angular/*"],
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
-      "@epgu/epgu-constructor-ui-kit": ["node_modules/@epgu/epgu-constructor-ui-kit"],
-      "@tinkoff/ng-polymorpheus": [
-        "node_modules/@taiga-ui/cdk/node_modules/@tinkoff/ng-polymorpheus"
-      ]
+      "@epgu/epgu-constructor": ["dist/epgu-constructor"],
+      "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"],
+      "@epgu/children-clubs": ["dist/children-clubs"],
+      "@epgu/epgu-constructor-types": ["projects/epgu-constructor-types/dist"]
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
   "include": ["src/**/*.d.ts", "src/**/*.ts"],
+  "exclude": ["**/*.spec.ts"],
   "angularCompilerOptions": {
     "enableIvy": true
   }

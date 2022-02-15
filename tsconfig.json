@@ -15,5 +15,13 @@
       "@epgu/children-clubs": ["projects/children-clubs/src/public-api"],
       "@epgu/epgu-constructor-types": ["projects/epgu-constructor-types/src"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

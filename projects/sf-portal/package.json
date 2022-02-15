@@ -73,14 +73,5 @@
     "jest": "27.5.0",
     "replace": "^1.2.1",
     "ts-jest": "27.0.7"
-  },
-  "workspaces": {
-    "nohoist": [
-      "**@epgu/children-clubs",
-      "**@epgu/epgu-constructor-types",
-      "**@epgu/epgu-constructor-ui-kit",
-      "**@epgu/epgu-constructor",
-      "**/@epgu/ui"
-    ]
   }
 }
