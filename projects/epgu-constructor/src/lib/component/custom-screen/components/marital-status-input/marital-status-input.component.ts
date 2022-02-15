@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } f
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ValidationShowOn, BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import {
+  DATE_STRING_DOT_FORMAT,
   DatesToolsService,
   TextTransformService,
   UnsubscribeService,
@@ -189,18 +190,24 @@ export class MaritalStatusInputComponent
 
   private addFormGroupControls(): void {
     const componentValues = this.getParsedComponentValues();
-
+    const dateFields: string[] = [
+      MaritalStatusInputFieldsTypes.actRecDate,
+      MaritalStatusInputFieldsTypes.issueDate,
+    ];
     const fields = this.fieldsNames.reduce((acc: object, fieldName: string) => {
       const subComponent = this.getFieldByName(fieldName);
       if (!subComponent) return acc;
 
       const validators = [this.validationService.customValidator(subComponent)];
-      const value =
-        (fieldName === MaritalStatusInputFieldsTypes.actRecDate ||
-          fieldName === MaritalStatusInputFieldsTypes.issueDate) &&
-        componentValues[fieldName]
-          ? new Date(componentValues[fieldName])
-          : componentValues[fieldName];
+      let value;
+      if (dateFields.includes(fieldName) && componentValues[fieldName]) {
+        const dateString = componentValues[fieldName];
+        value = this.datesToolsService.isDateStringDotFormat(dateString)
+          ? this.datesToolsService.parse(dateString, DATE_STRING_DOT_FORMAT)
+          : new Date(componentValues[fieldName]);
+      } else {
+        value = componentValues[fieldName];
+      }
 
       return {
         ...acc,
