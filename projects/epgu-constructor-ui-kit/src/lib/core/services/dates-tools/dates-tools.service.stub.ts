@@ -88,4 +88,6 @@ export class DatesToolsServiceStub {
   utcOffset() {}
 
   addDays() {}
+
+  isDateStringDotFormat() {}
 }
