@@ -3,13 +3,16 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from 
 import { Observable } from 'rxjs';
 import { pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { isEqual } from 'lodash';
-
 import {
   DatesToolsService,
   LoggerService,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentRelationFieldDto, RelationCondition } from '@epgu/epgu-constructor-types';
+import {
+  ComponentRelationFieldDto,
+  DictionaryConditions,
+  RelationCondition,
+} from '@epgu/epgu-constructor-types';
 import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
 import {
@@ -35,7 +38,9 @@ import { ScreenService } from '../../../../screen/screen.service';
 import { MaskTransformService } from '../../../../shared/services/mask-transform/mask-transform.service';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
+import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 import { MaritalStatusInputField } from '../../components/marital-status-input/marital-status-input.types';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 
 @Injectable()
 export class ComponentsListFormService {
@@ -79,6 +84,7 @@ export class ComponentsListFormService {
     private logger: LoggerService,
     private datesToolsService: DatesToolsService,
     private datesRangeService: DateRangeService,
+    private dictionaryService: DictionaryService,
     private screenService: ScreenService,
     private maskTransformService: MaskTransformService,
   ) {}
@@ -400,9 +406,47 @@ export class ComponentsListFormService {
           componentsGroupIndex,
           isEqualPrevNext,
         );
+        if (!isEqualPrevNext) {
+          // TODO: в перспективе избавиться от этой хардкодной логики
+          this.checkAndFetchCarModel(next);
+        }
       });
 
     return form;
+  }
+
+  private checkAndFetchCarModel(next: CustomListFormGroup): void {
+    if (next.attrs.dictionaryType === 'MARKI_TS') {
+      const indexVehicle: number = this.form.controls.findIndex(
+        (control: AbstractControl) => control.value?.id === next.id,
+      );
+
+      const options = {
+        filter: {
+          simple: {
+            attributeName: 'Id_Mark',
+            condition: DictionaryConditions.EQUALS,
+            value: {
+              asString: `${this.form.get(String(indexVehicle)).value?.value?.id}`,
+            },
+          },
+        },
+      };
+
+      const carModelControl: AbstractControl = this.form.controls.find(
+        (control: AbstractControl) => control.value?.attrs?.dictionaryType === 'MODEL_TS',
+      );
+
+      carModelControl.get('value').patchValue('');
+
+      // TODO: моделмодел
+      const carModelModel: DictionaryLikeModel = carModelControl.value.model;
+      carModelModel
+        .loadReferenceData$(
+          this.dictionaryService.getDictionaries$('MODEL_TS', carModelModel, options),
+        )
+        .subscribe();
+    }
   }
 
   private watchFormGroup$(form: FormGroup): Observable<CustomListFormGroup[]> {

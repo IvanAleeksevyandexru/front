@@ -641,6 +641,41 @@ describe('ComponentsListFormService', () => {
     });
   });
 
+  describe('checkAndFetchCarModel()', () => {
+    it('should call dictionaryService.getDictionaries$() and initDictionary(), if MARKI_TS has place', () => {
+      const extraComponent = JSON.parse(JSON.stringify(componentMockData));
+      extraComponent.attrs.dictionaryType = 'MODEL_TS';
+      extraComponent.id = 'rf2';
+      const { id, label, required, type, value, attrs } = componentMockData;
+      const prev: CustomListFormGroup = {
+        attrs,
+        id,
+        label,
+        required,
+        type,
+        value,
+      };
+      const next: CustomListFormGroup = JSON.parse(JSON.stringify(prev));
+      next.value = 'new_value';
+      service.create(
+        [
+          new LookupInputModel(mockComponent.componentMockData),
+          new LookupInputModel(extraComponent),
+        ],
+        componentsGroupIndex,
+      );
+      const spyControl = service.form.controls.find(
+        (control) => control.value.id === extraComponent.id,
+      );
+      const spyMethod = jest
+        .spyOn(spyControl.value.model, 'loadReferenceData$')
+        .mockImplementation((...args) => of(null));
+      // @ts-ignore
+      service.checkAndFetchCarModel(next);
+      expect(spyMethod).toHaveBeenCalled();
+    });
+  });
+
   describe('watchFormGroup$()', () => {
     it('should return observable', () => {
       // @ts-ignore
