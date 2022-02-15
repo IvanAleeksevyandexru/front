@@ -255,6 +255,8 @@ describe('FormPlayerStartManager', () => {
           orderId: 123456,
         },
       ],
+      compareRegions: false,
+      serviceName: '',
     } as CheckOrderApiResponse;
 
     it('should call invited of initDataService', () => {
@@ -285,6 +287,8 @@ describe('FormPlayerStartManager', () => {
         checkIfOrderExistResult.limitOrders,
         checkIfOrderExistResult.inviteByOrderId,
         checkIfOrderExistResult.startNewBlockedByOrderId,
+        checkIfOrderExistResult.compareRegions,
+        checkIfOrderExistResult.serviceName,
       );
     });
   });
