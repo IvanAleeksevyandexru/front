@@ -9,7 +9,7 @@ import {
   HealthService,
   HealthServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-import { CompressionService } from './compression.service';
+import { CompressionService, testImageURL } from './compression.service';
 import { TerraByteApiService } from '../../../../../core/services/terra-byte-api/terra-byte-api.service';
 import { LOAD_FAILURE_SRC, LOAD_SUCCESS_SRC } from './compression.mock';
 
@@ -62,6 +62,12 @@ describe('CompressionService', () => {
       const isValid = service.isValidImageType(file);
       expect(isValid).toBeFalsy();
     });
+
+    it('should return false because unsupported image types', () => {
+      const file = new File([], 'tiff', { type: 'image/TIFF' });
+      const isValid = service.isValidImageType(file);
+      expect(isValid).toBeFalsy();
+    });
   });
 
   describe('imageCompression', () => {
@@ -109,5 +115,42 @@ describe('CompressionService', () => {
         expect(error.message).toBe('The given file is not a valid image');
       }
     });
+  });
+
+  describe('isValidImage()', () => {
+    it('should return false', async () => {
+      const file = new File([], 'txt', { type: 'txt' });
+
+      const res = await service['isValidImage'](file);
+
+      expect(res).toEqual(false);
+    });
+
+    it('should return true', async () => {
+      const file = new File([], 'image', { type: 'image' });
+
+      const res = await service['isValidImage'](file);
+
+      expect(res).toEqual(true);
+    });
+
+    it('should return true if deep checking', async () => {
+      const file = new File([], 'image', { type: 'image' });
+
+      const spy = jest.spyOn<any, any>(service, 'addImageProcess').mockReturnValueOnce(true);
+
+      const res = await service['isValidImage'](file, true);
+
+      expect(res).toEqual(true);
+      expect(spy).toHaveBeenCalledWith(file);
+    });
+  });
+
+  it('getFilefromDataUrl() - conversion check', async () => {
+    const file = await service['getFilefromDataUrl'](testImageURL, 'txt');
+
+    const dataUrl = await service['getDataUrlFromFile'](file);
+
+    expect(dataUrl).toEqual(testImageURL);
   });
 });
