@@ -138,11 +138,11 @@
 
 @mixin divider {
   border: none;
-  border-top: 1px solid $color-divider;
+  border-bottom: 1px solid $color-divider;
   padding-bottom: 24px;
   margin-bottom: 24px;
   &.grey {
-    border-top: 1px solid $color-ciottoli;
+    border-bottom: 1px solid $color-ciottoli;
   }
 }
 
