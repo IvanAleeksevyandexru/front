@@ -1,4 +1,5 @@
 import { ListElement } from '@epgu/ui/models/dropdown';
+import { DictionaryItem } from '../../services/dictionary/dictionary-api.types';
 
 export interface TreeNode extends ListElement {
   [key: string]: unknown;
@@ -18,6 +19,7 @@ export interface FlatNode {
   text: string;
   level: number;
   disabled?: boolean;
+  originalItem?: DictionaryItem;
 }
 
 export enum FormField {
