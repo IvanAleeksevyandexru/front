@@ -16,6 +16,7 @@ import { FormControl } from '@angular/forms';
 import { DictionaryToolsService } from '../../services/dictionary/dictionary-tools.service';
 import { DictionaryApiService } from '../../services/dictionary/dictionary-api.service';
 import { TreeNode, FilteredTreeResult, FlatNode } from './complex-choice-dictionary.models';
+import { AttributeValue } from '../../services/dictionary/dictionary-api.types';
 
 export function filterTreeData(data: TreeNode[], value: string): FilteredTreeResult {
   const filterUniq = (arr: TreeNode[]): TreeNode[] => {
@@ -171,11 +172,16 @@ export class DynamicDatasource implements DataSource<FlatNode> {
   private createFilterValue(node: FlatNode): DictionaryFilters['filter'] {
     let currentFilter = JSON.parse(JSON.stringify(this.currentFilter.filter));
 
+    const find = node?.originalItem?.attributes?.find(
+      (item: AttributeValue) => item?.name === 'PARENT_ID',
+    ) as AttributeValue;
+
+    const type = find && find?.type === 'STRING' ? AttributeTypes.asString : AttributeTypes.asLong;
     const parentFilter = {
       attributeName: 'PARENT_ID',
       condition: DictionaryConditions.EQUALS,
       value: {
-        [AttributeTypes.asLong]: node.id,
+        [type]: node.id,
       },
     };
 

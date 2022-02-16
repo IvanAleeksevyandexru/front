@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   Input,
   ViewChild,
   ViewContainerRef,
@@ -44,7 +43,7 @@ export const ContentTypes = {
 export class BalloonContentResolverComponent implements AfterViewInit, OnChanges {
   @ViewChild('content', { read: ViewContainerRef }) content: ViewContainerRef;
 
-  @Input() mapObject;
+  @Input() mapObjects;
   @Input() isSelectButtonHidden = false;
   @Input() contentType = ContentTypes[MapTypes.commonMap];
   @Input() attrs = {};
@@ -63,14 +62,13 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
   };
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef,
     private screenService: ScreenService,
     public deviceDetector: DeviceDetectorService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.mapObject && changes.mapObject !== this.mapObject && this.content) {
+    if (changes.mapObjects && changes.mapObjects !== this.mapObjects && this.content) {
       this.balloonContentComponentRef.destroy();
       this.balloonContentComponentRef = null;
       this.addContent();
@@ -87,10 +85,9 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
   }
 
   public addContent(): void {
-    const content = this.componentFactoryResolver.resolveComponentFactory(
+    this.balloonContentComponentRef = this.content.createComponent(
       this.getComponent(this.contentType),
     );
-    this.balloonContentComponentRef = this.content.createComponent(content);
     this.setInstanceFields(this.balloonContentComponentRef);
 
     this.cdr.detectChanges();
@@ -115,7 +112,7 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
   private setInstanceFields(ref): void {
     const { instance } = ref;
     instance.showLoader = this.screenService.isLoading$;
-    instance.mapObject = this.mapObject;
+    instance.mapObjects = this.mapObjects;
     instance.isSelectButtonHidden = this.isSelectButtonHidden;
     instance.attrs = this.attrs || {};
     instance.showCrossButton = this.showCrossButton;

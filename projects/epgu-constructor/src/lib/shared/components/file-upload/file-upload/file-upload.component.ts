@@ -80,7 +80,6 @@ export class FileUploadComponent implements OnInit {
           ) as Observable<UploadedFile[]>,
     ),
     concatMap((files: UploadedFile[]) =>
-      // TODO: Добавить тестов
       from(files).pipe(
         reduce<UploadedFile, Record<string, UploadedFile[]>>((acc, value) => {
           const id = this.getMnemonicWithoutOrder(value.mnemonic);
@@ -149,7 +148,6 @@ export class FileUploadComponent implements OnInit {
     } as UploadContext;
   }
 
-  // TODO: Упростить(удалить?) метод
   private getMnemonicWithoutOrder(mnemonic: string): string {
     const result = mnemonic.match(/\.[0-9]*$/);
     return result ? mnemonic.replace(result[0], '') : mnemonic;

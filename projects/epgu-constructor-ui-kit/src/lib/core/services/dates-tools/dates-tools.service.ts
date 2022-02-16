@@ -588,6 +588,19 @@ export class DatesToolsService {
     return _endOfISOWeek(date);
   }
 
+  public isDateStringDotFormat(date: string): boolean {
+    if (!date) {
+      return false;
+    }
+    const splitDate = date.split('.');
+    return (
+      splitDate.length === 3 &&
+      splitDate[0].length === 2 &&
+      splitDate[1].length === 2 &&
+      splitDate[2].length === 4
+    );
+  }
+
   /**
    * Преобразовывает продолжительность из формата moment.js в dateFns
    * Нужно например для restrictions формата 30, 'd'

@@ -8,8 +8,7 @@ export const smoothHeight = trigger('grow', [
 ]);
 
 export const flyInOut = trigger('flyInOut', [
-  transition('void => *', [style({ opacity: 0, transform: 'translateY(100%)' }), animate(600)]),
-  transition('* => void', [animate(600, style({ opacity: 0, transform: 'translateY(100%)' }))]),
+  transition('void => true', [style({ opacity: 0, transform: 'translateY(100%)' }), animate(600)]),
 ]);
 
 export const rotateAndDiminish = trigger('rotateAndDiminish', [

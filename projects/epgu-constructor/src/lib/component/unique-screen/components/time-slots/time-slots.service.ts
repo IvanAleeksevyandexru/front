@@ -429,8 +429,8 @@ export class TimeSlotsService {
   private getTimeSlotsForCancel(): TimeSlotsAnswerInterface[] {
     return this.cancelReservation
       .map((id) =>
-        this.screenService.getCompValueFromCachedAnswers(id)
-          ? JSON.parse(this.screenService.getCompValueFromCachedAnswers(id))
+        this.screenService.getCompValueFromApplicantAnswers(id)
+          ? JSON.parse(this.screenService.getCompValueFromApplicantAnswers(id))
           : null,
       )
       .filter((timeslot) => !!timeslot && this.isCancelCondition(timeslot));
@@ -510,6 +510,7 @@ export class TimeSlotsService {
         { name: 'SlotsPeriod', value: this.slotsPeriod },
       ],
       [TimeSlotsTypes.RAZBRAK]: [],
+      [TimeSlotsTypes.BIRTH]: [],
       [TimeSlotsTypes.MVD]: [],
       [TimeSlotsTypes.GIBDD]: [
         { name: 'organizationId', value: this.department.attributeValues.code },
@@ -524,6 +525,7 @@ export class TimeSlotsService {
     const settings = {
       [TimeSlotsTypes.BRAK]: this.department.attributeValues.CODE,
       [TimeSlotsTypes.RAZBRAK]: this.department.attributeValues.CODE,
+      [TimeSlotsTypes.BIRTH]: this.department.attributeValues.CODE,
       [TimeSlotsTypes.MVD]: this.department.value,
       [TimeSlotsTypes.GIBDD]: this.department.attributeValues.code,
     };
@@ -603,6 +605,7 @@ export class TimeSlotsService {
     const settings = {
       [TimeSlotsTypes.BRAK]: [],
       [TimeSlotsTypes.RAZBRAK]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
+      [TimeSlotsTypes.BIRTH]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
       [TimeSlotsTypes.MVD]: [],
       [TimeSlotsTypes.GIBDD]: [{ name: 'serviceId', value: this.config.serviceId || serviceId }],
     };
@@ -723,7 +726,10 @@ export class TimeSlotsService {
       this.timeSlotsType !== TimeSlotsTypes.MVD &&
       (!this.getBookedDepartment(timeslotAnswer, this.department) ||
         this.waitingTimeExpired ||
-        this.timeSlotsType === TimeSlotsTypes.GIBDD)
+        this.timeSlotsType === TimeSlotsTypes.GIBDD ||
+        this.timeSlotsType === TimeSlotsTypes.BRAK ||
+        this.timeSlotsType === TimeSlotsTypes.BIRTH ||
+        this.timeSlotsType === TimeSlotsTypes.RAZBRAK)
     );
   }
 

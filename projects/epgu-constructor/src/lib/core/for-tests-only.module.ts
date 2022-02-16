@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import {
   AddressesToolsService,
@@ -75,12 +74,14 @@ import { UploaderStatService } from '../shared/components/file-upload/services/s
 import { UploaderStatServiceStub } from '../shared/components/file-upload/services/stat/uploader-stat.service.stub';
 import { UploaderValidationServiceStub } from '../shared/components/file-upload/services/validation/uploader-validation.service.stub';
 import { UploaderValidationService } from '../shared/components/file-upload/services/validation/uploader-validation.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
  */
 @NgModule({
-  imports: [HttpClientModule, BrowserAnimationsModule],
+  imports: [BrowserAnimationsModule, HttpClientTestingModule, RouterTestingModule],
   providers: [
     { provide: ActivatedRoute, useClass: ActivatedRouteStub },
     { provide: ConfigService, useClass: ConfigServiceStub },

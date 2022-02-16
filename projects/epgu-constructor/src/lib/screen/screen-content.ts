@@ -99,6 +99,8 @@ export class ScreenContent {
 
   private _isLogicComponentLoading = new BehaviorSubject<boolean>(false);
 
+  private _isLogicComponentAfterValidationLoading = new BehaviorSubject<boolean>(false);
+
   private _cycledApplicantAnswerContext = new BehaviorSubject<CycledApplicantAnswerContextDto>(
     null,
   );
@@ -531,6 +533,18 @@ export class ScreenContent {
 
   public get isLogicComponentLoading$(): Observable<boolean> {
     return this._isLogicComponentLoading.asObservable();
+  }
+
+  public get isLogicComponentAfterValidationLoading(): boolean {
+    return this._isLogicComponentAfterValidationLoading.getValue();
+  }
+
+  public set isLogicComponentAfterValidationLoading(val: boolean) {
+    this._isLogicComponentAfterValidationLoading.next(val);
+  }
+
+  public get isLogicComponentAfterValidationLoading$(): Observable<boolean> {
+    return this._isLogicComponentAfterValidationLoading.asObservable();
   }
 
   public get cycledApplicantAnswerContext(): CycledApplicantAnswerContextDto {

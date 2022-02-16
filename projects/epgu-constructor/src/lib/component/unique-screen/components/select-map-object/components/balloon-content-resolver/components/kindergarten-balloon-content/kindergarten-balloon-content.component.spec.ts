@@ -39,7 +39,7 @@ describe('KindergartenContentComponent', () => {
 
     component = fixture.componentInstance;
     component.selectObject = jest.fn((item) => (item.isSelected = !item.isSelected));
-    component.mapObject = mockKindergartenMapObject;
+    component.mapObjects = [mockKindergartenMapObject];
     component.objectClick = () => null;
     fixture.detectChanges();
   });

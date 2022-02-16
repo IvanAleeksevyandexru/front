@@ -47,6 +47,8 @@ export interface CheckOrderApiResponse {
   inviteByOrderId?: number;
   limitOrders?: number;
   startNewBlockedByOrderId?: number;
+  compareRegions?: boolean;
+  serviceName?: string;
   orders?: OrderDto[];
 }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-interface UploaderCounter {
+export interface UploaderCounter {
   maxAmount: number;
   maxSize: number;
   amount: number;

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TextTransform } from '@epgu/epgu-constructor-types';
+import { Clarifications, TextTransform } from '@epgu/epgu-constructor-types';
 import { Width } from '@epgu/ui/models';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
@@ -31,4 +31,5 @@ export class ConstructorMultilineInputComponent {
   @Input() public fullHeightScroll = true;
   @Input() public width?: Width | string;
   @Input() public stringsAmount?: number;
+  @Input() public clarifications?: Clarifications;
 }

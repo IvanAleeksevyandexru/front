@@ -154,6 +154,8 @@ export class FormPlayerStartManager {
     limitOrders?: number,
     inviteByOrderId?: number,
     startNewBlockedByOrderId?: number,
+    compareRegions?: boolean,
+    serviceName?: string,
   ): void {
     this.initDataService.orderId = orders[0]?.orderId;
     if (
@@ -168,7 +170,16 @@ export class FormPlayerStartManager {
       if (orders?.length && limitOrders > 1) {
         this.showSelectOrderModal(orders, limitOrders);
       } else {
-        this.showContinueOrderModal();
+        if (
+          compareRegions &&
+          !this.initDataService.serviceInfo?.userRegion?.codes.includes(
+            orders[0]?.region.toString(),
+          )
+        ) {
+          this.showContinueOrderChangeRegionModal(orders[0], serviceName);
+        } else {
+          this.showContinueOrderModal();
+        }
       }
     } else {
       let initOrderId = this.initDataService.orderId;
@@ -233,6 +244,21 @@ export class FormPlayerStartManager {
       });
   }
 
+  private showContinueOrderChangeRegionModal(order: OrderDto, serviceName: string): void {
+    this.continueOrderModalService
+      .openChangeRegionModal(order, this.initDataService, serviceName)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((result) => {
+        const orderId = result ? this.initDataService.orderId : null;
+
+        if (!orderId) {
+          this.localStorageService.set('cachedAnswers', {});
+        }
+
+        this.formPlayerService.initData(orderId);
+      });
+  }
+
   private getOrderStatus(): void {
     this.formPlayerService
       .getOrderStatus(this.initDataService.orderId)
@@ -255,6 +281,8 @@ export class FormPlayerStartManager {
       limitOrders,
       inviteByOrderId,
       startNewBlockedByOrderId,
+      compareRegions,
+      serviceName,
     } = checkOrderApiResponse;
     this.initDataService.invited = invited;
     this.initDataService.canStartNew = canStartNew;
@@ -265,6 +293,8 @@ export class FormPlayerStartManager {
       limitOrders,
       inviteByOrderId,
       startNewBlockedByOrderId,
+      compareRegions,
+      serviceName,
     );
   }
 

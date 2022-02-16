@@ -1,6 +1,10 @@
 # Release Notes
 
-## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-02-07)
+## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-02-14)
+
+### BREAKING CHANGES
+
+* Упразднение костыльного закардкоженного метода checkAndFetchCarModel в КФ. Необходимо поддержать измение на уровне json, где используются обращения к справочникам MARKI_TS, MODEL_TS [EPGUCORE-72612]
 
 ### Features
 
@@ -17,6 +21,14 @@
 * Добавлен isInvite для timeslot [EPGUCORE-85384]
 * Добавлен линтер в sf-portal [EPGUCORE-87306]
 * Добавлен isInvite в MapService [EPGUCORE-85997]
+* Добавлен прелоад шрифтов Lato для sf-portal [EPGUCORE-79244]
+* Добавлен прелоадер при открытии окна с ранее загруженными файлами [EPGUCORE-86175]
+* Валидация работает так как описано в json [EPGUCORE-83311]
+* Добавлена поддержка конфиг-параметра isYaMetricDisabled для sf-portal [EPGUCORE-87546]
+* Добавлена функциональность в MultipleChoiceDictionary из LookupInput [EPGUCORE-88058]
+* Добавлено мод. окно с выбором черновика, при появлении 404 ошибки в навигации формы [EPGUCORE-86266]
+* Добавлены clarifications для text-area [EPGUCORE-86019]
+* Доработка компонента ComplexChoiceDictionary [EPGUCORE-85236]
 
 ### Refactor
 
@@ -41,6 +53,16 @@
 * Изменены стили и набор атрибутов компонента Checkbox [EPGUCORE-75228]
 * Правка HealthService для suggest сервиса [EPGUCORE-87298]
 * Исправления для selectedItems в MultipleChoiceDictionary [EPGUCORE-86678]
+* Восстановлена передача хитов в метрику для новых форм [EPGUCORE-87367]
+* Поправлен фокус на списке врачей в таймслотах [EPGUCORE-86457]
+* Добавлен класс убирающий лишний отступ листа без заголовка в инфо скрине [EPGUCORE-86834]
+* Поправлен детектор изменений в ScreenResolverComponent [EPGUCORE-84009]
+* Починен механизм stepsBack и атрибута hidden [EPGUCORE-86334]
+* Поправлен вывод информации о booking timeslot [EPGUCORE-67487]
+* Правка singleNotifier для отображения нескольких дисклеймеров [EPGUCORE-87879]
+* Поправлено условие отмены TimeSlot [EPGUCORE-88096]
+* Поправлен формат даты для отправки на бэк согласно контракту в MaritalStatusInputComponent [EPGUCORE-86304]
+* Сделано наличие attrs на уровне филдов необязательным в DocInput [EPGUCORE-87973]
 
 ### Tests
 
@@ -48,8 +70,15 @@
 * Добавлены тесты ContinueOrderModalService [EPGUCORE-85299]
 * Поправлены тесты MonthPicker [EPGUCORE-76608]
 * Ускорен тест: заменена картинка, оптимизированы вызовы тяжелого метода в CompressionService [EPGUCORE-87310]
+* Подключены и поправлены тесты в sf-portal, изменён параметр nohoist - [EPGUCORE-87321]
+* Добавлены тесты для HealthService [EPGUCORE-85309]
+* Поправлены тесты для FileUpload [EPGUCORE-85317]
 
-## [399.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.x.x) (2022-02-07)
+### Chore
+
+* Поправлен конфиг jest для Angular Ivy [EPGUCORE-85541]
+
+## [399.18.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.18.0) (2022-02-14)
 
 ### BREAKING CHANGES
 * Мини-приложение СhildrenСlubs декомпозировано на 3 самостоятельных UNIQUE-компонента ProgramList, ProgramView, GroupList в контуре КФ. Необходимые изменения на бэке EPGUCORE-81501 и в json - EPGUCORE-84364. Обратная совместимость с мини-приложением СhildrenСlubs сохраняется на время жизни старых черновиков (3 месяца) [EPGUCORE-81501]
@@ -77,6 +106,7 @@
 * Добавлен компонент not-found в sf-portal [EPGUCORE-85703]
 * Поддержка Trobber для logicAfterValidationComponents [EPGUCORE-85052]
 * Добавлен новый компонент MedicalBirthCertificates [EPGUCORE-85940]
+* Доработка компонента ComplexChoiceDictionary в части выбора только одного чек-бокса [EPGUCORE-85236]
 
 ### Refactor
 
@@ -132,6 +162,10 @@
 * Правки по internal-error [EPGUCORE-82540]
 * Исправлено ref displayOn не срабатывает. Кнопка далее неактивна при возврате назад [EPGUCORE-86211]
 * Исправлена работа trobber, если не задан timeout в RestCallComponent [EPGUCORE-87527]
+* Исправлен текст в модальном окне при ошибке 409 [EPGUCORE-82665]
+* Поправлен вывод информации о booking timeslot [EPGUCORE-67487]
+* Правка singleNotifier для отображения нескольких дисклеймеров [EPGUCORE-87879]
+* Исправлена работа rest call [EPGUCORE-88035]
 
 ### Tests
 
@@ -169,5 +203,9 @@
 *
 
 ### Tests
+
+*
+
+### Chore
 
 *

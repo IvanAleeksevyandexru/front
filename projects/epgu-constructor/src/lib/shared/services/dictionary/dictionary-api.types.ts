@@ -23,6 +23,18 @@ export interface DictionaryResponseError {
   };
 }
 
+export interface AttributeValue {
+  name?: string;
+  type?: string;
+  value?: {
+    asString?: string | null;
+    asLong?: number;
+    asDecimal?: number;
+    asDateTime?: string;
+    asDate?: string;
+  };
+}
+
 /**
  * @property {object}attributeValues -
  * @property {Array<any>}attributes -
@@ -34,7 +46,7 @@ export interface DictionaryResponseError {
  */
 export interface DictionaryItem extends ListElement {
   attributeValues: PaymentInfoInterface & { [key: string]: string & number };
-  attributes: (string | boolean)[];
+  attributes: (string | boolean | AttributeValue)[];
   children: unknown[];
   isLeaf: boolean;
   parentValue: null;

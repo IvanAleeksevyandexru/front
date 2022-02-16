@@ -526,7 +526,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       // ref: https://jira.egovdev.ru/browse/EPGUCORE-82378
       // selectAttributes: this.screenService.component.attrs.selectAttributes || ['*'],
       selectAttributes: ['*'],
-      pageSize: '100000',
+      pageSize: this.screenService.component.attrs.pageSize || '100000',
     };
   }
 

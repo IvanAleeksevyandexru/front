@@ -7,6 +7,7 @@ import {
   InputErrorModule,
   ConstructorLookupComponent,
   DatesToolsServiceStub,
+  DATE_STRING_DOT_FORMAT,
 } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -304,6 +305,35 @@ describe('MaritalStatusInputComponent', () => {
 
       component.form.patchValue(formValueMock);
       expect(emitToParentSpy).toHaveBeenCalledWith(expectedValue);
+    });
+
+    it('should process date fields according to transfer contract', () => {
+      const formValueMock = {
+        act_rec_date: new Date('2016-07-01T08:00:00.000Z'),
+      };
+      const formattingSpy = jest.spyOn(component['datesToolsService'], 'format');
+      component.form.patchValue(formValueMock);
+
+      component.ngOnInit();
+
+      expect(formattingSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should correctly process dot format', () => {
+      const formValueMock = {
+        act_rec_date: '07.08.2021',
+      };
+      const stub1 = jest
+        .spyOn(component, 'getParsedComponentValues' as any)
+        .mockReturnValue(formValueMock);
+      const stub2 = jest
+        .spyOn(component['datesToolsService'], 'isDateStringDotFormat')
+        .mockReturnValue(true);
+      const spy = jest.spyOn(component['datesToolsService'], 'parse');
+
+      component.ngOnInit();
+
+      expect(spy).toHaveBeenCalledWith(formValueMock.act_rec_date, DATE_STRING_DOT_FORMAT);
     });
 
     it('should update parent if form is not VALID', () => {
