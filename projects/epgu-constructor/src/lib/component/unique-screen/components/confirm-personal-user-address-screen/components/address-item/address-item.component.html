@@ -1,7 +1,14 @@
 <div>
-  <epgu-constructor-label [tips]="tips" [label]="label"></epgu-constructor-label>
+  <epgu-constructor-label
+    [tips]="tips"
+    [label]="label"
+    [clarifications]="clarifications"
+  ></epgu-constructor-label>
   <ng-content></ng-content>
-  <epgu-cf-ui-constructor-helper-text class="address-item-hint" *ngIf="hint">
-    {{ hint }}
-  </epgu-cf-ui-constructor-helper-text>
+  <epgu-constructor-hint
+    class="address-item-hint"
+    *ngIf="hint"
+    [hint]="hint"
+    [clarifications]="clarifications"
+  ></epgu-constructor-hint>
 </div>
