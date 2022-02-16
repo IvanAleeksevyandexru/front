@@ -81,5 +81,12 @@
         </div>
       </div>
     </form>
+
+    <div
+      *ngIf="(data$ | async).attrs?.hint as hint"
+      epgu-constructor-clickable-label
+      [clarifications]="(data$ | async).attrs?.clarifications"
+      [innerHTML]="hint | imgPrefixer | safe: 'html'"
+    ></div>
   </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>
