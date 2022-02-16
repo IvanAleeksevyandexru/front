@@ -472,7 +472,7 @@
         "test": {
           "builder": "@angular-builders/jest:run"
         },
-        "_lint": {
+        "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "eslintConfig": "projects/sf-portal/.eslintrc.js",
