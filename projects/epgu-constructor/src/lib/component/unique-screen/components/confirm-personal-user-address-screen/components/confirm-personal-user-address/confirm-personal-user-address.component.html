@@ -40,6 +40,7 @@
         [label]="field.label"
         [tips]="field?.attrs?.labelHint"
         [hint]="field?.hint"
+        [clarifications]="field?.attrs?.clarifications"
       >
         <lib-dadata-widget
           [simpleMode]="true"
@@ -60,6 +61,7 @@
         class="item"
         [label]="field.label"
         [hint]="field?.hint"
+        [clarifications]="field?.attrs?.clarifications"
       >
         <epgu-constructor-constructor-date-picker
           class="item--date"
@@ -78,6 +80,7 @@
         class="item"
         [label]="field.label"
         [hint]="field?.hint"
+        [clarifications]="field?.attrs?.clarifications"
       >
         <lib-plain-input
           epgu-cf-ui-constructor-trim

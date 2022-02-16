@@ -1,4 +1,4 @@
-import { TextTransform } from '@epgu/epgu-constructor-types';
+import { Clarifications, TextTransform } from '@epgu/epgu-constructor-types';
 import { RelativeDate } from '@epgu/ui/models/date-time';
 import { UniqueScreenComponentTypes } from '../../../unique-screen-components.types';
 import { FieldNames } from '../../registration-addr/registration-addr-screen.types';
@@ -21,6 +21,7 @@ export interface ConfirmAddressInterface {
 }
 
 interface ConfirmAddressInterfaceAttr {
+  clarifications?: Clarifications;
   actions: ConfirmAddressActionsInterface[];
   emptyFieldsErrorMsg: string;
   fields: ConfirmAddressFieldsInterface[];
@@ -49,6 +50,7 @@ export interface ConfirmAddressFieldsInterface {
   fieldName: FieldNames;
   label: string;
   attrs?: {
+    clarifications?: Clarifications;
     isOnlyForValidation?: boolean;
     labelHint?: string;
   };
