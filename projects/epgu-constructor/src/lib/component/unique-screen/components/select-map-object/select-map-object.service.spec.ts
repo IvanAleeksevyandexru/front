@@ -54,9 +54,7 @@ describe('SelectMapObjectService', () => {
 
   beforeEach(() => {
     const componentMock = {
-      arguments: {
-        /*  childsHome: "{'geoLon': 1,'geoLat': 2}"  */
-      },
+      arguments: {},
       attrs: {},
       id: 'test',
       type: '1',

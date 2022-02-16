@@ -28,56 +28,7 @@ export class ValidationHelperService {
 
     const arrValue: number[] = strValue.split('').map(Number);
 
-    //для ИНН в 10 знаков
-    if (
-      arrValue.length === 10 &&
-      +arrValue[9] ===
-        ((2 * arrValue[0] +
-          4 * arrValue[1] +
-          10 * arrValue[2] +
-          3 * arrValue[3] +
-          5 * arrValue[4] +
-          9 * arrValue[5] +
-          4 * arrValue[6] +
-          6 * arrValue[7] +
-          8 * arrValue[8]) %
-          11) %
-          10
-    ) {
-      return true;
-    }
-
-    //для ИНН в 12 знаков
-    return (
-      arrValue.length === 12 &&
-      +arrValue[10] ===
-        ((7 * arrValue[0] +
-          2 * arrValue[1] +
-          4 * arrValue[2] +
-          10 * arrValue[3] +
-          3 * arrValue[4] +
-          5 * arrValue[5] +
-          9 * arrValue[6] +
-          4 * arrValue[7] +
-          6 * arrValue[8] +
-          8 * arrValue[9]) %
-          11) %
-          10 &&
-      +arrValue[11] ===
-        ((3 * arrValue[0] +
-          7 * arrValue[1] +
-          2 * arrValue[2] +
-          4 * arrValue[3] +
-          10 * arrValue[4] +
-          3 * arrValue[5] +
-          5 * arrValue[6] +
-          9 * arrValue[7] +
-          4 * arrValue[8] +
-          6 * arrValue[9] +
-          8 * arrValue[10]) %
-          11) %
-          10
-    );
+    return this.isValidINNWith10Signs(arrValue) || this.isValidINNWith12Signs(arrValue);
   };
 
   public checkOgrn = (value: unknown): boolean => {
@@ -148,5 +99,56 @@ export class ValidationHelperService {
       result.slice(-2);
 
     return this.checkSnils(result);
+  };
+
+  private isValidINNWith10Signs = (arrValue: number[]): boolean => {
+    return (
+      arrValue.length === 10 &&
+      +arrValue[9] ===
+        ((2 * arrValue[0] +
+          4 * arrValue[1] +
+          10 * arrValue[2] +
+          3 * arrValue[3] +
+          5 * arrValue[4] +
+          9 * arrValue[5] +
+          4 * arrValue[6] +
+          6 * arrValue[7] +
+          8 * arrValue[8]) %
+          11) %
+          10
+    );
+  };
+
+  private isValidINNWith12Signs = (arrValue: number[]): boolean => {
+    return (
+      arrValue.length === 12 &&
+      +arrValue[10] ===
+        ((7 * arrValue[0] +
+          2 * arrValue[1] +
+          4 * arrValue[2] +
+          10 * arrValue[3] +
+          3 * arrValue[4] +
+          5 * arrValue[5] +
+          9 * arrValue[6] +
+          4 * arrValue[7] +
+          6 * arrValue[8] +
+          8 * arrValue[9]) %
+          11) %
+          10 &&
+      +arrValue[11] ===
+        ((3 * arrValue[0] +
+          7 * arrValue[1] +
+          2 * arrValue[2] +
+          4 * arrValue[3] +
+          10 * arrValue[4] +
+          3 * arrValue[5] +
+          5 * arrValue[6] +
+          9 * arrValue[7] +
+          4 * arrValue[8] +
+          6 * arrValue[9] +
+          8 * arrValue[10]) %
+          11) %
+          10
+    );
   };
 }
