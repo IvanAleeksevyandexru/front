@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CurrencyPipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { FormBuilder, FormControl, FormGroup, NgControl } from '@angular/forms';
-import { BaseModule } from '@epgu/epgu-constructor/src/lib/shared/base.module';
+import { BaseModule } from '../../../../../../epgu-constructor/src/lib/shared/base.module';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { TextTransformDirective } from './text-transform.directive';
 import { TextTransformService } from '../../../core/services/text-transform/text-transform.service';

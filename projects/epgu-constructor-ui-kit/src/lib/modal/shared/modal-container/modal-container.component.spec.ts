@@ -1,14 +1,14 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ConfirmationModalModule } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.module';
+import { ConfirmationModalModule } from '../../../../../../epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.module';
 import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
-import { ScreenButtonsComponent } from '@epgu/epgu-constructor/src/lib/shared/components/screen-buttons/screen-buttons.component';
-import { AnswerButtonModule } from '@epgu/epgu-constructor/src/lib/shared/components/answer-button/answer-button.module';
-import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
-import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
-import { ConfirmationModalComponent } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.component';
-import { CurrentAnswersService } from '@epgu/epgu-constructor/src/lib/screen/current-answers.service';
-import { HtmlSelectService } from '@epgu/epgu-constructor/src/lib/core/services/html-select/html-select.service';
+import { ScreenButtonsComponent } from '../../../../../../epgu-constructor/src/lib/shared/components/screen-buttons/screen-buttons.component';
+import { AnswerButtonModule } from '../../../../../../epgu-constructor/src/lib/shared/components/answer-button/answer-button.module';
+import { NavigationService } from '../../../../../../epgu-constructor/src/lib/core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../../../../../epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
+import { ConfirmationModalComponent } from '../../../../../../epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.component';
+import { CurrentAnswersService } from '../../../../../../epgu-constructor/src/lib/screen/current-answers.service';
+import { HtmlSelectService } from '../../../../../../epgu-constructor/src/lib/core/services/html-select/html-select.service';
 import { ModalContainerComponent } from './modal-container.component';
 import { ModalService } from '../../modal.service';
 import { CtaModalComponent } from '../cta-modal/cta-modal.component';
@@ -18,9 +18,7 @@ import { EventBusService } from '../../../core/services/event-bus/event-bus.serv
 import { BaseUiModule } from '../../../base/base-ui.module';
 import { LocationService } from '../../../core/services/location/location.service';
 import { LocationServiceStub } from '../../../core/services/location/location.service.stub';
-import { DeviceDetectorServiceStub } from '../../../core/services/device-detector/device-detector.service.stub';
-import { DeviceDetectorService } from '../../../core/services/device-detector/device-detector.service';
-import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
+import { ScreenService } from '../../../../../../epgu-constructor/src/lib/screen/screen.service';
 import { JsonHelperService } from '../../../core/services/json-helper/json-helper.service';
 
 const blankModalParameters = {
@@ -57,7 +55,6 @@ describe('ModalContainerComponent', () => {
           { provide: LocationService, useClass: LocationServiceStub },
           { provide: NavigationService, useClass: NavigationServiceStub },
           { provide: ConfigService, useClass: ConfigServiceStub },
-          { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
           MockProvider(CurrentAnswersService),
           MockProvider(HtmlSelectService),
           MockProvider(JsonHelperService),

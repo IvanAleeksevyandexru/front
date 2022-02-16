@@ -1,17 +1,6 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
-import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
-import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
-import { FormPlayerApiService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
-import { InitDataService } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service';
-import { InitDataServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
-import { FormPlayerServiceStub } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service.stub';
-
-import { FormPlayerService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service';
-import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
-import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
 import {
   ConfigService,
   ConfigServiceStub,
@@ -26,6 +15,15 @@ import { BaseInterceptor } from './base.interceptor';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { InitDataService } from '../../services/init-data/init-data.service';
+import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
+import { NavigationService } from '../../services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../services/navigation/navigation.service.stub';
 
 @Injectable()
 class TestInterceptor extends BaseInterceptor {
@@ -42,9 +40,6 @@ class TestInterceptor extends BaseInterceptor {
 }
 
 describe('BaseInterceptor', () => {
-  let modalService: ModalService;
-  let formPlayerApi: FormPlayerApiService;
-  let config: ConfigService;
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
 
@@ -73,9 +68,6 @@ describe('BaseInterceptor', () => {
   afterEach(waitForAsync(() => httpMock.verify()));
 
   beforeEach(() => {
-    modalService = TestBed.inject(ModalService);
-    formPlayerApi = TestBed.inject(FormPlayerApiService);
-    config = TestBed.inject(ConfigService);
     httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
   });

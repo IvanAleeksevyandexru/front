@@ -2,13 +2,12 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockModule } from 'ng-mocks';
-
-import { CoreModule } from '@epgu/epgu-constructor/src/lib/core/core.module';
-import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
-import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
 import { PrevButtonModule } from '../prev-button/prev-button.module';
 import { ScreenContainerComponent } from './screen-container.component';
+import { CoreUiModule } from '../../../core/core-ui.module';
+import { CoreModule } from '../../../../../../epgu-constructor/src/lib/core/core.module';
+import { ScreenService } from '../../../../../../epgu-constructor/src/lib/screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../epgu-constructor/src/lib/screen/screen.service.stub';
 
 describe('ScreenContainerComponent', () => {
   let component: ScreenContainerComponent;
