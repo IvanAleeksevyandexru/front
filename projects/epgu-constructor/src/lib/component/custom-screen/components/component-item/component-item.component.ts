@@ -20,6 +20,7 @@ import {
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../components-list.types';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-component-item',
@@ -38,6 +39,7 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   @Input() largeFontSize = false;
   @Input() parentFirst?: boolean;
   @Input() parentLast?: boolean;
+  @Input() clarifications?: Clarifications;
 
   readonly componentType = CustomScreenComponentTypes;
   public isHelperTextVisible = false;
