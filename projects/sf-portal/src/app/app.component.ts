@@ -138,8 +138,10 @@ export class AppComponent implements OnInit {
 
   private setWebViewUi() {
     if (this.deviceDetectorService.isWebView) {
-      this.headerService.setVisible(false);
-      this.footerService.setVisible(false);
+      /* TODO: отключено до выяснения точности реализации определения WebView в МП
+      ref: https://jira.egovdev.ru/browse/EPGUCORE-86689 */
+      // this.headerService.setVisible(false);
+      // this.footerService.setVisible(false);
     } else {
       this.setWindowParams();
     }
