@@ -1,10 +1,10 @@
 # Release Notes
 
-## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-02-14)
+## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-02-17)
 
 ### BREAKING CHANGES
 
-* Упразднение костыльного закардкоженного метода checkAndFetchCarModel в КФ. Необходимо поддержать измение на уровне json, где используются обращения к справочникам MARKI_TS, MODEL_TS [EPGUCORE-72612]
+* Упразднение костыльного закардкоженного метода checkAndFetchCarModel в КФ. Необходимо поддержать измение на уровне json, где используются обращения к справочникам MARKI_TS, MODEL_TS. Обратная совместимость сохраняется. [EPGUCORE-72612]
 
 ### Features
 
@@ -29,6 +29,11 @@
 * Добавлено мод. окно с выбором черновика, при появлении 404 ошибки в навигации формы [EPGUCORE-86266]
 * Добавлены clarifications для text-area [EPGUCORE-86019]
 * Доработка компонента ComplexChoiceDictionary [EPGUCORE-85236]
+* Добавлена поддержка stringDotFormat для дат из ЛК [EPGUCORE-88160]
+* Добавлена фича при открытии услуг дополнительно производить проверку региона [EPGUCORE-86590]
+* Добавлена поддержка hint для registration addr на уровне компонента [EPGUCORE-87038]
+* Добавлена поддержка clarifications для компонента ConfirmPersonalUserRegAddr [EPGUCORE-86022]
+* Добавлена поддержка clarifications для radio-input[EPGUCORE-86018]
 
 ### Refactor
 
@@ -38,6 +43,8 @@
 * Оптимизация ConfirmPersonalUserData, добавление в ScreenService screenStore$ [EPGUCORE-84010]
 * Добавлена возможность скрывать/открывать панели стендов в versions. Добавлен config.json для API. Рефакторинг кода и стилей. [EPGUCORE-85909]
 * Изменение стратегии обнаружения с Default на OnPush по проекту [EPGUCORE-84009]
+* Оптимизирован рендеринг элементов списка на карте [EPGUCORE-86830]
+* Комплесный рефактор, уменьшающий кол-во warnings при сборке [EPGUCORE-80320]
 
 ### Bug Fixes
 
@@ -63,6 +70,9 @@
 * Поправлено условие отмены TimeSlot [EPGUCORE-88096]
 * Поправлен формат даты для отправки на бэк согласно контракту в MaritalStatusInputComponent [EPGUCORE-86304]
 * Сделано наличие attrs на уровне филдов необязательным в DocInput [EPGUCORE-87973]
+* Исправлена включенная кнопка на экране списка садов [EPGUCORE-87452]
+* Поправлены параметры у Birth Timeslot [EPGUCORE-88420]
+* Добавлено определение типа PARENT_ID для MultiChoice [EPGUCORE-88029]
 
 ### Tests
 
@@ -73,10 +83,14 @@
 * Подключены и поправлены тесты в sf-portal, изменён параметр nohoist - [EPGUCORE-87321]
 * Добавлены тесты для HealthService [EPGUCORE-85309]
 * Поправлены тесты для FileUpload [EPGUCORE-85317]
+* Добавлены тесты на compression service [EPGUCORE-85281]
+* Добавлены тесты для UploaderManagerService [EPGUCORE-88301]
+* Добавлены тесты для GenderRadioButtonComponent [EPGUCORE-88563]
 
 ### Chore
 
 * Поправлен конфиг jest для Angular Ivy [EPGUCORE-85541]
+* Обновление либы jest-angular-preset, фиксящий кривую работу с ts-кэшом [EPGUCORE-85541]
 
 ## [399.18.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.18.0) (2022-02-14)
 
