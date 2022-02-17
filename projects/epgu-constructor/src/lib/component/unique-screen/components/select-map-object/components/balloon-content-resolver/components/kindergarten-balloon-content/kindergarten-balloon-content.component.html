@@ -3,6 +3,7 @@
     [ngClass]="{ expanded: mapObject.expanded }"
     class="map-object"
     [@flyInOut]="deviceDetector.isDesktop"
+    #balloonComponents
   >
     <div class="cross-btn" (click)="collapseObject(mapObject)" *ngIf="mapObject.expanded && showCrossButton"></div>
     <div class="balloon-content-wrapper">

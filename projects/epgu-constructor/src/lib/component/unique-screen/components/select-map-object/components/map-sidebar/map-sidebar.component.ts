@@ -6,8 +6,7 @@ import {
   Input,
   OnInit,
   Output,
-  QueryList,
-  ViewChildren,
+  ViewChild,
 } from '@angular/core';
 import { DisclaimerDto, KeyValueMap } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService, YandexMapService, YMapItem } from '@epgu/epgu-constructor-ui-kit';
@@ -21,7 +20,6 @@ import {
   BalloonContentResolverComponent,
   ContentTypes,
 } from '../balloon-content-resolver/balloon-content-resolver.component';
-import { arePointsEqual } from '../../select-map-object.helpers';
 
 @Component({
   selector: 'epgu-constructor-map-sidebar',
@@ -30,7 +28,7 @@ import { arePointsEqual } from '../../select-map-object.helpers';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapSidebarComponent implements OnInit {
-  @ViewChildren('balloonComponents') balloonComponents: QueryList<BalloonContentResolverComponent>;
+  @ViewChild('balloonComponents') balloonComponents: BalloonContentResolverComponent;
   @Input() sidebarData: SidebarData;
   @Input() previouslyChoosenItem: DictionaryItem;
   @Output() selectObjectEvent = new EventEmitter<YMapItem<DictionaryItem>>();
@@ -98,11 +96,9 @@ export class MapSidebarComponent implements OnInit {
           let activeBalloonRef;
           if (this.activeItem) {
             this.activeItem.expanded = false;
-            activeBalloonRef = this.balloonComponents.find((item) =>
-              arePointsEqual(item.mapObjects[0], this.activeItem),
-            );
+            activeBalloonRef = this.balloonComponents.findMatchingElementIdx(value[0]);
             if (activeBalloonRef) {
-              activeBalloonRef.balloonContentComponentRef.instance.lockAnimation = true;
+              this.balloonComponents.lockAnimation(true);
             }
           }
           this.originalValue = value;
@@ -112,16 +108,13 @@ export class MapSidebarComponent implements OnInit {
             this.activeItem.expanded = true;
           }
           this.cdr.detectChanges();
-
-          const matchingBalloon = this.balloonComponents.find((item) =>
-            arePointsEqual(item.mapObjects[0], value[0]),
-          );
-
-          if (matchingBalloon) {
+          this.balloonComponents.detectBalloonChanges();
+          const idx = this.balloonComponents.findMatchingElementIdx(value[0]);
+          if (idx) {
             window.requestAnimationFrame(() => {
-              matchingBalloon.balloonContentComponentRef.location.nativeElement.scrollIntoView();
+              this.balloonComponents.scrollMatchingRefIntoView(idx);
               if (activeBalloonRef) {
-                activeBalloonRef.balloonContentComponentRef.instance.lockAnimation = false;
+                this.balloonComponents.lockAnimation(false);
               }
             });
           }

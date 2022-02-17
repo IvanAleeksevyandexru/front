@@ -3,7 +3,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import { DeviceDetectorService, flyInOut } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs';
@@ -25,6 +28,7 @@ export class ElectionsBalloonContentComponent implements AfterViewInit, IBalloon
   @Input() showLoader: Observable<boolean>;
   @Input() mapObjects: DictionaryYMapItem[];
   @Input() attrs;
+  @ViewChildren('balloonComponents') balloonComponents: QueryList<ElementRef>;
   public selectObject: Function;
   public objectClick: Function;
   public collapseObject: Function;

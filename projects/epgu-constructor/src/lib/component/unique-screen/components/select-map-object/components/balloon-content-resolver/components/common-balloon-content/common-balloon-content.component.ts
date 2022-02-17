@@ -2,8 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import {
   CommonModalComponent,
@@ -37,6 +40,7 @@ export class CommonBalloonContentComponent implements IBalloonContent {
   @Input() showCrossButton = true;
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
   @ViewChild('informationTemplate', { static: false }) informationTemplate;
+  @ViewChildren('balloonComponents') balloonComponents: QueryList<ElementRef>;
   public selectObject: Function;
   public objectClick: Function;
   public collapseObject: Function;
