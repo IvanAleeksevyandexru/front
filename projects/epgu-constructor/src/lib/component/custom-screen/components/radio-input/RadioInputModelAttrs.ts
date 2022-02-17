@@ -1,5 +1,6 @@
 import { CustomComponentAttr, SupportedValue } from '../../components-list.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 
 export default class RadioInputModelAttrs extends GenericAttrs {
   readonly hidden: boolean;
@@ -16,6 +17,8 @@ export default class RadioInputModelAttrs extends GenericAttrs {
 
   readonly largeFontSize: boolean;
 
+  readonly clarifications: Clarifications;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.hidden = attrs.hidden;
@@ -25,5 +28,6 @@ export default class RadioInputModelAttrs extends GenericAttrs {
     this.subLabel = attrs.subLabel;
     this.isTextHelper = attrs.isTextHelper;
     this.largeFontSize = attrs.largeFontSize;
+    this.clarifications = attrs.clarifications;
   }
 }
