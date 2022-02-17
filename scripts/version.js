@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const sfVersion = require('../projects/sf-portal/package.json').version;
-const cfVersion = require('../dist/epgu-constructor/package.json').version;
+const cfVersion = require('../node_modules/@epgu/epgu-constructor/package.json').version;
 const uiVersion = require('../node_modules/@epgu/ui/package.json').version;
 const versionFileLibPath = path.join(
   __dirname,
