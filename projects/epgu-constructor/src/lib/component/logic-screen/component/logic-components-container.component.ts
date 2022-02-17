@@ -38,7 +38,7 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
   isLoading = true;
 
   constructor(
-    private screenService: ScreenService,
+    public screenService: ScreenService,
     private hookService: HookService,
     private ngUnsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,
@@ -68,14 +68,6 @@ export class LogicComponentsContainerComponent implements OnInit, AfterViewInit 
     this.viewComponents.changes.subscribe(() => {
       this.resetInitSubscribe();
     });
-  }
-
-  public logicAfterValidationComponents(): string {
-    const trobber = this.screenService.trobber;
-    if (trobber !== null) {
-      return trobber?.message || '';
-    }
-    return '';
   }
 
   private resetInitSubscribe(): void {

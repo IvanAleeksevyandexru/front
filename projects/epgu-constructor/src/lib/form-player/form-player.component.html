@@ -1,5 +1,6 @@
 <epgu-cf-ui-main-container
   [showLoader]="(isFirstLoading$ | async) || (screenService.isLoaderVisible | async)"
+  [trobber]="screenService.trobber"
 >
   <ng-container
     *ngIf="(formPlayerService.playerLoaded$ | async) && (configService.isLoaded$ | async)"
