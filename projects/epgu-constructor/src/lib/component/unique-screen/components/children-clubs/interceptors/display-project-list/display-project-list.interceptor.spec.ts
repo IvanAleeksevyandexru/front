@@ -1,16 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
-import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
-import { FormPlayerApiService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
-import { InitDataService } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service';
-import { InitDataServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
-import { FormPlayerServiceStub } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service.stub';
-import { FormPlayerService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service';
-import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
-import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
-
 import {
   ConfigService,
   ConfigServiceStub,
@@ -23,14 +13,19 @@ import {
   ModalServiceStub,
   SessionService,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { DisplayProjectListInterceptor } from './display-project-list.interceptor';
 import { PROGRAM_DETAIL_SUB_URL, SEARCH_GROUP_SUB_URL } from '../../services/health/health-handler';
+import { InitDataService } from '../../../../../../core/services/init-data/init-data.service';
+import { InitDataServiceStub } from '../../../../../../core/services/init-data/init-data.service.stub';
+import { NavigationService } from '../../../../../../core/services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../../../../../core/services/navigation/navigation.service.stub';
+import { FormPlayerApiService } from '../../../../../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerService } from '../../../../../../form-player/services/form-player/form-player.service';
+import { FormPlayerServiceStub } from '../../../../../../form-player/services/form-player/form-player.service.stub';
+import { ScreenService } from '../../../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../../../screen/screen.service.stub';
 
 describe('DisplayProjectListInterceptor', () => {
-  let modalService: ModalService;
-  let formPlayerApi: FormPlayerApiService;
-  let config: ConfigService;
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
   let navService: MicroAppNavigationService;
@@ -59,9 +54,6 @@ describe('DisplayProjectListInterceptor', () => {
 
   beforeEach(() => {
     navService = TestBed.inject(MicroAppNavigationService);
-    modalService = TestBed.inject(ModalService);
-    formPlayerApi = TestBed.inject(FormPlayerApiService);
-    config = TestBed.inject(ConfigService);
     httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
   });

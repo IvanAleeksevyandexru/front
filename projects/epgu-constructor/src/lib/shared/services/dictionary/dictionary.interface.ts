@@ -3,7 +3,7 @@ import {
   DictionaryValue,
   ComponentDictionaryFilterDto,
   AttributeTypes,
-} from '@epgu/epgu-constructor-types/src';
+} from '@epgu/epgu-constructor-types';
 import { ScreenStore } from '../../../screen/screen.types';
 
 export type ComponentValue = {

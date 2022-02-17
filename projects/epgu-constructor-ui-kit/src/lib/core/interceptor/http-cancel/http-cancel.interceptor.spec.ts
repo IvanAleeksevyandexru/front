@@ -6,7 +6,6 @@ import { HttpCancelService } from './http-cancel.service';
 import { HttpCancelInterceptor } from './http-cancel.interceptor';
 
 describe('HttpCancelInterceptor', () => {
-  let interceptor: HttpCancelInterceptor;
   let httpCancelService: HttpCancelService;
   let httpTestingController: HttpTestingController;
   let http: HttpClient;
@@ -23,7 +22,6 @@ describe('HttpCancelInterceptor', () => {
   );
 
   beforeEach(() => {
-    interceptor = TestBed.inject(HttpCancelInterceptor);
     httpCancelService = TestBed.inject(HttpCancelService);
     httpTestingController = TestBed.inject(HttpTestingController);
     http = TestBed.inject(HttpClient);

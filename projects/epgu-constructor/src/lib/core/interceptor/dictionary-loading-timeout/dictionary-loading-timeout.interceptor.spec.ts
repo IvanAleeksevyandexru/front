@@ -1,19 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { SERVICE_OR_SPEC_SESSION_TIMEOUT } from '@epgu/epgu-constructor/src/lib/core/services/error-handler/error-handler';
-import { NavigationServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service.stub';
-import { NavigationService } from '@epgu/epgu-constructor/src/lib/core/services/navigation/navigation.service';
-import { FormPlayerApiService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
-import { InitDataService } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service';
-import { InitDataServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
-import { FormPlayerServiceStub } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service.stub';
-
-import { ConfirmationModalComponent } from '@epgu/epgu-constructor/src/lib/modal/confirmation-modal/confirmation-modal.component';
-import { FormPlayerService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player/form-player.service';
-import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
-import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
-
 import {
   ConfigService,
   ConfigServiceStub,
@@ -27,6 +14,17 @@ import {
 import { DictionaryLoadingTimeoutInterceptor } from './dictionary-loading-timeout.interceptor';
 import { SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT2 } from '../../services/error-handler/error-handler.inteface';
 import { InterceptorUtilsService } from '../../services/interceptor-utils/interceptor-utils.service';
+import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import { FormPlayerServiceStub } from '../../../form-player/services/form-player/form-player.service.stub';
+import { ConfirmationModalComponent } from '../../../modal/confirmation-modal/confirmation-modal.component';
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../screen/screen.service.stub';
+import { SERVICE_OR_SPEC_SESSION_TIMEOUT } from '../../services/error-handler/error-handler';
+import { InitDataService } from '../../services/init-data/init-data.service';
+import { InitDataServiceStub } from '../../services/init-data/init-data.service.stub';
+import { NavigationService } from '../../services/navigation/navigation.service';
+import { NavigationServiceStub } from '../../services/navigation/navigation.service.stub';
 
 const data = {
   error: {
@@ -36,8 +34,6 @@ const data = {
 
 describe('DictionaryLoadingTimeoutInterceptor', () => {
   let modalService: ModalService;
-  let formPlayerApi: FormPlayerApiService;
-  let config: ConfigService;
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
   beforeEach(() => {
@@ -65,8 +61,6 @@ describe('DictionaryLoadingTimeoutInterceptor', () => {
 
   beforeEach(() => {
     modalService = TestBed.inject(ModalService);
-    formPlayerApi = TestBed.inject(FormPlayerApiService);
-    config = TestBed.inject(ConfigService);
     httpMock = TestBed.inject(HttpTestingController);
     httpClient = TestBed.inject(HttpClient);
   });

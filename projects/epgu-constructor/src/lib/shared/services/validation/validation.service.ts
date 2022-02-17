@@ -6,7 +6,6 @@ import {
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
-import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import {
   HealthService,
@@ -15,9 +14,9 @@ import {
   InvalidControlMsg,
   REQUIRED_FIELD,
   JsonHelperService,
+  ValidationHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CookieService } from 'ngx-cookie-service';
-
 import { get } from 'lodash';
 import { ComponentDto, KeyValueMap } from '@epgu/epgu-constructor-types';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
@@ -66,6 +65,7 @@ export class ValidationService {
     private health: HealthService,
     private cookie: CookieService,
     private jsonHelperService: JsonHelperService,
+    private validationHelperService: ValidationHelperService,
   ) {}
 
   public customValidator(component: CustomComponent): ValidatorFn {
@@ -304,15 +304,17 @@ export class ValidationService {
   private isValid(component: CustomComponent, value: string): boolean {
     switch (component.type) {
       case CustomScreenComponentTypes.OgrnInput:
-        return checkOgrn(value);
+        return this.validationHelperService.checkOgrn(value);
       case CustomScreenComponentTypes.OgrnipInput:
-        return checkOgrnip(value);
+        return this.validationHelperService.checkOgrnip(value);
       case CustomScreenComponentTypes.SnilsInput:
-        return checkSnils(value);
+        return this.validationHelperService.checkSnils(value);
       case CustomScreenComponentTypes.PersonInnInput:
-        return value.length === this.personInnLength && checkINN(value);
+        return (
+          value.length === this.personInnLength && this.validationHelperService.checkINN(value)
+        );
       case CustomScreenComponentTypes.LegalInnInput:
-        return value.length === this.legalInnLength && checkINN(value);
+        return value.length === this.legalInnLength && this.validationHelperService.checkINN(value);
       case CustomScreenComponentTypes.CalendarInput:
         return this.isCompoundComponentValid(component, (value as unknown) as KeyValueMap);
       case CustomScreenComponentTypes.CardNumberInput:

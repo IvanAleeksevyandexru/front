@@ -17,7 +17,7 @@ import { GroupListModule } from '../../group-list.module';
 import { FindOptionsGroup, VendorType } from '../../../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
-import { ComponentDto } from '@epgu/epgu-constructor-types/src';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { GroupListServiceStub } from '../../../../services/group-list/group-list.service.stub';
 import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary.service.stub';

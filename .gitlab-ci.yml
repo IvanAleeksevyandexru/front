@@ -9,8 +9,6 @@ cache:
     files:
       - yarn.lock
   paths:
-    - .yarn
-    - .yarn-cache/
     - node_modules
     - 'projects/*/node_modules'
   policy: pull
@@ -43,8 +41,6 @@ Install:
         - yarn.lock
     policy: pull-push
     paths:
-      - .yarn
-      - .yarn-cache/
       - node_modules
       - 'projects/*/node_modules'
   interruptible: true
@@ -64,8 +60,6 @@ Types-build:
           - yarn.lock
       policy: pull
       paths:
-        - .yarn
-        - .yarn-cache/
         - node_modules
         - 'projects/*/node_modules'
     - key: cache-${CI_COMMIT_REF_SLUG}
@@ -126,8 +120,6 @@ Ui-kit-build:
           - yarn.lock
       policy: pull
       paths:
-        - .yarn
-        - .yarn-cache/
         - node_modules
         - 'projects/*/node_modules'
     - key: cache-${CI_COMMIT_REF_SLUG}
@@ -155,8 +147,6 @@ Children-clubs-build:
           - yarn.lock
       policy: pull
       paths:
-        - .yarn
-        - .yarn-cache/
         - node_modules
         - 'projects/*/node_modules'
     - key: cache-${CI_COMMIT_REF_SLUG}
@@ -184,8 +174,6 @@ Form-player-build:
           - yarn.lock
       policy: pull
       paths:
-        - .yarn
-        - .yarn-cache/
         - node_modules
         - 'projects/*/node_modules'
     - key: cache-${CI_COMMIT_REF_SLUG}
@@ -213,8 +201,6 @@ Emulator-build:
           - yarn.lock
       policy: pull
       paths:
-        - .yarn
-        - .yarn-cache/
         - node_modules
         - 'projects/*/node_modules'
     - key: cache-${CI_COMMIT_REF_SLUG}
@@ -240,15 +226,18 @@ Portal-build:
           - yarn.lock
       policy: pull
       paths:
-        - .yarn
-        - .yarn-cache/
         - node_modules
         - 'projects/*/node_modules'
+    - key: cache-${CI_COMMIT_REF_SLUG}
+      policy: pull
+      paths:
+        - dist
+        - projects/epgu-constructor-types/dist
   script:
-    - test -d node_modules || yarn install --frozen-lockfile --no-progress
-    - yarn build:portal
+    - test -d projects/sf-portal/node_modules || yarn install --frozen-lockfile --no-progress
+    - yarn build:portal:dev
   interruptible: true
-  needs: ["Install"]
+  needs: ["Form-player-build"]
   only:
     - merge_requests
     - master

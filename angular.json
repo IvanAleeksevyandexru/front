@@ -412,6 +412,7 @@
           },
           "configurations": {
             "production": {
+              "tsConfig": "projects/sf-portal/tsconfig.app.prod.json",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -439,6 +440,7 @@
               ]
             },
             "development": {
+              "tsConfig": "projects/sf-portal/tsconfig.app.dev.json",
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
@@ -566,13 +568,8 @@
             "polyfills": "projects/versions/src/polyfills.ts",
             "tsConfig": "projects/versions/tsconfig.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/versions/src/favicon.ico",
-              "projects/versions/src/assets"
-            ],
-            "styles": [
-              "projects/versions/src/styles.scss"
-            ],
+            "assets": ["projects/versions/src/favicon.ico", "projects/versions/src/assets"],
+            "styles": ["projects/versions/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
