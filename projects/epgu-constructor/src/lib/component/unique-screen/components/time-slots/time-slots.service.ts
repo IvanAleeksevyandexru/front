@@ -429,8 +429,8 @@ export class TimeSlotsService {
   private getTimeSlotsForCancel(): TimeSlotsAnswerInterface[] {
     return this.cancelReservation
       .map((id) =>
-        this.screenService.getCompValueFromApplicantAnswers(id)
-          ? JSON.parse(this.screenService.getCompValueFromApplicantAnswers(id))
+        this.screenService.getCompValueFromApplicantAndCachedAnswers(id)
+          ? JSON.parse(this.screenService.getCompValueFromApplicantAndCachedAnswers(id))
           : null,
       )
       .filter((timeslot) => !!timeslot && this.isCancelCondition(timeslot));

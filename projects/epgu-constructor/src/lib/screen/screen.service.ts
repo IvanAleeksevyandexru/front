@@ -56,6 +56,15 @@ export class ScreenService extends ScreenContent {
     return this.display?.components[index];
   }
 
+  public getCompValueFromApplicantAndCachedAnswers(componentId?: string): string {
+    const { cachedAnswers, applicantAnswers } = this.getStore();
+    const store = { ...applicantAnswers, ...cachedAnswers };
+    if (!componentId) {
+      componentId = this.component?.id;
+    }
+    return store && store[componentId]?.value;
+  }
+
   public getCompValueFromCachedAnswers(componentId?: string): string {
     const { cachedAnswers } = this.getStore();
     if (!componentId) {
