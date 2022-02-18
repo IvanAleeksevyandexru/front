@@ -26,16 +26,24 @@
         [description]="error.desc"
         [clarifications]="data.attrs?.clarifications"
       ></epgu-constructor-disclaimer>
-      <div class="label-helper">
-        {{ data.label }}
-      </div>
-      <div>
+      <epgu-constructor-output-html
+        *ngIf="data?.label"
+        class="label-helper"
+        [html]="data.label"
+        [clarifications]="data.attrs?.clarifications"
+      ></epgu-constructor-output-html>
+      <div class="value-text">
         {{ data.value }}
       </div>
     </ng-container>
 
     <ng-container *ngIf="data.errors?.length == 0">
-      <div class="label-helper">{{ data.label }}</div>
+      <epgu-constructor-output-html
+        *ngIf="data?.label"
+        class="label-helper"
+        [html]="data.label"
+        [clarifications]="data.attrs?.clarifications"
+      ></epgu-constructor-output-html>
       <div class="value-text">
         {{ isPhoneScreenType ? (data.value | formatPhone) : data.value }}
       </div>
