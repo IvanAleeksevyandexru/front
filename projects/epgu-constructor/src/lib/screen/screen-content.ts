@@ -490,9 +490,9 @@ export class ScreenContent {
     this._logicAfterValidationComponents.next(value);
   }
 
-  public get trobber(): Trobber | null {
+  public get trobber(): Trobber {
     const logicAfterValidationComponents = this.logicAfterValidationComponents;
-    return logicAfterValidationComponents[0]?.attrs?.onload?.trobber;
+    return logicAfterValidationComponents[0]?.attrs?.onload?.trobber || { message: '' };
   }
 
   public get logicAnswers$(): Observable<ApplicantAnswersDto> {

@@ -1,6 +1,6 @@
 export interface Trobber {
   message: string;
-  timeout: number;
+  timeout?: number;
 }
 
 export interface LogicAfterValidationComponents {
