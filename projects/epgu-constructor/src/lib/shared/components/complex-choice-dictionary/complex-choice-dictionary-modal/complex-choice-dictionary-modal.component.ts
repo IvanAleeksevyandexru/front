@@ -87,10 +87,17 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
     return node?.expandable;
   }
 
+  addSelectedItemsToChanges(changes): void {
+    this.selectedItems?.forEach((i) => {
+      changes[i.id] = !!changes[i.id];
+    });
+  }
+
   checkShownElements(changes): void {
+    this.addSelectedItemsToChanges(changes);
+    const controls = (this.form.get(this.formField.checkboxGroup) as FormGroup).controls;
     const countOfTruthfulCheckboxes = Object.values(changes).filter((value) => value).length;
     const isLimitReached = countOfTruthfulCheckboxes >= this.limit;
-    const controls = (this.form.get(this.formField.checkboxGroup) as FormGroup).controls;
     Object.keys(controls).forEach((key) => {
       if (isLimitReached && !changes[key]) {
         controls[key].disable({ emitEvent: false });
@@ -138,7 +145,7 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
         const selectedItem = value && this.items.find((item) => item.id === key);
         return [...acc, selectedItem];
       }, []);
-    const arr = uniqBy([...items, ...selectedItems], 'id');
+    const arr = uniqBy(items, 'id');
     this.closeModal(arr);
   }
 
