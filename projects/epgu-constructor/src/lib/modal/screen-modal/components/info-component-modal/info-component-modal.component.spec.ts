@@ -27,6 +27,8 @@ import { ActionModule } from '../../../../shared/directives/action/action.module
 import { ActionService } from '../../../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
 import { CurrentAnswersService } from '../../../../screen/current-answers.service';
+import { ComponentsListRelationsService } from '../../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
+import { ComponentsListRelationsServiceStub } from '../../../../component/custom-screen/services/components-list-relations/components-list-relations.service.stub';
 
 describe('InfoComponentModalComponent', () => {
   let component: InfoComponentModalComponent;
@@ -56,6 +58,7 @@ describe('InfoComponentModalComponent', () => {
         { provide: ScreenModalService, useClass: ScreenModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
+        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
       ],
     })
       .overrideComponent(InfoComponentModalComponent, {
