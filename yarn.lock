@@ -1854,6 +1854,11 @@
   resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-400.14.2.tgz#5d729a875135c40f13bea631703e649630dc8057"
   integrity sha512-zcHirdLoU6hi2cHeQb2MF9I+D7j2GuwhStlv1AYTGkoubIFOjwtSvPVQwZNwG+CoQN3qWz2wzbEgHYhQMO08kQ==
 
+"@epgu/epgu-constructor-types@400.15.0":
+  version "400.15.0"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-400.15.0.tgz#679e4c31df4c9bb6d84bbf6463de2654b7aa4341"
+  integrity sha512-B3aD4pRMQNVmfi3rMsyHbLB8R4Usk8pqV59+lmrkNfBLZNiZuG/82/55Xl0Ue21gqLE4mqpbHNT/iKGfB370dw==
+
 "@epgu/epgu-constructor-ui-kit@400.14.2":
   version "400.14.2"
   resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-400.14.2.tgz#1debe09290b44a7fbcf3f09e2e2f81f7385742da"

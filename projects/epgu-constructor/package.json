@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@alyle/ui": "10.5.1",
-    "@epgu/epgu-constructor-types": "400.14.2",
+    "@epgu/epgu-constructor-types": "400.15.0",
     "@epgu/epgu-constructor-ui-kit": "400.14.2",
     "ics": "2.24.0",
     "node-fetch": "2.6.1",
