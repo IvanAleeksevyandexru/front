@@ -201,7 +201,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initModalsSettings();
-    const cachedAnswer = this.screenService.getCompValueFromApplicantAnswers();
+    const cachedAnswer = this.screenService.getCompValueFromApplicantAndCachedAnswers();
 
     if (cachedAnswer) {
       this.cachedAnswer = JSON.parse(cachedAnswer);
