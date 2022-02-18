@@ -11,7 +11,8 @@
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
-      "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"]
+      "@epgu/epgu-constructor-ui-kit": ["node_modules/@epgu/epgu-constructor-ui-kit"],
+      "@epgu/epgu-constructor-types": ["node_modules/@epgu/epgu-constructor-types/src"]
     },
     "lib": ["dom", "es2018"]
   },
