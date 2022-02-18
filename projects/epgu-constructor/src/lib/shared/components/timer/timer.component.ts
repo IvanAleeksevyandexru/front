@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import { timer } from 'rxjs';
-import { takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, timer } from 'rxjs';
+import { filter, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { TimerComponentDtoAction, TimerLabelSection } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
+import { DatesToolsService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenService } from '../../../screen/screen.service';
 import { createTimer, isWarning } from './timer.helper';
 import { TimerComponentBase, TimerInterface } from './timer.interface';
@@ -15,24 +15,23 @@ import { TimerComponentBase, TimerInterface } from './timer.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimerComponent {
+  initTimer$$ = new BehaviorSubject<boolean>(false);
+  initTimer$ = this.initTimer$$
+    .pipe(
+      filter((status) => status),
+      switchMap(() => from(this.getCurrentTime())),
+      tap((today: Date) => {
+        this.currentTime = today.getTime();
+        this.init();
+      }),
+    )
+    .subscribe();
+
   @Input() set data(componentBase: TimerComponentBase) {
     this.componentBase = componentBase;
     this.hasLabels = this.data.attrs?.timerRules?.labels?.length > 0;
     this.hasButtons = this.data.attrs?.timerRules?.actions?.length > 0;
-
-    this.timer = createTimer(
-      this.getCurrentTime(),
-      this.getStartDate(),
-      this.getFinishDate(),
-      this.componentBase.attrs?.timerRules?.warningColorFromTime,
-    );
-    if (this.hasLabels) {
-      this.sortLabelsByTime();
-    }
-    if (this.hasButtons) {
-      this.setActionsButtons();
-    }
-    this.startTimer();
+    this.initTimer$$.next(true);
   }
 
   public componentBase: TimerComponentBase;
@@ -43,6 +42,7 @@ export class TimerComponent {
   timer: TimerInterface;
   showTimer = true;
   actionButtons: TimerComponentDtoAction[] = [];
+  currentTime: number;
 
   private hasLabels = false;
   private hasButtons = false;
@@ -52,13 +52,14 @@ export class TimerComponent {
     private ngUnsubscribe$: UnsubscribeService,
     public screenService: ScreenService,
     private changeDetectionRef: ChangeDetectorRef,
+    private datesToolsService: DatesToolsService,
   ) {}
 
   /**
    * Стартует работу таймера
    */
   startTimer(): void {
-    timer(this.timer.start - this.getCurrentTime(), this.oneSecond)
+    timer(this.timer.start - this.currentTime, this.oneSecond)
       .pipe(
         takeWhile(() => this.timer.time - this.oneSecond >= -this.oneSecond),
         takeUntil(this.ngUnsubscribe$),
@@ -96,6 +97,22 @@ export class TimerComponent {
 
   trackActionsById(_index, action: TimerComponentDtoAction): string {
     return action.id;
+  }
+
+  private init(): void {
+    this.timer = createTimer(
+      this.currentTime,
+      this.getStartDate(),
+      this.getFinishDate(),
+      this.componentBase.attrs?.timerRules?.warningColorFromTime,
+    );
+    if (this.hasLabels) {
+      this.sortLabelsByTime();
+    }
+    if (this.hasButtons) {
+      this.setActionsButtons();
+    }
+    this.startTimer();
   }
 
   /**
@@ -172,15 +189,11 @@ export class TimerComponent {
     }
   }
 
-  /**
-   * Возвращает текущее время в милисекундах
-   * @private
-   */
-  private getCurrentTime(): number {
+  private async getCurrentTime(): Promise<Date> {
     if (this.data.attrs?.currentTime) {
-      return new Date(this.data.attrs.currentTime).getTime();
+      return new Date(this.data.attrs.currentTime);
     }
-    return Date.now();
+    return this.datesToolsService.getToday();
   }
 
   /**

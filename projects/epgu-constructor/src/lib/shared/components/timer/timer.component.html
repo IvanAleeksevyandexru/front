@@ -3,7 +3,7 @@
 
   <div
     class="progress__value-wrapper"
-    *ngIf="showTimer"
+    *ngIf="showTimer && timer"
     [class.warning]="timer.isWarning"
     [class.finish]="timer.isFinish"
   >
