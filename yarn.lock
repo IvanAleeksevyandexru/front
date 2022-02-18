@@ -1840,43 +1840,48 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.6.tgz#d5e0706cf8c6acd8c6032f8d54070af261bbbb2f"
   integrity sha512-ws57AidsDvREKrZKYffXddNkyaF14iHNHm8VQnZH6t99E8gczjNN0GpvcGny0imC80yQ0tHz1xVUKk/KFQSUyA==
 
-"@epgu/children-clubs@400.0.0":
-  version "400.0.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/children-clubs/-/children-clubs-400.0.0.tgz#1a17f0381150067e16f35363072f090d456cf39b"
-  integrity sha512-JUyawO2hQGtOACLrJIHpaBPed52+svniFA0DxHnQ3MAwKCk0HvYB7hlNfxaggCbCSQ6gzj3NRsrMmt/4i3xjpA==
+"@epgu/children-clubs@400.14.2":
+  version "400.14.2"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/children-clubs/-/children-clubs-400.14.2.tgz#f9f1b3b73dc958107466ffddd9f607e795f365fd"
+  integrity sha512-twznIqX+FoaHSgpiptI0IObSCvprGtBDN4l7lgKpd4Rb0pHjaWH5WZi58TFN+zOcsRlALkpJBygIWLqNwkWBUg==
   dependencies:
-    "@epgu/epgu-constructor-types" "400.0.0"
-    "@epgu/epgu-constructor-ui-kit" "400.0.0"
+    "@epgu/epgu-constructor-types" "400.14.2"
+    "@epgu/epgu-constructor-ui-kit" "400.14.2"
     tslib "^2.3.1"
 
-"@epgu/epgu-constructor-ui-kit@400.0.0":
-  version "400.0.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-400.0.0.tgz#48132965dc4e59bd897f4b59d30d5f6dba930d91"
-  integrity sha512-Vs/NPfG9tJrAQ6+dWDjwqJ9nNusIw9LbM5MykIqs18dZjk3gzRame/M03HncHGrabIKo4wqY66KAs7+BYKNDrw==
+"@epgu/epgu-constructor-types@400.14.2":
+  version "400.14.2"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-types/-/epgu-constructor-types-400.14.2.tgz#5d729a875135c40f13bea631703e649630dc8057"
+  integrity sha512-zcHirdLoU6hi2cHeQb2MF9I+D7j2GuwhStlv1AYTGkoubIFOjwtSvPVQwZNwG+CoQN3qWz2wzbEgHYhQMO08kQ==
+
+"@epgu/epgu-constructor-ui-kit@400.14.2":
+  version "400.14.2"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor-ui-kit/-/epgu-constructor-ui-kit-400.14.2.tgz#1debe09290b44a7fbcf3f09e2e2f81f7385742da"
+  integrity sha512-/YvJx+qpN5sSYTHZdiFi7Y3rGjtNuEMfSp56A6NSm7fSRatB1Nn7XVuvt6Zq7FX5SpqOXT6OJ6VcGQmPK5zbBg==
   dependencies:
-    "@epgu/epgu-constructor-types" "400.0.0"
+    "@epgu/epgu-constructor-types" "400.14.2"
     "@epgu/zipkin" "0.0.3"
     ismobilejs "^1.1.1"
     tslib "^2.0.0"
     zipkin-transport-http "0.22.0"
 
-"@epgu/epgu-constructor@400.0.0":
-  version "400.0.0"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor/-/epgu-constructor-400.0.0.tgz#cc43b43e6b2a8b603ed16791b99fb93a08d9ed7e"
-  integrity sha512-2vdQT76coDwNm7sbBwl2tapNM41ZvXJVQpx6X2EAL4EDYIPm5hLytthqXFhCusZwCv1lpW0P0em8yexpGhO4Nw==
+"@epgu/epgu-constructor@400.14.2":
+  version "400.14.2"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/epgu-constructor/-/epgu-constructor-400.14.2.tgz#a844e46b63de8dd219bab59c5b4ee10f22068828"
+  integrity sha512-PNgz41o4QCbbBj349ahb2mudQHVWZHFfAy/5NS4nBiJAN0+/PfbL5sR24wC0JW9+BUe1xZ+dsVqKkHNFKZgo0g==
   dependencies:
     "@alyle/ui" "10.5.1"
-    "@epgu/epgu-constructor-types" "400.0.0"
-    "@epgu/epgu-constructor-ui-kit" "400.0.0"
+    "@epgu/epgu-constructor-types" "400.14.2"
+    "@epgu/epgu-constructor-ui-kit" "400.14.2"
     ics "2.24.0"
     node-fetch "2.6.1"
     os "0.1.1"
     tslib "2.3.1"
 
-"@epgu/ui@3.0.400-3-front-v2.0.1":
-  version "3.0.400-3-front-v2.0.1"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.400-3-front-v2.0.1.tgz#88dc464e6cc20e3435abadf59f03e37b7ed3778a"
-  integrity sha512-udStXNA1vct5B3oFX7yAG4luCKjHn54cVytITnFxDk96VgXiyLMID+qnzLVLnYSqrnEi1ruivuSxxfKHHirwuA==
+"@epgu/ui@3.0.400-7-frontv4":
+  version "3.0.400-7-frontv4"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.400-7-frontv4.tgz#6e93dfc55220af7924fb1ca55a50cc73fe3a859f"
+  integrity sha512-nymkY5x/tuEk/8omAtVqBgqknrPlRWq+93phpQWCgnnISRd+ByjQPDM28sknutPXl2yqyLcxPX0e4tknUVAlAg==
   dependencies:
     "@epgu/zipkin" "0.0.3"
     date-fns "2.24.0"

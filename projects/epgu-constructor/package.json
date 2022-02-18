@@ -1,6 +1,6 @@
 {
   "name": "@epgu/epgu-constructor",
-  "version": "399.0.0",
+  "version": "0.0.0",
   "scripts": {
     "build": "cd ../../ && ng build epgu-constructor --prod",
     "watch": "cd ../../ && ng build epgu-constructor --watch",
@@ -13,7 +13,7 @@
     "@angular/common": "13.1.1",
     "@angular/core": "13.1.1",
     "@angular/forms": "13.1.1",
-    "@epgu/ui": "3.0.400-3-front-v2.0.1",
+    "@epgu/ui": "3.0.400-7-frontv4",
     "@ngx-translate/http-loader": "6.0.0",
     "@nicky-lenaers/ngx-scroll-to": "^9.0.0",
     "@squadette/hammerjs": "^2.1.0-pre3",
@@ -31,8 +31,8 @@
   },
   "dependencies": {
     "@alyle/ui": "10.5.1",
-    "@epgu/epgu-constructor-types": "400.0.0",
-    "@epgu/epgu-constructor-ui-kit": "400.0.0",
+    "@epgu/epgu-constructor-types": "400.14.2",
+    "@epgu/epgu-constructor-ui-kit": "400.14.2",
     "ics": "2.24.0",
     "node-fetch": "2.6.1",
     "os": "0.1.1",
