@@ -42,7 +42,7 @@
       *ngIf="!async.hideSocialShare && !async.terminal && !isWebView"
       class="social-share"
       [isNewDesign]="true"
-      [isNewDesignDisabled]="configService.isSocialShareDisabled"
+      [isNewDesignDisabled]="!configService.isSocialShareEnabled"
       [url]="locationService.getHref()"
     ></lib-social-share>
   </div>

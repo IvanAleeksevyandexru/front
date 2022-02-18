@@ -168,8 +168,8 @@ export class HealthHandlerService implements HealthHandler {
     const traceId = response?.headers?.get('x-trace-id');
     const isTraceIdRequire =
       traceId &&
-      this.configService.zipkinSendTraceIdToHealth &&
-      this.configService.zipkinGenerationEnabled;
+      this.configService.isZipkinSendTraceIdToHealth &&
+      this.configService.isZipkinGenerationEnabled;
 
     this.commonParams = {
       ...this.commonParams,
@@ -281,8 +281,8 @@ export class HealthHandlerService implements HealthHandler {
     const traceId = exception?.headers?.get('x-trace-id');
     const isTraceIdRequire =
       traceId &&
-      this.configService.zipkinSendTraceIdToHealth &&
-      this.configService.zipkinGenerationEnabled;
+      this.configService.isZipkinSendTraceIdToHealth &&
+      this.configService.isZipkinGenerationEnabled;
 
     this.commonParams = {
       ...this.commonParams,

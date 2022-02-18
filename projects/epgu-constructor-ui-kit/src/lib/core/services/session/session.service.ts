@@ -15,8 +15,8 @@ export class SessionService {
     return this._userId;
   }
 
-  get disableUnderConstructionMode(): string {
-    return this.cookieService.get('disableUnderConstructionMode');
+  get isUnderConstructionModeEnabled(): string {
+    return this.cookieService.get('isUnderConstructionModeEnabled');
   }
 
   private init(): void {

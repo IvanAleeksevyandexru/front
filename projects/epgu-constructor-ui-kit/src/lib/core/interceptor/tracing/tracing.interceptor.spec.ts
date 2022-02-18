@@ -66,7 +66,7 @@ describe('TracingHttpInterceptor', () => {
     interceptor = TestBed.inject(TracingHttpInterceptor);
     formPlayerApi = TestBed.inject(FormPlayerApiService);
     config = TestBed.inject(ConfigService);
-    config.zipkinSpanSendEnabled = true;
+    config.isZipkinSpanSendEnabled = true;
     init = TestBed.inject(InitDataService);
     init.serviceId = serviceId;
     init.orderId = orderId;
@@ -75,9 +75,9 @@ describe('TracingHttpInterceptor', () => {
   });
 
   describe('doIntercept()', () => {
-    it('should not call doIntercept(), if configService.zipkinSpanSendEnabled is disabled', fakeAsync(() => {
+    it('should not call doIntercept(), if configService.isZipkinSpanSendEnabled is disabled', fakeAsync(() => {
       const doInterceptSpy = jest.spyOn<any, string>(interceptor, 'doIntercept');
-      config.zipkinSpanSendEnabled = false;
+      config.isZipkinSpanSendEnabled = false;
       formPlayerApi.sendAction(api, dto).subscribe((response) => {
         expect(response).toBeTruthy();
       });
