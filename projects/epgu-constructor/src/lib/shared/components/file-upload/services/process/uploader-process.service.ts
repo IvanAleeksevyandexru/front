@@ -198,8 +198,8 @@ export class UploaderProcessService {
       tap((file: FileItem) => this.stat.incrementLimits(file)),
       concatMap((file: FileItem) => this.api.copyFile(options, file)),
       catchError((e) => {
-        this.store.update(item.setError(this.uploader.getError(ErrorActions.addUploadErr)));
-        this.stat.decrementLimits(item);
+        this.store.update(newFile.setError(this.uploader.getError(ErrorActions.addCopyErr)));
+        this.stat.decrementLimits(newFile);
         return throwError(e);
       }),
       tap(() => this.store.changeStatus(newFile, FileItemStatus.uploaded)),
@@ -207,9 +207,9 @@ export class UploaderProcessService {
       takeUntil(
         cancel.pipe(
           filter((status) => status),
-          tap(() => this.store.changeStatus(item, oldStatus)),
-          tap(() => this.store.remove(item)),
-          tap(() => this.stat.decrementLimitByFileItem(item)),
+          tap(() => this.store.changeStatus(newFile, oldStatus)),
+          tap(() => this.store.remove(newFile)),
+          tap(() => this.stat.decrementLimitByFileItem(newFile)),
         ),
       ),
     );

@@ -83,14 +83,13 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
                       mimeType: file.item.mimeType,
                     })
                     .pipe(
-                      map(
-                        (blob) =>
-                          new FileItem(
-                            FileItemStatus.uploaded,
-                            `${this.fileUploadApiUrl}/`,
-                            new File([blob], file.item.fileName),
-                            file.item,
-                          ),
+                      map((blob) =>
+                        new FileItem(
+                          FileItemStatus.uploaded,
+                          `${this.fileUploadApiUrl}/`,
+                          new File([blob], file.item.fileName),
+                          file.item,
+                        ).setAttached(file.attached),
                       ),
                       catchError(() =>
                         of(
@@ -179,8 +178,8 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   private isSameFile(fileItem: FileItem, resultFile: FileItem): boolean {
     return (
-      fileItem.item.objectId === resultFile.item.objectId &&
-      fileItem.item.objectType === resultFile.item.objectType &&
+      fileItem.item.fileSize === resultFile.item.fileSize &&
+      fileItem.item.objectTypeId == resultFile.item.objectTypeId &&
       fileItem.item.mnemonic === resultFile.item.mnemonic
     );
   }

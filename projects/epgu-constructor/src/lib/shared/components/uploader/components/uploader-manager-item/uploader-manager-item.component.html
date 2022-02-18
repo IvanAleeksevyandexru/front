@@ -5,6 +5,7 @@
         (isError &&
           (fileItem?.error?.type === errorTypeAction.addDeletionErr ||
             fileItem?.error?.type === errorTypeAction.serverError ||
+            fileItem?.error?.type === errorTypeAction.addCopyErr ||
             fileItem?.error?.type === errorTypeAction.addUploadErr)) ||
         !isError
       "
@@ -33,6 +34,7 @@
         isError &&
         fileItem?.error?.type !== errorTypeAction.addDeletionErr &&
         fileItem?.error?.type !== errorTypeAction.serverError &&
+        fileItem?.error?.type !== errorTypeAction.addCopyErr &&
         fileItem?.error?.type !== errorTypeAction.addUploadErr
       "
       class="fileType-preview"
@@ -140,7 +142,7 @@
     {{ fileItem.error.description }}
     <button
       class="uploader-manager-item__button"
-      *ngIf="!readonly && errorType === errorTypeAction.addUploadErr"
+      *ngIf="!readonly && (errorType === errorTypeAction.addUploadErr || errorType === errorTypeAction.addCopyErr)"
       (click)="repeat.emit(fileItem)"
     >
       Повторить
