@@ -34,6 +34,9 @@
 * Добавлена поддержка hint для registration addr на уровне компонента [EPGUCORE-87038]
 * Добавлена поддержка clarifications для компонента ConfirmPersonalUserRegAddr [EPGUCORE-86022]
 * Добавлена поддержка clarifications для radio-input[EPGUCORE-86018]
+* Добавлена поддержка clarifications для ConfirmPersonalUserPhone [EPGUCORE-86020]
+* Добавлена поддержка mappingParams для MVDGiac [EPGUCORE-88801]
+* Добавлена возможность скрывать и дизейблить кнопки по relations [EPGUCORE-86308]
 
 ### Refactor
 
@@ -46,6 +49,7 @@
 * Оптимизирован рендеринг элементов списка на карте [EPGUCORE-86830]
 * Комплесный рефактор, уменьшающий кол-во warnings при сборке [EPGUCORE-80320]
 * Переименованы конфигурационные параметры Disabled > Enabled [EPGUCORE-87853]
+* Изменен ConfirmPersonalUserDataPipe, кейс: без fields groups [EPGUCORE-78356]
 
 ### Bug Fixes
 
@@ -75,6 +79,11 @@
 * Поправлены параметры у Birth Timeslot [EPGUCORE-88420]
 * Добавлено определение типа PARENT_ID для MultiChoice [EPGUCORE-88029]
 * Исправлено, что при прикреплении файла из галереи не блокируется кнопка Далее в FileItemUpload [EPGUCORE-88583]
+* Поправлена работа троббера при переходах [EPGUCORE-88692]
+* Исправление для ComplexChoiceDictionary в выборе чекбоксов [EPGUCORE-88291]
+* Исправлен скролл списка на карте при клике на пин [EPGUCORE-88603]
+* Изменен способ извлечения bookedSlot в TimeSlot [EPGUCORE-88599]
+* Изменен способ получения текущей даты в timer компоненте [EPGUCORE-88594]
 
 ### Tests
 
