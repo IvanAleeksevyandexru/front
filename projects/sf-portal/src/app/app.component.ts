@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
     @Inject(WINDOW) private window: Window,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
-    if (!this.appConfig.config?.isYaMetricDisabled) {
+    if (this.appConfig.config?.isYaMetricEnabled) {
       this.yaMetricService.init();
     }
   }
@@ -148,7 +148,7 @@ export class AppComponent implements OnInit {
   }
 
   private initMetric(prevPath: string) {
-    if (!isDevMode() && !this.appConfig.config?.isYaMetricDisabled) {
+    if (!isDevMode() && this.appConfig.config?.isYaMetricEnabled) {
       this.yaMetricService.onInit().then(() => {
         const newPath = window.location.href;
         this.yaMetricService.ym(this.yaMetricService.counter, 'hit', newPath, {

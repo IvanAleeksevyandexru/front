@@ -38,20 +38,20 @@ export type TimeSlotsApi = Record<string, TimeSlotsApiItem>;
  * @property {string}mockUrl - url до mockApi
  * @property {string}identificationApiUrl - url до сервиса идентификации
  * @property {TimeSlotsApi}timeSlots - настройки для time-slot в разных услугах
- * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
- * @property {boolean}isSocialShareDisabled - задизейблить соц.кнопки на всех экранах
- * @property {boolean}isAutocompleteServiceDisabled - задизейблить функцию автокомплита для всего форм-плеера
+ * @property {boolean}isUnderConstructionModeEnabled - всключить underConstruction режим, для отладки прохода сценариев
+ * @property {boolean}isSocialShareEnabled - включить соц.кнопки на всех экранах
+ * @property {boolean}isAutocompleteServiceEnabled - включить функцию автокомплита для всего форм-плеера
  * @property {string}addToCalendarUrl - url добавления ивента в календарь
- * @property {boolean}zipkinGenerationEnabled  - включена ли генерация traceId для показа в модалках и отправке в запросах на бэк
- * @property {boolean}zipkinSendTraceIdToHealth  - включена ли отправка traceId в сообщениях для сервиса хелсов
- * @property {boolean}zipkinSpanSendEnabled - включена ли отправка span'ов в Zipkin-backend
+ * @property {boolean}isZipkinGenerationEnabled  - включена ли генерация traceId для показа в модалках и отправке в запросах на бэк
+ * @property {boolean}isZipkinSendTraceIdToHealth  - включена ли отправка traceId в сообщениях для сервиса хелсов
+ * @property {boolean}isZipkinSpanSendEnabled - включена ли отправка span'ов в Zipkin-backend
  * @property {string}zipkinUrl - API-url до бэк-сервиса Zipkin
  * @property {number}zipkinMaxPayloadSize - максимальный размер payload, передаваемого в span Zipkin'a
  * @property {string}zipkinEnv - окружение запуска Zipkin
- * @property {boolean}isZipkinCascadeMode - делать ли каждый следующий span ребенком предыдущего через parentId, обеспечивая каскадность
- * @property {boolean}showTraceIdOnError - показывать ли traceId в модалках "Не сработало"
+ * @property {boolean}isZipkinCascadeModeEnabled - делать ли каждый следующий span ребенком предыдущего через parentId, обеспечивая каскадность
+ * @property {boolean}isTraceIdOnErrorEnabled - показывать ли traceId в модалках "Не сработало"
  * @property {string}oplataUrl - url до оплаты
- * @property {boolean}isYaMetricDisabled - отключает инициализацию сервиса Яндекс.Метрики
+ * @property {boolean}isYaMetricEnabled - включить инициализацию сервиса Яндекс.Метрики
  */
 export interface Config {
   addToCalendarUrl?: string;
@@ -62,16 +62,16 @@ export interface Config {
   configApiUrl: string;
   configId: string;
   dictionaryUrl: string;
-  disableUnderConstructionMode?: boolean;
+  isUnderConstructionModeEnabled?: boolean;
   externalApiUrl: string;
   fileUploadApiUrl: string;
   galleryApiUrl: string;
   identificationApiUrl: string;
   invitationUrl: string;
-  isAutocompleteServiceDisabled?: boolean;
-  isSocialShareDisabled?: boolean;
-  isYaMetricDisabled: boolean;
-  isZipkinCascadeMode?: boolean;
+  isAutocompleteServiceEnabled?: boolean;
+  isSocialShareEnabled?: boolean;
+  isYaMetricEnabled: boolean;
+  isZipkinCascadeModeEnabled?: boolean;
   listPaymentsApiUrl: string;
   lkApi: string;
   lkuipElection?: string;
@@ -83,7 +83,7 @@ export interface Config {
   oplataUrl?: string;
   paymentUrl: string;
   quizDataApiUrl: string;
-  showTraceIdOnError?: boolean;
+  isTraceIdOnErrorEnabled?: boolean;
   staticDomainAssetsPath: string;
   staticDomainContentPath: string;
   suggestionsApiUrl: string;
@@ -93,10 +93,10 @@ export interface Config {
   wsIdentificationUrl?: string;
   yandexMapsApiKey: string;
   zipkinEnv?: string;
-  zipkinGenerationEnabled?: boolean;
+  isZipkinGenerationEnabled?: boolean;
   zipkinMaxPayloadSize?: number;
-  zipkinSendTraceIdToHealth?: boolean;
-  zipkinSpanSendEnabled?: boolean;
+  isZipkinSendTraceIdToHealth?: boolean;
+  isZipkinSpanSendEnabled?: boolean;
   zipkinUrl?: string;
 }
 

@@ -78,20 +78,20 @@
         "subject": "Запись на вакцинацию от COVID-19"
       }
     },
-    "disableUnderConstructionMode": false,
-    "isSocialShareDisabled": true,
-    "isAutocompleteServiceDisabled": false,
+    "isUnderConstructionModeEnabled": true,
+    "isSocialShareEnabled": true,
+    "isAutocompleteServiceEnabled": true,
     "addToCalendarUrl": "https://pgu-uat-betalk.test.gosuslugi.ru/",
     "suggestionsApiUrl": "https://pgu-uat-fed.test.gosuslugi.ru/api/suggests2",
     "staticDomainContentPath": "https://gu-st.ru/content",
-    "zipkinGenerationEnabled": false,
-    "zipkinSendTraceIdToHealth": false,
-    "zipkinSpanSendEnabled": false,
+    "isZipkinGenerationEnabled": false,
+    "isZipkinSendTraceIdToHealth": false,
+    "isZipkinSpanSendEnabled": false,
     "zipkinUrl": "http://dev01.pgu2-dev.test.gosuslugi.ru/zipkin/api/v2/spans",
     "zipkinMaxPayloadSize": 0,
     "zipkinEnv": "dev01",
-    "isZipkinCascadeMode": false,
-    "showTraceIdOnError": true,
+    "isZipkinCascadeModeEnabled": false,
+    "isTraceIdOnErrorEnabled": true,
     "appPathMap": {
       "ChildrenClubs": "/children-clubs"
     }

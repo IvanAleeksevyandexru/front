@@ -35,8 +35,8 @@ export class AutocompleteService {
     private autocompletePrepareService: AutocompletePrepareService,
   ) {}
 
-  public init(isDisabled: boolean = false): void {
-    if (isDisabled) return;
+  public init(isEnabled: boolean = true): void {
+    if (!isEnabled) return;
 
     this.screenService.display$
       .pipe(

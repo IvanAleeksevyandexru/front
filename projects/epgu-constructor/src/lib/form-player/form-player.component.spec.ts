@@ -201,20 +201,21 @@ describe('FormPlayerComponent', () => {
 
   describe('initConfigDependentEntities()', () => {
     it('should call autocompleteService init with true', () => {
-      configService['_isAutocompleteServiceDisabled'] = true;
+      configService['_isAutocompleteServiceEnabled'] = true;
       const spy = jest.spyOn(autocompleteService, 'init');
       component['initConfigDependentEntities']();
       expect(spy).toBeCalledWith(true);
     });
 
     it('should call autocompleteService init with false', () => {
+      configService['_isAutocompleteServiceEnabled'] = false;
       const spy = jest.spyOn(autocompleteService, 'init');
       component['initConfigDependentEntities']();
       expect(spy).toBeCalledWith(false);
     });
 
     it('should call tracingService init with true', () => {
-      configService['_zipkinGenerationEnabled'] = true;
+      configService['_isZipkinGenerationEnabled'] = true;
       const spy = jest.spyOn(tracingService, 'init');
       component['initConfigDependentEntities']();
       expect(spy).toBeCalledWith(true);

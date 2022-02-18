@@ -181,7 +181,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
       if (hasQueryParamsArrays) {
         const { url } = this.router;
 
-        if (this.appConfig.config?.isHealthErrorsOn) {
+        if (this.appConfig.config?.isHealthErrorsEnabled) {
           this.health.measureStart('queryParamsArrayError');
           this.health.measureEnd('queryParamsArrayError', RequestStatus.Failed, { url });
         }

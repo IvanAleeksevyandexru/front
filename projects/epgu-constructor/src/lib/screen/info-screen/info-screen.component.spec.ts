@@ -260,14 +260,14 @@ describe('InfoScreenComponent', () => {
       expect(debugEl).toBeNull();
     });
 
-    it('isNewDesignDisabled property should be true if isSocialShareDisabled true', () => {
+    it('isNewDesignDisabled property should be true if isSocialShareEnabled true', () => {
       const debugEl = fixture.debugElement.query(By.css(selector));
-      configService._isSocialShareDisabled = false;
+      configService['_isSocialShareEnabled'] = true;
 
       fixture.detectChanges();
       expect(debugEl.componentInstance.isNewDesignDisabled).toBeFalsy();
 
-      configService._isSocialShareDisabled = true;
+      configService['_isSocialShareEnabled'] = false;
       fixture.detectChanges();
       expect(debugEl.componentInstance.isNewDesignDisabled).toBeTruthy();
     });

@@ -31,7 +31,7 @@ export class TracingHttpInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    if (this.configService.zipkinSpanSendEnabled) {
+    if (this.configService.isZipkinSpanSendEnabled) {
       return this.doIntercept(tracer, url, req, next);
     }
     return next.handle(req);

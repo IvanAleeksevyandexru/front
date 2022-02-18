@@ -16,7 +16,7 @@
     </epgu-constructor-output-html>
     <div
       class="text--center mt-16 block--content-centered"
-      *ngIf="configService.showTraceIdOnError && traceId"
+      *ngIf="configService.isTraceIdOnErrorEnabled && traceId"
     >
       <span class="bold">
         {{ traceId }}

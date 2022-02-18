@@ -44,8 +44,8 @@ export class TracingService {
       recorder: this.recorder,
       localServiceName: this.localServiceName,
       supportsJoin: true,
-      defaultTags: this.defaultTags, // Need to pray that transfer by reference won't be changed to transfer by value
-      isCascadeMode: this.configService.isZipkinCascadeMode ?? true,
+      defaultTags: this.defaultTags,
+      isCascadeMode: !!this.configService.isZipkinCascadeModeEnabled,
     });
 
     this.defaultTags.userId = this.sessionService.userId;

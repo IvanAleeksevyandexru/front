@@ -58,15 +58,15 @@ const configMock: Config = {
       brakRouteNumber: '45382000',
     },
   },
-  disableUnderConstructionMode: true,
+  isUnderConstructionModeEnabled: true,
   addToCalendarUrl: 'https://pgu-uat-betalk.test.gosuslugi.ru/',
-  zipkinGenerationEnabled: false,
-  zipkinSendTraceIdToHealth: false,
-  zipkinSpanSendEnabled: false,
+  isZipkinGenerationEnabled: false,
+  isZipkinSendTraceIdToHealth: false,
+  isZipkinSpanSendEnabled: false,
   zipkinUrl: 'http://dev01.pgu2-dev.test.gosuslugi.ru/zipkin/api/v2/spans',
   zipkinMaxPayloadSize: 0,
   zipkinEnv: 'dev01',
-  showTraceIdOnError: true,
+  isTraceIdOnErrorEnabled: true,
 };
 
 describe('ConfigService', () => {
@@ -104,15 +104,15 @@ describe('ConfigService', () => {
     expect(service.mocks).toBe(configMock.mocks);
     expect(service.mockUrl).toBe(configMock.mockUrl);
     expect(service.timeSlots).toBe(configMock.timeSlots);
-    expect(service.disableUnderConstructionMode).toBe(configMock.disableUnderConstructionMode);
+    expect(service.isUnderConstructionModeEnabled).toBe(configMock.isUnderConstructionModeEnabled);
     expect(service.addToCalendarUrl).toBe(configMock.addToCalendarUrl);
-    expect(service.zipkinGenerationEnabled).toBe(configMock.zipkinGenerationEnabled);
-    expect(service.zipkinSendTraceIdToHealth).toBe(configMock.zipkinSendTraceIdToHealth);
-    expect(service.zipkinSpanSendEnabled).toBe(configMock.zipkinSpanSendEnabled);
+    expect(service.isZipkinGenerationEnabled).toBe(configMock.isZipkinGenerationEnabled);
+    expect(service.isZipkinSendTraceIdToHealth).toBe(configMock.isZipkinSendTraceIdToHealth);
+    expect(service.isZipkinSpanSendEnabled).toBe(configMock.isZipkinSpanSendEnabled);
     expect(service.zipkinUrl).toBe(configMock.zipkinUrl);
     expect(service.zipkinMaxPayloadSize).toBe(configMock.zipkinMaxPayloadSize);
     expect(service.zipkinEnv).toBe(configMock.zipkinEnv);
-    expect(service.showTraceIdOnError).toBe(configMock.showTraceIdOnError);
+    expect(service.isTraceIdOnErrorEnabled).toBe(configMock.isTraceIdOnErrorEnabled);
 
     expect(service.isLoaded).toBe(true);
   });
