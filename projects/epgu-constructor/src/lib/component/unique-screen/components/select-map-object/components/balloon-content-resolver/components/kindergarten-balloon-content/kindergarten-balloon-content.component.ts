@@ -2,8 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnInit,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import {
   ConfigService,
@@ -38,6 +41,7 @@ export class KindergartenContentComponent implements IBalloonContent, OnInit {
   @Input() showLoader: Observable<false>;
   @Input() mapObjects;
   @Input() showCrossButton = true;
+  @ViewChildren('balloonComponents') balloonComponents: QueryList<ElementRef>;
 
   public selectObject: Function;
   public objectClick: Function;

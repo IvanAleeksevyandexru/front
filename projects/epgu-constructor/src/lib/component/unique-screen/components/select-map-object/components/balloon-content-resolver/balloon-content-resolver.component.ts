@@ -20,6 +20,7 @@ import { DictionaryItem } from '../../../../../../shared/services/dictionary/dic
 import { MapTypes } from '../../select-map-object.service';
 import { KindergartenContentComponent } from './components/kindergarten-balloon-content/kindergarten-balloon-content.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import { arePointsEqual } from '../../select-map-object.helpers';
 
 type ContentTypesComponents =
   | CommonBalloonContentComponent
@@ -77,6 +78,28 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
     if ('redraw' in changes && this.balloonContentComponentRef) {
       this.balloonContentComponentRef.instance.cdr.detectChanges();
     }
+  }
+
+  public findMatchingElementIdx(item: DictionaryItem): number {
+    return this.balloonContentComponentRef.instance.mapObjects.findIndex((object) =>
+      arePointsEqual(object, item),
+    );
+  }
+
+  public detectBalloonChanges(): void {
+    this.balloonContentComponentRef.instance.cdr.detectChanges();
+  }
+
+  public scrollMatchingRefIntoView(idx: number): void {
+    this.balloonContentComponentRef.instance.mapObjects[idx].expanded = true;
+    // @ts-ignore
+    const matchingElement = this.balloonContentComponentRef.instance.balloonComponents.get(idx);
+    matchingElement.nativeElement.scrollIntoView();
+  }
+
+  public lockAnimation(value: boolean): void {
+    // @ts-ignore
+    this.balloonContentComponentRef.instance.lockAnimation = value;
   }
 
   ngAfterViewInit(): void {

@@ -3,6 +3,7 @@
     [ngClass]="{ expanded: mapObject.expanded }"
     class="map-object"
     [@flyInOut]="deviceDetector.isDesktop"
+    #balloonComponents
   >
     <div class="balloon-content-wrapper">
       <h6
