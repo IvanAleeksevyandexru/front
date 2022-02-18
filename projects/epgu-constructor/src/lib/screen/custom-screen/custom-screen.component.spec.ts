@@ -44,6 +44,8 @@ import { ActionServiceStub } from '../../shared/directives/action/action.service
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { HelperService } from '@epgu/ui/services/helper';
+import { ComponentsListRelationsService } from '../../component/custom-screen/services/components-list-relations/components-list-relations.service';
+import { ComponentsListRelationsServiceStub } from '../../component/custom-screen/services/components-list-relations/components-list-relations.service.stub';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -98,6 +100,7 @@ describe('CustomScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
+        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         EventBusService,
         CurrentAnswersService,
         CertificateEaisdoService,
