@@ -2,7 +2,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { CachedAnswersDto } from '@epgu/epgu-constructor-types';
 import { ListItem } from '@epgu/ui/models/dropdown';
 import { AbstractControl } from '@angular/forms';
-import { isUndefined } from 'lodash';
+import { get, isUndefined } from 'lodash';
 import {
   CustomComponentAttr,
   CustomComponentDropDownItem,
@@ -16,10 +16,23 @@ export default class DropDownLikeModel extends BaseModel<DictionarySharedAttrs> 
     Partial<ListItem>[]
   >([]);
 
-  static adaptDropdown(items: CustomComponentDropDownItemList = []): Partial<ListItem>[] {
+  static adaptDropdown(
+    items: CustomComponentDropDownItemList = [],
+    mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
+    isRoot?: boolean,
+  ): Partial<ListItem>[] {
     return items.map((item: CustomComponentDropDownItem, index: number) => {
-      const itemText = item.label || item.title;
-      const itemCode = item.code || item?.value || `${itemText}-${index}`;
+      const itemText = `${
+        (isRoot ? get(item, mappingParams.textPath, undefined) : item[mappingParams.textPath]) ||
+        item.label ||
+        item.title
+      }`;
+      const itemCode =
+        (isRoot ? get(item, mappingParams.idPath, undefined) : item[mappingParams.idPath]) ||
+        item.code ||
+        item?.value ||
+        `${itemText}-${index}`;
+
       return {
         id: itemCode,
         text: `${itemText}`,
@@ -48,7 +61,11 @@ export default class DropDownLikeModel extends BaseModel<DictionarySharedAttrs> 
     if (this.attrs.isLoadingNeeded()) {
       const dataStructure = this.attrs.add
         ? this.loadCycledDropdown(this.attrs.add.component, this.attrs.add.caption, cachedAnswers)
-        : DropDownLikeModel.adaptDropdown(this.attrs.dictionaryList);
+        : DropDownLikeModel.adaptDropdown(
+            this.attrs.dictionaryList,
+            this.attrs.mappingParams,
+            this.attrs.mappingParams?.isRoot,
+          );
       this._dropDown$.next(dataStructure);
       return of(dataStructure);
     }
