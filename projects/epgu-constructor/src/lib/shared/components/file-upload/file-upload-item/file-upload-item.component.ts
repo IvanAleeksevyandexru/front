@@ -11,13 +11,13 @@ import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { concatMap, filter, map, reduce, takeUntil, tap } from 'rxjs/operators';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 import {
-  ModalService,
+  BaseComponent,
+  BusEventType,
+  ConfigService,
   DeviceDetectorService,
   EventBusService,
+  ModalService,
   UnsubscribeService,
-  ConfigService,
-  BusEventType,
-  BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
@@ -221,7 +221,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
     value: FileItem,
   ): FileResponseToBackendUploadsItem {
     const ignoreActions = [ErrorActions.addDeletionErr, ErrorActions.addDownloadErr];
-    const blockActions = [ErrorActions.serverError];
+    const blockActions = [ErrorActions.serverError, ErrorActions.addCopyErr];
     const availableErrorCondition = value?.error && ignoreActions.includes(value?.error?.type);
 
     if ((availableErrorCondition || !value?.error) && value.item) {
@@ -239,9 +239,16 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   repeat(file: FileItem): void {
     const files = this.store.files.getValue();
-    files.forEach((item) =>
-      item?.error?.type === file?.error?.type ? this.addPrepare(item) : null,
-    );
+    files.forEach((item) => {
+      if (item?.error?.type === file?.error?.type) {
+        if (file?.error?.type === ErrorActions.addCopyErr) {
+          this.suggest({ isAdd: false, file });
+          this.suggest({ isAdd: true, file });
+        } else {
+          this.addPrepare(item);
+        }
+      }
+    });
   }
 
   addPrepare(file: FileItem): void {

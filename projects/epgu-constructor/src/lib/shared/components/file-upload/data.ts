@@ -21,6 +21,7 @@ export enum ErrorActions {
   addInvalidFileName = 'addInvalidFileName',
   addDownloadErr = 'addDownloadErr',
   addUploadErr = 'addUploadErr',
+  addCopyErr = 'addCopyErr',
   addDeletionErr = 'addDeletionErr',
   serverError = 'serverError',
 }
@@ -326,6 +327,10 @@ export const createError = (
     description: 'Не удалось скачать файл. Попробуйте снова',
   };
   errorHandler[ErrorActions.addUploadErr] = {
+    text: 'Ошибка при загрузке',
+    description: 'Попробуйте отправить снова или замените документ.',
+  };
+  errorHandler[ErrorActions.addCopyErr] = {
     text: 'Ошибка при загрузке',
     description: 'Попробуйте отправить снова или замените документ.',
   };
