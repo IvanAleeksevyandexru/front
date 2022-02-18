@@ -1,6 +1,6 @@
 # Release Notes
 
-## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-02-17)
+## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-02-18)
 
 ### BREAKING CHANGES
 
@@ -45,6 +45,7 @@
 * Изменение стратегии обнаружения с Default на OnPush по проекту [EPGUCORE-84009]
 * Оптимизирован рендеринг элементов списка на карте [EPGUCORE-86830]
 * Комплесный рефактор, уменьшающий кол-во warnings при сборке [EPGUCORE-80320]
+* Переименованы конфигурационные параметры Disabled > Enabled [EPGUCORE-87853]
 
 ### Bug Fixes
 
@@ -73,6 +74,7 @@
 * Исправлена включенная кнопка на экране списка садов [EPGUCORE-87452]
 * Поправлены параметры у Birth Timeslot [EPGUCORE-88420]
 * Добавлено определение типа PARENT_ID для MultiChoice [EPGUCORE-88029]
+* Исправлено, что при прикреплении файла из галереи не блокируется кнопка Далее в FileItemUpload [EPGUCORE-88583]
 
 ### Tests
 
@@ -91,6 +93,7 @@
 
 * Поправлен конфиг jest для Angular Ivy [EPGUCORE-85541]
 * Обновление либы jest-angular-preset, фиксящий кривую работу с ts-кэшом [EPGUCORE-85541]
+* Обновлены зависимости @epgu
 
 ## [399.18.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.18.0) (2022-02-14)
 
