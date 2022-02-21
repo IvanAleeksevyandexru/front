@@ -1,14 +1,15 @@
-import { FormArray, FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { CustomComponent, CustomListStatusElements } from '../../../components-list.types';
-import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
+import { CustomComponentRefRelation, TimeRelatedValue } from '@epgu/epgu-constructor-types';
 import { MockProvider } from 'ng-mocks';
 import { RefRelationService } from '../../../../../shared/services/ref-relation/ref-relation.service';
 import { BaseDisplayRelation } from './base-display-relation';
 import { createComponentMock, createComponentMockWithRel } from '../components-list-relations.mock';
-import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
+import { ConfigService, DatesToolsService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
 import { CachedAnswers } from '../../../../../screen/screen.types';
 import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 interface SetupTestInterface {
   isRelatedComponentShown: boolean;
@@ -63,6 +64,9 @@ describe('BaseDisplayRelation', () => {
     TestBed.configureTestingModule({
       providers: [
         ConcreteDisplayRelation,
+        DatesToolsService,
+        MockProvider(ConfigService),
+        MockProvider(HttpClient),
         MockProvider(RefRelationService),
         MockProvider(JsonHelperService),
       ],
@@ -185,6 +189,175 @@ describe('BaseDisplayRelation', () => {
         );
 
         expect(result).toBeTruthy();
+      });
+    });
+
+    describe('when displaying depends on timeRelatedValue', function () {
+      const mockForm = new FormArray([new FormControl()]);
+      const setupForTime = (
+        timeString: string,
+        relationType: CustomComponentRefRelation,
+        timeType: TimeRelatedValue,
+      ) => {
+        const { dependentComponent, cachedAnswers } = setup({ isRelatedComponentShown: false });
+        dependentComponent.attrs.ref = [
+          {
+            val: timeType,
+            relation: relationType,
+            relatedRel: 'testTime',
+            path: 'test',
+          },
+        ];
+        cachedAnswers.testTime = { value: { test: timeString } as any, visited: false };
+        return { dependentComponent, cachedAnswers };
+      };
+
+      it('should fire if argument time is after current', () => {
+        const { dependentComponent, cachedAnswers } = setupForTime(
+          '2200-01-31T18:16:13+03:00',
+          CustomComponentRefRelation.displayOff,
+          TimeRelatedValue.dateTimeBefore,
+        );
+
+        const result = relation.isAtLeastOneRelationFired(
+          dependentComponent,
+          {},
+          mockForm,
+          cachedAnswers,
+        );
+
+        expect(result).toBeTruthy();
+      });
+
+      it('should not fire if argument time is before current', () => {
+        const { dependentComponent, cachedAnswers } = setupForTime(
+          '2000-01-31T18:16:13+03:00',
+          CustomComponentRefRelation.displayOff,
+          TimeRelatedValue.dateTimeBefore,
+        );
+
+        const result = relation.isAtLeastOneRelationFired(
+          dependentComponent,
+          {},
+          mockForm,
+          cachedAnswers,
+        );
+
+        expect(result).toBeFalsy();
+      });
+
+      it('should fire if argument time is after current', () => {
+        const { dependentComponent, cachedAnswers } = setupForTime(
+          '2200-01-31T18:16:13+03:00',
+          CustomComponentRefRelation.displayOn,
+          TimeRelatedValue.dateTimeBefore,
+        );
+
+        const result = relation.isAtLeastOneRelationFired(
+          dependentComponent,
+          {},
+          mockForm,
+          cachedAnswers,
+        );
+
+        expect(result).toBeTruthy();
+      });
+
+      it('should not fire if argument time is before current', () => {
+        const { dependentComponent, cachedAnswers } = setupForTime(
+          '2000-01-31T18:16:13+03:00',
+          CustomComponentRefRelation.displayOff,
+          TimeRelatedValue.dateTimeBefore,
+        );
+
+        const result = relation.isAtLeastOneRelationFired(
+          dependentComponent,
+          {},
+          mockForm,
+          cachedAnswers,
+        );
+
+        expect(result).toBeFalsy();
+      });
+
+      it('should not fire if argument time is after current', () => {
+        const { dependentComponent, cachedAnswers } = setupForTime(
+          '2200-01-31T18:16:13+03:00',
+          CustomComponentRefRelation.displayOff,
+          TimeRelatedValue.dateTimeAfter,
+        );
+
+        const result = relation.isAtLeastOneRelationFired(
+          dependentComponent,
+          {},
+          mockForm,
+          cachedAnswers,
+        );
+
+        expect(result).toBeFalsy();
+      });
+
+      it('should fire if argument time is before current', () => {
+        const { dependentComponent, cachedAnswers } = setupForTime(
+          '2000-01-31T18:16:13+03:00',
+          CustomComponentRefRelation.displayOff,
+          TimeRelatedValue.dateTimeAfter,
+        );
+
+        const result = relation.isAtLeastOneRelationFired(
+          dependentComponent,
+          {},
+          mockForm,
+          cachedAnswers,
+        );
+
+        expect(result).toBeTruthy();
+      });
+
+      it('should call timeout for future updates', () => {
+        jest.useFakeTimers();
+        const spy = jest.spyOn(global, 'setTimeout');
+        const { dependentComponent, cachedAnswers } = setupForTime(
+          '2200-01-31T18:16:13+03:00',
+          CustomComponentRefRelation.displayOff,
+          TimeRelatedValue.dateTimeAfter,
+        );
+
+        relation.isAtLeastOneRelationFired(dependentComponent, {}, mockForm, cachedAnswers);
+
+        expect(spy).toHaveBeenCalled();
+        spy.mockRestore();
+      });
+
+      it('should write ids to hashMap and not to call timeout repeatedly', () => {
+        jest.useFakeTimers();
+        const spy = jest.spyOn(global, 'setTimeout');
+        const { dependentComponent, cachedAnswers } = setupForTime(
+          '2200-01-31T18:16:13+03:00',
+          CustomComponentRefRelation.displayOff,
+          TimeRelatedValue.dateTimeAfter,
+        );
+
+        relation.isAtLeastOneRelationFired(dependentComponent, {}, mockForm, cachedAnswers);
+        relation.isAtLeastOneRelationFired(dependentComponent, {}, mockForm, cachedAnswers);
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(relation.timeouts[dependentComponent.id]).toBeTruthy();
+        spy.mockRestore();
+      });
+
+      it('should not call timeout ', () => {
+        const spy = jest.spyOn(global, 'setTimeout');
+        const { dependentComponent, cachedAnswers } = setupForTime(
+          '2000-01-31T18:16:13+03:00',
+          CustomComponentRefRelation.displayOff,
+          TimeRelatedValue.dateTimeAfter,
+        );
+
+        relation.isAtLeastOneRelationFired(dependentComponent, {}, mockForm, cachedAnswers);
+
+        expect(spy).toHaveBeenCalledTimes(0);
+        jest.useRealTimers();
       });
     });
   });

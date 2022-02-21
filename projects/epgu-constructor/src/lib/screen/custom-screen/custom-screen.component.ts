@@ -18,6 +18,7 @@ import {
 } from '../../component/custom-screen/components-list.types';
 import { ScreenBase } from '../screen-base';
 import { CustomScreenService } from './custom-screen.service';
+import { NO_WHITE_BACKGROUND_COMPONENTS } from '../../shared/constants/no-white-background-components';
 
 @Component({
   selector: 'epgu-constructor-custom-screen',
@@ -28,11 +29,18 @@ import { CustomScreenService } from './custom-screen.service';
 })
 export class CustomScreenComponent extends ScreenBase implements OnInit {
   data$: Observable<DisplayDto> = this.screenService.display$.pipe(
+    //TODO: нужно создать механизм для активации белой подложки по данным из json
+    tap(({ components }) => {
+      if (components.some((component) => NO_WHITE_BACKGROUND_COMPONENTS.includes(component.type))) {
+        this.disableWhiteBackground = true;
+      }
+    }),
     tap(() => this.cdr.markForCheck()),
   );
   dataToSend: NavigationPayload;
   isValid: boolean;
   helperText: CustomComponent;
+  disableWhiteBackground: boolean;
 
   constructor(
     public injector: Injector,

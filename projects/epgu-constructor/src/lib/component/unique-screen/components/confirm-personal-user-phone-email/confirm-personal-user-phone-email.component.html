@@ -17,7 +17,7 @@
   </ng-container>
 
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body" *ngIf="data$ | async as data">
-    <ng-container *ngIf="data.errors">
+    <ng-container *ngIf="data.errors.length">
       <epgu-constructor-disclaimer
         *ngFor="let error of data.errors"
         class="mb-16"
@@ -26,17 +26,31 @@
         [description]="error.desc"
         [clarifications]="data.attrs?.clarifications"
       ></epgu-constructor-disclaimer>
+      <epgu-constructor-output-html
+        *ngIf="data?.label"
+        class="label-helper"
+        [html]="data.label"
+        [clarifications]="data.attrs?.clarifications"
+      ></epgu-constructor-output-html>
+      <div class="value-text">
+        {{ data.value }}
+      </div>
     </ng-container>
 
     <ng-container *ngIf="data.errors?.length == 0">
-      <div class="label-helper">{{ data.label }}</div>
+      <epgu-constructor-output-html
+        *ngIf="data?.label"
+        class="label-helper"
+        [html]="data.label"
+        [clarifications]="data.attrs?.clarifications"
+      ></epgu-constructor-output-html>
       <div class="value-text">
         {{ isPhoneScreenType ? (data.value | formatPhone) : data.value }}
       </div>
     </ng-container>
 
     <div class="footer" *ngIf="screenService.action$ | async as action">
-      <div class="divider"></div>
+      <div class="divider mb-24"></div>
       <button
         class="btn-edit"
         epgu-constructor-action

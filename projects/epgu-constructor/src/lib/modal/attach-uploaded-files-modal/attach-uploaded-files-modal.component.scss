@@ -1,6 +1,6 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
 
 ::ng-deep .conf-modal {
   & .perfect-scrollbar .ps-content {
@@ -83,4 +83,13 @@
   &.small {
     @include typ-plain-small();
   }
+}
+
+.loader{
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 }

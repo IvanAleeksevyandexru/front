@@ -455,6 +455,34 @@ describe('DatesToolsService', () => {
     });
   });
 
+  describe('isDateStringDotFormat()', () => {
+    it('should correctly detect string dot format', () => {
+      const stringDot = '01.02.2000';
+
+      expect(service.isDateStringDotFormat(stringDot)).toBeTruthy();
+
+      const notStringDot1 = '01.02.2000.1';
+
+      expect(service.isDateStringDotFormat(notStringDot1)).toBeFalsy();
+
+      const notStringDot2 = '01.2000';
+
+      expect(service.isDateStringDotFormat(notStringDot2)).toBeFalsy();
+
+      const notStringDot3 = '2000.13.13';
+
+      expect(service.isDateStringDotFormat(notStringDot3)).toBeFalsy();
+
+      const notStringDot4 = '12,12,2003';
+
+      expect(service.isDateStringDotFormat(notStringDot4)).toBeFalsy();
+
+      const notStringDot5 = '';
+
+      expect(service.isDateStringDotFormat(notStringDot5)).toBeFalsy();
+    });
+  });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

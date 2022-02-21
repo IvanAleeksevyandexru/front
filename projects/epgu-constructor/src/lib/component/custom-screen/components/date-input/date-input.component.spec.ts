@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { DateInputComponent } from './date-input.component';
-import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { ConstructorDatePickerComponent } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.component';
 import { BaseModule } from '../../../../shared/base.module';
@@ -13,6 +12,8 @@ import { DateRangeService } from '../../../../shared/services/date-range/date-ra
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 import { HelperService } from '@epgu/ui/services/helper';
+import { ScreenButtonService } from '../../../../shared/components/screen-buttons/screen-button.service';
+import { ScreenButtonServiceStub } from '../../../../shared/components/screen-buttons/screen-button.service.stub';
 
 const mockComponent = {
   id: 'cl11_4',
@@ -88,21 +89,24 @@ const mockComponent = {
 describe('DateInputComponent', () => {
   let component: DateInputComponent;
   let fixture: ComponentFixture<DateInputComponent>;
-  let formService: ComponentsListFormServiceStub;
+  let formService: ComponentsListFormService;
   let control: FormGroup;
   let fb: FormBuilder;
   let dateRangeService: DateRangeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ForTestsOnlyModule, BaseModule],
+      imports: [BaseModule],
       declarations: [
         DateInputComponent,
         MockComponents(ComponentItemComponent, ConstructorDatePickerComponent),
       ],
       providers: [
         { provide: DictionaryService, useClass: DictionaryServiceStub },
+        { provide: ScreenButtonService, useClass: ScreenButtonServiceStub },
         MockProvider(HelperService),
+        MockProvider(DateRangeService),
+        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
       ],
     }).compileComponents();
   });
@@ -112,9 +116,9 @@ describe('DateInputComponent', () => {
     dateRangeService = TestBed.inject(DateRangeService);
     formService = (TestBed.inject(
       ComponentsListFormService,
-    ) as unknown) as ComponentsListFormServiceStub;
+    ) as unknown) as ComponentsListFormService;
     control = fb.group(mockComponent);
-    formService._form = new FormArray([control]);
+    formService['_form'] = new FormArray([control]);
     fixture = TestBed.createComponent(DateInputComponent);
     component = fixture.componentInstance;
     component.componentIndex = 0;

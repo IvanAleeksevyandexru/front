@@ -32,17 +32,11 @@
               [(scale)]="scale"
               (ready)="imageLoaded()"
             ></ly-img-cropper>
-            <epgu-constructor-output-html
-              *ngIf="isFacePhotoMode"
-              class="photo-editor__mask"
-              [html]="maskSrc"
-            ></epgu-constructor-output-html>
+            <img *ngIf="isFacePhotoMode" class="photo-editor__mask" [src]="maskSrc" alt />
           </div>
           <div *ngIf="cropper.isLoaded" class="photo-editor__actions">
             <button class="photo-editor__button" (click)="cropper.zoomOut()">
-              <epgu-cf-ui-icon
-                [mainColor]="iconColor.BaseGosblue"
-                [type]="iconType.ZoomOut">
+              <epgu-cf-ui-icon [mainColor]="iconColor.BaseGosblue" [type]="iconType.ZoomOut">
               </epgu-cf-ui-icon>
             </button>
             <epgu-constructor-slider
@@ -100,7 +94,7 @@
         </div>
         <div class="photo-editor-modal__buttons">
           <lib-button class="photo-editor-modal__button" color="white" (click)="takeAnotherPhoto()">
-            {{ isFacePhotoMode ? 'Выбрать другое фото' : 'Выбрать другой'}}
+            {{ isFacePhotoMode ? 'Выбрать другое фото' : 'Выбрать другой' }}
           </lib-button>
           <lib-button class="photo-editor-modal__button" (click)="saveAndExit()">
             Сохранить и продолжить

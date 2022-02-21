@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Trobber } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-cf-ui-main-container',
@@ -8,4 +9,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class MainContainerComponent {
   @Input() showLoader = true;
+  @Input() trobber: Trobber = { message: '' };
 }

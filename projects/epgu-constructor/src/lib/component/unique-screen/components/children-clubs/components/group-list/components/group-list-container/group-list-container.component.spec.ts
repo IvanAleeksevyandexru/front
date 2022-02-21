@@ -17,7 +17,7 @@ import { GroupListModule } from '../../group-list.module';
 import { FindOptionsGroup, VendorType } from '../../../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../../screen/screen.service.stub';
-import { ComponentDto } from '@epgu/epgu-constructor-types/src';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 import { GroupListServiceStub } from '../../../../services/group-list/group-list.service.stub';
 import { DictionaryService } from '../../../../../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../../../../../shared/services/dictionary/dictionary.service.stub';
@@ -105,15 +105,6 @@ describe('GroupListContainerComponent', () => {
       component.countingFilters(testObject);
 
       expect(component.filtersCount$$.getValue()).toBe(4);
-    });
-  });
-
-  describe('search', () => {
-    it('should reinit list', () => {
-      const spy = jest.spyOn(component, 'init');
-      component.search('тестик');
-
-      expect(spy).toBeCalled();
     });
   });
 });

@@ -17,10 +17,6 @@ import {
   providedIn: 'root',
 })
 export class CardsFormsService {
-  private serviceCache: { [name: string]: Service } = {};
-
-  private passportCache: { [name: string]: Passport } = {};
-
   public blockAttrByRadioOrderType = {
     online: 'order.button.disabled',
     mfc: 'mfc.button.disabled',
@@ -28,6 +24,10 @@ export class CardsFormsService {
     widget: 'widget.button.disabled',
     widgetnoauth: 'widgetnoauth.button.disabled',
   };
+
+  private serviceCache: { [name: string]: Service } = {};
+
+  private passportCache: { [name: string]: Passport } = {};
 
   constructor(
     private catalogService: CatalogService,

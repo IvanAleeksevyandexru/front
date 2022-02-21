@@ -1,9 +1,13 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/index';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/index';
 .error-region {
   padding-bottom: 24px;
 }
 .map-search-panel {
   padding: 0 24px;
+  @include tablets-down() {
+    padding: 0 16px;
+  }
+
   &__nav {
     padding: 14px 0;
     margin-bottom: 0;

@@ -6,7 +6,6 @@ import {
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
-import { checkINN, checkOgrn, checkOgrnip, checkSnils } from 'ru-validation-codes';
 import { Observable, of } from 'rxjs';
 import {
   HealthService,
@@ -14,9 +13,10 @@ import {
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
+  JsonHelperService,
+  ValidationHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CookieService } from 'ngx-cookie-service';
-
 import { get } from 'lodash';
 import { ComponentDto, KeyValueMap } from '@epgu/epgu-constructor-types';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
@@ -28,6 +28,7 @@ import {
   CustomComponentAttrValidation,
   CustomComponentAttrValidator,
   CustomScreenComponentTypes,
+  UpdateOn,
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
 import { MultipleSelectedItems } from '../../components/multiple-choice-dictionary/multiple-choice-dictionary.models';
@@ -63,11 +64,12 @@ export class ValidationService {
     private currentAnswerService: CurrentAnswersService,
     private health: HealthService,
     private cookie: CookieService,
+    private jsonHelperService: JsonHelperService,
+    private validationHelperService: ValidationHelperService,
   ) {}
 
   public customValidator(component: CustomComponent): ValidatorFn {
-    const componentValidations = component.attrs?.validation;
-    const validations = componentValidations;
+    const validations = component.attrs?.validation;
 
     return (control: AbstractControl): ValidationErrors => {
       if (this.typesWithoutValidation.includes(component.type)) {
@@ -108,7 +110,7 @@ export class ValidationService {
   ): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
     const onBlurValidations = componentValidations.filter(
-      (validationRule) => validationRule.updateOn === 'blur',
+      (validationRule) => validationRule.updateOn === UpdateOn.ON_BLUR,
     );
 
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -118,7 +120,7 @@ export class ValidationService {
 
       let customMessage;
 
-      if (asyncValidationType === 'blur' && onBlurValidations?.length) {
+      if (asyncValidationType === UpdateOn.ON_BLUR && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control, component);
         if (error) {
           return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));
@@ -302,15 +304,17 @@ export class ValidationService {
   private isValid(component: CustomComponent, value: string): boolean {
     switch (component.type) {
       case CustomScreenComponentTypes.OgrnInput:
-        return checkOgrn(value);
+        return this.validationHelperService.checkOgrn(value);
       case CustomScreenComponentTypes.OgrnipInput:
-        return checkOgrnip(value);
+        return this.validationHelperService.checkOgrnip(value);
       case CustomScreenComponentTypes.SnilsInput:
-        return checkSnils(value);
+        return this.validationHelperService.checkSnils(value);
       case CustomScreenComponentTypes.PersonInnInput:
-        return value.length === this.personInnLength && checkINN(value);
+        return (
+          value.length === this.personInnLength && this.validationHelperService.checkINN(value)
+        );
       case CustomScreenComponentTypes.LegalInnInput:
-        return value.length === this.legalInnLength && checkINN(value);
+        return value.length === this.legalInnLength && this.validationHelperService.checkINN(value);
       case CustomScreenComponentTypes.CalendarInput:
         return this.isCompoundComponentValid(component, (value as unknown) as KeyValueMap);
       case CustomScreenComponentTypes.CardNumberInput:
@@ -425,6 +429,12 @@ export class ValidationService {
   }
 
   private isMultipleSelectedItemsValid(selectedItems: MultipleSelectedItems): boolean {
-    return selectedItems && !!selectedItems.amount;
+    const parsedValue = this.getParsedValue(selectedItems);
+    return parsedValue && !!(parsedValue as MultipleSelectedItems).amount;
+  }
+
+  private getParsedValue(value: string | unknown): unknown {
+    const isParsable = this.jsonHelperService.hasJsonStructure(value as string);
+    return isParsable ? JSON.parse(value as string) : value;
   }
 }

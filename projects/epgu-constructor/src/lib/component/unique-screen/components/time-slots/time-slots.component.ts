@@ -72,6 +72,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   public activeYearNumber: number;
   public chosenTimeStr: string;
   public isChosenTimeStrVisible = false;
+  public chosenTimeStrNewBooking = '';
   public isFinish = new Subject<null>();
 
   errorTemplateCheckboxControl = new FormControl();
@@ -84,7 +85,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   };
 
   confirmModalParameters: ConfirmationModal = {
-    text: 'Вы уверены, что хотите поменять забронированное время?',
+    title: 'Вы уверены, что хотите поменять забронированное время?',
+    text: 'Предыдущая запись будет отменена',
     showCloseButton: false,
     buttons: [
       {
@@ -199,7 +201,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initModalsSettings();
-    const cachedAnswer = this.screenService.getCompValueFromCachedAnswers();
+    const cachedAnswer = this.screenService.getCompValueFromApplicantAndCachedAnswers();
+
     if (cachedAnswer) {
       this.cachedAnswer = JSON.parse(cachedAnswer);
     }
@@ -297,6 +300,13 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     }
   }
 
+  public calculateNewBookInfo(): void {
+    this.chosenTimeStrNewBooking =
+      this.cachedAnswer?.timeSlot?.slotId === this.currentSlot?.slotId || !this.currentSlot?.slotId
+        ? ''
+        : this.getSlotTimeStr(this.currentSlot);
+  }
+
   /**
    * Клик по слоту на календаре. Повторный клик по уже выбранному слоту отменяет выбор
    * @param slot слот для выбора
@@ -312,6 +322,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
         this.currentAnswersService.state = slot;
       }
     }
+    this.calculateNewBookInfo();
   }
 
   public isSlotSelected({ slotId }: SlotInterface): boolean {
@@ -893,10 +904,14 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.bookedSlot = waitingTimeExpired ? null : bookedSlot;
   }
 
-  private setBookedTimeStr(slot: SlotInterface): void {
+  private getSlotTimeStr(slot: SlotInterface): string {
     const time = this.datesHelperService.utcOffset(slot.slotTime, slot.timezone);
 
-    this.chosenTimeStr = this.datesHelperService.format(time, DATE_TIME_STRING_FULL);
+    return this.datesHelperService.format(time, DATE_TIME_STRING_FULL);
+  }
+
+  private setBookedTimeStr(slot: SlotInterface): void {
+    this.chosenTimeStr = this.getSlotTimeStr(slot);
   }
 
   /**

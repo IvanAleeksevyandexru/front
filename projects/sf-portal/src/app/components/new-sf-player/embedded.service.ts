@@ -6,10 +6,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EmbeddedService implements Resolve<boolean> {
-  constructor() {}
-
   public resolve(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     route: ActivatedRouteSnapshot,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     state: RouterStateSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
     return true;

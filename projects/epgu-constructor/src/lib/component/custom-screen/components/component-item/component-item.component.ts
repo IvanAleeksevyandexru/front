@@ -9,12 +9,18 @@ import {
 import { AbstractControl } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs/operators';
 import {
-  UnsubscribeService,
   FocusManagerService,
   OPTIONAL_FIELD,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FocusState } from '@epgu/ui/services/focus';
-import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
+import {
+  CustomComponent,
+  CustomComponentAttrValidation,
+  CustomScreenComponentTypes,
+  UpdateOn,
+} from '../../components-list.types';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-component-item',
@@ -31,6 +37,9 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   @Input() disableError = false;
   @Input() disableHint = false;
   @Input() largeFontSize = false;
+  @Input() parentFirst?: boolean;
+  @Input() parentLast?: boolean;
+  @Input() clarifications?: Clarifications;
 
   readonly componentType = CustomScreenComponentTypes;
   public isHelperTextVisible = false;
@@ -41,18 +50,27 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   public hasUiError = false;
   public hasServerError = false;
   public isShowErrors = true;
-  constructor(
+  public lastError = {
+    msg: '',
+    desc: '',
+  };
+
+  public constructor(
     private focusManager: FocusManagerService,
     private unsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,
   ) {}
 
-  checkShowErrors(state: FocusState): void {
-    this.isShowErrors = !(state?.current?.name === this.component.id && !this.hasUiError);
+  public checkShowErrors(state: FocusState): void {
+    const isAnotherControlFocused = state?.current?.name !== this.component.id;
+    if (isAnotherControlFocused) {
+      this.isShowErrors = this.hasUiError;
+      this.updateError();
+    }
     this.cdr.markForCheck();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     /**
      * По умолчанию ошибки должны отображаться также как при change(Сделано для того - если у компонента нет поддержки фокуса)
      * Если в момент фокуса нет ошибок то скрываем ошибки
@@ -70,8 +88,15 @@ export class ComponentItemComponent implements OnInit, OnChanges {
     this.setState();
   }
 
-  ngOnChanges(): void {
+  public ngOnChanges(): void {
     this.setState();
+  }
+
+  private updateError(): void {
+    this.lastError = {
+      msg: this.control.getError('msg'),
+      desc: this.control.getError('desc'),
+    };
   }
 
   private setState(): void {
@@ -83,9 +108,25 @@ export class ComponentItemComponent implements OnInit, OnChanges {
 
   private checkItemHasErrors(): void {
     this.hasUiError =
-      this.control.invalid && this.control.touched ? this.control.hasError('msg') : false;
+      this.control.invalid && (this.control.touched || this.control.value)
+        ? this.control.hasError('msg')
+        : false;
     this.hasServerError = this.control.hasError('serverError');
     this.hasErrors = !this.disableError && (this.hasUiError || this.hasServerError);
+    if (this.getFirstUpdateOn() === UpdateOn.ON_CHANGE) {
+      this.isShowErrors = this.hasUiError;
+      this.updateError();
+    }
+  }
+
+  private getFirstUpdateOn(): UpdateOn {
+    const validations = this.component.attrs?.validation || [];
+
+    const ruleWithUpdateOn = validations.find(
+      (validation: CustomComponentAttrValidation) => !!validation.updateOn,
+    );
+
+    return ruleWithUpdateOn ? ruleWithUpdateOn.updateOn : UpdateOn.ON_CHANGE;
   }
 
   private checkItemHasInfo(): void {

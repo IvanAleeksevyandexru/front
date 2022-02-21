@@ -8,6 +8,7 @@ import { AbstractControl } from '@angular/forms';
       [labelText]="labelText"
       [control]="control"
       [checkboxId]="checkboxId + 'tree-checkbox'"
+      [hidden]="hidden"
     ></epgu-cf-ui-constructor-constructor-checkbox>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +26,7 @@ export class TreeNodeCheckboxComponent {
   @Input() disabled?: boolean;
   @Input() labelText: string;
   @Input() checkboxId: string;
+  @Input() hidden: boolean;
   @Input() control: AbstractControl;
   @Output() readonly treeClick = new EventEmitter<MouseEvent>();
 

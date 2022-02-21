@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 
-enum GenderOrder {
+export enum GenderOrder {
   male = 0,
   female = 1,
 }

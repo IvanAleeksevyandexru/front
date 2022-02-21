@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -38,7 +39,7 @@ import GenericAttrs from './component-list-resolver/GenericAttrs';
   templateUrl: './components-list.component.html',
   styleUrls: ['./components-list.component.scss'],
   providers: [ComponentsListFormService, UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   /**
@@ -55,6 +56,9 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   readonly componentType = CustomScreenComponentTypes;
 
+  public idxFirstShownElement = 0;
+  public idxLastShownElement = 0;
+
   constructor(
     public configService: ConfigService,
     public suggestHandlerService: SuggestHandlerService,
@@ -64,6 +68,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     private eventBusService: EventBusService,
     private httpCancelService: HttpCancelService,
     private validationService: ValidationService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.changes = this.formService.changes;
   }
@@ -73,6 +78,11 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       .on(BusEventType.ValidateOnBlur)
       .pipe(takeUntil(this.unsubscribeService.ngUnsubscribe$))
       .subscribe(() => this.formService.emitChanges());
+
+    this.formService.form.valueChanges.subscribe(() => {
+      this.findShowElements();
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -135,5 +145,19 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe(): void {
     this.unsubscribeService.ngUnsubscribe$.next();
     this.unsubscribeService.ngUnsubscribe$.complete();
+  }
+
+  private findShowElements(): void {
+    const arrShowElem = [];
+    this.formService.form.controls.forEach((componentData, idx) => {
+      if (
+        this.formService.shownElements[componentData.value?.id]?.isShown &&
+        !componentData.value?.attrs?.hidden
+      ) {
+        arrShowElem.push(idx);
+      }
+    });
+    this.idxFirstShownElement = Math.min(...arrShowElem);
+    this.idxLastShownElement = Math.max(...arrShowElem);
   }
 }

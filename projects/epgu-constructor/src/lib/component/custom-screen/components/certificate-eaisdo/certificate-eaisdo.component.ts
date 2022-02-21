@@ -19,6 +19,7 @@ import { EXTERNAL_INTEGRATION_ACTION } from '../../../../shared/constants/action
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import CertificateEaisdoModelAttrs from './CertificateEaisdoModelAttrs';
 import CertificateEaisdoModel from './CertificateEaisdoModel';
+import { ScreenService } from '../../../../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-certificate-eaisdo',
@@ -37,6 +38,7 @@ export class CertificateEaisdoComponent
     public injector: Injector,
     private actionService: ActionService,
     private certificateEaisdoService: CertificateEaisdoService,
+    private screenService: ScreenService,
     private eventBusService: EventBusService,
     private logger: LoggerService,
   ) {
@@ -75,6 +77,7 @@ export class CertificateEaisdoComponent
 
   private tryFetchCertificate(): void {
     this.hasError = false;
+    this.screenService.updateLoading(true);
     this.actionService
       .handleExternalIntegrationAction(EXTERNAL_INTEGRATION_ACTION, this.component.id)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -85,6 +88,7 @@ export class CertificateEaisdoComponent
   }
 
   private handleResponse(response: ActionApiResponse<EaisdoResponse>): void {
+    this.screenService.updateLoading(false);
     const hasErrors = !!response.message;
     const isTimeout = response.status === 'REQUEST_TIMEOUT';
     if (hasErrors || isTimeout) {
@@ -108,5 +112,6 @@ export class CertificateEaisdoComponent
       this.logger.error([error]);
     }
     this.hasError = true;
+    this.screenService.updateLoading(false);
   }
 }

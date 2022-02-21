@@ -12,10 +12,12 @@ import {
   DisplaySubjHead,
   Gender,
   InfoComponentDto,
+  LogicAfterValidationComponents,
   LogicComponents,
   ScenarioErrorsDto,
   ScreenButton,
   ScreenTypes,
+  Trobber,
 } from '@epgu/epgu-constructor-types';
 import { ScreenStore, ServiceInfo } from './screen.types';
 import { ISuggestionItem } from '../core/services/autocomplete/autocomplete.inteface';
@@ -79,6 +81,10 @@ export class ScreenContent {
 
   private _logicComponents = new BehaviorSubject<LogicComponents[]>([]);
 
+  private _logicAfterValidationComponents = new BehaviorSubject<LogicAfterValidationComponents[]>(
+    [],
+  );
+
   private _infoComponents = new BehaviorSubject<InfoComponentDto[]>(null);
 
   private _showInfoComponent = new BehaviorSubject<boolean>(null);
@@ -92,6 +98,8 @@ export class ScreenContent {
   private _isPrevStepCase = new BehaviorSubject<boolean>(null);
 
   private _isLogicComponentLoading = new BehaviorSubject<boolean>(false);
+
+  private _isLogicComponentAfterValidationLoading = new BehaviorSubject<boolean>(false);
 
   private _cycledApplicantAnswerContext = new BehaviorSubject<CycledApplicantAnswerContextDto>(
     null,
@@ -470,6 +478,23 @@ export class ScreenContent {
     this._logicComponents.next(val);
   }
 
+  public get logicAfterValidationComponents$(): Observable<LogicAfterValidationComponents[]> {
+    return this._logicAfterValidationComponents.asObservable();
+  }
+
+  public get logicAfterValidationComponents(): LogicAfterValidationComponents[] {
+    return this._logicAfterValidationComponents.getValue();
+  }
+
+  public set logicAfterValidationComponents(value: LogicAfterValidationComponents[]) {
+    this._logicAfterValidationComponents.next(value);
+  }
+
+  public get trobber(): Trobber {
+    const logicAfterValidationComponents = this.logicAfterValidationComponents;
+    return logicAfterValidationComponents[0]?.attrs?.onload?.trobber || { message: '' };
+  }
+
   public get logicAnswers$(): Observable<ApplicantAnswersDto> {
     return this._logicAnswers.asObservable();
   }
@@ -510,6 +535,18 @@ export class ScreenContent {
     return this._isLogicComponentLoading.asObservable();
   }
 
+  public get isLogicComponentAfterValidationLoading(): boolean {
+    return this._isLogicComponentAfterValidationLoading.getValue();
+  }
+
+  public set isLogicComponentAfterValidationLoading(val: boolean) {
+    this._isLogicComponentAfterValidationLoading.next(val);
+  }
+
+  public get isLogicComponentAfterValidationLoading$(): Observable<boolean> {
+    return this._isLogicComponentAfterValidationLoading.asObservable();
+  }
+
   public get cycledApplicantAnswerContext(): CycledApplicantAnswerContextDto {
     return this._cycledApplicantAnswerContext.getValue();
   }
@@ -539,6 +576,7 @@ export class ScreenContent {
       subHeader,
       type,
       components = [],
+      logicAfterValidationComponents = [],
       terminal,
       cssClass,
       buttons,
@@ -569,6 +607,7 @@ export class ScreenContent {
     this.disclaimers = disclaimers;
     this.componentError = errors[firstComponent?.id];
     this.component = firstComponent;
+    this.logicAfterValidationComponents = logicAfterValidationComponents;
     this.componentType = firstComponent?.type;
     this.componentLabel = firstComponent?.label;
     this.componentValue = this.getComponentData(firstComponent?.value);

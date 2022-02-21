@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 export const electionSinglePoint = {
   value: '4024049411294',
   parentValue: null,

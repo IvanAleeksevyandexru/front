@@ -50,6 +50,7 @@ import { MapSidebarComponent } from './components/map-sidebar/map-sidebar.compon
 import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipeable-wrapper.component';
 import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 import { HelperService } from '@epgu/ui/services/helper';
+import { InviteService } from '../../../../core/services/invite/invite.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -86,7 +87,7 @@ describe('SelectMapObjectComponent', () => {
         IconsModule,
         ForTestsOnlyModule,
       ],
-      providers: [MockProvider(HelperService)],
+      providers: [MockProvider(HelperService), MockProvider(InviteService)],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: { entryComponents: [CommonBalloonContentComponent, CommonSearchPanelComponent] },

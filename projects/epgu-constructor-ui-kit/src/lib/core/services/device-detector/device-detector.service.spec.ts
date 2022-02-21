@@ -34,7 +34,7 @@ describe('DeviceDetectorService', () => {
   });
 
   it('is Mob', () => {
-    injectableWindow.navigator.__defineGetter__(
+    injectableWindow.navigator['__defineGetter__'](
       'userAgent',
       () =>
         'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Mobile/15E148 Safari/604.1',
@@ -44,7 +44,7 @@ describe('DeviceDetectorService', () => {
   });
 
   it('is Tablet', () => {
-    injectableWindow.navigator.__defineGetter__(
+    injectableWindow.navigator['__defineGetter__'](
       'userAgent',
       () =>
         'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
@@ -54,7 +54,7 @@ describe('DeviceDetectorService', () => {
   });
 
   it('is Desktop', () => {
-    injectableWindow.navigator.__defineGetter__(
+    injectableWindow.navigator['__defineGetter__'](
       'userAgent',
       () =>
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
@@ -77,7 +77,7 @@ describe('DeviceDetectorService', () => {
   });
 
   it('is ChromeIOS', () => {
-    injectableWindow.navigator.__defineGetter__(
+    injectableWindow.navigator['__defineGetter__'](
       'userAgent',
       () => 'AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75',
     );
@@ -88,48 +88,48 @@ describe('DeviceDetectorService', () => {
   describe('get system', () => {
     it('should return "Desktop"', () => {
       deviceDetectorService.isDesktop = true;
+      deviceDetectorService.initState();
       const operatingSystem = deviceDetectorService.system;
-
       expect(operatingSystem).toEqual(System.Desktop);
     });
 
     it('should return "Android"', () => {
       deviceDetectorService.isDesktop = false;
-      injectableWindow.navigator.__defineGetter__('userAgent', () => 'Android Mozilla');
+      injectableWindow.navigator['__defineGetter__']('userAgent', () => 'Android Mozilla');
+      deviceDetectorService.initState();
       const operatingSystem = deviceDetectorService.system;
-
       expect(operatingSystem).toEqual(System.Android);
     });
 
     it('should return "iOS"', () => {
       deviceDetectorService.isDesktop = false;
-      injectableWindow.navigator.__defineGetter__('userAgent', () => 'iPhone Safari');
+      injectableWindow.navigator['__defineGetter__']('userAgent', () => 'iPhone Safari');
+      deviceDetectorService.initState();
       const operatingSystem = deviceDetectorService.system;
-
       expect(operatingSystem).toEqual(System.iOS);
     });
 
     it('should return "Harmony"', () => {
+      injectableWindow.navigator['__defineGetter__']('userAgent', () => 'Harmony');
+      deviceDetectorService.initState();
       deviceDetectorService.isDesktop = false;
-      injectableWindow.navigator.__defineGetter__('userAgent', () => 'Harmony');
       const operatingSystem = deviceDetectorService.system;
-
       expect(operatingSystem).toEqual(System.Harmony);
     });
 
     it('should return "NotDetermined"', () => {
+      injectableWindow.navigator['__defineGetter__']('userAgent', () => 'Ubuntu Touch');
+      deviceDetectorService.initState();
       deviceDetectorService.isDesktop = false;
-      injectableWindow.navigator.__defineGetter__('userAgent', () => 'Ubuntu Touch');
       const operatingSystem = deviceDetectorService.system;
-
       expect(operatingSystem).toEqual(System.NotDetermined);
     });
 
     it('should return "Error"', () => {
+      injectableWindow.navigator['__defineGetter__']('userAgent', () => null);
+      deviceDetectorService.initState();
       deviceDetectorService.isDesktop = false;
-      injectableWindow.navigator.__defineGetter__('userAgent', () => null);
       const operatingSystem = deviceDetectorService.system;
-
       expect(operatingSystem).toEqual(System.Error);
     });
   });

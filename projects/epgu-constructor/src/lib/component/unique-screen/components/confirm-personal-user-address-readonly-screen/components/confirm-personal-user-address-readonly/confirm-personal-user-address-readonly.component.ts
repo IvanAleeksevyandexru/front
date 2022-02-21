@@ -34,7 +34,7 @@ import { FieldNames } from '../../../registration-addr/registration-addr-screen.
   templateUrl: './confirm-personal-user-address-readonly.component.html',
   styleUrls: ['./confirm-personal-user-address-readonly.component.scss'],
   providers: [UnsubscribeService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmPersonalUserAddressReadonlyComponent extends BaseComponent
   implements OnInit, OnDestroy {
@@ -68,6 +68,7 @@ export class ConfirmPersonalUserAddressReadonlyComponent extends BaseComponent
         this.valueParsed[fieldName] = value;
         this.currentAnswersService.state = this.getPreparedDataToSend();
       });
+      this.changeDetectionRef.markForCheck();
     });
   }
 

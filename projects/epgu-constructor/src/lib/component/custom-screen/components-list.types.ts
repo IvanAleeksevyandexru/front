@@ -64,6 +64,7 @@ export enum CustomScreenComponentTypes {
   RestLookup = 'RestLookup',
   SearchableDropDown = 'SearchableDropDown',
   SignAppLink = 'SignAppLink',
+  SelectFromList = 'SelectFromList',
   SnilsInput = 'SnilsInput',
   StringInput = 'StringInput',
   TextArea = 'TextArea',
@@ -274,6 +275,8 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   validation?: CustomComponentAttrValidation[];
   wait?: Wait;
   largeFontSize?: boolean;
+  listIncrementLength?: number;
+  listInitLength?: number;
 }
 
 export interface DateRestriction {
@@ -283,7 +286,11 @@ export interface DateRestriction {
   forChild?: string;
 }
 
-export type UpdateOn = 'blur' | 'change' | 'submit';
+export enum UpdateOn {
+  ON_BLUR = 'blur',
+  ON_CHANGE = 'change',
+  ON_SUBMIT = 'submit',
+}
 
 export interface CustomComponentAttrValidation extends ComponentValidationDto {
   errorDesc?: string;
@@ -386,4 +393,11 @@ export interface DateRestrictionGroups {
 export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';
 export interface Searchable {
   [key: string]: { value: string | object };
+}
+
+export interface IEntityWithRef {
+  id?: string;
+  attrs?: {
+    ref?: CustomComponentRef[];
+  };
 }

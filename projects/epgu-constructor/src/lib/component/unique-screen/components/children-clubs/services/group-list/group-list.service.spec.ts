@@ -4,15 +4,16 @@ import {
   MicroAppStateQueryStub,
   MicroAppStateService,
   MicroAppStateServiceStub,
+  UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { StateService } from '../state/state.service';
 import { StateServiceStub } from '../state/state.service.stub';
 import { GroupListService } from './group-list.service';
 import { ProgramListService } from '../program-list/program-list.service';
 import { groupStub } from '../../stubs/projects.stub';
-import { ChildrenClubsState } from '../../models/children-clubs.types';
 import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../../../shared/services/dictionary/dictionary-api.service.stub';
+import ChildrenClubsListService from '../children-clubs-list.service';
 
 describe('GroupListService', () => {
   let service: GroupListService;
@@ -22,10 +23,12 @@ describe('GroupListService', () => {
       providers: [
         GroupListService,
         ProgramListService,
+        ChildrenClubsListService,
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: StateService, useClass: StateServiceStub },
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        UnsubscribeService,
       ],
     }).compileComponents();
     service = TestBed.inject(GroupListService);
@@ -39,78 +42,59 @@ describe('GroupListService', () => {
     service = TestBed.inject(GroupListService);
   });
 
-  describe('reset()', () => {
+  describe('resetData()', () => {
     it('should reset specific fields', () => {
-      service.reset();
+      service.resetData();
 
-      expect(service.page$$.getValue()).toBe(0);
-      expect(service.isFinish$$.getValue()).toBe(false);
-      expect(service.loading$$.getValue()).toBe(true);
-      expect(service.data$$.getValue().length).toBe(0);
-      expect(service.allData$$.getValue().length).toBe(0);
+      expect(service.currentPage).toBe(0);
+      expect(service.paginatedData.getValue()).toEqual([]);
+      expect(service.isFinished.getValue()).toBe(false);
+      expect(service.isLoading.getValue()).toBe(true);
+      expect(service.fullData.getValue()).toEqual([]);
     });
   });
 
-  describe('resetPagination()', () => {
-    it('should reset page number ', () => {
-      service.page$$.next(678);
-
-      service.resetPagination();
-
-      expect(service.page$$.getValue()).toBe(0);
-    });
-  });
-
-  describe('setGroupList()', () => {
+  describe('setData()', () => {
     it('should reset page number ', () => {
       const param = [];
-      const spy = jest.spyOn(service, 'next');
-      service.setGroupList(param);
+      const spy = jest.spyOn(service, 'nextPage');
+      service.setData(param);
 
-      expect(service.data).toStrictEqual(param);
+      expect(service.fullData.getValue()).toStrictEqual(param);
       expect(spy).toHaveBeenCalled();
     });
   });
 
-  describe('next()', () => {
+  describe('nextPage()', () => {
     const programsArray = new Array(21).fill(groupStub);
 
     it('should increase page number', () => {
-      service.next();
+      service.nextPage();
 
-      expect(service.page$$.getValue()).toBe(1);
+      expect(service.currentPage).toBe(1);
     });
 
     it('should return paginated data according to amount of page opened', () => {
-      service.allData$$.next(programsArray);
+      service.fullData.next(programsArray);
 
-      service.next();
-      service.next();
+      service.nextPage();
+      service.nextPage();
 
-      expect(service.data$$.getValue().length).toBe(20);
-      expect(service.isFinish$$.getValue()).toBe(false);
+      expect(service.paginatedData.getValue().length).toBe(20);
+      expect(service.isFinished.getValue()).toBe(false);
     });
 
     it('should set isFinish to true when all data is loaded', () => {
-      service.data$$.next(programsArray);
+      service.fullData.next(programsArray);
 
-      service.next();
-      service.next();
-      service.next();
-      service.next();
-      service.next();
+      service.nextPage();
+      service.nextPage();
+      service.nextPage();
+      service.nextPage();
+      service.nextPage();
 
-      expect(service.data$$.getValue().length).toBe(21);
-      expect(service.isFinish$$.getValue()).toBe(true);
-    });
-  });
-
-  describe('getGroupList()', () => {
-    it('should call api and write result to all data', (done) => {
-      service.getGroupList(({} as unknown) as ChildrenClubsState).subscribe(() => {
-        expect(service.allData$$.getValue().length).toBe(43);
-        done();
-      });
+      expect(service.paginatedData.getValue().length).toBe(21);
+      expect(service.isFinished.getValue()).toBe(true);
     });
   });
 });

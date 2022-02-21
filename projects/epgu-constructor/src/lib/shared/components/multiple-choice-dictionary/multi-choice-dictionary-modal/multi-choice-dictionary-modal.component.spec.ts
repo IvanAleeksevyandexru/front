@@ -13,8 +13,8 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientModule } from '@angular/common/http';
 import { MultiChoiceDictionaryModalComponent } from './multi-choice-dictionary-modal.component';
-import { DictionaryApiService } from '../../../services/dictionary/dictionary-api.service';
-import { DictionaryApiServiceStub } from '../../../services/dictionary/dictionary-api.service.stub';
+import { DictionaryService } from '../../../services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../services/dictionary/dictionary.service.stub';
 import { BaseModule } from '../../../base.module';
 import { DictionaryToolsService } from '../../../services/dictionary/dictionary-tools.service';
 import { ComponentsListRelationsService } from '../../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
@@ -73,8 +73,8 @@ describe('MultiChoiceDictionaryModalComponent', () => {
         EventBusService,
         DateRefService,
         {
-          provide: DictionaryApiService,
-          useClass: DictionaryApiServiceStub,
+          provide: DictionaryService,
+          useClass: DictionaryServiceStub,
         },
         DictionaryToolsService,
         ComponentsListRelationsService,

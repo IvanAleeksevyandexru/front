@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, DoCheck, OnInit } from '@angular/core';
-import { ActionType } from '@epgu/epgu-constructor-types';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ActionType, ScenarioErrorsDto } from '@epgu/epgu-constructor-types';
 import { UnsubscribeService, SessionStorageService } from '@epgu/epgu-constructor-ui-kit';
 import {
   ConfirmUserData,
@@ -16,12 +16,21 @@ import { AbstractConfirmPersonalUserDataDirective } from '../abstract-confirm-pe
 })
 export class ConfirmPersonalUserDataComponent
   extends AbstractConfirmPersonalUserDataDirective<ConfirmUserData>
-  implements OnInit, DoCheck {
+  implements OnInit {
   actionType = ActionType;
   private readonly sessionStorageService: SessionStorageService = new SessionStorageService();
 
-  ngDoCheck(): void {
-    const error = this.screenService?.getStore().errors[this.screenService?.component?.id];
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.sessionStorageService.setRaw(
+      'childId',
+      this.screenService?.cycledApplicantAnswerContext?.cycledApplicantAnswerItem?.id || '',
+    );
+    this.screenService.getStore$().subscribe((store) => this.updateErrors(store.errors));
+  }
+
+  updateErrors(errors: ScenarioErrorsDto): void {
+    const error = errors[this.screenService?.component?.id];
     if (typeof error === 'string' && !this.errors.find(({ desc }) => desc === error)) {
       this.errors.push({
         type: 'error',
@@ -29,14 +38,5 @@ export class ConfirmPersonalUserDataComponent
         desc: error,
       } as ConfirmUserDataError);
     }
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
-
-    this.sessionStorageService.setRaw(
-      'childId',
-      this.screenService?.cycledApplicantAnswerContext?.cycledApplicantAnswerItem?.id || '',
-    );
   }
 }

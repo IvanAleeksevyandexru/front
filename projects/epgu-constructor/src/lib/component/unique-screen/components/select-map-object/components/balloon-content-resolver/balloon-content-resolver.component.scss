@@ -1,12 +1,12 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 :host {
   ::ng-deep.map-object {
     position: relative;
     &:after {
       content: '';
       height: 1px;
-      background-color: $color-mercury;
+      background-color: $color-ciottoli;
       width: 100%;
       position: absolute;
       left: 0;

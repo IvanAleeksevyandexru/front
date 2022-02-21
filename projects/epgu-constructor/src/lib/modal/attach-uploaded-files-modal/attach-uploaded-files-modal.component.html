@@ -1,11 +1,11 @@
-<ng-container>
+<ng-container *ngIf="!isLoading else loading">
   <epgu-cf-ui-cta-modal [title]="title" [showCrossButton]="true" text="previewFiles">
     <ng-container modal-content>
       <div class="text_modal_error" *ngIf="!galleryFiles.length">
-        <epgu-constructor-output-html
+        <img
           class="text_modal_error__img"
-          [html]="icons.error"
-        ></epgu-constructor-output-html>
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/image-error.svg"
+        />
         <h4>Нет подходящих файлов</h4>
         <span>
           Не удалось найти файлы нужного формата.<br />
@@ -13,10 +13,10 @@
         </span>
       </div>
       <div class="text_modal_error" *ngIf="!galleryFiles.length">
-        <epgu-constructor-output-html
+        <img
           class="text_modal_error__img"
-          [html]="icons.stop"
-        ></epgu-constructor-output-html>
+          src="{{ config.staticDomainAssetsPath }}/assets/icons/svg/stop.svg"
+        />
         <h4>Найти файлы не удалось</h4>
         <span>Загрузите новые</span>
       </div>
@@ -62,3 +62,9 @@
     </ng-container>
   </epgu-cf-ui-cta-modal>
 </ng-container>
+
+<ng-template #loading>
+  <div class="loader">
+    <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+  </div>
+</ng-template>

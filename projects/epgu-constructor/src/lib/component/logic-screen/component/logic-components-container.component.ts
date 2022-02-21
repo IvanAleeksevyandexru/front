@@ -32,12 +32,13 @@ import {
 export class LogicComponentsContainerComponent implements OnInit, AfterViewInit {
   @ViewChildren('viewComponents') viewComponents: QueryList<LogicComponentResolverComponent>;
   isLoading$ = this.screenService.isLogicComponentLoading$;
+  isLoadingAfterValidation$ = this.screenService.isLogicComponentAfterValidationLoading$;
   logicComponents$ = this.screenService.logicComponents$;
   loadSubscription: Subscription;
   isLoading = true;
 
   constructor(
-    private screenService: ScreenService,
+    public screenService: ScreenService,
     private hookService: HookService,
     private ngUnsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,

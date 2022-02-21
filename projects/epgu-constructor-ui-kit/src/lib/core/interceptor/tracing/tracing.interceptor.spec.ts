@@ -1,20 +1,10 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { discardPeriodicTasks, fakeAsync, TestBed } from '@angular/core/testing';
-import { ComponentsListRelationsService } from '@epgu/epgu-constructor/src/lib/component/custom-screen/services/components-list-relations/components-list-relations.service';
-import { FormPlayerApiService } from '@epgu/epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
-import { CurrentAnswersService } from '@epgu/epgu-constructor/src/lib/screen/current-answers.service';
-import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
-import { CachedAnswersService } from '@epgu/epgu-constructor/src/lib/shared/services/cached-answers/cached-answers.service';
-import { DateRangeService } from '@epgu/epgu-constructor/src/lib/shared/services/date-range/date-range.service';
-import { DictionaryApiService } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-api.service';
-import { DictionaryToolsService } from '@epgu/epgu-constructor/src/lib/shared/services/dictionary/dictionary-tools.service';
-import { PrepareComponentsService } from '@epgu/epgu-constructor/src/lib/shared/services/prepare-components/prepare-components.service';
-import { RefRelationService } from '@epgu/epgu-constructor/src/lib/shared/services/ref-relation/ref-relation.service';
-import { InitDataService } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service';
-import { InitDataServiceStub } from '@epgu/epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
+import { FormPlayerApiService } from '../../../../../../epgu-constructor/src/lib/form-player/services/form-player-api/form-player-api.service';
+import { InitDataService } from '../../../../../../epgu-constructor/src/lib/core/services/init-data/init-data.service';
+import { InitDataServiceStub } from '../../../../../../epgu-constructor/src/lib/core/services/init-data/init-data.service.stub';
 import { ActionRequestPayload } from '@epgu/epgu-constructor-types';
-import { DateRestrictionsService } from '@epgu/epgu-constructor/src/lib/shared/services/date-restrictions/date-restrictions.service';
 import { MockProvider } from 'ng-mocks';
 import { TracingService } from '../../services/tracing/tracing.service';
 import { TracingHttpInterceptor } from './tracing.interceptor';
@@ -22,15 +12,8 @@ import { ConfigService } from '../../services/config/config.service';
 import { ConfigServiceStub } from '../../services/config/config.service.stub';
 import { LocationServiceStub } from '../../services/location/location.service.stub';
 import { LocationService } from '../../services/location/location.service';
-import { DeviceDetectorService } from '../../services/device-detector/device-detector.service';
-import { DownloadService } from '../../services/download/download.service';
-import { DatesToolsService } from '../../services/dates-tools/dates-tools.service';
 import { SessionService } from '../../services/session/session.service';
-import { UnsubscribeService } from '../../services/unsubscribe/unsubscribe.service';
-import { LocalStorageService } from '../../services/local-storage/local-storage.service';
-import { LocalStorageServiceStub } from '../../services/local-storage/local-storage.service.stub';
 import { TRACE_ALLOWED_REMOTE_SERVICES } from '../../services/tracing/tracing.token';
-import { ObjectHelperService } from '../../services/object-helper/object-helper.service';
 
 describe('TracingHttpInterceptor', () => {
   let interceptor: TracingHttpInterceptor;
@@ -59,8 +42,9 @@ describe('TracingHttpInterceptor', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
+        MockProvider(TracingHttpInterceptor),
+        MockProvider(SessionService),
         FormPlayerApiService,
-        TracingHttpInterceptor,
         TracingService,
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: InitDataService, useClass: InitDataServiceStub },
@@ -70,22 +54,6 @@ describe('TracingHttpInterceptor', () => {
           useClass: TracingHttpInterceptor,
           multi: true,
         },
-        ScreenService,
-        CurrentAnswersService,
-        DeviceDetectorService,
-        MockProvider(PrepareComponentsService),
-        CachedAnswersService,
-        DownloadService,
-        ObjectHelperService,
-        DatesToolsService,
-        DictionaryApiService,
-        ComponentsListRelationsService,
-        DateRangeService,
-        RefRelationService,
-        SessionService,
-        UnsubscribeService,
-        MockProvider(DateRestrictionsService),
-        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
         {
           provide: TRACE_ALLOWED_REMOTE_SERVICES,
           useValue: [someUrl1, someUrl2],
@@ -98,7 +66,7 @@ describe('TracingHttpInterceptor', () => {
     interceptor = TestBed.inject(TracingHttpInterceptor);
     formPlayerApi = TestBed.inject(FormPlayerApiService);
     config = TestBed.inject(ConfigService);
-    config.zipkinSpanSendEnabled = true;
+    config.isZipkinSpanSendEnabled = true;
     init = TestBed.inject(InitDataService);
     init.serviceId = serviceId;
     init.orderId = orderId;
@@ -107,9 +75,9 @@ describe('TracingHttpInterceptor', () => {
   });
 
   describe('doIntercept()', () => {
-    it('should not call doIntercept(), if configService.zipkinSpanSendEnabled is disabled', fakeAsync(() => {
+    it('should not call doIntercept(), if configService.isZipkinSpanSendEnabled is disabled', fakeAsync(() => {
       const doInterceptSpy = jest.spyOn<any, string>(interceptor, 'doIntercept');
-      config.zipkinSpanSendEnabled = false;
+      config.isZipkinSpanSendEnabled = false;
       formPlayerApi.sendAction(api, dto).subscribe((response) => {
         expect(response).toBeTruthy();
       });

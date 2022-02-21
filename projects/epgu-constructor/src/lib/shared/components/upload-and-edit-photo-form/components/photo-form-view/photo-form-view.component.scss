@@ -1,6 +1,6 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
 
 .photo {
   display: flex;
@@ -41,7 +41,7 @@
     width: 100%;
     position: relative;
 
-    &::ng-deep  svg {
+    & > img {
       width: 100%;
     }
   }

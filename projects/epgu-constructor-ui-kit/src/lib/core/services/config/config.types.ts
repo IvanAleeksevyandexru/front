@@ -38,64 +38,66 @@ export type TimeSlotsApi = Record<string, TimeSlotsApiItem>;
  * @property {string}mockUrl - url до mockApi
  * @property {string}identificationApiUrl - url до сервиса идентификации
  * @property {TimeSlotsApi}timeSlots - настройки для time-slot в разных услугах
- * @property {boolean}disableUnderConstructionMode - отключить underConstruction режим, для отладки прохода сценариев
- * @property {boolean}isSocialShareDisabled - задизейблить соц.кнопки на всех экранах
- * @property {boolean}isAutocompleteServiceDisabled - задизейблить функцию автокомплита для всего форм-плеера
+ * @property {boolean}isUnderConstructionModeEnabled - всключить underConstruction режим, для отладки прохода сценариев
+ * @property {boolean}isSocialShareEnabled - включить соц.кнопки на всех экранах
+ * @property {boolean}isAutocompleteServiceEnabled - включить функцию автокомплита для всего форм-плеера
  * @property {string}addToCalendarUrl - url добавления ивента в календарь
- * @property {boolean}zipkinGenerationEnabled  - включена ли генерация traceId для показа в модалках и отправке в запросах на бэк
- * @property {boolean}zipkinSendTraceIdToHealth  - включена ли отправка traceId в сообщениях для сервиса хелсов
- * @property {boolean}zipkinSpanSendEnabled - включена ли отправка span'ов в Zipkin-backend
+ * @property {boolean}isZipkinGenerationEnabled  - включена ли генерация traceId для показа в модалках и отправке в запросах на бэк
+ * @property {boolean}isZipkinSendTraceIdToHealth  - включена ли отправка traceId в сообщениях для сервиса хелсов
+ * @property {boolean}isZipkinSpanSendEnabled - включена ли отправка span'ов в Zipkin-backend
  * @property {string}zipkinUrl - API-url до бэк-сервиса Zipkin
  * @property {number}zipkinMaxPayloadSize - максимальный размер payload, передаваемого в span Zipkin'a
  * @property {string}zipkinEnv - окружение запуска Zipkin
- * @property {boolean}isZipkinCascadeMode - делать ли каждый следующий span ребенком предыдущего через parentId, обеспечивая каскадность
- * @property {boolean}showTraceIdOnError - показывать ли traceId в модалках "Не сработало"
+ * @property {boolean}isZipkinCascadeModeEnabled - делать ли каждый следующий span ребенком предыдущего через parentId, обеспечивая каскадность
+ * @property {boolean}isTraceIdOnErrorEnabled - показывать ли traceId в модалках "Не сработало"
  * @property {string}oplataUrl - url до оплаты
+ * @property {boolean}isYaMetricEnabled - включить инициализацию сервиса Яндекс.Метрики
  */
 export interface Config {
+  addToCalendarUrl?: string;
   apiUrl: string;
-  suggestionsApiUrl: string;
+  appPathMap: AppPathMap;
+  billsApiUrl: string;
+  childrenClubsApi: string;
   configApiUrl: string;
   configId: string;
   dictionaryUrl: string;
+  isUnderConstructionModeEnabled?: boolean;
   externalApiUrl: string;
-  timeSlotApiUrl: string;
-  listPaymentsApiUrl: string;
-  uinApiUrl: string;
-  billsApiUrl: string;
-  paymentUrl: string;
   fileUploadApiUrl: string;
   galleryApiUrl: string;
-  quizDataApiUrl: string;
-  lkUrl: string;
-  lkApi: string;
-  childrenClubsApi: string;
   identificationApiUrl: string;
-  yandexMapsApiKey: string;
   invitationUrl: string;
-  staticDomainAssetsPath: string;
-  staticDomainContentPath: string;
+  isAutocompleteServiceEnabled?: boolean;
+  isSocialShareEnabled?: boolean;
+  isYaMetricEnabled: boolean;
+  isZipkinCascadeModeEnabled?: boolean;
+  listPaymentsApiUrl: string;
+  lkApi: string;
+  lkuipElection?: string;
+  lkUrl: string;
+  lookupQueryTimeoutMs?: number;
   mocks?: MockApi[];
   mockUrl?: string;
-  timeSlots?: TimeSlotsApi;
-  disableUnderConstructionMode?: boolean;
-  isSocialShareDisabled?: boolean;
-  isAutocompleteServiceDisabled?: boolean;
-  addToCalendarUrl?: string;
-  zipkinGenerationEnabled?: boolean;
-  zipkinSendTraceIdToHealth?: boolean;
-  zipkinSpanSendEnabled?: boolean;
-  zipkinUrl?: string;
-  zipkinMaxPayloadSize?: number;
-  zipkinEnv?: string;
-  isZipkinCascadeMode?: boolean;
-  showTraceIdOnError?: boolean;
-  oplataUrl?: string;
-  lookupQueryTimeoutMs?: number;
   nsiSuggestDictionaryUrl?: string;
-  lkuipElection?: string;
-  appPathMap: AppPathMap;
+  oplataUrl?: string;
+  paymentUrl: string;
+  quizDataApiUrl: string;
+  isTraceIdOnErrorEnabled?: boolean;
+  staticDomainAssetsPath: string;
+  staticDomainContentPath: string;
+  suggestionsApiUrl: string;
+  timeSlotApiUrl: string;
+  timeSlots?: TimeSlotsApi;
+  uinApiUrl: string;
   wsIdentificationUrl?: string;
+  yandexMapsApiKey: string;
+  zipkinEnv?: string;
+  isZipkinGenerationEnabled?: boolean;
+  zipkinMaxPayloadSize?: number;
+  isZipkinSendTraceIdToHealth?: boolean;
+  isZipkinSpanSendEnabled?: boolean;
+  zipkinUrl?: string;
 }
 
 export const LOCAL_STORAGE_PLATFORM_TYPE = 'LOCAL_STORAGE_PLATFORM_TYPE';

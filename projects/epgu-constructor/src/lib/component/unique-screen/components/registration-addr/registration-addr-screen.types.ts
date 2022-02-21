@@ -26,6 +26,8 @@ export interface RegistrationAddrComponentAttrs {
   actions: ComponentActionDto[];
   fstuc?: TextTransform;
   hideLevels?: string[];
+  hint: string;
+  clarifications: Clarifications;
 }
 
 /**

@@ -8,7 +8,7 @@ import {
 } from '../../../component/unique-screen/components/children-clubs/models/children-clubs.types';
 import { StateService } from '../../../component/unique-screen/components/children-clubs/services/state/state.service';
 import { DictionaryApiService } from './dictionary-api.service';
-import { DictionaryOptions } from '@epgu/epgu-constructor-types/src';
+import { DictionaryOptions } from '@epgu/epgu-constructor-types';
 import { DictionaryResponse } from './dictionary-api.types';
 import {
   CustomComponent,

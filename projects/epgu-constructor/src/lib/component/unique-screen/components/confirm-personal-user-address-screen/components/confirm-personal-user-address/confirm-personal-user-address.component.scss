@@ -1,6 +1,6 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 :host {
   display: block;
@@ -61,6 +61,26 @@
   font-size: $font-sm;
   color: $color-gosred;
   margin-top: 7px;
+
+  &--grouped {
+    margin-top: 32px;
+
+    .title {
+      @include typ-h6;
+      margin-bottom: 4px;
+      color: $color-summer-night;
+    }
+
+    .description {
+      @include typ-plain-small;
+      color: $color-text-helper;
+      margin: 0;
+    }
+
+    & + & {
+      margin-top: 12px;
+    }
+  }
 }
 
 //HARDCODE

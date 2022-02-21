@@ -1,5 +1,6 @@
 <div class="loader" *ngIf="showLoader">
   <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+  <div class="text--center" [innerHtml]="trobber.message"></div>
 </div>
 
 <ng-container>

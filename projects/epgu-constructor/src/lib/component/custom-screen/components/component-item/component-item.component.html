@@ -1,4 +1,7 @@
-<div class="component-item {{ component?.attrs?.class }}">
+<div class="component-item {{ component?.attrs?.class }}"
+  [class.first_elem] = "parentFirst"
+  [class.last_elem] = "parentLast"
+>
   <div *ngIf="component?.attrs?.image?.src" class="custom__img-wrapper">
     <img
       class="custom__img"
@@ -22,10 +25,10 @@
   ></epgu-constructor-label>
   <div class="form__error" *ngIf="hasErrors">
     <div *ngIf="hasUiError && isShowErrors">
-      <small>{{ control.getError('msg') }}</small>
+      <small>{{ lastError.msg }}</small>
       <epgu-constructor-output-html
         class="helper-text"
-        [html]="control.getError('desc')"
+        [html]="lastError.desc"
         [clarifications]="component?.attrs?.clarifications"
       ></epgu-constructor-output-html>
     </div>

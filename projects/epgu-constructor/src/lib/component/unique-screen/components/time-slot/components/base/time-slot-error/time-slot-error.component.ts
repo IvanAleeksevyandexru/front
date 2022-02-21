@@ -8,7 +8,6 @@ import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-ca
 @Component({
   selector: 'epgu-constructor-time-slot-error',
   templateUrl: './time-slot-error.component.html',
-  styleUrls: ['./time-slot-error.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSlotErrorComponent {

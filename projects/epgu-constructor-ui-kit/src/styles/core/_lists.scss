@@ -11,6 +11,11 @@
     }
   }
 
+  ul.only-list,
+  ol.only-list {
+    margin-left: 0;
+  }
+
   ol {
     counter-reset: number;
   }

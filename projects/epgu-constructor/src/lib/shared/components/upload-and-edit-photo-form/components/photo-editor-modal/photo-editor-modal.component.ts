@@ -9,9 +9,8 @@ import {
 } from '@angular/core';
 import { ImgCropperEvent, LyImageCropper } from '@alyle/ui/image-cropper';
 import { Subject } from 'rxjs';
-
-import { ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
-import { hintSetting, showErrorTime } from './photo-editor-modal.constant';
+import { ConfigService, ModalBaseComponent } from '@epgu/epgu-constructor-ui-kit';
+import { hintSetting, photoMaskSrc, showErrorTime } from './photo-editor-modal.constant';
 import {
   ImageErrorText,
   NewSizeEvent,
@@ -20,8 +19,6 @@ import {
 import { cropperConfig, imageErrorText } from '../../upload-and-edit-photo-form.constant';
 import { CropTypes, ImageCropOptions } from '@epgu/epgu-constructor-types';
 
-const photoMask = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/photo-mask-desktop.svg')
-  .default as string;
 @Component({
   selector: 'epgu-constructor-photo-editor-modal',
   templateUrl: './photo-editor-modal.component.html',
@@ -36,7 +33,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements OnI
   hintSetting = hintSetting;
 
   imageObjectUrl: string;
-  maskSrc = photoMask;
+  maskSrc: string;
 
   cropOptions: ImageCropOptions = {
     cropType: CropTypes.FACE,
@@ -51,7 +48,11 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements OnI
   isFacePhotoMode = true;
   isPhoneSize: boolean;
 
-  constructor(public injector: Injector, private changeDetectionRef: ChangeDetectorRef) {
+  constructor(
+    public injector: Injector,
+    public configService: ConfigService,
+    private changeDetectionRef: ChangeDetectorRef,
+  ) {
     super(injector);
   }
 
@@ -118,6 +119,7 @@ export class PhotoEditorModalComponent extends ModalBaseComponent implements OnI
 
   private setCropperSize(): void {
     this.isPhoneSize = matchMedia('(max-width: 576px)').matches;
+    this.maskSrc = `${this.configService.staticDomainAssetsPath}/${photoMaskSrc.desktop}`;
   }
 
   private fitImageToCropArea(): void {

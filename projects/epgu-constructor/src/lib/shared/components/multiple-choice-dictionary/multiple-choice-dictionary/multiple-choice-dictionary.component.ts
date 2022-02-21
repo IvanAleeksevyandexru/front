@@ -11,9 +11,12 @@ import { ListElement } from '@epgu/ui/models/dropdown';
 import { mapTo, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
-import { DictionaryFilters } from '@epgu/epgu-constructor-types';
+import { DictionaryFilters, DictionaryOptions } from '@epgu/epgu-constructor-types';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
-import { CustomComponentDropDownItem } from '../../../../component/custom-screen/components-list.types';
+import {
+  CustomComponentDropDownItem,
+  MappingParamsDto,
+} from '../../../../component/custom-screen/components-list.types';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../core/services/error-handler/error-handler';
 import { ConfirmationModalComponent } from '../../../../modal/confirmation-modal/confirmation-modal.component';
 import { MultipleSelectedItems } from '../multiple-choice-dictionary.models';
@@ -41,6 +44,8 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   @Input() dictionaryType?: string;
   @Input() isReadonly?: boolean;
   @Input() tip?: string;
+  @Input() mappingParams?: MappingParamsDto;
+  @Input() dictionaryOptions?: DictionaryOptions;
 
   selectedItems: MultipleSelectedItems = { list: [], amount: 0 };
 
@@ -62,13 +67,15 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
         dictionaryList: this.dictionaryList,
         dictionaryType: this.dictionaryType,
         selectedItems: this.selectedItems.list,
+        dictionaryOptions: this.dictionaryOptions,
+        mappingParams: this.mappingParams,
       })
       .pipe(
         switchMap((items) => {
           if (items instanceof Error) {
             return this.openErrorModal();
           }
-          return of(items);
+          return of(items || this.selectedItems.list);
         }),
       )
       .subscribe((items) => {

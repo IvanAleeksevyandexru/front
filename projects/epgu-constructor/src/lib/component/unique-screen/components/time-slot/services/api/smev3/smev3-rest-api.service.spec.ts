@@ -32,7 +32,7 @@ describe('Smev3RestApiService', () => {
         expect(v).toEqual([]);
       });
       httpTestingController
-        .expectOne(`${service.urlPrefix}/${service.listPath}`)
+        .expectOne(`${service.urlPrefix}/${service.postfixPath}/${service.listPath}`)
         .flush({ slots: [] });
     });
     it('should be book', () => {
@@ -41,7 +41,7 @@ describe('Smev3RestApiService', () => {
         expect(v).toEqual(test);
       });
       httpTestingController
-        .expectOne(`${service.urlPrefix}/${service.bookPath}?srcSystem=BETA`)
+        .expectOne(`${service.urlPrefix}/${service.postfixPath}/${service.bookPath}?srcSystem=BETA`)
         .flush(test);
     });
     it('should be cancel', () => {
@@ -49,7 +49,9 @@ describe('Smev3RestApiService', () => {
       service.cancel(({} as unknown) as TimeSlotCancelRequest).subscribe((v) => {
         expect(v).toEqual(test);
       });
-      httpTestingController.expectOne(`${service.urlPrefix}/${service.cancelPath}`).flush(test);
+      httpTestingController
+        .expectOne(`${service.urlPrefix}/${service.postfixPath}/${service.cancelPath}`)
+        .flush(test);
     });
   });
 });

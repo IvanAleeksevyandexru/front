@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, isDevMode } from '@angular/core';
 import { LoadService } from '@epgu/ui/services/load';
 import { NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { MainPageService } from '@epgu/ui/services/main-page';
@@ -8,8 +8,11 @@ import { CountersService } from '@epgu/ui/services/counters';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { PsoService } from '@epgu/ui/services/pso';
 import { DOCUMENT, isPlatformServer } from '@angular/common';
-import { WINDOW } from '@epgu/epgu-constructor-ui-kit';
+import { HeaderService } from '@epgu/ui/services/header';
+import { FooterService } from '@epgu/ui/services/footer';
+import { DeviceDetectorService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { MetaTagGeneratorService } from './services/meta-tag-generator/meta-tag-generator.service';
+import { AppConfig } from './app.config';
 
 @Component({
   selector: '[app-root]',
@@ -30,6 +33,10 @@ export class AppComponent implements OnInit {
   constructor(
     public router: Router,
     public loadService: LoadService,
+    private appConfig: AppConfig,
+    private deviceDetectorService: DeviceDetectorService,
+    private headerService: HeaderService,
+    private footerService: FooterService,
     private mainPageService: MainPageService,
     private catalogTabsService: CatalogTabsService,
     private countersService: CountersService,
@@ -40,7 +47,9 @@ export class AppComponent implements OnInit {
     @Inject(WINDOW) private window: Window,
     @Inject(PLATFORM_ID) private platformId: Object,
   ) {
-    this.yaMetricService.init();
+    if (this.appConfig.config?.isYaMetricEnabled) {
+      this.yaMetricService.init();
+    }
   }
 
   public ngOnInit() {
@@ -61,7 +70,7 @@ export class AppComponent implements OnInit {
     this.getMainBlocksData();
     this.initCounters();
     this.fadeOutEffect(this.document.getElementById('start-app-loader') as HTMLElement);
-    this.setWindowParams();
+    this.setWebViewUi();
   }
 
   public getMainBlocksData(): void {
@@ -116,9 +125,11 @@ export class AppComponent implements OnInit {
   }
 
   private onRouteChange(): void {
+    const prevPath = this.document.referrer || window.location.href;
     this.router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
         this.documentScrollTop();
+        this.initMetric(prevPath);
       }
     });
   }
@@ -129,6 +140,29 @@ export class AppComponent implements OnInit {
       window.showNewDesignPsoHelp = this.loadService.config.showNewDesignPsoHelp;
       window.betaUrl = this.loadService.config.betaUrl;
       this.psoService.loadAndRunPso();
+    }
+  }
+
+  private setWebViewUi() {
+    if (this.deviceDetectorService.isWebView) {
+      /* TODO: отключено до выяснения точности реализации определения WebView в МП
+      ref: https://jira.egovdev.ru/browse/EPGUCORE-86689 */
+      // this.headerService.setVisible(false);
+      // this.footerService.setVisible(false);
+    } else {
+      this.setWindowParams();
+    }
+  }
+
+  private initMetric(prevPath: string) {
+    if (!isDevMode() && this.appConfig.config?.isYaMetricEnabled) {
+      this.yaMetricService.onInit().then(() => {
+        const newPath = window.location.href;
+        this.yaMetricService.ym(this.yaMetricService.counter, 'hit', newPath, {
+          referer: prevPath,
+        });
+        prevPath = newPath;
+      });
     }
   }
 }

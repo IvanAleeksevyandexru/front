@@ -1,15 +1,11 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 
 .flex-row {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
-}
-
-.divider {
-  margin-bottom: 24px;
 }
 
 .btn-edit {

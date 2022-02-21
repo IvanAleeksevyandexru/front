@@ -7,18 +7,17 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import FilePonyfill from '@tanker/file-ponyfill';
 import { BehaviorSubject, from, Observable, Subject, Subscription } from 'rxjs';
 import { concatMap, filter, map, reduce, takeUntil, tap } from 'rxjs/operators';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 import {
-  ModalService,
+  BaseComponent,
+  BusEventType,
+  ConfigService,
   DeviceDetectorService,
   EventBusService,
+  ModalService,
   UnsubscribeService,
-  ConfigService,
-  BusEventType,
-  BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { TerraByteApiService } from '../../../../core/services/terra-byte-api/terra-byte-api.service';
 import {
@@ -29,7 +28,6 @@ import {
 import {
   beforeFilesPlural,
   ErrorActions,
-  extToLowerCase,
   FileItem,
   FileItemStatus,
   OperationType,
@@ -83,12 +81,13 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   processingFiles = new Subject<FileList>(); // Сюда попадают файлы на загрузку
 
+  public filesDivider: boolean;
+
   processingFiles$ = this.processingFiles.pipe(
     tap(() => this.stat.resetLimits()), // Обнуляем каунтеры перебора
     tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на uploaded статус
     tap(() => this.store.removeWithErrorStatus([ErrorActions.serverError])), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
-    map(this.polyfillFile.bind(this)), // приводим файл к PonyFillFile
     map(
       (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
     ), // Формируем FileItem
@@ -104,6 +103,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   files = this.store.files;
   files$ = this.files.pipe(
+    tap((files) => (this.filesDivider = !!files.length)),
     concatMap((files) =>
       from(files).pipe(
         reduce<FileItem, FileResponseToBackendUploadsItem>(this.reduceChanges.bind(this), {
@@ -221,7 +221,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
     value: FileItem,
   ): FileResponseToBackendUploadsItem {
     const ignoreActions = [ErrorActions.addDeletionErr, ErrorActions.addDownloadErr];
-    const blockActions = [ErrorActions.serverError];
+    const blockActions = [ErrorActions.serverError, ErrorActions.addCopyErr];
     const availableErrorCondition = value?.error && ignoreActions.includes(value?.error?.type);
 
     if ((availableErrorCondition || !value?.error) && value.item) {
@@ -239,9 +239,16 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   repeat(file: FileItem): void {
     const files = this.store.files.getValue();
-    files.forEach((item) =>
-      item?.error?.type === file?.error?.type ? this.addPrepare(item) : null,
-    );
+    files.forEach((item) => {
+      if (item?.error?.type === file?.error?.type) {
+        if (file?.error?.type === ErrorActions.addCopyErr) {
+          this.suggest({ isAdd: false, file });
+          this.suggest({ isAdd: true, file });
+        } else {
+          this.addPrepare(item);
+        }
+      }
+    });
   }
 
   addPrepare(file: FileItem): void {
@@ -265,10 +272,6 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
 
   addUpload(file: FileItem): void {
     this.process.upload(file);
-  }
-
-  isShownDivider(): boolean {
-    return this.files.getValue().length > 0 && !!this.data.label;
   }
 
   sendUpdateEvent({ value, errors }: FileResponseToBackendUploadsItem): void {
@@ -321,15 +324,6 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
       tap((file: FileItem) => this.uploader.updateMaxFileNumber(file.item)),
       tap(() => this.stat.updateLimits()),
     );
-  }
-
-  polyfillFile(file: File): File {
-    const { type, lastModified, name } = file;
-
-    return new FilePonyfill([file], extToLowerCase(name), {
-      type,
-      lastModified,
-    });
   }
 
   openGalleryFilesModal(): void {

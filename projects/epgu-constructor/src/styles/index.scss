@@ -1,9 +1,9 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/components';
 
 .epgu-constructor {
   counter-reset: section;
-  @import '~@epgu/epgu-constructor-ui-kit/src/styles/core/class';
+  @import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/class';
   @include flex-container();
   color: $color-summer-night;
   font-family: $font-main;

@@ -49,19 +49,19 @@ export class ConfigServiceStub implements Config {
 
   _timeSlots = {};
 
-  _disableUnderConstructionMode = false;
+  _isUnderConstructionModeEnabled = false;
 
-  _isSocialShareDisabled = false;
+  _isSocialShareEnabled = true;
 
-  _isAutocompleteServiceDisabled = false;
+  _isAutocompleteServiceEnabled = true;
 
   _addToCalendarUrl = '';
 
-  _zipkinGenerationEnabled: boolean;
+  _isZipkinGenerationEnabled: boolean;
 
-  _zipkinSendTraceIdToHealth: boolean;
+  _isZipkinSendTraceIdToHealth: boolean;
 
-  _zipkinSpanSendEnabled: boolean;
+  _isZipkinSpanSendEnabled: boolean;
 
   _zipkinUrl = '';
 
@@ -69,9 +69,9 @@ export class ConfigServiceStub implements Config {
 
   _zipkinEnv = '';
 
-  _isZipkinCascadeMode = false;
+  _isZipkinCascadeModeEnabled = false;
 
-  _showTraceIdOnError = false;
+  _isTraceIdOnErrorEnabled = false;
 
   _oplataUrl = 'oplataUrl';
 
@@ -88,6 +88,8 @@ export class ConfigServiceStub implements Config {
   _isLoaded$ = of(false);
 
   _appPathMap = {};
+
+  _isYaMetricEnabled = false;
 
   constructor() {
     this._timeSlots = {
@@ -229,16 +231,16 @@ export class ConfigServiceStub implements Config {
     return this._timeSlots;
   }
 
-  get disableUnderConstructionMode(): boolean {
-    return this._disableUnderConstructionMode;
+  get isUnderConstructionModeEnabled(): boolean {
+    return this._isUnderConstructionModeEnabled;
   }
 
-  get isSocialShareDisabled(): boolean {
-    return this._isSocialShareDisabled;
+  get isSocialShareEnabled(): boolean {
+    return this._isSocialShareEnabled;
   }
 
-  get isAutocompleteServiceDisabled(): boolean {
-    return this._isAutocompleteServiceDisabled;
+  get isAutocompleteServiceEnabled(): boolean {
+    return this._isAutocompleteServiceEnabled;
   }
 
   get isLoaded$(): Observable<boolean> {
@@ -249,20 +251,20 @@ export class ConfigServiceStub implements Config {
     return this._addToCalendarUrl;
   }
 
-  get zipkinGenerationEnabled(): boolean {
-    return this._zipkinGenerationEnabled;
+  get isZipkinGenerationEnabled(): boolean {
+    return this._isZipkinGenerationEnabled;
   }
 
-  get zipkinSendTraceIdToHealth(): boolean {
-    return this._zipkinSendTraceIdToHealth;
+  get isZipkinSendTraceIdToHealth(): boolean {
+    return this._isZipkinSendTraceIdToHealth;
   }
 
-  get zipkinSpanSendEnabled(): boolean {
-    return this._zipkinSpanSendEnabled;
+  get isZipkinSpanSendEnabled(): boolean {
+    return this._isZipkinSpanSendEnabled;
   }
 
-  set zipkinSpanSendEnabled(value) {
-    this._zipkinSpanSendEnabled = value;
+  set isZipkinSpanSendEnabled(value) {
+    this._isZipkinSpanSendEnabled = value;
   }
 
   get zipkinUrl(): string {
@@ -277,12 +279,12 @@ export class ConfigServiceStub implements Config {
     return this._zipkinEnv;
   }
 
-  get isZipkinCascadeMode(): boolean {
-    return this._isZipkinCascadeMode;
+  get isZipkinCascadeModeEnabled(): boolean {
+    return this._isZipkinCascadeModeEnabled;
   }
 
-  get showTraceIdOnError(): boolean {
-    return this._showTraceIdOnError;
+  get isTraceIdOnErrorEnabled(): boolean {
+    return this._isTraceIdOnErrorEnabled;
   }
 
   get oplataUrl(): string {
@@ -313,6 +315,10 @@ export class ConfigServiceStub implements Config {
     return this._identificationApiUrl;
   }
 
+  get isYaMetricEnabled(): boolean {
+    return this._isYaMetricEnabled;
+  }
+
   initCore(): void {}
 
   set config(config: Config) {
@@ -336,17 +342,18 @@ export class ConfigServiceStub implements Config {
     this._mocks = config.mocks;
     this._mockUrl = config.mockUrl;
     this._timeSlots = config.timeSlots;
-    this._disableUnderConstructionMode = config.disableUnderConstructionMode || false;
-    this._isSocialShareDisabled = config.isSocialShareDisabled || false;
+    this._isUnderConstructionModeEnabled = !!config.isUnderConstructionModeEnabled;
+    this._isSocialShareEnabled = !!config.isSocialShareEnabled;
     this._addToCalendarUrl = config.addToCalendarUrl;
-    this._zipkinGenerationEnabled = config.zipkinGenerationEnabled || false;
-    this._zipkinSendTraceIdToHealth = config.zipkinSendTraceIdToHealth || false;
-    this._zipkinSpanSendEnabled = config.zipkinSpanSendEnabled || false;
+    this._isZipkinGenerationEnabled = !!config.isZipkinGenerationEnabled;
+    this._isZipkinSendTraceIdToHealth = !!config.isZipkinSendTraceIdToHealth;
+    this._isZipkinSpanSendEnabled = !!config.isZipkinSpanSendEnabled;
+    this._isZipkinCascadeModeEnabled = !!config.isZipkinCascadeModeEnabled;
     this._zipkinUrl = config.zipkinUrl || '';
     this._zipkinMaxPayloadSize = config.zipkinMaxPayloadSize || 0;
     this._zipkinEnv = config.zipkinEnv || '';
-    this._showTraceIdOnError = config.isZipkinCascadeMode || false;
-    this._showTraceIdOnError = config.showTraceIdOnError || false;
+    this._isTraceIdOnErrorEnabled = !!config.isTraceIdOnErrorEnabled;
     this._identificationApiUrl = config.identificationApiUrl || '';
+    this._isYaMetricEnabled = !!config.isYaMetricEnabled;
   }
 }

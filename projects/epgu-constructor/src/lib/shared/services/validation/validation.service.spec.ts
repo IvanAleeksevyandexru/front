@@ -3,18 +3,23 @@ import { AbstractControl, FormArray, FormControl } from '@angular/forms';
 import {
   ConfigService,
   DatesToolsService,
-  LoggerService,
-  HealthServiceStub,
   HealthService,
+  HealthServiceStub,
+  JsonHelperService,
+  JsonHelperServiceStub,
+  LoggerService,
+  ValidationHelperService,
+  ValidationHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockProvider } from 'ng-mocks';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
+  UpdateOn,
 } from '../../../component/custom-screen/components-list.types';
 import { ComponentsListToolsService } from '../../../component/custom-screen/services/components-list-tools/components-list-tools.service';
-import { ValidationService, CARD_VALIDATION_EVENT } from './validation.service';
+import { CARD_VALIDATION_EVENT, ValidationService } from './validation.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -83,7 +88,7 @@ describe('ValidationService', () => {
           dataType: '',
           condition: '',
           errorMsg: 'Поле может содержать не более 10 символов',
-          updateOn: 'change',
+          updateOn: UpdateOn.ON_CHANGE,
         },
         {
           type: 'RegExp',
@@ -93,7 +98,7 @@ describe('ValidationService', () => {
           condition: '',
           errorMsg:
             'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
-          updateOn: 'change',
+          updateOn: UpdateOn.ON_CHANGE,
         },
         {
           type: 'RegExp',
@@ -102,7 +107,7 @@ describe('ValidationService', () => {
           dataType: '',
           condition: '',
           errorMsg: 'Поле должно содержать 9 символов',
-          updateOn: 'blur',
+          updateOn: UpdateOn.ON_BLUR,
         },
         {
           type: 'RegExp',
@@ -111,12 +116,35 @@ describe('ValidationService', () => {
           dataType: '',
           condition: '',
           errorMsg: 'Поле должно содержать хотя бы одну цифру',
-          updateOn: 'blur',
+          updateOn: UpdateOn.ON_BLUR,
         },
       ],
     },
     value: '',
     required: true,
+  };
+
+  const mockMultipleChoiceDictionary: CustomComponent = {
+    id: 'id',
+    type: CustomScreenComponentTypes.MultipleChoiceDictionary,
+    attrs: {
+      subLabel: 'Необходимо выбрать виды использования лесов',
+      dictionaryType: 'PGS_using_forest',
+      required: false,
+      validation: [
+        {
+          type: 'RegExp',
+          value: '^.{0,10}$',
+          ref: '',
+          dataType: '',
+          condition: '',
+          errorMsg: 'Поле может содержать не более 10 символов',
+          updateOn: 'change',
+        },
+      ],
+    },
+    value: '1',
+    visited: false,
   };
 
   beforeEach(() => {
@@ -126,6 +154,7 @@ describe('ValidationService', () => {
         ValidationService,
         ComponentsListToolsService,
         DateRangeService,
+        { provide: ValidationHelperService, useClass: ValidationHelperServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
         CurrentAnswersService,
@@ -136,6 +165,7 @@ describe('ValidationService', () => {
         ConfigService,
         LoggerService,
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
+        { provide: JsonHelperService, useClass: JsonHelperServiceStub },
       ],
     });
   });
@@ -260,9 +290,9 @@ describe('ValidationService', () => {
     });
   });
 
-  describe('customValidator', () => {
+  describe('customAsyncValidator', () => {
     it('should return proper error for control value with not enought length', (done) => {
-      const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
+      const customAsyncValidator = service.customAsyncValidator(mockComponent, UpdateOn.ON_BLUR);
       const control = new FormControl('input');
       control.setValue('12345678фи');
       // @ts-ignore
@@ -273,7 +303,7 @@ describe('ValidationService', () => {
     });
 
     it('should return proper error for control value without any digits', (done) => {
-      const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
+      const customAsyncValidator = service.customAsyncValidator(mockComponent, UpdateOn.ON_BLUR);
       const control = new FormControl('input');
       control.setValue('фыждлоекa');
       // @ts-ignore
@@ -287,7 +317,7 @@ describe('ValidationService', () => {
     });
 
     it('should return proper error for control empty value', (done) => {
-      const customAsyncValidator = service.customAsyncValidator(mockComponent, 'blur');
+      const customAsyncValidator = service.customAsyncValidator(mockComponent, UpdateOn.ON_BLUR);
       const control = new FormControl('input');
       control.setValue('');
       control.markAsTouched();
@@ -296,6 +326,18 @@ describe('ValidationService', () => {
         expect(obj).toEqual({ msg: 'Обязательно для заполнения', textFromJson: false });
         done();
       });
+    });
+
+    it('should call isMultipleSelectedItemsValid if component.type === MultipleChoiceDictionary', (done) => {
+      const spy = jest.spyOn<any, any>(service, 'isMultipleSelectedItemsValid');
+      const customAsyncValidator = service.customAsyncValidator(mockMultipleChoiceDictionary, '');
+      const control = new FormControl('v');
+      // @ts-ignore
+      customAsyncValidator(control).subscribe((obj) => {
+        expect(spy).toHaveBeenCalledTimes(1);
+        done();
+      });
+      control.setValue('');
     });
   });
 
@@ -322,8 +364,11 @@ describe('ValidationService', () => {
     it('for customAsyncValidator', (done) => {
       control.markAsTouched();
       components.forEach((component) => {
-        component.attrs.validation[0].updateOn = 'blur';
-        const customAsyncValidator = service.customAsyncValidator(component as any, 'blur');
+        component.attrs.validation[0].updateOn = UpdateOn.ON_BLUR;
+        const customAsyncValidator = service.customAsyncValidator(
+          component as any,
+          UpdateOn.ON_BLUR,
+        );
         // @ts-ignore
         customAsyncValidator(control).subscribe((obj) => {
           expect(obj).toEqual({ msg: 'ошибка', textFromJson: true });
@@ -379,6 +424,7 @@ describe('ValidationService', () => {
       ).toBeTruthy();
     });
   });
+
   describe('checkRS', () => {
     it('should return true', () => {
       service.form = new FormArray([new FormControl({ id: 'bik', value: '044030827' })]);

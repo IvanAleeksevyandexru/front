@@ -276,7 +276,7 @@ export class AutocompletePrepareService {
       if (repeatableComponents.length && parsedValue.length) {
         parsedValue = Object.values(parsedValue[0])[0];
       }
-      value = parsedValue.text;
+      value = parsedValue.text || value;
     }
 
     const componentsGroupIndex = 0;
@@ -454,6 +454,10 @@ export class AutocompletePrepareService {
         value = parsedItem[component.id];
 
         return typeof value === 'string' ? value : JSON.stringify(value);
+      }
+      // TODO: лучше использовать явные suggestionPath в json услуг
+      if (component.type === CustomScreenComponentTypes.SnilsInput) {
+        return parsedValue.snils;
       }
     }
     return value;

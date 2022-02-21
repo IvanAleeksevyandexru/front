@@ -7,7 +7,6 @@ import { Slot } from '../../../typings';
 @Component({
   selector: 'epgu-constructor-time-slot-time',
   templateUrl: './time-slot-time.component.html',
-  styleUrls: ['./time-slot-time.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSlotTimeComponent {

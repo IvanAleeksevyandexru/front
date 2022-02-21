@@ -1,15 +1,15 @@
 <form class="config" [formGroup]="configForm" (keyup.enter)="saveConfig()">
   <div class="config__input" *ngFor="let fieldName of fieldsName">
     <label [for]="fieldName">{{ fieldName }}</label>
-    <ng-container *ngIf="numberFields.includes(fieldName)">
+    <ng-container *ngIf="numberFields.includes(fieldName) else trimInput">
       <lib-plain-input type="number" [formControl]="configForm.get(fieldName)"></lib-plain-input>
     </ng-container>
-    <ng-container *ngIf="!numberFields.includes(fieldName)">
+    <ng-template #trimInput>
       <lib-plain-input
         epgu-constructor-trim
         [formControl]="configForm.get(fieldName)"
       ></lib-plain-input>
-    </ng-container>
+    </ng-template>
   </div>
 
   <div class="config__cta-wrapper">

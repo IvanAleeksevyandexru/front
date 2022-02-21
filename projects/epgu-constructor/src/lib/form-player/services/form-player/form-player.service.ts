@@ -11,11 +11,9 @@ import {
   Navigation,
   ScenarioDto,
 } from '@epgu/epgu-constructor-types';
-
 import { catchError, finalize, mergeMap, tap } from 'rxjs/operators';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
-
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
  * Хранит текущий респонс в store и транслирует поток данных в screenService

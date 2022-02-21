@@ -1,43 +1,52 @@
-<div class="balloon-content-wrapper">
-  <h6
-    (click)="headerClick()"
-    [ngClass]="{
-      'map-object__header__bold': mapObject.expanded
-    }"
-    class="map-object__header"
+<ng-container *ngFor="let mapObject of mapObjects; index as i">
+  <div
+    [ngClass]="{ expanded: mapObject.expanded }"
+    class="map-object"
+    [@flyInOut]="deviceDetector.isDesktop"
+    #balloonComponents
   >
-    {{ mapObject.balloonContentHeader }}
-  </h6>
-  <div class="map-object__attr" *ngIf="mapObject.expanded && (extInfo$ | async) as extInfo">
-    <span class="map-object__label">{{ extInfo.commissionName }}</span>
-    <span class="map-object__value">{{ extInfo.address }}</span>
-    <span class="map-object__label">Телефон</span>
-    <span class="map-object__value">{{ extInfo.phone }}</span>
-    <span class="map-object__label">Выборы и референдумы, доступные на данном участке:</span>
-    <span class="map-object__value election">
-      <ul>
-        <li *ngFor="let election of extInfo.elections">
-          {{ election.electionName }}.
-          <ng-container *ngIf="attrs?.isDistrictNoVisible && election.districtNo">
-            <br />Избирательный округ № {{ election.districtNo }}
-          </ng-container>
-        </li>
-      </ul>
-    </span>
-    <span *ngIf="electionForDisclaimer && attrs?.isDisclaimerVisible" class="disclaimer">
-      <span class="map-object__label">Доступное голосование</span>
-      <span class="map-object__value">
-        При выборе данного участка вам будет недоступно голосование по
-        {{ electionForDisclaimer.districtNo }} избирательному округу на
-        {{ electionForDisclaimer.electionName }}
-      </span>
-    </span>
-    <lib-button
-      [showLoader]="showLoader | async"
-      (click)="selectObject(extInfo, $event)"
-      class="submit-button"
-      width="wide"
-      >Выбрать
-    </lib-button>
+    <div class="balloon-content-wrapper">
+      <h6
+        (click)="headerClick()"
+        [ngClass]="{
+          'map-object__header__bold': mapObject.expanded
+        }"
+        class="map-object__header"
+      >
+        {{ mapObject.balloonContentHeader }}
+      </h6>
+      <div class="map-object__attr" *ngIf="mapObject.expanded && (extInfo$ | async) as extInfo">
+        <span class="map-object__label">{{ extInfo.commissionName }}</span>
+        <span class="map-object__value">{{ extInfo.address }}</span>
+        <span class="map-object__label">Телефон</span>
+        <span class="map-object__value">{{ extInfo.phone }}</span>
+        <span class="map-object__label">Выборы и референдумы, доступные на данном участке:</span>
+        <span class="map-object__value election">
+          <ul>
+            <li *ngFor="let election of extInfo.elections">
+              {{ election.electionName }}.
+              <ng-container *ngIf="attrs?.isDistrictNoVisible && election.districtNo">
+                <br />Избирательный округ № {{ election.districtNo }}
+              </ng-container>
+            </li>
+          </ul>
+        </span>
+        <span *ngIf="electionForDisclaimer && attrs?.isDisclaimerVisible" class="disclaimer">
+          <span class="map-object__label">Доступное голосование</span>
+          <span class="map-object__value">
+            При выборе данного участка вам будет недоступно голосование по
+            {{ electionForDisclaimer.districtNo }} избирательному округу на
+            {{ electionForDisclaimer.electionName }}
+          </span>
+        </span>
+        <lib-button
+          [showLoader]="showLoader | async"
+          (click)="selectObject(extInfo, $event)"
+          class="submit-button"
+          width="wide"
+          >Выбрать
+        </lib-button>
+      </div>
+    </div>
   </div>
-</div>
+</ng-container>

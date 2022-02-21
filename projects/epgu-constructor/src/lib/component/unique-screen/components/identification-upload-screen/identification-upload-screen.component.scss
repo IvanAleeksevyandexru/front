@@ -1,5 +1,5 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/functions';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
 
 :host {
   @include flex-container();

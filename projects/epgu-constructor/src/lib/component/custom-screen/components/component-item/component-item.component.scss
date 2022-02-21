@@ -1,10 +1,13 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/variables';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/variables';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 .component-item {
   display: block;
   margin-bottom: $screen-pad-24;
+  &.last_elem {
+    margin-bottom: 0;
+  }
 }
 
 .form {

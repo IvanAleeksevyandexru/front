@@ -1,0 +1,207 @@
+//  TODO: причесать стили и избавиться от лишних классов
+
+#content-wrapper {
+  min-height: 250px;
+  font-family: Helvetica, Arial, sans-serif;
+
+  a {
+    height: 56px;
+    background-color: rgb(255, 255, 255);
+    padding: 0 24px;
+    font-size: 16px;
+    line-height: 56px;
+    vertical-align: middle;
+    font-family: Helvetica, Arial, sans-serif;
+    color: rgb(86, 86, 86);
+    border-radius: 4px;
+    border: 1px solid rgb(205, 209, 212);
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  a.to-main-btn:before {
+    width: 8px;
+    height: 12px;
+    background: url(../../../assets/svg/arrow_back.svg) 0 0 no-repeat;
+    margin-right: 8px;
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  a:hover {
+    background-color: rgb(245, 245, 245) !important;
+    border: 1px solid rgb(205, 207, 209) !important;
+    color: rgb(86, 86, 86) !important;
+  }
+
+  .error-text {
+    color: rgb(0, 0, 0);
+    font-size: 14px;
+  }
+
+  .err-msg-btn {
+    margin-left: 23px;
+  }
+}
+
+// Для десктопных экранов
+@media (min-width: 1100px) {
+  #content {
+    padding-bottom: 50px;
+    position: relative;
+
+    .content-center-box {
+      width: 1200px;
+      margin: 0 auto;
+      padding: 0 10px;
+
+      .error-content {
+        margin: 160px 0 40px 0;
+
+        .error-text {
+          width: 52%;
+          float: left;
+
+          h1 {
+            font-size: 42px;
+            line-height: 48px;
+            margin-top: 0;
+            font-family: system-ui;
+            font-weight: 100;
+          }
+
+          p {
+            margin: 40px 0 0;
+            line-height: 1.5em;
+          }
+        }
+
+        .error-img {
+          float: right;
+          margin-right: 100px;
+
+          img {
+            margin-top: -30px;
+            border: none;
+          }
+        }
+
+        .error-nav {
+          margin-top: 82px;
+          clear: both;
+        }
+      }
+    }
+  }
+}
+
+// Для планшетов
+@media (min-width: 737px) and (max-width: 1099px) {
+  .error-img img {
+    max-width: 250px;
+  }
+
+  .error-text {
+    h1 {
+      font-size: 30px;
+      line-height: 34px;
+    }
+
+    p {
+      margin: 30px 0 0;
+    }
+  }
+}
+
+// Для мобильных устройств
+@media (max-width: 736px) {
+  a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0 15px;
+    font-size: 15px;
+    line-height: 50px;
+    height: 50px;
+    vertical-align: middle;
+    color: rgb(86, 86, 86);
+    border-radius: 4px;
+    border: 1px solid rgb(205, 209, 212);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .err-msg-btn {
+    margin-top: 20px;
+    margin-left: 0 !important;
+  }
+
+  .error-img img {
+    max-width: 200px;
+  }
+
+  .error-text {
+    h1 {
+      font-size: 22px;
+      line-height: 25px;
+    }
+
+    p {
+      margin: 20px 0 0;
+
+    }
+  }
+}
+
+// Общие стили для планшетов и моб. устройств
+@media (max-width: 1099px) {
+  #content {
+    padding-bottom: 64px;
+
+    .content-center-box {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0;
+
+      .error-content {
+        padding: 0 20px;
+
+        .error-info {
+          display: flex;
+          flex-direction: column-reverse;
+
+          .error-img, .error-text {
+            height: auto;
+          }
+
+          .error-img {
+            text-align: center;
+          }
+
+          .error-text {
+            margin-bottom: 80px;
+            text-align: center;
+
+            h1 {
+              margin-top: 0;
+              font-family: system-ui;
+              font-weight: 100;
+            }
+
+            p {
+              line-height: 1.5em;
+            }
+          }
+        }
+
+        .error-nav {
+          margin-top: 30px;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

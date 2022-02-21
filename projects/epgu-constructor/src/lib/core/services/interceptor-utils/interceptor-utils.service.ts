@@ -15,12 +15,18 @@ export class InterceptorUtilsService {
     private formPlayer: FormPlayerService,
   ) {}
 
-  public getConfirmationModalParamsFromErrorModalParams(params: ErrorModal): ConfirmationModal {
+  public getConfirmationModalParamsFromErrorModalParams(
+    params: ErrorModal,
+    isConfirm: boolean,
+  ): ConfirmationModal {
     const confirmationModalParams = { ...params };
     const statusIcon = params.content.statusIcon ? STATUS_ICON_MAP[params.content.statusIcon] : '';
     const header = params.content.header ? `<h4>${params.content.header}</h4>` : '';
-    const helperText = params.content.helperText ? `<span>${params.content.helperText}</span>` : '';
-    confirmationModalParams.text = `<div class="text_modal_error">${statusIcon}${header}${helperText}</div>`;
+    let helperText: string;
+    helperText = params.content.helperText ? `<span>${params.content.helperText}</span>` : '';
+    confirmationModalParams.text = `<div class="text_modal_error ${
+      isConfirm ? 'confirm_code' : ''
+    }">${statusIcon}${header}${helperText}</div>`;
     return confirmationModalParams;
   }
 
@@ -50,8 +56,11 @@ export class InterceptorUtilsService {
       .toPromise();
   }
 
-  public showErrorModal(params: ErrorModal): Promise<unknown> {
-    const confirmationModalParams = this.getConfirmationModalParamsFromErrorModalParams(params);
+  public showErrorModal(params: ErrorModal, isConfirm: boolean): Promise<unknown> {
+    const confirmationModalParams = this.getConfirmationModalParamsFromErrorModalParams(
+      params,
+      isConfirm,
+    );
     return this.modalService
       .openModal(ConfirmationModalComponent, confirmationModalParams)
       .toPromise();

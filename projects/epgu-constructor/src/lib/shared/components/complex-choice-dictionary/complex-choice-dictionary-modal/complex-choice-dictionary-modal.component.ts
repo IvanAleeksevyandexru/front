@@ -47,6 +47,7 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
   items: ListElement[];
   placeholder$ = new BehaviorSubject('Поиск по списку');
   form: FormGroup;
+  limit?: number | string;
 
   treeControl = new FlatTreeControl<FlatNode>(
     (node) => node.level,
@@ -60,7 +61,6 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
     },
   ];
   readonly formField = FormField;
-
   dataSource: DynamicDatasource;
 
   constructor(
@@ -83,9 +83,32 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
     this.getDictionary();
   }
 
-  hasChild = (_: number, node: FlatNode): boolean => node?.expandable;
+  hasChild(_: number, node: FlatNode): boolean {
+    return node?.expandable;
+  }
+
+  addSelectedItemsToChanges(changes): void {
+    this.selectedItems?.forEach((i) => {
+      changes[i.id] = !!changes[i.id];
+    });
+  }
+
+  checkShownElements(changes): void {
+    this.addSelectedItemsToChanges(changes);
+    const controls = (this.form.get(this.formField.checkboxGroup) as FormGroup).controls;
+    const countOfTruthfulCheckboxes = Object.values(changes).filter((value) => value).length;
+    const isLimitReached = countOfTruthfulCheckboxes >= this.limit;
+    Object.keys(controls).forEach((key) => {
+      if (isLimitReached && !changes[key]) {
+        controls[key].disable({ emitEvent: false });
+      } else {
+        controls[key].enable({ emitEvent: false });
+      }
+    });
+  }
 
   updateForm(): void {
+    //TODO: разобраться с подписками
     this.dataSource.flattenedData
       .asObservable()
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -94,6 +117,7 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
           id: item.id,
           originalItem: item.originalItem,
           text: item.text,
+          disabled: item.disabled,
         }));
         this.items = [...new Map([...this.items, ...listItems].map((v) => [v.id, v])).values()];
         listItems.forEach((item) => {
@@ -121,7 +145,7 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
         const selectedItem = value && this.items.find((item) => item.id === key);
         return [...acc, selectedItem];
       }, []);
-    const arr = uniqBy([...items, ...selectedItems], 'id');
+    const arr = uniqBy(items, 'id');
     this.closeModal(arr);
   }
 
@@ -147,6 +171,7 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
       .subscribe((value) => {
         const { length } = Object.values(value).filter((val) => val);
         this.updatePlaceholder(length);
+        this.checkShownElements(value);
       });
     this.provideSearchValue();
   }
@@ -158,8 +183,8 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
         this.closeModal(new Error('Dictionary error'));
         return;
       }
-      this.items = items;
       const data = dataMapping(items);
+      this.items = items;
       this.dataSource = new DynamicDatasource(
         this.treeControl,
         data as FlatNode[],

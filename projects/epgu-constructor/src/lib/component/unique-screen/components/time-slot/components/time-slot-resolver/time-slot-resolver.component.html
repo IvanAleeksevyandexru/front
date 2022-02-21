@@ -2,7 +2,11 @@
 </ng-container>
 
 <ng-template #templateContent let-isSmev2="isSmev2">
-  <epgu-constructor-time-slot-smev2 *ngIf="isSmev2"></epgu-constructor-time-slot-smev2>
+  <epgu-constructor-time-slot-smev2 *ngIf="isSmev2">
+    <ng-container after-content>
+      <epgu-constructor-time-slot-error></epgu-constructor-time-slot-error>
+    </ng-container>
+  </epgu-constructor-time-slot-smev2>
   <epgu-constructor-time-slot-smev3-resolver
     *ngIf="!isSmev2"
   ></epgu-constructor-time-slot-smev3-resolver>

@@ -12,7 +12,7 @@
       (haveLockedDays && templates[types.DAYS_NOT_FOUND]) ||
       (haveLockedDays && templates[types.SLOTS_NOT_FOUND] && !templates[types.DAYS_NOT_FOUND])
     "
-    class="divider"
+    class="divider mt-20 mb-24"
   ></div>
   <epgu-constructor-time-slot-empty-error
     *ngIf="haveLockedDays && templates[types.DAYS_NOT_FOUND]"

@@ -1,6 +1,6 @@
 :host::ng-deep {
-  @import '~@epgu/epgu-constructor-ui-kit/src/styles/core';
-  @import '~@epgu/epgu-constructor-ui-kit/src/styles/components';
+  @import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core';
+  @import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/components';
 
   .mb-24 {
     margin-bottom: 24px;
@@ -54,7 +54,7 @@
   }
 
   .divider {
-    background: $color-mercury;
+    background: $color-ciottoli;
     margin: 16px 0;
     height: 1px;
     @include phones-down {
@@ -74,8 +74,8 @@
   }
 
   .modal-divider {
-    background: $color-mercury;
-    border-top: 1px solid $color-mercury;
+    background: $color-ciottoli;
+    border-top: 1px solid $color-ciottoli;
   }
 
   .half-for-desktop {

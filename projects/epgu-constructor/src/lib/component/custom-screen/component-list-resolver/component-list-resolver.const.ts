@@ -33,6 +33,7 @@ import { ConfirmPersonalPolicyChangeComponent } from '../components/confirm-pers
 import { MaritalStatusInputComponent } from '../components/marital-status-input/marital-status-input.component';
 import { KinderGartenDraftHandlerComponent } from '../components/kinder-garten-draft-handler/kinder-garten-draft-handler.component';
 import { CheckboxCubeItemComponent } from '../components/checkbox-cube-item/checkbox-cube-item.component';
+import { SelectFromListComponent } from '../components/select-from-list/select-from-list.component';
 
 export type ComponentTypes = CustomScreenComponentTypes;
 
@@ -69,7 +70,8 @@ type CustomScreenComponent =
   | TimerItemComponent
   | DictionaryComponent
   | DropdownComponent
-  | KinderGartenDraftHandlerComponent;
+  | KinderGartenDraftHandlerComponent
+  | SelectFromListComponent;
 
 export type ScreenComponentTypes = CustomScreenComponent;
 
@@ -116,6 +118,7 @@ export const CUSTOM_SCREEN_COMPONENTS: Partial<Record<
   PhoneNumberChangeInput: MaskedAndPlainInputComponent,
   RadioInput: RadioInputComponent,
   SearchableDropDown: SearchableDropdownComponent,
+  SelectFromList: SelectFromListComponent,
   SignAppLink: SignAppLinkComponent,
   SnilsInput: MaskedAndPlainInputComponent,
   StringInput: MaskedAndPlainInputComponent,

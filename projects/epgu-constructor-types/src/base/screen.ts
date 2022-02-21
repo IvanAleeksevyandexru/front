@@ -3,6 +3,7 @@ import { ActionConfirmationsDto, DisplaySubjHead } from './component-attrs';
 import { ScreenButton } from './screen-buttons';
 import { SuggestionGroup } from './suggestion';
 import { InfoComponentDto } from './info-component-dto';
+import { LogicAfterValidationComponents } from './logic-after-validation-components';
 
 /**
  * @property {}components
@@ -24,6 +25,7 @@ export interface DisplayDto {
   subHeader?: DisplaySubjHead;
   confirmations?: ActionConfirmationsDto;
   label?: string;
+  logicAfterValidationComponents?: LogicAfterValidationComponents[];
   cssClass?: string;
   isSocialButtonsHidden?: boolean;
   displayCssClass?: string;

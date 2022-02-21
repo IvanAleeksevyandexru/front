@@ -1,4 +1,4 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/index';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/index';
 :host {
   height: 100%;
   & > *[hidden] {
@@ -14,7 +14,8 @@
     left: 0;
     right: 0;
     @include tablets-down() {
-      bottom: 115px;
+      bottom: 19px;
+      padding: 0 16px;
     }
   }
 }

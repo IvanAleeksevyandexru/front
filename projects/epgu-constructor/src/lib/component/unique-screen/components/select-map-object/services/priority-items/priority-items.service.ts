@@ -24,7 +24,7 @@ export class PriorityItemsService {
   maxKindergarten$ = this.maxKindergarten$$.pipe(filter((status) => !!status));
 
   disabled$$ = combineLatest([this.maxKindergarten$, this.items]).pipe(
-    map(([max, items]) => items.length > max),
+    map(([max, items]) => items.length > max || !items.length),
   );
 
   leftItems$ = combineLatest([this.maxKindergarten$, this.screenItems]).pipe(

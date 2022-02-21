@@ -6,18 +6,17 @@ import { LoadService } from '@epgu/ui/services/load';
 import { HelperService } from '@epgu/ui/services/helper';
 import { v4 as uuidv4 } from 'uuid';
 
-interface EventInfo {
+export interface EventInfo {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
 @Injectable({ providedIn: 'root' })
 export class HealthService {
-  private measures: object = {};
+  private measures: Record<string, number> = {};
 
   constructor(private route: ActivatedRoute, private loadService: LoadService) {}
 
-  /** TODO: подумать над реализацией стандартного Get метода от Angular HttpClient */
   private static request(url: string): void {
     const scriptId = uuidv4();
     const s = document.createElement('script');
@@ -44,12 +43,12 @@ export class HealthService {
   }
 
   public measureDomEvents(id: string, eventInfo: EventInfo = {}): void {
+    const timing = window?.performance?.timing;
     // tslint:disable-next-line:deprecation
-    if (window.performance && window.performance.timing) {
+    if (timing) {
       // tslint:disable-next-line:deprecation
-      const timingApiObj = window.performance.timing;
-      const dcl = timingApiObj.domContentLoadedEventEnd - timingApiObj.navigationStart;
-      const complete = timingApiObj.loadEventEnd - timingApiObj.navigationStart;
+      const dcl = timing.domContentLoadedEventEnd - timing.navigationStart;
+      const complete = timing.loadEventEnd - timing.navigationStart;
       this.send(id, dcl, 0, eventInfo);
       this.send(id, complete, 0, eventInfo);
     } else {
@@ -67,7 +66,6 @@ export class HealthService {
     if (isDevMode() || !api) {
       return;
     }
-
     let utmSource: string;
     if (typeof result === 'undefined') {
       result = 0;

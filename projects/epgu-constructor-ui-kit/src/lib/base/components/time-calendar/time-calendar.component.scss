@@ -1,6 +1,6 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/breakpoint';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 .calendar-grid-wrap {
   display: flex;
@@ -122,9 +122,6 @@
   }
 }
 
-.divider {
-  margin: 20px 0 24px;
-}
 .time-slots-items {
   margin: 0 -4px -4px -4px;
   display: flex;

@@ -9,8 +9,8 @@ import {
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
-  DictionaryConditions,
   ComponentRelationFieldDto,
+  DictionaryConditions,
   RelationCondition,
 } from '@epgu/epgu-constructor-types';
 import { LookupPartialProvider, LookupProvider } from '@epgu/ui/models/dropdown';
@@ -24,8 +24,8 @@ import {
   CustomListFormGroup,
   CustomListStatusElements,
   CustomScreenComponentTypes,
-  UpdateOn,
   Fields,
+  UpdateOn,
 } from '../../components-list.types';
 import {
   AddressHelperService,
@@ -40,6 +40,7 @@ import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 import { MaritalStatusInputField } from '../../components/marital-status-input/marital-status-input.types';
+import { ScreenButtonService } from '../../../../shared/components/screen-buttons/screen-button.service';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 
 @Injectable()
@@ -87,6 +88,7 @@ export class ComponentsListFormService {
     private dictionaryService: DictionaryService,
     private screenService: ScreenService,
     private maskTransformService: MaskTransformService,
+    private screenButtonService: ScreenButtonService,
   ) {}
 
   public create(components: CustomComponent[], componentsGroupIndex?: number): FormArray {
@@ -131,7 +133,7 @@ export class ComponentsListFormService {
       )
       .subscribe(() => this.emitChanges());
     this.emitChanges();
-
+    this.screenButtonService.initSubscribeOnComponentsForm(this._form, this.shownElements);
     return this._form;
   }
 
@@ -239,13 +241,13 @@ export class ComponentsListFormService {
     return String(value).match(params);
   }
 
-  private relationMinDate(value: string | Date, params: string): boolean {
-    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
+  private relationMinDate(value: string | Date, conditionDate: string): boolean {
+    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, conditionDate);
     return this.datesToolsService.isSameOrAfter(dateLeft, dateRight);
   }
 
-  private relationMaxDate(value: string | Date, params: string): boolean {
-    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, params);
+  private relationMaxDate(value: string | Date, conditionDate: string): boolean {
+    const { dateLeft, dateRight } = this.datesRangeService.parsedDates(value, conditionDate);
     return this.datesToolsService.isSameOrBefore(dateLeft, dateRight);
   }
 
@@ -384,7 +386,7 @@ export class ComponentsListFormService {
           validators,
         ],
       },
-      { updateOn: this.updateOnValidation() },
+      { updateOn: UpdateOn.ON_CHANGE }, // NOTE: See https://jira.egovdev.ru/browse/EPGUCORE-53355
     );
 
     if (component.attrs?.hidden) {
@@ -395,16 +397,18 @@ export class ComponentsListFormService {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(([prev, next]: [CustomListFormGroup, CustomListFormGroup]) => {
         this.lastChangedComponent = [prev, next];
-        if (!isEqual(prev, next)) {
-          this._shownElements = this.componentsListRelationsService.processRelations(
-            components,
-            next,
-            this.shownElements,
-            this.form,
-            true,
-            this.screenService,
-            componentsGroupIndex,
-          );
+        const isEqualPrevNext = isEqual(prev, next);
+        this._shownElements = this.componentsListRelationsService.processRelations(
+          components,
+          next,
+          this.shownElements,
+          this.form,
+          true,
+          this.screenService,
+          componentsGroupIndex,
+          isEqualPrevNext,
+        );
+        if (!isEqualPrevNext) {
           // TODO: в перспективе избавиться от этой хардкодной логики
           this.checkAndFetchCarModel(next);
         }
@@ -457,9 +461,5 @@ export class ComponentsListFormService {
 
   private watchFormArray$(): Observable<CustomListFormGroup[]> {
     return this.form.valueChanges.pipe(takeUntil(this.ngUnsubscribe$));
-  }
-
-  private updateOnValidation(): UpdateOn {
-    return 'change';
   }
 }

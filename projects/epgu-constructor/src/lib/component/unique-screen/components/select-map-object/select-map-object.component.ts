@@ -70,6 +70,7 @@ import { NavigationService } from '../../../../core/services/navigation/navigati
 import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
 import { ComponentValue } from '../../../../shared/services/dictionary/dictionary.interface';
+import { Invite, InviteService } from '../../../../core/services/invite/invite.service';
 
 const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 
@@ -107,6 +108,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   private valueFromCache: string;
 
   constructor(
+    public invite: InviteService,
     public config: ConfigService,
     public screenService: ScreenService,
     public selectMapObjectService: SelectMapObjectService,
@@ -420,12 +422,20 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     this.mapCenter = (geoCode || center || moscowCenter) as number[];
   }
 
+  private setFilterOptions(options: DictionaryOptions, invite: Invite): DictionaryOptions {
+    if (invite?.organizations?.length > 0) {
+      options.filterCodes = invite?.organizations.map((org) => org.orgId);
+    }
+    return options;
+  }
+
   /**
    * настройки для справочника объектов на карте и фильтров берем из атрибутов компонента с бэка
    * затем по адресам объектов получаем список координат
    * затем заполняем полученный справочник этими координтами и кладем в сервис
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
+
   private fillCoords(
     dictionaryFilters: ComponentDictionaryFilterDto[],
     isEmptyDictionaryCritical = true,
@@ -436,45 +446,54 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     } catch (e) {
       return throwError(e);
     }
-    return this.getDataSource(options).pipe(
-      switchMap((dictionary: DictionaryResponseForYMap) => {
-        if (dictionary.error !== null && dictionary.error?.code !== 0) {
-          return throwError(dictionary.error);
-        }
-        if (!dictionary.total && isEmptyDictionaryCritical) {
-          return throwError(NO_MAP_ITEMS_AVAILABLE);
-        }
-        this.selectMapObjectService.dictionary = dictionary;
-        if (this.isMultiSelect && this.valueFromCache) {
-          this.applySelectedObjects(dictionary);
-        }
-        // Параллелим получение геоточек на 4 запроса
-        const items = [...dictionary.items];
-        const addresses = items.map(
-          (item: DictionaryItem) =>
-            item.attributeValues[
-              this.screenService.component.attrs.attributeNameWithAddress
-            ] as string,
-        );
 
-        const chunkSize = items.length / 4;
-        return merge(
-          this.addressesToolsService.getCoordsByAddress(addresses.splice(0, chunkSize)),
-          this.addressesToolsService.getCoordsByAddress(addresses.splice(0, chunkSize)),
-          this.addressesToolsService.getCoordsByAddress(addresses.splice(0, chunkSize)),
-          this.addressesToolsService.getCoordsByAddress(addresses),
-        ).pipe(
-          reduce((acc, { coords }) => {
-            return [...acc, ...coords];
-          }, []),
-          map((coords) => {
-            return {
-              coords,
-              dictionaryError: dictionary.error,
-            };
+    const getFilter = this.data.attrs?.isInvite
+      ? this.invite.getInvite(String(this.screenService.orderId))
+      : of({} as Invite);
+
+    return getFilter.pipe(
+      switchMap((invite) =>
+        this.getDataSource(this.setFilterOptions(options, invite)).pipe(
+          switchMap((dictionary: DictionaryResponseForYMap) => {
+            if (dictionary.error !== null && dictionary.error?.code !== 0) {
+              return throwError(dictionary.error);
+            }
+            if (!dictionary.total && isEmptyDictionaryCritical) {
+              return throwError(NO_MAP_ITEMS_AVAILABLE);
+            }
+            this.selectMapObjectService.dictionary = dictionary;
+            if (this.isMultiSelect && this.valueFromCache) {
+              this.applySelectedObjects(dictionary);
+            }
+            // Параллелим получение геоточек на 4 запроса
+            const items = [...dictionary.items];
+            const addresses = items.map(
+              (item: DictionaryItem) =>
+                item.attributeValues[
+                  this.screenService.component.attrs.attributeNameWithAddress
+                ] as string,
+            );
+
+            const chunkSize = items.length / 4;
+            return merge(
+              this.addressesToolsService.getCoordsByAddress(addresses.splice(0, chunkSize)),
+              this.addressesToolsService.getCoordsByAddress(addresses.splice(0, chunkSize)),
+              this.addressesToolsService.getCoordsByAddress(addresses.splice(0, chunkSize)),
+              this.addressesToolsService.getCoordsByAddress(addresses),
+            ).pipe(
+              reduce((acc, { coords }) => {
+                return [...acc, ...coords];
+              }, []),
+              map((coords) => {
+                return {
+                  coords,
+                  dictionaryError: dictionary.error,
+                };
+              }),
+            );
           }),
-        );
-      }),
+        ),
+      ),
     );
   }
 
@@ -507,7 +526,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       // ref: https://jira.egovdev.ru/browse/EPGUCORE-82378
       // selectAttributes: this.screenService.component.attrs.selectAttributes || ['*'],
       selectAttributes: ['*'],
-      pageSize: '100000',
+      pageSize: this.screenService.component.attrs.pageSize || '100000',
     };
   }
 
@@ -515,6 +534,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     if (this.componentValue?.barbarbokResponse) {
       return of(this.componentValue.barbarbokResponse as DictionaryResponse);
     }
+
     return this.dictionaryApiService.getSelectMapDictionary(this.getDictionaryType(), options);
   }
 

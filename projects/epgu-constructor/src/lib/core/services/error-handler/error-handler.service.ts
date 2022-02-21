@@ -6,6 +6,7 @@ import {
   ErrorHandlerAbstractService,
   ConfigService,
   UnsubscribeService,
+  LocalStorageService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Observable, of, throwError } from 'rxjs';
 import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
@@ -23,6 +24,8 @@ import { ScreenService } from '../../../screen/screen.service';
 import { ModalFailureType } from './error-handler.inteface';
 import { InterceptorUtilsService } from '../interceptor-utils/interceptor-utils.service';
 import { FormPlayerApiSuccessResponse } from '@epgu/epgu-constructor-types';
+import { FormPlayerService } from '../../../form-player/services/form-player/form-player.service';
+import { ContinueOrderModalService } from '../../../modal/continue-order-modal/continue-order-modal.service';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
@@ -31,6 +34,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     private navigationService: NavigationService,
     private configService: ConfigService,
     private screenService: ScreenService,
+    private continueOrderModalService: ContinueOrderModalService,
+    private formPlayerService: FormPlayerService,
+    private localStorageService: LocalStorageService,
     private utils: InterceptorUtilsService,
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
@@ -70,8 +76,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       return throwError(httpErrorResponse);
     }
     if (error?.errorModalWindow) {
-      const shownTraceId = error?.hideTraceId ? null : traceId;
-      this.utils.showErrorModal({ ...error?.errorModalWindow, traceId: shownTraceId });
+      const shownTraceId = error.errorModalWindow.hideTraceId ? null : traceId;
+      const isConfirm = url.includes('confirmSmsCode') || url.includes('confirmEmailCode');
+      this.utils.showErrorModal({ ...error?.errorModalWindow, traceId: shownTraceId }, isConfirm);
     } else if (status === 401) {
       this.utils.showModal(AUTH_ERROR_MODAL_PARAMS).then((result) => {
         if (result === 'login') {
@@ -91,6 +98,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       this.utils
         .showModal(COMMON_ERROR_MODAL_PARAMS(traceId), traceId)
         .then((value) => this.utils.handleModalAction(value));
+    } else if (
+      status === 404 &&
+      (url.includes('scenario/getNextStep') || url.includes('scenario/getPrevStep'))
+    ) {
+      this.openModalWithContinueOrder();
     }
     return throwError(httpErrorResponse);
   }
@@ -125,7 +137,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     this.screenService.updateLoading(true);
     of()
       .pipe(
-        takeUntil(this.ngUnsubscribe$),
+        takeUntil(this.ngUnsubscribe$), //TODO: обычно используют в конце pipe, подумать над рефакторингом
         debounceTime(refreshTime),
         tap(() => this.navigationService.next()),
         switchMap(() => this.navigationService.nextStep$),
@@ -136,5 +148,23 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
         }),
       )
       .subscribe();
+  }
+
+  private openModalWithContinueOrder(): void {
+    this.continueOrderModalService
+      .openModal()
+      .pipe(
+        switchMap((continueForm) =>
+          continueForm ? this.formPlayerService.checkIfOrderExist() : of(null),
+        ),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe((checkIfOrderExistResponse) => {
+        const orderId = checkIfOrderExistResponse?.orders[0]?.orderId;
+        if (!orderId) {
+          this.localStorageService.set('cachedAnswers', {});
+        }
+        this.formPlayerService.initData(orderId);
+      });
   }
 }

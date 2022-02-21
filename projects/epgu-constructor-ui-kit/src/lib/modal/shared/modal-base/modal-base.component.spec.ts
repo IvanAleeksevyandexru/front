@@ -59,11 +59,13 @@ describe('ModalBaseComponent', () => {
 
   describe('closeModal', () => {
     it('should be reset overflow', () => {
+      const modalContainer = document.createElement('div');
+      modalContainer.setAttribute('id', 'modal-container');
+      modalContainer.innerHTML = '<div>modal</div>';
+      document.body.appendChild(modalContainer);
       document.body.style.overflow = 'hidden';
-      document.body.style.height = '100%';
       component.closeModal();
       expect(document.body.style.overflow).toBe('');
-      expect(document.body.style.height).toBe('');
     });
   });
 });

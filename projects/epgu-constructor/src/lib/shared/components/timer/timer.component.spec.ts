@@ -22,10 +22,10 @@ import { DateRestrictionsService } from '../../services/date-restrictions/date-r
 
 const someDate = '2020-01-01T00:00:00.000Z';
 const millisecondsOfSomeDate = new Date(someDate).getTime();
-Date.now = jest.fn().mockReturnValue(millisecondsOfSomeDate);
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
+  let datesToolsService: DatesToolsService;
   let fixture: ComponentFixture<TimerComponent>;
   const startTime = millisecondsOfSomeDate;
   let currentTime = millisecondsOfSomeDate + 2000;
@@ -184,6 +184,9 @@ describe('TimerComponent', () => {
     component.data = ({
       attrs: { startTime, currentTime, expirationTime },
     } as any) as TimerComponentBase;
+    datesToolsService = TestBed.inject(DatesToolsService);
+    jest.spyOn(datesToolsService, 'getToday').mockReturnValue(Promise.resolve(new Date(someDate)));
+
     fixture.detectChanges();
   });
 
@@ -192,16 +195,12 @@ describe('TimerComponent', () => {
   });
 
   describe('when serverTime not provided', () => {
-    const savedCurrentTime = currentTime;
-    beforeAll(() => {
-      currentTime = undefined;
-    });
+    it('should use local time', async () => {
+      component.data = ({
+        attrs: { startTime, expirationTime },
+      } as any) as TimerComponentBase;
+      await fixture.whenStable();
 
-    afterAll(() => {
-      currentTime = savedCurrentTime;
-    });
-
-    it('should use local time', () => {
       expect(component.timer.time).toBe(expirationTime - millisecondsOfSomeDate);
     });
   });
@@ -237,8 +236,9 @@ describe('TimerComponent', () => {
         expect(component.label).toEqual(mockData.attrs.timerRules.labels[0].label);
       });
 
-      it('should label equal attrs.label if timer finish', () => {
+      it('should label equal attrs.label if timer finish', async () => {
         component.data = mockDataFullActions;
+        await fixture.whenStable();
         component.startTimerHandler();
         component.timer = { isFinish: true };
         expect(component.label).toEqual(mockDataFullActions.attrs.timerRules.labels[0].label);
@@ -262,7 +262,7 @@ describe('TimerComponent', () => {
     });
 
     describe('checkHideTimer', () => {
-      it('should showTimer be false if timer finish', () => {
+      it('should showTimer be false if timer finish', async () => {
         component.data = {
           attrs: {
             timerRules: {
@@ -270,6 +270,7 @@ describe('TimerComponent', () => {
             },
           },
         };
+        await fixture.whenStable();
         component.startTimerHandler();
         component.timer = { isFinish: true };
         expect(component.showTimer).toBeFalsy();
@@ -278,17 +279,20 @@ describe('TimerComponent', () => {
   });
 
   describe('sortLabelsByTime', () => {
-    it('should sort labels by asc', () => {
+    it('should sort labels by asc', async () => {
       component.data = attrsFromTimeDesc;
+      await fixture.whenStable();
       let { labels } = component.data.attrs.timerRules;
       expect(labels[0].label).toEqual('a');
       component.data = attrsFromTimeEqual;
+      await fixture.whenStable();
       labels = component.data.attrs.timerRules.labels;
       expect(labels[0].label).toEqual('a');
     });
 
-    it('should sort labels by desc', () => {
+    it('should sort labels by desc', async () => {
       component.data = attrsFromTimeAsc;
+      await fixture.whenStable();
       const { labels } = component.data.attrs.timerRules;
       expect(labels[1].label).toEqual('a');
     });

@@ -32,7 +32,7 @@ import { ConfirmationModalComponent } from '../../../../../../modal/confirmation
   templateUrl: './select-map-object.component.html',
   styleUrls: ['./select-map-object.component.scss'],
   providers: [UnsubscribeService, YandexMapService],
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestroy {
   public selectedValue;
@@ -60,7 +60,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnInit(): void {
-    this.programListService.load$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+    this.programListService.subscribeOnFiltersChange();
     this.initVariable();
     this.subscribeToEmmitNextStepData();
     this.stateService.isLoaderVisible = true;
@@ -163,7 +163,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private fillCoords(): Observable<IYMapPoint<BaseProgram>[]> {
-    return this.programListService.data$.pipe(
+    return this.programListService.fullData$.pipe(
       switchMap((programList: BaseProgram[]) => {
         // Параллелим получение геоточек на 4 запроса
         const addresses = programList.map((program) => program.address);

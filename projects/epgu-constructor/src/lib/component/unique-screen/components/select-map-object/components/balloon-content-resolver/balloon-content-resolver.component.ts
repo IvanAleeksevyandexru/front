@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   Input,
   ViewChild,
   ViewContainerRef,
@@ -21,6 +20,7 @@ import { DictionaryItem } from '../../../../../../shared/services/dictionary/dic
 import { MapTypes } from '../../select-map-object.service';
 import { KindergartenContentComponent } from './components/kindergarten-balloon-content/kindergarten-balloon-content.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import { arePointsEqual } from '../../select-map-object.helpers';
 
 type ContentTypesComponents =
   | CommonBalloonContentComponent
@@ -44,7 +44,7 @@ export const ContentTypes = {
 export class BalloonContentResolverComponent implements AfterViewInit, OnChanges {
   @ViewChild('content', { read: ViewContainerRef }) content: ViewContainerRef;
 
-  @Input() mapObject;
+  @Input() mapObjects;
   @Input() isSelectButtonHidden = false;
   @Input() contentType = ContentTypes[MapTypes.commonMap];
   @Input() attrs = {};
@@ -63,14 +63,13 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
   };
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef,
     private screenService: ScreenService,
     public deviceDetector: DeviceDetectorService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.mapObject && changes.mapObject !== this.mapObject && this.content) {
+    if (changes.mapObjects && changes.mapObjects !== this.mapObjects && this.content) {
       this.balloonContentComponentRef.destroy();
       this.balloonContentComponentRef = null;
       this.addContent();
@@ -81,16 +80,37 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
     }
   }
 
+  public findMatchingElementIdx(item: DictionaryItem): number {
+    return this.balloonContentComponentRef.instance.mapObjects.findIndex((object) =>
+      arePointsEqual(object, item),
+    );
+  }
+
+  public detectBalloonChanges(): void {
+    this.balloonContentComponentRef.instance.cdr.detectChanges();
+  }
+
+  public scrollMatchingRefIntoView(idx: number): void {
+    this.balloonContentComponentRef.instance.mapObjects[idx].expanded = true;
+    // @ts-ignore
+    const matchingElement = this.balloonContentComponentRef.instance.balloonComponents.get(idx);
+    matchingElement.nativeElement.scrollIntoView();
+  }
+
+  public lockAnimation(value: boolean): void {
+    // @ts-ignore
+    this.balloonContentComponentRef.instance.lockAnimation = value;
+  }
+
   ngAfterViewInit(): void {
     this.addContent();
     this.cdr.markForCheck();
   }
 
   public addContent(): void {
-    const content = this.componentFactoryResolver.resolveComponentFactory(
+    this.balloonContentComponentRef = this.content.createComponent(
       this.getComponent(this.contentType),
     );
-    this.balloonContentComponentRef = this.content.createComponent(content);
     this.setInstanceFields(this.balloonContentComponentRef);
 
     this.cdr.detectChanges();
@@ -115,7 +135,7 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
   private setInstanceFields(ref): void {
     const { instance } = ref;
     instance.showLoader = this.screenService.isLoading$;
-    instance.mapObject = this.mapObject;
+    instance.mapObjects = this.mapObjects;
     instance.isSelectButtonHidden = this.isSelectButtonHidden;
     instance.attrs = this.attrs || {};
     instance.showCrossButton = this.showCrossButton;

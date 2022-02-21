@@ -1,5 +1,5 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 .item {
   margin-bottom: 16px;
@@ -16,10 +16,6 @@
 
 .value-text {
   @include typ-plain-text;
-}
-
-.divider {
-  margin: 0 0 24px;
 }
 
 .btn-edit {

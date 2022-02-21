@@ -30,6 +30,7 @@ import { UserInfoLoaderModule } from '../../../../../../shared/components/user-i
 import { SuggestHandlerService } from '../../../../../../shared/services/suggest-handler/suggest-handler.service';
 import { SuggestMonitorService } from '../../../../../../shared/services/suggest-monitor/suggest-monitor.service';
 import { ValidationService } from '../../../../../../shared/services/validation/validation.service';
+import { UpdateOn } from '../../../../../custom-screen/components-list.types';
 
 describe('RegistrationAddrComponent', () => {
   let component: RegistrationAddrComponent;
@@ -58,7 +59,7 @@ describe('RegistrationAddrComponent', () => {
           fieldName: FieldNames.regAddr,
           label: 'Адрес',
           type: 'input',
-          updateOnValidation: 'submit',
+          updateOnValidation: UpdateOn.ON_SUBMIT,
         },
         {
           fieldName: FieldNames.regDate,

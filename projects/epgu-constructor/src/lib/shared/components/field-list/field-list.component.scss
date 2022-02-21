@@ -1,5 +1,5 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 .data-group {
   @include typ-plain-text;
@@ -17,10 +17,6 @@
   &__label {
     color: $color-text-helper;
   }
-}
-
-.group-divider {
-  border-bottom: 1px solid $color-divider;
 }
 
 .error {

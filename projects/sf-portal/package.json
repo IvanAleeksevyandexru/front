@@ -1,6 +1,6 @@
 {
   "name": "sf-portal",
-  "version": "397.1.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "build": "cd ../../ && ng build sf-portal --prod",
@@ -25,11 +25,11 @@
     "@angular/platform-server": "13.1.1",
     "@angular/router": "13.1.1",
     "@datorama/akita": "6.2.3",
-    "@epgu/children-clubs": "398.10.0",
-    "@epgu/epgu-constructor-types": "398.10.0",
-    "@epgu/epgu-constructor-ui-kit": "398.10.0",
-    "@epgu/epgu-constructor": "398.10.0",
-    "@epgu/ui": "3.0.399-1-front",
+    "@epgu/children-clubs": "400.14.2",
+    "@epgu/epgu-constructor-types": "400.15.0",
+    "@epgu/epgu-constructor-ui-kit": "400.14.2",
+    "@epgu/epgu-constructor": "400.14.2",
+    "@epgu/ui": "3.0.400-7-frontv4",
     "@nguniversal/express-engine": "12.1.0",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
@@ -53,7 +53,6 @@
     "ngx-page-scroll-core": "7.0.5",
     "ngx-perfect-scrollbar": "8.0.0",
     "ngx-webcam": "0.3.2",
-    "ru-validation-codes": "2.8.2",
     "rxjs": "6.6.7",
     "ts-node": "10.2.1",
     "tslib": "^2.3.1",
@@ -63,15 +62,15 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
-    "replace": "^1.2.1",
-    "cpx": "^1.5.0",
     "@nguniversal/builders": "^12.1.0",
-    "@types/express": "^4.17.0"
+    "@types/express": "^4.17.0",
+    "cpx": "^1.5.0",
+    "cross-env": "^7.0.3",
+    "replace": "^1.2.1"
   },
   "workspaces": {
     "nohoist": [
-      "@epgu/**"
+      "**/@epgu/ui"
     ]
   }
 }

@@ -46,7 +46,7 @@ import { DropdownListModalComponent } from '../modal/dropdown-list-modal/compone
   styleUrls: ['../../styles/index.scss'],
   providers: [UnsubscribeService, FormPlayerStartManager],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   @HostBinding('class.epgu-constructor') class = true;
@@ -68,7 +68,7 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
     public loadService: LoadService,
     public screenService: ScreenService,
     public formPlayerStartService: FormPlayerStartManager,
-    private changeDetectionRef: ChangeDetectorRef,
+    public changeDetectionRef: ChangeDetectorRef,
     private autocompleteService: AutocompleteService,
     private tracingService: TracingService,
   ) {
@@ -118,8 +118,8 @@ export class FormPlayerComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private initConfigDependentEntities(): void {
-    this.autocompleteService.init(this.configService.isAutocompleteServiceDisabled || false);
-    this.tracingService.init(this.configService.zipkinGenerationEnabled || false);
+    this.autocompleteService.init(!!this.configService.isAutocompleteServiceEnabled);
+    this.tracingService.init(this.configService.isZipkinGenerationEnabled || false);
     this.screenService.serviceCode$
       .pipe(
         filter((serviceCode) => serviceCode !== null),

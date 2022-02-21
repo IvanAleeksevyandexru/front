@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -19,7 +20,7 @@ import {
 @Component({
   selector: 'epgu-cf-ui-constructor-constructor-lookup',
   templateUrl: './constructor-lookup.component.html',
-  changeDetection: ChangeDetectionStrategy.Default, // @todo. заменить на OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConstructorLookupComponent {
   @ViewChild('lookupComponent', { static: false })
@@ -49,15 +50,19 @@ export class ConstructorLookupComponent {
   @Input() formatter: (item: ListItem, context: { [name: string]: unknown }) => string;
   @Output() changed = new EventEmitter<ListElement>(); // TODO: подумать над рефактором подписочной модели
 
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+
   public onChanged(item: ListElement): void {
     this.changed.emit(item);
   }
 
   public clearInput(): void {
     this.lookupComponent.clearInput();
+    this.changeDetectorRef.detectChanges();
   }
 
   public setFocus(): void {
     this.lookupComponent.searchBar.setFocus();
+    this.changeDetectorRef.detectChanges();
   }
 }

@@ -25,10 +25,6 @@ import { UploadedFile } from '../../core/services/terra-byte-api/terra-byte-api.
 import { ViewerService } from '../../shared/components/uploader/services/viewer/viewer.service';
 import { FilesCollection, iconsTypes, SuggestAction } from '../../shared/components/uploader/data';
 import { TerraByteApiService } from '../../core/services/terra-byte-api/terra-byte-api.service';
-const imageErrorPicture = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/image-error.svg')
-  .default as string;
-const stopImagePicture = require('!raw-loader!projects/epgu-constructor-ui-kit/src/assets/icons/svg/stop.svg')
-  .default as string;
 
 @Component({
   selector: 'epgu-constructor-attach-uploaded-files-modal',
@@ -54,10 +50,8 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
   fileUploadApiUrl = this.configService.fileUploadApiUrl;
   basePath = `${this.configService.staticDomainAssetsPath}/assets/icons/svg/file-types/`;
   iconsTypes = iconsTypes;
-  icons = {
-    error: imageErrorPicture,
-    stop: stopImagePicture,
-  };
+  isLoading = true;
+
   constructor(
     public injector: Injector,
     public config: ConfigService,
@@ -89,14 +83,13 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
                       mimeType: file.item.mimeType,
                     })
                     .pipe(
-                      map(
-                        (blob) =>
-                          new FileItem(
-                            FileItemStatus.uploaded,
-                            `${this.fileUploadApiUrl}/`,
-                            new File([blob], file.item.fileName),
-                            file.item,
-                          ),
+                      map((blob) =>
+                        new FileItem(
+                          FileItemStatus.uploaded,
+                          `${this.fileUploadApiUrl}/`,
+                          new File([blob], file.item.fileName),
+                          file.item,
+                        ).setAttached(file.attached),
                       ),
                       catchError(() =>
                         of(
@@ -120,6 +113,7 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
       .subscribe((galleryFilesList) => {
         this.galleryFiles = galleryFilesList;
         this.galleryFilesGroupByDate = this.getGalleryFilesGroupedByDate(this.galleryFiles);
+        this.isLoading = false;
         this.cdRef.markForCheck();
       });
 
@@ -184,8 +178,8 @@ export class AttachUploadedFilesModalComponent extends ModalBaseComponent implem
 
   private isSameFile(fileItem: FileItem, resultFile: FileItem): boolean {
     return (
-      fileItem.item.objectId === resultFile.item.objectId &&
-      fileItem.item.objectType === resultFile.item.objectType &&
+      fileItem.item.fileSize === resultFile.item.fileSize &&
+      fileItem.item.objectTypeId == resultFile.item.objectTypeId &&
       fileItem.item.mnemonic === resultFile.item.mnemonic
     );
   }

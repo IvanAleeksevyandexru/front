@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import {
   HttpErrorResponse,
@@ -12,7 +13,7 @@ import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class UserAuthInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(private appConfig: AppConfig) {}
 
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
@@ -23,7 +24,7 @@ export class UserAuthInterceptor implements HttpInterceptor {
         console.error(error);
         // обрабатываем 401 и 624 статусы и ведем на авторизацию
         if (error.status === 401 || error.status === 624) {
-          window.location.href = AppConfig.settings.authProviderUrl + btoa(window.location.href);
+          window.location.href = this.appConfig.config.authProviderUrl + btoa(window.location.href);
         }
         return throwError(error);
       }),

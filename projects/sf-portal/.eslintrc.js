@@ -4,7 +4,9 @@ module.exports = {
     'plugin:@angular-eslint/recommended',
     'airbnb-typescript/base',
     'prettier/@typescript-eslint',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
   settings: {
     'import/resolver': {
@@ -12,13 +14,16 @@ module.exports = {
     }
   },
   rules: {
-    '@angular-eslint/directive-selector': ['error', { type: 'attribute', style: 'kebab-case' }],
-    '@angular-eslint/component-selector': ['error', { type: 'element', style: 'kebab-case' }],
     semi: 'off',
-    '@typescript-eslint/semi': ['error'],
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'import/extensions': 'off',
+    '@typescript-eslint/semi': ['error'],
     'no-empty-function': ['error', { allow: ['constructors'] }],
-    'object-curly-spacing': ['error', 'always', { objectsInObjects: false }],
+    'default-param-last': 'off',
+    '@typescript-eslint/default-param-last': 'off',
+    'object-curly-spacing': ['error', 'always'],
     '@typescript-eslint/no-explicit-any': ['error', { ignoreRestArgs: false }],
     '@typescript-eslint/typedef': [
       'error',
@@ -103,6 +108,7 @@ module.exports = {
       },
       rules: {
         'no-underscore-dangle': 'off',
+        'import/no-extraneous-dependencies': 'off',
         'import/no-webpack-loader-syntax': 'off',
         'import/no-unresolved': 'off',
         'import/prefer-default-export': 'off',
@@ -142,6 +148,7 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/member-ordering': 'off',
+        '@typescript-eslint/dot-notation': 'off',
         'max-len': ['error', { code: 180, ignorePattern: '^import .*' }],
       },
     },

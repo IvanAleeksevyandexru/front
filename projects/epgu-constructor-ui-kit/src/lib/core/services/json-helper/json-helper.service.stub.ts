@@ -7,4 +7,8 @@ export class JsonHelperServiceStub {
   tryToParse(value: string | object | []) {
     return value;
   }
+
+  hasJsonStructure(): boolean {
+    return false;
+  }
 }

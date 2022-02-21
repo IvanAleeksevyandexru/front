@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
@@ -186,6 +187,48 @@ describe('AutocompletePrepareService', () => {
     },
     visited: false,
   };
+  const mockSnilsInput = {
+    attrs: {
+      validation: [
+        {
+          type: 'RegExp',
+          value: '^(|[0-9]{3}-[0-9]{3}-[0-9]{3} [0-9]{2})$',
+          errorMsg: 'Неверный формат',
+        },
+        {
+          type: 'validation-fn',
+          errorMsg: 'СНИЛС некорректный',
+        },
+      ],
+      placeholder: '000-000-000 00',
+      refs: {},
+      mask: [
+        '/\\d/',
+        '/\\d/',
+        '/\\d/',
+        '-',
+        '/\\d/',
+        '/\\d/',
+        '/\\d/',
+        '-',
+        '/\\d/',
+        '/\\d/',
+        '/\\d/',
+        ' ',
+        '/\\d/',
+        '/\\d/',
+      ],
+    },
+    id: 'pd6',
+    label: 'СНИЛС',
+    required: true,
+    presetValue: '',
+    valueFromCache: false,
+    suggestionId: 'doc_snils_bride',
+    arguments: {},
+    value: '',
+    type: 'SnilsInput',
+  };
 
   let deviceDetectorService: DeviceDetectorService;
 
@@ -234,7 +277,7 @@ describe('AutocompletePrepareService', () => {
       const result = [{ value: 'value', mnemonic: 'prev_region' }];
       autocompleteService.init();
       expect(
-        service.getFormattedHints(
+        service['getFormattedHints'](
           repeatableComponents,
           componentsSuggestionsList,
           fields,
@@ -314,15 +357,29 @@ describe('AutocompletePrepareService', () => {
         const value = '{ "text": "value" }';
         autocompleteService.init();
         expect(
-          service.prepareValue(repeatableComponents, componentsSuggestionsList, 'value', value),
+          service['prepareValue'](repeatableComponents, componentsSuggestionsList, 'value', value),
         ).toBe('value');
       });
       it('if value is not json structure', () => {
         const { value } = mockSuggestionItemList;
         autocompleteService.init();
         expect(
-          service.prepareValue(repeatableComponents, componentsSuggestionsList, 'value', value),
+          service['prepareValue'](repeatableComponents, componentsSuggestionsList, 'value', value),
         ).toBe('value');
+      });
+
+      it('prepareValue should work for snilsInput', () => {
+        const value =
+          '{"birthDate":"11.11.2000","gender":"F","trusted":true,"citizenship":"RUS","snils":"420-291-003 15","biomStu":false,"verifying":false,"oid":"1000473849","exists":true,"age":21}                        ';
+        jest.spyOn<any, any>(service, 'findComponents').mockReturnValueOnce([mockSnilsInput]);
+        expect(
+          service['prepareValue'](
+            repeatableComponents,
+            componentsSuggestionsList,
+            value,
+            'doc_snils_bride',
+          ),
+        ).toBe('420-291-003 15');
       });
     });
   });
@@ -335,7 +392,7 @@ describe('AutocompletePrepareService', () => {
       const componentMnemonic = 'prev_region1';
       autocompleteService.init();
       expect(
-        service.findComponents(
+        service['findComponents'](
           mockRepeatableComponents,
           componentsSuggestionsList,
           componentMnemonic,
@@ -361,7 +418,7 @@ describe('AutocompletePrepareService', () => {
         ],
       };
       expect(
-        service.findComponentValue(
+        service['findComponentValue'](
           component,
           null,
           componentValue,
@@ -376,7 +433,7 @@ describe('AutocompletePrepareService', () => {
     it('should set component with passed value', () => {
       const component = mockData.display.components[0];
       const value = 'value';
-      service.setComponentValue(component, value);
+      service['setComponentValue'](component, value);
       expect(component.value).toEqual(value);
     });
   });
@@ -390,7 +447,7 @@ describe('AutocompletePrepareService', () => {
       const newParentComponent = { id: 'pd8' } as ComponentDto;
       const component = { id: 'ai18', value: 'value' } as ComponentDto;
       currentAnswersService.state = [{ value: 'value', ai18: 'value' }];
-      const result = service.prepareCachedAnswers(newParentComponent, component, 0, 'value');
+      const result = service['prepareCachedAnswers'](newParentComponent, component, 0, 'value');
       expect(result).toEqual(answer);
     });
   });
@@ -401,10 +458,10 @@ describe('AutocompletePrepareService', () => {
       component.type = 'DateInput';
       const value = '2020-01-01T00:00:00.000Z';
       it('formatted', () => {
-        expect(service.getFormattedValue(component, value, true)).toEqual('01.01.2020');
+        expect(service['getFormattedValue'](component, value, true)).toEqual('01.01.2020');
       });
       it('not formatted', () => {
-        expect(service.getFormattedValue(component, value, false)).toEqual(
+        expect(service['getFormattedValue'](component, value, false)).toEqual(
           datesToolsService.toDate(value),
         );
       });
@@ -416,10 +473,10 @@ describe('AutocompletePrepareService', () => {
       const value = 'F';
 
       it('formatted', () => {
-        expect(service.getFormattedValue(component, value, true)).toEqual('Женский');
+        expect(service['getFormattedValue'](component, value, true)).toEqual('Женский');
       });
       it('not formatted', () => {
-        expect(service.getFormattedValue(component, value, false)).toEqual(value);
+        expect(service['getFormattedValue'](component, value, false)).toEqual(value);
       });
     });
 
@@ -430,16 +487,16 @@ describe('AutocompletePrepareService', () => {
       const result = 'value';
       it('value via existing json-path in suggestionPath attr', () => {
         component.attrs.suggestionPath = 'value';
-        expect(service.getFormattedValue(component, value)).toEqual(result);
+        expect(service['getFormattedValue'](component, value)).toEqual(result);
       });
       it('undefined value via non existing json-path in suggestionPath attr', () => {
         component.attrs.suggestionPath = 'nonExisting.json.path.value';
-        expect(service.getFormattedValue(component, value)).toBeUndefined();
+        expect(service['getFormattedValue'](component, value)).toBeUndefined();
       });
       it('json-string of finded item in json-stringified array of items', () => {
         component.attrs.suggestionPath = null;
         value = '[{ "pd8": "value"}]';
-        expect(service.getFormattedValue(component, value)).toEqual(result);
+        expect(service['getFormattedValue'](component, value)).toEqual(result);
       });
     });
   });

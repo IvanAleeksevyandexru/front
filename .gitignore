@@ -7,15 +7,12 @@ fs-1.0-SNAPSHOT.jar
 /dist
 /tmp
 /out-tsc
-/projects/epgu-constructor/src/version.ts
 /projects/*/node_modules
 # Only exists if Bazel was run
 /bazel-out
 
 # dependencies
-/node_modules
-/packages/@epgu/epgu-constructor/node_modules
-/packages/@epgu/epgu-constructor-types/node_modules
+node_modules
 package-lock.json
 
 # profiling files
@@ -23,7 +20,7 @@ chrome-profiler-events*.json
 speed-measure-plugin*.json
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -32,19 +29,20 @@ speed-measure-plugin*.json
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
-.history/*
+.vscode
+.history
 
 # misc
-/.angular/cache
-/.sass-cache
+.angular
+.sass-cache
 /connect.lock
 /coverage
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+typings
+.jest-cache
 
 # System Files
 .DS_Store

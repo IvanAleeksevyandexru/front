@@ -1,11 +1,11 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/typography';
 
 .equipment-category {
   &-inputs {
     margin-top: 24px;
     padding: 24px 0;
-    border-top: 1px solid $color-mercury;
+    border-top: 1px solid $color-ciottoli;
   }
 
   &-item-title {

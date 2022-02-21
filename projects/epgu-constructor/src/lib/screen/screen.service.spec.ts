@@ -356,6 +356,78 @@ describe('ScreenService', () => {
     });
   });
 
+  describe('getCompValueFromApplicantAnswers() method', () => {
+    it('should get component by component id from parameters', () => {
+      const store = {
+        ...makeScreenStoreSample(),
+        applicantAnswers: {
+          w1: {
+            visited: true,
+            value: 'cached answer w1 value',
+          },
+        },
+      };
+
+      screenService.initScreenStore(store);
+
+      expect(screenService.getCompValueFromApplicantAnswers('w1')).toBe('cached answer w1 value');
+    });
+
+    it('should get component by component id from instance property', () => {
+      const store = {
+        ...makeScreenStoreSample(),
+        applicantAnswers: {
+          w1: {
+            visited: true,
+            value: 'cached answer w1 value',
+          },
+        },
+      };
+
+      screenService.initScreenStore(store);
+
+      expect(screenService.getCompValueFromApplicantAnswers()).toBe('cached answer w1 value');
+    });
+  });
+
+  describe('getCompValueFromApplicantAndCachedAnswers() method', () => {
+    it('should get component by component id from parameters', () => {
+      const store = {
+        ...makeScreenStoreSample(),
+        applicantAnswers: {
+          w1: {
+            visited: true,
+            value: 'cached answer w1 value',
+          },
+        },
+      };
+
+      screenService.initScreenStore(store);
+
+      expect(screenService.getCompValueFromApplicantAndCachedAnswers('w1')).toBe(
+        'cached answer w1 value',
+      );
+    });
+
+    it('should get component by component id from instance property', () => {
+      const store = {
+        ...makeScreenStoreSample(),
+        applicantAnswers: {
+          w1: {
+            visited: true,
+            value: 'cached answer w1 value',
+          },
+        },
+      };
+
+      screenService.initScreenStore(store);
+
+      expect(screenService.getCompValueFromApplicantAndCachedAnswers()).toBe(
+        'cached answer w1 value',
+      );
+    });
+  });
+
   describe('getCompValueFromCachedAnswers() method', () => {
     it('should get component by component id from parameters', () => {
       const store = {

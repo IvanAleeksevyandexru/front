@@ -1,18 +1,16 @@
-require('jest-preset-angular/ngcc-jest-processor');
-
 module.exports = {
   preset: 'jest-preset-angular',
   modulePaths: ['<rootDir>'],
   moduleDirectories: ['node_modules'],
+  globalSetup: 'jest-preset-angular/global-setup',
   setupFiles: ['<rootDir>/configs/jest/setup-jest.ts', 'jest-canvas-mock'],
   setupFilesAfterEnv: ['<rootDir>/configs/jest/setup-jest-env.ts'],
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/', '<rootDir>/projects/sf-portal'],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/src/'],
   moduleNameMapper: {
     '@ifc/plugin': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js',
     '@ifc/common': '<rootDir>/node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js',
     '@epgu/epgu-constructor-ui-kit': '<rootDir>/projects/epgu-constructor-ui-kit/src/public-api',
     '@epgu/epgu-constructor-types': '<rootDir>/projects/epgu-constructor-types/src',
-    '^!raw-loader!.*': 'jest-raw-loader',
   },
   modulePathIgnorePatterns: ['<rootDir>/dist/'],
   coverageReporters: ['text', 'cobertura', 'html'],

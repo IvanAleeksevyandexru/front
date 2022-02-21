@@ -11,16 +11,12 @@ import {
 import { Observable, Subscription } from 'rxjs';
 import { BaseTimeSlotComponent } from '../base-time-slot.component';
 import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
-
 import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
-
 import { TimeSlotSmev2Service } from '../../../services/smev2/time-slot-smev2.service';
-
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ActionService } from '../../../../../../../shared/directives/action/action.service';
 import { getConfirmModalParams, templateList } from './data';
 import { Slot } from '../../../typings';
-
 import { TimeSlotErrorService } from '../../../services/error/time-slot-error.service';
 import { LockProvider } from '../../../../../../../shared/components/calendar/typings';
 
@@ -80,7 +76,27 @@ export class TimeSlotSmev2Component extends BaseTimeSlotComponent implements OnI
 
   ngOnInit(): void {
     this.error.setAllTemplates(templateList);
+    this.state.startLoaded$$.next(true);
+    this.state.setAdditionalDisplayingButton(true);
+
     super.ngOnInit();
+
+    this.error.errorHandling$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe();
+    this.error.error$
+      .pipe(
+        tap((error) => {
+          if (error) {
+            this.state.setList([]);
+          }
+        }),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe();
+  }
+
+  changeDayAction(day: Date): void {
+    this.state.clearSlot();
+    super.changeDayAction(day);
   }
 
   changeSlot(slot: Slot): void {

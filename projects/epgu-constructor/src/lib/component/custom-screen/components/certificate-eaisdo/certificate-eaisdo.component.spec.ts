@@ -33,6 +33,8 @@ import { ActionService } from '../../../../shared/directives/action/action.servi
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { ActionServiceStub } from '../../../../shared/directives/action/action.service.stub';
+import { ScreenService } from '../../../../screen/screen.service';
+import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 
 const mockComponent = {
   id: 'ecr1',
@@ -190,6 +192,7 @@ describe('CertificateEaisdoComponent', () => {
         EventBusService,
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
       ],
     })
       .overrideComponent(CertificateEaisdoComponent, {

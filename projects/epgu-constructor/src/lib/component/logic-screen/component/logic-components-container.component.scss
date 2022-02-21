@@ -1,4 +1,4 @@
-@import '~@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
+@import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/palettes';
 
 .wrapper {
   position: fixed;
@@ -12,4 +12,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.text--center {
+  text-align: center;
 }

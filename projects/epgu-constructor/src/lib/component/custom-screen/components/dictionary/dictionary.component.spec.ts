@@ -122,16 +122,28 @@ describe('DictionaryComponent', () => {
       component.model._dictionary$.next(({
         list: [{ id: 1, text: 'some-text' }],
       } as unknown) as CustomListDictionary);
+      fixture.detectChanges();
     });
 
     it('Should render Lib DropDown', () => {
-      fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector))).toBeTruthy();
     });
 
     it('Should render Lib DropDown', () => {
+      expect(fixture.debugElement.query(By.css(selector)).componentInstance.disabled).toBeFalsy();
+
+      control.controls.attrs.setValue(
+        new DictionaryModelAttrs({
+          dictionaryType: 'someDictionaryType',
+          isClearable: false,
+        }),
+      );
+      component.model._dictionary$.next(({
+        list: [{ id: 1, text: 'some-text' }],
+      } as unknown) as CustomListDictionary);
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css(selector)).componentInstance.disabled).toBeTruthy();
+
       component.model._dictionary$.next(({
         list: [
           { id: 1, text: 'some-text' },
