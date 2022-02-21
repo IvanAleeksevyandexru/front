@@ -13,11 +13,8 @@ import {
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
-  JsonHelperService,
-  ValidationHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CookieService } from 'ngx-cookie-service';
-import { get } from 'lodash';
 import { ComponentDto, KeyValueMap } from '@epgu/epgu-constructor-types';
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { MonthYear } from '@epgu/ui/models/date-time';
@@ -31,9 +28,6 @@ import {
   UpdateOn,
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
-import { MultipleSelectedItems } from '../../components/multiple-choice-dictionary/multiple-choice-dictionary.models';
-
-export const CARD_VALIDATION_EVENT = 'CardValidation';
 
 enum ValidationType {
   regExp = 'RegExp',
@@ -53,19 +47,13 @@ export class ValidationService {
     CustomScreenComponentTypes.HtmlString,
   ];
 
-  private readonly personInnLength = 12;
-
-  private readonly legalInnLength = 10;
-
   constructor(
     private dateRangeService: DateRangeService,
     private dateRestrictionsService: DateRestrictionsService,
     private datesToolsService: DatesToolsService,
-    private currentAnswerService: CurrentAnswersService,
-    private health: HealthService,
-    private cookie: CookieService,
-    private jsonHelperService: JsonHelperService,
-    private validationHelperService: ValidationHelperService,
+    private currentAnswersService: CurrentAnswersService,
+    private healthService: HealthService,
+    private cookieService: CookieService,
   ) {}
 
   public customValidator(component: CustomComponent): ValidatorFn {
@@ -76,8 +64,10 @@ export class ValidationService {
         return null;
       }
 
-      if (component.required && !control.value) {
-        return this.validationErrorMsg(control.touched || control.dirty ? REQUIRED_FIELD : '');
+      const { value, touched, dirty } = control;
+
+      if (component.required && !value) {
+        return this.validationErrorMsg(touched || dirty ? REQUIRED_FIELD : '');
       }
 
       let customMessage;
@@ -94,11 +84,11 @@ export class ValidationService {
         );
       }
 
-      if (!control.value || validations?.length === 0) {
+      if (!value || validations?.length === 0) {
         return null;
       }
 
-      return this.isValid(component, control.value)
+      return this.isValid(value, component)
         ? null
         : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true);
     };
@@ -114,8 +104,10 @@ export class ValidationService {
     );
 
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      if (component.required && !control.value) {
-        return of(this.validationErrorMsg(control.touched ? REQUIRED_FIELD : ''));
+      const { value, touched } = control;
+
+      if (component.required && !value) {
+        return of(this.validationErrorMsg(touched ? REQUIRED_FIELD : ''));
       }
 
       let customMessage;
@@ -132,11 +124,11 @@ export class ValidationService {
         );
       }
 
-      if (!control.value) {
+      if (!value) {
         return of(null);
       }
 
-      return this.isValid(component, control.value)
+      return this.isValid(value, component)
         ? of(null)
         : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true));
     };
@@ -257,6 +249,7 @@ export class ValidationService {
     };
   }
 
+  // TODO: подумать над возможностью вынести это в компонентный StringInputValidations
   public checkRS(rs: string, refs: KeyValueMap): boolean {
     const check = (checkRs: string, bik: string | null): boolean => {
       const bikRs = `${bik?.slice(-3)}${checkRs}`;
@@ -278,107 +271,17 @@ export class ValidationService {
     return manualBik !== null && manualBik !== undefined ? check(rs, manualBik) : check(rs, bik);
   }
 
-  public checkCardNumber(cardNumber: string): boolean {
-    let sum = 0;
-    const digits = String(cardNumber).replace(/\D/g, '');
-    const isEven = digits.length % 2 === 0;
-    for (let i = 0; i < digits.length; i++) {
-      let cardNum = parseInt(digits[i]);
-      if (isEven ? i % 2 === 0 : i % 2 === 1) {
-        cardNum *= 2;
-        if (cardNum > 9) {
-          cardNum -= 9;
-        }
-      }
-      sum += cardNum;
-    }
-    const result = sum % 10 === 0;
-    this.health.measureStart(CARD_VALIDATION_EVENT);
-    this.health.measureEnd(CARD_VALIDATION_EVENT, 0, {
-      userId: this.cookie.get('u'),
-      validationStatus: result,
+  private isValid(value: string, component: CustomComponent): boolean {
+    const validations =
+      'getSpecificValidators' in component ? component.getSpecificValidators() : [];
+
+    return validations.every((passIsValidCheck) => {
+      return passIsValidCheck(value, component, {
+        healthService: this.healthService,
+        cookieService: this.cookieService,
+        currentAnswersService: this.currentAnswersService,
+      });
     });
-    return result;
-  }
-
-  private isValid(component: CustomComponent, value: string): boolean {
-    switch (component.type) {
-      case CustomScreenComponentTypes.OgrnInput:
-        return this.validationHelperService.checkOgrn(value);
-      case CustomScreenComponentTypes.OgrnipInput:
-        return this.validationHelperService.checkOgrnip(value);
-      case CustomScreenComponentTypes.SnilsInput:
-        return this.validationHelperService.checkSnils(value);
-      case CustomScreenComponentTypes.PersonInnInput:
-        return (
-          value.length === this.personInnLength && this.validationHelperService.checkINN(value)
-        );
-      case CustomScreenComponentTypes.LegalInnInput:
-        return value.length === this.legalInnLength && this.validationHelperService.checkINN(value);
-      case CustomScreenComponentTypes.CalendarInput:
-        return this.isCompoundComponentValid(component, (value as unknown) as KeyValueMap);
-      case CustomScreenComponentTypes.CardNumberInput:
-        return this.checkCardNumber(value);
-      case CustomScreenComponentTypes.StringInput:
-        return this.calculateStringPredicate(component, value);
-      case CustomScreenComponentTypes.MultipleChoiceDictionary:
-        return this.isMultipleSelectedItemsValid((value as unknown) as MultipleSelectedItems);
-      default:
-        return true;
-    }
-  }
-
-  private isCompoundComponentValid(component: CustomComponent, controlValue: KeyValueMap): boolean {
-    const requiredIds = component.attrs.components
-      .filter((componentDto) => componentDto.required)
-      .map((componentDto) => componentDto.id);
-    return Object.entries(controlValue).every(
-      ([key, value]) => !requiredIds.includes(key) || !!value,
-    );
-  }
-
-  private calculateStringPredicate(component: CustomComponent, value: string): boolean {
-    const customPredicateValidation = component.attrs.validation?.find((validation) => {
-      return validation.type === CustomComponentAttrValidator.calculatedPredicate;
-    });
-    if (!customPredicateValidation) {
-      return true;
-    }
-    const validationExpression = this.replaceValueForPredicateExpression(
-      customPredicateValidation.expr,
-      component.id,
-      value,
-    );
-    try {
-      return eval(validationExpression);
-    } catch (error) {
-      if (error instanceof SyntaxError) {
-        throw new Error(`Ошибка в выражении CalculatedPredicate. Component ID: ${component.id}`);
-      }
-    }
-  }
-
-  private replaceValueForPredicateExpression(
-    expression: string,
-    componentId: string,
-    value: string,
-  ): string {
-    const takePlaceholdersRegExp = new RegExp(/\${([^\s)]*)}/, 'g');
-    const takeRefGroupPlaceholderRegExp = new RegExp(/\${\s?([^\s)]*)\s?}/);
-    return expression
-      .match(takePlaceholdersRegExp)
-      .map((match) => match.match(takeRefGroupPlaceholderRegExp)[1])
-      .reduce((accumulator, currentMatch) => {
-        // Конвертируется в Number чтобы избежать скриптинга по эвал
-        const valueToReplace =
-          currentMatch === `${componentId}.value`
-            ? Number(value)
-            : Number(get(this.currentAnswerService.state, currentMatch));
-        return accumulator.replace(
-          `\$\{${currentMatch}\}`,
-          isNaN(valueToReplace) ? '' : `${valueToReplace}`,
-        );
-      }, expression);
   }
 
   private validationErrorMsg(
@@ -426,15 +329,5 @@ export class ValidationService {
         ) || [];
     }
     return validations;
-  }
-
-  private isMultipleSelectedItemsValid(selectedItems: MultipleSelectedItems): boolean {
-    const parsedValue = this.getParsedValue(selectedItems);
-    return parsedValue && !!(parsedValue as MultipleSelectedItems).amount;
-  }
-
-  private getParsedValue(value: string | unknown): unknown {
-    const isParsable = this.jsonHelperService.hasJsonStructure(value as string);
-    return isParsable ? JSON.parse(value as string) : value;
   }
 }

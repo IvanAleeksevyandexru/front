@@ -378,6 +378,7 @@ export interface CustomComponent extends ComponentBase {
   isShown?: boolean;
   price?: boolean;
   searchProvider?: { search: Function };
+  getSpecificValidators?: () => Function[];
 }
 
 export interface SupportedValue {
