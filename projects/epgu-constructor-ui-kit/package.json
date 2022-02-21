@@ -18,7 +18,6 @@
     "ngx-perfect-scrollbar": "8.0.0"
   },
   "dependencies": {
-    "@epgu/epgu-constructor-types": "400.15.0",
     "@epgu/zipkin": "0.0.3",
     "tslib": "^2.0.0",
     "ismobilejs": "^1.1.1",
