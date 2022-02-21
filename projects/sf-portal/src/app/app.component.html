@@ -1,5 +1,6 @@
 <ng-container *ngIf="loaded && !isServer">
   <lib-header
+    *ngIf="!hasIframe"
     [mergeHeaderMenu]="true"
     [isPortal]="true"
     [rolesListEnabled]="true"
@@ -13,7 +14,7 @@
     <router-outlet></router-outlet>
     <lib-modal-placeholder></lib-modal-placeholder>
   </div>
-  <div class="footer-wrapper no-print" id="footer-wrapper">
+  <div *ngIf="!hasIframe" class="footer-wrapper no-print" id="footer-wrapper">
     <lib-footer [onlyCopyright]="true"></lib-footer>
   </div>
 </ng-container>
