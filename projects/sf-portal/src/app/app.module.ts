@@ -24,7 +24,6 @@ import { FormPlayerModule } from '@epgu/epgu-constructor';
 import { FrameModule } from '@epgu/ui/components/frame';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
-import { FrameNewSfPlayerComponent } from './components/frame-new-sf-player/frame-new-sf-player.component';
 
 registerLocaleData(localeRu);
 
@@ -41,7 +40,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent, NewSfPlayerComponent, FrameNewSfPlayerComponent],
+  declarations: [AppComponent, NewSfPlayerComponent],
   imports: [
     CoreUiModule,
     HttpClientModule,

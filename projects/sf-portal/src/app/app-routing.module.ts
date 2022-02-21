@@ -4,7 +4,6 @@ import { RouterModule, Routes, UrlMatchResult, UrlSegment } from '@angular/route
 import { NewSfPlayerComponent } from './components/new-sf-player/new-sf-player.component';
 import { AuthGuard } from './interceptors/auth/auth.guard';
 import { EmbeddedService } from './components/new-sf-player/embedded.service';
-import { FrameNewSfPlayerComponent } from './components/frame-new-sf-player/frame-new-sf-player.component';
 
 export function routeMatcherByRegex(
   url: UrlSegment[],
@@ -117,11 +116,6 @@ const routes: Routes = [
   {
     path: 'children-clubs',
     loadChildren: () => import('./components/clubs/clubs.module').then((mod) => mod.ClubsModule),
-  },
-  {
-    path: 'frame',
-    canActivate: [AuthGuard],
-    component: FrameNewSfPlayerComponent,
   },
   {
     path: '**',

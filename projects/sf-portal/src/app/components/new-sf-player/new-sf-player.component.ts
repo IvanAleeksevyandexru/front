@@ -62,7 +62,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.hasIframe = (window.self !== window.top);
+    this.hasIframe = window.self !== window.top;
     if (this.hasIframe) {
       this.initIframeEmbedding();
     } else {
@@ -243,16 +243,18 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
    * @private
    */
   private initIframeEmbedding() {
-    window.parent.postMessage('init');
+    window.parent.postMessage('initEPGU');
     if (window.addEventListener) {
       window.addEventListener('message', this.handleMessage.bind(this), false);
-    } else if (window['attachEvent']) {
-      window['attachEvent']('onmessage', this.handleMessage.bind(this));
+      // @ts-ignore
+    } else if (window.attachEvent) {
+      // @ts-ignore
+      window.attachEvent('onmessage', this.handleMessage.bind(this));
     }
   }
 
   private handleMessage(event: MessageEvent<ServerFormDataEmbedding>): void {
-    if(typeof event.data === 'object' && 'serviceId' in event.data && 'targetId' in event.data) {
+    if (typeof event.data === 'object' && 'serviceId' in event.data && 'targetId' in event.data) {
       this.cookieService.put('acc_t', event.data.authToken);
       delete event.data.authToken;
       this.newSfService = event.data;
