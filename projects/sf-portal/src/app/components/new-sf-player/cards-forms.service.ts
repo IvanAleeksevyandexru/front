@@ -6,7 +6,6 @@ import { LoadService } from '@epgu/ui/services/load';
 import { CatalogService } from '@epgu/ui/services/catalog';
 import { BreadcrumbsService } from '@epgu/ui/services/breadcrumbs';
 import {
-  AdditionalAttribute,
   GetPassportRequest,
   GetServiceRequest,
   Passport,
@@ -19,7 +18,9 @@ import {
 })
 export class CardsFormsService {
   private serviceCache: { [name: string]: Service } = {};
+
   private passportCache: { [name: string]: Passport } = {};
+
   public blockAttrByRadioOrderType = {
     online: 'order.button.disabled',
     mfc: 'mfc.button.disabled',
@@ -119,6 +120,10 @@ export interface ServerFormData {
   invited?: boolean;
   gepsId?: string;
   serviceInfo: ServiceInfo;
+}
+
+export interface ServerFormDataEmbedding extends ServerFormData {
+  authToken: string;
 }
 
 export interface ServiceInfo {

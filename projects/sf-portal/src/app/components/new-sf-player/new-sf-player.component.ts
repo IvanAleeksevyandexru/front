@@ -14,9 +14,11 @@ import {
   CardsFormsService,
   RegionServiceCheck,
   ServerFormData,
+  ServerFormDataEmbedding,
   ServiceInfoDepartment,
 } from './cards-forms.service';
 import { AppConfig } from '../../app.config';
+import { CookieService } from 'ngx-cookie';
 
 @Component({
   selector: 'portal-new-sf-player',
@@ -55,63 +57,61 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
     public locationService: LocationService,
     private router: Router,
     private health: HealthService,
+    private cookieService: CookieService,
     @Inject(DOCUMENT) private document: Document,
   ) {}
 
   public ngOnInit(): void {
     this.hasIframe = (window.self !== window.top);
-    if(!this.hasIframe) {
-      this.document.querySelector('.main-container')?.classList.add('new-sf-player');
-      const params = new GetServiceRequest(this.passportId, this.targetId, false, false, true);
-      this.isEmbedded = this.cardsFormsService.checkIsEmbedded(this.route.snapshot.data);
-      this.locationService.savedDetectRegion$
-        .pipe(
-          filter((region) => region !== null),
-          take(1),
-          switchMap((data) => {
-            this.region = data;
-            this.loadService.attributes.selectedRegion = this.region.code;
-            return this.cardsFormsService.getService(params).pipe(
-              filter((service) => service !== null),
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              switchMap(
-                (service): ObservableInput<any> => {
-                  this.service = service;
-                  return this.checkPermissionsAndRegion();
-                },
-              ),
-            );
-          }),
-        )
-        .subscribe(
-          (res: [Array<ServicePermission>, RegionServiceCheck]) => {
-            if (res[0] && res[0].length) {
-              [[this.permissionData]] = res;
-            } else {
-              [, this.regionServiceCheck] = res;
-              this.findParamsToNewSf();
-            }
-          },
-          (error) => {
-            if (error.status === 404) {
-              window.location.href = `${this.loadService.config.betaUrl}404`;
-            }
-          },
-        );
+    if (this.hasIframe) {
+      this.initIframeEmbedding();
     } else {
-      if (this.hasIframe) {
-        window.parent.postMessage('init');
-        if (window.addEventListener) {
-          window.addEventListener('message', this.handleMessage.bind(this), false);
-        } else if (window['attachEvent']) {
-          window['attachEvent']('onmessage', this.handleMessage.bind(this));
-        }
-      }
+      this.init();
     }
   }
 
   public ngOnDestroy(): void {
     this.document.querySelector('.main').classList.remove('new-sf-player');
+  }
+
+  private init() {
+    this.document.querySelector('.main-container')?.classList.add('new-sf-player');
+    const params = new GetServiceRequest(this.passportId, this.targetId, false, false, true);
+    this.isEmbedded = this.cardsFormsService.checkIsEmbedded(this.route.snapshot.data);
+    this.locationService.savedDetectRegion$
+      .pipe(
+        filter((region) => region !== null),
+        take(1),
+        switchMap((data) => {
+          this.region = data;
+          this.loadService.attributes.selectedRegion = this.region.code;
+          return this.cardsFormsService.getService(params).pipe(
+            filter((service) => service !== null),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            switchMap(
+              (service): ObservableInput<any> => {
+                this.service = service;
+                return this.checkPermissionsAndRegion();
+              },
+            ),
+          );
+        }),
+      )
+      .subscribe(
+        (res: [Array<ServicePermission>, RegionServiceCheck]) => {
+          if (res[0] && res[0].length) {
+            [[this.permissionData]] = res;
+          } else {
+            [, this.regionServiceCheck] = res;
+            this.findParamsToNewSf();
+          }
+        },
+        (error) => {
+          if (error.status === 404) {
+            window.location.href = `${this.loadService.config.betaUrl}404`;
+          }
+        },
+      );
   }
 
   /** *
@@ -238,8 +238,23 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  private handleMessage(event: MessageEvent<ServerFormData>): void {
+  /**
+   * Инициализация встроенного в iframe приложения
+   * @private
+   */
+  private initIframeEmbedding() {
+    window.parent.postMessage('init');
+    if (window.addEventListener) {
+      window.addEventListener('message', this.handleMessage.bind(this), false);
+    } else if (window['attachEvent']) {
+      window['attachEvent']('onmessage', this.handleMessage.bind(this));
+    }
+  }
+
+  private handleMessage(event: MessageEvent<ServerFormDataEmbedding>): void {
     if(typeof event.data === 'object' && 'serviceId' in event.data && 'targetId' in event.data) {
+      this.cookieService.put('acc_t', event.data.authToken);
+      delete event.data.authToken;
       this.newSfService = event.data;
       this.checkInProgress = false;
     }
