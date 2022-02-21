@@ -16,8 +16,6 @@
     "ngx-perfect-scrollbar": "8.0.0"
   },
   "dependencies": {
-    "@epgu/epgu-constructor-types": "400.15.0",
-    "@epgu/epgu-constructor-ui-kit": "400.14.2",
     "tslib": "^2.3.1"
   }
 }
