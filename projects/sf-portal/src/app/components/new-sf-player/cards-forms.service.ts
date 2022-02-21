@@ -122,6 +122,10 @@ export interface ServerFormData {
   serviceInfo: ServiceInfo;
 }
 
+export interface ServerFormDataEmbedding extends ServerFormData {
+  authToken: string;
+}
+
 export interface ServiceInfo {
   department: ServiceInfoDepartment;
   routingCode: string;
