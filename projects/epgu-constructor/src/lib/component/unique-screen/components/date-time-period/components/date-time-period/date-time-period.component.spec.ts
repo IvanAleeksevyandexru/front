@@ -12,8 +12,6 @@ import {
   HealthService,
   JsonHelperService,
   JsonHelperServiceStub,
-  ValidationHelperServiceStub,
-  ValidationHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   AbstractControl,
@@ -86,7 +84,6 @@ describe('DateTimePeriodComponent', () => {
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
-        { provide: ValidationHelperService, useClass: ValidationHelperServiceStub },
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         ValidationService,
         DateRangeService,
