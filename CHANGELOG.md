@@ -37,6 +37,7 @@
 * Добавлена поддержка clarifications для ConfirmPersonalUserPhone [EPGUCORE-86020]
 * Добавлена поддержка mappingParams для MVDGiac [EPGUCORE-88801]
 * Добавлена возможность скрывать и дизейблить кнопки по relations [EPGUCORE-86308]
+* Добавлена поддержка clarifications для AddressInput [EPGUCORE-86014]
 
 ### Refactor
 
@@ -97,6 +98,7 @@
 * Добавлены тесты на compression service [EPGUCORE-85281]
 * Добавлены тесты для UploaderManagerService [EPGUCORE-88301]
 * Добавлены тесты для GenderRadioButtonComponent [EPGUCORE-88563]
+* Добавлены тесты для TimeSlotResolverVersionComponent [EPGUCORE-88903]
 
 ### Chore
 
