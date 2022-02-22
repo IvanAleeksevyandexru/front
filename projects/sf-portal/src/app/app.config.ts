@@ -8,6 +8,7 @@ import isMobile from 'ismobilejs';
 import { LocationService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { isPlatformServer } from '@angular/common';
 import { HOST_URL } from './tokens/host-url.token';
+import { IframePlayerService } from './services/iframe-player/iframe-player.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,12 +23,17 @@ export class AppConfig {
     private loadService: LoadService,
     private cookieService: CookieService,
     private locationService: LocationService,
+    private iframeService: IframePlayerService,
     @Inject(WINDOW) private window: any,
     @Inject(PLATFORM_ID) private platformId: Object,
     @Optional() @Inject(HOST_URL) private hostUrl: string,
   ) {}
 
   public load(): Promise<void> {
+    if (this.iframeService.hasIframe) {
+      this.iframeService.initIframeEmbedding();
+    }
+    console.log('after load ->', ' ---- IFRAME_STATE');
     return new Promise<void>((resolve, reject) => {
       this.fetchConfig()
         .then((response: any) => {

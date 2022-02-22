@@ -14,11 +14,10 @@ import {
   CardsFormsService,
   RegionServiceCheck,
   ServerFormData,
-  ServerFormDataEmbedding,
   ServiceInfoDepartment,
 } from './cards-forms.service';
 import { AppConfig } from '../../app.config';
-import { CookieService } from 'ngx-cookie';
+import { IframePlayerService } from '../../services/iframe-player/iframe-player.service';
 
 @Component({
   selector: 'portal-new-sf-player',
@@ -58,14 +57,15 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
     private appConfig: AppConfig,
     private router: Router,
     private health: HealthService,
-    private cookieService: CookieService,
+    private iframeService: IframePlayerService,
     @Inject(DOCUMENT) private document: Document,
   ) {}
 
   public ngOnInit(): void {
     this.hasIframe = window.self !== window.top;
     if (this.hasIframe) {
-      this.initIframeEmbedding();
+      this.newSfService = this.iframeService.serviceData;
+      this.checkInProgress = false;
     } else {
       this.init();
     }
@@ -237,29 +237,5 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
       return { id: targetState.id, title: targetState.title };
     }
     return null;
-  }
-
-  /**
-   * Инициализация встроенного в iframe приложения
-   * @private
-   */
-  private initIframeEmbedding() {
-    window.parent.postMessage('initEPGU');
-    if (window.addEventListener) {
-      window.addEventListener('message', this.handleMessage.bind(this), false);
-      // @ts-ignore
-    } else if (window.attachEvent) {
-      // @ts-ignore
-      window.attachEvent('onmessage', this.handleMessage.bind(this));
-    }
-  }
-
-  private handleMessage(event: MessageEvent<ServerFormDataEmbedding>): void {
-    if (typeof event.data === 'object' && 'serviceId' in event.data && 'targetId' in event.data) {
-      this.cookieService.put('acc_t', event.data.authToken);
-      delete event.data.authToken;
-      this.newSfService = event.data;
-      this.checkInProgress = false;
-    }
   }
 }

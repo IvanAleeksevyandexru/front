@@ -25,6 +25,7 @@ import { FrameModule } from '@epgu/ui/components/frame';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { IframePlayerService } from './services/iframe-player/iframe-player.service';
 
 registerLocaleData(localeRu);
 
@@ -69,6 +70,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ConstantsService,
     LoadService,
     FocusManager,
+    IframePlayerService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
