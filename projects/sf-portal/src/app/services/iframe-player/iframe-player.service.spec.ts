@@ -6,7 +6,9 @@ describe('IframePlayerService', () => {
   let service: IframePlayerService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [IframePlayerService],
+    });
     service = TestBed.inject(IframePlayerService);
   });
 

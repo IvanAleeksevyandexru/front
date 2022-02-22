@@ -13,6 +13,7 @@ import {
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { AppConfig } from './app.config';
 import { MockProvider } from 'ng-mocks';
+import { IframePlayerService } from './services/iframe-player/iframe-player.service';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -22,6 +23,7 @@ describe('AppComponent', () => {
       declarations: [AppComponent],
       providers: [
         MockProvider(AppConfig),
+        IframePlayerService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: WINDOW, useValue: Window },
         { provide: YaMetricService, useValue: { init: () => null } },

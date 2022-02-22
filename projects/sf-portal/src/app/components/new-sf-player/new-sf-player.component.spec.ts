@@ -7,6 +7,7 @@ import { CookieModule } from 'ngx-cookie';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppConfig } from '../../app.config';
 import { MockProvider } from 'ng-mocks';
+import { IframePlayerService } from '../../services/iframe-player/iframe-player.service';
 
 describe('NewSfPlayerComponent', () => {
   let component: NewSfPlayerComponent;
@@ -18,6 +19,7 @@ describe('NewSfPlayerComponent', () => {
       declarations: [NewSfPlayerComponent],
       providers: [
         MockProvider(AppConfig),
+        IframePlayerService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
       ],
     }).compileComponents();
