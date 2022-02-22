@@ -6,6 +6,7 @@ import { FormArray, FormControl } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenButton, System } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
+import { isEqual } from 'lodash';
 
 @Injectable()
 export class ScreenButtonService {
@@ -51,7 +52,9 @@ export class ScreenButtonService {
   }
 
   public initButtonsDisablingHandling(buttons: ScreenButton[]): void {
-    this.outputButtons = buttons;
+    if (!isEqual(buttons, this.outputButtons)) {
+      this.outputButtons = buttons;
+    }
     this._subscriptionOnInnerFormForDisabling = new FormArray([new FormControl({})]);
     this._subscriptionOnInnerFormForDisabling.valueChanges.subscribe(() => {
       this.processButtonsDisabling();
@@ -60,14 +63,21 @@ export class ScreenButtonService {
   }
 
   private processButtonsDisabling(): void {
-    this.outputButtons = this.outputButtons.map((button) => {
-      button.disabledByRel = this.rel.calculateDisabling(
+    let shouldUpdate = false;
+    this.outputButtons.forEach((button) => {
+      const disabledByRel = this.rel.calculateDisabling(
         button,
         this.screenService.cachedAnswers,
         this._subscriptionOnInnerFormForDisabling,
       );
-      return { ...button };
+      if (button.disabledByRel !== disabledByRel || button.disabledByRel === undefined) {
+        shouldUpdate = true;
+      }
+      button.disabledByRel = disabledByRel;
     });
+    if (shouldUpdate) {
+      this.updateButtons(this.outputButtons);
+    }
   }
 
   private processButtonsVisibility(form: FormArray): void {
@@ -81,8 +91,21 @@ export class ScreenButtonService {
       form,
       this._shownElements,
     );
-    this.outputButtons = initialButtons.map((button) => {
-      button.hidden = shownButtons[button.id] && !shownButtons[button.id].isShown;
+    let shouldUpdate = false;
+    initialButtons.forEach((button) => {
+      const hidden = shownButtons[button.id] && !shownButtons[button.id].isShown;
+      if (button.hidden !== hidden || button.hidden === undefined) {
+        shouldUpdate = true;
+      }
+      button.hidden = hidden;
+    });
+    if (shouldUpdate) {
+      this.updateButtons(initialButtons);
+    }
+  }
+
+  private updateButtons(buttons: ScreenButton[]): void {
+    this.outputButtons = buttons.map((button) => {
       return { ...button };
     });
   }

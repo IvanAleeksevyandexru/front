@@ -119,6 +119,9 @@ export class ScreenService extends ScreenContent {
    */
   public updateLoading(isLoading: boolean): void {
     this.isLoading = isLoading;
+    if (this.trobber.message || !isLoading) {
+      this.isLoaderVisible.next(isLoading);
+    }
     this.isLoadingSubject.next(this.isLoading);
   }
 

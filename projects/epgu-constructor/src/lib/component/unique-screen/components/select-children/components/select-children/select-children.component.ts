@@ -342,7 +342,7 @@ export class SelectChildrenComponent implements OnInit {
     return this.component?.attrs?.components.map((component) => {
       const value =
         component.type === CustomScreenComponentTypes.SnilsInput
-          ? child[component.id].snils
+          ? child[component.id]?.snils
           : child[component.id];
       return {
         ...component,

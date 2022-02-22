@@ -8,8 +8,6 @@ import {
   JsonHelperService,
   JsonHelperServiceStub,
   LoggerService,
-  ValidationHelperService,
-  ValidationHelperServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockProvider } from 'ng-mocks';
@@ -19,7 +17,7 @@ import {
   UpdateOn,
 } from '../../../component/custom-screen/components-list.types';
 import { ComponentsListToolsService } from '../../../component/custom-screen/services/components-list-tools/components-list-tools.service';
-import { CARD_VALIDATION_EVENT, ValidationService } from './validation.service';
+import { ValidationService } from './validation.service';
 import { DateRangeService } from '../date-range/date-range.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../screen/screen.service.stub';
@@ -29,12 +27,12 @@ import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { DictionaryToolsService } from '../dictionary/dictionary-tools.service';
 import { DictionaryToolsServiceStub } from '../dictionary/dictionary-tools.service.stub';
 import { HelperService } from '@epgu/ui/services/helper';
+import createModel from '../../../component/custom-screen/component-list-resolver/ModelFactory';
+import { ComponentDto } from '@epgu/epgu-constructor-types';
 
 describe('ValidationService', () => {
   let service: ValidationService;
   let restrictionService: DateRestrictionsService;
-  let currentAnswersService: CurrentAnswersService;
-  let health: HealthService;
   const dateInputComponent = ({
     id: 'pd8',
     type: CustomScreenComponentTypes.DateInput,
@@ -78,7 +76,6 @@ describe('ValidationService', () => {
     attrs: {
       dictionaryType: '',
       ref: [],
-      labelAttr: '',
       fields: [],
       validation: [
         {
@@ -124,29 +121,6 @@ describe('ValidationService', () => {
     required: true,
   };
 
-  const mockMultipleChoiceDictionary: CustomComponent = {
-    id: 'id',
-    type: CustomScreenComponentTypes.MultipleChoiceDictionary,
-    attrs: {
-      subLabel: 'Необходимо выбрать виды использования лесов',
-      dictionaryType: 'PGS_using_forest',
-      required: false,
-      validation: [
-        {
-          type: 'RegExp',
-          value: '^.{0,10}$',
-          ref: '',
-          dataType: '',
-          condition: '',
-          errorMsg: 'Поле может содержать не более 10 символов',
-          updateOn: 'change',
-        },
-      ],
-    },
-    value: '1',
-    visited: false,
-  };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -154,7 +128,6 @@ describe('ValidationService', () => {
         ValidationService,
         ComponentsListToolsService,
         DateRangeService,
-        { provide: ValidationHelperService, useClass: ValidationHelperServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: HealthService, useClass: HealthServiceStub },
         CurrentAnswersService,
@@ -173,12 +146,6 @@ describe('ValidationService', () => {
   beforeEach(() => {
     service = TestBed.inject(ValidationService);
     restrictionService = TestBed.inject(DateRestrictionsService);
-    currentAnswersService = TestBed.inject(CurrentAnswersService);
-    health = TestBed.inject(HealthService);
-    Object.defineProperty(window.document, 'cookie', {
-      writable: true,
-      value: 'u=123456',
-    });
   });
 
   describe('customValidator', () => {
@@ -221,75 +188,6 @@ describe('ValidationService', () => {
     });
   });
 
-  describe('calculateStringPredicate()', () => {
-    const mockCalcStringComponent: CustomComponent = {
-      id: 'rf2',
-      type: CustomScreenComponentTypes.StringInput,
-      label: 'Сумма',
-      attrs: {
-        dictionaryType: '',
-        ref: [],
-        labelAttr: '',
-        fields: [],
-        validation: [
-          {
-            type: 'CalculatedPredicate',
-            value: '',
-            ref: '',
-            condition: '',
-            dataType: '',
-            expr: '${rf2.value} > ${rf3.value}',
-            errorMsg: 'Полная стоимость путёвки должна превышать оплаченную',
-          },
-        ],
-        value: '',
-      },
-    };
-    it('should evaluate 10 > 12 to false', () => {
-      currentAnswersService.state = {
-        rf3: {
-          value: 12,
-        },
-      };
-      const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
-      expect(customValidator).toBeFalsy();
-    });
-
-    it('should evaluate 10 > 8 to true', () => {
-      currentAnswersService.state = {
-        rf3: {
-          value: 8,
-        },
-      };
-      const customValidator = service.calculateStringPredicate(mockCalcStringComponent, '10');
-      expect(customValidator).toBeTruthy();
-    });
-
-    it('should throw error on evil script', () => {
-      // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
-      currentAnswersService.state = {
-        rf3: {
-          value: 'throw new Error("Evil code"); 12',
-        },
-      };
-      expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError(
-        'Ошибка в выражении CalculatedPredicate. Component ID: rf2',
-      );
-    });
-
-    it('should throw error on evil script', () => {
-      // скрипт который должен возвращать false так как ( 10 > 12 ) но получается NaN и возвращается true
-      currentAnswersService.state = {
-        rf3: {
-          value: '12; throw new Error("Evil code")',
-        },
-      };
-      expect(() => service.calculateStringPredicate(mockCalcStringComponent, '10')).toThrowError(
-        'Ошибка в выражении CalculatedPredicate. Component ID: rf2',
-      );
-    });
-  });
-
   describe('customAsyncValidator', () => {
     it('should return proper error for control value with not enought length', (done) => {
       const customAsyncValidator = service.customAsyncValidator(mockComponent, UpdateOn.ON_BLUR);
@@ -327,18 +225,6 @@ describe('ValidationService', () => {
         done();
       });
     });
-
-    it('should call isMultipleSelectedItemsValid if component.type === MultipleChoiceDictionary', (done) => {
-      const spy = jest.spyOn<any, any>(service, 'isMultipleSelectedItemsValid');
-      const customAsyncValidator = service.customAsyncValidator(mockMultipleChoiceDictionary, '');
-      const control = new FormControl('v');
-      // @ts-ignore
-      customAsyncValidator(control).subscribe((obj) => {
-        expect(spy).toHaveBeenCalledTimes(1);
-        done();
-      });
-      control.setValue('');
-    });
   });
 
   describe('should return customMessage if validation-fn', () => {
@@ -350,7 +236,7 @@ describe('ValidationService', () => {
       { type: CustomScreenComponentTypes.PersonInnInput, attrs },
       { type: CustomScreenComponentTypes.LegalInnInput, attrs },
       { type: CustomScreenComponentTypes.CardNumberInput, attrs },
-    ];
+    ].map((component) => createModel(component as ComponentDto));
     const control = new FormControl('input');
     control.setValue('12');
 
@@ -364,7 +250,7 @@ describe('ValidationService', () => {
     it('for customAsyncValidator', (done) => {
       control.markAsTouched();
       components.forEach((component) => {
-        component.attrs.validation[0].updateOn = UpdateOn.ON_BLUR;
+        component.attrs.validation[0]['updateOn'] = UpdateOn.ON_BLUR;
         const customAsyncValidator = service.customAsyncValidator(
           component as any,
           UpdateOn.ON_BLUR,
@@ -393,38 +279,6 @@ describe('ValidationService', () => {
     });
   });
 
-  describe('isCompoundComponentValid', () => {
-    const mockData = {
-      attrs: {
-        components: [
-          { id: 'q1', required: true },
-          { id: 'q2', required: false },
-        ],
-      },
-    };
-    const mockValue = { q1: 'true', q2: '' };
-
-    it('should be valid', () => {
-      expect(
-        service.isCompoundComponentValid((mockData as unknown) as CustomComponent, mockValue),
-      ).toBeTruthy();
-    });
-
-    it('should be invalid', () => {
-      mockData.attrs.components[1].required = true;
-      expect(
-        service.isCompoundComponentValid((mockData as unknown) as CustomComponent, mockValue),
-      ).toBeFalsy();
-    });
-
-    it('should be valid', () => {
-      mockValue.q2 = '1';
-      expect(
-        service.isCompoundComponentValid((mockData as unknown) as CustomComponent, mockValue),
-      ).toBeTruthy();
-    });
-  });
-
   describe('checkRS', () => {
     it('should return true', () => {
       service.form = new FormArray([new FormControl({ id: 'bik', value: '044030827' })]);
@@ -442,41 +296,6 @@ describe('ValidationService', () => {
       service.form = new FormArray([new FormControl({ id: 'bik', value: '049205603' })]);
       const isValid = service.checkRS('40817810362001249935', { bik: 'bik' });
       expect(isValid).toBeFalsy();
-    });
-  });
-
-  describe('checkCardNumber()', () => {
-    const checkNumber = (number: any) => service.checkCardNumber(number);
-
-    it('should return true', () => {
-      const spyMeasureStart = jest.spyOn(health, 'measureStart');
-      const spyMeasureEnd = jest.spyOn(health, 'measureEnd');
-      expect(checkNumber('3562990024016152')).toBeTruthy();
-      expect(checkNumber('3562 9900 2401 6152')).toBeTruthy();
-      expect(checkNumber('3562 99002401 6152')).toBeTruthy();
-      expect(checkNumber('35629900 24016152')).toBeTruthy();
-
-      expect(checkNumber('6291 5700 1247 5287482')).toBeTruthy();
-      expect(checkNumber('6291 5700 1247 528438')).toBeTruthy();
-      expect(checkNumber('6291 5700 1247 52832')).toBeTruthy();
-      expect(checkNumber('2200 3307 9345 4721 809')).toBeTruthy();
-      expect(checkNumber('2200 3307 1335 4721 6')).toBeTruthy();
-      expect(spyMeasureStart).toHaveBeenCalledWith(CARD_VALIDATION_EVENT);
-      expect(spyMeasureEnd).toHaveBeenCalledWith(CARD_VALIDATION_EVENT, 0, {
-        userId: '123456',
-        validationStatus: true,
-      });
-    });
-
-    it('should return false', () => {
-      const spyMeasureStart = jest.spyOn(health, 'measureStart');
-      const spyMeasureEnd = jest.spyOn(health, 'measureEnd');
-      expect(checkNumber('5439 3800 2401 6155')).toBeFalsy();
-      expect(spyMeasureStart).toHaveBeenCalledWith(CARD_VALIDATION_EVENT);
-      expect(spyMeasureEnd).toHaveBeenCalledWith(CARD_VALIDATION_EVENT, 0, {
-        userId: '123456',
-        validationStatus: false,
-      });
     });
   });
 
