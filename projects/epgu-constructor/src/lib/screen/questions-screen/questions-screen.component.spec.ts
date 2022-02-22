@@ -202,23 +202,23 @@ describe('QuestionsScreenComponent', () => {
       expect(nextStepSpy).toBeCalledWith(expectedPayload);
     });
 
-    it('should mutate action if action.underConstruction && config.isUnderConstructionModeEnabled || isUnderConstructionModeEnabled', () => {
+    it('should mutate action if action.underConstruction && config.isUnderConstructionModeEnabled || isUnderConstructionModeEnabledViaCookie !== "false"', () => {
       const showModalRedirectToSpy = jest.spyOn<any, string>(component, 'showModalRedirectTo');
       const nextStepSpy = jest.spyOn(component, 'nextStep');
 
       const actionUnderConstruction: ComponentActionDto = {
         ...componentActionDtoSample1,
         underConstruction: true,
-        // this type will change to ActionType.nextStep if config.isUnderConstructionModeEnabled is TRUE
+        // this type will change to ActionType.nextStep if config.isUnderConstructionModeEnabled is FALSE
         type: ActionType.modalRedirectTo,
-        // this action will change to DTOActionAction.getNextStep if config.isUnderConstructionModeEnabled is TRUE
+        // this action will change to DTOActionAction.getNextStep if config.isUnderConstructionModeEnabled is FALSE
         action: DTOActionAction.editEmail,
       };
 
       screenService.component = componentDtoSample;
 
-      configService['_isUnderConstructionModeEnabled'] = false;
-      // should NOT mutate action because configService.isUnderConstructionModeEnabled is FALSE
+      configService['_isUnderConstructionModeEnabled'] = true;
+      // should NOT mutate action because configService.isUnderConstructionModeEnabled is TRUE
       component.answerChoose(actionUnderConstruction);
 
       expect(actionUnderConstruction.type).toBe(ActionType.modalRedirectTo);
@@ -229,8 +229,8 @@ describe('QuestionsScreenComponent', () => {
       expect(nextStepSpy).not.toBeCalled();
       showModalRedirectToSpy.mockReset();
 
-      configService['_isUnderConstructionModeEnabled'] = true;
-      // should mutate action because configService.isUnderConstructionModeEnabled is TRUE
+      configService['_isUnderConstructionModeEnabled'] = false;
+      // should mutate action because configService.isUnderConstructionModeEnabled is FALSE
       component.answerChoose(actionUnderConstruction);
 
       expect(actionUnderConstruction.type).toBe(ActionType.nextStep);
@@ -239,10 +239,11 @@ describe('QuestionsScreenComponent', () => {
       expect(showModalRedirectToSpy).not.toBeCalled();
       // call nextStep() because action is changed to ActionType.nextStep
       expect(nextStepSpy).toBeCalledTimes(1);
+      nextStepSpy.mockReset();
 
-      configService['_isUnderConstructionModeEnabled'] = false;
-      component.isUnderConstructionModeEnabledViaCookie = true;
-      // should mutate action because component.isUnderConstructionModeEnabled is TRUE
+      configService['_isUnderConstructionModeEnabled'] = true;
+      component.isUnderConstructionModeEnabledViaCookie = false;
+      // should mutate action because component.isUnderConstructionModeEnabledViaCookie is FALSE
       component.answerChoose(actionUnderConstruction);
 
       expect(actionUnderConstruction.type).toBe(ActionType.nextStep);
@@ -250,6 +251,7 @@ describe('QuestionsScreenComponent', () => {
 
       expect(showModalRedirectToSpy).not.toBeCalled();
       // call nextStep() because action is changed to ActionType.nextStep
+      expect(nextStepSpy).toBeCalledTimes(1);
     });
   });
 
