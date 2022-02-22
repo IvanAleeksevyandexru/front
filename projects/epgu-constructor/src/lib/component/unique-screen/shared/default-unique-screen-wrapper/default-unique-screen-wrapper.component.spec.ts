@@ -33,8 +33,6 @@ import {
 } from '@epgu/epgu-constructor-types';
 import { EaisdoGroupCostService } from '../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
-import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
-import { ComponentsListRelationsServiceStub } from '../../../custom-screen/services/components-list-relations/components-list-relations.service.stub';
 
 const componentActionDtoSample1: ComponentActionDto = {
   label: 'label1',
@@ -72,7 +70,6 @@ describe('DefaultUniqueScreenWrapperComponent', () => {
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
-        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
       ],
     })
       .overrideComponent(DefaultUniqueScreenWrapperComponent, {

@@ -7,7 +7,6 @@ import {
   DATE_RESTRICTION_GROUP_DEFAULT_KEY,
   DateRestriction,
   DateRestrictionGroups,
-  IEntityWithRef,
 } from '../../components-list.types';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -29,7 +28,6 @@ import { FilterOnRelation } from './relation-strategies/filter-on-relation';
 import { BaseRelation } from './relation-strategies/base-relation';
 import { DisplayOffRelation } from './relation-strategies/display-off-relation';
 import { DisplayOnRelation } from './relation-strategies/display-on-relation';
-import { DisableButtonRelation } from './relation-strategies/disable-button-relation.service';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
@@ -144,46 +142,36 @@ export class ComponentsListRelationsService {
   }
 
   public calculateVisibility(
-    entitiesWithRefs: IEntityWithRef[],
+    components: CustomComponent[],
     cachedAnswers: CachedAnswers,
     form: FormArray,
     previousStatusElements: CustomListStatusElements = {},
   ): CustomListStatusElements {
-    return entitiesWithRefs.reduce((acc, entity: IEntityWithRef) => {
-      const hasDisplayOn = this.hasRelation(entity, CustomComponentRefRelation.displayOn);
+    return components.reduce((acc, component: CustomComponent) => {
+      const hasDisplayOn = this.hasRelation(component, CustomComponentRefRelation.displayOn);
       const isDisplayOnFired = (<DisplayOnRelation>(
         this.relationResolverService.getStrategy(CustomComponentRefRelation.displayOn)
-      )).isAtLeastOneRelationFired(entity, acc, form, cachedAnswers);
+      )).isAtLeastOneRelationFired(component, acc, form, cachedAnswers);
 
       const isDisplayOffFired = (<DisplayOffRelation>(
         this.relationResolverService.getStrategy(CustomComponentRefRelation.displayOff)
-      )).isAtLeastOneRelationFired(entity, acc, form, cachedAnswers);
+      )).isAtLeastOneRelationFired(component, acc, form, cachedAnswers);
 
       const isShown = (!hasDisplayOn || isDisplayOnFired) && !isDisplayOffFired;
 
       if (
-        !previousStatusElements[entity.id] ||
-        previousStatusElements[entity.id].isShown != isShown
+        !previousStatusElements[component.id] ||
+        previousStatusElements[component.id].isShown != isShown
       ) {
-        const dependentControl = form.controls.find((control) => control.value.id === entity.id);
+        const dependentControl = form.controls.find((control) => control.value.id === component.id);
         dependentControl?.markAsUntouched();
       }
 
       return {
         ...acc,
-        [entity.id]: { isShown },
+        [component.id]: { isShown },
       };
     }, previousStatusElements);
-  }
-
-  public calculateDisabling(
-    entityWithRef: IEntityWithRef,
-    cachedAnswers: CachedAnswers,
-    form: FormArray,
-  ): boolean {
-    return (<DisableButtonRelation>(
-      this.relationResolverService.getStrategy(CustomComponentRefRelation.disableButton)
-    )).isAtLeastOneRelationFired(entityWithRef, {}, form, cachedAnswers);
   }
 
   public isComponentDependent(arr = [], component: CustomComponent): boolean {
@@ -220,7 +208,7 @@ export class ComponentsListRelationsService {
     return undefined;
   }
 
-  public hasRelation(component: IEntityWithRef, relation: CustomComponentRefRelation): boolean {
+  public hasRelation(component: CustomComponent, relation: CustomComponentRefRelation): boolean {
     return component.attrs?.ref?.some((o) => o.relation === relation);
   }
 

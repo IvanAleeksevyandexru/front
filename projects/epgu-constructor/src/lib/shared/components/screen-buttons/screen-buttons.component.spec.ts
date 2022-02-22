@@ -23,8 +23,6 @@ import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-
 import { MockProvider } from 'ng-mocks';
 import { CertificateEaisdoService } from '../../services/certificate-eaisdo/certificate-eaisdo.service';
 import { ScreenService } from '../../../screen/screen.service';
-import { ScreenButtonService } from './screen-button.service';
-import { ScreenButtonServiceStub } from './screen-button.service.stub';
 
 describe('ScreenButtonsComponent', () => {
   let component: ScreenButtonsComponent;
@@ -32,7 +30,6 @@ describe('ScreenButtonsComponent', () => {
   let deviceDetectorService: DeviceDetectorService;
   let deviceDetectorServiceSpy: jest.SpyInstance;
   let screenService: ScreenService;
-  let buttonsService: ScreenButtonService;
 
   const mockScreenButtons: ScreenButton[] = [
     {
@@ -85,7 +82,6 @@ describe('ScreenButtonsComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: ScreenButtonService, useClass: ScreenButtonServiceStub },
         EventBusService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: EaisdoGroupCostService, useClass: EaisdoGroupCostServiceStub },
@@ -101,7 +97,6 @@ describe('ScreenButtonsComponent', () => {
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
-    buttonsService = TestBed.inject(ScreenButtonService);
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     deviceDetectorServiceSpy = jest.spyOn(deviceDetectorService, 'system', 'get');
     createComponent();
@@ -109,11 +104,18 @@ describe('ScreenButtonsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should set shownButtons by filtered screenButtons', () => {
-    buttonsService.clientSystem = System.Android;
+  it('should set clientSystem', () => {
+    deviceDetectorServiceSpy.mockReturnValue(System.Android);
     createComponent();
 
-    expect(buttonsService.outputButtons.length).toEqual(4);
+    expect((component as any).clientSystem).toEqual(System.Android);
+  });
+
+  it('should set shownButtons by filtered screenButtons', () => {
+    deviceDetectorServiceSpy.mockReturnValue(System.Android);
+    createComponent();
+
+    expect(component.shownButtons.length).toEqual(4);
   });
 
   describe('render', () => {
@@ -137,7 +139,7 @@ describe('ScreenButtonsComponent', () => {
     });
 
     it('should render buttons filtered for client system', () => {
-      buttonsService.clientSystem = System.iOS;
+      deviceDetectorServiceSpy.mockReturnValue(System.iOS);
       createComponent();
       fixture.detectChanges();
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
@@ -157,8 +159,8 @@ describe('ScreenButtonsComponent', () => {
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
       debugElements[0].nativeElement.click();
 
-      expect(setClickedButtonSpy).toBeCalledWith(buttonsService.outputButtons[0]);
-      expect(component.clickedButton).toBe(buttonsService.outputButtons[0]);
+      expect(setClickedButtonSpy).toBeCalledWith(component.shownButtons[0]);
+      expect(component.clickedButton).toBe(component.shownButtons[0]);
     });
 
     it('should disable all buttons when isLoading', () => {
@@ -172,7 +174,7 @@ describe('ScreenButtonsComponent', () => {
 
     it('should add loaded class for clickedButton', () => {
       component.isLoading = true;
-      component.clickedButton = buttonsService.outputButtons[1];
+      component.clickedButton = component.shownButtons[1];
       fixture.detectChanges();
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
 
