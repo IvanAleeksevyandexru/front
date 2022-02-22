@@ -96,5 +96,24 @@ describe('ScreenButtonService', () => {
 
       expect(service.outputButtons.every((b) => b.disabledByRel));
     });
+
+    it('should set new buttons on first call', () => {
+      jest.spyOn(relationService, 'calculateDisabling').mockReturnValue(true);
+      const spy = jest.spyOn(service, 'outputButtons', 'set');
+
+      service.initButtonsDisablingHandling(mockButtons as any);
+
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should set new buttons only once', () => {
+      jest.spyOn(relationService, 'calculateDisabling').mockReturnValue(true);
+      const spy = jest.spyOn(service, 'outputButtons', 'set');
+
+      service.initButtonsDisablingHandling(mockButtons as any);
+      service.initButtonsDisablingHandling(mockButtons as any);
+
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
   });
 });
