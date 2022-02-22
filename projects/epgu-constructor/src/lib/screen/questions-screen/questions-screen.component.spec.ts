@@ -241,7 +241,7 @@ describe('QuestionsScreenComponent', () => {
       expect(nextStepSpy).toBeCalledTimes(1);
 
       configService['_isUnderConstructionModeEnabled'] = false;
-      component.isUnderConstructionModeEnabled = true;
+      component.isUnderConstructionModeEnabledViaCookie = true;
       // should mutate action because component.isUnderConstructionModeEnabled is TRUE
       component.answerChoose(actionUnderConstruction);
 
