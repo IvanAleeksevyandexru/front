@@ -47,8 +47,6 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
   private readonly routeNumber: string = this.route.snapshot.queryParamMap.get('routeNumber');
   private readonly formId: string = this.router.url?.split('/').pop().split('?').shift();
 
-  private hasIframe: boolean;
-
   constructor(
     public route: ActivatedRoute,
     public cardsFormsService: CardsFormsService,
@@ -62,8 +60,7 @@ export class NewSfPlayerComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.hasIframe = window.self !== window.top;
-    if (this.hasIframe) {
+    if (this.iframeService.hasIframe) {
       this.newSfService = this.iframeService.serviceData;
       this.checkInProgress = false;
     } else {
