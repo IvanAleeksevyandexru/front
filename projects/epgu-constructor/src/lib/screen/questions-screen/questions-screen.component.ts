@@ -35,7 +35,7 @@ import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confi
 export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   isLoading: boolean;
   selectedAnswer: string;
-  isUnderConstructionModeEnabled = true;
+  isUnderConstructionModeEnabledViaCookie = true;
 
   constructor(
     public injector: Injector,
@@ -49,7 +49,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isUnderConstructionModeEnabled =
+    this.isUnderConstructionModeEnabledViaCookie =
       this.sessionService.isUnderConstructionModeEnabled === 'false';
     this.screenService.isLoading$
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -73,8 +73,8 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
       return;
     }
     if (
-      (this.isUnderConstructionModeEnabled && answer.underConstruction) ||
-      (this.config.isUnderConstructionModeEnabled && answer.underConstruction)
+      (this.isUnderConstructionModeEnabledViaCookie && answer.underConstruction) ||
+      (!this.config.isUnderConstructionModeEnabled && answer.underConstruction)
     ) {
       // Здесь намеренное мутирование значений для работы форм-плеера с отключенным режимом underConstruction
       // eslint-disable-next-line no-param-reassign
