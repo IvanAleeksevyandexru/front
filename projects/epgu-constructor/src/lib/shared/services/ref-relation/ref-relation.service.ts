@@ -12,10 +12,6 @@ export class RefRelationService {
     return relation === CustomComponentRefRelation.displayOff;
   }
 
-  public isDisableButtonRelation(relation: CustomComponentRefRelation): boolean {
-    return relation === CustomComponentRefRelation.disableButton;
-  }
-
   public isDisplayOnRelation(relation: CustomComponentRefRelation): boolean {
     return relation === CustomComponentRefRelation.displayOn;
   }

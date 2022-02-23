@@ -26,7 +26,6 @@ export enum CustomComponentRefRelation {
   displayOff = 'displayOff',
   filterOn = 'filterOn',
   disabled = 'disabled',
-  disableButton = 'disableButton',
   calc = 'calc',
   getValue = 'getValue',
   autofillFromDictionary = 'autofillFromDictionary',
