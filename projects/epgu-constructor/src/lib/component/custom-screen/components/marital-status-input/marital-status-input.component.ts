@@ -11,6 +11,7 @@ import { isEmpty } from 'lodash';
 import { map, takeUntil } from 'rxjs/operators';
 import { TextTransform } from '@epgu/epgu-constructor-types';
 import { Observable } from 'rxjs';
+
 import { ListElement } from '@epgu/ui/models/dropdown';
 import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomplete.inteface';
 import { ValidationService } from '../../../../shared/services/validation/validation.service';
@@ -24,7 +25,7 @@ import { SuggestHandlerService } from '../../../../shared/services/suggest-handl
 import { ScreenService } from '../../../../screen/screen.service';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import MaritalStatusInputModelAttrs from './MaritalStatusInputModelAttrs';
+import { MaritalStatusInputModelAttrs } from './marital-status-input.model';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { Fields } from '../../components-list.types';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';

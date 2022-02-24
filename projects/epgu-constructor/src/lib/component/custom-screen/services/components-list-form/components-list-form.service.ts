@@ -251,6 +251,7 @@ export class ComponentsListFormService {
 
   private changeValidators(component: CustomComponent | Fields, control: AbstractControl): void {
     const validators = [this.validationService.customValidator(component)];
+
     if (
       component.type === CustomScreenComponentTypes.DateInput ||
       component.type === CustomScreenComponentTypes.MonthPicker ||
@@ -259,6 +260,7 @@ export class ComponentsListFormService {
     ) {
       validators.push(this.validationService.dateValidator(component, null));
     }
+
     control.setValidators(validators);
   }
 
@@ -281,6 +283,7 @@ export class ComponentsListFormService {
       control.get('value').updateValueAndValidity();
     } else {
       this.changeValidators(resultComponent, refControl);
+      refControl.markAsTouched();
       refControl.updateValueAndValidity();
     }
   }
