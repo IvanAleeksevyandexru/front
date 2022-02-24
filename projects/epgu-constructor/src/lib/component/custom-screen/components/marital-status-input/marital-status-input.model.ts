@@ -1,6 +1,6 @@
 import BaseModel from '../../component-list-resolver/BaseModel';
 import { CustomComponentAttr, CustomScreenComponentTypes } from '../../components-list.types';
-import MaritalStatusInputModelAttrs from './MaritalStatusInputModelAttrs';
+import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
 export default class MaritalStatusInputModel extends BaseModel<MaritalStatusInputModelAttrs> {
   type = CustomScreenComponentTypes.MaritalStatusInput;
@@ -9,3 +9,5 @@ export default class MaritalStatusInputModel extends BaseModel<MaritalStatusInpu
     return new MaritalStatusInputModelAttrs(attrs);
   }
 }
+
+export class MaritalStatusInputModelAttrs extends GenericAttrs {}
