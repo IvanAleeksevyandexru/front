@@ -451,7 +451,7 @@ export class AutocompletePrepareService {
 
       if (Array.isArray(parsedValue)) {
         const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
-        value = parsedItem[component.id];
+        value = parsedItem?.[component.id] || value;
 
         return typeof value === 'string' ? value : JSON.stringify(value);
       }
