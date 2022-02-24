@@ -35,7 +35,7 @@
     "@ngx-translate/http-loader": "6.0.0",
     "@nicky-lenaers/ngx-scroll-to": "9.0.0",
     "@squadette/hammerjs": "^2.1.0-pre3",
-    "@types/node": "16.11.10",
+    "@types/node": "17.0.8",
     "@types/yandex-maps": "^2.1.20",
     "angular-resize-event": "^2.0.0",
     "angular2-text-mask": "9.0.0",
