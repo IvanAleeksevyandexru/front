@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { NewSfPlayerComponent } from './new-sf-player.component';
-import { ActivatedRouteStub } from '@epgu/epgu-constructor-ui-kit';
+import { ActivatedRouteStub, LoggerService } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CookieModule } from 'ngx-cookie';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppConfig } from '../../app.config';
 import { MockProvider } from 'ng-mocks';
+import { IframePlayerService } from '../../services/iframe-player/iframe-player.service';
 
 describe('NewSfPlayerComponent', () => {
   let component: NewSfPlayerComponent;
@@ -18,6 +19,8 @@ describe('NewSfPlayerComponent', () => {
       declarations: [NewSfPlayerComponent],
       providers: [
         MockProvider(AppConfig),
+        IframePlayerService,
+        LoggerService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
       ],
     }).compileComponents();
