@@ -5,7 +5,7 @@ import { environment } from '../environments/environment';
 import { LoadService } from '@epgu/ui/services/load';
 import { CookieService } from 'ngx-cookie';
 import isMobile from 'ismobilejs';
-import { LocationService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
+import { LocationService, LoggerService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { isPlatformServer } from '@angular/common';
 import { HOST_URL } from './tokens/host-url.token';
 import { IframePlayerService } from './services/iframe-player/iframe-player.service';
@@ -21,6 +21,7 @@ export class AppConfig {
   constructor(
     private http: HttpClient,
     private loadService: LoadService,
+    private loggerService: LoggerService,
     private cookieService: CookieService,
     private locationService: LocationService,
     private iframeService: IframePlayerService,
@@ -33,7 +34,7 @@ export class AppConfig {
     if (this.iframeService.hasIframe) {
       this.iframeService.initIframeEmbedding();
     }
-    console.log('after load ->', ' ---- IFRAME_STATE');
+    this.loggerService.log(['after load -> ---- IFRAME_STATE']);
     return new Promise<void>((resolve, reject) => {
       this.fetchConfig()
         .then((response: any) => {

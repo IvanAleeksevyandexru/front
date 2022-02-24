@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ServerFormDataEmbedding } from '../../components/new-sf-player/cards-forms.service';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../environments/environment';
+import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class IframePlayerService {
@@ -15,7 +16,7 @@ export class IframePlayerService {
 
   public serviceData: ServerFormDataEmbedding;
 
-  constructor(private cookieService: CookieService) {}
+  constructor(private cookieService: CookieService, private loggerService: LoggerService) {}
 
   /**
    * Инициализация встроенного в iframe приложения
@@ -34,12 +35,12 @@ export class IframePlayerService {
   }
 
   private handleMessage(event: MessageEvent<ServerFormDataEmbedding>): void {
-    console.log('handleMessage event -> ', event, ' ---- IFRAME_STATE');
-    console.log(
-      'domain -> ',
-      environment.name !== 'local' ? '.gosuslugi.ru' : '.test.gosuslugi.ru',
-      ' ---- IFRAME_STATE',
-    );
+    this.loggerService.log(['handleMessage event -> ' + event + ' ---- IFRAME_STATE']);
+    this.loggerService.log([
+      'domain -> ' + environment.name !== 'local'
+        ? '.gosuslugi.ru'
+        : '.test.gosuslugi.ru' + ' ---- IFRAME_STATE',
+    ]);
     if (typeof event.data === 'object' && 'serviceId' in event.data && 'targetId' in event.data) {
       this.cookieService.set('acc_t', event.data.authToken, {
         domain: environment.name !== 'local' ? '.gosuslugi.ru' : '.test.gosuslugi.ru',
