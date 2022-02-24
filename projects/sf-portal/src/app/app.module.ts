@@ -53,6 +53,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
+      defaultLanguage: 'ru',
     }),
     CommonModule,
     CookieModule.forRoot(),
