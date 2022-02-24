@@ -8,6 +8,7 @@ import {
   DeviceDetectorServiceStub,
   LocationService,
   LocationServiceStub,
+  LoggerService,
   WINDOW,
 } from '@epgu/epgu-constructor-ui-kit';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
@@ -24,6 +25,7 @@ describe('AppComponent', () => {
       providers: [
         MockProvider(AppConfig),
         IframePlayerService,
+        LoggerService,
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: WINDOW, useValue: Window },
         { provide: YaMetricService, useValue: { init: () => null } },
