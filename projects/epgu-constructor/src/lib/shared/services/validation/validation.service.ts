@@ -13,6 +13,7 @@ import {
   INCORRENT_DATE_FIELD,
   InvalidControlMsg,
   REQUIRED_FIELD,
+  JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { CookieService } from 'ngx-cookie-service';
 import { ComponentDto, KeyValueMap } from '@epgu/epgu-constructor-types';
@@ -50,6 +51,7 @@ export class ValidationService {
     private currentAnswersService: CurrentAnswersService,
     private healthService: HealthService,
     private cookieService: CookieService,
+    private jsonHelperService: JsonHelperService,
   ) {}
 
   public customValidator(component: CustomComponent): ValidatorFn {
@@ -276,6 +278,7 @@ export class ValidationService {
         healthService: this.healthService,
         cookieService: this.cookieService,
         currentAnswersService: this.currentAnswersService,
+        jsonHelperService: this.jsonHelperService,
       });
     });
   }
