@@ -40,7 +40,6 @@ import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 import { MaritalStatusInputField } from '../../components/marital-status-input/marital-status-input.types';
-import { ScreenButtonService } from '../../../../shared/components/screen-buttons/screen-button.service';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 
 @Injectable()
@@ -88,7 +87,6 @@ export class ComponentsListFormService {
     private dictionaryService: DictionaryService,
     private screenService: ScreenService,
     private maskTransformService: MaskTransformService,
-    private screenButtonService: ScreenButtonService,
   ) {}
 
   public create(components: CustomComponent[], componentsGroupIndex?: number): FormArray {
@@ -133,7 +131,7 @@ export class ComponentsListFormService {
       )
       .subscribe(() => this.emitChanges());
     this.emitChanges();
-    this.screenButtonService.initSubscribeOnComponentsForm(this._form, this.shownElements);
+
     return this._form;
   }
 
@@ -253,6 +251,7 @@ export class ComponentsListFormService {
 
   private changeValidators(component: CustomComponent | Fields, control: AbstractControl): void {
     const validators = [this.validationService.customValidator(component)];
+
     if (
       component.type === CustomScreenComponentTypes.DateInput ||
       component.type === CustomScreenComponentTypes.MonthPicker ||
@@ -261,6 +260,7 @@ export class ComponentsListFormService {
     ) {
       validators.push(this.validationService.dateValidator(component, null));
     }
+
     control.setValidators(validators);
   }
 
@@ -283,6 +283,7 @@ export class ComponentsListFormService {
       control.get('value').updateValueAndValidity();
     } else {
       this.changeValidators(resultComponent, refControl);
+      refControl.markAsTouched();
       refControl.updateValueAndValidity();
     }
   }

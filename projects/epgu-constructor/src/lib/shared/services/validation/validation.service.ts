@@ -28,15 +28,11 @@ import {
   UpdateOn,
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../date-range/date-range.service';
-
-enum ValidationType {
-  regExp = 'RegExp',
-  regExpException = 'RegExpException',
-  date = 'Date',
-  checkRS = 'checkRS',
-}
-
-type DateValidationCondition = '<' | '<=' | '>' | '>=';
+import { DateValidationCondition, ValidationType } from './validation.service.types';
+import {
+  checkMaritalStatusRecordCS,
+  checkMaritalStatusRecordYear,
+} from '../../../component/custom-screen/components/marital-status-input/marital-status-input.validation';
 
 @Injectable()
 export class ValidationService {
@@ -306,7 +302,10 @@ export class ValidationService {
         (type === ValidationType.regExpException &&
           control.value &&
           new RegExp(value).test(control.value)) ||
-        (type === ValidationType.checkRS && !this.checkRS(control.value, component.attrs.refs)),
+        (type === ValidationType.checkRS && !this.checkRS(control.value, component.attrs.refs)) ||
+        (type === ValidationType.maritalStatusYear &&
+          !checkMaritalStatusRecordYear(component, control)) ||
+        (type === ValidationType.maritalStatusRank && !checkMaritalStatusRecordCS(control.value)),
     );
   }
 

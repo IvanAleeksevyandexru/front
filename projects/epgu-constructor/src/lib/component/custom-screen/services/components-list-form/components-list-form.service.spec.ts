@@ -18,8 +18,6 @@ import {
   JsonHelperService,
   NumberMaskOptions,
   DatesToolsService,
-  DeviceDetectorService,
-  DeviceDetectorServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
 import { ScreenService } from '../../../../screen/screen.service';
@@ -52,8 +50,6 @@ import { DictionaryService } from '../../../../shared/services/dictionary/dictio
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
 import { HelperService } from '@epgu/ui/services/helper';
-import { ScreenButtonService } from '../../../../shared/components/screen-buttons/screen-button.service';
-import { ScreenButtonServiceStub } from '../../../../shared/components/screen-buttons/screen-button.service.stub';
 
 describe('ComponentsListFormService', () => {
   const componentsGroupIndex = 1;
@@ -153,8 +149,6 @@ describe('ComponentsListFormService', () => {
         { provide: ValidationService, useClass: ValidationServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
-        { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: ScreenButtonService, useClass: ScreenButtonServiceStub },
         DatesToolsService,
         DateRefService,
         ComponentsListFormService,

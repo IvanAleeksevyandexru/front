@@ -17,7 +17,6 @@ import {
   UnsubscribeService,
   UnsubscribeServiceStub,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import {
   ComponentDto,
   ComponentActionDto,
@@ -29,7 +28,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
 import { PageNameComponent } from '../../shared/components/base-components/page-name/page-name.component';
-
 import { ActionDirective } from '../../shared/directives/action/action.directive';
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
@@ -40,12 +38,9 @@ import { BaseModule } from '../../shared/base.module';
 import { ScreenButtonsModule } from '../../shared/components/screen-buttons/screen-buttons.module';
 import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
-
 import { EaisdoGroupCostService } from '../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { CertificateEaisdoService } from '../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { HelperService } from '@epgu/ui/services/helper';
-import { ComponentsListRelationsService } from '../../component/custom-screen/services/components-list-relations/components-list-relations.service';
-import { ComponentsListRelationsServiceStub } from '../../component/custom-screen/services/components-list-relations/components-list-relations.service.stub';
 
 const componentSample: ComponentDto = {
   attrs: {},
@@ -100,7 +95,6 @@ describe('InfoScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
-        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         EventBusService,
         CertificateEaisdoService,
         CurrentAnswersService,
@@ -272,7 +266,7 @@ describe('InfoScreenComponent', () => {
 
       configService['_isSocialShareEnabled'] = false;
       fixture.detectChanges();
-      expect(debugEl.componentInstance.isNewDesignDisabled).toBeTruthy();
+      expect(debugEl.componentInstance.isNewDesignDisabled).toBeFalsy();
     });
 
     it('url property', () => {

@@ -13,6 +13,7 @@ import { FooterService } from '@epgu/ui/services/footer';
 import { DeviceDetectorService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { MetaTagGeneratorService } from './services/meta-tag-generator/meta-tag-generator.service';
 import { AppConfig } from './app.config';
+import { IframePlayerService } from './services/iframe-player/iframe-player.service';
 
 @Component({
   selector: '[app-root]',
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit {
   constructor(
     public router: Router,
     public loadService: LoadService,
+    public iframeService: IframePlayerService,
     private appConfig: AppConfig,
     private deviceDetectorService: DeviceDetectorService,
     private headerService: HeaderService,

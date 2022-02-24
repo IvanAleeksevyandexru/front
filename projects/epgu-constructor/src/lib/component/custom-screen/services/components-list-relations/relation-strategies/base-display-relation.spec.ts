@@ -329,23 +329,6 @@ describe('BaseDisplayRelation', () => {
         spy.mockRestore();
       });
 
-      it('should write ids to hashMap and not to call timeout repeatedly', () => {
-        jest.useFakeTimers();
-        const spy = jest.spyOn(global, 'setTimeout');
-        const { dependentComponent, cachedAnswers } = setupForTime(
-          '2200-01-31T18:16:13+03:00',
-          CustomComponentRefRelation.displayOff,
-          TimeRelatedValue.dateTimeAfter,
-        );
-
-        relation.isAtLeastOneRelationFired(dependentComponent, {}, mockForm, cachedAnswers);
-        relation.isAtLeastOneRelationFired(dependentComponent, {}, mockForm, cachedAnswers);
-
-        expect(spy).toHaveBeenCalledTimes(1);
-        expect(relation.timeouts[dependentComponent.id]).toBeTruthy();
-        spy.mockRestore();
-      });
-
       it('should not call timeout ', () => {
         const spy = jest.spyOn(global, 'setTimeout');
         const { dependentComponent, cachedAnswers } = setupForTime(
