@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormsModule } from '@angular/forms';
-import { PREV_BUTTON_NAVIGATION, ScreenContainerModule } from '@epgu/epgu-constructor-ui-kit';
+import {
+  ObjectHelperService,
+  PREV_BUTTON_NAVIGATION,
+  ScreenContainerModule,
+} from '@epgu/epgu-constructor-ui-kit';
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { MockModule } from 'ng-mocks';
@@ -41,6 +45,7 @@ describe('TimeSlotBaseScreenComponent', () => {
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: PREV_BUTTON_NAVIGATION, useClass: PrevButtonNavigationServiceStub },
+        ObjectHelperService,
       ],
     }).compileComponents();
   });

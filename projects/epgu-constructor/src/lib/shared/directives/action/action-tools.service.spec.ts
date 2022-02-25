@@ -17,6 +17,7 @@ import {
   DeviceDetectorServiceStub,
   DeviceDetectorService,
   JsonHelperService,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpClient, HttpHandler } from '@angular/common/http';
@@ -98,6 +99,7 @@ describe('ActionToolsService', () => {
         JsonHelperService,
         NotifierService,
         Clipboard,
+        ObjectHelperService,
       ],
     });
   });
