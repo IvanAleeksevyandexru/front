@@ -56,9 +56,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
 
   readonly componentType = CustomScreenComponentTypes;
 
-  public idxFirstShownElement = 0;
-  public idxLastShownElement = 0;
-
   constructor(
     public configService: ConfigService,
     public suggestHandlerService: SuggestHandlerService,
@@ -80,7 +77,6 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(() => this.formService.emitChanges());
 
     this.formService.form.valueChanges.subscribe(() => {
-      this.findShowElements();
       this.changeDetectorRef.markForCheck();
     });
   }
@@ -145,19 +141,5 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe(): void {
     this.unsubscribeService.ngUnsubscribe$.next();
     this.unsubscribeService.ngUnsubscribe$.complete();
-  }
-
-  private findShowElements(): void {
-    const arrShowElem = [];
-    this.formService.form.controls.forEach((componentData, idx) => {
-      if (
-        this.formService.shownElements[componentData.value?.id]?.isShown &&
-        !componentData.value?.attrs?.hidden
-      ) {
-        arrShowElem.push(idx);
-      }
-    });
-    this.idxFirstShownElement = Math.min(...arrShowElem);
-    this.idxLastShownElement = Math.max(...arrShowElem);
   }
 }
