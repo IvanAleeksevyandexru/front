@@ -96,6 +96,7 @@
 * Налажена работа TranslateModule в sf-portal [EPGUCORE-88171]
 * Добавлена jsonHelperService в validation.service.ts [EPGUCORE-89296]
 * Поправлен парсинг саджестов для автокомлита в EmployeeHistory [EPGUCORE-89341]
+* Поправлены пути до шрифтов в sf-portal/index.html [EPGUCORE-79244]
 
 ### Tests
 
