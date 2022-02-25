@@ -4,8 +4,6 @@ import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export default class ListPaginationService<T> {
-  protected _initSize = 3;
-
   protected _pageSize = 10;
 
   protected isLoading = new BehaviorSubject(false);
@@ -40,10 +38,6 @@ export default class ListPaginationService<T> {
     return this.fullData.asObservable();
   }
 
-  public set initSize(size: number) {
-    this._initSize = +size;
-  }
-
   public set pageSize(size: number) {
     this._pageSize = +size;
   }
@@ -56,14 +50,11 @@ export default class ListPaginationService<T> {
     let result = [];
     if (size > length) {
       if (size - length > 0) {
-        result = data.slice(this.paginatedData.getValue().length);
+        result = data.slice(size - this._pageSize, length);
       }
       this.isFinished.next(true);
     } else {
-      result = data.slice(
-        this.paginatedData.getValue().length,
-        this._initSize + this.currentPage * this._pageSize,
-      );
+      result = data.slice(size - this._pageSize, size);
     }
     this.paginatedData.next(this.paginatedData.getValue().concat(result));
     this.currentPage = newCurrentPage;
