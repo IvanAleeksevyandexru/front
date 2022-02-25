@@ -8,7 +8,9 @@
     [invalid]="control.invalid"
     [disableLabel]="true"
   >
-    <div [ngClass]="attrs?.isSoloCheckBox ? 'form__checkbox_solo' : 'form__checkbox_after-item'">
+    <div class="checkbox-item"
+      [class.checkbox-item--optional]="attrs?.isSoloCheckBox"
+    >
       <epgu-cf-ui-constructor-constructor-checkbox
         checkboxId="{{ component?.id }}_{{ componentsGroupIndex }}"
         [control]="control.get('value')"

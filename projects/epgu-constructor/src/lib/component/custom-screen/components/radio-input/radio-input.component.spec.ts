@@ -83,15 +83,11 @@ describe('RadioInputComponent', () => {
     expect(debugEl.componentInstance.invalid).toBeFalsy();
   });
 
-  it('form__radio--inline / form__radio--block', () => {
-    expect(fixture.debugElement.query(By.css('.form__radio--block'))).toBeTruthy();
-    expect(fixture.debugElement.query(By.css('.form__radio--inline'))).toBeNull();
-
+  it('should add radio-group--row', () => {
+    expect(fixture.debugElement.query(By.css('.radio-group--row'))).toBeNull();
     component.control = new FormControl({ ...mockRadioComponent, attrs: { isHorizontal: true } });
     fixture.detectChanges();
-
-    expect(fixture.debugElement.query(By.css('.form__radio--block'))).toBeNull();
-    expect(fixture.debugElement.query(By.css('.form__radio--inline'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.radio-group--row'))).toBeTruthy();
   });
 
   it('should render lib-radio', () => {
