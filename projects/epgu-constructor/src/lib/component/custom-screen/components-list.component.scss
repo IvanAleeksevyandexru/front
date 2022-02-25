@@ -6,123 +6,73 @@
 .form {
   @include flex-container();
   flex-flow: wrap;
+  margin-top: -24px; // Убирает лишний отступ для первого дочернего элемента
   margin-left: calc(#{-$screen-pad-16} / 2);
   margin-right: calc(#{-$screen-pad-16} / 2);
-  &__item {
-    &.show {
-      display: flex;
-    }
-    @include flex-container();
+}
+
+.form__item {
+  @include flex-container();
+  flex-basis: 100%;
+  justify-content: flex-start;
+  margin-top: 24px;
+  margin-left: calc(#{$screen-pad-16} / 2);
+  margin-right: calc(#{$screen-pad-16} / 2);
+  max-width: calc(100% - #{$screen-pad-16});
+  &--hidden {
     display: none;
-    justify-content: flex-start;
-    flex: 1 1 100%;
-    margin-left: calc(#{$screen-pad-16} / 2);
-    margin-right: calc(#{$screen-pad-16} / 2);
-    max-width: calc(100% - #{$screen-pad-16});
-    &::ng-deep > .component-list-resolver {
-      & > * > .label {
-        margin-bottom: $screen-pad-24;
-      }
-    }
-    ::ng-deep .doc-input {
-      margin-bottom: $screen-pad-24;
-    }
-    &--checkbox > * {
-      margin-bottom: $screen-pad-16;
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-    &--date {
-      @include tablets-up {
-        width: calc((100% - #{$screen-pad-32}) / 2);
-        flex-basis: auto !important;
-        &::ng-deep .component-item {
-          margin-bottom: 0 !important;
-        }
-      }
-      // добавляет отступ после периода дат
-      &:not(:last-child) ~ div:not(.form__item--date) {
-        margin-top: 24px;
-      }
-    }
-    &[class*='grid'] {
-      .component-list-resolver {
-        justify-content: flex-start;
-      }
+  }
+  // Для полей даты
+  // TODO:
+  //  1. сделать для всех полей даты, сейчас только для MonthPicker
+  //  2. баг - период дат ломается после коротких полей,
+  //  нужно выносить в отдельный контейнер
+  &--date {
+    @include phones-up {
+      max-width: calc(50% - #{$screen-pad-16});
+      flex-basis: auto;
     }
   }
-  &__radio {
-    &--block {
-      display: inline-block;
-      margin-top: $screen-pad-12;
-      lib-radio {
-        display: block;
-        margin-bottom: 16px;
-      }
+}
 
-      lib-checkbox {
-        display: block;
-        margin-bottom: 16px;
-
-        &::ng-deep .labelText {
-          line-height: 24px;
-        }
-
-        &:first-child {
-          margin-top: 4px;
-        }
-      }
-    }
-    &--inline {
-      display: inline-flex;
+.radio-group {
+  @include flex-container();
+  margin-top: -4px; // Убирает лишний отступ для первого элемента
+  &__item {
+    margin-top: 12px;
+  }
+  &--row {
+    @include phones-up {
+      flex-direction: row;
       flex-wrap: wrap;
-      @include phones-down {
-        flex-direction: column;
-      }
-      lib-radio {
-        margin-top: $screen-pad-12;
-      }
-      lib-radio:not(:last-child) {
+      //TODO: узнать у дизайна, как правильно
+      // должны располагаться элементы в строке,
+      // в гайдах - 2шт с мал текстом рядом на одной линии,
+      // при этом отступы в макетах везде разные
+      .radio-group__item {
         margin-right: $screen-pad-32;
       }
     }
   }
-  &__checkbox {
-    &_after-item {
-      margin-top: -8px; // TODO: подумать как лучше избавиться от отрцительных марджинов.
-      @include phones-down {
-        margin-top: 0;
-      }
-    }
-    &_solo {
-      margin-top: 0;
-      margin-bottom: -6px; // TODO: подумать как лучше избавиться от отрцительных марджинов.
-    }
-  }
-  p.find-item {
-    display: none;
-  }
-  & > p:first-of-type + .form__item.show {
-    &::ng-deep .form__input:only-child .form__radio--block {
-      margin-top: 0;
-    }
-  }
-  & > p:last-of-type + .form__item.show {
-    &[class*='grid'] {
-      > * {
-        margin-bottom: $screen-pad-24 !important;
-      }
-    }
-    &::ng-deep > .component-list-resolver > * > *,
-    &::ng-deep > .component-list-resolver .component-item,
-    &::ng-deep .component-list-resolver,
-    ::ng-deep .doc-input {
-      margin-bottom: 0;
-    }
-  }
+}
 
-  &__radio &__radio-item:last-child {
-    margin-bottom: 0;
+// Убирает лишний отступ для первого элемента, если нет label
+.component-item .form__input:first-child .radio-group {
+  margin-top: -12px;
+}
+
+// Уменьшает отступ, если чекбокс относится к другому элементу формы
+// TODO:
+//  1. На мобилке отступ стандартный, узнать у дизайна верно ли это,
+//     нужен ли этот фикс, на некоторых экранах на десктоп стандартный отступ
+//  2. Возможно вынести на уровень form__item, компонент может быть опцией для другого
+:host-context(.form__item:not(:first-child))::ng-deep .checkbox-item--optional {
+  margin-top: -8px;
+}
+
+// Прибивает поля в одной строке к верхнему краю
+[class*='grid'] {
+  .component-list-resolver {
+    justify-content: flex-start;
   }
 }

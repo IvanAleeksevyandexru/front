@@ -7,13 +7,11 @@
     [invalid]="control.invalid"
     [hidden]="component?.attrs?.hidden"
     [largeFontSize]="component?.attrs?.largeFontSize === false ? false : true"
-    [parentFirst]="parentFirst"
-    [parentLast]="parentLast"
     [clarifications]="attrs?.clarifications"
   >
     <div
-      class="form__radio"
-      [ngClass]="component?.attrs?.isHorizontal ? 'form__radio--inline' : 'form__radio--block'"
+      class="radio-group"
+      [class.radio-group--row]="component?.attrs?.isHorizontal"
     >
       <lib-radio
         *ngFor="let item of component?.attrs?.supportedValues"
@@ -21,7 +19,7 @@
         [labelText]="item.label"
         [formControl]="$any(control.get('value'))"
         [value]="item.value"
-        class="form__radio-item"
+        class="radio-group__item"
       >
       </lib-radio>
     </div>

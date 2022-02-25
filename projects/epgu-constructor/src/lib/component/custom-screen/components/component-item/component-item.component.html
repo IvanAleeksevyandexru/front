@@ -1,20 +1,4 @@
-<div class="component-item {{ component?.attrs?.class }}"
-  [class.first_elem] = "parentFirst"
-  [class.last_elem] = "parentLast"
->
-  <div *ngIf="component?.attrs?.image?.src" class="custom__img-wrapper">
-    <img
-      class="custom__img"
-      [src]="component.attrs.image.src"
-      [attr.alt]="component.attrs.image.alt || null"
-    />
-  </div>
-  <epgu-constructor-output-html
-    *ngIf="component?.attrs?.subLabel"
-    class="custom_subLabel"
-    [html]="component.attrs.subLabel"
-    [clarifications]="component?.attrs?.clarifications"
-  ></epgu-constructor-output-html>
+<div class="component-item {{ component?.attrs?.class }}">
   <epgu-constructor-label
     [isTextHelper]="component?.attrs?.isTextHelper"
     [tips]="component?.attrs?.labelHint"
@@ -24,14 +8,15 @@
     *ngIf="!disableLabel && component?.label"
   ></epgu-constructor-label>
   <div class="form__error" *ngIf="hasErrors">
-    <div *ngIf="hasUiError && isShowErrors">
-      <small>{{ lastError.msg }}</small>
+    <ng-container *ngIf="hasUiError && isShowErrors">
       <epgu-constructor-output-html
+        *ngIf="lastError.desc"
         class="helper-text"
         [html]="lastError.desc"
         [clarifications]="component?.attrs?.clarifications"
       ></epgu-constructor-output-html>
-    </div>
+      <small>{{ lastError.msg }}</small>
+    </ng-container>
     <small *ngIf="hasServerError">
       {{ control.getError('serverError') }}
     </small>

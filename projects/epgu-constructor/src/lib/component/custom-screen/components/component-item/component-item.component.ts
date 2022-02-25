@@ -37,8 +37,6 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   @Input() disableError = false;
   @Input() disableHint = false;
   @Input() largeFontSize = false;
-  @Input() parentFirst?: boolean;
-  @Input() parentLast?: boolean;
   @Input() clarifications?: Clarifications;
 
   readonly componentType = CustomScreenComponentTypes;

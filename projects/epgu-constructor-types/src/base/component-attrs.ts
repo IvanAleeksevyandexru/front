@@ -312,8 +312,6 @@ export interface ComponentAttrsDto {
   notFoundItemsMessage?: NotFoundItemsMessage;
   nsi?: Nsi;
   obliged?: Obliged;
-  parentFirst?: boolean;
-  parentLast?: boolean;
   participant?: Participant;
   path?: Path;
   payCode?: PayCode;
