@@ -29,9 +29,6 @@ export class OutputHtmlComponent implements AfterViewInit {
     if (actionType === ActionType.copyToClipboard) {
       element.setAttribute('data-notify', 'false');
       element.click();
-      window.requestAnimationFrame(() => {
-        element.setAttribute('data-notify', null);
-      });
     }
   }
 }
