@@ -171,7 +171,7 @@ export const DEFAULT_FIELD_LIST: FieldGroup[] = [
     ],
   },
   {
-    groupName: 'Паспорт иностранного гражаина',
+    groupName: 'Паспорт иностранного гражданина',
     visibilityLabel: '',
     fields: [
       {
@@ -183,6 +183,27 @@ export const DEFAULT_FIELD_LIST: FieldGroup[] = [
         label: 'Дата выдачи',
         value: '${foreignPasportIssueDate}',
         fieldName: 'foreignPasportIssueDate',
+      },
+    ],
+  },
+  {
+    groupName: 'Свидетельство о рождении',
+    visibilityLabel: '',
+    fields: [
+      {
+        label: 'Серия и номер',
+        value: '${rfBirthCertificateSeries} ${rfBirthCertificateNumber}',
+        fieldName: 'rfBirthCertificateSeries',
+      },
+      {
+        label: 'Дата выдачи',
+        value: '${rfBirthCertificateIssueDate}',
+        fieldName: 'rfBirthCertificateIssueDate',
+      },
+      {
+        label: 'Кем выдан',
+        value: '${rfBirthCertificateIssuedBy}',
+        fieldName: 'rfBirthCertificateIssuedBy',
       },
     ],
   },
