@@ -24,7 +24,7 @@ export class IframePlayerService {
    */
   public initIframeEmbedding() {
     console.log('initIframeEmbedding', ' ---- IFRAME_STATE');
-    window.parent.postMessage('initEPGU');
+    window.parent.postMessage('initEPGU', '*');
     if (window.addEventListener) {
       window.addEventListener('message', this.handleMessage.bind(this), false);
       // @ts-ignore
