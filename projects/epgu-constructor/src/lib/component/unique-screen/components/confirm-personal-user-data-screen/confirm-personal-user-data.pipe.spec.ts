@@ -212,7 +212,7 @@ const resultOfRemoveFieldsOutsideJson = [
         value: '${birthPlace}',
       },
     ],
-    groupName: '${lastName} ${firstName} ${middleName}',
+    groupName: '${lastName} ${firstName} ${middleName} ${fullName}',
     visibilityLabel: '',
   },
   {
