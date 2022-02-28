@@ -41,6 +41,8 @@ export class IframePlayerService {
       this.cookieService.set('acc_t', event.data.authToken, {
         domain: environment.name !== 'local' ? '.gosuslugi.ru' : '.test.gosuslugi.ru',
         path: '/',
+        sameSite: 'None',
+        secure: true,
       });
       delete event.data.authToken;
       this.serviceData = event.data;
