@@ -212,7 +212,7 @@ const resultOfRemoveFieldsOutsideJson = [
         value: '${birthPlace}',
       },
     ],
-    groupName: '${lastName} ${firstName} ${middleName}',
+    groupName: '${lastName} ${firstName} ${middleName} ${fullName}',
     visibilityLabel: '',
   },
   {
@@ -227,7 +227,12 @@ const resultOfRemoveFieldsOutsideJson = [
   },
   {
     fields: [],
-    groupName: 'Паспорт иностранного гражаина',
+    groupName: 'Паспорт иностранного гражданина',
+    visibilityLabel: '',
+  },
+  {
+    fields: [],
+    groupName: 'Свидетельство о рождении',
     visibilityLabel: '',
   },
 ];

@@ -97,6 +97,9 @@
 * Добавлена jsonHelperService в validation.service.ts [EPGUCORE-89296]
 * Поправлен парсинг саджестов для автокомлита в EmployeeHistory [EPGUCORE-89341]
 * Поправлены пути до шрифтов в sf-portal/index.html [EPGUCORE-79244]
+* Поправлено отображение данных свид. о рождении в FieldListComponent [EPGUCORE-89351]
+* Исправлено отображение плейсхолдеров в ConfirmLegalData [EPGUCORE-89351]
+* Исправление multiple-choice-dictionary.component [EPGUCORE-89447]
 
 ### Tests
 
@@ -117,6 +120,7 @@
 * Поправлен конфиг jest для Angular Ivy [EPGUCORE-85541]
 * Обновление либы jest-angular-preset, фиксящий кривую работу с ts-кэшом [EPGUCORE-85541]
 * Обновлены зависимости @epgu
+* Доработки по встраиванию КФ в iframe [EPGUCORE-85935]
 
 ## [399.18.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.18.0) (2022-02-14)
 
@@ -184,7 +188,6 @@
 * Актуализированы иконки, используемые на экранах "Загрузите документы"/"Заявление создано" [EPGUCORE-83584]
 * Поправлен текст ошибки в обработке INTERNAL_ERROR [EPGUCORE-82540]
 * Поправлен символ рубля в PaymentComponent [EPGUCORE-83335]
-* Исправлено ложное срабатывание notify при clipboard для ios [EPGUCORE-85543]
 * Поправлены стили для списков, если они находятся внутри background-white [EPGUCORE-83336]
 * Поправлены шрифты woff2 для корректной работы в Safaria [EPGUCORE-85708]
 * Поправлена работа шторки карты для айфона [EPGUCORE-85433]

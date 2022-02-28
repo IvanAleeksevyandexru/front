@@ -52,8 +52,11 @@ export class InterpolationService {
     defaultValue: string = '',
     keepVariables = true,
   ): string {
-    return stringWithVariables.replace(this.variableRegExp, (match: string, path: string): string =>
-      get(variables, path, keepVariables ? match : defaultValue),
-    );
+    return stringWithVariables
+      .replace(this.variableRegExp, (match: string, path: string): string =>
+        get(variables, path, keepVariables ? match : defaultValue),
+      )
+      .replace(this.variableRegExp, '')
+      .trim();
   }
 }

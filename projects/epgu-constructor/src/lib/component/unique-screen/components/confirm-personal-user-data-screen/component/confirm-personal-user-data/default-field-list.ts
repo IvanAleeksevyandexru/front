@@ -2,7 +2,7 @@ import { FieldGroup } from '@epgu/epgu-constructor-types';
 
 export const DEFAULT_FIELD_LIST: FieldGroup[] = [
   {
-    groupName: '${lastName} ${firstName} ${middleName}',
+    groupName: '${lastName} ${firstName} ${middleName} ${fullName}',
     visibilityLabel: '',
     fields: [
       {
@@ -41,6 +41,11 @@ export const DEFAULT_FIELD_LIST: FieldGroup[] = [
         fieldName: 'inn',
       },
       {
+        label: 'КПП',
+        value: '${kpp}',
+        fieldName: 'kpp',
+      },
+      {
         label: 'Гражданство',
         value: '${citizenship}',
         fieldName: 'citizenship',
@@ -54,6 +59,62 @@ export const DEFAULT_FIELD_LIST: FieldGroup[] = [
         label: 'СНИЛС',
         value: '${snils}',
         fieldName: 'snils',
+      },
+      {
+        label: 'Код организации',
+        value: '${orgCode}',
+        fieldName: 'orgCode',
+      },
+      {
+        label: 'Сокращенное наименование',
+        value: '${shortName}',
+        fieldName: 'shortName',
+      },
+      {
+        label: 'ОГРН/ОГРНИП',
+        value: '${ogrn}',
+        fieldName: 'ogrn',
+      },
+      {
+        label: 'Организационно правовая форма',
+        value: '${opf}',
+        fieldName: 'opf',
+      },
+      {
+        label:
+          'Код организационно-правовой формы по общероссийскому классификатору организационно-правовых форм',
+        value: '${leg}',
+        fieldName: 'leg',
+      },
+      {
+        label: 'Организационно правовая форма',
+        value: '${opf}',
+        fieldName: 'opf',
+      },
+      {
+        label: 'Имя руководителя организации',
+        value: '${chiefFirstName}',
+        fieldName: 'chiefFirstName',
+      },
+      {
+        label: 'Фамилия руководителя организации',
+        value: '${chiefLastName}',
+        fieldName: 'chiefLastName',
+      },
+      {
+        label: 'Отчество руководителя организации',
+        value: '${chiefMiddleName}',
+        fieldName: 'chiefMiddleName',
+      },
+      {
+        label: 'Дата рождения руководителя организации',
+        value: '${chiefBirthDate}',
+        fieldName: 'chiefBirthDate',
+      },
+      {
+        label: 'Должность руководителя организации',
+        value: '${chiefPosition}',
+        fieldName: 'chiefPosition',
       },
     ],
   },
@@ -110,7 +171,7 @@ export const DEFAULT_FIELD_LIST: FieldGroup[] = [
     ],
   },
   {
-    groupName: 'Паспорт иностранного гражаина',
+    groupName: 'Паспорт иностранного гражданина',
     visibilityLabel: '',
     fields: [
       {
@@ -122,6 +183,27 @@ export const DEFAULT_FIELD_LIST: FieldGroup[] = [
         label: 'Дата выдачи',
         value: '${foreignPasportIssueDate}',
         fieldName: 'foreignPasportIssueDate',
+      },
+    ],
+  },
+  {
+    groupName: 'Свидетельство о рождении',
+    visibilityLabel: '',
+    fields: [
+      {
+        label: 'Серия и номер',
+        value: '${rfBirthCertificateSeries} ${rfBirthCertificateNumber}',
+        fieldName: 'rfBirthCertificateSeries',
+      },
+      {
+        label: 'Дата выдачи',
+        value: '${rfBirthCertificateIssueDate}',
+        fieldName: 'rfBirthCertificateIssueDate',
+      },
+      {
+        label: 'Кем выдан',
+        value: '${rfBirthCertificateIssuedBy}',
+        fieldName: 'rfBirthCertificateIssuedBy',
       },
     ],
   },
