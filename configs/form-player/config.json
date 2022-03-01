@@ -76,6 +76,16 @@
         "serviceId": "10000006633",
         "calendarName": "на вакцинацию от COVID-19",
         "subject": "Запись на вакцинацию от COVID-19"
+      },
+      "BIRTH": {
+        "calendarName": "Получение свидетельства о рождении ребенка",
+        "eserviceId": "10000057526",
+        "preliminaryReservation": "true",
+        "preliminaryReservationPeriod": "240",
+        "routeNumber": "45382000",
+        "serviceCode": "-100000100821",
+        "serviceId": "ЗагсРождение",
+        "subject": "Государственная регистрация рождения"
       }
     },
     "isUnderConstructionModeEnabled": true,

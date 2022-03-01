@@ -48,9 +48,11 @@ import { Smev3RestApiInterceptor } from './services/api/smev3/smev3-rest-api.int
 import { TimeSlotEmptyErrorComponent } from './components/base/time-slot-error-templates/time-slot-empty-error/time-slot-empty-error.component';
 // eslint-disable-next-line max-len
 import { TimeSlotCheckboxErrorComponent } from './components/base/time-slot-error-templates/time-slot-checkbox-error/time-slot-checkbox-error.component';
+import { TimeSlotBirthComponent } from './components/component-types/time-slot-birth/time-slot-birth.component';
 
 @NgModule({
   declarations: [
+    TimeSlotBirthComponent,
     TimeSlotBaseScreenComponent,
     TimeSlotAreaComponent,
     TimeSlotBookedInfoComponent,
