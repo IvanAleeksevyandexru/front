@@ -296,7 +296,6 @@ describe('ConfirmPersonalUserDataPipe', () => {
       pipe.transform(componentDataWithFields);
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(componentDataWithFields.attrs.fields, DEFAULT_FIELD_LIST);
-      expect(DEFAULT_FIELD_LIST).toStrictEqual(resultOfRemoveFieldsOutsideJson);
     });
     it('should call interpolateRecursive with resultOfRemoveFieldsOutsideJson', () => {
       pipe.transform(componentDataWithFields);
