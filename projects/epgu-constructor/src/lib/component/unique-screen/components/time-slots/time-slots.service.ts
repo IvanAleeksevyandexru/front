@@ -594,7 +594,9 @@ export class TimeSlotsService {
         : '';
       requestBody.caseNumber = this.config.orderId ? (this.config.orderId as string) : '';
     }
-
+    if ([TimeSlotsTypes.BIRTH].includes(this.timeSlotsType)) {
+      requestBody.parentOrderId = (this.config?.parentOrderId ?? this.config?.orderId) as string;
+    }
     return <BookTimeSlotReq>this.deleteIgnoreRequestParams(requestBody);
   }
 

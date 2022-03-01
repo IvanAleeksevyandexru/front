@@ -59,7 +59,6 @@ import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.
 import { TimeSlotErrorService } from '../error/time-slot-error.service';
 import { TimeSlotCalendarService } from '../calendar/time-slot-calendar.service';
 import { Invite, InviteService } from '../../../../../../core/services/invite/invite.service';
-
 @Injectable()
 export class TimeSlotSmev3Service {
   requestListParams$$ = new BehaviorSubject<Partial<TimeSlotRequest>>(undefined);
@@ -104,7 +103,9 @@ export class TimeSlotSmev3Service {
         null,
       ]) =>
         (isInvite
-          ? this.invite.getInvite(this.getParentOrderId(data), cachedAnswer?.timeSlot?.slotId)
+          ? this.invite
+              .getInvite(this.getParentOrderId(data), cachedAnswer?.timeSlot?.slotId)
+              .pipe(catchError(() => of({})))
           : of(({} as unknown) as Invite)
         ).pipe(
           switchMap((invite) =>
@@ -311,6 +312,7 @@ export class TimeSlotSmev3Service {
               )
               .pipe(
                 catchError((err) => {
+                  this.state.progressEnd();
                   result.error(err);
                   return EMPTY;
                 }),
@@ -412,7 +414,11 @@ export class TimeSlotSmev3Service {
   }
 
   getParentOrderId(data: TimeSlotValueInterface): string {
-    return this.requestBookParams$$.getValue()?.parentOrderId || (data.orderId as string);
+    return (
+      this.requestBookParams$$.getValue()?.parentOrderId ||
+      data?.parentOrderId ||
+      (data?.orderId as string)
+    );
   }
 
   getAddress(attributeNameWithAddress: string, attributeValues: KeyValueMap): string {
