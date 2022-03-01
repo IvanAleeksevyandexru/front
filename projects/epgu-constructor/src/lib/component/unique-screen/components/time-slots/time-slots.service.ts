@@ -157,6 +157,7 @@ export class TimeSlotsService {
   }
 
   getAvailableSlots(selectedDay: Date, areadId?: string | number): Observable<SlotInterface[]> {
+    this.errorMessage = null;
     return of(this.getSlotsByDate(selectedDay, areadId));
   }
 
