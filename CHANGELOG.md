@@ -1,6 +1,6 @@
 # Release Notes
 
-## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-02-25)
+## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-03-01)
 
 ### BREAKING CHANGES
 
@@ -100,6 +100,10 @@
 * Поправлено отображение данных свид. о рождении в FieldListComponent [EPGUCORE-89351]
 * Исправлено отображение плейсхолдеров в ConfirmLegalData [EPGUCORE-89351]
 * Исправление multiple-choice-dictionary.component [EPGUCORE-89447]
+* Сохраняем выбранные до этого элементы иерархического словаря [EPGUCORE-89521]
+* Поправлен 25 статус TimeSlot [EPGUCORE-89605]
+* Добавлена поддержка CalendarInput в AutocompletePrepareService для suggests2 [EPGUCORE-89520]
+* Исправлены пропадающие филды в ConfirmPersonalUserData [EPGUCORE-89332]
 
 ### Tests
 
