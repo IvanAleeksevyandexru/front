@@ -51,6 +51,7 @@ import { SwipeableWrapperComponent } from './components/swipeable-wrapper/swipea
 import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 import { HelperService } from '@epgu/ui/services/helper';
 import { InviteService } from '../../../../core/services/invite/invite.service';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -87,7 +88,11 @@ describe('SelectMapObjectComponent', () => {
         IconsModule,
         ForTestsOnlyModule,
       ],
-      providers: [MockProvider(HelperService), MockProvider(InviteService)],
+      providers: [
+        MockProvider(HelperService),
+        MockProvider(InviteService),
+        MockProvider(ActivatedRouteSnapshot),
+      ],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: { entryComponents: [CommonBalloonContentComponent, CommonSearchPanelComponent] },
