@@ -3,6 +3,7 @@ import { ComponentDto, ComponentFieldDto, FieldGroup } from '@epgu/epgu-construc
 import { ConfirmUserDataState } from './confirm-personal-user-data-screen.types';
 import { InterpolationService } from '../../../../shared/services/interpolation/interpolation.service';
 import { DEFAULT_FIELD_LIST } from './component/confirm-personal-user-data/default-field-list';
+import { cloneDeep } from 'lodash';
 
 @Pipe({ name: 'confirmPersonalUserData' })
 export class ConfirmPersonalUserDataPipe implements PipeTransform {
@@ -18,8 +19,10 @@ export class ConfirmPersonalUserDataPipe implements PipeTransform {
     let fieldGroups: FieldGroup[];
     const { keepVariables = true } = componentDto.attrs;
     if (!componentDto?.attrs?.fieldGroups) {
-      fieldGroups = DEFAULT_FIELD_LIST;
-      this.removeFieldsOutsideJson(componentDto.attrs.fields, fieldGroups);
+      fieldGroups = this.removeFieldsOutsideJson(
+        componentDto.attrs.fields,
+        cloneDeep(DEFAULT_FIELD_LIST),
+      );
     } else {
       fieldGroups = componentDto.attrs.fieldGroups;
     }
@@ -46,11 +49,15 @@ export class ConfirmPersonalUserDataPipe implements PipeTransform {
     );
   }
 
-  private removeFieldsOutsideJson(dtoFields: ComponentFieldDto[], fieldGroups: FieldGroup[]): void {
-    fieldGroups.forEach((fieldGroup) => {
-      fieldGroup.fields = fieldGroup.fields.filter((field) => {
+  private removeFieldsOutsideJson(
+    dtoFields: ComponentFieldDto[],
+    fieldGroups: FieldGroup[],
+  ): FieldGroup[] {
+    return fieldGroups.map((fieldGroup) => {
+      const fields = fieldGroup.fields.filter((field) => {
         return dtoFields.findIndex((dtoField) => dtoField.fieldName === field.fieldName) !== -1;
       });
+      return { ...fieldGroup, fields };
     });
   }
 }
