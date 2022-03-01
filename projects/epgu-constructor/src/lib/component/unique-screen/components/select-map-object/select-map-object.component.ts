@@ -71,7 +71,7 @@ import { ActionToolsService } from '../../../../shared/directives/action/action-
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
 import { ComponentValue } from '../../../../shared/services/dictionary/dictionary.interface';
 import { Invite, InviteService } from '../../../../core/services/invite/invite.service';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 
@@ -129,7 +129,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     private yaMapService: YaMapService,
     private zone: NgZone,
     private priorityItemsService: PriorityItemsService,
-    private route: ActivatedRouteSnapshot,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -451,7 +451,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
 
     const getFilter = this.data.attrs?.isInvite
       ? this.invite.getInvite(
-          this.route.queryParamMap.get('parentOrderId') ?? String(this.screenService.orderId),
+          this.route.snapshot.queryParamMap.get('parentOrderId') ??
+            String(this.screenService.orderId),
         )
       : of({} as Invite);
 
