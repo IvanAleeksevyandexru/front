@@ -12,9 +12,6 @@ import {
 
 @Injectable()
 export class DeviceDetectorService {
-  // Определение платформы работает на backend(-e) на портале, там используется node c пакетом ismobilejs.
-  // для локальной работы и для наших стендов используется angular пакет device-detector
-
   isMobile: boolean;
 
   isTablet: boolean;
@@ -39,11 +36,11 @@ export class DeviceDetectorService {
    */
   initState(): void {
     const deviceInfo = isMobile(this.window.navigator);
+    this.userAgent = this.window.navigator?.userAgent;
     this.isMobile = deviceInfo.phone;
     this.isTablet = deviceInfo.tablet;
     this.isDesktop = !this.isMobile && !this.isTablet;
     this.isWebView = this.isWebViewUserAgent() || this.smuEventsService.smuInit;
-    this.userAgent = this.window.navigator?.userAgent;
   }
 
   isIOS(): boolean {

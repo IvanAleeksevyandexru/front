@@ -22,7 +22,6 @@ import {
 import { YaMapService } from '@epgu/ui/services/ya-map';
 import { catchError, filter, map, reduce, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { merge, Observable } from 'rxjs';
-import { FooterService } from '@epgu/ui/services/footer';
 import { BaseProgram, financingTypes } from '../../typings';
 import { StateService } from '../../services/state/state.service';
 import { ProgramListService } from '../../services/program-list/program-list.service';
@@ -56,7 +55,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private zone: NgZone,
     private modalService: ModalService,
     private addressesToolsService: AddressesToolsService,
-    private footerService: FooterService,
     private elementRef: ElementRef,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
@@ -109,7 +107,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   private initVariable(): void {
-    this.footerService.setVisible(false);
     this.controlsLogicInit();
   }
 
@@ -205,7 +202,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
   private clearMapVariables(): void {
     // Необходимо очистить behaviorSubject чтобы при следующей подписке он не стрельнул 2 раза (текущее значение и новое при создание карты)
     this.yaMapService.mapSubject.next(null);
-    this.footerService.setVisible(true);
   }
 
   private initCenter(): void {
