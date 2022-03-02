@@ -37,7 +37,12 @@ export class IframePlayerService {
   }
 
   private handleMessage(event: MessageEvent<ServerFormDataEmbedding>): void {
-    if (typeof event.data === 'object' && 'serviceId' in event.data && 'targetId' in event.data) {
+    if (
+      typeof event.data === 'object' &&
+      'serviceId' in event.data &&
+      'targetId' in event.data &&
+      'authToken' in event.data
+    ) {
       this.cookieService.set('acc_t', event.data.authToken, {
         domain: environment.name !== 'local' ? '.gosuslugi.ru' : '.test.gosuslugi.ru',
         path: '/',
