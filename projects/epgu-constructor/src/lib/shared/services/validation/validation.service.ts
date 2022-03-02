@@ -72,9 +72,14 @@ export class ValidationService {
 
       if (validations?.length) {
         const error = this.getError(validations, control, component);
+
         if (error) {
-          return this.validationErrorMsg(error.errorMsg, error?.errorDesc, true);
+          return this.validationErrorMsg(error.errorMsg, error.errorDesc, {
+            textFromJson: true,
+            updateOn: error.updateOn,
+          });
         }
+
         customMessage = validations.find(
           (validator: CustomComponentAttrValidation) =>
             validator.type === CustomComponentAttrValidator.validationFn ||
@@ -88,13 +93,16 @@ export class ValidationService {
 
       return this.isValid(value, component)
         ? null
-        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true);
+        : this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, {
+            textFromJson: true,
+            updateOn: customMessage?.updateOn,
+          });
     };
   }
 
   public customAsyncValidator(
     component: CustomComponent,
-    asyncValidationType: string,
+    asyncValidationType: UpdateOn,
   ): AsyncValidatorFn {
     const componentValidations = component.attrs?.validation;
     const onBlurValidations = componentValidations.filter(
@@ -105,15 +113,25 @@ export class ValidationService {
       const { value, touched } = control;
 
       if (component.required && !value) {
-        return of(this.validationErrorMsg(touched ? REQUIRED_FIELD : ''));
+        return of(
+          this.validationErrorMsg(touched ? REQUIRED_FIELD : '', undefined, {
+            updateOn: asyncValidationType,
+          }),
+        );
       }
 
       let customMessage;
 
       if (asyncValidationType === UpdateOn.ON_BLUR && onBlurValidations?.length) {
         const error = this.getError(onBlurValidations, control, component);
+
         if (error) {
-          return of(this.validationErrorMsg(error.errorMsg, error?.errorDesc, true));
+          return of(
+            this.validationErrorMsg(error.errorMsg, error?.errorDesc, {
+              textFromJson: true,
+              updateOn: asyncValidationType,
+            }),
+          );
         }
         customMessage = onBlurValidations.find(
           (validator: CustomComponentAttrValidation) =>
@@ -128,7 +146,12 @@ export class ValidationService {
 
       return this.isValid(value, component)
         ? of(null)
-        : of(this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, true));
+        : of(
+            this.validationErrorMsg(customMessage?.errorMsg, customMessage?.errorDesc, {
+              textFromJson: true,
+              updateOn: asyncValidationType,
+            }),
+          );
     };
   }
 
@@ -239,8 +262,11 @@ export class ValidationService {
           return this.validationErrorMsg(
             validation.errorMsg ? validation.errorMsg : INCORRENT_DATE_FIELD,
             undefined,
-            !!validation.errorMsg,
-            validation.forChild,
+            {
+              textFromJson: !!validation.errorMsg,
+              forChild: validation.forChild,
+              updateOn: validation.updateOn,
+            },
           );
         }
       }
@@ -286,10 +312,21 @@ export class ValidationService {
   private validationErrorMsg(
     error: string = InvalidControlMsg.formatField,
     desc?: string,
-    textFromJson = false,
-    forChild?: string,
+    options?: {
+      textFromJson?: boolean;
+      forChild?: string;
+      updateOn?: UpdateOn;
+    },
   ): ValidationErrors {
-    return { msg: error, desc, textFromJson, forChild };
+    const validationError = {
+      msg: error,
+      desc,
+      textFromJson: options?.textFromJson,
+      forChild: options?.forChild,
+      updateOn: options?.updateOn || UpdateOn.ON_CHANGE,
+    };
+
+    return validationError;
   }
 
   private getError(

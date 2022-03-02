@@ -18,6 +18,7 @@ import { MockModule, MockProvider } from 'ng-mocks';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
+  UpdateOn,
 } from '../../../component/custom-screen/components-list.types';
 import { DateRangeService } from '../../services/date-range/date-range.service';
 import { CoreModule } from '../../../core/core.module';
@@ -40,6 +41,7 @@ const componentMockData: CustomComponent = {
         dataType: '',
         condition: '',
         errorMsg: 'Необходимо заполнить Серию',
+        updateOn: UpdateOn.ON_BLUR,
       },
     ],
   },
