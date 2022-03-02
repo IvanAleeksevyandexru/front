@@ -94,14 +94,6 @@ describe('SelectMapObjectComponent', () => {
   });
 
   describe('ngOnInit()', () => {
-    it('should hide footer', () => {
-      component.footerService.setVisible(true);
-
-      component.ngOnInit();
-
-      expect(component.footerService.getVisible()).toEqual(false);
-    });
-
     it('fill coords should have been called on init', () => {
       const spy = jest.spyOn(component as any, 'fillCoords');
       component.yaMapService.mapSubject.next(true);
@@ -159,14 +151,6 @@ describe('SelectMapObjectComponent', () => {
       component.ngOnDestroy();
 
       expect(component.yaMapService.mapSubject.getValue()).toBeNull();
-    });
-
-    it('should show footer', () => {
-      component.footerService.setVisible(false);
-
-      component.ngOnDestroy();
-
-      expect(component.footerService.getVisible()).toEqual(true);
     });
   });
 
