@@ -6,8 +6,6 @@ import { CookieModule } from 'ngx-cookie';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
-  LocationService,
-  LocationServiceStub,
   LoggerService,
   WINDOW,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -15,6 +13,7 @@ import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { AppConfig } from './app.config';
 import { MockProvider } from 'ng-mocks';
 import { IframePlayerService } from './services/iframe-player/iframe-player.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
@@ -26,6 +25,7 @@ describe('AppComponent', () => {
         MockProvider(AppConfig),
         IframePlayerService,
         LoggerService,
+        MockProvider(HelperService),
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: WINDOW, useValue: Window },
         { provide: YaMetricService, useValue: { init: () => null } },
