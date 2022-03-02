@@ -9,6 +9,7 @@ import { LocationService, LoggerService, WINDOW } from '@epgu/epgu-constructor-u
 import { isPlatformServer } from '@angular/common';
 import { HOST_URL } from './tokens/host-url.token';
 import { IframePlayerService } from './services/iframe-player/iframe-player.service';
+import { filter, map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -31,12 +32,22 @@ export class AppConfig {
   ) {}
 
   public load(): Promise<void> {
-    if (this.iframeService.hasIframe) {
-      this.iframeService.initIframeEmbedding();
-    }
-    this.loggerService.log(['after load -> ---- IFRAME_STATE']);
     return new Promise<void>((resolve, reject) => {
       this.fetchConfig()
+        .then((response: any) => {
+          if (this.iframeService.hasIframe) {
+            this.iframeService.initIframeEmbedding();
+            return this.iframeService.hasAcceptedData$
+              .pipe(
+                filter((status) => !!status),
+                map(() => response),
+                take(1),
+              )
+              .toPromise();
+          } else {
+            return response;
+          }
+        })
         .then((response: any) => {
           AppConfig.settings = response;
           this.setWindowServerData(AppConfig.settings);

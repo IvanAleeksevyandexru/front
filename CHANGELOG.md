@@ -1,6 +1,6 @@
 # Release Notes
 
-## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-02-18)
+## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-03-01)
 
 ### BREAKING CHANGES
 
@@ -38,6 +38,9 @@
 * Добавлена поддержка mappingParams для MVDGiac [EPGUCORE-88801]
 * Добавлена возможность скрывать и дизейблить кнопки по relations [EPGUCORE-86308]
 * Добавлена поддержка clarifications для AddressInput [EPGUCORE-86014]
+* Добавлена поддержка встраивания sf-portal в iframe [EPGUCORE-85935]
+* Добавлены валидации в MaritalStatusInput [EPGUCORE-86855]
+* Доработки по авторизации встраивания в iframe [EPGUCORE-85935]
 
 ### Refactor
 
@@ -51,6 +54,8 @@
 * Комплесный рефактор, уменьшающий кол-во warnings при сборке [EPGUCORE-80320]
 * Переименованы конфигурационные параметры Disabled > Enabled [EPGUCORE-87853]
 * Изменен ConfirmPersonalUserDataPipe, кейс: без fields groups [EPGUCORE-78356]
+* Переписан isValid() в ValidationService в пользу компонентных getSpecificValidators() [EPGUCORE-88529]
+* Переписаны стили в component-list и component-item [EPGUCORE-86502]
 
 ### Bug Fixes
 
@@ -85,6 +90,20 @@
 * Исправлен скролл списка на карте при клике на пин [EPGUCORE-88603]
 * Изменен способ извлечения bookedSlot в TimeSlot [EPGUCORE-88599]
 * Изменен способ получения текущей даты в timer компоненте [EPGUCORE-88594]
+* Исправлено заполнение полей кастомного ребенка [EPGUCORE-88573]
+* Поправлена функция глобального скрытия иконок соц.сетей [EPGUCORE-89151]
+* Показывать лоадер если задан троббер [EPGUCORE-88692]
+* Налажена работа TranslateModule в sf-portal [EPGUCORE-88171]
+* Добавлена jsonHelperService в validation.service.ts [EPGUCORE-89296]
+* Поправлен парсинг саджестов для автокомлита в EmployeeHistory [EPGUCORE-89341]
+* Поправлены пути до шрифтов в sf-portal/index.html [EPGUCORE-79244]
+* Поправлено отображение данных свид. о рождении в FieldListComponent [EPGUCORE-89351]
+* Исправлено отображение плейсхолдеров в ConfirmLegalData [EPGUCORE-89351]
+* Исправление multiple-choice-dictionary.component [EPGUCORE-89447]
+* Сохраняем выбранные до этого элементы иерархического словаря [EPGUCORE-89521]
+* Поправлен 25 статус TimeSlot [EPGUCORE-89605]
+* Добавлена поддержка CalendarInput в AutocompletePrepareService для suggests2 [EPGUCORE-89520]
+* Исправлены пропадающие филды в ConfirmPersonalUserData [EPGUCORE-89332]
 
 ### Tests
 
@@ -105,6 +124,7 @@
 * Поправлен конфиг jest для Angular Ivy [EPGUCORE-85541]
 * Обновление либы jest-angular-preset, фиксящий кривую работу с ts-кэшом [EPGUCORE-85541]
 * Обновлены зависимости @epgu
+* Доработки по встраиванию КФ в iframe [EPGUCORE-85935]
 
 ## [399.18.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.18.0) (2022-02-14)
 
@@ -172,7 +192,6 @@
 * Актуализированы иконки, используемые на экранах "Загрузите документы"/"Заявление создано" [EPGUCORE-83584]
 * Поправлен текст ошибки в обработке INTERNAL_ERROR [EPGUCORE-82540]
 * Поправлен символ рубля в PaymentComponent [EPGUCORE-83335]
-* Исправлено ложное срабатывание notify при clipboard для ios [EPGUCORE-85543]
 * Поправлены стили для списков, если они находятся внутри background-white [EPGUCORE-83336]
 * Поправлены шрифты woff2 для корректной работы в Safaria [EPGUCORE-85708]
 * Поправлена работа шторки карты для айфона [EPGUCORE-85433]

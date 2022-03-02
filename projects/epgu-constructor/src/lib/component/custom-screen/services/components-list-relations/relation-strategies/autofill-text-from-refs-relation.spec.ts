@@ -63,7 +63,7 @@ describe('AutofillTextFromRefsRelation', () => {
       id: 'rf2',
       label: 'label with some title',
       clarification: 'clarification with some address',
-      hint: 'not match for replace ${not_match}',
+      hint: 'not match for replace',
     });
   });
 });

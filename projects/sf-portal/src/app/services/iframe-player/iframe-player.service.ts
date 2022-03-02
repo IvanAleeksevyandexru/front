@@ -3,6 +3,7 @@ import { ServerFormDataEmbedding } from '../../components/new-sf-player/cards-fo
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../environments/environment';
 import { LoggerService } from '@epgu/epgu-constructor-ui-kit';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class IframePlayerService {
@@ -14,6 +15,8 @@ export class IframePlayerService {
     }
   }
 
+  hasAcceptedData$ = new BehaviorSubject<boolean>(false);
+
   public serviceData: ServerFormDataEmbedding;
 
   constructor(private cookieService: CookieService, private loggerService: LoggerService) {}
@@ -23,8 +26,7 @@ export class IframePlayerService {
    * @private
    */
   public initIframeEmbedding() {
-    console.log('initIframeEmbedding', ' ---- IFRAME_STATE');
-    window.parent.postMessage('initEPGU');
+    window.parent.postMessage('initEPGU', '*');
     if (window.addEventListener) {
       window.addEventListener('message', this.handleMessage.bind(this), false);
       // @ts-ignore
@@ -35,19 +37,21 @@ export class IframePlayerService {
   }
 
   private handleMessage(event: MessageEvent<ServerFormDataEmbedding>): void {
-    this.loggerService.log(['handleMessage event -> ' + event + ' ---- IFRAME_STATE']);
-    this.loggerService.log([
-      'domain -> ' + environment.name !== 'local'
-        ? '.gosuslugi.ru'
-        : '.test.gosuslugi.ru' + ' ---- IFRAME_STATE',
-    ]);
-    if (typeof event.data === 'object' && 'serviceId' in event.data && 'targetId' in event.data) {
+    if (
+      typeof event.data === 'object' &&
+      'serviceId' in event.data &&
+      'targetId' in event.data &&
+      'authToken' in event.data
+    ) {
       this.cookieService.set('acc_t', event.data.authToken, {
         domain: environment.name !== 'local' ? '.gosuslugi.ru' : '.test.gosuslugi.ru',
         path: '/',
+        sameSite: 'None',
+        secure: true,
       });
       delete event.data.authToken;
       this.serviceData = event.data;
+      this.hasAcceptedData$.next(true);
     }
   }
 }

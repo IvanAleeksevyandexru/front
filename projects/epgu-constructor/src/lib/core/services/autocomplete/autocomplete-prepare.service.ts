@@ -21,6 +21,7 @@ import {
   CustomComponentAttr,
   CustomScreenComponentTypes,
 } from '../../../component/custom-screen/components-list.types';
+import { RegistrationAddrFormValue } from '../../../component/unique-screen/components/registration-addr/registration-addr-screen.types';
 
 @Injectable()
 export class AutocompletePrepareService {
@@ -441,6 +442,23 @@ export class AutocompletePrepareService {
         ? componentAttrs.supportedValues.find((item) => item.value === value)?.label || value
         : value;
     }
+    if (component.type === CustomScreenComponentTypes.CalendarInput) {
+      const parsedValue = this.jsonHelperService.tryToParse(value) as RegistrationAddrFormValue;
+      // TODO. Костыль. Саджесты groups: temp_reg_adr имеют 2 формата для CalendarInput
+      // В услугах 100 и 101 они названы одинаково. Нужно привести к общему формату.
+      if (parsedValue.regAddr) {
+        const dateFrom = new Date(parsedValue.regFrom);
+        const dateTo = new Date(parsedValue.regTo);
+        return `${this.datesToolsService.format(
+          new Date(dateFrom),
+          DATE_STRING_DOT_FORMAT,
+        )}, ${this.datesToolsService.format(new Date(dateTo), DATE_STRING_DOT_FORMAT)}`;
+      } else {
+        return Object.values(parsedValue)
+          .map((date) => this.datesToolsService.format(new Date(date), DATE_STRING_DOT_FORMAT))
+          .join(', ');
+      }
+    }
     if (!!component.attrs?.suggestionPath && this.jsonHelperService.hasJsonStructure(value)) {
       const parsedValue = this.jsonHelperService.tryToParse(value);
 
@@ -451,7 +469,7 @@ export class AutocompletePrepareService {
 
       if (Array.isArray(parsedValue)) {
         const parsedItem = parsedValue.find((item) => Object.keys(item)[0] === component.id);
-        value = parsedItem[component.id];
+        value = parsedItem?.[component.id] || value;
 
         return typeof value === 'string' ? value : JSON.stringify(value);
       }

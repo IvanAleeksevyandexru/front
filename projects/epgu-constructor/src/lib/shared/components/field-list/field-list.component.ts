@@ -69,9 +69,10 @@ export class FieldListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.data?.currentValue) {
-      const { states, errors = [] } = (this.data.presetValue
-        ? JSON.parse(this.data.presetValue)
-        : JSON.parse(this.data.value)) as ConfirmUserDataState;
+      const presetValue = this.data.presetValue && JSON.parse(this.data.presetValue);
+      const { states, errors = [] } = presetValue?.states.length
+        ? presetValue
+        : (JSON.parse(this.data.value) as ConfirmUserDataState);
       this.preparedData = states;
       this.errors = errors;
 

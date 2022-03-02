@@ -31,11 +31,9 @@ describe('InterpolationService', () => {
     );
   });
 
-  it('should keep variable placeholder if variable not found', () => {
+  it('should erase variable placeholder if variable not found', () => {
     const vars = { variable: 'var' };
-    expect(service.interpolateString('Some ${variable} ${no.var.here}', vars)).toBe(
-      'Some var ${no.var.here}',
-    );
+    expect(service.interpolateString('Some ${variable} ${no.var.here}', vars)).toBe('Some var');
   });
 
   it('should interpolate variables to object', () => {

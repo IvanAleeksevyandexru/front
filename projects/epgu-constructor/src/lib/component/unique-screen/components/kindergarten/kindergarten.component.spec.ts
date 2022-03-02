@@ -60,6 +60,7 @@ import { By } from '@angular/platform-browser';
 import { PriorityScreenComponent } from '../select-map-object/components/priority-screen/priority-screen.component';
 import { HelperService } from '@epgu/ui/services/helper';
 import { InviteService } from '../../../../core/services/invite/invite.service';
+import { ActivatedRoute } from '@angular/router';
 
 describe('KindergartenComponent', () => {
   let component: KindergartenComponent;
@@ -104,6 +105,7 @@ describe('KindergartenComponent', () => {
         MockProvider(AnimationBuilder),
         MockProvider(HtmlSelectService),
         MockProvider(HelperService),
+        MockProvider(ActivatedRoute),
         PrepareComponentsService,
         CertificateEaisdoService,
         ScreenService,

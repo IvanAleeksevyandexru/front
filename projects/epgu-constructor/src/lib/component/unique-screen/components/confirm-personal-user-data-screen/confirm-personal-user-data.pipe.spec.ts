@@ -212,7 +212,7 @@ const resultOfRemoveFieldsOutsideJson = [
         value: '${birthPlace}',
       },
     ],
-    groupName: '${lastName} ${firstName} ${middleName}',
+    groupName: '${lastName} ${firstName} ${middleName} ${fullName}',
     visibilityLabel: '',
   },
   {
@@ -227,7 +227,12 @@ const resultOfRemoveFieldsOutsideJson = [
   },
   {
     fields: [],
-    groupName: 'Паспорт иностранного гражаина',
+    groupName: 'Паспорт иностранного гражданина',
+    visibilityLabel: '',
+  },
+  {
+    fields: [],
+    groupName: 'Свидетельство о рождении',
     visibilityLabel: '',
   },
 ];
@@ -291,7 +296,6 @@ describe('ConfirmPersonalUserDataPipe', () => {
       pipe.transform(componentDataWithFields);
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(componentDataWithFields.attrs.fields, DEFAULT_FIELD_LIST);
-      expect(DEFAULT_FIELD_LIST).toStrictEqual(resultOfRemoveFieldsOutsideJson);
     });
     it('should call interpolateRecursive with resultOfRemoveFieldsOutsideJson', () => {
       pipe.transform(componentDataWithFields);

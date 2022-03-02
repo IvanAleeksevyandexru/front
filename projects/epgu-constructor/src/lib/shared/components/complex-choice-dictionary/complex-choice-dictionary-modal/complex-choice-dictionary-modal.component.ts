@@ -145,7 +145,8 @@ export class ComplexChoiceDictionaryModalComponent extends ModalBaseComponent im
         const selectedItem = value && this.items.find((item) => item.id === key);
         return [...acc, selectedItem];
       }, []);
-    const arr = uniqBy(items, 'id');
+    // NOTICE: Объединяем выбранные элементы из предыдущих операций выбора с тем, что выбрали сейчас
+    const arr = uniqBy([...selectedItems, ...items], 'id').slice(-this.limit);
     this.closeModal(arr);
   }
 
