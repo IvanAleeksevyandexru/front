@@ -16,8 +16,4 @@ export class InvitationErrorScreenComponent extends ScreenBase {
   constructor(public injector: Injector) {
     super(injector);
   }
-
-  nextStep(): void {
-    // NOTICE: у скрина InvitationErrorScreenComponent не может быть следующего экрана по бизнес-логике.
-  }
 }

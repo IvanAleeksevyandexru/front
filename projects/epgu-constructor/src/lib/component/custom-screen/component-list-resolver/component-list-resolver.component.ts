@@ -3,8 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactory,
-  ComponentFactoryResolver,
   ComponentRef,
   Input,
   OnChanges,
@@ -41,7 +39,6 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
 
   constructor(
     private screenService: ScreenService,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private ngUnsubscribe$: UnsubscribeService,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -84,10 +81,7 @@ export class ComponentListResolverComponent implements AfterViewInit, OnChanges 
       this.handleComponentError(cmpType, screenType);
     }
 
-    const componentFactory: ComponentFactory<ScreenComponentTypes> = this.componentFactoryResolver.resolveComponentFactory(
-      component,
-    );
-    this.componentRef = this.componentContainer.createComponent(componentFactory);
+    this.componentRef = this.componentContainer.createComponent(component);
 
     // @ts-ignore
     this.componentRef.instance.componentIndex = this.componentIndex;
