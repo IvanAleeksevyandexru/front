@@ -66,6 +66,20 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
       (item) => item.condition === CustomComponentValidationConditions.atLeastOne,
     );
 
+    const multipleChoiceDictComponents = atLeastOne.filter(
+      (c) => c.type === CustomScreenComponentTypes.MultipleChoiceDictionary,
+    );
+    if (
+      multipleChoiceDictComponents &&
+      multipleChoiceDictComponents.some((c) => c.isValid && c.value)
+    ) {
+      atLeastOne.forEach((c) => {
+        if (c.type === CustomScreenComponentTypes.MultipleChoiceDictionary) {
+          c.isValid = true;
+        }
+      });
+    }
+
     const notAtLeastOneExpression: boolean = notAtLeastOne.length
       ? notAtLeastOne.every((item) => item.isValid)
       : true;

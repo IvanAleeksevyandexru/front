@@ -228,7 +228,7 @@ export class ComponentsListFormService {
           // при вводе любого числа, оно должно отправляться в нужном формате NumberMaskInput (EPGUCORE-59658)
           value = this.maskTransformService.transformNumberMaskInput(value, val.attrs.maskOptions);
         }
-        acc[val.id] = { value, isValid, disabled, condition };
+        acc[val.id] = { value, isValid, disabled, condition, type };
       }
 
       return acc;

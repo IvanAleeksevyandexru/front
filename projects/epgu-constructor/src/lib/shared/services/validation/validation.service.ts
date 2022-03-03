@@ -25,6 +25,7 @@ import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomComponentAttrValidator,
+  CustomComponentValidationConditions,
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../../component/custom-screen/components-list.types';
@@ -80,6 +81,15 @@ export class ValidationService {
             validator.type === CustomComponentAttrValidator.validationFn ||
             validator.type === CustomComponentAttrValidator.calculatedPredicate,
         );
+      }
+
+      if (component.type === CustomScreenComponentTypes.MultipleChoiceDictionary) {
+        const atLeastOne = component?.attrs?.validation?.find(
+          (v) => v.condition === CustomComponentValidationConditions.atLeastOne,
+        );
+        if (atLeastOne) {
+          customMessage = { errorMsg: '' };
+        }
       }
 
       if (!value || validations?.length === 0) {
