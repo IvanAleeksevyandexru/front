@@ -53,7 +53,7 @@ export interface ConfirmAddressActionsInterface {
 export interface ConfirmAddressFieldsInterface {
   fieldName: FieldNames;
   label: string;
-  attrs?: { labelHint?: string };
+  attrs?: { labelHint?: string; clarifications?: Clarifications };
   hint?: string;
   nonPresetable?: boolean;
 }

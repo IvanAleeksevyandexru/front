@@ -16,6 +16,11 @@
           <div class="value-text">
             {{ getAddress(valueParsed[field.fieldName]) }}
           </div>
+          <epgu-constructor-hint
+            *ngIf="field?.hint"
+            [hint]="field.hint"
+            [clarifications]="field?.attrs?.clarifications"
+          ></epgu-constructor-hint>
         </div>
       </ng-container>
 
@@ -32,11 +37,11 @@
             [clearable]="true"
             align="left"
           ></epgu-constructor-constructor-date-picker>
-          <div class="address-item-hint" *ngIf="field?.hint">
-            <epgu-cf-ui-constructor-helper-text>{{
-              field?.hint
-            }}</epgu-cf-ui-constructor-helper-text>
-          </div>
+          <epgu-constructor-hint
+            *ngIf="field?.hint"
+            [hint]="field.hint"
+            [clarifications]="field?.attrs?.clarifications"
+          ></epgu-constructor-hint>
         </div>
       </div>
 
