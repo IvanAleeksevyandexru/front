@@ -80,9 +80,9 @@ export class SelectFromListComponent
   }
 
   private setInitialData(): void {
-    this.listService.pageSize = this.attrs.listInitLength;
-    this.listService.setData(this.fullList);
+    this.listService.initSize = this.attrs.listInitLength;
     this.listService.pageSize = this.attrs.listIncrementLength;
+    this.listService.setData(this.fullList);
   }
 
   private processList(list: SelectFromListElement[]): void {
