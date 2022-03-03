@@ -3,8 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactory,
-  ComponentFactoryResolver,
   ComponentRef,
   OnDestroy,
   Type,
@@ -33,7 +31,6 @@ export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private screenService: ScreenService,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private ngUnsubscribe$: UnsubscribeService,
     private footerService: FooterService,
     private cdRef: ChangeDetectorRef,
@@ -79,11 +76,7 @@ export class ScreenResolverComponent implements AfterViewInit, OnDestroy {
       this.handleScreenComponentError(screenType);
     }
 
-    const componentFactory: ComponentFactory<ScreenComponent> = this.componentFactoryResolver.resolveComponentFactory(
-      screenComponent,
-    );
-
-    this.componentRef = this.screenContainer.createComponent(componentFactory);
+    this.componentRef = this.screenContainer.createComponent(screenComponent);
     this.cdRef.markForCheck();
   }
 

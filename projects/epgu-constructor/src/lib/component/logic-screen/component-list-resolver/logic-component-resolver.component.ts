@@ -3,8 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactory,
-  ComponentFactoryResolver,
   ComponentRef,
   Input,
   Type,
@@ -34,11 +32,7 @@ export class LogicComponentResolverComponent implements AfterViewInit {
 
   componentRef: ComponentRef<ScreenComponentTypes>;
 
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private cdr: ChangeDetectorRef,
-    private logger: LoggerService,
-  ) {}
+  constructor(private cdr: ChangeDetectorRef, private logger: LoggerService) {}
 
   ngAfterViewInit(): void {
     const cmpType = this.componentDto.type as LogicScreenComponentTypes;
@@ -53,10 +47,7 @@ export class LogicComponentResolverComponent implements AfterViewInit {
       return;
     }
 
-    const componentFactory: ComponentFactory<ScreenComponentTypes> = this.componentFactoryResolver.resolveComponentFactory(
-      component,
-    );
-    this.componentRef = this.componentContainer.createComponent(componentFactory);
+    this.componentRef = this.componentContainer.createComponent(component);
     this.componentRef.instance.hasLoaded = new BehaviorSubject(false);
     this.componentRef.instance.componentDto = this.componentDto;
     this.cdr.detectChanges();
