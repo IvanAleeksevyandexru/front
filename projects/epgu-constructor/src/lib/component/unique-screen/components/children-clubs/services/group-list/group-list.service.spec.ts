@@ -80,7 +80,7 @@ describe('GroupListService', () => {
       service.nextPage();
       service.nextPage();
 
-      expect(service.paginatedData.getValue().length).toBe(20);
+      expect(service.paginatedData.getValue().length).toBe(13);
       expect(service.isFinished.getValue()).toBe(false);
     });
 
