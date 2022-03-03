@@ -29,7 +29,7 @@
     "@epgu/epgu-constructor-types": "400.15.0",
     "@epgu/epgu-constructor-ui-kit": "400.14.2",
     "@epgu/epgu-constructor": "400.14.2",
-    "@epgu/ui": "3.0.400-7-frontv4",
+    "@epgu/ui": "3.0.401-1-front",
     "@nguniversal/express-engine": "12.1.0",
     "@ngx-translate/core": "13.0.0",
     "@ngx-translate/http-loader": "6.0.0",
