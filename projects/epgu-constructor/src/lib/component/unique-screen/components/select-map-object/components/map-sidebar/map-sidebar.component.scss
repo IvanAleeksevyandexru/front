@@ -75,3 +75,38 @@
     flex-direction: column;
   }
 }
+.multiple-mode {
+  @include tablets-down() {
+    display: none;
+  }
+  background-color: $color-white;
+  z-index: 6;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  &__address-area {
+    display: flex;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 12px 32px;
+    background-color: $color-azzurro-alice;
+    p {
+      margin-top: 0;
+      margin-left: 12px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+  &__count-area {
+    position: relative;
+    padding: 14px 24px;
+    &__cross-button {
+      position: absolute;
+      top: 14px;
+    }
+  }
+}
+
+

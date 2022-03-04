@@ -9,7 +9,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DisclaimerDto, KeyValueMap } from '@epgu/epgu-constructor-types';
-import { UnsubscribeService, YandexMapService, YMapItem } from '@epgu/epgu-constructor-ui-kit';
+import {
+  BaseComponent,
+  UnsubscribeService,
+  YandexMapService,
+  YMapItem,
+} from '@epgu/epgu-constructor-ui-kit';
 import { skip, takeUntil } from 'rxjs/operators';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import { MapTypes, SelectMapObjectService } from '../../select-map-object.service';
@@ -27,7 +32,7 @@ import {
   styleUrls: ['./map-sidebar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MapSidebarComponent implements OnInit {
+export class MapSidebarComponent extends BaseComponent implements OnInit {
   @ViewChild('balloonComponents') balloonComponents: BalloonContentResolverComponent;
   @Input() sidebarData: SidebarData;
   @Input() previouslyChoosenItem: DictionaryItem;
@@ -47,7 +52,9 @@ export class MapSidebarComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private yandexMapService: YandexMapService,
     private ngUnsubscribe$: UnsubscribeService,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.searchPanelType = PanelTypes[this.sidebarData.attrs.mapType];
@@ -64,9 +71,11 @@ export class MapSidebarComponent implements OnInit {
     this.selectObjectEvent.emit(value);
   }
 
-  public collapseObject(mapObject: DictionaryItem): void {
-    // eslint-disable-next-line no-param-reassign
-    mapObject.expanded = false;
+  public collapseObject(mapObject?: DictionaryItem): void {
+    if (mapObject) {
+      // eslint-disable-next-line no-param-reassign
+      mapObject.expanded = false;
+    }
     this.yandexMapService.closeBalloon();
     this.cdr.detectChanges();
   }
@@ -164,4 +173,7 @@ export interface SidebarDataAttrs {
   mapType?: string;
   notFoundItemsMessage?: string;
   isCommonDictionary?: boolean;
+  enableFilter?: boolean;
+  customNav?: boolean;
+  attributeNameWithAddress?: string;
 }

@@ -11,6 +11,16 @@
       *ngIf="mapObject?.expanded && showCrossButton"
       [@rotateAndDiminish]
     ></div>
+    <epgu-cf-ui-icon
+      class="chevron-button"
+      *ngIf="showChevron"
+      [ngClass]="{ 'chevron-button__rotated': mapObject.expanded }"
+      [mainColor]="iconColor.BaseGosblue"
+      [type]="iconType.DirectionArrow"
+      [width]="12"
+      [height]="12"
+    >
+    </epgu-cf-ui-icon>
     <div class="balloon-content-wrapper">
       <h6
         (click)="objectClick(mapObject)"

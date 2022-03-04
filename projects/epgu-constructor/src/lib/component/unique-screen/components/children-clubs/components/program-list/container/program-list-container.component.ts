@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ModalService } from '@epgu/epgu-constructor-ui-kit';
+import { ModalService, CfAppStateService, LocationService } from '@epgu/epgu-constructor-ui-kit';
 import { ProgramListService } from '../../../services/program-list/program-list.service';
 import { ProgramFiltersFormComponent } from '../../base/components/program-filters-form/program-filters-form.component';
 import { StateService } from '../../../services/state/state.service';
 import { BaseProgram, Filters, GroupFiltersModes } from '../../../models/children-clubs.types';
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { countFilters } from '../../../services/helpers/helpers';
+import { AppTypes, DataDirectionType, InputAppDto } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-program-list',
@@ -27,9 +28,13 @@ export class ProgramListContainerComponent implements OnInit {
     private modalService: ModalService,
     private stateService: StateService,
     private screenService: ScreenService,
+    private locationService: LocationService,
+    private cfAppStateService: CfAppStateService,
   ) {}
 
   public ngOnInit(): void {
+    this.createInitStateForChildrenClubs();
+    this.stateService.initializeStateSynchronization();
     this.initFilter = this.stateService.programFilters?.query || '';
 
     this.stateService.groupFiltersMode =
@@ -71,5 +76,26 @@ export class ProgramListContainerComponent implements OnInit {
       .subscribe((programFilters) => {
         this.stateService.programFilters = programFilters;
       });
+  }
+
+  private createInitStateForChildrenClubs(): void {
+    this.cfAppStateService.setState(this.getAppInputState(), DataDirectionType.INPUT);
+  }
+
+  private getAppInputState(): InputAppDto {
+    const { component } = this.screenService;
+    return {
+      componentId: component.id,
+      componentType: component.type as AppTypes,
+      value: JSON.stringify({ state: component.arguments }),
+      callbackRedirectUrl: this.locationService.getHref(),
+      isPrevStepCase: !!this.screenService.isPrevStepCase,
+      orderId: this.screenService.orderId,
+      healthPayload: {
+        id: this.screenService.display.id,
+        name: this.screenService.display.name,
+        orderId: this.screenService.orderId,
+      },
+    };
   }
 }

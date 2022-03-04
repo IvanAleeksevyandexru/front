@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Injector,
   ViewChild,
 } from '@angular/core';
 import {
@@ -30,13 +31,17 @@ export class CommonSearchPanelComponent implements AfterViewInit {
   public provider: LookupProvider<Partial<ListElement>> = {
     search: this.providerSearch(),
   };
+  public selectMapObjectService: SelectMapObjectService;
+  private cdr: ChangeDetectorRef;
+  private dictionaryToolsService: DictionaryToolsService;
+  private yandexMapService: YandexMapService;
 
-  constructor(
-    public selectMapObjectService: SelectMapObjectService,
-    private cdr: ChangeDetectorRef,
-    private dictionaryToolsService: DictionaryToolsService,
-    private yandexMapService: YandexMapService,
-  ) {}
+  constructor(protected injector: Injector) {
+    this.selectMapObjectService = injector.get(SelectMapObjectService);
+    this.cdr = injector.get(ChangeDetectorRef);
+    this.dictionaryToolsService = injector.get(DictionaryToolsService);
+    this.yandexMapService = injector.get(YandexMapService);
+  }
 
   public ngAfterViewInit(): void {
     this.cdr.markForCheck();

@@ -21,6 +21,7 @@ import { CommonSearchPanelComponent } from './components/common-search-panel/com
 import { ElectionsSearchPanelComponent } from './components/elections-search-panel/elections-search-panel.component';
 import { JusticeSearchPanelComponent } from './components/justice-search-panel/justice-search-panel.component';
 import { DictionaryYMapItem } from '../../../../../../shared/services/dictionary/dictionary-api.types';
+import { ChildrenClubsSearchPanelComponent } from './components/children-clubs-search-panel/children-clubs-search-panel.component';
 
 type PanelTypesComponents =
   | CommonSearchPanelComponent
@@ -33,6 +34,7 @@ export const PanelTypes = {
   [MapTypes.electionsMap]: 'electionsPanel',
   [MapTypes.kindergartenMap]: 'kindergartenPanel',
   [MapTypes.justiceMap]: 'justicePanel',
+  [MapTypes.childrenClubsMap]: 'childrenClubsPanel',
   undefined: 'commonPanel',
 };
 
@@ -54,15 +56,18 @@ export class SearchPanelResolverComponent extends BaseComponent implements After
   @Input() showNav: boolean;
   @Input() disclaimer: DisclaimerDto;
   @Input() panelType = PanelTypes[MapTypes.commonMap];
+  @Input() enableFilter = false;
+  @Input() customNav = false;
 
   public viewTypes = SidebarViewType;
-  private searchPanelRef: ComponentRef<PanelTypesComponents>;
+  public searchPanelRef: ComponentRef<PanelTypesComponents>;
 
   private panelsMap = {
     [PanelTypes[MapTypes.commonMap]]: CommonSearchPanelComponent,
     [PanelTypes[MapTypes.electionsMap]]: ElectionsSearchPanelComponent,
     [PanelTypes[MapTypes.kindergartenMap]]: KindergartenSearchPanelComponent,
     [PanelTypes[MapTypes.justiceMap]]: JusticeSearchPanelComponent,
+    [PanelTypes[MapTypes.childrenClubsMap]]: ChildrenClubsSearchPanelComponent,
   };
 
   constructor(

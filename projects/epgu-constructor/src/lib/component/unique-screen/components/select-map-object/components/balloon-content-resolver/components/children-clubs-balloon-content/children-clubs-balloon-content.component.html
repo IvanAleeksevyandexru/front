@@ -1,0 +1,49 @@
+<ng-container *ngFor="let mapObject of mapObjects; index as i">
+  <div
+    [ngClass]="{ expanded: mapObject.expanded }"
+    class="map-object"
+    #balloonComponents
+  >
+    <div
+      class="cross-btn"
+      (click)="collapseObject(mapObject)"
+      *ngIf="mapObject.expanded && showCrossButton"
+      [@rotateAndDiminish]
+    ></div>
+
+    <div class="balloon-content-wrapper">
+      <div
+        class="balloon-header-wrapper"
+        (click)="objectClick(mapObject)">
+        <h6 class="map-object__header"
+            [ngClass]="{ 'map-object__header__bold': mapObject.expanded }"
+            [innerHTML]="mapObject.name | highlight: (selectMapObjectService.searchString | async)">
+          {{ mapObject.name }}
+        </h6>
+        <epgu-cf-ui-icon
+          class="chevron-button"
+          *ngIf="showChevron"
+          [ngClass]="{ 'chevron-button__rotated': mapObject.expanded }"
+          [mainColor]="iconColor.BaseGosblue"
+          [type]="iconType.DirectionArrow"
+          [width]="12"
+          [height]="12"
+        >
+        </epgu-cf-ui-icon>
+      </div>
+      <div *ngIf="mapObject.expanded">
+        <div class="map-object__building">{{ mapObject.partnerName }}</div>
+        <div class="map-object__attr" *ngFor="let item of mapObject.financingTypes">
+          <img
+            [alt]="financingTypes[item].text"
+            src="{{ config.staticDomainAssetsPath }}/assets/icons/{{ financingTypes[item].icon }}"
+          />
+          <span class="PGU-AttrsValue">{{ financingTypes[item].text }}</span>
+        </div>
+        <lib-button (click)="selectObject(mapObject, $event)" class="submit-button" width="wide">
+          Выбрать
+        </lib-button>
+      </div>
+    </div>
+  </div>
+</ng-container>
