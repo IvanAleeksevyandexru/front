@@ -1,9 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
+  CfAppStateService,
+  CfAppStateServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
   ErrorModule,
   EventBusService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  LocationService,
+  LocationServiceStub,
   MicroAppStateQuery,
   MicroAppStateService,
   MicroAppStateStore,
@@ -58,6 +64,9 @@ describe('GroupFiltersFormComponent', () => {
         { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: CfAppStateService, useClass: CfAppStateServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
       imports: [
         CommonModule,

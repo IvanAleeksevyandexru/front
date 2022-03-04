@@ -20,9 +20,11 @@ import { DictionaryItem } from '../../../../../../shared/services/dictionary/dic
 import { MapTypes } from '../../select-map-object.service';
 import { KindergartenContentComponent } from './components/kindergarten-balloon-content/kindergarten-balloon-content.component';
 import { ScreenService } from '../../../../../../screen/screen.service';
+import { ChildrenClubsBalloonContentComponent } from './components/children-clubs-balloon-content/children-clubs-balloon-content.component';
 import { arePointsEqual } from '../../select-map-object.helpers';
 
 type ContentTypesComponents =
+  | ChildrenClubsBalloonContentComponent
   | CommonBalloonContentComponent
   | ElectionsBalloonContentComponent
   | KindergartenContentComponent;
@@ -31,6 +33,7 @@ export const ContentTypes = {
   [MapTypes.commonMap]: 'commonContent',
   [MapTypes.electionsMap]: 'electionsContent',
   [MapTypes.kindergartenMap]: 'kindergartenContent',
+  [MapTypes.childrenClubsMap]: 'childrenClubsContent',
   undefined: 'commonContent',
 };
 
@@ -46,6 +49,7 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
 
   @Input() mapObjects;
   @Input() isSelectButtonHidden = false;
+  @Input() showChevron = false;
   @Input() contentType = ContentTypes[MapTypes.commonMap];
   @Input() attrs = {};
   @Input() redraw: boolean;
@@ -57,6 +61,7 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
 
   private contentMap = {
     [ContentTypes[MapTypes.commonMap]]: CommonBalloonContentComponent,
+    [ContentTypes[MapTypes.childrenClubsMap]]: ChildrenClubsBalloonContentComponent,
     [ContentTypes[MapTypes.electionsMap]]: ElectionsBalloonContentComponent,
     [ContentTypes[MapTypes.kindergartenMap]]: KindergartenContentComponent,
     undefined: CommonBalloonContentComponent,
@@ -135,6 +140,7 @@ export class BalloonContentResolverComponent implements AfterViewInit, OnChanges
   private setInstanceFields(ref): void {
     const { instance } = ref;
     instance.showLoader = this.screenService.isLoading$;
+    instance.showChevron = this.showChevron;
     instance.mapObjects = this.mapObjects;
     instance.isSelectButtonHidden = this.isSelectButtonHidden;
     instance.attrs = this.attrs || {};

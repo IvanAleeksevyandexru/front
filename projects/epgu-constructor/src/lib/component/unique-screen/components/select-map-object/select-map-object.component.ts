@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Injector,
   NgZone,
   OnDestroy,
   OnInit,
@@ -93,6 +94,32 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   public initZoom: number;
   public hasPreviouslyChoosen: DictionaryItem;
 
+  public config: ConfigService;
+  public screenService: ScreenService;
+  public selectMapObjectService: SelectMapObjectService;
+  public yandexMapService: YandexMapService;
+  public invite: InviteService;
+
+  protected addressesToolsService: AddressesToolsService;
+  protected cdr: ChangeDetectorRef;
+  protected ngUnsubscribe$: UnsubscribeService;
+
+  private actionService: ActionService;
+  private actionToolsService: ActionToolsService;
+
+  private currentAnswersService: CurrentAnswersService;
+  private dictionaryApiService: DictionaryApiService;
+  private dictionaryToolsService: DictionaryToolsService;
+  private jsonHelperService: JsonHelperService;
+  private modalErrorService: ModalErrorService;
+  private modalService: ModalService;
+  private navigationService: NavigationService;
+
+  private yaMapService: YaMapService;
+  private zone: NgZone;
+  private priorityItemsService: PriorityItemsService;
+  private route: ActivatedRoute;
+
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
   private screenStore: ScreenStore;
@@ -102,35 +129,37 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   private isMultiSelect = false;
   private isCommonDictionary; // Флаг отвечающий за общую логику карты. Например для правосудия она отключается и реализована на searchPanel
 
-  private initData$ = combineLatest([
-    this.screenService.component$,
-    this.screenService.applicantAnswers$,
-  ]);
+  private initData$;
   private valueFromCache: string;
 
-  constructor(
-    public invite: InviteService,
-    public config: ConfigService,
-    public screenService: ScreenService,
-    public selectMapObjectService: SelectMapObjectService,
-    public yandexMapService: YandexMapService,
-    private actionService: ActionService,
-    private actionToolsService: ActionToolsService,
-    private addressesToolsService: AddressesToolsService,
-    private cdr: ChangeDetectorRef,
-    private currentAnswersService: CurrentAnswersService,
-    private dictionaryApiService: DictionaryApiService,
-    private dictionaryToolsService: DictionaryToolsService,
-    private jsonHelperService: JsonHelperService,
-    private modalErrorService: ModalErrorService,
-    private modalService: ModalService,
-    private navigationService: NavigationService,
-    private ngUnsubscribe$: UnsubscribeService,
-    private yaMapService: YaMapService,
-    private zone: NgZone,
-    private priorityItemsService: PriorityItemsService,
-    private route: ActivatedRoute,
-  ) {}
+  constructor(protected injector: Injector) {
+    this.route = injector.get(ActivatedRoute);
+    this.invite = injector.get(InviteService);
+    this.config = injector.get(ConfigService);
+    this.screenService = injector.get(ScreenService);
+    this.selectMapObjectService = injector.get(SelectMapObjectService);
+    this.yandexMapService = injector.get(YandexMapService);
+    this.actionService = injector.get(ActionService);
+    this.actionToolsService = injector.get(ActionToolsService);
+    this.addressesToolsService = injector.get(AddressesToolsService);
+    this.cdr = injector.get(ChangeDetectorRef);
+    this.currentAnswersService = injector.get(CurrentAnswersService);
+    this.dictionaryApiService = injector.get(DictionaryApiService);
+    this.dictionaryToolsService = injector.get(DictionaryToolsService);
+    this.jsonHelperService = injector.get(JsonHelperService);
+    this.modalErrorService = injector.get(ModalErrorService);
+    this.modalService = injector.get(ModalService);
+    this.navigationService = injector.get(NavigationService);
+    this.ngUnsubscribe$ = injector.get(UnsubscribeService);
+    this.yaMapService = injector.get(YaMapService);
+    this.zone = injector.get(NgZone);
+    this.priorityItemsService = injector.get(PriorityItemsService);
+
+    this.initData$ = combineLatest([
+      this.screenService.component$,
+      this.screenService.applicantAnswers$,
+    ]);
+  }
 
   ngOnInit(): void {
     this.screenService.isLoaderVisible.next(true);
@@ -196,107 +225,10 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     }
   }
 
-  private prepareNextStep(item: YMapItem<DictionaryItem>): void {
-    if (this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
-      this.availablePaymentInGIBDD((item.attributeValues?.code as string) || item.value)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(() => this.nextStep(item));
-      return;
-    }
-
-    this.nextStep(item);
-  }
-
-  private initVariable(): void {
-    this.initComponentAttrs();
-    if (this.isCommonDictionary) {
-      this.controlsLogicInit();
-    }
-    this.initMapCenter();
-  }
-
-  private initComponentAttrs(): void {
-    this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
-    this.selectMapObjectService.userAddress = this.data?.arguments[
-      this.data.attrs?.addressString?.value
-    ] as string;
-    this.yandexMapService.componentAttrs = this.data.attrs;
-
-    this.selectMapObjectService.mapType =
-      (this.data.attrs.mapType as MapTypes) || MapTypes.commonMap;
-    this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
-    this.initZoom = this.data.attrs.mapOptions?.initZoom as number;
-    this.isMultiSelect = this.data.attrs.isMultiSelect;
-    this.isCommonDictionary = this.data.attrs.isCommonDictionary ?? true;
-    this.valueFromCache = this.screenService.getCompValueFromCachedAnswers();
-    this.needToAutoFocus = this.data.attrs.autoMapFocus;
-    this.needToAutoCenterAllPoints = this.data.attrs.autoCenterAllPoints;
-    this.componentValue = JSON.parse(this.data.value || '{}');
-    this.componentPresetValue = JSON.parse(this.data.presetValue || '{}');
-    this.screenStore = this.screenService.getStore();
-  }
-
-  private initSelectedValue(): void {
-    if (this.isMultiSelect) {
-      this.selectMapObjectService.handleMultiSelectCentering();
-    } else if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
-      const mapObject = this.jsonHelperService.tryToParse(this.data?.value) as YMapItem<
-        DictionaryItem
-      >;
-      // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
-      if (mapObject.idForMap !== undefined && this.isMapObjectExisted(mapObject)) {
-        mapObject.expanded = false;
-        this.hasPreviouslyChoosen = mapObject;
-        this.yandexMapService.selectMapObject(mapObject);
-      } else if (this.data?.attrs.selectedValue) {
-        const selectedValue = this.getSelectedValue();
-        this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id as string);
-      } else if (this.needToAutoFocus && this.areMapObjectsFound()) {
-        this.selectClosestMapObject();
-      } else if (this.needToAutoCenterAllPoints) {
-        this.yandexMapService.centerAllPoints();
-      }
-    }
-  }
-
-  private areMapObjectsFound(): boolean {
-    return this.selectMapObjectService.filteredDictionaryItems.length > 0;
-  }
-
-  /**
-   * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
-   */
-  private getSelectedValue(): KeyValueMap {
-    const selectedValue = (get(
-      this.applicantAnswers,
-      this.data?.attrs.selectedValue,
-    ) as unknown) as string;
-    return JSON.parse(selectedValue);
-  }
-
-  private controlsLogicInit(): void {
-    this.yaMapService.mapSubject
-      .pipe(
-        filter((yMap) => yMap),
-        takeUntil(this.ngUnsubscribe$),
-      )
-      .subscribe(() => {
-        this.initMap();
-      });
-  }
-
-  private getUrlTemplate(): string {
-    const region = this.data.attrs.region ? `&region=${this.data.attrs.region}` : '';
-    const url =
-      `${this.config.lkuipElection}/${this.data.attrs.LOMurlTemplate}&electionLevel=${this.data.attrs.electionLevel}` +
-      `&electionDate=${this.data.attrs.electionDate + region}`;
-    return url;
-  }
-
   /**
    * Инициализация карты - попытка определения центра, получение и расстановка точек на карте
    */
-  private initMap(): void {
+  protected initMap(): void {
     if (this.data.attrs.LOMurlTemplate) {
       this.yandexMapService.placeObjectsOnMap(null, null, this.getUrlTemplate());
       this.selectMapObjectService.isMapLoaded.next(true);
@@ -333,14 +265,14 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     }
   }
 
-  private isOnlySecondaryFilterRequestNeeded(): boolean {
-    return (
-      this.data.arguments?.dictionaryFilterPriority ===
-      DictionaryFilterPriority.secondaryDictionaryFilter
-    );
+  protected handleGettingCoordinatesResponse(coords: IGeoCoordsResponse): void {
+    this.handleFilledCoordinate(coords);
+    this.selectMapObjectService.isMapLoaded.next(true);
+    this.initSelectedValue();
+    this.cdr.detectChanges();
   }
 
-  private handleError(error): Observable<null> {
+  protected handleError(error): Observable<null> {
     if (error === NO_MAP_ITEMS_AVAILABLE) {
       this.modalService.openModal(ConfirmationModalComponent, {
         ...NO_MAP_ITEMS_AVAILABLE,
@@ -382,53 +314,27 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     return of(null);
   }
 
-  private notSpecificDictionary(): boolean {
-    const dictionaryType = this.getDictionaryType();
-    return (
-      dictionaryType !== 'mzrf_lpu_equeue_smev3' &&
-      dictionaryType !== 'mzrf_equeue_lpu' &&
-      dictionaryType !== 'mzrf_lpu_vaccination'
-    );
-  }
-
-  private handleGettingCoordinatesResponse(coords: IGeoCoordsResponse): void {
-    this.handleFilledCoordinate(coords);
-    this.selectMapObjectService.isMapLoaded.next(true);
-    this.initSelectedValue();
-    this.cdr.detectChanges();
-  }
-
-  /**
-   * Обработка полученных координат - сохранение в массиве сервиса, расстановка на карте
-   * @param coords ответ с бэка с координатами точек
-   */
-  private handleFilledCoordinate(coords: IGeoCoordsResponse): void {
-    this.selectMapObjectService.saveCoords(coords);
-    const items = this.selectMapObjectService.filteredDictionaryItems.map((item) => {
-      return {
-        center: item.center,
-        obj: item,
-      };
-    });
-    this.yandexMapService.placeObjectsOnMap(items);
-  }
-
-  /**
-   * Функция инициализирует центр карты
-   */
-  private initMapCenter(): void {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { geo_lon, geo_lat, center } = this.componentValue;
-    const moscowCenter = [37.64, 55.76]; // Москва
-    const geoCode = geo_lon && geo_lat ? [geo_lon, geo_lat] : null;
-    this.mapCenter = (geoCode || center || moscowCenter) as number[];
-  }
-
-  private setFilterOptions(options: DictionaryOptions, invite: Invite): DictionaryOptions {
-    if (invite?.organizations?.length > 0) {
-      options.filterCodes = invite?.organizations.map((org) => org.orgId);
+  protected initSelectedValue(): void {
+    if (this.isMultiSelect) {
+      this.selectMapObjectService.handleMultiSelectCentering();
+    } else if ((this.data?.value && this.data?.value !== '{}') || this.needToAutoCenterAllPoints) {
+      const mapObject = this.jsonHelperService.tryToParse(this.data?.value) as YMapItem<
+        DictionaryItem
+      >;
+      // Если есть idForMap (из cachedAnswers) то берем его, иначе пытаемся использовать из attrs.selectedValue
+      if (mapObject.idForMap !== undefined && this.isMapObjectExisted(mapObject)) {
+        mapObject.expanded = false;
+        this.hasPreviouslyChoosen = mapObject;
+        this.yandexMapService.selectMapObject(mapObject);
+      } else if (this.data?.attrs.selectedValue) {
+        const selectedValue = this.getSelectedValue();
+        this.selectMapObjectService.centeredPlaceMarkByObjectValue(selectedValue.id as string);
+      } else if (this.needToAutoFocus && this.areMapObjectsFound()) {
+        this.selectClosestMapObject();
+      } else if (this.needToAutoCenterAllPoints) {
+        this.yandexMapService.centerAllPoints();
+      }
     }
-    return options;
   }
 
   /**
@@ -438,7 +344,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
    * @param dictionaryFilters фильтры из атрибутов компонента
    */
 
-  private fillCoords(
+  protected fillCoords(
     dictionaryFilters: ComponentDictionaryFilterDto[],
     isEmptyDictionaryCritical = true,
   ): Observable<IFillCoordsResponse> {
@@ -500,6 +406,129 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
         ),
       ),
     );
+  }
+
+  private prepareNextStep(item: YMapItem<DictionaryItem>): void {
+    if (this.screenService.component.attrs.isNeedToCheckGIBDDPayment) {
+      this.availablePaymentInGIBDD((item.attributeValues?.code as string) || item.value)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(() => this.nextStep(item));
+      return;
+    }
+
+    this.nextStep(item);
+  }
+
+  private initVariable(): void {
+    this.initComponentAttrs();
+    if (this.isCommonDictionary) {
+      this.controlsLogicInit();
+    }
+    this.initMapCenter();
+  }
+
+  private initComponentAttrs(): void {
+    this.selectMapObjectService.componentAttrs = this.data.attrs as SelectMapComponentAttrs;
+    this.selectMapObjectService.userAddress = this.data?.arguments[
+      this.data.attrs?.addressString?.value
+    ] as string;
+    this.yandexMapService.componentAttrs = this.data.attrs;
+
+    this.selectMapObjectService.mapType =
+      (this.data.attrs.mapType as MapTypes) || MapTypes.commonMap;
+    this.yandexMapService.mapOptions = this.data.attrs.mapOptions;
+    this.initZoom = this.data.attrs.mapOptions?.initZoom as number;
+    this.isMultiSelect = this.data.attrs.isMultiSelect;
+    this.isCommonDictionary = this.data.attrs.isCommonDictionary ?? true;
+    this.valueFromCache = this.screenService.getCompValueFromCachedAnswers();
+    this.needToAutoFocus = this.data.attrs.autoMapFocus;
+    this.needToAutoCenterAllPoints = this.data.attrs.autoCenterAllPoints;
+    this.componentValue = JSON.parse(this.data.value || '{}');
+    this.componentPresetValue = JSON.parse(this.data.presetValue || '{}');
+    this.screenStore = this.screenService.getStore();
+  }
+
+  private areMapObjectsFound(): boolean {
+    return this.selectMapObjectService.filteredDictionaryItems.length > 0;
+  }
+
+  /**
+   * Получаем выбранный ЗАГС из applicantAnswers по пути из attrs.selectedValue
+   */
+  private getSelectedValue(): KeyValueMap {
+    const selectedValue = (get(
+      this.applicantAnswers,
+      this.data?.attrs.selectedValue,
+    ) as unknown) as string;
+    return JSON.parse(selectedValue);
+  }
+
+  private controlsLogicInit(): void {
+    this.yaMapService.mapSubject
+      .pipe(
+        filter((yMap) => yMap),
+        takeUntil(this.ngUnsubscribe$),
+      )
+      .subscribe(() => {
+        this.initMap();
+      });
+  }
+
+  private getUrlTemplate(): string {
+    const region = this.data.attrs.region ? `&region=${this.data.attrs.region}` : '';
+    const url =
+      `${this.config.lkuipElection}/${this.data.attrs.LOMurlTemplate}&electionLevel=${this.data.attrs.electionLevel}` +
+      `&electionDate=${this.data.attrs.electionDate + region}`;
+    return url;
+  }
+
+  private isOnlySecondaryFilterRequestNeeded(): boolean {
+    return (
+      this.data.arguments?.dictionaryFilterPriority ===
+      DictionaryFilterPriority.secondaryDictionaryFilter
+    );
+  }
+
+  private notSpecificDictionary(): boolean {
+    const dictionaryType = this.getDictionaryType();
+    return (
+      dictionaryType !== 'mzrf_lpu_equeue_smev3' &&
+      dictionaryType !== 'mzrf_equeue_lpu' &&
+      dictionaryType !== 'mzrf_lpu_vaccination'
+    );
+  }
+
+  /**
+   * Обработка полученных координат - сохранение в массиве сервиса, расстановка на карте
+   * @param coords ответ с бэка с координатами точек
+   */
+  private handleFilledCoordinate(coords: IGeoCoordsResponse): void {
+    this.selectMapObjectService.saveCoords(coords);
+    const items = this.selectMapObjectService.filteredDictionaryItems.map((item) => {
+      return {
+        center: item.center,
+        obj: item,
+      };
+    });
+    this.yandexMapService.placeObjectsOnMap(items);
+  }
+
+  /**
+   * Функция инициализирует центр карты
+   */
+  private initMapCenter(): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { geo_lon, geo_lat, center } = this.componentValue;
+    const moscowCenter = [37.64, 55.76]; // Москва
+    const geoCode = geo_lon && geo_lat ? [geo_lon, geo_lat] : null;
+    this.mapCenter = (geoCode || center || moscowCenter) as number[];
+  }
+
+  private setFilterOptions(options: DictionaryOptions, invite: Invite): DictionaryOptions {
+    if (invite?.organizations?.length > 0) {
+      options.filterCodes = invite?.organizations.map((org) => org.orgId);
+    }
+    return options;
   }
 
   private applySelectedObjects(dictionary: DictionaryResponseForYMap): void {

@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import { Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
-import { MicroAppStateQuery, MicroAppStateService } from '@epgu/epgu-constructor-ui-kit';
+import {
+  CfAppStateService,
+  LocalStorageService,
+  MicroAppStateQuery,
+  MicroAppStateService,
+} from '@epgu/epgu-constructor-ui-kit';
 import {
   ChildrenClubsState,
   ChildrenClubsValue,
@@ -11,19 +16,35 @@ import {
   GroupFiltersModes,
   VendorType,
 } from '../../models/children-clubs.types';
+import { DataDirectionType, InputAppDto, MicroAppState } from '@epgu/epgu-constructor-types';
 
 @Injectable()
 export class StateService {
   state$ = this.stateQuery.state$;
 
+  public inputAppData: InputAppDto;
+
   public isLoaderVisible$: Observable<boolean> = this.stateQuery.state$.pipe(
     pluck('isLoaderVisible'),
   );
 
+  private stateSynchronizationEnabled = false;
+
   constructor(
     private appStateService: MicroAppStateService<ChildrenClubsValue, ChildrenClubsState>,
     private stateQuery: MicroAppStateQuery<ChildrenClubsValue, ChildrenClubsState>,
+    private cfAppStateService: CfAppStateService,
+    private localStorageService: LocalStorageService,
   ) {}
+
+  initializeStateSynchronization(): void {
+    if (!this.stateSynchronizationEnabled) {
+      this.setInputAppData();
+      this.initializeAppState();
+      this.enableStorageSynchronization();
+      this.stateSynchronizationEnabled = true;
+    }
+  }
 
   changeState(state: Partial<ChildrenClubsState>): void {
     this.appStateService.updateState({ ...this.stateQuery.state, ...state });
@@ -114,5 +135,72 @@ export class StateService {
   clearGroupFilters(): void {
     const groupFilters = {};
     this.changeState({ groupFilters });
+  }
+
+  private setInputAppData(): void {
+    this.inputAppData = this.cfAppStateService.getState<InputAppDto>(DataDirectionType.INPUT);
+  }
+
+  private initializeAppState(): void {
+    const stateFromStorage = this.getStateFromLocalStorage();
+    let initState: MicroAppState<ChildrenClubsValue, ChildrenClubsState>;
+
+    if (stateFromStorage && this.inputAppData?.orderId === stateFromStorage.orderId) {
+      initState = stateFromStorage;
+    } else {
+      try {
+        initState = JSON.parse(this.inputAppData.value) as MicroAppState<
+          ChildrenClubsValue,
+          ChildrenClubsState
+        >;
+        if (this.inputAppData?.healthPayload) {
+          initState.healthPayload = this.inputAppData.healthPayload;
+        }
+
+        initState.orderId = this.inputAppData.orderId;
+
+        if (!initState.value) {
+          initState.value = {} as ChildrenClubsValue;
+        }
+
+        if (!initState.state) {
+          initState.state = {} as ChildrenClubsState;
+        }
+      } catch (_) {
+        throw new Error(
+          `Looks like we have some issues. We can't parse string: "${this.inputAppData.value}"`,
+        );
+      }
+    }
+    this.appStateService.initialize(initState);
+  }
+
+  private getStateFromLocalStorage(): MicroAppState<ChildrenClubsValue, ChildrenClubsState> {
+    const key = this.getStorageKey();
+    let stateFromStorage;
+
+    try {
+      stateFromStorage = this.localStorageService.get<
+        MicroAppState<ChildrenClubsValue, ChildrenClubsState>
+      >(key);
+    } catch (_) {
+      stateFromStorage = null;
+    }
+
+    return stateFromStorage;
+  }
+
+  private getStorageKey(): string {
+    return `APP_STORAGE_${this.inputAppData.componentType.toUpperCase()}_${this.inputAppData.componentId.toUpperCase()}`;
+  }
+
+  private enableStorageSynchronization(): void {
+    const key = this.getStorageKey();
+    this.stateQuery.store$.subscribe((storeState) => {
+      this.localStorageService.set<MicroAppState<ChildrenClubsValue, ChildrenClubsState>>(
+        key,
+        storeState,
+      );
+    });
   }
 }

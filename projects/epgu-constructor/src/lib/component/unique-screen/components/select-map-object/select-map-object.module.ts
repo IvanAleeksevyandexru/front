@@ -13,7 +13,7 @@ import {
 import { NotifierService } from '@epgu/ui/services/notifier';
 import { NotifierModule } from '@epgu/ui/components/notifier';
 import { FormsModule } from '@angular/forms';
-import { HighlightModule } from '@epgu/ui/pipes';
+import { HighlightModule, PluralizeModule } from '@epgu/ui/pipes';
 import { SelectMapObjectComponent } from './select-map-object.component';
 import { BaseModule } from '../../../../shared/base.module';
 import { PriorityScreenComponent } from './components/priority-screen/priority-screen.component';
@@ -43,20 +43,28 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DictionaryLoadingTimeoutInterceptor } from '../../../../core/interceptor/dictionary-loading-timeout/dictionary-loading-timeout.interceptor';
 import { DictionaryLoadingErrorInterceptor } from '../../../../core/interceptor/dictionary-loading-error/dictionary-loading-error.interceptor';
 import { InternalErrorInterceptor } from '../../../../core/interceptor/internal-error/internal-error.interceptor';
+import { ChildrenClubsSelectMapObjectComponent } from './children-clubs-select-map-object.component';
+import { ProgramListService } from '../children-clubs/services/program-list/program-list.service';
+import { StateService } from '../children-clubs/services/state/state.service';
+import { ChildrenClubsBalloonContentComponent } from './components/balloon-content-resolver/components/children-clubs-balloon-content/children-clubs-balloon-content.component';
+import { ChildrenClubsSearchPanelComponent } from './components/search-panel-resolver/components/children-clubs-search-panel/children-clubs-search-panel.component';
 
 @NgModule({
   declarations: [
+    ChildrenClubsSelectMapObjectComponent,
     SelectMapObjectComponent,
     PriorityScreenComponent,
     PriorityItemComponent,
     PriorityItemEmptyComponent,
     SearchPanelResolverComponent,
     CommonSearchPanelComponent,
+    ChildrenClubsSearchPanelComponent,
     ElectionsSearchPanelComponent,
     JusticeSearchPanelComponent,
     KindergartenSearchPanelComponent,
     BalloonContentResolverComponent,
     CommonBalloonContentComponent,
+    ChildrenClubsBalloonContentComponent,
     ElectionsBalloonContentComponent,
     KindergartenContentComponent,
     MapSidebarComponent,
@@ -68,6 +76,8 @@ import { InternalErrorInterceptor } from '../../../../core/interceptor/internal-
     NotifierService,
     KindergartenSearchPanelService,
     KindergartenService,
+    ProgramListService,
+    StateService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: InternalErrorInterceptor,
@@ -88,8 +98,13 @@ import { InternalErrorInterceptor } from '../../../../core/interceptor/internal-
       useValue: { singleNotifier: true },
     },
   ],
-  exports: [SelectMapObjectComponent, PriorityScreenComponent],
+  exports: [
+    SelectMapObjectComponent,
+    PriorityScreenComponent,
+    ChildrenClubsSelectMapObjectComponent,
+  ],
   imports: [
+    PluralizeModule,
     BaseComponentsModule,
     ScreenContainerModule,
     BaseModule,

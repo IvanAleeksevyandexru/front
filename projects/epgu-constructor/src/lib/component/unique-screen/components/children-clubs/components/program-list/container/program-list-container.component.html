@@ -1,16 +1,5 @@
 <epgu-constructor-cc-select-map-object *ngIf="(programListService.groupFiltersMode$ | async).isMap">
-  <div
-    class="filter-panel"
-    [ngClass]="{ expanded: programListService.isFilterPanelExpanded$ | async }"
-  >
-    <epgu-constructor-cc-filter-panel
-      (openFilters)="openFilter()"
-      (search)="search($event)"
-      [initValue]="initFilter"
-      [filtersCount]="filtersCount$ | async"
-      [showNav]="(programListService.groupFiltersMode$ | async).isMap"
-    ></epgu-constructor-cc-filter-panel>
-  </div>
+
 </epgu-constructor-cc-select-map-object>
 <epgu-cf-ui-screen-container
   [show-nav]="(programListService.groupFiltersMode$ | async).isList"

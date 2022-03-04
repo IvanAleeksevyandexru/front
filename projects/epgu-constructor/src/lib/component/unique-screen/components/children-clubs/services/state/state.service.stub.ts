@@ -79,4 +79,8 @@ export class StateServiceStub {
   set groupFiltersMode(groupFiltersMode: GroupFiltersModes) {
     this.changeState({ groupFiltersMode });
   }
+
+  public initializeStateSynchronization(): void {
+    return null;
+  }
 }
