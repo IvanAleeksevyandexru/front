@@ -125,7 +125,9 @@
       *ngIf="(data$ | async).attrs?.hint as hint"
       epgu-constructor-clickable-label
       [clarifications]="(data$ | async).attrs?.clarifications"
-      [innerHTML]="hint | imgPrefixer | safe: 'html'"
-    ></div>
+    >
+      <div class="divider mt-24 mb-24"></div>
+      <div [innerHTML]="hint | imgPrefixer | safe: 'html'"></div>
+    </div>
   </epgu-cf-ui-constructor-screen-pad>
 </epgu-constructor-default-unique-screen-wrapper>
