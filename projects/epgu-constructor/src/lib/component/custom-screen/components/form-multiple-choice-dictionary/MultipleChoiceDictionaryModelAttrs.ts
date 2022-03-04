@@ -1,4 +1,8 @@
-import { ComponentDictionaryFilterDto, DictionaryOptions } from '@epgu/epgu-constructor-types';
+import {
+  Clarifications,
+  ComponentDictionaryFilterDto,
+  DictionaryOptions,
+} from '@epgu/epgu-constructor-types';
 import {
   CustomComponentAttr,
   CustomComponentDropDownItemList,
@@ -23,6 +27,8 @@ export default class MultipleChoiceDictionaryModelAttrs extends GenericAttrs {
 
   readonly mappingParams: MappingParamsDto;
 
+  readonly clarifications: Clarifications;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.dictionaryList = attrs.dictionaryList;
@@ -33,5 +39,6 @@ export default class MultipleChoiceDictionaryModelAttrs extends GenericAttrs {
     this.customUnrecLabel = attrs.customUnrecLabel;
     this.dictionaryOptions = attrs.dictionaryOptions;
     this.mappingParams = attrs.mappingParams;
+    this.clarifications = attrs.clarifications;
   }
 }
