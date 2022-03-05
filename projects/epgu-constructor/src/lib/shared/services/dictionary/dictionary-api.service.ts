@@ -42,6 +42,9 @@ export class DictionaryApiService {
     [DictionaryUrlTypes.nsiSuggest]: (): string => this.config.nsiSuggestDictionaryUrl,
     [DictionaryUrlTypes.lkApi]: (): string => this.config.lkApi,
     [DictionaryUrlTypes.childrenClubsApi]: (): string => this.config.childrenClubsApi,
+    [DictionaryUrlTypes.schoolDictionaryUrl]: (): string => this.config.schoolDictionaryUrl,
+    [DictionaryUrlTypes.schoolSearchUrl]: (): string => this.config.schoolSearchUrl,
+    undefined: (): string => this.config.dictionaryUrl,
   };
 
   private dictionaryCache: Record<string, DictionaryResponse> = {};
