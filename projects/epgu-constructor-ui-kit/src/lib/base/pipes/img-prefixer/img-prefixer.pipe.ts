@@ -12,14 +12,14 @@ export class ImgPrefixerPipe implements PipeTransform {
   constructor(private config: ConfigService) {}
 
   transform(value: string | Error): string {
-    const replacer = (match, quoteSymbol, staticDomainPrefix?): string => {
+    const replacer = (match, staticDomainPrefix?): string => {
       if (staticDomainPrefix) {
-        return `src=${quoteSymbol}${this.config.staticDomainAssetsPath || ''}`;
+        return `${this.config.staticDomainAssetsPath || ''}`;
       }
 
       return match;
     };
-    const regExp = /src=(\'|\")(\{staticDomainAssetsPath\})?/g;
+    const regExp = /(\{staticDomainAssetsPath\})/g;
 
     return (((value as Error)?.message || value || '') as String).replace(regExp, replacer);
   }

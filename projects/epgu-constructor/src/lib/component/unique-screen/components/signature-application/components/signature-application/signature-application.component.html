@@ -6,7 +6,7 @@
     <epgu-constructor-page-name>{{ header }}</epgu-constructor-page-name>
     <div class="application" *ngIf="isMobile; else desktopTemplate">
       <div class="application__center">
-        <img [src]="component.attrs.image.src" />
+        <img [src]="component.attrs.image.src | imgPrefixer" />
       </div>
 
       <epgu-constructor-output-html [html]="component.label"></epgu-constructor-output-html>
