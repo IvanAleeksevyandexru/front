@@ -16,6 +16,7 @@ import {
   SessionStorageService,
   SessionStorageServiceStub,
   EventBusService,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import {
@@ -118,6 +119,7 @@ describe('ActionService', () => {
         HttpHandler,
         JsonHelperService,
         NavigationModalService,
+        ObjectHelperService,
       ],
     });
   });
