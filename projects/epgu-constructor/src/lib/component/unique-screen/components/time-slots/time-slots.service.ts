@@ -412,7 +412,7 @@ export class TimeSlotsService {
     const request = {
       organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
       caseNumber:
-        this.timeSlotsType === TimeSlotsTypes.MVD
+        this.timeSlotsType === TimeSlotsTypes.MVD || this.timeSlotsType === TimeSlotsTypes.BIRTH
           ? (this.config.parentOrderId as string)
           : (this.config.orderId as string),
       serviceId: [(this.config.serviceId as string) || serviceId],

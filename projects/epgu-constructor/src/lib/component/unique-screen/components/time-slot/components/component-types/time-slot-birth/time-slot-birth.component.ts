@@ -41,6 +41,7 @@ export class TimeSlotBirthComponent {
   ): Partial<TimeSlotRequest> {
     return {
       organizationId: [value.organizationId || (department.attributeValues.CODE as string)],
+      caseNumber: value?.parentOrderId ?? value?.orderId,
     };
   }
 
