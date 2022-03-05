@@ -411,10 +411,7 @@ export class TimeSlotsService {
 
     const request = {
       organizationId: [this.getSlotsRequestOrganizationId(this.timeSlotsType)],
-      caseNumber:
-        this.timeSlotsType === TimeSlotsTypes.MVD
-          ? (this.config.parentOrderId as string)
-          : (this.config.orderId as string),
+      caseNumber: this.getCaseNumber(),
       serviceId: [(this.config.serviceId as string) || serviceId],
       eserviceId: (this.config.eserviceId as string) || eserviceId,
       routeNumber,
@@ -424,6 +421,16 @@ export class TimeSlotsService {
     return <TimeSlotReq>(
       this.deleteIgnoreRequestParams({ ...request, ...this.getSmev3DictionaryOptions() })
     );
+  }
+
+  private getCaseNumber(): string {
+    if (this.timeSlotsType === TimeSlotsTypes.MVD) {
+      return this.config.parentOrderId as string;
+    }
+    if (this.timeSlotsType === TimeSlotsTypes.BIRTH) {
+      return (this.config.parentOrderId || this.config.orderId) as string;
+    }
+    return this.config.orderId as string;
   }
 
   private getTimeSlotsForCancel(): TimeSlotsAnswerInterface[] {
