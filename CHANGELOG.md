@@ -1,5 +1,25 @@
 # Release Notes
 
+## [401.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.x.x) (2022-03-05)
+
+### Features
+
+* Добавлен clarification в ConfirmPersonalUserRegReadOnlyAddr [EPGUCORE-86023]
+* Добавлена поддержка словарей schoolDictionaryUrl и schoolSearchUrl [EPGUCORE-89110]
+* Добавлен параметр screenId, пофикшена работа скрытой кнопки в prev-button [EPGUCORE-89472]
+
+### Refactor
+
+* Убраны избыточные зависимости в скринах [EPGUCORE-89406]
+* Смерджена карта кружков, добавлена поддержка фильтров в компонентах кружков [EPGUCORE-84527]
+
+### Bug Fixes
+
+* Заменен текст в модалке для кейса "врачи не найдены" [EPGUCORE-88568]
+* Включение notify для clipboard в outputhtml [EPGUCORE-85543]
+* Исправлено отображение оставшихся элементов в list-pagination.service [EPGUCORE-88670]
+
+
 ## [400.26.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.26.0) (2022-03-04)
 
 ### BREAKING CHANGES
