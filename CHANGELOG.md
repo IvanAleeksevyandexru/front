@@ -1,6 +1,6 @@
 # Release Notes
 
-## [400.25.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.25.0) (2022-03-03)
+## [400.26.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.26.0) (2022-03-04)
 
 ### BREAKING CHANGES
 
@@ -41,6 +41,7 @@
 * Добавлена поддержка встраивания sf-portal в iframe [EPGUCORE-85935]
 * Добавлены валидации в MaritalStatusInput [EPGUCORE-86855]
 * Доработки по авторизации встраивания в iframe [EPGUCORE-85935]
+* Добавлена поддержка скрытия header (шапки) для WebView, footer (подвал) упразднен [EPGUCORE-89076]
 
 ### Refactor
 
