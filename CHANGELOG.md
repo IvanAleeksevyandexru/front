@@ -1,6 +1,6 @@
 # Release Notes
 
-## [400.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.x.x) (2022-03-01)
+## [400.25.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.25.0) (2022-03-03)
 
 ### BREAKING CHANGES
 
@@ -104,6 +104,10 @@
 * Поправлен 25 статус TimeSlot [EPGUCORE-89605]
 * Добавлена поддержка CalendarInput в AutocompletePrepareService для suggests2 [EPGUCORE-89520]
 * Исправлены пропадающие филды в ConfirmPersonalUserData [EPGUCORE-89332]
+* Поправлены иконки закрытия RepeatableFields на уровне заголовка [EPGUCORE-89653]
+* Исправлена ошибка no provider на карте [EPGUCORE-89759]
+* Доработки встраивания КФ в iframe / дополнительный параметр проверки [EPGUCORE-85935]
+* Увеличен z-index для иконок закрытия RepeatableFields [EPGUCORE-89653]
 
 ### Tests
 
