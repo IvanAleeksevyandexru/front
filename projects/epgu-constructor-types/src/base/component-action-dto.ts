@@ -10,6 +10,7 @@ export interface ComponentActionDto {
   applicantType?: string;
   attrs?: {
     stepsBack?: number;
+    screenId?: string;
     hidden?: boolean;
     clarifications?: Clarifications;
     additionalParams?: KeyValueMap;

@@ -20,6 +20,7 @@ import {
   LocalStorageServiceStub,
   DownloadService,
   DownloadServiceStub,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import {
   ActionType,
@@ -187,6 +188,7 @@ describe('ActionDirective', () => {
         EventBusService,
         EaisdoGroupCostService,
         JsonHelperService,
+        ObjectHelperService,
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

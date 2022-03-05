@@ -4,6 +4,7 @@ import { PrevButtonNavigation } from '@epgu/epgu-constructor-types';
 import { By } from '@angular/platform-browser';
 import { PrevButtonComponent } from './prev-button.component';
 import { PREV_BUTTON_NAVIGATION } from './prev-button.token';
+import { ObjectHelperService } from '../../../core/services/object-helper/object-helper.service';
 
 @Injectable()
 class TestService implements PrevButtonNavigation {
@@ -20,7 +21,7 @@ describe('NavigationComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [PrevButtonComponent],
-      providers: [{ provide: PREV_BUTTON_NAVIGATION, useClass: TestService }],
+      providers: [{ provide: PREV_BUTTON_NAVIGATION, useClass: TestService }, ObjectHelperService],
     }).compileComponents();
   });
 

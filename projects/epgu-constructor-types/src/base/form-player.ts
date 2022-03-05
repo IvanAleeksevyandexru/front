@@ -88,7 +88,7 @@ export interface NavigationOptions {
 }
 
 // @ts-ignore
-export type NavigationParams = Pick<ComponentActionDto['attrs'], 'stepsBack'>;
+export type NavigationParams = Pick<ComponentActionDto['attrs'], 'stepsBack' | 'screenId'>;
 
 export interface Navigation {
   payload?: NavigationPayload;
