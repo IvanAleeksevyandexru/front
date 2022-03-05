@@ -93,6 +93,10 @@ export class ConfigService implements Config {
 
   private _nsiSuggestDictionaryUrl: string;
 
+  private _schoolDictionaryUrl: string;
+
+  private _schoolSearchUrl: string;
+
   private _appPathMap: AppPathMap;
 
   private _lkuipElection: string;
@@ -285,6 +289,14 @@ export class ConfigService implements Config {
     return this._nsiSuggestDictionaryUrl;
   }
 
+  get schoolDictionaryUrl(): string {
+    return this._schoolDictionaryUrl;
+  }
+
+  get schoolSearchUrl(): string {
+    return this._schoolSearchUrl;
+  }
+
   get appPathMap(): AppPathMap {
     return this._appPathMap;
   }
@@ -316,6 +328,8 @@ export class ConfigService implements Config {
     this._lkUrl = config.lkUrl ?? `${this.loadService.config.lkUrl}`;
     this._lkApi = config.lkApi ?? `${this.loadService.config.lkApi}`;
     this._childrenClubsApi = config.childrenClubsApi;
+    this._schoolDictionaryUrl = config.schoolDictionaryUrl;
+    this._schoolSearchUrl = config.schoolSearchUrl;
     this._paymentUrl = config.paymentUrl ?? `${this.loadService.config.paymentUrl}`;
     this._timeSlotApiUrl = config.timeSlotApiUrl ?? `${this.loadService.config.lkApiUrl}equeue`;
     this._listPaymentsApiUrl =
