@@ -20,6 +20,8 @@ const configMock: Config = {
   invitationUrl: 'invitationUrl',
   staticDomainAssetsPath: 'staticDomainAssetsPath',
   staticDomainContentPath: 'staticDomainContentPath',
+  schoolDictionaryUrl: 'schoolDictionaryUrl',
+  schoolSearchUrl: 'schoolSearchUrl',
   mocks: ['mvd', 'selectMap', 'timeSlot', 'payment'],
   mockUrl: 'mockUrl',
   timeSlots: {
@@ -101,6 +103,8 @@ describe('ConfigService', () => {
     expect(service.invitationUrl).toBe(configMock.invitationUrl);
     expect(service.staticDomainAssetsPath).toBe(configMock.staticDomainAssetsPath);
     expect(service.staticDomainContentPath).toBe(configMock.staticDomainContentPath);
+    expect(service.schoolDictionaryUrl).toBe(configMock.schoolDictionaryUrl);
+    expect(service.schoolSearchUrl).toBe(configMock.schoolSearchUrl);
     expect(service.mocks).toBe(configMock.mocks);
     expect(service.mockUrl).toBe(configMock.mockUrl);
     expect(service.timeSlots).toBe(configMock.timeSlots);

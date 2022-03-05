@@ -83,6 +83,10 @@ export class ConfigServiceStub implements Config {
 
   _suggestionsApiUrl = '';
 
+  _schoolDictionaryUrl = '';
+
+  _schoolSearchUrl = '';
+
   _identificationApiUrl = 'http://localhost:8097/v1/identification';
 
   _isLoaded$ = of(false);
@@ -307,6 +311,14 @@ export class ConfigServiceStub implements Config {
     return this._nsiSuggestDictionaryUrl;
   }
 
+  get schoolDictionaryUrl(): string {
+    return this._schoolDictionaryUrl;
+  }
+
+  get schoolSearchUrl(): string {
+    return this._schoolSearchUrl;
+  }
+
   get suggestionsApiUrl(): string {
     return this._suggestionsApiUrl;
   }
@@ -339,6 +351,8 @@ export class ConfigServiceStub implements Config {
     this._yandexMapsApiKey = config.yandexMapsApiKey;
     this._staticDomainAssetsPath = '';
     this._staticDomainContentPath = '';
+    this._schoolDictionaryUrl = '';
+    this._schoolSearchUrl = '';
     this._mocks = config.mocks;
     this._mockUrl = config.mockUrl;
     this._timeSlots = config.timeSlots;
