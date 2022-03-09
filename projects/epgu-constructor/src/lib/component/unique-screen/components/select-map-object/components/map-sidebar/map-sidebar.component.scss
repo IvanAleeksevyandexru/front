@@ -1,6 +1,7 @@
 @import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/index';
 
 .previously-choosen {
+  background: $color-azzurro-alice;
   margin-top: 24px;
   @include tablets-down() {
     margin-top: 8px;
@@ -51,9 +52,15 @@
   margin: 24px;
   color: $color-text-helper;
 }
-::ng-deep.previously-choosen .balloon-content-wrapper {
-  padding-bottom: 16px !important;
-  padding-top: 16px !important;
+::ng-deep.previously-choosen {
+  .map-object {
+    background: $color-azzurro-alice;
+  }
+
+  .balloon-content-wrapper {
+    padding-bottom: 16px !important;
+    padding-top: 16px !important;
+  }
 }
 
 .swipeable-mode {
@@ -108,5 +115,3 @@
     }
   }
 }
-
-
