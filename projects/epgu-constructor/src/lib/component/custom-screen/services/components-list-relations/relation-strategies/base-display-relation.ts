@@ -8,6 +8,7 @@ import {
   CustomComponent,
   CustomComponentRef,
   CustomListStatusElements,
+  IEntityWithRef,
 } from '../../../components-list.types';
 import { FormArray } from '@angular/forms';
 import { CachedAnswers } from '../../../../../screen/screen.types';
@@ -19,7 +20,7 @@ import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export abstract class BaseDisplayRelation extends BaseRelation {
-  private timeOutEnabled = false;
+  private timeouts = {};
 
   private datesToolsService: DatesToolsService;
 
@@ -38,14 +39,16 @@ export abstract class BaseDisplayRelation extends BaseRelation {
   }
 
   public isAtLeastOneRelationFired(
-    dependentComponent: CustomComponent | BaseModel<GenericAttrs>,
+    dependentEntity: IEntityWithRef,
     shownElements: CustomListStatusElements,
     form: FormArray,
     cachedAnswers: CachedAnswers,
   ): boolean {
-    return (dependentComponent.attrs?.ref || [])
+    return (dependentEntity.attrs?.ref || [])
       .filter((reference) => this.isCurrentRelation(reference.relation))
-      .some((reference) => this.isReferenceFired(reference, shownElements, form, cachedAnswers));
+      .some((reference) =>
+        this.isReferenceFired(reference, shownElements, form, cachedAnswers, dependentEntity.id),
+      );
   }
 
   protected isReferenceFired(
@@ -53,6 +56,7 @@ export abstract class BaseDisplayRelation extends BaseRelation {
     shownElements: CustomListStatusElements,
     form: FormArray,
     cachedAnswers: CachedAnswers,
+    entityId: string,
   ): boolean {
     const cachedValue = cachedAnswers[reference.relatedRel]?.value;
     const listOfDateValue: string[] = [
@@ -64,7 +68,13 @@ export abstract class BaseDisplayRelation extends BaseRelation {
       listOfDateValue.includes(reference.val) &&
       form.controls.length
     ) {
-      return this.calculateTimeRelatedValue(reference.val, reference.path, form, cachedValue);
+      return this.calculateTimeRelatedValue(
+        reference.val,
+        reference.path,
+        form,
+        cachedValue,
+        entityId,
+      );
     }
     const isOnCurrentScreen = this.hasControlWithIdOnForm(reference.relatedRel, form);
     const parsedRefValue = this.getRefValue(reference.val) as string | string[] | boolean;
@@ -91,22 +101,26 @@ export abstract class BaseDisplayRelation extends BaseRelation {
     path: string,
     form: FormArray,
     cachedValue: string,
+    entityId: string,
   ): boolean {
+    const id = entityId + referenceValue;
+
     const currentDate = new Date();
     const targetDate = new Date(get(this.getRefValue(cachedValue), path));
     const currentIsGreaterOrEqual = currentDate >= targetDate;
     let shouldShow;
-    if (referenceValue === 'dateTimeAfter') {
+    if (referenceValue === TimeRelatedValue.dateTimeAfter) {
       shouldShow = currentIsGreaterOrEqual;
-    } else if (referenceValue === 'dateTimeBefore') {
+    } else if (referenceValue === TimeRelatedValue.dateTimeBefore) {
       shouldShow = !currentIsGreaterOrEqual;
     }
-    if (!currentIsGreaterOrEqual && !this.timeOutEnabled) {
+    if (!currentIsGreaterOrEqual && !this.timeouts[id]) {
       const diff = this.datesToolsService.diff(targetDate, currentDate);
       setTimeout(() => {
         form.controls[0].updateValueAndValidity({ onlySelf: false, emitEvent: true });
+        delete this.timeouts[id];
       }, diff);
-      this.timeOutEnabled = true;
+      this.timeouts[id] = true;
     }
     return shouldShow;
   }
