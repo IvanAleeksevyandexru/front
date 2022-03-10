@@ -36,6 +36,10 @@ import { CertificateEaisdoService } from '../../../../shared/services/certificat
 import { FileSizeModule } from '../../../../shared/pipes/file-size/file-size.module';
 import { UploaderScreenService } from '../../../../shared/components/file-upload/services/screen/uploader-screen.service';
 import { UniqueScreenService } from '../../unique-screen.service';
+import { ComponentsListRelationsService } from '../../../custom-screen/services/components-list-relations/components-list-relations.service';
+import { ComponentsListRelationsServiceStub } from '../../../custom-screen/services/components-list-relations/components-list-relations.service.stub';
+import { ScreenButtonService } from '../../../../shared/components/screen-buttons/screen-button.service';
+import { ScreenButtonServiceStub } from '../../../../shared/components/screen-buttons/screen-button.service.stub';
 
 const screenServiceComponentMockData: ComponentDto = {
   attrs: {
@@ -81,6 +85,7 @@ describe('FileUploadScreenComponent', () => {
   let screenService: ScreenService;
   let currentAnswersService: CurrentAnswersService;
   let eventBusService: EventBusService;
+  let relationService: ComponentsListRelationsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -98,6 +103,8 @@ describe('FileUploadScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
+        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
+        { provide: ScreenButtonService, useClass: ScreenButtonServiceStub },
         EventBusService,
         CertificateEaisdoService,
         CurrentAnswersService,
@@ -112,6 +119,7 @@ describe('FileUploadScreenComponent', () => {
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
+    relationService = TestBed.inject(ComponentsListRelationsService);
     screenService.component = screenServiceComponentMockData;
     screenService.header = '';
     screenService.buttons = [button];
@@ -439,7 +447,6 @@ describe('FileUploadScreenComponent', () => {
         errors: [],
       });
       fixture.detectChanges();
-
       expect(debugEl.componentInstance.disabled).toBeFalsy();
     });
 
