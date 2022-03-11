@@ -1,12 +1,14 @@
 # Release Notes
 
-## [401.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.x.x) (2022-03-05)
+## [401.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.x.x) (2022-03-11)
 
 ### Features
 
 * Добавлен clarification в ConfirmPersonalUserRegReadOnlyAddr [EPGUCORE-86023]
 * Добавлена поддержка словарей schoolDictionaryUrl и schoolSearchUrl [EPGUCORE-89110]
 * Добавлен параметр screenId, пофикшена работа скрытой кнопки в prev-button [EPGUCORE-89472]
+* Добавлена валидация в Адреса в компоненте AddressInput [EPGUCORE-90117]
+* Добавлена валидация в Адреса в компоненте RegistrationAddr [EPGUCORE-90116]
 
 ### Refactor
 
@@ -18,6 +20,13 @@
 * Заменен текст в модалке для кейса "врачи не найдены" [EPGUCORE-88568]
 * Включение notify для clipboard в outputhtml [EPGUCORE-85543]
 * Исправлено отображение оставшихся элементов в list-pagination.service [EPGUCORE-88670]
+* Исправлена валидация контрольной суммы MaritalStatusInput [EPGUCORE-90123]
+* Добавлен параметр IsFinalReservation для TimeSLot [EPGUCORE-90472]
+* Поправлено отображение presetValue для FieldsList [EPGUCORE-89897]
+
+### Chore
+
+* Зафиксирована версия es5-ext без антивоенных призывов
 
 
 ## [400.26.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.26.0) (2022-03-04)
