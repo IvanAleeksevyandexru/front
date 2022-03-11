@@ -6,6 +6,7 @@ import {
   CustomScreenComponentValueTypes,
 } from '../../components-list.types';
 import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
+import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 
 @Injectable()
 export class ComponentsListToolsService {
@@ -22,7 +23,10 @@ export class ComponentsListToolsService {
     CustomScreenComponentTypes.SelectFromList,
   ];
 
-  constructor(private typeCastService: TypeCastService) {}
+  constructor(
+    private typeCastService: TypeCastService,
+    private datesToolsService: DatesToolsService,
+  ) {}
 
   public convertedValue(component: CustomComponent): CustomScreenComponentValueTypes {
     const isDateAndValue: boolean = this.isDate(component.type) && !!component.value;
@@ -89,7 +93,7 @@ export class ComponentsListToolsService {
     componentType: CustomScreenComponentTypes,
   ): CustomScreenComponentValueTypes {
     if (isDateAndValue) {
-      return new Date(value);
+      return this.datesToolsService.parse(value, 'dd.MM.yyyy');
     }
     if (this.isAddress(componentType)) {
       try {

@@ -82,6 +82,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ClickableLabelModule } from '../shared/directives/clickable-label/clickable-label.module';
 import { ActionService } from '../shared/directives/action/action.service';
 import { ActionToolsService } from '../shared/directives/action/action-tools.service';
+import { DictionaryService } from '../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../shared/services/dictionary/dictionary.service.stub';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -92,6 +94,7 @@ import { ActionToolsService } from '../shared/directives/action/action-tools.ser
     { provide: ActivatedRoute, useClass: ActivatedRouteStub },
     { provide: ConfigService, useClass: ConfigServiceStub },
     { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+    { provide: DictionaryService, useClass: DictionaryServiceStub },
     { provide: LocationService, useClass: LocationServiceStub },
     { provide: NavigationService, useClass: NavigationServiceStub },
     { provide: ScreenService, useClass: ScreenServiceStub },
