@@ -53,6 +53,7 @@ export interface RegistrationAddrFields {
   regexp: string | RegExp;
   hideLevels?: string[];
   attrs?: {
+    isOnlyForValidation?: boolean;
     labelHint?: string;
     minDate?: Date | RelativeDate | string;
     maxDate?: Date | RelativeDate | string;
@@ -73,4 +74,11 @@ export interface RegistrationAddrFormValue {
   regAddr: DadataResult;
   regFrom: Date;
   regTo: Date;
+}
+
+export interface ConfirmAddressErrorsInterface {
+  desc?: string;
+  icon?: string;
+  title?: string;
+  type?: string;
 }
