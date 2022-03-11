@@ -284,6 +284,7 @@ export interface ComponentAttrsDto {
   isSmev2?: IsSmev2;
   isServiceSpecific?: IsServiceSpecific;
   isInvite?: boolean;
+  IsFinalReservation?: boolean;
   isSoloCheckBox?: IsSoloCheckBox;
   keepVariables?: KeepVariables;
   label?: Label;

@@ -265,6 +265,7 @@ export class TimeSlotSmev3Service {
         this.smev3.ignoreRootParams$,
         this.smev3.bookAttributes$,
         this.requestBookParams$$.pipe(filter((value) => value !== undefined)),
+        this.smev3.IsFinalReservation$,
       ]).pipe(
         take(1),
         concatMap(
@@ -280,6 +281,7 @@ export class TimeSlotSmev3Service {
             ignoreRootParams,
             attributes,
             params,
+            IsFinalReservation,
           ]: [
             string,
             boolean,
@@ -292,6 +294,7 @@ export class TimeSlotSmev3Service {
             string[],
             TimeSlotAttribute[],
             Partial<TimeSlotBookRequest>,
+            boolean,
           ]) =>
             this.api
               .book(
@@ -307,6 +310,7 @@ export class TimeSlotSmev3Service {
                   ignoreRootParams,
                   attributes,
                   params,
+                  IsFinalReservation,
                 ),
                 isServiceSpecific,
               )
@@ -363,6 +367,7 @@ export class TimeSlotSmev3Service {
     ignoreRootParams: string[],
     attributes: TimeSlotAttribute[],
     params: Partial<TimeSlotBookRequest>,
+    IsFinalReservation: boolean,
   ): TimeSlotBookRequest {
     let nowBookId = bookId;
     if (!bookId || !isBookedDepartment || waitingTimeExpired) {
@@ -400,6 +405,13 @@ export class TimeSlotSmev3Service {
       slotId: [slot?.slotId],
       serviceId: [(data.serviceId as string) || serviceId],
     };
+
+    if (!IsFinalReservation) {
+      result.preliminaryReservationPeriod = preliminaryReservationPeriod;
+      result.preliminaryReservation = preliminaryReservation;
+    } else {
+      result.preliminaryReservation = 'false';
+    }
 
     return this.paramsFilter(
       ignoreRootParams,
