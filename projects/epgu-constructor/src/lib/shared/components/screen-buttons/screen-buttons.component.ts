@@ -31,6 +31,7 @@ export class ScreenButtonsComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
+    this.screenButtonService.subscriptionOnInnerFormForDisablingChanges.subscribe();
     if (this.screenService.display?.type === ScreenTypes.UNIQUE) {
       this.screenButtonService.initSubscribeOnComponentsForm(new FormArray([]), {
         [this.screenService.component.id]: { isShown: true },
