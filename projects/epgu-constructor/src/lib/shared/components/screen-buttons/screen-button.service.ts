@@ -8,13 +8,15 @@ import { ScreenButton, System } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 
 import { isEqual } from 'lodash';
+import { tap } from 'rxjs/operators';
+
 @Injectable()
 export class ScreenButtonService {
   private _shownElements: CustomListStatusElements = {};
 
   private _outputButtons = new BehaviorSubject<ScreenButton[]>([]);
 
-  private _subscriptionOnInnerFormForDisabling: FormArray;
+  private _subscriptionOnInnerFormForDisabling: FormArray = new FormArray([new FormControl({})]);
 
   private readonly clientSystem: System = this.deviceDetectorService.system;
 
@@ -30,6 +32,12 @@ export class ScreenButtonService {
 
   get outputButtons(): ScreenButton[] {
     return this._outputButtons.getValue();
+  }
+
+  get subscriptionOnInnerFormForDisablingChanges(): Observable<ScreenButton[]> {
+    return this._subscriptionOnInnerFormForDisabling.valueChanges.pipe(
+      tap(() => this.processButtonsDisabling()),
+    );
   }
 
   private set outputButtons(buttons: ScreenButton[]) {
@@ -59,10 +67,6 @@ export class ScreenButtonService {
     if (!isEqual(buttons, this.outputButtons)) {
       this.outputButtons = buttons;
     }
-    this._subscriptionOnInnerFormForDisabling = new FormArray([new FormControl({})]);
-    this._subscriptionOnInnerFormForDisabling.valueChanges.subscribe(() => {
-      this.processButtonsDisabling();
-    });
     this.processButtonsDisabling();
   }
 
@@ -77,7 +81,10 @@ export class ScreenButtonService {
       if (button.disabledByRel !== disabledByRel || button.disabledByRel === undefined) {
         shouldUpdate = true;
       }
-      button.disabledByRel = disabledByRel;
+
+      if (disabledByRel !== undefined) {
+        button.disabledByRel = disabledByRel;
+      }
       if (shouldUpdate) {
         this.updateButtons(this.outputButtons);
       }
@@ -108,7 +115,9 @@ export class ScreenButtonService {
       if (button.hidden !== hidden || button.hidden === undefined) {
         shouldUpdate = true;
       }
-      button.hidden = hidden;
+      if (hidden !== undefined) {
+        button.hidden = hidden;
+      }
     });
     if (shouldUpdate) {
       this.updateButtons(initialButtons);
