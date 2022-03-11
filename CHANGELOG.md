@@ -28,6 +28,12 @@
 
 * Зафиксирована версия es5-ext без антивоенных призывов
 
+## [400.28.2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.28.2) (2022-03-06)
+
+### Bug Fixes
+
+* Поправлен caseNumber для TimeSlot Birth [EPGUCORE-90052]
+* Поправлен запроса таймслотов типа birth [EPGUCORE-90052]
 
 ## [400.26.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.26.0) (2022-03-04)
 
