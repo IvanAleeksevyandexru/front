@@ -9,6 +9,7 @@
 * Добавлен параметр screenId, пофикшена работа скрытой кнопки в prev-button [EPGUCORE-89472]
 * Добавлена валидация в Адреса в компоненте AddressInput [EPGUCORE-90117]
 * Добавлена валидация в Адреса в компоненте RegistrationAddr [EPGUCORE-90116]
+* Добавлена возможность скрывать и дизейблить кнопки по relations [EPGUCORE-86308]
 
 ### Refactor
 
@@ -23,6 +24,7 @@
 * Исправлена валидация контрольной суммы MaritalStatusInput [EPGUCORE-90123]
 * Добавлен параметр IsFinalReservation для TimeSLot [EPGUCORE-90472]
 * Поправлено отображение presetValue для FieldsList [EPGUCORE-89897]
+* Поправлено обновление данных у ref-buttons [EPGUCORE-90550]
 
 ### Chore
 
@@ -71,7 +73,6 @@
 * Добавлена поддержка clarifications для radio-input[EPGUCORE-86018]
 * Добавлена поддержка clarifications для ConfirmPersonalUserPhone [EPGUCORE-86020]
 * Добавлена поддержка mappingParams для MVDGiac [EPGUCORE-88801]
-* Добавлена возможность скрывать и дизейблить кнопки по relations [EPGUCORE-86308]
 * Добавлена поддержка clarifications для AddressInput [EPGUCORE-86014]
 * Добавлена поддержка встраивания sf-portal в iframe [EPGUCORE-85935]
 * Добавлены валидации в MaritalStatusInput [EPGUCORE-86855]
