@@ -370,7 +370,7 @@ export class ComponentsListFormService {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { type, attrs, id, label, required, arguments: _arguments } = component;
+    const { type, attrs, id, label, required, presetValue, arguments: _arguments } = component;
 
     const form: FormGroup = this.fb.group(
       {
@@ -381,6 +381,7 @@ export class ComponentsListFormService {
         label,
         required,
         arguments: _arguments,
+        presetValue,
         value: [
           {
             value: this.componentsListToolsService.convertedValue(component),
