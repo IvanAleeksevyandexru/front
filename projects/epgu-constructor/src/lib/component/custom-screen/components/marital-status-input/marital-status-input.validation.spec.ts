@@ -57,8 +57,8 @@ describe('checkMaritalYear', () => {
 describe('checkMaritalStatusRecordCS', () => {
   it('should return true', () => {
     expect(checkMaritalStatusRecordCS('')).toBeTruthy();
-    expect(checkMaritalStatusRecordCS('120189910001500982002')).toBeTruthy();
-    expect(checkMaritalStatusRecordCS('120189990001500982003')).toBeTruthy();
+    expect(checkMaritalStatusRecordCS('130209910002900532008')).toBeTruthy();
+    expect(checkMaritalStatusRecordCS('120189550003401034008')).toBeTruthy();
   });
 
   it('should return false', () => {
