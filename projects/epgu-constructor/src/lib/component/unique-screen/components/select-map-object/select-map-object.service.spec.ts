@@ -28,9 +28,11 @@ import { MockProvider } from 'ng-mocks';
 import { electionSinglePoint } from './select-map-elections.mock';
 import { DictionaryApiService } from '../../../../shared/services/dictionary/dictionary-api.service';
 import { DictionaryApiServiceStub } from '../../../../shared/services/dictionary/dictionary-api.service.stub';
+import { KindergartenService } from '../kindergarten/kindergarten.service';
 
 describe('SelectMapObjectService', () => {
   let selectMapObjectService: SelectMapObjectService;
+  let kindergartenService: KindergartenService;
   let screenService: ScreenService;
 
   beforeEach(() => {
@@ -48,6 +50,7 @@ describe('SelectMapObjectService', () => {
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         MockProvider(MapAnimationService),
         MockProvider(Icons),
+        KindergartenService,
       ],
     }).compileComponents();
   });
@@ -62,6 +65,7 @@ describe('SelectMapObjectService', () => {
     screenService = TestBed.inject(ScreenService);
     screenService.component = componentMock;
     selectMapObjectService = TestBed.inject(SelectMapObjectService);
+    kindergartenService = TestBed.inject(KindergartenService);
   });
 
   it('centeredPlaceMark should call closeBalloon', () => {
@@ -334,7 +338,7 @@ describe('SelectMapObjectService', () => {
 
       selectMapObjectService.filteredDictionaryItems = [];
 
-      selectMapObjectService.handleKindergartenSelection();
+      kindergartenService.handleKindergartenSelection();
 
       expect(selectMapObjectService.isSelectedView.getValue()).toBeFalsy();
     });
@@ -360,7 +364,7 @@ describe('SelectMapObjectService', () => {
       ] as unknown) as DictionaryYMapItem[];
       selectMapObjectService.filteredDictionaryItems = testItems;
 
-      selectMapObjectService.handleKindergartenSelection();
+      kindergartenService.handleKindergartenSelection();
 
       expect(selectMapObjectService.selectedViewItems$.getValue()).toEqual(testItems);
       expect(selectMapObjectService.isSelectedView.getValue()).toBeTruthy();

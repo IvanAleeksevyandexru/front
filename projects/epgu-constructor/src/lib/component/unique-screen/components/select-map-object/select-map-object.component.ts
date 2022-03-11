@@ -72,6 +72,7 @@ import { ActionToolsService } from '../../../../shared/directives/action/action-
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
 import { ComponentValue } from '../../../../shared/services/dictionary/dictionary.interface';
 import { InviteService } from '../../../../core/services/invite/invite.service';
+import { KindergartenService } from '../kindergarten/kindergarten.service';
 
 const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 
@@ -117,6 +118,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   private yaMapService: YaMapService;
   private zone: NgZone;
   private priorityItemsService: PriorityItemsService;
+  private kindergartenService: KindergartenService;
 
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
@@ -151,6 +153,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     this.yaMapService = injector.get(YaMapService);
     this.zone = injector.get(NgZone);
     this.priorityItemsService = injector.get(PriorityItemsService);
+    this.kindergartenService = injector.get(KindergartenService);
 
     this.initData$ = combineLatest([
       this.screenService.component$,
@@ -198,7 +201,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       this.yandexMapService.mapPaint();
       let arr = this.priorityItemsService.getItems();
       if (this.selectMapObjectService.isSelectedView.getValue()) {
-        this.selectMapObjectService.handleKindergartenSelection();
+        this.kindergartenService.handleKindergartenSelection();
       }
       if (yaMapItem.isSelected) {
         arr.push(yaMapItem);
@@ -216,7 +219,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   public closeBaloon(): void {
     if (this.selectMapObjectService.isSelectedView.getValue()) {
       this.selectMapObjectService.resetSelectedView();
-      this.selectMapObjectService.placeChildsHomeOnMap();
+      this.kindergartenService.placeChildsHomeOnMap();
     } else {
       this.yandexMapService.closeBalloon();
     }

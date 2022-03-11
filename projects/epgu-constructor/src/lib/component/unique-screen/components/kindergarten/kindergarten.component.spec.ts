@@ -62,6 +62,7 @@ import { PriorityScreenComponent } from '../select-map-object/components/priorit
 import { HelperService } from '@epgu/ui/services/helper';
 import { InviteService } from '../../../../core/services/invite/invite.service';
 import { ActivatedRoute } from '@angular/router';
+import { SelectMapObjectService } from '../select-map-object/select-map-object.service';
 
 describe('KindergartenComponent', () => {
   let component: KindergartenComponent;
@@ -113,6 +114,7 @@ describe('KindergartenComponent', () => {
         EaisdoGroupCostService,
         KindergartenService,
         ObjectHelperService,
+        SelectMapObjectService,
       ],
     }).compileComponents();
   });

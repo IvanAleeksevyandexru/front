@@ -21,6 +21,7 @@ import { ModalErrorService } from '../../../../../../../../modal/modal-error.ser
 import { ScreenService } from '../../../../../../../../screen/screen.service';
 import { DictionaryYMapItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { DictionaryToolsService } from '../../../../../../../../shared/services/dictionary/dictionary-tools.service';
+import { KindergartenService } from '../../../../../kindergarten/kindergarten.service';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { PriorityItemsService } from '../../../../services/priority-items/priority-items.service';
 import { KindergartenSearchPanelService } from './kindergarten-search-panel.service';
@@ -54,6 +55,7 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
     private screenService: ScreenService,
     private jsonHelperService: JsonHelperService,
     private ngUnsubscribe$: UnsubscribeService,
+    private kindergartenService: KindergartenService,
   ) {}
 
   ngOnInit(): void {
@@ -91,9 +93,9 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
     this.handleFiltering(this.selectMapObjectService.searchMapObject(''));
     if (this.selectMapObjectService.isSelectedView.getValue()) {
       this.selectMapObjectService.resetSelectedView();
-      this.selectMapObjectService.placeChildsHomeOnMap();
+      this.kindergartenService.placeChildsHomeOnMap();
     } else {
-      this.selectMapObjectService.handleKindergartenSelection();
+      this.kindergartenService.handleKindergartenSelection();
     }
   }
 
@@ -149,6 +151,6 @@ export class KindergartenSearchPanelComponent implements AfterViewInit, OnInit {
   }
 
   private placeChildsHomeOnMap(): void {
-    this.selectMapObjectService.placeChildsHomeOnMap();
+    this.kindergartenService.placeChildsHomeOnMap();
   }
 }

@@ -204,7 +204,7 @@ describe('KindergartenSearchPanelComponent', () => {
 
     it('should draw kids home on map loading', () => {
       const placeSpy = jest
-        .spyOn(component.selectMapObjectService, 'placeChildsHomeOnMap')
+        .spyOn(component['kindergartenService'], 'placeChildsHomeOnMap')
         .mockImplementation((...args) => null);
       component.ngOnInit();
 
@@ -223,10 +223,10 @@ describe('KindergartenSearchPanelComponent', () => {
         .spyOn(component.selectMapObjectService, 'resetSelectedView')
         .mockImplementation((...args) => null);
       const handleSpy = jest
-        .spyOn(component.selectMapObjectService, 'handleKindergartenSelection')
+        .spyOn(component['kindergartenService'], 'handleKindergartenSelection')
         .mockImplementation((...args) => null);
       const placeSpy = jest
-        .spyOn(component.selectMapObjectService, 'placeChildsHomeOnMap')
+        .spyOn(component['kindergartenService'], 'placeChildsHomeOnMap')
         .mockImplementation((...args) => null);
 
       component.toggleSelectedKindergartensView();
@@ -241,10 +241,10 @@ describe('KindergartenSearchPanelComponent', () => {
         .spyOn(component.selectMapObjectService, 'resetSelectedView')
         .mockImplementation((...args) => null);
       const handleSpy = jest
-        .spyOn(component.selectMapObjectService, 'handleKindergartenSelection')
+        .spyOn(component['kindergartenService'], 'handleKindergartenSelection')
         .mockImplementation((...args) => null);
       const placeSpy = jest
-        .spyOn(component.selectMapObjectService, 'placeChildsHomeOnMap')
+        .spyOn(component['kindergartenService'], 'placeChildsHomeOnMap')
         .mockImplementation((...args) => null);
 
       component.toggleSelectedKindergartensView();
