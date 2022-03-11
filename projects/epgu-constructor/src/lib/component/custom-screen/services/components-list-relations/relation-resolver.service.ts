@@ -13,6 +13,7 @@ import { AutofillTextFromRefsRelation } from './relation-strategies/autofill-tex
 import { FormatOnRelation } from './relation-strategies/format-on-relation';
 import { UpdateRestLookupRelation } from './relation-strategies/update-rest-lookup-relation';
 import { Injectable, Injector } from '@angular/core';
+import { DisableButtonRelation } from './relation-strategies/disable-button-relation.service';
 
 export const RELATION_STRATEGIES: Partial<Record<
   CustomComponentRefRelation,
@@ -24,6 +25,8 @@ export const RELATION_STRATEGIES: Partial<Record<
     new AutofillTextFromRefsRelation(injector),
   [CustomComponentRefRelation.calc]: (injector: Injector) => new CalcRelation(injector),
   [CustomComponentRefRelation.disabled]: (injector: Injector) => new DisabledRelation(injector),
+  [CustomComponentRefRelation.disableButton]: (injector: Injector) =>
+    new DisableButtonRelation(injector),
   [CustomComponentRefRelation.displayOff]: (injector: Injector) => new DisplayOffRelation(injector),
   [CustomComponentRefRelation.displayOn]: (injector: Injector) => new DisplayOnRelation(injector),
   [CustomComponentRefRelation.filterOn]: (injector: Injector) => new FilterOnRelation(injector),
