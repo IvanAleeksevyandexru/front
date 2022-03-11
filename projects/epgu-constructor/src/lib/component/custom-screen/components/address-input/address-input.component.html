@@ -3,6 +3,9 @@
   [component]="control.value"
   [invalid]="control.invalid"
 >
+  <div class="error" *ngIf="stringError">
+    <small>{{ stringError }}</small>
+  </div>
   <epgu-constructor-constructor-dadata-widget
     [simpleMode]="true"
     [invalid]="control.get('value').invalid && control.get('value').touched"
@@ -21,4 +24,13 @@
     [name]="control.value.id"
   >
   </epgu-constructor-constructor-dadata-widget>
+  <ng-container *ngFor="let error of groupedErrors">
+    <epgu-constructor-disclaimer
+        class="confirm-personal-data-disclaimer"
+        *ngIf="error"
+        [type]="error.type"
+        [title]="error.title"
+        [description]="error.desc"
+      ></epgu-constructor-disclaimer>
+  </ng-container>
 </epgu-constructor-component-item>
