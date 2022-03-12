@@ -112,8 +112,8 @@ describe('SelectFromListComponent', () => {
 
   describe('subscribeOnValueChange', () => {
     it('should check radio with choosen element and uncheck others', () => {
-      const testElement = { checked: false };
-      const testElement1 = { checked: true };
+      const testElement = { checked: false, id: 1 };
+      const testElement1 = { checked: true, id: 2 };
       component.fullList = [testElement, testElement1] as any;
 
       component.subscribeOnValueChange();
