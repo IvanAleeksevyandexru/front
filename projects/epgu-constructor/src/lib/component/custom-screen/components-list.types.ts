@@ -277,6 +277,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   largeFontSize?: boolean;
   listIncrementLength?: number;
   listInitLength?: number;
+  emptyDictError?: string;
 }
 
 export interface DateRestriction {

@@ -61,6 +61,8 @@ export default class DictionarySharedAttrs extends GenericAttrs {
 
   readonly clarifications: Clarifications;
 
+  readonly emptyDictError: string;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.dictionaryType = attrs.dictionaryType;
@@ -81,6 +83,7 @@ export default class DictionarySharedAttrs extends GenericAttrs {
     this.mappingParams = attrs.mappingParams;
     this.lookupFilterPath = attrs.lookupFilterPath;
     this.clarifications = attrs.clarifications;
+    this.emptyDictError = attrs.emptyDictError;
   }
 
   public isLoadingNeeded(): boolean {

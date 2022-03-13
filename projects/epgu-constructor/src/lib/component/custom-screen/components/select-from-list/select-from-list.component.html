@@ -25,10 +25,22 @@
       <p class="select-from-list-element__description select-from-list-element__description__mobile" [innerHTML]="item.description"></p>
     </div>
 
+    <div
+      *ngIf="!paginatedData.length"
+      class="select-from-list-element"
+    >
+      <div class="select-from-list-element__container">
+        <epgu-constructor-output-html
+          [clarifications]="attrs.clarifications"
+          [html]="attrs.emptyDictError"
+        ></epgu-constructor-output-html>
+      </div>
+    </div>
+
     <div class="buttons-container">
       <button
         (click)="nextPage()"
-        *ngIf="(isFinished$ | async) === false"
+        *ngIf="(isFinished$ | async) === false && paginatedData.length"
         class="link-btn mt-24 select-from-list-element__button"
       >
         Показать еще {{ leftElementCount$ | async }}
