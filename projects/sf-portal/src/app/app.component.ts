@@ -12,6 +12,7 @@ import { DeviceDetectorService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { MetaTagGeneratorService } from './services/meta-tag-generator/meta-tag-generator.service';
 import { AppConfig } from './app.config';
 import { IframePlayerService } from './services/iframe-player/iframe-player.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 @Component({
   selector: '[app-root]',
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
     private yaMetricService: YaMetricService,
     private psoService: PsoService,
     private metaTagGeneratorService: MetaTagGeneratorService,
+    private helperService: HelperService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(WINDOW) private window: Window,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -71,6 +73,7 @@ export class AppComponent implements OnInit {
     this.fadeOutEffect(this.document.getElementById('start-app-loader') as HTMLElement);
     this.setWindowParams();
     this.isHeaderShown = !this.iframeService.hasIframe && !this.deviceDetectorService.isWebView;
+    this.helperService.setReloadAbsoluteInternalLinks(true);
   }
 
   public getMainBlocksData(): void {
