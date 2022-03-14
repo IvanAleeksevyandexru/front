@@ -4,7 +4,7 @@
   [buttons$]="screenService.buttons$"
 >
   <div class="screen-body" *ngIf="data$ | async as data">
-    <epgu-constructor-page-name>{{ screenService.header$ | async }} </epgu-constructor-page-name>
+    <epgu-constructor-page-name class="mb-0">{{ screenService.header$ | async }} </epgu-constructor-page-name>
 
     <epgu-cf-ui-constructor-screen-pad
       class="body"
