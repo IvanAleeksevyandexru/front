@@ -32,6 +32,7 @@ import { CertificateEaisdoService } from '../../services/certificate-eaisdo/cert
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenButtonService } from './screen-button.service';
 import { ScreenButtonServiceStub } from './screen-button.service.stub';
+import { ForTestsOnlyModule } from '../../../core/for-tests-only.module';
 
 describe('ScreenButtonsComponent', () => {
   let component: ScreenButtonsComponent;
@@ -86,13 +87,12 @@ describe('ScreenButtonsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BaseModule],
+      imports: [BaseModule, ForTestsOnlyModule],
       declarations: [DisabledButtonPipe, ScreenButtonsComponent, ShowLoaderButtonPipe],
       providers: [
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
-        { provide: ScreenButtonService, useClass: ScreenButtonServiceStub },
         EventBusService,
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: EaisdoGroupCostService, useClass: EaisdoGroupCostServiceStub },
@@ -112,17 +112,17 @@ describe('ScreenButtonsComponent', () => {
       .spyOn(screenService, 'display', 'get')
       .mockReturnValue(({ type: ScreenTypes.CUSTOM } as unknown) as DisplayDto);
 
-    buttonsService = TestBed.inject(ScreenButtonService);
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     deviceDetectorServiceSpy = jest.spyOn(deviceDetectorService, 'system', 'get');
     createComponent();
+    buttonsService = fixture.debugElement.injector.get(ScreenButtonService);
     jest.spyOn(screenService, 'buttons', 'get').mockReturnValue([]);
     fixture.detectChanges();
   });
 
   it('should set shownButtons by filtered screenButtons', () => {
     buttonsService.clientSystem = System.Android;
-    createComponent();
+    component.screenButtons = mockScreenButtons;
 
     expect(buttonsService.outputButtons.length).toEqual(4);
   });
@@ -149,7 +149,7 @@ describe('ScreenButtonsComponent', () => {
 
     it('should render buttons filtered for client system', () => {
       buttonsService.clientSystem = System.iOS;
-      createComponent();
+      component.screenButtons = mockScreenButtons;
       fixture.detectChanges();
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
 
