@@ -31,6 +31,7 @@ import { MockProvider } from 'ng-mocks';
 import { CertificateEaisdoService } from '../../../../../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
 import { ScreenButtonService } from '../../../../../../../../shared/components/screen-buttons/screen-button.service';
 import { ScreenButtonServiceStub } from '../../../../../../../../shared/components/screen-buttons/screen-button.service.stub';
+import { ForTestsOnlyModule } from '../../../../../../../../core/for-tests-only.module';
 
 const mockTemplate: ErrorTemplate = {
   header: 'test',
@@ -46,7 +47,13 @@ describe('TimeSlotCheckboxErrorComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TimeSlotCheckboxErrorComponent],
-      imports: [BaseModule, BaseComponentsModule, ConstructorCheckboxModule, ScreenButtonsModule],
+      imports: [
+        BaseModule,
+        BaseComponentsModule,
+        ConstructorCheckboxModule,
+        ScreenButtonsModule,
+        ForTestsOnlyModule,
+      ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },

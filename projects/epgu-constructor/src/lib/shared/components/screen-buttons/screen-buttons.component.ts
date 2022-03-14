@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './screen-buttons.component.html',
   styleUrls: ['./screen-buttons.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
-  providers: [UnsubscribeService],
+  providers: [UnsubscribeService, ScreenButtonService],
 })
 export class ScreenButtonsComponent implements OnInit, OnDestroy {
   @Input() set screenButtons(screenButtons: ScreenButton[]) {
