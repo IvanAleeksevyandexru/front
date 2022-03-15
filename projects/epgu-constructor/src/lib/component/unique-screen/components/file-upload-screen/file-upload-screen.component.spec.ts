@@ -76,6 +76,7 @@ const button = {
   action: DTOActionAction.getNextStep,
   value: '',
   type: ActionType.nextStep,
+  disabledByRel: false,
 };
 
 describe('FileUploadScreenComponent', () => {

@@ -31,7 +31,6 @@ import { MockProvider } from 'ng-mocks';
 import { CertificateEaisdoService } from '../../services/certificate-eaisdo/certificate-eaisdo.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { ScreenButtonService } from './screen-button.service';
-import { ScreenButtonServiceStub } from './screen-button.service.stub';
 import { ForTestsOnlyModule } from '../../../core/for-tests-only.module';
 
 describe('ScreenButtonsComponent', () => {
@@ -121,10 +120,14 @@ describe('ScreenButtonsComponent', () => {
   });
 
   it('should set shownButtons by filtered screenButtons', () => {
-    buttonsService.clientSystem = System.Android;
-    component.screenButtons = mockScreenButtons;
+    fixture = TestBed.createComponent(ScreenButtonsComponent);
+    component = fixture.componentInstance;
+    // @ts-ignore
+    component.screenButtonService.clientSystem = System.Android;
 
-    expect(buttonsService.outputButtons.length).toEqual(4);
+    component.screenButtons = mockScreenButtons;
+    fixture.detectChanges();
+    expect(component.screenButtonService.outputButtons.length).toEqual(4);
   });
 
   describe('render', () => {
@@ -148,8 +151,12 @@ describe('ScreenButtonsComponent', () => {
     });
 
     it('should render buttons filtered for client system', () => {
-      buttonsService.clientSystem = System.iOS;
+      fixture = TestBed.createComponent(ScreenButtonsComponent);
+      component = fixture.componentInstance;
+      // @ts-ignore
+      component.screenButtonService['clientSystem'] = System.iOS;
       component.screenButtons = mockScreenButtons;
+
       fixture.detectChanges();
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
 
