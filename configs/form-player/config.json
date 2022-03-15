@@ -2,6 +2,8 @@
   "default-config": {
     "lkuipElection": "https://lkuip-elections-dev.test.gosuslugi.ru",
     "nsiSuggestDictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi-suggest/v1",
+    "schoolDictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/school/v1/dictionary",
+    "schoolSearchUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/school/v1/search",
     "dictionaryUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1/dictionary",
     "externalApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/nsi/v1",
     "listPaymentsApiUrl": "https://pgu-dev-fed.test.gosuslugi.ru/api/lk/v1/orders/listpaymentsinfo",
