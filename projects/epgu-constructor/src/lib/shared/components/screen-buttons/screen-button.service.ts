@@ -7,8 +7,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenButton, System } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
 
-import { isEqual } from 'lodash';
-import { tap } from 'rxjs/operators';
+import { cloneDeep, isEqual } from 'lodash';
+import { distinctUntilChanged, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ScreenButtonService {
@@ -27,7 +27,11 @@ export class ScreenButtonService {
   ) {}
 
   get outputButtons$(): Observable<ScreenButton[]> {
-    return this._outputButtons.asObservable();
+    return this._outputButtons.pipe(
+      distinctUntilChanged((left, right) => {
+        return isEqual(left, right);
+      }),
+    );
   }
 
   get outputButtons(): ScreenButton[] {
@@ -72,7 +76,8 @@ export class ScreenButtonService {
 
   private processButtonsDisabling(): void {
     let shouldUpdate = false;
-    this.outputButtons.forEach((button) => {
+    const processingButtons = cloneDeep(this.outputButtons);
+    processingButtons.forEach((button) => {
       const disabledByRel = this.rel.calculateDisabling(
         button,
         this.screenService.cachedAnswers,
@@ -86,15 +91,13 @@ export class ScreenButtonService {
         button.disabledByRel = disabledByRel;
       }
       if (shouldUpdate) {
-        this.updateButtons(this.outputButtons);
+        this.updateButtons(processingButtons);
       }
     });
   }
 
   private updateButtons(buttons: ScreenButton[]): void {
-    this.outputButtons = buttons.map((button) => {
-      return { ...button };
-    });
+    this.outputButtons = buttons;
   }
 
   private processButtonsVisibility(form: FormArray): void {
