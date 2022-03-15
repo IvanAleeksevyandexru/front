@@ -31,9 +31,14 @@
     >
       <div class="select-from-list-element__container">
         <epgu-constructor-output-html
+          *ngIf="attrs.emptyDictError || attrs.emptyDictError == ''; else defaultEmptyDictError"
           [clarifications]="attrs.clarifications"
           [html]="attrs.emptyDictError"
         ></epgu-constructor-output-html>
+
+        <ng-template #defaultEmptyDictError>
+          <h6 class="red-line">Значения не найдены</h6>
+        </ng-template>
       </div>
     </div>
 
