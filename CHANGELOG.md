@@ -1,6 +1,6 @@
 # Release Notes
 
-## [401.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.x.x) (2022-03-11)
+## [401.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.x.x) (2022-03-15)
 
 ### Features
 
@@ -25,7 +25,10 @@
 * Добавлен параметр IsFinalReservation для TimeSLot [EPGUCORE-90472]
 * Поправлено отображение presetValue для FieldsList [EPGUCORE-89897]
 * Поправлено обновление данных у ref-buttons [EPGUCORE-90550]
-
+* Добавлен атрибут emptyDictError для SelectFromList [EPGUCORE-89001]
+* Исправлено восстановление select-from-list.component из cachedAnswers [EPGUCORE-90760]
+* Поправлена работа ссылок в lib-header [EPGUCORE-90452]
+* Исправлены пропадающие кнопки на screen-buttons [EPGUCORE-90771]
 ### Chore
 
 * Зафиксирована версия es5-ext без антивоенных призывов
