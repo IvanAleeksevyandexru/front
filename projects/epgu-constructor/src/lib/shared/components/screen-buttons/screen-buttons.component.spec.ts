@@ -120,14 +120,10 @@ describe('ScreenButtonsComponent', () => {
   });
 
   it('should set shownButtons by filtered screenButtons', () => {
-    fixture = TestBed.createComponent(ScreenButtonsComponent);
-    component = fixture.componentInstance;
-    // @ts-ignore
-    component.screenButtonService.clientSystem = System.Android;
-
+    buttonsService['clientSystem'] = System.Android;
     component.screenButtons = mockScreenButtons;
-    fixture.detectChanges();
-    expect(component.screenButtonService.outputButtons.length).toEqual(4);
+
+    expect(buttonsService.outputButtons.length).toEqual(2);
   });
 
   describe('render', () => {
@@ -151,16 +147,12 @@ describe('ScreenButtonsComponent', () => {
     });
 
     it('should render buttons filtered for client system', () => {
-      fixture = TestBed.createComponent(ScreenButtonsComponent);
-      component = fixture.componentInstance;
-      // @ts-ignore
-      component.screenButtonService['clientSystem'] = System.iOS;
+      buttonsService['clientSystem'] = System.iOS;
       component.screenButtons = mockScreenButtons;
-
       fixture.detectChanges();
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
 
-      expect(debugElements.length).toBe(3);
+      expect(debugElements.length).toBe(2);
     });
 
     it('should have button labels', () => {

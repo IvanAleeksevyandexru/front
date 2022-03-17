@@ -4,6 +4,6 @@ import { isBoolean } from 'lodash';
 @Injectable()
 export class TypeCastService {
   public toBoolean(value: boolean | string): boolean {
-    return isBoolean(value) ? value : value === 'true';
+    return isBoolean(value as boolean) ? (value as boolean) : (value as string) === 'true';
   }
 }
