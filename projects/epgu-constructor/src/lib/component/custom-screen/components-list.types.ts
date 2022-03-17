@@ -396,3 +396,10 @@ export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';
 export interface Searchable {
   [key: string]: { value: string | object };
 }
+
+export interface IEntityWithRef {
+  id?: string;
+  attrs?: {
+    ref?: CustomComponentRef[];
+  };
+}

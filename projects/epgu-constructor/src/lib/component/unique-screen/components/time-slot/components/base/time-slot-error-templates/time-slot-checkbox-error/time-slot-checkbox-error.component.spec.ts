@@ -29,6 +29,9 @@ import { EaisdoGroupCostServiceStub } from '../../../../../../../../shared/servi
 import { EaisdoGroupCostService } from '../../../../../../../../shared/services/eaisdo-group-cost/eaisdo-group-cost.service';
 import { MockProvider } from 'ng-mocks';
 import { CertificateEaisdoService } from '../../../../../../../../shared/services/certificate-eaisdo/certificate-eaisdo.service';
+import { ScreenButtonService } from '../../../../../../../../shared/components/screen-buttons/screen-button.service';
+import { ScreenButtonServiceStub } from '../../../../../../../../shared/components/screen-buttons/screen-button.service.stub';
+import { ForTestsOnlyModule } from '../../../../../../../../core/for-tests-only.module';
 
 const mockTemplate: ErrorTemplate = {
   header: 'test',
@@ -44,12 +47,19 @@ describe('TimeSlotCheckboxErrorComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TimeSlotCheckboxErrorComponent],
-      imports: [BaseModule, BaseComponentsModule, ConstructorCheckboxModule, ScreenButtonsModule],
+      imports: [
+        BaseModule,
+        BaseComponentsModule,
+        ConstructorCheckboxModule,
+        ScreenButtonsModule,
+        ForTestsOnlyModule,
+      ],
       providers: [
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: ScreenButtonService, useClass: ScreenButtonServiceStub },
         { provide: HtmlSelectService, useClass: HtmlSelectServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ActionService, useClass: ActionServiceStub },
