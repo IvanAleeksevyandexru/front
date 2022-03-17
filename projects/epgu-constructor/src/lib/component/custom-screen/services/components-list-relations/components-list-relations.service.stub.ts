@@ -5,6 +5,7 @@ import {
   CustomComponent,
   CustomListFormGroup,
   CustomListStatusElements,
+  IEntityWithRef,
 } from '../../components-list.types';
 import { CachedAnswers } from '../../../../screen/screen.types';
 import { FormArray } from '@angular/forms';
@@ -42,5 +43,13 @@ export class ComponentsListRelationsServiceStub {
     _componentsGroupIndex?: number,
   ): CustomListStatusElements {
     return this.calculateVisibility(_components, _screenService.cachedAnswers, _form);
+  }
+
+  public calculateDisabling(
+    _entityWithRef: IEntityWithRef,
+    _cachedAnswers: CachedAnswers,
+    _form: FormArray,
+  ): boolean {
+    return false;
   }
 }
