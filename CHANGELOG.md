@@ -1,5 +1,29 @@
 # Release Notes
 
+## [400.40.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.40.0) (2022-03-17)
+
+### Features
+
+* Добавлена поддержка словарей schoolDictionaryUrl и schoolSearchUrl [EPGUCORE-89110]
+* Добавил атрибут emptyDictError для SelectFromList [EPGUCORE-89001]
+* Добавлен функционал блокирования экранных кнопок через ref buttons [EPGUCORE-86308]
+* Добавлен параметр screenId, пофикшена работа скрытой кнопки в prev-button [EPGUCORE-89472]
+
+### Bug Fixes
+
+* Поправлено отображение ошибки в SelectFromList [EPGUCORE-90870]
+* Исправлено отображение оставшихся элементов в list-pagination.service [EPGUCORE-88670]
+* Исправлены пропадающие кнопки на screen-buttons [EPGUCORE-90771]
+* Исправлен дефект, что при нажатии на кнопку верно ничего не происходит [EPGUCORE-90550]
+* Исправлен дефект, что кнопка сабмита в разных местах нажимается только со второго раза [EPGUCORE-90724]
+* Исправлено восстановление select-from-list.component из cachedAnswers [EPGUCORE-90760]
+* Убраны лишние внутренние отступы в css-классе disabled-white-bg [EPGUCORE-90761]
+* Поправлено, что верстка экрана с компонентом SelectFromList не соответсвует фигме [EPGUCORE-90634]
+
+### Chore
+
+* Застолблены версии всех зависимостей [EPGUCORE-91214]
+
 ## [400.28.2](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.28.2) (2022-03-06)
 
 ### Bug Fixes
