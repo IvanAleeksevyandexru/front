@@ -56,13 +56,14 @@ export class ContinueOrderModalService {
 
     const answerButtons = [];
 
-    orders.forEach((order) => {
+    orders.forEach((order: OrderDto) => {
+      const orderId = order.id || order.orderId;
       const orderRegionName = regions.find((region) => region.okato === order.region)?.name || '';
       const date = this.datesToolsService.format(new Date(order.createdAt), DATE_TIME_HUMAN_FORMAT);
       const answerButton = {
         label: order.name || orderRegionName || order.region,
-        description: `${date} | №${order.id}`,
-        value: order.id.toString(),
+        description: `${date} | №${orderId}`,
+        value: orderId.toString(),
         type: '',
         action: '',
       };
