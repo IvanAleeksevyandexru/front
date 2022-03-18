@@ -29,6 +29,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { NotifierService } from '@epgu/ui/services/notifier';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { ScreenService } from '../../screen/screen.service';
 
 @Component({
   selector: 'epgu-constructor-confirmation-modal',
@@ -60,6 +61,7 @@ export class ConfirmationModalComponent extends ModalBaseComponent
   constructor(
     public injector: Injector,
     public configService: ConfigService,
+    public screenService: ScreenService,
     protected elemRef: ElementRef,
     private locationService: LocationService,
     private ngUnsubscribe$: UnsubscribeService,
