@@ -16,7 +16,10 @@ import {
 import DictionarySharedAttrs from './DictionarySharedAttrs';
 import BaseModel from './BaseModel';
 
-export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs> {
+export default class DictionaryLikeModel<
+  //eslint-disable-next-line
+  T extends DictionarySharedAttrs = DictionarySharedAttrs,
+> extends BaseModel<T> {
   protected _dictionary$ = new BehaviorSubject<CustomListDictionary>(
     this.getDictionaryFirstState(),
   );
@@ -69,8 +72,8 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
     }
   }
 
-  getAttrs(attrs: CustomComponentAttr): DictionarySharedAttrs {
-    return new DictionarySharedAttrs(attrs);
+  getAttrs(attrs: CustomComponentAttr): T {
+    return (new DictionarySharedAttrs(attrs) as unknown) as T;
   }
 
   loadReferenceData$(
