@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { DictionaryFilters } from '@epgu/epgu-constructor-types';
-import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
-import { ScreenService } from '../../../../screen/screen.service';
+import { DictionaryFilters, DictionaryOptions } from '@epgu/epgu-constructor-types';
 import MultipleChoiceDictionaryModelAttrs from './MultipleChoiceDictionaryModelAttrs';
+import AbstractDictionaryLikeComponent from '../abstract-component-list-item/abstract-dictionary-like.component';
+import { takeUntil } from 'rxjs/operators';
+import { isUndefined } from 'lodash';
 
 @Component({
   selector: 'epgu-constructor-multi-choice-dictionary',
@@ -13,14 +13,11 @@ import MultipleChoiceDictionaryModelAttrs from './MultipleChoiceDictionaryModelA
   providers: [UnsubscribeService],
 })
 export class MultiChoiceDictionaryComponent
-  extends AbstractComponentListItemComponent<MultipleChoiceDictionaryModelAttrs>
+  extends AbstractDictionaryLikeComponent<MultipleChoiceDictionaryModelAttrs>
   implements OnInit {
   dictionaryFilter: DictionaryFilters;
-  constructor(
-    public injector: Injector,
-    private dictionaryToolsService: DictionaryToolsService,
-    private screenService: ScreenService,
-  ) {
+  dictionaryOptions: DictionaryOptions;
+  constructor(public injector: Injector) {
     super(injector);
   }
 
@@ -31,5 +28,17 @@ export class MultiChoiceDictionaryComponent
       this.screenService.getStore(),
       this.attrs.dictionaryFilter,
     );
+  }
+
+  protected watchForFilters(): void {
+    this.componentsListRelationsService.filters$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((filters) => {
+        const isFilterInited = !isUndefined(filters[this.model.id]);
+
+        if (isFilterInited) {
+          this.dictionaryOptions = this.prepareDictionaryOptions(filters);
+        }
+      });
   }
 }

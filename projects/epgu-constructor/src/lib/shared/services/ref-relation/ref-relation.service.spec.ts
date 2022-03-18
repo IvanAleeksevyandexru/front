@@ -153,6 +153,20 @@ describe('RefRelationService', () => {
           { id: 2, text: 'gfsd', originalItem: {} },
         ]);
       });
+
+      describe('when componentVal is list with amount (result of MultipleChoiceDictionary)', () => {
+        const componentVal = {
+          list: [
+            { id: 1, text: 'Some text for id 1' },
+            { id: 2, text: 'Some text for id 2' },
+            { id: 3, text: 'Some text for id 3' },
+          ],
+        };
+
+        it('return componentVal.list', () => {
+          expect(service['getValueFromComponentVal'](componentVal)).toEqual(componentVal.list);
+        });
+      });
     });
 
     describe('isValueEquals()', () => {
