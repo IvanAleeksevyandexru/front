@@ -19,6 +19,11 @@ import { MultipleChoiceDictionaryComponent } from '../../../../shared/components
 import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { ScreenService } from '../../../../screen/screen.service';
+import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
+import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
+import AbstractDictionaryLikeComponent from '../abstract-component-list-item/abstract-dictionary-like.component';
+import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
+import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 
 describe('MultiChoiceDictionaryComponent', () => {
   let component: MultiChoiceDictionaryComponent;
@@ -35,10 +40,12 @@ describe('MultiChoiceDictionaryComponent', () => {
       ],
       imports: [FormsModule, ReactiveFormsModule],
       providers: [
-        MockProvider(ComponentsListRelationsService),
         MockProvider(DictionaryToolsService),
+        MockProvider(ComponentsListToolsService),
+        { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
       ],
     })
       .overrideComponent(MultiChoiceDictionaryComponent, {
@@ -59,6 +66,7 @@ describe('MultiChoiceDictionaryComponent', () => {
         dictionaryList: new FormControl('fake dictionaryList'),
         dictionaryType: new FormControl('fake dictionaryType'),
         subLabel: new FormControl('fake subLabel'),
+        isLoadingNeeded: new FormControl(jest.fn().mockReturnValue(false)),
       }),
     });
     formService._form = new FormArray([control]);
@@ -70,6 +78,10 @@ describe('MultiChoiceDictionaryComponent', () => {
 
   it('should extend AbstractComponentListItemComponent', () => {
     expect(component).toBeInstanceOf(AbstractComponentListItemComponent);
+  });
+
+  it('should extend AbstractDictionaryLikeComponent', () => {
+    expect(component).toBeInstanceOf(AbstractDictionaryLikeComponent);
   });
 
   describe('epgu-constructor-component-item', () => {
