@@ -7,6 +7,7 @@ import {
   CustomComponentAttr,
   CustomComponentDropDownItem,
   CustomComponentDropDownItemList,
+  MappingParamsDto,
 } from '../components-list.types';
 import BaseModel from './BaseModel';
 import DictionarySharedAttrs from './DictionarySharedAttrs';
@@ -18,7 +19,7 @@ export default class DropDownLikeModel extends BaseModel<DictionarySharedAttrs> 
 
   static adaptDropdown(
     items: CustomComponentDropDownItemList = [],
-    mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
+    mappingParams: MappingParamsDto = { idPath: '', textPath: '' },
     isRoot?: boolean,
   ): Partial<ListItem>[] {
     return items.map((item: CustomComponentDropDownItem, index: number) => {

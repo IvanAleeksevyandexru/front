@@ -12,6 +12,7 @@ import {
   CustomComponentAttr,
   CustomListDictionary,
   CustomListGenericData,
+  MappingParamsDto,
 } from '../components-list.types';
 import DictionarySharedAttrs from './DictionarySharedAttrs';
 import BaseModel from './BaseModel';
@@ -160,7 +161,7 @@ export default class DictionaryLikeModel<
 
   protected adaptDictionaryToListItem(
     items: (DictionaryItem | KeyValueMap)[],
-    mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
+    mappingParams: MappingParamsDto = { idPath: '', textPath: '' },
     isRoot?: boolean,
   ): ListElement[] {
     return items.map((item) => ({
