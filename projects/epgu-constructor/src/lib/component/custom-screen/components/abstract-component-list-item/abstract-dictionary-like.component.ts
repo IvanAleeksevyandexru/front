@@ -179,7 +179,6 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
       if (dependentComponent.isResultEmpty) {
         dependentControl.get('value').patchValue(reference.defaultValue || '');
         dependentControl.get('value').markAsUntouched();
-        dependentControl.disable({ onlySelf: true, emitEvent: false });
       } else if (dependentControl.disabled) {
         dependentControl.enable({ onlySelf: true, emitEvent: false });
       }
