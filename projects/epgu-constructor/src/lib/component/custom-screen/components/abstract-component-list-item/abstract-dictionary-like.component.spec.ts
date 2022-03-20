@@ -117,26 +117,6 @@ describe('AbstractDictionaryLikeComponent', () => {
       expect(dependentControlSpy).not.toBeCalled();
     });
 
-    it('should reset dependent control', () => {
-      const { dependentControl, control, mockForm, dependentComponent } = setup();
-      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
-      control.markAsTouched();
-      dependentComponent.loadReferenceData$(
-        of({
-          component: dependentComponent as CustomComponent,
-          data: {
-            error: { code: 0, message: 'emptyDictionary' },
-            fieldErrors: [],
-            items: [],
-            total: 0,
-          },
-        }),
-      );
-      component.onAfterFilterOnRel(dependentComponent, mockForm);
-
-      expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
-    });
-
     it('should NOT affect another relations', () => {
       const refs = [
         {
@@ -177,7 +157,6 @@ describe('AbstractDictionaryLikeComponent', () => {
 
       component.onAfterFilterOnRel(dependentComponent, mockForm);
 
-      expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
       expect(dependentComponent.attrs.ref).toEqual(refsExpected);
     });
   });
