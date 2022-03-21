@@ -72,7 +72,9 @@ export class AppComponent implements OnInit {
     this.setWindowParams();
     this.isHeaderShown =
       !this.iframeService.hasIframe &&
-      (!this.deviceDetectorService.isWebView || !this.deviceDetectorService.isBrandSpecificWebView);
+      (!this.deviceDetectorService.isWebView ||
+        // eslint-disable-next-line @typescript-eslint/dot-notation
+        !this.deviceDetectorService['isBrandSpecificWebView']);
   }
 
   public getMainBlocksData(): void {
