@@ -21,6 +21,7 @@ import { ListElement } from '@epgu/ui/models/dropdown';
 import {
   CustomComponent,
   CustomScreenComponentTypes,
+  MappingParamsDto,
   Searchable,
 } from '../../../component/custom-screen/components-list.types';
 import { DictionaryItem } from './dictionary-api.types';
@@ -128,11 +129,12 @@ export class DictionaryToolsService {
    */
   public adaptDictionaryToListItem(
     items: (DictionaryItem | KeyValueMap)[],
-    mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
-    isRoot?: boolean,
+    mappingParams: MappingParamsDto = { idPath: '', textPath: '' },
+    isRootForce?: boolean,
   ): ListElement[] {
     const idPath = this.parsePath(mappingParams.idPath, items[0]);
     const textPath = this.parsePath(mappingParams.textPath, items[0]);
+    const isRoot = isRootForce === undefined ? mappingParams.isRoot : isRootForce;
 
     return items.map((item) => ({
       originalItem: item,
