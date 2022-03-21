@@ -32,6 +32,6 @@ export class DictionaryComponent extends AbstractDictionaryLikeComponent<Diction
   }
 
   public isOneElement(items: ListItem[]): boolean {
-    return items?.length === 1 && items[0].id && items[0].text && this.attrs?.isClearable === false;
+    return items?.length === 1 && items[0].id && items[0].text && !this.attrs?.isClearable;
   }
 }

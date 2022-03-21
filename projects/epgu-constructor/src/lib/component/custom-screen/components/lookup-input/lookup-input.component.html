@@ -9,6 +9,7 @@
     epgu-constructor-validation-type
     [showNotFound]="showNotFound"
     [component]="control.value"
+    [disabled]="!list.length"
     [id]="control.value.id"
     [invalid]="control.get('value').invalid && control.get('value').touched"
     [validationShowOn]="validationShowOn"
