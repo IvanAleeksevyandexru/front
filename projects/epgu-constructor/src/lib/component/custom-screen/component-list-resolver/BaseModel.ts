@@ -14,6 +14,8 @@ export default abstract class BaseModel<T> {
 
   readonly required: boolean;
 
+  readonly disabled: boolean;
+
   readonly visited: boolean;
 
   readonly presetValue?: string;
@@ -33,6 +35,7 @@ export default abstract class BaseModel<T> {
     this.id = componentDto.id;
     this.label = componentDto.label;
     this.required = componentDto.required;
+    this.disabled = componentDto.disabled;
     this.visited = componentDto.visited;
     this.presetValue = componentDto.presetValue;
     this.valueFromCache = componentDto.valueFromCache;
@@ -57,6 +60,7 @@ export default abstract class BaseModel<T> {
       type: this.type,
       label: this.label,
       required: this.required,
+      disabled: this.disabled,
       visited: this.visited,
       presetValue: this.presetValue,
       valueFromCache: this.valueFromCache,
