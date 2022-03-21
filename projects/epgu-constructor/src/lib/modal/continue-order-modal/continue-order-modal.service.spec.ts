@@ -85,8 +85,8 @@ describe('ContinueOrderModalService', () => {
 
     it('should add button with correct params to result', () => {
       const testButton = {
-        label: 'Москва',
-        description: '12 декабря | №1',
+        label: '№1',
+        description: '12 декабря',
         value: '1',
         type: '',
         action: '',
@@ -115,7 +115,7 @@ describe('ContinueOrderModalService', () => {
     it('should add button with correct label to result', () => {
       const testButton = {
         label: 'НеМосква',
-        description: '12 декабря | №1',
+        description: '12 декабря',
         value: '1',
         type: '',
         action: '',
@@ -144,8 +144,8 @@ describe('ContinueOrderModalService', () => {
 
     it('should add button with correct label to result', () => {
       const testButton = {
-        label: 'Киев',
-        description: '12 декабря | №1',
+        label: '№1',
+        description: '12 декабря',
         value: '1',
         type: '',
         action: '',
