@@ -13,6 +13,7 @@ import BaseModel from '../../component-list-resolver/BaseModel';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
+import { UpdateFiltersEvents } from '../../services/components-list-relations/components-list-relations.interface';
 
 @Component({
   template: '',
@@ -94,25 +95,8 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
       const hasFilterReference = filters[this.model.id] !== null;
 
       if (isFilterInited) {
-        const { dictionaryType, dictionaryOptions = null } = this.attrs;
-        const isHierarchical = !!filters[this.model.id]?.reference?.isHierarchical;
-        const hasFilter = !!filters[this.model.id]?.reference?.dictionaryFilter;
-        let options: DictionaryOptions = dictionaryOptions || { pageNum: 0 };
-
-        if (isHierarchical) {
-          options = {
-            ...options,
-            parentRefItemValue: filters[this.model.id].value.id as string,
-          };
-        }
-
-        if (hasFilter) {
-          options.filter = this.dictionaryToolsService.getFilterOptions(
-            filters[this.model.id].value,
-            this.screenService.getStore(),
-            filters[this.model.id].reference.dictionaryFilter,
-          ).filter;
-        }
+        const { dictionaryType } = this.attrs;
+        const options = this.prepareDictionaryOptions(filters);
 
         this.model
           .getDictionariesByFilter(
@@ -127,6 +111,30 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
           });
       }
     });
+  }
+
+  protected prepareDictionaryOptions(filters: UpdateFiltersEvents): DictionaryOptions {
+    const { dictionaryOptions = null } = this.attrs;
+    const isHierarchical = !!filters[this.model.id]?.reference?.isHierarchical;
+    const hasFilter = !!filters[this.model.id]?.reference?.dictionaryFilter;
+    let options: DictionaryOptions = dictionaryOptions || { pageNum: 0 };
+
+    if (isHierarchical) {
+      options = {
+        ...options,
+        parentRefItemValue: filters[this.model.id].value.id as string,
+      };
+    }
+
+    if (hasFilter) {
+      options.filter = this.dictionaryToolsService.getFilterOptions(
+        filters[this.model.id].value,
+        this.screenService.getStore(),
+        filters[this.model.id].reference.dictionaryFilter,
+      ).filter;
+    }
+
+    return options;
   }
 
   protected onAfterFilterOnRel(
@@ -171,7 +179,6 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
       if (dependentComponent.isResultEmpty) {
         dependentControl.get('value').patchValue(reference.defaultValue || '');
         dependentControl.get('value').markAsUntouched();
-        dependentControl.disable({ onlySelf: true, emitEvent: false });
       } else if (dependentControl.disabled) {
         dependentControl.enable({ onlySelf: true, emitEvent: false });
       }

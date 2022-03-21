@@ -39,6 +39,7 @@ export class GroupListContainerComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+    this.stateService.initializeStateSynchronization();
     const { uuid, isNextSchoolYear } = this.init();
 
     this.program$ = this.dictionaryService

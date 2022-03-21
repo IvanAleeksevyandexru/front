@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ListElement } from '@epgu/ui/models/dropdown';
 import { JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { CustomComponentRefRelation } from '@epgu/epgu-constructor-types';
+import {
+  CustomComponentRefRelation,
+  ObjectWithId,
+  ParsedComponentValue,
+} from '@epgu/epgu-constructor-types';
 import { EMPTY_VALUE, NON_EMPTY_VALUE } from './ref-relation.contant';
 
 @Injectable()
@@ -10,6 +14,10 @@ export class RefRelationService {
 
   public isDisplayOffRelation(relation: CustomComponentRefRelation): boolean {
     return relation === CustomComponentRefRelation.displayOff;
+  }
+
+  public isDisableButtonRelation(relation: CustomComponentRefRelation): boolean {
+    return relation === CustomComponentRefRelation.disableButton;
   }
 
   public isDisplayOnRelation(relation: CustomComponentRefRelation): boolean {
@@ -43,16 +51,20 @@ export class RefRelationService {
    */
   public isValueEquals(
     value: string | string[] | boolean,
-    componentVal: { id?: string } | string | number, // TODO: нормализовать типы
+    componentVal: ParsedComponentValue,
   ): boolean {
     const parsedComponentValue = this.getValueFromComponentVal(componentVal);
 
     if (value === EMPTY_VALUE) {
-      return !parsedComponentValue;
+      return Array.isArray(parsedComponentValue)
+        ? parsedComponentValue.length === 0
+        : !parsedComponentValue;
     }
 
     if (value === NON_EMPTY_VALUE) {
-      return !!parsedComponentValue;
+      return Array.isArray(parsedComponentValue)
+        ? parsedComponentValue.length > 0
+        : !!parsedComponentValue;
     }
 
     if (Array.isArray(parsedComponentValue)) {
@@ -72,7 +84,7 @@ export class RefRelationService {
   }
 
   private getValueFromComponentVal(
-    componentVal: { id?: string } | string | number | Date | ListElement[],
+    componentVal: ParsedComponentValue,
   ): string | Date | ListElement[] {
     if (componentVal instanceof Date) {
       return componentVal;
@@ -89,14 +101,18 @@ export class RefRelationService {
       return parsedValue.id;
     }
 
+    if (typeof componentVal === 'object' && componentVal !== null && 'list' in componentVal) {
+      return componentVal.list as ListElement[];
+    }
+
     // NOTICE: иногда сюда приходят значения мультисписка, которые представлены массивом ListElement
     // необходимо возвращать его в том же виде, чтобы в isValueEquals не ломалась бизнес-логика
     if (Array.isArray(componentVal)) {
-      return componentVal;
+      return componentVal as ListElement[];
     }
 
     return ['string', 'boolean'].includes(typeof componentVal)
       ? (componentVal as string)
-      : (componentVal as { id?: string })?.id;
+      : (componentVal as ObjectWithId)?.id;
   }
 }

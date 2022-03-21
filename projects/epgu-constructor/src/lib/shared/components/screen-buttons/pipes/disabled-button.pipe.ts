@@ -12,6 +12,7 @@ export class DisabledButtonPipe implements PipeTransform {
     isLoading: boolean,
   ): boolean {
     return (
+      button.disabledByRel ||
       (disabled && disabledForAll) ||
       (disabled &&
         !disabledForAll &&

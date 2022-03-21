@@ -19,6 +19,7 @@ import {
   EventBusService,
   LocationService,
   ModalService,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, filter } from 'rxjs/operators';
@@ -65,6 +66,7 @@ export class ActionToolsService {
     private navModalService: NavigationModalService,
     private notifierService: NotifierService,
     private screenService: ScreenService,
+    private objectHelperService: ObjectHelperService,
   ) {}
 
   public openConfirmationModal(
@@ -278,8 +280,8 @@ export class ActionToolsService {
   }
 
   private getParams(action: ComponentActionDto): NavigationParams {
-    const { stepsBack } = action?.attrs || {};
-    return stepsBack ? { stepsBack } : {};
+    const { stepsBack, screenId } = action?.attrs || {};
+    return this.objectHelperService.filterIncorrectObjectFields({ stepsBack, screenId });
   }
 
   private getComponentStateForNavigate(

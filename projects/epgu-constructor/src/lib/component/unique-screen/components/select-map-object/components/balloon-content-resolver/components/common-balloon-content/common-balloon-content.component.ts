@@ -17,6 +17,7 @@ import {
   YMapItem,
   DeviceDetectorService,
   flyInOut,
+  BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
@@ -31,11 +32,12 @@ import { IBalloonContent } from '../../balloon-content-resolver.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [rotateAndDiminish, smoothHeight, flyInOut],
 })
-export class CommonBalloonContentComponent implements IBalloonContent {
+export class CommonBalloonContentComponent extends BaseComponent implements IBalloonContent {
   @Input() isSelectButtonHidden = false;
   @Input() showLoader: Observable<boolean>;
   @Input() mapObjects;
   @Input() lockAnimation = false;
+  @Input() showChevron = false;
   @Input() attrs: KeyValueMap = {};
   @Input() showCrossButton = true;
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
@@ -51,7 +53,9 @@ export class CommonBalloonContentComponent implements IBalloonContent {
     public config: ConfigService,
     public deviceDetector: DeviceDetectorService,
     private modalService: ModalService,
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * Показывает модальное окно на основе шаблона

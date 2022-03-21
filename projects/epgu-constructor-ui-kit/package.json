@@ -8,10 +8,10 @@
     "lint:fix": "cd ../../ && ng lint epgu-constructor-ui-kit --fix"
   },
   "peerDependencies": {
-    "@angular/common": "13.1.1",
-    "@angular/core": "13.1.1",
-    "@angular/cdk": "13.1.1",
-    "@angular/forms": "13.1.1",
+    "@angular/common": "13.3.0",
+    "@angular/core": "13.3.0",
+    "@angular/cdk": "13.3.0",
+    "@angular/forms": "13.3.0",
     "@datorama/akita": "6.2.0",
     "@epgu/ui": "3.0.401-1-front",
     "rxjs": "6.6.7",
@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@epgu/zipkin": "0.0.3",
-    "tslib": "^2.0.0",
-    "ismobilejs": "^1.1.1",
+    "tslib": "2.0.0",
+    "ismobilejs": "1.1.1",
     "zipkin-transport-http": "0.22.0"
   }
 }

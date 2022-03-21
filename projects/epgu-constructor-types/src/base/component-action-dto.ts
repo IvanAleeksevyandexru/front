@@ -4,21 +4,25 @@ import { ActionAnswerDto } from './action-answer-dto';
 import { Clarifications } from './clarifications';
 import { KeyValueMap } from './core.types';
 import { System } from './system';
+import { CustomComponentRef } from './custom-component-ref';
 
 export interface ComponentActionDto {
   action: DTOActionAction;
   applicantType?: string;
   attrs?: {
     stepsBack?: number;
+    screenId?: string;
     hidden?: boolean;
     clarifications?: Clarifications;
     additionalParams?: KeyValueMap;
     showOnOS?: System[];
     needToCloseModal?: boolean;
+    ref?: CustomComponentRef[];
   };
   color?: ButtonColor;
   deliriumAction?: string;
   disabled?: boolean;
+  disabledByRel?: boolean;
   id?: string;
   hidden?: boolean;
   hint?: string;

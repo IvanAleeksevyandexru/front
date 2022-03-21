@@ -10,7 +10,7 @@
     [validationShowOn]="validationShowOn"
     [disabled]="isOneElement(list)"
     [formControl]="$any(control.get('value'))"
-    [clearable]="attrs?.isClearable !== false"
+    [clearable]="attrs?.isClearable"
     [placeholder]="attrs?.defaultLabelList || '&mdash;'"
     [localSearch]="attrs?.localSearch"
     class="cs__select cs-select"

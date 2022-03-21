@@ -17,8 +17,9 @@ import { ItemComponent } from './components/item/item.component';
 import { ViewComponent } from './components/view/view.component';
 import { BaseModule } from '../base/base.module';
 import { StateService } from '../../services/state/state.service';
-import { SelectMapObjectCcModule } from '../select-map-object/select-map-object.module';
 import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
+import { SelectMapObjectModule } from '../../../select-map-object/select-map-object.module';
+import { SelectMapObjectService } from '../../../select-map-object/select-map-object.service';
 
 @NgModule({
   declarations: [ProgramListContainerComponent, ListComponent, ItemComponent, ViewComponent],
@@ -29,12 +30,19 @@ import { DictionaryApiService } from '../../../../../../shared/services/dictiona
     SharedModalModule,
     ScreenPadModule,
     ScreenContainerModule,
-    SelectMapObjectCcModule,
+    SelectMapObjectModule,
     PluralizeModule,
     ToggleTextModule,
   ],
 
-  providers: [ProgramListService, ModalService, ConfigService, DictionaryApiService, StateService],
+  providers: [
+    ProgramListService,
+    ModalService,
+    ConfigService,
+    DictionaryApiService,
+    StateService,
+    SelectMapObjectService,
+  ],
   exports: [ProgramListContainerComponent, ViewComponent],
   entryComponents: [ProgramListContainerComponent, ViewComponent],
 })

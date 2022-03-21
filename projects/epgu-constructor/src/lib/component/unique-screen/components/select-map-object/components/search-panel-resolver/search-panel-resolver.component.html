@@ -2,8 +2,24 @@
   <div class="map-search-panel__nav">
     <epgu-cf-ui-prev-button
       class="map-search-panel__nav__prev-button"
-      *ngIf="screenService.showNav$ | async"
+      *ngIf="!customNav && screenService.showNav$ | async"
     ></epgu-cf-ui-prev-button>
+    <button
+      *ngIf="customNav"
+      class="back-button link-btn"
+      name="prev"
+      (click)="$any(searchPanelRef.instance).handleCustomNavBehavior()"
+    >
+      <span class="icon-arrow icon-arrow--left icon-arrow--back"></span>
+      <span>Назад</span>
+    </button>
+    <epgu-cf-ui-icon
+      class="map-search-panel__nav__filter-icon-desktop"
+      *ngIf="enableFilter"
+      [type]="iconType.Filter"
+      [mainColor]="iconColor.BaseGosblue"
+      (click)="$any(searchPanelRef.instance).openFilters()"
+    ></epgu-cf-ui-icon>
     <div class="map-search-panel__nav__toolbar">
       <epgu-cf-ui-icon
         [activeColor]="iconColor.ActiveGray"
@@ -19,6 +35,15 @@
         [type]="iconType.Menu"
         [mainColor]="iconColor.BaseGosblue"
         (click)="selectMapObjectService.setViewType(viewTypes.List)"
+      ></epgu-cf-ui-icon>
+      <epgu-cf-ui-icon
+        class="map-search-panel__nav__filter-icon-mobile"
+        *ngIf="enableFilter"
+        [width]="20"
+        [height]="20"
+        [type]="iconType.Filter"
+        [mainColor]="iconColor.BaseGosblue"
+        (click)="$any(searchPanelRef.instance).openFilters()"
       ></epgu-cf-ui-icon>
     </div>
   </div>

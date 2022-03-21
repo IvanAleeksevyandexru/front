@@ -48,6 +48,7 @@ export enum MapTypes {
   electionsMap = 'electionsMap',
   kindergartenMap = 'kindergartenMap',
   justiceMap = 'justiceMap',
+  childrenClubsMap = 'childrenClubsMap',
 }
 
 export enum SidebarViewType {
@@ -150,8 +151,10 @@ export class SelectMapObjectService implements OnDestroy {
       if (coordinates) {
         item.center = [coordinates.longitude, coordinates.latitude];
       }
-      item.baloonContent =
-        this.getMappedAttrsForBaloon(this.componentAttrs.baloonContent, item) || [];
+      if (this.componentAttrs.baloonContent) {
+        item.baloonContent =
+          this.getMappedAttrsForBaloon(this.componentAttrs.baloonContent, item) || [];
+      }
     });
     this.filteredDictionaryItems = this.dictionary.items;
   }

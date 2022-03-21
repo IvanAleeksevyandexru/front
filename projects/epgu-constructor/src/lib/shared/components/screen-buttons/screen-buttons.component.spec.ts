@@ -2,7 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
-import { ActionType, DTOActionAction, ScreenButton, System } from '@epgu/epgu-constructor-types';
+import {
+  ActionType,
+  DisplayDto,
+  DTOActionAction,
+  ScreenButton,
+  ScreenTypes,
+  System,
+} from '@epgu/epgu-constructor-types';
 import {
   DeviceDetectorService,
   DeviceDetectorServiceStub,
@@ -23,6 +30,8 @@ import { EaisdoGroupCostService } from '../../services/eaisdo-group-cost/eaisdo-
 import { MockProvider } from 'ng-mocks';
 import { CertificateEaisdoService } from '../../services/certificate-eaisdo/certificate-eaisdo.service';
 import { ScreenService } from '../../../screen/screen.service';
+import { ScreenButtonService } from './screen-button.service';
+import { ForTestsOnlyModule } from '../../../core/for-tests-only.module';
 
 describe('ScreenButtonsComponent', () => {
   let component: ScreenButtonsComponent;
@@ -30,6 +39,7 @@ describe('ScreenButtonsComponent', () => {
   let deviceDetectorService: DeviceDetectorService;
   let deviceDetectorServiceSpy: jest.SpyInstance;
   let screenService: ScreenService;
+  let buttonsService: ScreenButtonService;
 
   const mockScreenButtons: ScreenButton[] = [
     {
@@ -76,7 +86,7 @@ describe('ScreenButtonsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BaseModule],
+      imports: [BaseModule, ForTestsOnlyModule],
       declarations: [DisabledButtonPipe, ScreenButtonsComponent, ShowLoaderButtonPipe],
       providers: [
         { provide: ActionService, useClass: ActionServiceStub },
@@ -97,25 +107,23 @@ describe('ScreenButtonsComponent', () => {
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
+    jest
+      .spyOn(screenService, 'display', 'get')
+      .mockReturnValue(({ type: ScreenTypes.CUSTOM } as unknown) as DisplayDto);
+
     deviceDetectorService = TestBed.inject(DeviceDetectorService);
     deviceDetectorServiceSpy = jest.spyOn(deviceDetectorService, 'system', 'get');
     createComponent();
+    buttonsService = fixture.debugElement.injector.get(ScreenButtonService);
     jest.spyOn(screenService, 'buttons', 'get').mockReturnValue([]);
     fixture.detectChanges();
   });
 
-  it('should set clientSystem', () => {
-    deviceDetectorServiceSpy.mockReturnValue(System.Android);
-    createComponent();
-
-    expect((component as any).clientSystem).toEqual(System.Android);
-  });
-
   it('should set shownButtons by filtered screenButtons', () => {
-    deviceDetectorServiceSpy.mockReturnValue(System.Android);
-    createComponent();
+    buttonsService['clientSystem'] = System.Android;
+    component.screenButtons = mockScreenButtons;
 
-    expect(component.shownButtons.length).toEqual(4);
+    expect(buttonsService.outputButtons.length).toEqual(2);
   });
 
   describe('render', () => {
@@ -139,12 +147,12 @@ describe('ScreenButtonsComponent', () => {
     });
 
     it('should render buttons filtered for client system', () => {
-      deviceDetectorServiceSpy.mockReturnValue(System.iOS);
-      createComponent();
+      buttonsService['clientSystem'] = System.iOS;
+      component.screenButtons = mockScreenButtons;
       fixture.detectChanges();
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
 
-      expect(debugElements.length).toBe(3);
+      expect(debugElements.length).toBe(2);
     });
 
     it('should have button labels', () => {
@@ -159,8 +167,8 @@ describe('ScreenButtonsComponent', () => {
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));
       debugElements[0].nativeElement.click();
 
-      expect(setClickedButtonSpy).toBeCalledWith(component.shownButtons[0]);
-      expect(component.clickedButton).toBe(component.shownButtons[0]);
+      expect(setClickedButtonSpy).toBeCalledWith(buttonsService.outputButtons[0]);
+      expect(component.clickedButton).toBe(buttonsService.outputButtons[0]);
     });
 
     it('should disable all buttons when isLoading', () => {
@@ -174,7 +182,7 @@ describe('ScreenButtonsComponent', () => {
 
     it('should add loaded class for clickedButton', () => {
       component.isLoading = true;
-      component.clickedButton = component.shownButtons[1];
+      component.clickedButton = buttonsService.outputButtons[1];
       fixture.detectChanges();
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button button'));
 

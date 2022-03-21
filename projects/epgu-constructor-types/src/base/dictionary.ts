@@ -65,6 +65,8 @@ export enum DictionaryUrlTypes {
   nsiSuggest = 'nsiSuggest',
   lkApi = 'lkApi',
   childrenClubsApi = 'childrenClubsApi',
+  schoolDictionaryUrl = 'schoolDictionaryUrl',
+  schoolSearchUrl = 'schoolSearchUrl',
 }
 
 export enum DictionaryUnionKind {

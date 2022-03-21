@@ -33,10 +33,12 @@ export const checkMaritalStatusRecordYear = (
  */
 export const checkMaritalStatusRecordCS = (value: string): boolean => {
   const check = (checkVal: string): boolean => {
-    const coefficients = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+    const coefficients = new Array(10).fill([1, 2]).flat();
     // 1) произведение значения на коэффицент не должно быть больше 9
-    const checkDigit = (coefficient: number, digit: number): number =>
-      coefficient * digit > 9 ? digit - 9 : digit;
+    const checkDigit = (coefficient: number, digit: number): number => {
+      const result = coefficient * digit;
+      return result > 9 ? result - 9 : result;
+    };
 
     const checkSum = coefficients.reduce(
       (sum, coefficient, index) => sum + checkDigit(coefficient, parseFloat(checkVal[index])),

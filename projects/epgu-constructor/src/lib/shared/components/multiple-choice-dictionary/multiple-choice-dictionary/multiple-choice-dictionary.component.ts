@@ -11,7 +11,7 @@ import { ListElement } from '@epgu/ui/models/dropdown';
 import { mapTo, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
-import { Clarifications, DictionaryFilters, DictionaryOptions } from '@epgu/epgu-constructor-types';
+import { DictionaryFilters, DictionaryOptions, DictionaryType, Clarifications } from '@epgu/epgu-constructor-types';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
 import {
   CustomComponentDropDownItem,
@@ -41,7 +41,7 @@ export class MultipleChoiceDictionaryComponent implements OnInit, ControlValueAc
   @Input() label: string;
   @Input() dictionaryFilter: DictionaryFilters;
   @Input() dictionaryList?: unknown;
-  @Input() dictionaryType?: string;
+  @Input() dictionaryType?: DictionaryType;
   @Input() isReadonly?: boolean;
   @Input() tip?: string;
   @Input() mappingParams?: MappingParamsDto;

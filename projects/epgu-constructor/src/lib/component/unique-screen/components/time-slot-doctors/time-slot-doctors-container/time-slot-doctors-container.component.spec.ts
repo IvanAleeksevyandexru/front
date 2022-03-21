@@ -26,6 +26,7 @@ import {
   UnsubscribeService,
   JsonHelperService,
   ConstructorLookupComponent,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockProvider } from 'ng-mocks';
 import { HttpClientModule } from '@angular/common/http';
@@ -375,6 +376,7 @@ describe('TimeSlotDoctorsContainerComponent', () => {
         HtmlRemoverService,
         EventBusService,
         HtmlSelectService,
+        ObjectHelperService,
       ],
       imports: [
         BaseModule,

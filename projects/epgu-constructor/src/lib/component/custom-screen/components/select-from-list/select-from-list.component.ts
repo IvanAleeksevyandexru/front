@@ -102,7 +102,7 @@ export class SelectFromListComponent
   private subscribeOnValueChange(): void {
     this.control.get('value').valueChanges.subscribe((value) => {
       this.fullList.forEach((listElement) => {
-        listElement.checked = listElement === value;
+        listElement.checked = listElement.id === value.id;
       });
     });
   }

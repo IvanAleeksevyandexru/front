@@ -20,5 +20,6 @@
 .disabled-white-bg {
   background-color: transparent;
   box-shadow: none;
+  padding: 0;
 }
 @include screen-buttons-margin;

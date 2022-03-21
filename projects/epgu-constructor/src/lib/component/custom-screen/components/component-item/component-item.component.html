@@ -17,7 +17,7 @@
       ></epgu-constructor-output-html>
       <small>{{ lastError.msg }}</small>
     </ng-container>
-    <small *ngIf="hasServerError">
+    <small *ngIf="hasServerError && component.type !== 'AddressInput'">
       {{ control.getError('serverError') }}
     </small>
   </div>
