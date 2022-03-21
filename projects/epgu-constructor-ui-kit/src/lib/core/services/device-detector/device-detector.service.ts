@@ -7,7 +7,7 @@ import { WINDOW } from '../../providers/window.provider';
 import {
   BrowserName,
   MOBILE_VIEW_COOKIE_NAME,
-  WEB_VIEW_USER_AGENTS,
+  BRAND_SPECIFIC_WEB_VIEW_USER_AGENTS,
 } from './device-detector.types';
 
 @Injectable()
@@ -19,6 +19,8 @@ export class DeviceDetectorService {
   isDesktop: boolean;
 
   isWebView: boolean;
+
+  isBrandSpecificWebView: boolean;
 
   userAgent: UserAgent;
 
@@ -40,7 +42,8 @@ export class DeviceDetectorService {
     this.isMobile = deviceInfo.phone;
     this.isTablet = deviceInfo.tablet;
     this.isDesktop = !this.isMobile && !this.isTablet;
-    this.isWebView = this.isWebViewUserAgent() || this.smuEventsService.smuInit;
+    this.isBrandSpecificWebView = this.isBrandSpecificWebViewUserAgent();
+    this.isWebView = this.smuEventsService.smuInit;
   }
 
   isIOS(): boolean {
@@ -113,9 +116,9 @@ export class DeviceDetectorService {
     }
   }
 
-  private isWebViewUserAgent(): boolean {
-    const webViewRegExp = new RegExp(`(${WEB_VIEW_USER_AGENTS.join('|')})`, 'ig');
+  private isBrandSpecificWebViewUserAgent(): boolean {
+    const regExp = new RegExp(`(${BRAND_SPECIFIC_WEB_VIEW_USER_AGENTS.join('|')})`, 'ig');
 
-    return !!this.userAgent?.match(webViewRegExp);
+    return !!this.userAgent?.match(regExp);
   }
 }
