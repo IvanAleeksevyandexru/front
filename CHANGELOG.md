@@ -1,5 +1,18 @@
 # Release Notes
 
+## [400.43.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.43.0) (2022-03-21)
+
+### Features
+
+* Добавлена поддержка фильтрации и displayOff для MultipleChoiceDictionary [EPGUCORE-89031]
+
+### Bug Fixes
+
+* Исправлен выбор языка в Dictionary [EPGUCORE-91030]
+* Добавлен isLoading на кнопку в screen-buttons.component [EPGUCORE-91323]
+* Поправлена передача orderId в ContinueOrderModalService [EPGUCORE-91344]
+* Поправлено поведение Lookup, теперь он не дисейблится, если спрочник пустой [EPGUCORE-91394]
+
 ## [400.40.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.40.0) (2022-03-17)
 
 ### Features
