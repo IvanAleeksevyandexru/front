@@ -388,6 +388,7 @@ export class ComponentsListFormService {
           },
           validators,
         ],
+        disabled: false,
       },
       { updateOn: UpdateOn.ON_CHANGE }, // NOTE: See https://jira.egovdev.ru/browse/EPGUCORE-53355
     );
