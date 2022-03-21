@@ -24,6 +24,8 @@
 ### Chore
 
 * Зафиксирована версия es5-ext без антивоенных призывов
+* Произведена дедупликация зависимостей в yarn.lock [EPGUCORE-91325]
+
 ## [400.43.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.43.0) (2022-03-21)
 
 ### Features
