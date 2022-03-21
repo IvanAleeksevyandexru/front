@@ -70,7 +70,9 @@ export class AppComponent implements OnInit {
     this.initCounters();
     this.fadeOutEffect(this.document.getElementById('start-app-loader') as HTMLElement);
     this.setWindowParams();
-    this.isHeaderShown = !this.iframeService.hasIframe && !this.deviceDetectorService.isWebView;
+    this.isHeaderShown =
+      !this.iframeService.hasIframe &&
+      (!this.deviceDetectorService.isWebView || !this.deviceDetectorService.isBrandSpecificWebView);
   }
 
   public getMainBlocksData(): void {

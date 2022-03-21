@@ -15,7 +15,11 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
-      "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"]
+      "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
+      "@epgu/epgu-constructor": ["dist/epgu-constructor"],
+      "@epgu/epgu-constructor-ui-kit": ["dist/epgu-constructor-ui-kit"],
+      "@epgu/children-clubs": ["dist/children-clubs"],
+      "@epgu/epgu-constructor-types": ["projects/epgu-constructor-types/dist"]
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
