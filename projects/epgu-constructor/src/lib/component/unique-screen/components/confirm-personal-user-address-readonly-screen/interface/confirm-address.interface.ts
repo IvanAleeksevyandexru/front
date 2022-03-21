@@ -53,7 +53,7 @@ export interface ConfirmAddressActionsInterface {
 export interface ConfirmAddressFieldsInterface {
   fieldName: FieldNames;
   label: string;
-  attrs?: { labelHint?: string; clarifications?: Clarifications };
+  attrs?: { labelHint?: string; clarifications?: Clarifications; isOnlyForValidation?: boolean };
   hint?: string;
   nonPresetable?: boolean;
 }
@@ -62,4 +62,11 @@ export interface ConfirmAddressReadonlyValue {
   fullAddress: object;
   regAddr: string;
   regDate?: string | Date;
+}
+
+export interface ConfirmAddressReadonlyErrorsInterface {
+  desc?: string;
+  icon?: string;
+  title?: string;
+  type?: string;
 }

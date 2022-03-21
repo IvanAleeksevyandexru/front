@@ -7,7 +7,7 @@
 >
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
     <ng-container
-      *ngFor="let field of (data$ | async)?.attrs?.fields"
+      *ngFor="let field of (fields$ | async)"
       [ngSwitch]="field?.fieldName"
     >
       <ng-container *ngSwitchCase="isAddr(field.fieldName)">
@@ -51,9 +51,18 @@
         </div>
       </div>
     </ng-container>
-    <div class="error" *ngIf="screenService.componentError$ | async">
-      <small>{{ screenService.componentError$ | async }}</small>
+    <div class="error" *ngIf="stringError">
+      <small>{{ stringError }}</small>
     </div>
+    <ng-container *ngFor="let error of groupedErrors">
+      <div class="error error--grouped" *ngIf="error">
+        <p class="title"><span [class]="error.icon"></span>{{ error.title }}</p>
+        <epgu-constructor-output-html
+          class="description"
+          [html]="error.desc"
+        ></epgu-constructor-output-html>
+      </div>
+    </ng-container>
     <epgu-constructor-disclaimer
       *ngIf="(data$ | async)?.attrs?.disclaimer as disclaimer"
       [type]="disclaimer.type"
