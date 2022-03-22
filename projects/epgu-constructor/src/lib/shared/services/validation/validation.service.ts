@@ -83,13 +83,8 @@ export class ValidationService {
         );
       }
 
-      if (component.type === CustomScreenComponentTypes.MultipleChoiceDictionary) {
-        const atLeastOne = component?.attrs?.validation?.find(
-          (v) => v.condition === CustomComponentValidationConditions.atLeastOne,
-        );
-        if (atLeastOne) {
-          customMessage = { errorMsg: '' };
-        }
+      if (component.hasAtLeastOne(component)) {
+        customMessage = { errorMsg: '' };
       }
 
       if (!value || validations?.length === 0) {
