@@ -234,8 +234,7 @@ Portal-build:
         - dist
         - projects/epgu-constructor-types/dist
   script:
-    - test -d projects/sf-portal/node_modules || yarn install --frozen-lockfile --no-progress
-    - yarn build:portal:dev
+    - yarn build:portal
   interruptible: true
   needs: ["Form-player-build"]
   only:

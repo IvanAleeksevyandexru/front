@@ -1,9 +1,32 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "extends": "./tsconfig.app.json",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "baseUrl": ".",
+    "outDir": "../../out-tsc/app",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["node_modules/@types"],
+    "types": ["node"],
+    "inlineSources": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es6",
+    "lib": ["es2018", "dom"],
+    "paths": {
+      "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
+      "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"],
+      "@epgu/epgu-constructor": ["../../dist/epgu-constructor/public-api"],
+      "@epgu/children-clubs": ["../../dist/children-clubs/public-api"],
+      "@epgu/epgu-constructor-ui-kit": ["../../dist/epgu-constructor-ui-kit/public-api"],
+      "@epgu/epgu-constructor-types": ["../epgu-constructor-types/dist"]
+    }
+  },
+  "files": ["src/main.ts", "src/polyfills.ts"],
+  "include": ["src/**/*.d.ts", "src/**/*.ts"],
+  "exclude": ["**/*.spec.ts"],
   "angularCompilerOptions": {
     "enableIvy": true,
     "compilationMode": "full"
-  },
-  "files": ["src/main.ts", "src/polyfills.ts"]
+  }
 }
