@@ -7,6 +7,7 @@
 * Добавлен clarification в ConfirmPersonalUserRegReadOnlyAddr [EPGUCORE-86023]
 * Добавлена валидация в Адреса в компоненте AddressInput [EPGUCORE-90117]
 * Добавлена валидация в Адреса в компоненте RegistrationAddr [EPGUCORE-90116]
+* Добавлена валидация в ConfirmPersonalUserRegReadOnlyAddr [EPGUCORE-90115]
 
 ### Refactor
 
@@ -21,6 +22,7 @@
 * Добавлен параметр IsFinalReservation для TimeSLot [EPGUCORE-90472]
 * Поправлено отображение presetValue для FieldsList [EPGUCORE-89897]
 * Поправлена работа ссылок в lib-header [EPGUCORE-90452]
+
 ### Chore
 
 * Зафиксирована версия es5-ext без антивоенных призывов
