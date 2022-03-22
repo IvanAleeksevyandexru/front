@@ -326,7 +326,7 @@
               ]
             },
             "development": {
-              "tsConfig": "projects/sf-portal/tsconfig.app.dev.json",
+              "tsConfig": "projects/sf-portal/tsconfig.app.prod.json",
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
