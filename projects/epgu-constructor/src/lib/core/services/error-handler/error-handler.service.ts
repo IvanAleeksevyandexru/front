@@ -8,8 +8,8 @@ import {
   UnsubscribeService,
   LocalStorageService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { Observable, of, throwError } from 'rxjs';
-import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Observable, of, throwError, timer } from 'rxjs';
+import { switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   NEW_BOOKING_ERROR,
@@ -29,6 +29,8 @@ import { ContinueOrderModalService } from '../../../modal/continue-order-modal/c
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
+  private isPollingActive = false;
+
   constructor(
     private locationService: LocationService,
     private navigationService: NavigationService,
@@ -134,18 +136,23 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
   }
 
   private waitingOrderCreate(refreshTime = 10000): void {
+    if (this.isPollingActive) return;
+
+    this.isPollingActive = true;
     this.screenService.updateLoading(true);
-    of()
+
+    timer(0, refreshTime)
       .pipe(
-        takeUntil(this.ngUnsubscribe$), //TODO: обычно используют в конце pipe, подумать над рефакторингом
-        debounceTime(refreshTime),
         tap(() => this.navigationService.next()),
         switchMap(() => this.navigationService.nextStep$),
         tap({
           next: () => {
+            this.isPollingActive = false;
             this.screenService.updateLoading(false);
           },
         }),
+        takeWhile(() => this.isPollingActive),
+        takeUntil(this.ngUnsubscribe$),
       )
       .subscribe();
   }
