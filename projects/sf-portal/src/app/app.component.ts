@@ -72,8 +72,12 @@ export class AppComponent implements OnInit {
     this.initCounters();
     this.fadeOutEffect(this.document.getElementById('start-app-loader') as HTMLElement);
     this.setWindowParams();
-    this.isHeaderShown = !this.iframeService.hasIframe && !this.deviceDetectorService.isWebView;
     this.helperService.setReloadAbsoluteInternalLinks(true);
+    this.isHeaderShown =
+      !this.iframeService.hasIframe &&
+      (!this.deviceDetectorService.isWebView ||
+        // eslint-disable-next-line @typescript-eslint/dot-notation
+        !this.deviceDetectorService['isBrandSpecificWebView']);
   }
 
   public getMainBlocksData(): void {

@@ -38,6 +38,7 @@ export interface ComponentDto {
   type: string;
   value?: string;
   required?: boolean;
+  disabled?: boolean;
   visited?: boolean;
   presetValue?: string;
   valueFromCache?: boolean;

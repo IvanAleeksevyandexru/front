@@ -25,6 +25,15 @@
 
 * Зафиксирована версия es5-ext без антивоенных призывов
 * Произведена дедупликация зависимостей в yarn.lock [EPGUCORE-91325]
+## [400.44.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.44.3) (2022-03-22)
+
+### Bug Fixes
+
+* Поправлена работа mappingParams в компоненте MultipleChoiceDictionary [EPGUCORE-91364]
+* Поправлена логика определения новых WebView userAgent [EPGUCORE-90903]
+* Поправлена опечатка в текстовке openSelectOrderModal [EPGUCORE-91571]
+* Изменен вывод именованных черновиков в модалке выбора мульти-черновиков [EPGUCORE-91563]
+* Поправлена доступность кнопки Продолжить для DictionaryLikeComponent [EPGUCORE-91568]
 
 ## [400.43.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.43.0) (2022-03-21)
 
