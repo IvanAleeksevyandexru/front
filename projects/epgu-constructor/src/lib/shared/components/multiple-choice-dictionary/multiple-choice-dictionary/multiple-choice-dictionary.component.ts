@@ -11,7 +11,12 @@ import { ListElement } from '@epgu/ui/models/dropdown';
 import { mapTo, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
-import { DictionaryFilters, DictionaryOptions, DictionaryType, Clarifications } from '@epgu/epgu-constructor-types';
+import {
+  DictionaryFilters,
+  DictionaryOptions,
+  DictionaryType,
+  Clarifications,
+} from '@epgu/epgu-constructor-types';
 import { MultiChoiceDictionaryModalComponent } from '../multi-choice-dictionary-modal/multi-choice-dictionary-modal.component';
 import {
   CustomComponentDropDownItem,

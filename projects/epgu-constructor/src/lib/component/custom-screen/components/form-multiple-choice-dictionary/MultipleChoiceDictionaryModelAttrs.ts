@@ -1,5 +1,6 @@
 import { CustomComponentAttr } from '../../components-list.types';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
+import { Clarifications } from '@epgu/epgu-constructor-types';
 
 export default class MultipleChoiceDictionaryModelAttrs extends DictionarySharedAttrs {
   readonly subLabel: string;
