@@ -8,7 +8,7 @@
     "build:docs:html": "node --max-old-space-size=4096 node_modules/@compodoc/compodoc/bin/index-cli.js -p ./tsconfig.base.json --disableGraph",
     "build:docs:json": "node --max-old-space-size=4096 node_modules/@compodoc/compodoc/bin/index-cli.js -p ./tsconfig.base.json -e json -d . --disableGraph",
     "build:docs": "ng build epgu-constructor-docs --configuration production",
-    "build:portal:all": "cross-env rimraf ./dist && yarn build:portal --deploy-url https://gu-st.ru/sf-portal-st/ && yarn generate:versions && yarn copy-static-all",
+    "build:portal:all": "cross-env rimraf ./dist/sf-portal-st && yarn build:portal --deploy-url https://gu-st.ru/sf-portal-st/ && yarn generate:versions && yarn copy-static-all",
     "build:portal:ssr": "yarn build:portal && ng run sf-portal:server",
     "build:portal:ssr:dev": "yarn build:portal:dev && ng run sf-portal:server --configuration development",
     "build:portal": "ng build sf-portal --configuration production",
