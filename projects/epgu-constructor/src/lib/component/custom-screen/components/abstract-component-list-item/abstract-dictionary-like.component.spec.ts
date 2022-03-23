@@ -89,6 +89,7 @@ describe('AbstractDictionaryLikeComponent', () => {
         id: 'acc_org',
         type: 'Lookup',
         required: true,
+        disabled: false,
         label: 'Расчётный счёт',
         attrs: {
           ref: references ? [...references] : [],
@@ -112,14 +113,15 @@ describe('AbstractDictionaryLikeComponent', () => {
       const { dependentControl, mockForm } = setup(null);
       const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
 
-      component.onAfterFilterOnRel(componentMock as BaseModel<DictionarySharedAttrs>, mockForm);
+      component['onAfterFilterOnRel'](componentMock as BaseModel<DictionarySharedAttrs>, mockForm);
 
       expect(dependentControlSpy).not.toBeCalled();
     });
 
     it('should reset dependent control', () => {
       const { dependentControl, control, mockForm, dependentComponent } = setup();
-      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
+      const disabledControl = dependentControl.get('disabled');
+      const dependentControlSpy = jest.spyOn(disabledControl, 'patchValue');
       control.markAsTouched();
       dependentComponent.loadReferenceData$(
         of({
@@ -132,9 +134,9 @@ describe('AbstractDictionaryLikeComponent', () => {
           },
         }),
       );
-      component.onAfterFilterOnRel(dependentComponent, mockForm);
+      component['onAfterFilterOnRel'](dependentComponent, mockForm);
 
-      expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
+      expect(dependentControlSpy).toBeCalledWith(true);
     });
 
     it('should NOT affect another relations', () => {
@@ -160,7 +162,8 @@ describe('AbstractDictionaryLikeComponent', () => {
       ];
       const refsExpected = JSON.parse(JSON.stringify(refs));
       const { dependentControl, control, mockForm, dependentComponent } = setup(refs as any);
-      const dependentControlSpy = jest.spyOn(dependentControl, 'disable');
+      const disabledControl = dependentControl.get('disabled');
+      const dependentControlSpy = jest.spyOn(disabledControl, 'patchValue');
       control.markAsTouched();
 
       dependentComponent.loadReferenceData$(
@@ -175,9 +178,9 @@ describe('AbstractDictionaryLikeComponent', () => {
         }),
       );
 
-      component.onAfterFilterOnRel(dependentComponent, mockForm);
+      component['onAfterFilterOnRel'](dependentComponent, mockForm);
 
-      expect(dependentControlSpy).toBeCalledWith({ emitEvent: false, onlySelf: true });
+      expect(dependentControlSpy).toBeCalledWith(true);
       expect(dependentComponent.attrs.ref).toEqual(refsExpected);
     });
   });

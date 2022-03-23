@@ -80,9 +80,9 @@ export class SelectFromListComponent
   }
 
   private setInitialData(): void {
-    this.listService.pageSize = this.attrs.listInitLength;
-    this.listService.setData(this.fullList);
+    this.listService.initSize = this.attrs.listInitLength;
     this.listService.pageSize = this.attrs.listIncrementLength;
+    this.listService.setData(this.fullList);
   }
 
   private processList(list: SelectFromListElement[]): void {
@@ -102,7 +102,7 @@ export class SelectFromListComponent
   private subscribeOnValueChange(): void {
     this.control.get('value').valueChanges.subscribe((value) => {
       this.fullList.forEach((listElement) => {
-        listElement.checked = listElement === value;
+        listElement.checked = listElement.id === value.id;
       });
     });
   }

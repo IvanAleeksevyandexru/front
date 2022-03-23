@@ -25,7 +25,6 @@ import {
   CustomComponent,
   CustomComponentAttrValidation,
   CustomComponentAttrValidator,
-  CustomComponentValidationConditions,
   CustomScreenComponentTypes,
   UpdateOn,
 } from '../../../component/custom-screen/components-list.types';

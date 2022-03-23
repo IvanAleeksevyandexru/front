@@ -1,7 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import {
+  CfAppStateService,
+  CfAppStateServiceStub,
   DatesToolsService,
   JsonHelperService,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  LocationService,
+  LocationServiceStub,
   MicroAppStateQuery,
   MicroAppStateService,
   MicroAppStateStore,
@@ -32,8 +38,10 @@ describe('DictionaryService', () => {
         DictionaryToolsService,
         MockProvider(DatesToolsService),
         JsonHelperService,
-
+        { provide: LocationService, useClass: LocationServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: CfAppStateService, useClass: CfAppStateServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     }).compileComponents();
     service = TestBed.inject(DictionaryService);

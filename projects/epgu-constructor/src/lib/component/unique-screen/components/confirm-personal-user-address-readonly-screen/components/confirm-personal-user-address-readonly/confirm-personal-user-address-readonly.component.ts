@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TextTransform, DTOActionAction } from '@epgu/epgu-constructor-types';
 import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
@@ -25,9 +25,11 @@ import { ScreenService } from '../../../../../../screen/screen.service';
 import {
   ConfirmAddressFieldsInterface,
   ConfirmAddressInterface,
+  ConfirmAddressReadonlyErrorsInterface,
   ConfirmAddressReadonlyValue,
 } from '../../interface/confirm-address.interface';
 import { FieldNames } from '../../../registration-addr/registration-addr-screen.types';
+import { ConfirmAddressErrorsInterface } from '../../../confirm-personal-user-address-screen/interface/confirm-address.interface';
 
 @Component({
   selector: 'epgu-constructor-confirm-personal-user-address-readonly',
@@ -41,12 +43,24 @@ export class ConfirmPersonalUserAddressReadonlyComponent extends BaseComponent
   public data$: Observable<ConfirmAddressInterface> = this.screenService.component$ as Observable<
     ConfirmAddressInterface
   >;
+  public fields$: Observable<ConfirmAddressFieldsInterface[]> = this.data$.pipe(
+    map(({ attrs }) => {
+      return attrs.fields
+        .filter((field) => !field.attrs?.isOnlyForValidation)
+        .map((field) => ({
+          ...field,
+          isDate: this.isDate(field.fieldName),
+        }));
+    }),
+  );
   public valueParsed: ConfirmAddressReadonlyValue = {} as ConfirmAddressReadonlyValue;
   public textTransformType: TextTransform;
   public isEditAction: boolean;
   public isRequired: boolean;
   public form: FormGroup = new FormGroup({});
   public readonly strategy = BrokenDateFixStrategy.RESET;
+  public groupedErrors: ConfirmAddressReadonlyErrorsInterface[] = [];
+  public stringError: string = '';
 
   public constructor(
     public config: ConfigService,
@@ -70,6 +84,9 @@ export class ConfirmPersonalUserAddressReadonlyComponent extends BaseComponent
       });
       this.changeDetectionRef.markForCheck();
     });
+    this.screenService.componentError$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((errors) => {
+      this.setErrors(errors);
+    });
   }
 
   public ngOnDestroy(): void {
@@ -85,8 +102,10 @@ export class ConfirmPersonalUserAddressReadonlyComponent extends BaseComponent
     return dateType.includes(fieldName) ? fieldName : false;
   }
 
-  public getAddress(regAddr: string | { fullAddress: string }): string {
-    return typeof regAddr === 'string' ? regAddr : regAddr?.fullAddress;
+  public getAddress(regAddr: string | { fullAddress: string } | Date): string {
+    return typeof regAddr === 'string'
+      ? regAddr
+      : (regAddr as { fullAddress: string })?.fullAddress;
   }
 
   private onDataChange(data: ConfirmAddressInterface): void {
@@ -110,6 +129,9 @@ export class ConfirmPersonalUserAddressReadonlyComponent extends BaseComponent
   private createForm(data: ConfirmAddressInterface, values: ConfirmAddressReadonlyValue): void {
     if (data?.attrs?.fields) {
       data?.attrs?.fields.forEach((field: ConfirmAddressFieldsInterface) => {
+        if (field.attrs?.isOnlyForValidation) {
+          return;
+        }
         this.form.setControl(field.fieldName, new FormControl(values[field.fieldName]));
       });
 
@@ -207,5 +229,39 @@ export class ConfirmPersonalUserAddressReadonlyComponent extends BaseComponent
 
   private getDate(regDate: string): Date {
     return this.datesToolsService.parse(regDate, DATE_STRING_DOT_FORMAT);
+  }
+
+  private getGroupedErrors(errors): ConfirmAddressErrorsInterface[] {
+    return Object.values(
+      errors.reduce((accumulator, { desc, icon, title, type }) => {
+        accumulator[title] = {
+          desc:
+            title in accumulator && accumulator[title].desc !== desc
+              ? `${accumulator[title].desc} <br> ${desc}`
+              : desc,
+          icon,
+          title,
+          type,
+        };
+
+        return accumulator;
+      }, {}),
+    );
+  }
+
+  private setErrors(errors: string): void {
+    if (!errors) {
+      this.stringError = '';
+      this.groupedErrors = [];
+      return;
+    }
+
+    try {
+      this.groupedErrors = this.getGroupedErrors(Object.values(JSON.parse(errors)));
+      this.stringError = '';
+    } catch (err) {
+      this.stringError = errors;
+      this.groupedErrors = [];
+    }
   }
 }

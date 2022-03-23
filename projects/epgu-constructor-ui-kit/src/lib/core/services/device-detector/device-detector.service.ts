@@ -7,14 +7,11 @@ import { WINDOW } from '../../providers/window.provider';
 import {
   BrowserName,
   MOBILE_VIEW_COOKIE_NAME,
-  WEB_VIEW_USER_AGENTS,
+  BRAND_SPECIFIC_WEB_VIEW_USER_AGENTS,
 } from './device-detector.types';
 
 @Injectable()
 export class DeviceDetectorService {
-  // Определение платформы работает на backend(-e) на портале, там используется node c пакетом ismobilejs.
-  // для локальной работы и для наших стендов используется angular пакет device-detector
-
   isMobile: boolean;
 
   isTablet: boolean;
@@ -22,6 +19,8 @@ export class DeviceDetectorService {
   isDesktop: boolean;
 
   isWebView: boolean;
+
+  isBrandSpecificWebView: boolean;
 
   userAgent: UserAgent;
 
@@ -39,11 +38,12 @@ export class DeviceDetectorService {
    */
   initState(): void {
     const deviceInfo = isMobile(this.window.navigator);
+    this.userAgent = this.window.navigator?.userAgent;
     this.isMobile = deviceInfo.phone;
     this.isTablet = deviceInfo.tablet;
     this.isDesktop = !this.isMobile && !this.isTablet;
-    this.isWebView = this.isWebViewUserAgent() || this.smuEventsService.smuInit;
-    this.userAgent = this.window.navigator?.userAgent;
+    this.isBrandSpecificWebView = this.isBrandSpecificWebViewUserAgent();
+    this.isWebView = this.smuEventsService.smuInit;
   }
 
   isIOS(): boolean {
@@ -116,9 +116,9 @@ export class DeviceDetectorService {
     }
   }
 
-  private isWebViewUserAgent(): boolean {
-    const webViewRegExp = new RegExp(`(${WEB_VIEW_USER_AGENTS.join('|')})`, 'ig');
+  private isBrandSpecificWebViewUserAgent(): boolean {
+    const regExp = new RegExp(`(${BRAND_SPECIFIC_WEB_VIEW_USER_AGENTS.join('|')})`, 'ig');
 
-    return !!this.userAgent?.match(webViewRegExp);
+    return !!this.userAgent?.match(regExp);
   }
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/common-enums';
-import { skip, startWith, takeUntil } from 'rxjs/operators';
+import { map, skip, startWith, takeUntil } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
 import { ComponentActionDto, ComponentDto } from '@epgu/epgu-constructor-types';
 import {
@@ -13,6 +13,7 @@ import {
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ScreenService } from '../../../../../../screen/screen.service';
 import {
+  ConfirmAddressErrorsInterface,
   FieldNames,
   IRegistrationAddrComponent,
   RegistrationAddrFields,
@@ -34,11 +35,18 @@ import { ValidationService } from '../../../../../../shared/services/validation/
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationAddrComponent implements OnInit {
-  data$: Observable<IRegistrationAddrComponent> = this.screenService.component$ as Observable<
+  data$: Observable<IRegistrationAddrComponent> = (this.screenService.component$ as Observable<
     IRegistrationAddrComponent
-  >;
-  error$: Observable<string> = this.screenService.componentError$;
+  >).pipe(
+    map((data: IRegistrationAddrComponent) => {
+      data.attrs.fields = data.attrs.fields.filter((field) => !field.attrs?.isOnlyForValidation);
+      return data;
+    }),
+  );
+
   classifiedSuggestionItems: { [key: string]: ISuggestionItem } = {};
+  groupedErrors: ConfirmAddressErrorsInterface[] = [];
+  stringError: string = '';
 
   required: boolean;
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
@@ -79,6 +87,9 @@ export class RegistrationAddrComponent implements OnInit {
         );
         this.changeDetectionRef.markForCheck();
       });
+    this.screenService.componentError$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((errors) => {
+      this.setErrors(errors);
+    });
   }
 
   initFormGroup(data: IRegistrationAddrComponent): void {
@@ -176,5 +187,40 @@ export class RegistrationAddrComponent implements OnInit {
       }
       return acc;
     }, changes);
+  }
+
+  // TODO: устранить дублирование кода в смежном компоненте AddressInputComponent
+  private getGroupedErrors(errors): ConfirmAddressErrorsInterface[] {
+    return Object.values(
+      errors.reduce((accumulator, { desc, icon, title, type }) => {
+        accumulator[title] = {
+          desc:
+            title in accumulator && accumulator[title].desc !== desc
+              ? `${accumulator[title].desc} <br> ${desc}`
+              : desc,
+          icon,
+          title,
+          type,
+        };
+
+        return accumulator;
+      }, {}),
+    );
+  }
+
+  private setErrors(errors: string): void {
+    if (!errors) {
+      this.stringError = '';
+      this.groupedErrors = [];
+      return;
+    }
+
+    try {
+      this.groupedErrors = this.getGroupedErrors(Object.values(JSON.parse(errors)));
+      this.stringError = '';
+    } catch (err) {
+      this.stringError = errors;
+      this.groupedErrors = [];
+    }
   }
 }

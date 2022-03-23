@@ -7,8 +7,9 @@
   [noDepartmentsErrorMsg]="sidebarData.attrs.noDepartmentsErrorMsg"
   [isNoDepartmentErrorVisible]="selectMapObjectService.isNoDepartmentErrorVisible | async"
   (handleFiltering)="handleFiltering($event)"
+  [enableFilter]="sidebarData.attrs.enableFilter"
+  [customNav]="sidebarData.attrs.customNav"
 ></epgu-constructor-search-panel-resolver>
-
 <div
   *ngIf="
     originalValue.length &&
@@ -108,3 +109,43 @@
     </epgu-constructor-balloon-content-resolver>
   </perfect-scrollbar>
 </epgu-constructor-swipeable-wrapper>
+
+<div class="multiple-mode"
+     *ngIf="originalValue?.length > 1 && !(sidebarData.attrs.mapType === MapTypes.justiceMap ||
+        sidebarData.attrs.mapType === MapTypes.electionsMap)">
+  <perfect-scrollbar [config]="scrollConfig" class="perfect-scrollbar">
+    <div class="multiple-mode__count-area">
+      <h5>
+        {{ ['Найдена', 'Найдено', 'Найдено'] | pluralize: originalValue.length }}
+        {{ originalValue.length }}
+        {{ ['организация', 'организации', 'организаций'] | pluralize: originalValue.length }}
+      </h5>
+      <div (click)="collapseObject()"
+           class="cross-btn multiple-mode__count-area__cross-button">
+      </div>
+    </div>
+    <div class="multiple-mode__address-area">
+      <epgu-cf-ui-icon
+        class="multiple-mode__address-area__icon"
+        [mainColor]="iconColor.LightBlue"
+        [type]="iconType.Location"
+        [width]="13"
+        [height]="17"
+      >
+      </epgu-cf-ui-icon>
+      <p>{{ originalValue[0].attributeValues[sidebarData.attrs.attributeNameWithAddress] }} </p>
+    </div>
+    <epgu-constructor-balloon-content-resolver
+      [contentType]="balloonContentType"
+      [mapObjects]="originalValue"
+      [isSelectButtonHidden]="sidebarData.attrs.isSelectButtonHidden"
+      [attrs]="sidebarData.attrs.balloonAttrs"
+      [showCrossButton]="false"
+      [showChevron]="true"
+      (selectObject)="selectObject($event)"
+      (handleObjectClickEvent)="$event.expanded = !$event.expanded"
+    >
+    </epgu-constructor-balloon-content-resolver>
+  </perfect-scrollbar>
+
+</div>

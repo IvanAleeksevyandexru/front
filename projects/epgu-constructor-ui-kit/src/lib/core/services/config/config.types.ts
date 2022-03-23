@@ -32,6 +32,8 @@ export type TimeSlotsApi = Record<string, TimeSlotsApiItem>;
  * @property {string}lkUrl - url до личного кабинета, как правило hostName/info
  * @property {string}invitationUrl - url приглашения по емейл
  * @property {string}yandexMapsApiKey - токен для яндекс карт
+ * @property {string}schoolDictionaryUrl - url словаря по школам
+ * @property {string}schoolSearchUrl - url поиска по школам
  * @property {string}staticDomainAssetsPath - путь до статики
  * @property {string}staticDomainContentPath - путь до контента
  * @property {MockApi[]}mocks - массив апи для которых будет использваван mockUrl
@@ -84,6 +86,8 @@ export interface Config {
   paymentUrl: string;
   quizDataApiUrl: string;
   isTraceIdOnErrorEnabled?: boolean;
+  schoolDictionaryUrl?: string;
+  schoolSearchUrl?: string;
   staticDomainAssetsPath: string;
   staticDomainContentPath: string;
   suggestionsApiUrl: string;

@@ -9,7 +9,6 @@ import {
 import { NotifierModule } from '@epgu/ui/components/notifier';
 import { BaseModule } from './components/base/base.module';
 import { ProgramListModule } from './components/program-list/program-list.module';
-import { SelectMapObjectCcModule } from './components/select-map-object/select-map-object.module';
 import { GroupListModule } from './components/group-list/group-list.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DisplayProjectListInterceptor } from './interceptors/display-project-list/display-project-list.interceptor';
@@ -24,7 +23,6 @@ import { DisplayProjectListInterceptor } from './interceptors/display-project-li
     ProgramListModule,
     BaseModule,
     SharedModalModule,
-    SelectMapObjectCcModule,
     NotifierModule,
   ],
   providers: [

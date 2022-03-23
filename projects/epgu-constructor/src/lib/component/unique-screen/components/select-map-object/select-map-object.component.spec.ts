@@ -15,6 +15,7 @@ import {
   SmoothHeightAnimationDirective,
   PrevButtonModule,
   IconsModule,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockModule, MockProvider } from 'ng-mocks';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -87,7 +88,7 @@ describe('SelectMapObjectComponent', () => {
         IconsModule,
         ForTestsOnlyModule,
       ],
-      providers: [MockProvider(HelperService), MockProvider(InviteService)],
+      providers: [MockProvider(HelperService), MockProvider(InviteService), ObjectHelperService],
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: { entryComponents: [CommonBalloonContentComponent, CommonSearchPanelComponent] },

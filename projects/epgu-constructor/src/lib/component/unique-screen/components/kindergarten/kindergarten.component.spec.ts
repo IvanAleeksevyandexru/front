@@ -22,6 +22,7 @@ import {
   SessionStorageServiceStub,
   UnsubscribeService,
   JsonHelperService,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { MockProvider } from 'ng-mocks';
 import { AnimationBuilder } from '@angular/animations';
@@ -111,6 +112,7 @@ describe('KindergartenComponent', () => {
         ScreenService,
         EaisdoGroupCostService,
         KindergartenService,
+        ObjectHelperService,
       ],
     }).compileComponents();
   });

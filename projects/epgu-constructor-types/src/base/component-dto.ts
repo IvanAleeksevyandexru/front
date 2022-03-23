@@ -8,6 +8,18 @@ export interface ILinkedValue {
   source?: string;
 }
 
+export interface ObjectWithId {
+  id?: string;
+}
+
+export type ParsedComponentValue =
+  | { list: ObjectWithId[] }
+  | ObjectWithId
+  | string
+  | number
+  | Date
+  | ObjectWithId[];
+
 /**
  * @property {Array<object>}attrs - объект с дополнительной информацией
  * (например для select элементов могут приходить словари)
@@ -26,6 +38,7 @@ export interface ComponentDto {
   type: string;
   value?: string;
   required?: boolean;
+  disabled?: boolean;
   visited?: boolean;
   presetValue?: string;
   valueFromCache?: boolean;

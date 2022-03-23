@@ -34,8 +34,8 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
       if (components.some((component) => NO_WHITE_BACKGROUND_COMPONENTS.includes(component.type))) {
         this.disableWhiteBackground = true;
       }
+      this.cdr.markForCheck();
     }),
-    tap(() => this.cdr.markForCheck()),
   );
   dataToSend: NavigationPayload;
   isValid: boolean;

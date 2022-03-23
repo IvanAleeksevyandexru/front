@@ -8,12 +8,11 @@ import { CountersService } from '@epgu/ui/services/counters';
 import { YaMetricService } from '@epgu/ui/services/ya-metric';
 import { PsoService } from '@epgu/ui/services/pso';
 import { DOCUMENT, isPlatformServer } from '@angular/common';
-import { HeaderService } from '@epgu/ui/services/header';
-import { FooterService } from '@epgu/ui/services/footer';
 import { DeviceDetectorService, WINDOW } from '@epgu/epgu-constructor-ui-kit';
 import { MetaTagGeneratorService } from './services/meta-tag-generator/meta-tag-generator.service';
 import { AppConfig } from './app.config';
 import { IframePlayerService } from './services/iframe-player/iframe-player.service';
+import { HelperService } from '@epgu/ui/services/helper';
 
 @Component({
   selector: '[app-root]',
@@ -22,6 +21,7 @@ import { IframePlayerService } from './services/iframe-player/iframe-player.serv
 })
 export class AppComponent implements OnInit {
   public loaded = false;
+  public isHeaderShown = true;
   public isServer = isPlatformServer(this.platformId);
   public get hasIframe(): boolean {
     try {
@@ -35,16 +35,15 @@ export class AppComponent implements OnInit {
     public router: Router,
     public loadService: LoadService,
     public iframeService: IframePlayerService,
+    public deviceDetectorService: DeviceDetectorService,
     private appConfig: AppConfig,
-    private deviceDetectorService: DeviceDetectorService,
-    private headerService: HeaderService,
-    private footerService: FooterService,
     private mainPageService: MainPageService,
     private catalogTabsService: CatalogTabsService,
     private countersService: CountersService,
     private yaMetricService: YaMetricService,
     private psoService: PsoService,
     private metaTagGeneratorService: MetaTagGeneratorService,
+    private helperService: HelperService,
     @Inject(DOCUMENT) private document: Document,
     @Inject(WINDOW) private window: Window,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -72,7 +71,11 @@ export class AppComponent implements OnInit {
     this.getMainBlocksData();
     this.initCounters();
     this.fadeOutEffect(this.document.getElementById('start-app-loader') as HTMLElement);
-    this.setWebViewUi();
+    this.setWindowParams();
+    this.helperService.setReloadAbsoluteInternalLinks(true);
+    this.isHeaderShown =
+      !this.iframeService.hasIframe &&
+      (!this.deviceDetectorService.isWebView || !this.deviceDetectorService.isBrandSpecificWebView);
   }
 
   public getMainBlocksData(): void {
@@ -142,17 +145,6 @@ export class AppComponent implements OnInit {
       window.showNewDesignPsoHelp = this.loadService.config.showNewDesignPsoHelp;
       window.betaUrl = this.loadService.config.betaUrl;
       this.psoService.loadAndRunPso();
-    }
-  }
-
-  private setWebViewUi() {
-    if (this.deviceDetectorService.isWebView) {
-      /* TODO: отключено до выяснения точности реализации определения WebView в МП
-      ref: https://jira.egovdev.ru/browse/EPGUCORE-86689 */
-      // this.headerService.setVisible(false);
-      // this.footerService.setVisible(false);
-    } else {
-      this.setWindowParams();
     }
   }
 

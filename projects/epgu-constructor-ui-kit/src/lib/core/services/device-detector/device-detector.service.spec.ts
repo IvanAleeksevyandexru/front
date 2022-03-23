@@ -7,6 +7,8 @@ import { DeviceDetectorService } from './device-detector.service';
 import { LoadServiceStub } from '../config/load-service-stub';
 import { SmuEventsServiceStub } from './smu-events.service.stub';
 import { WINDOW } from '../../providers/window.provider';
+import { HelperService } from '@epgu/ui/services/helper';
+import { MockProvider } from 'ng-mocks';
 
 describe('DeviceDetectorService', () => {
   let deviceDetectorService: DeviceDetectorService;
@@ -19,6 +21,7 @@ describe('DeviceDetectorService', () => {
       providers: [
         CookieService,
         DeviceDetectorService,
+        MockProvider(HelperService),
         { provide: LoadService, useClass: LoadServiceStub },
         { provide: SmuEventsService, useClass: SmuEventsServiceStub },
         { provide: WINDOW, useValue: { navigator: {} } },

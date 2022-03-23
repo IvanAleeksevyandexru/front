@@ -277,6 +277,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   largeFontSize?: boolean;
   listIncrementLength?: number;
   listInitLength?: number;
+  emptyDictError?: string;
 }
 
 export interface DateRestriction {
@@ -396,4 +397,11 @@ export interface DateRestrictionGroups {
 export const DATE_RESTRICTION_GROUP_DEFAULT_KEY = 'defaultGroup';
 export interface Searchable {
   [key: string]: { value: string | object };
+}
+
+export interface IEntityWithRef {
+  id?: string;
+  attrs?: {
+    ref?: CustomComponentRef[];
+  };
 }

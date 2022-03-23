@@ -12,11 +12,15 @@ import {
   CustomComponentAttr,
   CustomListDictionary,
   CustomListGenericData,
+  MappingParamsDto,
 } from '../components-list.types';
 import DictionarySharedAttrs from './DictionarySharedAttrs';
 import BaseModel from './BaseModel';
 
-export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs> {
+export default class DictionaryLikeModel<
+  //eslint-disable-next-line
+  T extends DictionarySharedAttrs = DictionarySharedAttrs,
+> extends BaseModel<T> {
   protected _dictionary$ = new BehaviorSubject<CustomListDictionary>(
     this.getDictionaryFirstState(),
   );
@@ -69,8 +73,8 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
     }
   }
 
-  getAttrs(attrs: CustomComponentAttr): DictionarySharedAttrs {
-    return new DictionarySharedAttrs(attrs);
+  getAttrs(attrs: CustomComponentAttr): T {
+    return (new DictionarySharedAttrs(attrs) as unknown) as T;
   }
 
   loadReferenceData$(
@@ -157,7 +161,7 @@ export default class DictionaryLikeModel extends BaseModel<DictionarySharedAttrs
 
   protected adaptDictionaryToListItem(
     items: (DictionaryItem | KeyValueMap)[],
-    mappingParams: { idPath: string; textPath: string } = { idPath: '', textPath: '' },
+    mappingParams: MappingParamsDto = { idPath: '', textPath: '' },
     isRoot?: boolean,
   ): ListElement[] {
     return items.map((item) => ({

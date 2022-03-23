@@ -40,6 +40,7 @@ import BaseModel from '../../component-list-resolver/BaseModel';
 import DictionarySharedAttrs from '../../component-list-resolver/DictionarySharedAttrs';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
 import { MaritalStatusInputField } from '../../components/marital-status-input/marital-status-input.types';
+import { ScreenButtonService } from '../../../../shared/components/screen-buttons/screen-button.service';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 
 @Injectable()
@@ -87,6 +88,7 @@ export class ComponentsListFormService {
     private dictionaryService: DictionaryService,
     private screenService: ScreenService,
     private maskTransformService: MaskTransformService,
+    private screenButtonService: ScreenButtonService,
   ) {}
 
   public create(components: CustomComponent[], componentsGroupIndex?: number): FormArray {
@@ -131,7 +133,7 @@ export class ComponentsListFormService {
       )
       .subscribe(() => this.emitChanges());
     this.emitChanges();
-
+    this.screenButtonService.initSubscribeOnComponentsForm(this._form, this.shownElements);
     return this._form;
   }
 
@@ -368,7 +370,7 @@ export class ComponentsListFormService {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { type, attrs, id, label, required, arguments: _arguments } = component;
+    const { type, attrs, id, label, required, presetValue, arguments: _arguments } = component;
 
     const form: FormGroup = this.fb.group(
       {
@@ -379,6 +381,7 @@ export class ComponentsListFormService {
         label,
         required,
         arguments: _arguments,
+        presetValue,
         value: [
           {
             value: this.componentsListToolsService.convertedValue(component),
@@ -386,6 +389,7 @@ export class ComponentsListFormService {
           },
           validators,
         ],
+        disabled: false,
       },
       { updateOn: UpdateOn.ON_CHANGE }, // NOTE: See https://jira.egovdev.ru/browse/EPGUCORE-53355
     );

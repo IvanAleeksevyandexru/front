@@ -71,8 +71,8 @@
           field.hint
         }}</epgu-cf-ui-constructor-helper-text>
       </div>
-      <div class="error" *ngIf="error$ | async as errorText">
-        <small>{{ errorText }}</small>
+      <div class="error" *ngIf="stringError">
+        <small>{{ stringError }}</small>
       </div>
       <div class="item hint-wrapper" *ngIf="(data$ | async)?.attrs?.hints as hints">
         <!--Хинты связываются на текущую дату минус один день. Получается (текущая дата - 1) + timestamp из хинта и кладём в regTo-->
@@ -81,6 +81,16 @@
         </div>
       </div>
     </form>
+
+    <ng-container *ngFor="let error of groupedErrors">
+      <epgu-constructor-disclaimer
+          class="confirm-personal-data-disclaimer"
+          *ngIf="error"
+          [type]="error.type"
+          [title]="error.title"
+          [description]="error.desc"
+        ></epgu-constructor-disclaimer>
+    </ng-container>
 
     <div
       *ngIf="(data$ | async).attrs?.hint as hint"

@@ -1,4 +1,4 @@
-<ng-container *ngFor="let button of shownButtons">
+<ng-container *ngFor="let button of outputButtons$ | async">
   <lib-button
     *ngIf="!button?.attrs?.hidden && !button.hidden"
     epgu-constructor-action

@@ -66,6 +66,7 @@
     <div class="conf-modal__button">
       <epgu-constructor-screen-buttons
         [screenButtons]="actionButtons"
+        [isLoading]="screenService.isLoading$ | async"
       ></epgu-constructor-screen-buttons>
     </div>
   </ng-container>

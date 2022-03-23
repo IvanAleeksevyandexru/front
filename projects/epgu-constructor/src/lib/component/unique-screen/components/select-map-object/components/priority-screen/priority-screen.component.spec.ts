@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   ConstructorLookupModule,
   IconsModule,
+  ObjectHelperService,
   PrevButtonModule,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FormsModule } from '@angular/forms';
@@ -31,7 +32,7 @@ describe('PriorityScreenComponent', () => {
         IconsModule,
         ForTestsOnlyModule,
       ],
-      providers: [],
+      providers: [ObjectHelperService],
     }).compileComponents();
   });
 

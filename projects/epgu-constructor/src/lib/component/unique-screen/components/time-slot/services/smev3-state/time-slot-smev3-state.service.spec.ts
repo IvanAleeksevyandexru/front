@@ -27,6 +27,7 @@ const mockComponent = ({
   id: 'idComponent',
   type: 'TimeSlot',
   attrs: {
+    IsFinalReservation: false,
     attributeNameWithAddress: 'attr2',
     cancelReservation: ['res'],
     ignoreRootParams: ['attr'],
@@ -71,6 +72,12 @@ describe('TimeSlotSmev3StateService', () => {
     it('should be check value$', (done) => {
       service.value$.subscribe((value) => {
         expect(value).toBe(mockTimeSlotValue);
+        done();
+      });
+    });
+    it('should be check IsFinalReservation$', (done) => {
+      service.IsFinalReservation$.subscribe((value) => {
+        expect(value).toBe(mockComponent.attrs.IsFinalReservation);
         done();
       });
     });

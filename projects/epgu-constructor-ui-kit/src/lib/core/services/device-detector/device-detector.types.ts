@@ -14,10 +14,6 @@ export enum BrowserName {
 
 export const MOBILE_VIEW_COOKIE_NAME = 'mobVersion';
 
-export const WEB_VIEW_USER_AGENTS = [
-  'mp_', // индикатор для мобильных приложения Госуслуг
-  'WebView',
-  '(iPhone|iPod|iPad)(?!.*Safari)',
-  'Android.*(wv|.0.0.0)',
-  'Linux; U; Android',
+export const BRAND_SPECIFIC_WEB_VIEW_USER_AGENTS = [
+  'mp_gosuslugi', // индикатор для мобильных приложения Госуслуг
 ];
