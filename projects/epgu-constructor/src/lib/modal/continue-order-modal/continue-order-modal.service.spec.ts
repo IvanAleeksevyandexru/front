@@ -62,7 +62,7 @@ describe('ContinueOrderModalService', () => {
         backdropDismiss: false,
         text: defaultLimitedCaseText,
         showCloseButton: false,
-        showCrossButton: true,
+        showCrossButton: false,
         isShortModal: false,
         answerButtons: [],
       });
@@ -77,7 +77,7 @@ describe('ContinueOrderModalService', () => {
         backdropDismiss: false,
         text: defaultText,
         showCloseButton: false,
-        showCrossButton: true,
+        showCrossButton: false,
         isShortModal: false,
         answerButtons: [newOrderButton],
       });
@@ -106,7 +106,7 @@ describe('ContinueOrderModalService', () => {
         backdropDismiss: false,
         text: defaultLimitedCaseText,
         showCloseButton: false,
-        showCrossButton: true,
+        showCrossButton: false,
         isShortModal: false,
         answerButtons: [testButton],
       });
@@ -136,7 +136,7 @@ describe('ContinueOrderModalService', () => {
         backdropDismiss: false,
         text: defaultLimitedCaseText,
         showCloseButton: false,
-        showCrossButton: true,
+        showCrossButton: false,
         isShortModal: false,
         answerButtons: [testButton],
       });
@@ -165,7 +165,7 @@ describe('ContinueOrderModalService', () => {
         backdropDismiss: false,
         text: defaultLimitedCaseText,
         showCloseButton: false,
-        showCrossButton: true,
+        showCrossButton: false,
         isShortModal: false,
         answerButtons: [testButton],
       });

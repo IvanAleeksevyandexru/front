@@ -83,7 +83,7 @@ export class ContinueOrderModalService {
       backdropDismiss: false,
       text: textResult,
       showCloseButton: false,
-      showCrossButton: true,
+      showCrossButton: false,
       isShortModal: false,
       answerButtons,
     });
