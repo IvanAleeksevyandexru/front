@@ -128,7 +128,7 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
     const selectedItems = Object.entries(this.form.get(this.formField.checkbox).value)
       .filter(([, value]) => value)
       .reduce<ListElement[]>((acc, [key, value]) => {
-        const selectedItem = value && this.items.find((item) => item.id === key);
+        const selectedItem = value && this.items.find((item) => `${item.id}` === key);
         return [...acc, selectedItem];
       }, []);
     this.closeModal({
