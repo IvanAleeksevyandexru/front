@@ -14,4 +14,8 @@ export default class MultipleChoiceDictionaryModelAttrs extends DictionaryShared
     this.modalHeader = attrs.modalHeader;
     this.customUnrecLabel = attrs.customUnrecLabel;
   }
+
+  public isLoadingNeeded(): boolean {
+    return super.isLoadingNeeded() && !this.dictionaryList;
+  }
 }
