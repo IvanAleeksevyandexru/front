@@ -33,6 +33,14 @@
       ></epgu-constructor-disclaimer>
     </ng-template>
 
+    <epgu-constructor-disclaimer
+      class="mb-24"
+      [type]="data.attrs?.disclaimer.type"
+      [title]="data.attrs?.disclaimer.title"
+      [description]="data.attrs?.disclaimer.description"
+      [clarifications]="data.attrs?.disclaimer.clarifications"
+    ></epgu-constructor-disclaimer>
+
     <div class="footer" *ngIf="screenService.action$ | async as action">
       <div class="divider mb-24"></div>
       <button
