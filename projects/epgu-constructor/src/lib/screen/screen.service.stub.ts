@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ScreenStore } from './screen.types';
+import { ScreenStore, ScreenStoreComponentDtoI } from './screen.types';
 import { ScreenContent } from './screen-content';
 import { CachedAnswersDto, ComponentDto, DisplayDto } from '@epgu/epgu-constructor-types';
 
@@ -77,5 +77,11 @@ export class ScreenServiceStub extends ScreenContent {
     }
 
     cachedAnswers[componentId] = { ...cachedAnswers[componentId], value };
+  }
+
+  public getCompFromDisplay(componentId: string = this.component.id): ScreenStoreComponentDtoI {
+    return {
+      attrs: {},
+    } as ScreenStoreComponentDtoI;
   }
 }
