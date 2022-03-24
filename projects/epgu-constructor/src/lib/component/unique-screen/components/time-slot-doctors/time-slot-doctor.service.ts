@@ -28,6 +28,7 @@ import {
   TimeSlotDoctorState,
   TimeSlotValueInterface,
 } from './time-slot-doctors.interface';
+import { IBookingErrorHandling } from '@epgu/epgu-constructor-types';
 
 type AttributesMapType = { name: string; value: string }[];
 
@@ -62,6 +63,8 @@ export class TimeSlotDoctorService {
   public cancelReservation: string[];
 
   public department: DepartmentInterface;
+
+  public bookingErrorHandlingParams: IBookingErrorHandling[];
 
   private slotsMap: SmevSlotsMapInterface;
 

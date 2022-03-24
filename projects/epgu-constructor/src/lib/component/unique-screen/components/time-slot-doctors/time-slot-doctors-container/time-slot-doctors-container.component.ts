@@ -10,6 +10,7 @@ import {
   DictionaryOptions,
   DictionaryValueTypes,
   DisplayDto,
+  IBookingErrorHandling,
 } from '@epgu/epgu-constructor-types';
 import { FormControl } from '@angular/forms';
 import {
@@ -48,6 +49,7 @@ import {
 import { ConfirmationModalComponent } from '../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { DateTypeTypes, TimeSlotsConstants } from '../../time-slots/time-slots.constants';
 import {
+  ErrorInterface,
   TimeSlot,
   TimeSlotsAnswerInterface,
   TimeSlotValueInterface,
@@ -161,6 +163,9 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
       return { ...component, parsedValue: this.screenService.componentValue };
     }),
     tap((component: TimeSlotDoctorsComponentDto) => {
+      this.timeSlotDoctorService.bookingErrorHandlingParams =
+        component.attrs.ts?.bookingErrorHandling;
+
       this.timeSlotDoctorService.isOnlyDocLookupNeeded =
         !component.attrs.ts.department || component.attrs.isOnlyDocLookupNeeded;
       this.timeSlotDoctorService.timeSlotsType = component.attrs.ts.timeSlotType.value;
@@ -395,15 +400,17 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
       },
       (result) => {
         this.inBookingProgress = false;
-        this.showCustomError(result?.error?.errorDetail?.errorMessage);
+        this.showCustomError(result?.error);
         this.changeDetectionRef.markForCheck();
       },
     );
   }
 
-  showCustomError(error: string | undefined): void {
+  showCustomError(error: string | ErrorInterface): void {
     if (error != null) {
-      if (error.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
+      const errorMessage =
+        typeof error === 'string' ? error : (error as ErrorInterface)?.errorDetail?.errorMessage;
+      if (errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
         this.showModal(SERVICE_OR_SPEC_SESSION_TIMEOUT)
           .toPromise()
           .then((result) => {
@@ -412,33 +419,53 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
             }
           });
       } else {
-        const params = {
-          ...ITEMS_FAILURE,
-          buttons: [
-            {
-              label: 'Начать заново',
-              color: 'white',
-              closeModal: true,
-              value: 'init',
-            },
-            {
-              label: 'Попробовать ещё раз',
-              closeModal: true,
-            },
-          ],
-        } as ConfirmationModal;
-        const message = error
-          .replace('FAILURE:', '')
-          .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
-          .replace('NO_DATA:', '');
-        params.text = params.text.replace(/\{textAsset\}?/g, message);
-        this.showModal(params)
-          .toPromise()
-          .then((result) => {
-            if (result) {
-              this.formPlayer.initData();
+        const errorHandlingParams = this.findJsonParamsForErrorHandling(error);
+        if (errorHandlingParams) {
+          this.showModal(errorHandlingParams.modalAttributes).subscribe((result) => {
+            if (result == 'changeSpec') {
+              this.areSlotsNotAvailable = false;
+              this.clearDateSelection();
+              this.currentSlot = null;
+              this.currentAnswersService.state = null;
+
+              this.timeSlotDoctorService.state$$.next({
+                ...this.timeSlotDoctorService.state$$.getValue(),
+                docLookup: null,
+                specLookup: null,
+              });
+              this.timeSlotDoctorsComponent.specLookup.clearInput();
+              this.timeSlotDoctorsComponent.docLookup.clearInput();
             }
           });
+        } else {
+          const params = {
+            ...ITEMS_FAILURE,
+            buttons: [
+              {
+                label: 'Начать заново',
+                color: 'white',
+                closeModal: true,
+                value: 'init',
+              },
+              {
+                label: 'Попробовать ещё раз',
+                closeModal: true,
+              },
+            ],
+          } as ConfirmationModal;
+          const message = errorMessage
+            .replace('FAILURE:', '')
+            .replace('UNKNOWN_REQUEST_DESCRIPTION:', '')
+            .replace('NO_DATA:', '');
+          params.text = params.text.replace(/\{textAsset\}?/g, message);
+          this.showModal(params)
+            .toPromise()
+            .then((result) => {
+              if (result) {
+                this.formPlayer.initData();
+              }
+            });
+        }
       }
     } else {
       this.showModal(COMMON_ERROR_MODAL_PARAMS());
@@ -582,6 +609,20 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
         this.showModal(modalParams);
       }
     }
+  }
+
+  private findJsonParamsForErrorHandling(error: ErrorInterface | string): IBookingErrorHandling {
+    if (typeof error !== 'object') {
+      return null;
+    }
+    const { errorCode } = error.errorDetail;
+
+    return this.timeSlotDoctorService.bookingErrorHandlingParams.find((param) => {
+      const isCodesEqual = param.errorCode === String(errorCode);
+      return param.errorMessageRegExp
+        ? isCodesEqual && error.errorDetail.errorMessage.match(param.errorMessageRegExp)
+        : isCodesEqual;
+    });
   }
 
   private setProviders(component: TimeSlotDoctorsComponentDto): void {
@@ -878,7 +919,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
   private fillMonthsYears(): void {
     this.monthsYears = [];
     const availableMonths = this.timeSlotDoctorService.getAvailableMonths();
-    if (availableMonths.length) {
+    if (availableMonths?.length) {
       availableMonths.sort((date1: string, date2: string): number => {
         return new Date(date1) > new Date(date2) ? 1 : -1;
       });
