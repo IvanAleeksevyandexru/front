@@ -33,6 +33,7 @@ import {
   BookTimeSlotReq,
   CancelSlotResponseInterface,
   DepartmentInterface,
+  ErrorInterface,
   SmevBookResponseInterface,
   SmevSlotsMapInterface,
   TimeSlot,
@@ -55,6 +56,8 @@ const TIMEZONE_STR_OFFSET = -6;
 
 @Injectable()
 export class TimeSlotsService {
+  public slotsError?: ErrorInterface;
+
   public activeMonthNumber: number; // 0..11
 
   public activeYearNumber: number;
@@ -312,7 +315,9 @@ export class TimeSlotsService {
               if (response.error?.errorDetail.errorCode === 0 || response.error === null) {
                 this.initSlotsMap(response.slots);
                 this.areas = areaNames;
+                this.slotsError = null;
               } else {
+                this.slotsError = response.error;
                 const { errorMessage, errorCode } = response.error.errorDetail;
                 this.errorMessage = errorMessage || errorCode;
               }
