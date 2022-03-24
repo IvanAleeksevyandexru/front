@@ -27,6 +27,17 @@
 
 * Зафиксирована версия es5-ext без антивоенных призывов
 * Произведена дедупликация зависимостей в yarn.lock [EPGUCORE-91325]
+
+## [400.46.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.46.0) (2022-03-23)
+
+### Bug Fixes
+
+* Убран закрывающий крестик в модалке мульти-черновиков [EPGUCORE-91617]
+
+### Chore
+
+* Оптимизация сборки sf-portal [EPGUCORE-91618]
+
 ## [400.44.3](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.44.3) (2022-03-22)
 
 ### Bug Fixes
