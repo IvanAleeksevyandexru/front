@@ -207,6 +207,7 @@ export interface ComponentAttrsDto {
   beginTime?: ComponentDateTimeDto;
   body?: Body;
   bookingErrorHandling?: IBookingErrorHandling[];
+  slotsErrorHandling?: IBookingErrorHandling[];
   cacheRepeatableFieldsAnswersLocally?: CacheRepeatableFieldsAnswersLocally;
   cancelReservation?: CancelReservation;
   canDeleteFirstScreen?: CanDeleteFirstScreen;
