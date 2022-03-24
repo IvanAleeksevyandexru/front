@@ -28,7 +28,7 @@ export class ModalBaseComponent extends BaseComponent {
   }
 
   @HostListener('document:keydown', ['$event']) onKeydownComponent(event: KeyboardEvent): void {
-    if (event.key === 'Escape' || event.key === 'Esc') {
+    if (this.backdropDismiss && (event.key === 'Escape' || event.key === 'Esc')) {
       this.closeModal();
     }
   }
