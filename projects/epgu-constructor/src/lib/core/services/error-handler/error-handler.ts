@@ -106,7 +106,7 @@ const RESOURCE_NOT_AVAILABLE_TEXT = `<div class="text_modal_error">
 const NO_DOCTORS_TEXT = `<div class="text_modal_error">
 <img style="display:block; margin: 24px auto" src="{staticDomainAssetsPath}/assets/icons/svg/warn.svg">
 <h4>Врачи не найдены</h4>
-<span>По выбранной Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам через ЕПГУ. Пожалуйста, обратитесь в регистратуру медицинской организации</span>
+<span>По выбранной Вами медицинской должности в ближайшие 14 дней нет доступного времени для записи к специалистам через Госуслуги. Пожалуйста, обратитесь в регистратуру медицинской организации</span>
 </div>`;
 
 const NO_DOCTORS_AVAILABLE_TEXT = `<div class="text_modal_error">
@@ -225,7 +225,6 @@ export const NO_DOCTORS: ConfirmationModal = {
     },
     {
       label: 'Попробовать ещё раз',
-      value: 'prevStep',
       closeModal: true,
     },
   ],
