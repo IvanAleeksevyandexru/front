@@ -18,4 +18,8 @@ export default class MultipleChoiceDictionaryModelAttrs extends DictionaryShared
     this.customUnrecLabel = attrs.customUnrecLabel;
     this.clarifications = attrs.clarifications;
   }
+
+  public isLoadingNeeded(): boolean {
+    return super.isLoadingNeeded() && !this.dictionaryList;
+  }
 }
