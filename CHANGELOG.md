@@ -10,6 +10,10 @@
 * Изменен вывод именованных черновиков в модалке выбора мульти-черновиков [EPGUCORE-91563]
 * Поправлена доступность кнопки Продолжить для DictionaryLikeComponent [EPGUCORE-91568]
 
+### Chore
+
+* Подготовить возможность полной сборки фронта с одной итерацией yarn install [EPGUCORE-91618]
+
 ## [400.43.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.43.0) (2022-03-21)
 
 ### Features
