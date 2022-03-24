@@ -24,6 +24,9 @@ import {
   DeviceDetectorServiceStub,
   ActivatedRouteStub,
   FocusManagerService,
+  SafeModule,
+  ConstructorLookupModule,
+  ObjectHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KindergartenService } from '../component/unique-screen/components/kindergarten/kindergarten.service';
@@ -76,6 +79,9 @@ import { UploaderValidationServiceStub } from '../shared/components/file-upload/
 import { UploaderValidationService } from '../shared/components/file-upload/services/validation/uploader-validation.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ClickableLabelModule } from '../shared/directives/clickable-label/clickable-label.module';
+import { ActionService } from '../shared/directives/action/action.service';
+import { ActionToolsService } from '../shared/directives/action/action-tools.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -95,6 +101,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
     { provide: UploaderStoreService, useClass: UploaderStoreServiceStub },
     { provide: UploaderValidationService, useClass: UploaderValidationServiceStub },
     { provide: WINDOW, useValue: window },
+    ActionService,
+    ActionToolsService,
     AddressesToolsService,
     AddressHelperService,
     AutocompleteApiService,
@@ -131,6 +139,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
     ModalErrorService,
     ModalService,
     NavigationModalService,
+    ObjectHelperService,
     PrepareComponentsService,
     PriorityItemsService,
     RefRelationService,
@@ -144,5 +153,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
     ValidationService,
     YandexMapService,
   ],
+  exports: [SafeModule, ConstructorLookupModule, ClickableLabelModule],
 })
 export class ForTestsOnlyModule {}
