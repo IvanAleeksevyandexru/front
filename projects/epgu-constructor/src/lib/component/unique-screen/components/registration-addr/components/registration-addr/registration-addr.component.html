@@ -81,6 +81,35 @@
         </div>
       </div>
     </form>
+    <ng-container *ngIf="data$ | async as data">
+      <ng-container *ngIf="!data.errors?.length && data.value">
+        <epgu-constructor-disclaimer
+          class="confirm-personal-data-disclaimer"
+          *ngIf="data.attrs?.disclaimer as disclaimer"
+          [type]="disclaimer.type"
+          [title]="disclaimer.title"
+          [description]="disclaimer.description"
+        ></epgu-constructor-disclaimer>
+      </ng-container>
+      <ng-container *ngIf="!data.errors?.length && !data.value">
+        <epgu-constructor-disclaimer
+          class="confirm-personal-data-disclaimer"
+          *ngIf="data.attrs?.defaultHint as defaultHint"
+          [type]="defaultHint.type"
+          [title]="defaultHint.title"
+          [description]="defaultHint.value"
+        ></epgu-constructor-disclaimer>
+      </ng-container>
+      <ng-container *ngIf="data.errors?.length">
+        <epgu-constructor-disclaimer
+          class="confirm-personal-data-disclaimer"
+          *ngIf="data.attrs?.errors as error"
+          [type]="error.type"
+          [title]="error.title"
+          [description]="error.desc"
+        ></epgu-constructor-disclaimer>
+      </ng-container>
+    </ng-container>
 
     <ng-container *ngFor="let error of groupedErrors">
       <epgu-constructor-disclaimer
