@@ -1,4 +1,11 @@
 //  TODO: причесать стили и избавиться от лишних классов
+:host {
+  background: #ffffff;
+  display: block;
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 64px);
+}
 
 #content-wrapper {
   min-height: 250px;
