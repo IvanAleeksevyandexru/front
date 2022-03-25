@@ -72,7 +72,8 @@ export class AppComponent implements OnInit {
     this.setWindowParams();
     this.isHeaderShown =
       !this.iframeService.hasIframe &&
-      (!this.deviceDetectorService.isWebView || !this.deviceDetectorService.isBrandSpecificWebView);
+      !this.deviceDetectorService.isWebView &&
+      !this.deviceDetectorService.isBrandSpecificWebView;
   }
 
   public getMainBlocksData(): void {
