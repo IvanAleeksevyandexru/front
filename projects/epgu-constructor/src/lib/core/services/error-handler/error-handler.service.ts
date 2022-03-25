@@ -9,7 +9,7 @@ import {
   LocalStorageService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Observable, of, throwError, timer } from 'rxjs';
-import { switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { delay, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   NEW_BOOKING_ERROR,
@@ -49,6 +49,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     const bookingValue = String(
       (body as FormPlayerApiSuccessResponse)?.scenarioDto?.display?.components[0]?.value,
     );
+
+    if (status === 200 && url.includes('scenario/getNextStep')) {
+      this.isPollingActive = false;
+      this.screenService.updateLoading(false);
+    }
 
     if (
       status === 200 &&
@@ -91,8 +96,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       });
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY, errors: error });
-    } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
+    } else if (status === 410 && url.includes('scenario/getNextStep')) {
       this.waitingOrderCreate();
+      return;
     } else if (status !== 404) {
       if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
@@ -143,14 +149,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
 
     timer(0, refreshTime)
       .pipe(
+        delay(refreshTime),
         tap(() => this.navigationService.next()),
         switchMap(() => this.navigationService.nextStep$),
-        tap({
-          next: () => {
-            this.isPollingActive = false;
-            this.screenService.updateLoading(false);
-          },
-        }),
         takeWhile(() => this.isPollingActive),
         takeUntil(this.ngUnsubscribe$),
       )
