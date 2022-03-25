@@ -234,12 +234,19 @@ export class JusticeSearchPanelService implements OnDestroy {
         this.logError('WreckedCourtJurisdNav', item);
       } else {
         if (Array.isArray(collection.features)) {
-          [feature] = collection.features;
-          feature.id = index;
-          feature.properties = {
-            attributeValues: item.attributeValues,
-          };
-          featureCollection.features.push(feature);
+          collection.features = collection.features.filter((feat) => {
+            // Исключаем ошибочные данные где вместо полигонов в данных просто точка
+            return !feat.geometry.coordinates.some((coords) => !coords[0]);
+          });
+
+          if (collection.features.length) {
+            [feature] = collection.features;
+            feature.id = index;
+            feature.properties = {
+              attributeValues: item.attributeValues,
+            };
+            featureCollection.features.push(feature);
+          }
         } else {
           this.logError('EmptyCourtJurisdNav', item);
         }
