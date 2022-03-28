@@ -19,6 +19,7 @@
     "identificationApiUrl": "/v1/identification",
     "wsIdentificationUrl": "wss://guc.notamedia.ru:5443/ws",
     "production": true,
+    "pollingTimeoutMs": 3000,
     "mocks": [],
     "mockUrl": "https://pgu-uat-fed.test.gosuslugi.ru/mock/api",
     "timeSlots": {

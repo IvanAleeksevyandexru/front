@@ -28,11 +28,12 @@
 * Зафиксирована версия es5-ext без антивоенных призывов
 * Произведена дедупликация зависимостей в yarn.lock [EPGUCORE-91325]
 
-## [400.46.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.46.0) (2022-03-23)
+## [400.48.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.48.0) (2022-03-25)
 
 ### Bug Fixes
 
 * Убран закрывающий крестик в модалке мульти-черновиков [EPGUCORE-91617]
+* Поправлена логика определения скрытия хедера по isBrandSpecificWebView [EPGUCORE-92022]
 
 ### Chore
 

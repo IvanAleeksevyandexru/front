@@ -97,7 +97,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY, errors: error });
     } else if (status === 410 && url.includes('scenario/getNextStep')) {
-      this.waitingOrderCreate();
+      this.waitingOrderCreate(this.configService.pollingTimeoutMs);
       return;
     } else if (status !== 404) {
       if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
@@ -141,7 +141,7 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
-  private waitingOrderCreate(refreshTime = 10000): void {
+  private waitingOrderCreate(refreshTime = 3000): void {
     if (this.isPollingActive) return;
 
     this.isPollingActive = true;
