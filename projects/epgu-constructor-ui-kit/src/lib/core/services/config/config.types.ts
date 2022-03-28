@@ -21,6 +21,7 @@ export type TimeSlotsApi = Record<string, TimeSlotsApiItem>;
  * @property {string}configApiUrl - url до форм плеер конфиг сервиса апи
  * @property {string}configId - id
  * @property {string}dictionaryUrl - url до сервиса словарей, как правило apiHostName/api/nsi/v1/dictionary
+ * @property {number}pollingTimeoutMs - кол-во милисекунд до очередного запроса в waitingOrderCreate
  * @property {string}externalApiUrl - url до сервиса dadata, как правило apiHostName/api/nsi/v1
  * @property {string}timeSlotApiUrl - url до сервиса тайм слотов, как правило apiHostName/api/lk/v1/equeue/agg
  * @property {string}uinApiUrl - url до сервиса по получению УИН для платежей, как правило apiHostName/api/lk/v1/paygate/uin
@@ -64,6 +65,7 @@ export interface Config {
   configApiUrl: string;
   configId: string;
   dictionaryUrl: string;
+  pollingTimeoutMs: number;
   isUnderConstructionModeEnabled?: boolean;
   externalApiUrl: string;
   fileUploadApiUrl: string;

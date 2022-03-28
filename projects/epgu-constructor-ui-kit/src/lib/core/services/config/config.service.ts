@@ -27,6 +27,8 @@ export class ConfigService implements Config {
 
   private _dictionaryUrl: string;
 
+  private _pollingTimeoutMs: number;
+
   private _externalApiUrl: string;
 
   private _fileUploadApiUrl: string;
@@ -151,6 +153,10 @@ export class ConfigService implements Config {
 
   get dictionaryUrl(): string {
     return this._dictionaryUrl;
+  }
+
+  get pollingTimeoutMs(): number {
+    return this._pollingTimeoutMs;
   }
 
   get externalApiUrl(): string {
@@ -357,6 +363,7 @@ export class ConfigService implements Config {
     this._mockUrl = config.mockUrl || '';
     this._timeSlots = config.timeSlots || {};
     this._galleryApiUrl = config.galleryApiUrl || '';
+    this._pollingTimeoutMs = config.pollingTimeoutMs || 3000;
     this._isUnderConstructionModeEnabled = !!config.isUnderConstructionModeEnabled;
     this._isSocialShareEnabled = !!config.isSocialShareEnabled;
     this._isAutocompleteServiceEnabled = !!config.isAutocompleteServiceEnabled;
