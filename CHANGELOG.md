@@ -28,12 +28,21 @@
 * Зафиксирована версия es5-ext без антивоенных призывов
 * Произведена дедупликация зависимостей в yarn.lock [EPGUCORE-91325]
 
+## [400.49.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.49.0) (2022-03-25)
+
+### Bug Fixes
+
+* Правка логики обработки 410 в getNextStep и waitingOrderCreate [EPGUCORE-91507]
+* Добавлен конфижный pollingTimeoutMs для настройки полинга троббера [EPGUCORE-92192]
+
 ## [400.48.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.48.0) (2022-03-25)
 
 ### Bug Fixes
 
 * Убран закрывающий крестик в модалке мульти-черновиков [EPGUCORE-91617]
 * Поправлена логика определения скрытия хедера по isBrandSpecificWebView [EPGUCORE-92022]
+* В multi choice dict не делается запрос для статических справочников [EPGUCORE-91881]
+* Скорректирована работа ESC для закрытия модалки при backdropDismiss: false [EPGUCORE-91959]
 
 ### Chore
 
