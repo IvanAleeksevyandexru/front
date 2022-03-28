@@ -8,8 +8,8 @@ import {
   UnsubscribeService,
   LocalStorageService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { Observable, of, throwError } from 'rxjs';
-import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Observable, of, throwError, timer } from 'rxjs';
+import { delay, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import {
   AUTH_ERROR_MODAL_PARAMS,
   NEW_BOOKING_ERROR,
@@ -29,6 +29,8 @@ import { ContinueOrderModalService } from '../../../modal/continue-order-modal/c
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandlerAbstractService {
+  private isPollingActive = false;
+
   constructor(
     private locationService: LocationService,
     private navigationService: NavigationService,
@@ -47,6 +49,11 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     const bookingValue = String(
       (body as FormPlayerApiSuccessResponse)?.scenarioDto?.display?.components[0]?.value,
     );
+
+    if (status === 200 && url.includes('scenario/getNextStep')) {
+      this.isPollingActive = false;
+      this.screenService.updateLoading(false);
+    }
 
     if (
       status === 200 &&
@@ -89,8 +96,9 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
       });
     } else if (status === 409 && url.includes('scenario/getNextStep')) {
       this.navigationService.patchOnCli({ display: DOUBLE_ORDER_ERROR_DISPLAY, errors: error });
-    } else if (status === 410 && url.includes('scenario/getOrderStatus')) {
-      this.waitingOrderCreate();
+    } else if (status === 410 && url.includes('scenario/getNextStep')) {
+      this.waitingOrderCreate(this.configService.pollingTimeoutMs);
+      return;
     } else if (status !== 404) {
       if (status >= 400 && url.includes(this.configService.suggestionsApiUrl)) {
         return throwError(httpErrorResponse);
@@ -133,19 +141,19 @@ export class ErrorHandlerService implements ErrorHandlerAbstractService {
     }
   }
 
-  private waitingOrderCreate(refreshTime = 10000): void {
+  private waitingOrderCreate(refreshTime = 3000): void {
+    if (this.isPollingActive) return;
+
+    this.isPollingActive = true;
     this.screenService.updateLoading(true);
-    of()
+
+    timer(0, refreshTime)
       .pipe(
-        takeUntil(this.ngUnsubscribe$), //TODO: обычно используют в конце pipe, подумать над рефакторингом
-        debounceTime(refreshTime),
+        delay(refreshTime),
         tap(() => this.navigationService.next()),
         switchMap(() => this.navigationService.nextStep$),
-        tap({
-          next: () => {
-            this.screenService.updateLoading(false);
-          },
-        }),
+        takeWhile(() => this.isPollingActive),
+        takeUntil(this.ngUnsubscribe$),
       )
       .subscribe();
   }

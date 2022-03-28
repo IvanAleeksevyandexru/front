@@ -8,6 +8,7 @@ import { LoadServiceStub } from './load-service-stub';
 
 const configMock: Config = {
   dictionaryUrl: 'dictionaryUrl',
+  pollingTimeoutMs: 3000,
   externalApiUrl: 'externalApiUrl',
   timeSlotApiUrl: 'timeSlotApiUrl',
   listPaymentsApiUrl: 'listPaymentsApiUrl',
@@ -91,6 +92,7 @@ describe('ConfigService', () => {
   it('test properties', () => {
     service.config = configMock;
     expect(service.dictionaryUrl).toBe(configMock.dictionaryUrl);
+    expect(service.pollingTimeoutMs).toBe(configMock.pollingTimeoutMs);
     expect(service.externalApiUrl).toBe(configMock.externalApiUrl);
     expect(service.timeSlotApiUrl).toBe(configMock.timeSlotApiUrl);
     expect(service.listPaymentsApiUrl).toBe(configMock.listPaymentsApiUrl);
