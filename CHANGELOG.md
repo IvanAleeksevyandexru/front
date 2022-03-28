@@ -1,6 +1,6 @@
 # Release Notes
 
-## [400.46.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.46.0) (2022-03-23)
+## [400.48.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.48.0) (2022-03-25)
 
 ### Bug Fixes
 
