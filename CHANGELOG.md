@@ -8,6 +8,11 @@
 * Добавлена валидация в Адреса в компоненте AddressInput [EPGUCORE-90117]
 * Добавлена валидация в Адреса в компоненте RegistrationAddr [EPGUCORE-90116]
 * Добавлена валидация в ConfirmPersonalUserRegReadOnlyAddr [EPGUCORE-90115]
+* Добавлен Clarifications для MultipleChoiceDictionary [EPGUCORE-86336]
+* Добавлен slotsErrorHandling для TimeSlot [EPGUCORE-89927]
+* Добавлен disclaimer в confirm-personal-policy [EPGUCORE-88610]
+* Добавлен errorBookingHandling для TimeSlotDoctors [EPGUCORE-89926]
+* Реализован дисклеймер при отсутствии индекса в RegistrationLegalAddr [EPGUCORE-89049]
 
 ### Refactor
 
@@ -16,12 +21,16 @@
 
 ### Bug Fixes
 
-* Заменен текст в модалке для кейса "врачи не найдены" [EPGUCORE-88568]
+* Поправлена модалка для docLookup [EPGUCORE-88568]
 * Включение notify для clipboard в outputhtml [EPGUCORE-85543]
 * Исправлена валидация контрольной суммы MaritalStatusInput [EPGUCORE-90123]
 * Добавлен параметр IsFinalReservation для TimeSLot [EPGUCORE-90472]
 * Поправлено отображение presetValue для FieldsList [EPGUCORE-89897]
 * Поправлена работа ссылок в lib-header [EPGUCORE-90452]
+* Поддержка целочисленных типов в mappingParams, multi-choice-dictionary-modal [EPGUCORE-91604]
+* Исправлено падение карт на битых судах [EPGUCORE-88374]
+* Поправлен цвет фона в sf-portal [EPGUCORE-91980]
+* Добавлена обработка "плохих" координат в суды на карте [EPGUCORE-91925]
 
 ### Chore
 
