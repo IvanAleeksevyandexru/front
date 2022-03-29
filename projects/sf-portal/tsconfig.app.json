@@ -3,6 +3,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": false,
+    "baseUrl": ".",
     "outDir": "../../out-tsc/app",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
@@ -14,9 +15,10 @@
     "target": "es6",
     "lib": ["es2018", "dom"],
     "paths": {
-      "@angular/*": ["node_modules/@angular/*"],
-      "@ifc/plugin": ["node_modules/@epgu/ui/assets/vendor/ifcplugin-lib.js"],
-      "@ifc/common": ["node_modules/@epgu/ui/assets/vendor/ifccommon-lib.js"]
+      "@angular/*": ["../../node_modules/@angular/*", "node_modules/@angular/*"],
+      "@ifc/plugin": ["@epgu/ui/assets/vendor/ifcplugin-lib.js"],
+      "@ifc/common": ["@epgu/ui/assets/vendor/ifccommon-lib.js"],
+      "@epgu/*": ["../../dist/*", "@epgu/*", "../../@epgu/*"],
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],

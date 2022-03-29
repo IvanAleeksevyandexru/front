@@ -298,7 +298,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/sf-portal/tsconfig.app.prod.json",
+              "tsConfig": "projects/sf-portal/tsconfig.app.json",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -326,7 +326,7 @@
               ]
             },
             "development": {
-              "tsConfig": "projects/sf-portal/tsconfig.app.prod.json",
+              "tsConfig": "projects/sf-portal/tsconfig.app.json",
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
