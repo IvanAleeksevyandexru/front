@@ -13,7 +13,7 @@
     "@angular/cdk": "13.3.0",
     "@angular/forms": "13.3.0",
     "@datorama/akita": "6.2.0",
-    "@epgu/ui": "3.0.401-1-front",
+    "@epgu/ui": "3.0.403-1-frontv3",
     "rxjs": "6.6.7",
     "ngx-perfect-scrollbar": "8.0.0"
   },
