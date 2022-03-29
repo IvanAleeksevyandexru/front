@@ -43,9 +43,9 @@ export class ScreenButtonsComponent implements OnInit, OnDestroy {
       )
       .subscribe((buttons) => this.screenButtonService.initButtonsDisablingHandling(buttons));
     this.screenButtonService.subscriptionOnInnerFormForDisablingChanges.subscribe();
-    if (this.screenService.display?.type === ScreenTypes.UNIQUE) {
+    if (this.screenService.display?.type !== ScreenTypes.CUSTOM) {
       this.screenButtonService.initSubscribeOnComponentsForm(new FormArray([]), {
-        [this.screenService.component.id]: { isShown: true },
+        [this.screenService.component?.id]: { isShown: true },
       });
     }
 
