@@ -400,7 +400,6 @@ describe('ComponentsListFormService', () => {
           isValid: false,
           disabled: false,
           condition: null,
-          type: 'StringInput',
         },
       };
       service.shownElements.rf1.isShown = true;

@@ -312,7 +312,6 @@ export interface CustomComponentOutputData {
     isValid?: boolean;
     disabled?: boolean;
     condition?: string;
-    type?: CustomScreenComponentTypes;
   };
 }
 

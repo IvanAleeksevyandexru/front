@@ -4,10 +4,10 @@ import { CustomComponent } from '../../components-list.types';
 
 export const isMultipleSelectedItemsValid = (
   selectedItems: MultipleSelectedItems,
-  _component?: CustomComponent,
+  component?: CustomComponent,
   ctx?: ValidationServiceContext,
 ): boolean => {
-  if (!_component.required) {
+  if (!component.required) {
     return true;
   }
   const { jsonHelperService } = ctx || {};
