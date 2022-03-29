@@ -1,8 +1,18 @@
 const path = require('path');
 const fs = require('fs');
 const sfVersion = require('../projects/sf-portal/package.json').version;
-const cfVersion = require('../projects/sf-portal/node_modules/@epgu/epgu-constructor/package.json').version;
 const uiVersion = require('../projects/sf-portal/node_modules/@epgu/ui/package.json').version;
+const cfDirInnerVersion = '../projects/sf-portal/node_modules/@epgu/epgu-constructor/package.json';
+const cfDirRootVersion = '../node_modules/@epgu/epgu-constructor/package.json';
+let cfVersion = '';
+
+
+if (fs.existsSync(cfDirInnerVersion)) {
+  cfVersion = require(cfDirInnerVersion).version
+} else {
+  cfVersion = require(cfDirRootVersion).version
+}
+
 const versionFileLibPath = path.join(
   __dirname,
   '..',
