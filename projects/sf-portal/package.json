@@ -63,6 +63,8 @@
   },
   "devDependencies": {
     "@nguniversal/builders": "12.1.0",
+    "copy-webpack-plugin": "9.0.1",
+    "@angular-builders/custom-webpack": "13.0.0",
     "@types/express": "4.17.0",
     "cpx": "1.5.0",
     "cross-env": "7.0.3",
