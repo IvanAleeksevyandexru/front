@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable, PLATFORM_ID, Optional, Inject, isDevMode } from '@angular/core';
+import { Injectable, PLATFORM_ID, Optional, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { LoadService } from '@epgu/ui/services/load';
@@ -10,8 +10,6 @@ import { isPlatformServer } from '@angular/common';
 import { HOST_URL } from './tokens/host-url.token';
 import { IframePlayerService } from './services/iframe-player/iframe-player.service';
 import { filter, map, take } from 'rxjs/operators';
-
-const packageJson = require('../../package.json');
 
 @Injectable({
   providedIn: 'root',
@@ -70,8 +68,7 @@ export class AppConfig {
           if (this.isServer) {
             this.loadService.load('', false, false, '');
           } else {
-            const packageVersion = isDevMode() ? '' : packageJson.dependencies['@epgu/ui'];
-            this.loadService.load('', false, true, packageVersion);
+            this.loadService.load('', false, true);
           }
 
           switch (true) {
