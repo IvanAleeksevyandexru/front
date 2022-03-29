@@ -1,7 +1,4 @@
-import {
-  CustomComponentAttr,
-  CustomScreenComponentTypes,
-} from '../../components-list.types';
+import { CustomComponentAttr, CustomScreenComponentTypes } from '../../components-list.types';
 import MultipleChoiceDictionaryModelAttrs from './MultipleChoiceDictionaryModelAttrs';
 import { isMultipleSelectedItemsValid } from './MultipleChoiceDictionaryValidations';
 import DictionaryLikeModel from '../../component-list-resolver/DictionaryLikeModel';
