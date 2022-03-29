@@ -18,7 +18,7 @@
       "@angular/*": ["../../node_modules/@angular/*", "node_modules/@angular/*"],
       "@ifc/plugin": ["@epgu/ui/assets/vendor/ifcplugin-lib.js"],
       "@ifc/common": ["@epgu/ui/assets/vendor/ifccommon-lib.js"],
-      "@epgu/*": ["../../dist/*", "@epgu/*", "../../@epgu/*"],
+      "@epgu/*": ["../../dist/*", "node_modules/@epgu/*", "../../node_modules/@epgu/*"],
     }
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
