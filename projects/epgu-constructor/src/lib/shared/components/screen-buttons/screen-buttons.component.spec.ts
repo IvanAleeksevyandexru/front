@@ -120,7 +120,7 @@ describe('ScreenButtonsComponent', () => {
   });
 
   it('should set shownButtons by filtered screenButtons', () => {
-    buttonsService.clientSystem = System.Android;
+    buttonsService['clientSystem'] = System.Android;
     component.screenButtons = mockScreenButtons;
 
     expect(buttonsService.outputButtons.length).toEqual(2);
@@ -147,7 +147,7 @@ describe('ScreenButtonsComponent', () => {
     });
 
     it('should render buttons filtered for client system', () => {
-      buttonsService.clientSystem = System.iOS;
+      buttonsService['clientSystem'] = System.iOS;
       component.screenButtons = mockScreenButtons;
       fixture.detectChanges();
       const debugElements = fixture.debugElement.queryAll(By.css('.screen-button'));

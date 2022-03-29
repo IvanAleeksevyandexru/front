@@ -1,5 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import {
+  CfAppStateService,
+  CfAppStateServiceStub,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  LocationService,
+  LocationServiceStub,
   MicroAppStateQuery,
   MicroAppStateService,
   MicroAppStateStore,
@@ -10,6 +16,8 @@ import { municipalityStub, programStub } from '../../stubs/projects.stub';
 import { FocusDirectionsItem } from '../../models/children-clubs.types';
 import { DictionaryApiServiceStub } from '../../../../../../shared/services/dictionary/dictionary-api.service.stub';
 import { DictionaryApiService } from '../../../../../../shared/services/dictionary/dictionary-api.service';
+import { ApiService } from '@epgu/children-clubs/src/lib/services/api/api.service';
+import { ApiServiceStub } from '@epgu/children-clubs/src/lib/services/api/api.service.stub';
 
 describe('DictionaryService', () => {
   let service: DictionaryCcService;
@@ -23,7 +31,11 @@ describe('DictionaryService', () => {
         MicroAppStateService,
         MicroAppStateQuery,
         MicroAppStateStore,
+        { provide: ApiService, useClass: ApiServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
+        { provide: CfAppStateService, useClass: CfAppStateServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     }).compileComponents();
     service = TestBed.inject(DictionaryCcService);

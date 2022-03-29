@@ -92,6 +92,7 @@ import { ComponentsListRelationsServiceStub } from '../../../../custom-screen/se
 import { DictionaryService } from '../../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../../shared/services/dictionary/dictionary.service.stub';
 import { LookupComponent } from '@epgu/ui/controls';
+import { ErrorInterface } from '../../time-slot/typings';
 
 describe('TimeSlotDoctorsContainerComponent', () => {
   let component: TimeSlotDoctorsContainerComponent;
@@ -793,7 +794,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
       component.bookTimeSlot();
 
       expect(component.inBookingProgress).toEqual(false);
-      expect(component.showCustomError).toHaveBeenLastCalledWith('Ошибка запроса');
+      expect(component.showCustomError).toHaveBeenLastCalledWith({
+        errorDetail: { errorMessage: 'Ошибка запроса' },
+      });
       expect(actionService.switchAction).not.toHaveBeenLastCalledWith(NEXT_STEP_ACTION, 'test');
     });
 
@@ -875,7 +878,9 @@ describe('TimeSlotDoctorsContainerComponent', () => {
 
     it('when error is session timeout', () => {
       jest.spyOn(component, 'showModal');
-      component.showCustomError('Закончилось время');
+      component.showCustomError(({
+        errorDetail: { errorMessage: 'Закончилось время' },
+      } as unknown) as ErrorInterface);
       expect(component.showModal).toHaveBeenLastCalledWith(SERVICE_OR_SPEC_SESSION_TIMEOUT);
     });
 

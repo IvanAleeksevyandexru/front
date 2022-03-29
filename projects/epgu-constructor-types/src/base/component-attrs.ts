@@ -207,6 +207,7 @@ export interface ComponentAttrsDto {
   beginTime?: ComponentDateTimeDto;
   body?: Body;
   bookingErrorHandling?: IBookingErrorHandling[];
+  slotsErrorHandling?: IBookingErrorHandling[];
   cacheRepeatableFieldsAnswersLocally?: CacheRepeatableFieldsAnswersLocally;
   cancelReservation?: CancelReservation;
   canDeleteFirstScreen?: CanDeleteFirstScreen;
@@ -284,6 +285,7 @@ export interface ComponentAttrsDto {
   isSmev2?: IsSmev2;
   isServiceSpecific?: IsServiceSpecific;
   isInvite?: boolean;
+  IsFinalReservation?: boolean;
   isSoloCheckBox?: IsSoloCheckBox;
   keepVariables?: KeepVariables;
   label?: Label;

@@ -28,6 +28,18 @@
       display: flex;
 
     }
+    &__filter-icon-desktop {
+      @include tablets-down() {
+        display: none;
+      }
+      cursor: pointer;
+    }
+    &__filter-icon-mobile {
+      margin-left: 24px;
+      @include tablets-up() {
+        display: none;
+      }
+    }
   }
   &__title {
     font-size: $font-sm;
@@ -52,4 +64,14 @@
   margin: 0 12px;
   width: 1px;
   border-right: 1px solid $color-blu-selvaggio;
+}
+.back-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:active,
+  &:focus,
+  &:hover {
+    color: $color-active-item;
+  }
 }

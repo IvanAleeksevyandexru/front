@@ -9,35 +9,31 @@ import {
   ViewChildren,
 } from '@angular/core';
 import {
-  CommonModalComponent,
   ConfigService,
-  ModalService,
   rotateAndDiminish,
   smoothHeight,
-  YMapItem,
   DeviceDetectorService,
-  flyInOut,
   BaseComponent,
 } from '@epgu/epgu-constructor-ui-kit';
 import { Observable } from 'rxjs';
 import { KeyValueMap } from '@epgu/epgu-constructor-types';
-import { DictionaryItem } from '../../../../../../../../shared/services/dictionary/dictionary-api.types';
 import { SelectMapObjectService } from '../../../../select-map-object.service';
 import { IBalloonContent } from '../../balloon-content-resolver.interface';
+import { financingTypes } from '../../../../../children-clubs/models/children-clubs.types';
 
 @Component({
-  selector: 'epgu-constructor-common-balloon-content',
-  templateUrl: './common-balloon-content.component.html',
-  styleUrls: ['./common-balloon-content.component.scss'],
+  selector: 'epgu-constructor-children-clubs-balloon-content',
+  templateUrl: './children-clubs-balloon-content.component.html',
+  styleUrls: ['./children-clubs-balloon-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [rotateAndDiminish, smoothHeight, flyInOut],
+  animations: [rotateAndDiminish, smoothHeight],
 })
-export class CommonBalloonContentComponent extends BaseComponent implements IBalloonContent {
+export class ChildrenClubsBalloonContentComponent extends BaseComponent implements IBalloonContent {
   @Input() isSelectButtonHidden = false;
   @Input() showLoader: Observable<boolean>;
   @Input() mapObjects;
-  @Input() lockAnimation = false;
   @Input() showChevron = false;
+  @Input() lockAnimation = false;
   @Input() attrs: KeyValueMap = {};
   @Input() showCrossButton = true;
   @ViewChild('detailsTemplate', { static: false }) detailsTemplate;
@@ -46,26 +42,14 @@ export class CommonBalloonContentComponent extends BaseComponent implements IBal
   public selectObject: Function;
   public objectClick: Function;
   public collapseObject: Function;
+  public financingTypes = financingTypes;
 
   constructor(
     public selectMapObjectService: SelectMapObjectService,
     public cdr: ChangeDetectorRef,
     public config: ConfigService,
     public deviceDetector: DeviceDetectorService,
-    private modalService: ModalService,
   ) {
     super();
-  }
-
-  /**
-   * Показывает модальное окно на основе шаблона
-   * @param templateName имя шаблона из this.templates
-   * @param item контекст балуна
-   */
-  public showModalFromTemplate(templateName: string, item: YMapItem<DictionaryItem>): void {
-    this.modalService.openModal(CommonModalComponent, {
-      modalTemplateRef: this[templateName],
-      item,
-    });
   }
 }

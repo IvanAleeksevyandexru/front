@@ -6,6 +6,8 @@ import {
   MapLayouts,
   YandexMapService,
   JsonHelperService,
+  LoggerService,
+  HealthService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryConditions, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
 import { Subject } from 'rxjs';
@@ -30,7 +32,9 @@ export class JusticeSearchPanelService implements OnDestroy {
     private yaMapService: YaMapService,
     private icons: Icons,
     private jsonHelperService: JsonHelperService,
+    private loggerService: LoggerService,
     private selectMapObjectService: SelectMapObjectService,
+    private health: HealthService,
   ) {}
 
   ngOnDestroy(): void {
@@ -198,32 +202,69 @@ export class JusticeSearchPanelService implements OnDestroy {
       },
     };
     this.dictionaryApiService.getGenericDictionary('SDRF_Courts', options).subscribe((response) => {
-      // Складываем все полигоны в одну FeatureCollection чтобы проводить все операции с полигонами через нее
-      const featureCollection = {
-        type: 'FeatureCollection',
-        metadata: {
-          name: 'delivery',
-          creator: 'Yandex Map Constructor',
-        },
-        features: [],
-      };
-      response.items.forEach((item, index) => {
-        const collection: IFeatureCollection<IFeatureItem<
-          unknown
-        >> = this.jsonHelperService.tryToParse(
-          item.attributeValues.CourtJurisd_Nav,
-        ) as IFeatureCollection<IFeatureItem<unknown>>;
-        const [feature] = collection.features;
-        if (feature) {
-          feature.id = index;
-          feature.properties = {
-            attributeValues: item.attributeValues,
-          };
-          featureCollection.features.push(feature);
-        }
-      });
-      this.drawPolygonsOnMap(featureCollection);
+      this.drawPolygonsOnMap(this.prepareFeatureCollection(response));
       this.highlightResult(this.myPlacemark);
+    });
+  }
+
+  private prepareFeatureCollection(response): IFeatureCollection<IFeatureItem<unknown>> {
+    // Складываем все полигоны в одну FeatureCollection чтобы проводить все операции с полигонами через нее
+    const featureCollection = {
+      type: 'FeatureCollection',
+      metadata: {
+        name: 'delivery',
+        creator: 'Yandex Map Constructor',
+      },
+      features: [],
+    };
+    response.items.forEach((item, index) => {
+      const collection: IFeatureCollection<IFeatureItem<
+        unknown
+      >> = this.jsonHelperService.tryToParse(
+        item.attributeValues.CourtJurisd_Nav,
+      ) as IFeatureCollection<IFeatureItem<unknown>>;
+      let feature;
+
+      // Проверка на кривую кодировку
+      if (item.attributeValues.CourtName.match(/[^\w\sа-яё\-№\.]/i)) {
+        this.logError('WrongEncoding', item);
+      }
+
+      if (!collection) {
+        this.logError('WreckedCourtJurisdNav', item);
+      } else {
+        if (Array.isArray(collection.features)) {
+          collection.features = collection.features.filter((feat) => {
+            // Исключаем ошибочные данные где вместо полигонов в данных просто точка
+            return !feat.geometry.coordinates.some((coords) => !coords[0]);
+          });
+
+          if (collection.features.length) {
+            [feature] = collection.features;
+            feature.id = index;
+            feature.properties = {
+              attributeValues: item.attributeValues,
+            };
+            featureCollection.features.push(feature);
+          }
+        } else {
+          this.logError('EmptyCourtJurisdNav', item);
+        }
+      }
+    });
+
+    return featureCollection;
+  }
+
+  private logError(courtErrorType: string, item): void {
+    this.loggerService.log([
+      `${courtErrorType} ${item.attributeValues.CourtID} ${item.attributeValues.CourtName}`,
+    ]);
+    this.health.measureStart('courtError');
+    this.health.measureEnd('courtError', 1, {
+      CourtID: item.attributeValues.CourtID,
+      CourtName: item.attributeValues.CourtName,
+      courtErrorType,
     });
   }
 }

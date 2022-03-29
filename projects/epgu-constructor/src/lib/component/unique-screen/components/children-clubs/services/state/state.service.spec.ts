@@ -1,5 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import {
+  CfAppStateService,
+  CfAppStateServiceStub,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  LocationService,
+  LocationServiceStub,
   MicroAppStateQuery,
   MicroAppStateQueryStub,
   MicroAppStateService,
@@ -49,6 +55,9 @@ describe('StateService', () => {
         StateService,
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
+        { provide: CfAppStateService, useClass: CfAppStateServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     });
   });

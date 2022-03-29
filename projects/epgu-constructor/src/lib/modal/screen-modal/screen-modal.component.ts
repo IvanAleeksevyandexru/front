@@ -25,6 +25,8 @@ import { ScreenService } from '../../screen/screen.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { CurrentAnswersService } from '../../screen/current-answers.service';
 import { ActionService } from '../../shared/directives/action/action.service';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { DropdownListModalComponent } from '../dropdown-list-modal/components/dropdown-list-modal.component';
 
 @Component({
   selector: 'epgu-constructor-screen-modal',
@@ -53,6 +55,8 @@ export class ScreenModalComponent extends ModalBaseComponent implements OnInit {
     private changeDetectionRef: ChangeDetectorRef,
   ) {
     super(injector);
+    this.screenService.confirmationModalComponent = ConfirmationModalComponent;
+    this.screenService.dropdownListModalComponent = DropdownListModalComponent;
   }
 
   ngOnInit(): void {

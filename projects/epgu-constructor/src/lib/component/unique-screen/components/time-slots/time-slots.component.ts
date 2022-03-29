@@ -179,6 +179,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
   private nextStepAction = NEXT_STEP_ACTION;
   private emptySlotsModal: ConfirmationModal = null;
   private bookingErrorHandlingParams: IBookingErrorHandling[];
+  private slotsErrorHandlingParams: IBookingErrorHandling[];
   private firstDayOfMainSection: Date;
   private daysInMainSection: number;
   private visibleMonths = {}; // Мапа видимых месяцев. Если показ идет с текущей даты и доступные дни залезли на новый месяц, то показываем этот месяц
@@ -459,6 +460,17 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     );
   }
 
+  showErrorHandlingByStore(
+    store: IBookingErrorHandling[],
+    error: string | ErrorInterface,
+  ): boolean {
+    const errorHandlingParams = this.findJsonParamsForErrorHandling(store, error);
+    if (errorHandlingParams) {
+      this.showModal(errorHandlingParams.modalAttributes);
+    }
+    return !!errorHandlingParams;
+  }
+
   showCustomError(error: ErrorInterface | string): void {
     if (error != null) {
       if (this.errorMessage.includes(SMEV2_SERVICE_OR_SPEC_SESSION_TIMEOUT)) {
@@ -470,10 +482,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
             }
           });
       } else {
-        const errorHandlingParams = this.findJsonParamsForErrorHandling(error);
-        if (errorHandlingParams) {
-          this.showModal(errorHandlingParams.modalAttributes);
-        } else {
+        if (!this.showErrorHandlingByStore(this.bookingErrorHandlingParams, error)) {
           const params = {
             ...ITEMS_FAILURE,
             buttons: [
@@ -594,12 +603,16 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
       slots.findIndex((slot) => slot?.slotId === bookedSlot?.slotId) === -1
     );
   }
-  private findJsonParamsForErrorHandling(error: ErrorInterface | string): IBookingErrorHandling {
+
+  private findJsonParamsForErrorHandling(
+    store: IBookingErrorHandling[],
+    error: ErrorInterface | string,
+  ): IBookingErrorHandling {
     if (typeof error !== 'object') {
       return null;
     }
     const { errorCode } = error.errorDetail;
-    return this.bookingErrorHandlingParams.find((param) => {
+    return store.find((param) => {
       const isCodesEqual = param.errorCode === String(errorCode);
       return param.errorMessageRegExp
         ? isCodesEqual && error.errorDetail.errorMessage.match(param.errorMessageRegExp)
@@ -627,6 +640,10 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
           this.inProgress = false;
           this.inLoadingSlotsProgress = false;
           this.errorMessage = this.timeSlotsService.getErrorMessage();
+          this.showErrorHandlingByStore(
+            this.slotsErrorHandlingParams,
+            this.timeSlotsService.slotsError,
+          );
           if (this.errorMessage === 101) {
             this.errorMessage = `${this.errorMessage}: ${this.constants.error101ServiceUnavailable}`;
           }
@@ -986,6 +1003,7 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
     this.emptySlotsModal = this.screenService.component.attrs?.emptySlotsModal;
     this.bookingErrorHandlingParams =
       this.screenService.component.attrs?.bookingErrorHandling || [];
+    this.slotsErrorHandlingParams = this.screenService.component.attrs?.slotsErrorHandling || [];
   }
 
   private isDateOutOfSection(

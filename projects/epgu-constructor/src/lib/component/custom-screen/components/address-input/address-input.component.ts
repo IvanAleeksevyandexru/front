@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
@@ -8,6 +8,7 @@ import { ISuggestionItem } from '../../../../core/services/autocomplete/autocomp
 import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
 import { ScreenService } from '../../../../screen/screen.service';
 import AddressInputModelAttrs from './AddressInputModelAttrs';
+import { ConfirmAddressErrorsInterface } from '../../../unique-screen/components/confirm-personal-user-address-screen/interface/confirm-address.interface';
 
 @Component({
   selector: 'epgu-constructor-address-input',
@@ -26,6 +27,8 @@ export class AddressInputComponent extends AbstractComponentListItemComponent<
 
   validationShowOn = ValidationShowOn.TOUCHED_UNFOCUSED;
   clearable = true;
+  groupedErrors: ConfirmAddressErrorsInterface[] = [];
+  stringError: string = '';
 
   constructor(
     public injector: Injector,
@@ -34,6 +37,14 @@ export class AddressInputComponent extends AbstractComponentListItemComponent<
     public suggestHandlerService: SuggestHandlerService,
   ) {
     super(injector);
+  }
+
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.screenService.componentError$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((errors) => {
+      this.setErrors(errors);
+    });
   }
 
   private processSuggestions(suggestions: { [key: string]: ISuggestionItem }): ISuggestionItem {
@@ -46,5 +57,39 @@ export class AddressInputComponent extends AbstractComponentListItemComponent<
     });
 
     return addressSuggestions;
+  }
+
+  private getGroupedErrors(errors): ConfirmAddressErrorsInterface[] {
+    return Object.values(
+      errors.reduce((accumulator, { desc, icon, title, type }) => {
+        accumulator[title] = {
+          desc:
+            title in accumulator && accumulator[title].desc !== desc
+              ? `${accumulator[title].desc} <br> ${desc}`
+              : desc,
+          icon,
+          title,
+          type,
+        };
+
+        return accumulator;
+      }, {}),
+    );
+  }
+
+  private setErrors(errors: string): void {
+    if (!errors) {
+      this.stringError = '';
+      this.groupedErrors = [];
+      return;
+    }
+
+    try {
+      this.groupedErrors = this.getGroupedErrors(Object.values(JSON.parse(errors)));
+      this.stringError = '';
+    } catch (err) {
+      this.stringError = errors;
+      this.groupedErrors = [];
+    }
   }
 }

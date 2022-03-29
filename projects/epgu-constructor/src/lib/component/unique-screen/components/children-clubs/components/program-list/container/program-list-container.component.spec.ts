@@ -2,8 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent, MockModule } from 'ng-mocks';
 import {
   AddressesToolsService,
+  CfAppStateService,
+  CfAppStateServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
+  LocalStorageService,
+  LocalStorageServiceStub,
+  LocationService,
+  LocationServiceStub,
   MicroAppStateQuery,
   MicroAppStateQueryStub,
   MicroAppStateService,
@@ -20,7 +26,6 @@ import { ItemComponent } from '../components/item/item.component';
 import { StateService } from '../../../services/state/state.service';
 import { StateServiceStub } from '../../../services/state/state.service.stub';
 import { BaseModule } from '../../base/base.module';
-import { SelectMapObjectCcModule } from '../../select-map-object/select-map-object.module';
 import { Filters, VendorType } from '../../../models/children-clubs.types';
 import { ProgramListServiceStub } from '../../../services/program-list/program-list.stub';
 import { ScreenService } from '../../../../../../../screen/screen.service';
@@ -53,7 +58,6 @@ describe('ProgramListContainerComponent', () => {
         MockModule(ScreenContainerModule),
         MockModule(BaseModule),
         ScreenPadModule,
-        SelectMapObjectCcModule,
         HttpClientTestingModule,
       ],
       providers: [
@@ -65,6 +69,9 @@ describe('ProgramListContainerComponent', () => {
         { provide: MicroAppStateQuery, useClass: MicroAppStateQueryStub },
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
+        { provide: CfAppStateService, useClass: CfAppStateServiceStub },
+        { provide: LocationService, useClass: LocationServiceStub },
+        { provide: LocalStorageService, useClass: LocalStorageServiceStub },
       ],
     }).compileComponents();
   });
@@ -73,6 +80,7 @@ describe('ProgramListContainerComponent', () => {
     fixture = TestBed.createComponent(ProgramListContainerComponent);
     component = fixture.componentInstance;
     screenService = TestBed.inject(ScreenService);
+    screenService.display = {} as any;
     screenService.component = mockComponent;
     fixture.detectChanges();
   });

@@ -1,6 +1,44 @@
 # Release Notes
 
-## [400.49.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.49.0) (2022-03-25)
+## [401.20.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.20.0) (2022-03-29)
+
+### Features
+
+* Добавлен clarification в ConfirmPersonalUserRegReadOnlyAddr [EPGUCORE-86023]
+* Добавлена валидация в Адреса в компоненте AddressInput [EPGUCORE-90117]
+* Добавлена валидация в Адреса в компоненте RegistrationAddr [EPGUCORE-90116]
+* Добавлена валидация в ConfirmPersonalUserRegReadOnlyAddr [EPGUCORE-90115]
+* Добавлен Clarifications для MultipleChoiceDictionary [EPGUCORE-86336]
+* Добавлен slotsErrorHandling для TimeSlot [EPGUCORE-89927]
+* Добавлен disclaimer в confirm-personal-policy [EPGUCORE-88610]
+* Добавлен errorBookingHandling для TimeSlotDoctors [EPGUCORE-89926]
+* Реализован дисклеймер при отсутствии индекса в RegistrationLegalAddr [EPGUCORE-89049]
+
+### Refactor
+
+* Убраны избыточные зависимости в скринах [EPGUCORE-89406]
+* Смерджена карта кружков, добавлена поддержка фильтров в компонентах кружков [EPGUCORE-84527]
+
+### Bug Fixes
+
+* Поправлена модалка для docLookup [EPGUCORE-88568]
+* Включение notify для clipboard в outputhtml [EPGUCORE-85543]
+* Исправлена валидация контрольной суммы MaritalStatusInput [EPGUCORE-90123]
+* Добавлен параметр IsFinalReservation для TimeSLot [EPGUCORE-90472]
+* Поправлено отображение presetValue для FieldsList [EPGUCORE-89897]
+* Поправлена работа ссылок в lib-header [EPGUCORE-90452]
+* Поддержка целочисленных типов в mappingParams, multi-choice-dictionary-modal [EPGUCORE-91604]
+* Исправлено падение карт на битых судах [EPGUCORE-88374]
+* Поправлен цвет фона в sf-portal [EPGUCORE-91980]
+* Добавлена обработка "плохих" координат в суды на карте [EPGUCORE-91925]
+* Исправлено открытие модалок в модалке [EPGUCORE-91790]
+
+### Chore
+
+* Зафиксирована версия es5-ext без антивоенных призывов
+* Произведена дедупликация зависимостей в yarn.lock [EPGUCORE-91325]
+
+## [400.51.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.51.0) (2022-03-28)
 
 ### Bug Fixes
 
@@ -29,10 +67,6 @@
 * Поправлена опечатка в текстовке openSelectOrderModal [EPGUCORE-91571]
 * Изменен вывод именованных черновиков в модалке выбора мульти-черновиков [EPGUCORE-91563]
 * Поправлена доступность кнопки Продолжить для DictionaryLikeComponent [EPGUCORE-91568]
-
-### Chore
-
-* Подготовить возможность полной сборки фронта с одной итерацией yarn install [EPGUCORE-91618]
 
 ## [400.43.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.43.0) (2022-03-21)
 
@@ -86,7 +120,6 @@
 
 ### Features
 
-* Доработка компонента ComplexChoiceDictionary в части выбора только одного чек-бокса [EPGUCORE-85236]
 * Добавлено isClearable и defaultLabelList для DictionaryComponent [EPGUCORE-86314]
 * Добавлено приложение versions [EPGUCORE-85909]
 * Добавлен customUnrecLabel в MultipleChoiceDictionary [EPGUCORE-86325]
@@ -106,7 +139,6 @@
 * Добавлена функциональность в MultipleChoiceDictionary из LookupInput [EPGUCORE-88058]
 * Добавлено мод. окно с выбором черновика, при появлении 404 ошибки в навигации формы [EPGUCORE-86266]
 * Добавлены clarifications для text-area [EPGUCORE-86019]
-* Доработка компонента ComplexChoiceDictionary [EPGUCORE-85236]
 * Добавлена поддержка stringDotFormat для дат из ЛК [EPGUCORE-88160]
 * Добавлена фича при открытии услуг дополнительно производить проверку региона [EPGUCORE-86590]
 * Добавлена поддержка hint для registration addr на уровне компонента [EPGUCORE-87038]
@@ -114,11 +146,9 @@
 * Добавлена поддержка clarifications для radio-input[EPGUCORE-86018]
 * Добавлена поддержка clarifications для ConfirmPersonalUserPhone [EPGUCORE-86020]
 * Добавлена поддержка mappingParams для MVDGiac [EPGUCORE-88801]
-* Добавлена возможность скрывать и дизейблить кнопки по relations [EPGUCORE-86308]
 * Добавлена поддержка clarifications для AddressInput [EPGUCORE-86014]
 * Добавлена поддержка встраивания sf-portal в iframe [EPGUCORE-85935]
 * Добавлены валидации в MaritalStatusInput [EPGUCORE-86855]
-* Доработки по авторизации встраивания в iframe [EPGUCORE-85935]
 * Добавлена поддержка скрытия header (шапки) для WebView, footer (подвал) упразднен [EPGUCORE-89076]
 
 ### Refactor
@@ -127,7 +157,6 @@
 * Добавлен поиск parentFirst и parentLast из дочерних компонент [EPGUCORE-79609]
 * Правка лишней проверки в config.component.html [EPGUCORE-84013]
 * Оптимизация ConfirmPersonalUserData, добавление в ScreenService screenStore$ [EPGUCORE-84010]
-* Добавлена возможность скрывать/открывать панели стендов в versions. Добавлен config.json для API. Рефакторинг кода и стилей. [EPGUCORE-85909]
 * Изменение стратегии обнаружения с Default на OnPush по проекту [EPGUCORE-84009]
 * Оптимизирован рендеринг элементов списка на карте [EPGUCORE-86830]
 * Комплесный рефактор, уменьшающий кол-во warnings при сборке [EPGUCORE-80320]
@@ -145,7 +174,6 @@
 * Блок фокуса при нажатии на tab в DropdownListComponent [EPGUCORE-75278]
 * Поправлено присвоение значения атрибута hideHouseCheckbox в AddressInputModelAttrs [EPGUCORE-86568]
 * Поправлен smev2 для новой версии timeslot [EPGUCORE-81819]
-* Поправлен вывод информации о booking timeslot [EPGUCORE-67487]
 * Исправлено восстановление snils для children из cachedAnswers [EPGUCORE-86787]
 * Изменены стили и набор атрибутов компонента Checkbox [EPGUCORE-75228]
 * Правка HealthService для suggest сервиса [EPGUCORE-87298]
@@ -155,8 +183,6 @@
 * Добавлен класс убирающий лишний отступ листа без заголовка в инфо скрине [EPGUCORE-86834]
 * Поправлен детектор изменений в ScreenResolverComponent [EPGUCORE-84009]
 * Починен механизм stepsBack и атрибута hidden [EPGUCORE-86334]
-* Поправлен вывод информации о booking timeslot [EPGUCORE-67487]
-* Правка singleNotifier для отображения нескольких дисклеймеров [EPGUCORE-87879]
 * Поправлено условие отмены TimeSlot [EPGUCORE-88096]
 * Поправлен формат даты для отправки на бэк согласно контракту в MaritalStatusInputComponent [EPGUCORE-86304]
 * Сделано наличие attrs на уровне филдов необязательным в DocInput [EPGUCORE-87973]
@@ -185,7 +211,6 @@
 * Исправлены пропадающие филды в ConfirmPersonalUserData [EPGUCORE-89332]
 * Поправлены иконки закрытия RepeatableFields на уровне заголовка [EPGUCORE-89653]
 * Исправлена ошибка no provider на карте [EPGUCORE-89759]
-* Доработки встраивания КФ в iframe / дополнительный параметр проверки [EPGUCORE-85935]
 * Увеличен z-index для иконок закрытия RepeatableFields [EPGUCORE-89653]
 
 ### Tests
@@ -207,7 +232,6 @@
 * Поправлен конфиг jest для Angular Ivy [EPGUCORE-85541]
 * Обновление либы jest-angular-preset, фиксящий кривую работу с ts-кэшом [EPGUCORE-85541]
 * Обновлены зависимости @epgu
-* Доработки по встраиванию КФ в iframe [EPGUCORE-85935]
 
 ## [399.18.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v399.18.0) (2022-02-14)
 

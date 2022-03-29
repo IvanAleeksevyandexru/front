@@ -24,4 +24,5 @@ export enum IconType {
   Map = 'Map',
   Filter = 'Filter',
   Delete = 'Delete',
+  Location = 'Location',
 }

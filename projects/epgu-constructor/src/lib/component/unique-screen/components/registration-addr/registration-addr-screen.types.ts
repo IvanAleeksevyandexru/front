@@ -1,5 +1,11 @@
 import { DurationTimeTypes } from '@epgu/epgu-constructor-ui-kit';
-import { Clarifications, ComponentActionDto, TextTransform } from '@epgu/epgu-constructor-types';
+import {
+  Clarifications,
+  ComponentActionDto,
+  DisclaimerDto,
+  HintDto,
+  TextTransform,
+} from '@epgu/epgu-constructor-types';
 import { RelativeDate } from '@epgu/ui/models/date-time';
 import { DadataResult } from '@epgu/ui/models';
 import { CustomComponentAttrValidation } from '../../../custom-screen/components-list.types';
@@ -7,6 +13,7 @@ import { ComponentBase } from '../../../../screen/screen.types';
 
 export interface IRegistrationAddrComponent extends ComponentBase {
   attrs: RegistrationAddrComponentAttrs;
+  errors?: RegAddrError[];
 }
 
 export interface IRegistrationAddrReadonlyComponent extends ComponentBase {
@@ -28,6 +35,9 @@ export interface RegistrationAddrComponentAttrs {
   hideLevels?: string[];
   hint: string;
   clarifications: Clarifications;
+  errors?: RegAddrError;
+  disclaimer?: DisclaimerDto;
+  defaultHint?: HintDto;
 }
 
 /**
@@ -53,6 +63,7 @@ export interface RegistrationAddrFields {
   regexp: string | RegExp;
   hideLevels?: string[];
   attrs?: {
+    isOnlyForValidation?: boolean;
     labelHint?: string;
     minDate?: Date | RelativeDate | string;
     maxDate?: Date | RelativeDate | string;
@@ -73,4 +84,17 @@ export interface RegistrationAddrFormValue {
   regAddr: DadataResult;
   regFrom: Date;
   regTo: Date;
+}
+
+export interface ConfirmAddressErrorsInterface {
+  desc?: string;
+  icon?: string;
+  title?: string;
+  type?: string;
+}
+
+export interface RegAddrError {
+  type?: string;
+  title?: string;
+  desc?: string;
 }

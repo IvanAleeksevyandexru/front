@@ -14,6 +14,16 @@
     .balloon-content-wrapper {
       padding: 24px;
     }
+    .balloon-header-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chevron-button {
+      &__rotated {
+        transform: rotate(180deg);
+      }
+    }
     @include typ-plain-small;
 
     &__header {

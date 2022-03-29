@@ -25,6 +25,26 @@
   @include typ-plain-small();
   color: $color-gosred;
   margin: 4px 0 12px 0;
+
+  &--grouped {
+    margin-top: 32px;
+
+    .title {
+      @include typ-h6;
+      margin-bottom: 4px;
+      color: $color-summer-night;
+    }
+
+    .description {
+      @include typ-plain-small;
+      color: $color-text-helper;
+      margin: 0;
+    }
+
+    & + & {
+      margin-top: 12px;
+    }
+  }
 }
 
 .label-helper {

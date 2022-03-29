@@ -21,6 +21,13 @@
           <div class="text-helper">{{ field.value }}</div>
         </div>
       </ng-container>
+      <epgu-constructor-disclaimer
+        class="mb-24"
+        [type]="data.attrs?.disclaimer.type"
+        [title]="data.attrs?.disclaimer.title"
+        [description]="data.attrs?.disclaimer.description"
+        [clarifications]="data.attrs?.disclaimer.clarifications"
+      ></epgu-constructor-disclaimer>
     </ng-container>
 
     <ng-template #errorTemplate>
@@ -31,7 +38,7 @@
         [title]="error.title"
         [description]="error.desc"
       ></epgu-constructor-disclaimer>
-    </ng-template>
+    </ng-template>    
 
     <div class="footer" *ngIf="screenService.action$ | async as action">
       <div class="divider mb-24"></div>
