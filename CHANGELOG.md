@@ -1,6 +1,6 @@
 # Release Notes
 
-## [401.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.x.x) (2022-03-15)
+## [401.20.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.20.0) (2022-03-29)
 
 ### Features
 
@@ -31,13 +31,14 @@
 * Исправлено падение карт на битых судах [EPGUCORE-88374]
 * Поправлен цвет фона в sf-portal [EPGUCORE-91980]
 * Добавлена обработка "плохих" координат в суды на карте [EPGUCORE-91925]
+* Исправлено открытие модалок в модалке [EPGUCORE-91790]
 
 ### Chore
 
 * Зафиксирована версия es5-ext без антивоенных призывов
 * Произведена дедупликация зависимостей в yarn.lock [EPGUCORE-91325]
 
-## [400.49.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.49.0) (2022-03-25)
+## [400.51.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.51.0) (2022-03-28)
 
 ### Bug Fixes
 
