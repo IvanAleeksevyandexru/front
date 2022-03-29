@@ -19,6 +19,8 @@ import {
 import { ScreenBase } from '../screen-base';
 import { CustomScreenService } from './custom-screen.service';
 import { NO_WHITE_BACKGROUND_COMPONENTS } from '../../shared/constants/no-white-background-components';
+import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
+import { EMPTY_VALUE } from '../../shared/services/ref-relation/ref-relation.contant';
 
 @Component({
   selector: 'epgu-constructor-custom-screen',
@@ -46,6 +48,7 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
     public injector: Injector,
     private customScreenService: CustomScreenService,
     private cdr: ChangeDetectorRef,
+    private refRelationService: RefRelationService,
   ) {
     super(injector);
   }
@@ -71,7 +74,9 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
       : true;
 
     const atLeastOneExpression: boolean = atLeastOne.length
-      ? atLeastOne.some((item) => item.value) && atLeastOne.every((item) => item.isValid)
+      ? atLeastOne.some(
+          (item) => !this.refRelationService.isValueEquals(EMPTY_VALUE, item.value),
+        ) && atLeastOne.every((item) => item.isValid)
       : true;
 
     this.isValid = notAtLeastOneExpression && atLeastOneExpression;

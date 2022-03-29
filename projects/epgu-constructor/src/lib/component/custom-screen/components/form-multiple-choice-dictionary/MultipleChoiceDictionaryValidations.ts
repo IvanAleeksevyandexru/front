@@ -4,9 +4,12 @@ import { CustomComponent } from '../../components-list.types';
 
 export const isMultipleSelectedItemsValid = (
   selectedItems: MultipleSelectedItems,
-  _component?: CustomComponent,
+  component?: CustomComponent,
   ctx?: ValidationServiceContext,
 ): boolean => {
+  if (!component.required) {
+    return true;
+  }
   const { jsonHelperService } = ctx || {};
   const parsedValue = getParsedValue(selectedItems, jsonHelperService);
   return parsedValue && !!(parsedValue as MultipleSelectedItems).amount;

@@ -46,6 +46,7 @@ import { CertificateEaisdoService } from '../../shared/services/certificate-eais
 import { HelperService } from '@epgu/ui/services/helper';
 import { ComponentsListRelationsService } from '../../component/custom-screen/services/components-list-relations/components-list-relations.service';
 import { ComponentsListRelationsServiceStub } from '../../component/custom-screen/services/components-list-relations/components-list-relations.service.stub';
+import { RefRelationService } from '../../shared/services/ref-relation/ref-relation.service';
 
 describe('CustomScreenComponent', () => {
   let component: CustomScreenComponent;
@@ -109,6 +110,7 @@ describe('CustomScreenComponent', () => {
         ConfigService,
         LoggerService,
         EaisdoGroupCostService,
+        MockProvider(RefRelationService),
         MockProvider(HelperService),
       ],
       schemas: [NO_ERRORS_SCHEMA],

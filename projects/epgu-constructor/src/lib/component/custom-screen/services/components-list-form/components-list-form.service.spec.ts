@@ -395,7 +395,12 @@ describe('ComponentsListFormService', () => {
       const extraComponent = JSON.parse(JSON.stringify(componentMockData));
       service.create([componentMockData, extraComponent], componentsGroupIndex);
       const result = {
-        rf1: { value: 'value', isValid: false, disabled: false, condition: null },
+        rf1: {
+          value: 'value',
+          isValid: false,
+          disabled: false,
+          condition: null,
+        },
       };
       service.shownElements.rf1.isShown = true;
       // @ts-ignore
