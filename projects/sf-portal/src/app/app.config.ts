@@ -70,7 +70,7 @@ export class AppConfig {
           if (this.isServer) {
             this.loadService.load('', false, false, '');
           } else {
-            const packageVersion = isDevMode() ? packageJson.dependencies['@epgu/ui'] : '';
+            const packageVersion = isDevMode() ? '' : packageJson.dependencies['@epgu/ui'];
             this.loadService.load('', false, true, packageVersion);
           }
 
