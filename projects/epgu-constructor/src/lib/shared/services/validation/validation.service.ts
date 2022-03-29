@@ -82,10 +82,6 @@ export class ValidationService {
         );
       }
 
-      if (component.hasAtLeastOne(component)) {
-        customMessage = { errorMsg: '' };
-      }
-
       if (!value || validations?.length === 0) {
         return null;
       }

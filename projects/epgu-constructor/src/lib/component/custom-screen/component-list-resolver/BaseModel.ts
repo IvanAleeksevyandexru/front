@@ -49,10 +49,6 @@ export default abstract class BaseModel<T> {
     return false;
   }
 
-  public hasAtLeastOne(_: CustomComponent): boolean {
-    return false;
-  }
-
   public patchControlValue(_: AbstractControl, __: ScreenStore): boolean {
     return false;
   }

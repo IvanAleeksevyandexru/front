@@ -7,6 +7,9 @@ export const isMultipleSelectedItemsValid = (
   _component?: CustomComponent,
   ctx?: ValidationServiceContext,
 ): boolean => {
+  if (!_component.required) {
+    return true;
+  }
   const { jsonHelperService } = ctx || {};
   const parsedValue = getParsedValue(selectedItems, jsonHelperService);
   return parsedValue && !!(parsedValue as MultipleSelectedItems).amount;
