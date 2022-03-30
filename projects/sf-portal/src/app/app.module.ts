@@ -1,8 +1,8 @@
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru';
 import { BrowserModule } from '@angular/platform-browser';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { UserAuthInterceptor } from './interceptors/userAuth/user-auth.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,8 +16,6 @@ import { HeaderModule } from '@epgu/ui/components/header';
 import { SmallFooterModule } from '@epgu/ui/components/small-footer';
 import { CookieModule } from 'ngx-cookie';
 import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { environment } from '../environments/environment';
 import { NewSfPlayerComponent } from './components/new-sf-player/new-sf-player.component';
 import { LocationSelectModule } from '@epgu/ui/components/location-select';
 import { FormPlayerModule } from '@epgu/epgu-constructor';
@@ -33,28 +31,13 @@ export function initializeApp(appConfig: AppConfig) {
   return () => appConfig.load();
 }
 
-export function HttpLoaderFactory(httpClient: HttpClient) {
-  return new TranslateHttpLoader(
-    httpClient,
-    `${AppConfig.settings?.staticDomainLibAssetsPath}i18n/`,
-    `.json?v=${environment.appVersion}`,
-  );
-}
-
 @NgModule({
   declarations: [AppComponent, NewSfPlayerComponent, NotFoundComponent],
   imports: [
     CoreUiModule,
     HttpClientModule,
     NgxPageScrollCoreModule.forRoot(),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-      defaultLanguage: 'ru',
-    }),
+    TranslateModule.forRoot(),
     CommonModule,
     CookieModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
