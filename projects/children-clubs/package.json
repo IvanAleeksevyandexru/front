@@ -11,7 +11,7 @@
     "@angular/core": "13.1.1",
     "@angular/forms": "13.1.1",
     "@angular/cdk": "13.1.1",
-    "@epgu/ui": "3.0.401-1-front",
+    "@epgu/ui": "3.0.403-5-frontv3",
     "rxjs": "6.6.7",
     "ngx-perfect-scrollbar": "8.0.0"
   },
