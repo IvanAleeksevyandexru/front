@@ -9,6 +9,7 @@
     [disableLabel]="true"
   >
     <epgu-constructor-multiple-choice-dictionary
+      #multipleChoiceDictionaryComponent
       [formControl]="$any(control.get('value'))"
       [dictionaryFilter]="dictionaryFilter"
       [dictionaryList]="attrs?.dictionaryList"

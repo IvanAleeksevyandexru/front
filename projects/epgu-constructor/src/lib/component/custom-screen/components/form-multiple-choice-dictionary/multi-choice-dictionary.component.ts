@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DictionaryFilters, DictionaryOptions } from '@epgu/epgu-constructor-types';
 import MultipleChoiceDictionaryModelAttrs from './MultipleChoiceDictionaryModelAttrs';
 import AbstractDictionaryLikeComponent from '../abstract-component-list-item/abstract-dictionary-like.component';
 import { takeUntil } from 'rxjs/operators';
 import { isUndefined } from 'lodash';
+import { MultipleChoiceDictionaryComponent } from '../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary/multiple-choice-dictionary.component';
+import { MultipleSelectedItems } from '../../../../shared/components/multiple-choice-dictionary/multiple-choice-dictionary.models';
 
 @Component({
   selector: 'epgu-constructor-multi-choice-dictionary',
@@ -15,6 +17,8 @@ import { isUndefined } from 'lodash';
 export class MultiChoiceDictionaryComponent
   extends AbstractDictionaryLikeComponent<MultipleChoiceDictionaryModelAttrs>
   implements OnInit {
+  @ViewChild('multipleChoiceDictionaryComponent', { static: false })
+  multipleChoiceDictionaryComponent: MultipleChoiceDictionaryComponent;
   dictionaryFilter: DictionaryFilters;
   dictionaryOptions: DictionaryOptions;
   constructor(public injector: Injector) {
@@ -39,6 +43,15 @@ export class MultiChoiceDictionaryComponent
         if (isFilterInited) {
           this.dictionaryOptions = this.prepareDictionaryOptions(filters);
         }
+
+        this.clearComponentValue();
       });
+  }
+
+  private clearComponentValue(): void {
+    this.multipleChoiceDictionaryComponent?.writeValue({
+      list: [],
+      amount: 0,
+    } as MultipleSelectedItems);
   }
 }
