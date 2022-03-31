@@ -1771,10 +1771,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.6.tgz#d5e0706cf8c6acd8c6032f8d54070af261bbbb2f"
   integrity sha512-ws57AidsDvREKrZKYffXddNkyaF14iHNHm8VQnZH6t99E8gczjNN0GpvcGny0imC80yQ0tHz1xVUKk/KFQSUyA==
 
-"@epgu/ui@3.0.403-1-frontv3":
-  version "3.0.403-1-frontv3"
-  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.403-1-frontv3.tgz#b70b0ad82ae8af081b1a67ed4cc44dbcd8a9651f"
-  integrity sha512-xKn24gmRIos6gU490KSr9LHZ2laO6gKg2qZNjJaD96xxeOkroD5B5M1KtHu/Ftka4+cQeRO8c4jRogQB/x/WiQ==
+"@epgu/ui@3.0.403-5-frontv3":
+  version "3.0.403-5-frontv3"
+  resolved "http://nexus.gosuslugi.local/content/repositories/npm-internal/@epgu/ui/-/ui-3.0.403-5-frontv3.tgz#059ee025bc53f9b8d5a910fa1fb186329b2bd670"
+  integrity sha512-U5BvsFCWMdZaHbOAlcoB6bWdSTU/9SVUGcStAVajH87tspmrvUljrz9qLjcqMpE5dEEyJNL738M5vawwCW2gkg==
   dependencies:
     "@epgu/zipkin" "0.0.3"
     date-fns "2.24.0"

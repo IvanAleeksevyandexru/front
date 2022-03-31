@@ -13,7 +13,7 @@
     "@angular/common": "13.3.0",
     "@angular/core": "13.3.0",
     "@angular/forms": "13.3.0",
-    "@epgu/ui": "3.0.403-1-frontv3",
+    "@epgu/ui": "3.0.403-5-frontv3",
     "@ngx-translate/http-loader": "6.0.0",
     "@nicky-lenaers/ngx-scroll-to": "9.0.0",
     "@squadette/hammerjs": "2.1.0-pre3",
