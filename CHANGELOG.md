@@ -1,6 +1,6 @@
 # Release Notes
 
-## [401.20.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.20.0) (2022-03-29)
+## [401.26.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.26.0) (2022-04-01)
 
 ### Features
 
@@ -32,11 +32,21 @@
 * Поправлен цвет фона в sf-portal [EPGUCORE-91980]
 * Добавлена обработка "плохих" координат в суды на карте [EPGUCORE-91925]
 * Исправлено открытие модалок в модалке [EPGUCORE-91790]
+* Исправлено скрытие кнопок у не-CUSTOM screen [EPGUCORE-91815]
+* Исправлен дефект, что в меню профиля сбиты переводы [EPGUCORE-91101]
+* Добавлена корректная работа atLeastOne в MultipleChoiceDictionary [EPGUCORE-89367]
 
 ### Chore
 
 * Зафиксирована версия es5-ext без антивоенных призывов
 * Произведена дедупликация зависимостей в yarn.lock [EPGUCORE-91325]
+* Поправлен алгоритм продуктовой сборки sf-portal [EPGUCORE-92331]
+
+## [400.54.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.54.0) (2022-03-31)
+
+### Chore
+
+* Обновлен @epgu/ui до 3.0.403-5-frontv3 [EPGUCORE-92574]
 
 ## [400.51.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.51.0) (2022-03-28)
 
