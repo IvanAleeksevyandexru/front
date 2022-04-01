@@ -46,6 +46,7 @@ import { ActionService } from '../../shared/directives/action/action.service';
 import { ActionServiceStub } from '../../shared/directives/action/action.service.stub';
 
 import { HtmlSelectService } from '../../core/services/html-select/html-select.service';
+import { ActionToolsService } from '../../shared/directives/action/action-tools.service';
 
 const componentDtoSample: ComponentDto = {
   attrs: {},
@@ -108,6 +109,7 @@ describe('QuestionsScreenComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        MockProvider(ActionToolsService),
         MockProvider(LocationService),
         MockProvider(EventBusService),
         MockProvider(CurrentAnswersService),
