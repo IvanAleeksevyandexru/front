@@ -1,5 +1,11 @@
 # Release Notes
 
+## [400.54.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.54.0) (2022-03-31)
+
+### Chore
+
+* Обновлен @epgu/ui до 3.0.403-5-frontv3 [EPGUCORE-92574]
+
 ## [400.51.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v400.51.0) (2022-03-28)
 
 ### Bug Fixes
