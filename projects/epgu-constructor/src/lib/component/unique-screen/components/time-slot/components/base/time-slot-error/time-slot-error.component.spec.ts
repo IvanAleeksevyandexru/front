@@ -25,6 +25,8 @@ import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-sl
 import { TimeSlotSmev3StateServiceStub } from '../../../services/smev3-state/time-slot-smev3-state.service.stub';
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
 import { TimeSlotTemplateType } from '../../../typings';
+import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
+import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-state.service.stub';
 
 const mockTemplate = {
   header: 'test',
@@ -52,6 +54,7 @@ describe('TimeSlotErrorComponent', () => {
         { provide: CurrentAnswersService, useClass: CurrentAnswersServiceStub },
         { provide: DatesToolsService, useClass: DatesToolsServiceStub },
         { provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub },
+        { provide: TimeSlotStateService, useClass: TimeSlotStateServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         TimeSlotsConstants,
       ],

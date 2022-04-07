@@ -19,6 +19,8 @@ import { ScreenService } from '../../../../../../../screen/screen.service';
 import { doctorHandlers } from '../../../handlers/doctor-handlers';
 import { TimeSlotValueInterface } from '../../../typings';
 import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
+import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
+import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-state.service.stub';
 
 describe('TimeSlotDoctorComponent', () => {
   let component: TimeSlotDoctorComponent;
@@ -41,6 +43,7 @@ describe('TimeSlotDoctorComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         JsonHelperService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: TimeSlotStateService, useClass: TimeSlotStateServiceStub },
       ],
     }).compileComponents();
   });

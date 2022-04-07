@@ -12,9 +12,13 @@ import {
   TimeSlotRequestType,
   TimeSlotTemplateType,
 } from '../../typings';
+import { TimeSlotStateService } from '../state/time-slot-state.service';
+import { TimeSlotStateServiceStub } from '../state/time-slot-state.service.stub';
+import { IBookingErrorHandling } from '@epgu/epgu-constructor-types';
 
 describe('TimeSlotErrorService', () => {
   let service: TimeSlotErrorService;
+  let state: TimeSlotStateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,11 +26,14 @@ describe('TimeSlotErrorService', () => {
         { provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub },
         TimeSlotsConstants,
         TimeSlotErrorService,
+        { provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub },
+        { provide: TimeSlotStateService, useClass: TimeSlotStateServiceStub },
         Injector,
         { provide: ModalService, useClass: ModalServiceStub },
       ],
     });
     service = TestBed.inject(TimeSlotErrorService);
+    state = TestBed.inject(TimeSlotStateService);
   });
 
   describe('base', () => {
@@ -67,6 +74,43 @@ describe('TimeSlotErrorService', () => {
     });
   });
   describe('middleware', () => {
+    it('should be findJsonParamsForErrorHandling', () => {
+      const testBookingHandling = [
+        ({
+          errorCode: '2',
+        } as unknown) as IBookingErrorHandling,
+      ];
+      const testError = ({
+        code: 2,
+        message: 'test',
+      } as unknown) as TimeSlotError;
+
+      let res = service.findJsonParamsForErrorHandling(undefined, []);
+      expect(res).toBe(null);
+
+      res = service.findJsonParamsForErrorHandling(testError, testBookingHandling);
+      expect(res).toEqual(testBookingHandling[0]);
+
+      testBookingHandling[0].errorMessageRegExp = 'test';
+      res = service.findJsonParamsForErrorHandling(testError, testBookingHandling);
+      expect(res).toEqual(testBookingHandling[0]);
+
+      testBookingHandling[0].errorMessageRegExp = 'test2';
+      res = service.findJsonParamsForErrorHandling(testError, testBookingHandling);
+      expect(res).toEqual(undefined);
+    });
+
+    it('check errorHandling for handlers', () => {
+      const handler = {
+        errorCode: '2',
+        errorMessageRegExp: '',
+        modalAttributes: { title: '' },
+      };
+      jest.spyOn(service, 'findJsonParamsForErrorHandling').mockReturnValueOnce(handler);
+      jest.spyOn(state, 'showModal');
+      service.handling(({} as unknown) as TimeSlotError);
+      expect(state.showModal).toHaveBeenCalledWith(handler.modalAttributes);
+    });
     it('should be addHandlers', () => {
       const handlers = [
         ((() => null) as unknown) as TimeSlotErrorHandler,

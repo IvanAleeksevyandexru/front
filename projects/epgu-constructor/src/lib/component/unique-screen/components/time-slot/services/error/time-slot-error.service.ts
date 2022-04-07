@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { BehaviorSubject, EMPTY, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, EMPTY, Subject } from 'rxjs';
 import { catchError, exhaustMap, filter, tap } from 'rxjs/operators';
 import { ModalService } from '@epgu/epgu-constructor-ui-kit';
 import {
@@ -14,6 +14,9 @@ import {
 import { ConfirmationModalComponent } from '../../../../../../modal/confirmation-modal/confirmation-modal.component';
 import { COMMON_ERROR_MODAL_PARAMS } from '../../../../../../core/services/error-handler/error-handler';
 import { TimeSlotsConstants } from '../../../time-slots/time-slots.constants';
+import { TimeSlotSmev3StateService } from '../smev3-state/time-slot-smev3-state.service';
+import { IBookingErrorHandling } from '@epgu/epgu-constructor-types';
+import { TimeSlotStateService } from '../state/time-slot-state.service';
 
 @Injectable()
 export class TimeSlotErrorService {
@@ -21,10 +24,10 @@ export class TimeSlotErrorService {
 
   errorHandlers: TimeSlotErrorHandler[] = [];
 
-  errorHandling$ = this.error$$.pipe(
-    filter((value) => !!value),
-    filter((value) => value.type === TimeSlotRequestType.list),
-    tap((error) => this.handling(error)),
+  errorHandling$ = combineLatest([this.error$$, this.smev3State.slotsErrorHandling$]).pipe(
+    filter(([value]) => !!value),
+    filter(([value]) => value.type === TimeSlotRequestType.list),
+    tap(([error, slotsErrorHandling]) => this.handling(error, 0, slotsErrorHandling)),
   );
 
   show$$ = new Subject<string>();
@@ -52,6 +55,8 @@ export class TimeSlotErrorService {
   templates$$ = new BehaviorSubject<Record<string, ErrorTemplate>>({});
 
   constructor(
+    private smev3State: TimeSlotSmev3StateService,
+    private state: TimeSlotStateService,
     private modalService: ModalService,
     public constants: TimeSlotsConstants,
     private injector: Injector,
@@ -62,14 +67,35 @@ export class TimeSlotErrorService {
     return false;
   };
 
-  handling(error: TimeSlotError, index = 0): void {
+  findJsonParamsForErrorHandling(
+    error: TimeSlotError,
+    bookingHandling: IBookingErrorHandling[],
+  ): IBookingErrorHandling {
+    if (typeof error !== 'object') {
+      return null;
+    }
+    const errorCode = error.code;
+    return bookingHandling?.find((param) => {
+      const isCodesEqual = param.errorCode === String(errorCode);
+      return param.errorMessageRegExp
+        ? isCodesEqual && error.message.match(param.errorMessageRegExp)
+        : isCodesEqual;
+    });
+  }
+
+  handling(error: TimeSlotError, index = 0, errorHandling?: IBookingErrorHandling[]): void {
+    const errorHandlingByJson = this.findJsonParamsForErrorHandling(error, errorHandling);
+    if (errorHandlingByJson) {
+      this.state.showModal(errorHandlingByJson.modalAttributes);
+      return;
+    }
     const handler = this.errorHandlers[index];
     if (!handler) {
       this.endHandler();
       return;
     }
     const next: NextHandler = (timeSlotError: TimeSlotError) => {
-      this.handling(timeSlotError, index + 1);
+      this.handling(timeSlotError, index + 1, errorHandling);
     };
     handler(error, this.injector, next);
   }

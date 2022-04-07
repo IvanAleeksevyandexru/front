@@ -10,6 +10,8 @@ import { SmevSlotsResponseInterface, TimeSlotRequestType } from '../../../typing
 import { TimeSlotSmev3StateService } from '../../smev3-state/time-slot-smev3-state.service';
 import { TimeSlotSmev3StateServiceStub } from '../../smev3-state/time-slot-smev3-state.service.stub';
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
+import { TimeSlotStateService } from '../../state/time-slot-state.service';
+import { TimeSlotStateServiceStub } from '../../state/time-slot-state.service.stub';
 
 describe('Smev3RestApiInterceptor', () => {
   let service: Smev3RestApiInterceptor;
@@ -23,6 +25,8 @@ describe('Smev3RestApiInterceptor', () => {
         { provide: Smev3RestApiService, useClass: Smev3RestApiServiceStub },
         { provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub },
+        { provide: TimeSlotStateService, useClass: TimeSlotStateServiceStub },
         TimeSlotErrorService,
         TimeSlotsConstants,
       ],
