@@ -18,6 +18,8 @@ import {
 import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
 import { ScreenService } from '../../../../../../../screen/screen.service';
 import { ScreenServiceStub } from '../../../../../../../screen/screen.service.stub';
+import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
+import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-state.service.stub';
 
 const mockCreateItem = (text: string) =>
   new ListItem({
@@ -41,6 +43,7 @@ describe('TimeSlotAreaComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: TimeSlotSmev3Service, useClass: TimeSlotSmev3ServiceStub },
+        { provide: TimeSlotStateService, useClass: TimeSlotStateServiceStub },
       ],
     }).compileComponents();
   });

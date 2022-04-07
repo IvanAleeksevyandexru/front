@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
 import {
+  CancelFilterProvider,
   DepartmentInterface,
   TimeSlotBookRequest,
   TimeSlotRequest,
@@ -18,6 +19,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSlotBirthComponent {
+  cancelFilterProvider = (() => true) as CancelFilterProvider;
+
   requestListParams$: Observable<Partial<TimeSlotRequest>> = combineLatest([
     this.smev3.value$,
     this.smev3.department$,

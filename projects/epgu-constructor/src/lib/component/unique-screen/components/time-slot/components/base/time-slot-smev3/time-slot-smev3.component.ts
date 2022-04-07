@@ -14,7 +14,8 @@ import {
   distinctUntilChanged,
   filter,
   map,
-  shareReplay,
+  publishReplay,
+  refCount,
   switchMap,
   take,
   takeUntil,
@@ -124,7 +125,8 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
           SlotListFilterProvider,
         ]) => this.getSlotList(date, bookedSlot, slotMap, filterProvider),
       ),
-      shareReplay(),
+      publishReplay(1),
+      refCount(),
       tap((list) => this.state.setList(list)),
       takeUntil(this.ngUnsubscribe$),
     )
@@ -310,15 +312,16 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
       return this.booking(id, department, currentSlot, slotsForCancel, bookingErrorHandling);
     }
     if (this.isCachedValueChanged(cachedAnswer, currentSlot)) {
-      return this.state
-        .showModal(getConfirmChangeTimeModalParams())
-        .pipe(
-          switchMap((result) =>
-            result === 'y'
-              ? this.booking(id, department, currentSlot, slotsForCancel, bookingErrorHandling)
-              : of(null),
-          ),
-        );
+      return this.state.showModal(getConfirmChangeTimeModalParams()).pipe(
+        switchMap((result) => {
+          if (result === 'y') {
+            return this.booking(id, department, currentSlot, slotsForCancel, bookingErrorHandling);
+          } else {
+            window.requestAnimationFrame(() => this.setBookedSlot(this.state.day, bookedSlot));
+            return of(null);
+          }
+        }),
+      );
     }
     this.setResult(cachedAnswer);
     this.finish(id);
@@ -400,6 +403,15 @@ export class TimeSlotSmev3Component extends BaseTimeSlotComponent implements OnI
     filterProvider: SlotListFilterProvider,
   ): boolean {
     return !this.getSlotList(date, bookedSlot, slotMap, filterProvider).length;
+  }
+
+  setBookedSlot(date: Date, bookedSlot: Slot): void {
+    if (bookedSlot?.slotTime && !this.datesTools.isEqual(date, bookedSlot.slotTime)) {
+      this.changeDayAction(bookedSlot.slotTime);
+    }
+    if (this.state.slot !== bookedSlot) {
+      this.changeSlotAction(bookedSlot);
+    }
   }
 
   getSlotList(

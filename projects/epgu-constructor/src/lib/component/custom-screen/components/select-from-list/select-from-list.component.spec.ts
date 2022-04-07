@@ -29,6 +29,8 @@ import SelectFromListModelAttrs from './SelectFromListModelAttrs';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 import LookupInputModel from '../lookup-input/LookupInputModel';
 import SelectFromListModel from './SelectFromListModel';
+import { InviteService } from '../../../../core/services/invite/invite.service';
+import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
 
 const mockSelectListComponent = {
   id: 'rb12',
@@ -71,6 +73,7 @@ describe('SelectFromListComponent', () => {
         MockProvider(StateService),
         ComponentsListToolsService,
         TypeCastService,
+        { provide: InviteService, useClass: InviteServiceStub },
         { provide: SelectFromListService, useClass: SelectFromListServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
         { provide: ChildrenClubsListService, useClass: SelectFromListServiceStub },

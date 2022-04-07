@@ -8,6 +8,7 @@ import { TimeSlotVaccinationComponent } from '../component-types/time-slot-vacci
 
 import { TimeSlotsTypes } from '../../time-slot.const';
 import { TimeSlotBirthComponent } from '../component-types/time-slot-birth/time-slot-birth.component';
+import { TimeSlotDefaultComponent } from '../component-types/time-slot-default/time-slot-default.component';
 
 export type TimeSlotComponentTypes =
   | TimeSlotBirthComponent
@@ -16,7 +17,8 @@ export type TimeSlotComponentTypes =
   | TimeSlotDoctorComponent
   | TimeSlotGibddComponent
   | TimeSlotMvdComponent
-  | TimeSlotVaccinationComponent;
+  | TimeSlotVaccinationComponent
+  | TimeSlotDefaultComponent;
 
 export const TIMESLOT_COMPONENTS: Partial<Record<TimeSlotsTypes, Type<TimeSlotComponentTypes>>> = {
   BRAK: TimeSlotMarriageComponent,
@@ -26,4 +28,5 @@ export const TIMESLOT_COMPONENTS: Partial<Record<TimeSlotsTypes, Type<TimeSlotCo
   DOCTOR: TimeSlotDoctorComponent,
   VACCINATION: TimeSlotVaccinationComponent,
   BIRTH: TimeSlotBirthComponent,
+  DEFAULT: TimeSlotDefaultComponent,
 };

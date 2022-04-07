@@ -1,5 +1,8 @@
 @import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core';
 
+.time-helper {
+  color: $color-text-helper;
+}
 .time {
   margin-bottom: 24px;
   display: flex;

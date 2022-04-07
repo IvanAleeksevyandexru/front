@@ -49,9 +49,11 @@ import { TimeSlotEmptyErrorComponent } from './components/base/time-slot-error-t
 // eslint-disable-next-line max-len
 import { TimeSlotCheckboxErrorComponent } from './components/base/time-slot-error-templates/time-slot-checkbox-error/time-slot-checkbox-error.component';
 import { TimeSlotBirthComponent } from './components/component-types/time-slot-birth/time-slot-birth.component';
+import { TimeSlotDefaultComponent } from './components/component-types/time-slot-default/time-slot-default.component';
 
 @NgModule({
   declarations: [
+    TimeSlotDefaultComponent,
     TimeSlotBirthComponent,
     TimeSlotBaseScreenComponent,
     TimeSlotAreaComponent,

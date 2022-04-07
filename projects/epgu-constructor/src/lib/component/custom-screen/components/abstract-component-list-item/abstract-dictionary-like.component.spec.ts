@@ -28,6 +28,8 @@ import { ComponentsListRelationsService } from '../../services/components-list-r
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
+import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
+import { InviteService } from '../../../../core/services/invite/invite.service';
 
 @Component({
   template: '<div></div>',
@@ -57,6 +59,7 @@ describe('AbstractDictionaryLikeComponent', () => {
         { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
+        { provide: InviteService, useClass: InviteServiceStub },
       ],
     })
       .overrideComponent(ConcreteDictionaryLikeComponent, {

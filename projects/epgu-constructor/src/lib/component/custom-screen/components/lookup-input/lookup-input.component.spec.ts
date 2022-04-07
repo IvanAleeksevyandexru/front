@@ -40,6 +40,8 @@ import { ComponentsListRelationsServiceStub } from '../../services/components-li
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
+import { InviteService } from '../../../../core/services/invite/invite.service';
+import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -85,6 +87,7 @@ describe('LookupInputComponent', () => {
         { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: UnsubscribeService, useClass: UnsubscribeServiceStub },
+        { provide: InviteService, useClass: InviteServiceStub },
         MockProvider(JsonHelperService),
         MockProvider(ComponentsListToolsService),
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },

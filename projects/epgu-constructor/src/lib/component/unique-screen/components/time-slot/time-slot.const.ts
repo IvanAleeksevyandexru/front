@@ -6,6 +6,7 @@ export enum TimeSlotsTypes {
   DOCTOR = 'DOCTOR',
   VACCINATION = 'VACCINATION',
   BIRTH = 'BIRTH',
+  DEFAULT = 'DEFAULT',
 }
 
 export enum DateTypeTypes {

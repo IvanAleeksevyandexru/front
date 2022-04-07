@@ -32,7 +32,7 @@ export class TimeSlotCalendarService {
 
   today$: Observable<Date> = this.today$$.pipe(
     switchMapTo(from(this.datesTools.getToday(true))),
-    shareReplay(),
+    shareReplay(1),
   );
 
   monthList = new BehaviorSubject<Set<string>>(new Set<string>());

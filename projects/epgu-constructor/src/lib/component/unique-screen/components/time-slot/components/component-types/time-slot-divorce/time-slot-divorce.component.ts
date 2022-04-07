@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { DictionaryConditions, DictionarySubFilter } from '@epgu/epgu-constructor-types';
 import { TimeSlotsApiItem } from '@epgu/epgu-constructor-ui-kit';
 import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
 import {
+  CancelFilterProvider,
   DepartmentInterface,
   Slot,
   SlotListFilterProvider,
@@ -13,7 +14,6 @@ import {
   TimeSlotValueInterface,
 } from '../../../typings';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
-import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
 
 @Component({
   selector: 'epgu-constructor-time-slot-divorce',
@@ -22,8 +22,9 @@ import { TimeSlotStateService } from '../../../services/state/time-slot-state.se
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSlotDivorceComponent {
+  cancelFilterProvider = (() => true) as CancelFilterProvider;
+
   slotListFilterProvider$ = this.data.area$.pipe(
-    tap(() => this.state.clearDay()),
     map((area) => ((slot: Slot) => slot.areaId === area || !area) as SlotListFilterProvider),
   );
   requestListParams$: Observable<Partial<TimeSlotRequest>> = combineLatest([
@@ -44,11 +45,7 @@ export class TimeSlotDivorceComponent {
   attributes = this.createAreaAttributes();
   department$: Observable<DepartmentInterface> = this.smev3.department$;
 
-  constructor(
-    private smev3: TimeSlotSmev3StateService,
-    private data: TimeSlotSmev3Service,
-    private state: TimeSlotStateService,
-  ) {}
+  constructor(private smev3: TimeSlotSmev3StateService, private data: TimeSlotSmev3Service) {}
 
   createAreaAttributes(): DictionarySubFilter[] {
     return [

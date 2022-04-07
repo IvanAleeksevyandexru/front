@@ -1,8 +1,15 @@
 <ng-container *ngIf="bookedInfo$ | async as bookedInfo">
-  <span *ngIf="bookedInfo?.length > 0" class="time">
-    Вы забронировали:
-    <span class="time--bold">
-      {{ bookedInfo }}
-    </span>
-  </span>
+  <div *ngIf="bookedInfo?.length > 0" class="time">
+    Забронировано: {{ bookedInfo }}
+    <ng-container *ngIf="newSelectedSlot$ | async as newSelectedSlot; else bookedText">
+      <div class="mt-8">
+        Вы выбрали новое время: <span class="time--bold">{{ newSelectedSlot }}</span>
+      </div>
+    </ng-container>
+  </div>
 </ng-container>
+<ng-template #bookedText>
+  <div class="time-helper mt-8">
+    Если нужно записаться на другое время — данная запись будет отменена
+  </div>
+</ng-template>

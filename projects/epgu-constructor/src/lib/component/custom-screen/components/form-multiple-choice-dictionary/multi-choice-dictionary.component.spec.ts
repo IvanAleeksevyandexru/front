@@ -24,6 +24,8 @@ import { DictionaryServiceStub } from '../../../../shared/services/dictionary/di
 import AbstractDictionaryLikeComponent from '../abstract-component-list-item/abstract-dictionary-like.component';
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
+import { InviteService } from '../../../../core/services/invite/invite.service';
+import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
 
 describe('MultiChoiceDictionaryComponent', () => {
   let component: MultiChoiceDictionaryComponent;
@@ -46,6 +48,7 @@ describe('MultiChoiceDictionaryComponent', () => {
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
+        { provide: InviteService, useClass: InviteServiceStub },
       ],
     })
       .overrideComponent(MultiChoiceDictionaryComponent, {

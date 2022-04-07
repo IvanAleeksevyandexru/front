@@ -18,7 +18,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSlotGibddComponent {
-  cancelFilterProvider = ((item) => !!item) as CancelFilterProvider;
+  cancelFilterProvider = (() => true) as CancelFilterProvider;
   requestListParams$: Observable<Partial<TimeSlotRequest>> = combineLatest([
     this.smev3.value$,
     this.smev3.department$,

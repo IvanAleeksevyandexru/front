@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ValidationShowOn } from '@epgu/ui/models/common-enums';
 import { Observable } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { UnsubscribeService, ConfigService } from '@epgu/epgu-constructor-ui-kit';
 import { ConstantsService } from '@epgu/ui/services/constants';
 import { ListElement, ListItem } from '@epgu/ui/models/dropdown';
@@ -21,6 +21,8 @@ import AbstractDictionaryLikeComponent from '../abstract-component-list-item/abs
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DictionaryRegionsErrorInterceptor } from '../../../../core/interceptor/dictionary-regions-error/dictionary-regions-error.interceptor';
 import { InternalErrorInterceptor } from '../../../../core/interceptor/internal-error/internal-error.interceptor';
+
+import { InviteService } from '../../../../core/services/invite/invite.service';
 
 @Component({
   selector: 'epgu-constructor-lookup-input',
@@ -66,6 +68,7 @@ export class LookupInputComponent extends AbstractDictionaryLikeComponent<Lookup
   readonly suggestSeparator = SUGGEST_SEPARATOR_DEFAULT;
 
   constructor(
+    public inviteService: InviteService,
     public suggestHandlerService: SuggestHandlerService,
     private config: ConfigService,
     public injector: Injector,
@@ -143,20 +146,29 @@ export class LookupInputComponent extends AbstractDictionaryLikeComponent<Lookup
         filters,
       );
 
-      return this.dictionaryService
-        .getDictionaries$(this.attrs?.dictionaryType as string, this.control.value, {
-          ...this.attrs?.searchProvider.dictionaryOptions,
-          ...dictionaryOptions,
-        })
-        .pipe(
-          map((reference) => {
-            return this.dictionaryToolsService.adaptDictionaryToListItem(
-              reference.data.items,
-              reference.component.attrs.mappingParams,
-              false,
+      return this.inviteService.getFilter().pipe(
+        switchMap((invite) => {
+          const options = {
+            ...this.attrs?.searchProvider.dictionaryOptions,
+            ...dictionaryOptions,
+          };
+          return this.dictionaryService
+            .getDictionaries$(
+              this.attrs?.dictionaryType as string,
+              this.control.value,
+              this.inviteService.setFilterOptions(invite, options),
+            )
+            .pipe(
+              map((reference) => {
+                return this.dictionaryToolsService.adaptDictionaryToListItem(
+                  reference.data.items,
+                  reference.component.attrs.mappingParams,
+                  false,
+                );
+              }),
             );
-          }),
-        );
+        }),
+      );
     };
   }
 }

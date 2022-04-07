@@ -9,6 +9,8 @@ import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.se
 import { TimeSlotSmev3ServiceStub } from '../../../services/smev3/time-slot-smev3.service.stub';
 import { BaseModule } from '../../../../../../../shared/base.module';
 import { Slot } from '../../../typings';
+import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
+import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-state.service.stub';
 
 const mockSlot = {
   slotId: 'e3758564-bf72-4bc3-be55-b6c4e31954275456',
@@ -30,6 +32,7 @@ describe('TimeSlotBookedInfoComponent', () => {
       providers: [
         { provide: TimeSlotSmev3Service, useClass: TimeSlotSmev3ServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
+        { provide: TimeSlotStateService, useClass: TimeSlotStateServiceStub },
         DatesToolsService,
       ],
     }).compileComponents();
@@ -49,9 +52,8 @@ describe('TimeSlotBookedInfoComponent', () => {
 
   describe('base', () => {
     it('should be render', () => {
-      expect(
-        fixture.debugElement.query(By.css('.time--bold'))?.nativeElement?.innerHTML?.trim(),
-      ).toBe('14 сентября 2021 года в 10:00, вторник');
+      const text = fixture.debugElement.query(By.css('.time'))?.nativeElement?.innerHTML?.trim();
+      expect(text?.includes('14 сентября 2021 года в 10:00, вторник')).toBeTruthy();
     });
   });
 });

@@ -17,13 +17,15 @@ import {
   finalize,
   map,
   pluck,
-  shareReplay,
+  publishReplay,
+  refCount,
   startWith,
   switchMap,
   take,
   tap,
 } from 'rxjs/operators';
 import {
+  DATE_STRING_DASH_FORMAT,
   DATE_STRING_YEAR_MONTH,
   DatesToolsService,
   TimeSlotsApiItem,
@@ -33,6 +35,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   DictionaryConditions,
   DictionarySubFilter,
+  DictionaryUnionKind,
   KeyValueMap,
 } from '@epgu/epgu-constructor-types';
 import {
@@ -69,7 +72,6 @@ export class TimeSlotSmev3Service {
 
   store$ = combineLatest([
     this.smev3.cachedAnswer$,
-    this.smev3.isInvite$,
     this.smev3.value$,
     this.smev3.config$,
     this.smev3.isServiceSpecific$,
@@ -82,18 +84,8 @@ export class TimeSlotSmev3Service {
     tap(() => this.calendar.isVisibleDays$$.next(true)),
     tap(() => this.state.startLoaded$$.next(false)),
     switchMap(
-      ([
-        cachedAnswer,
-        isInvite,
-        data,
-        config,
-        isServiceSpecific,
-        ignoreRootParams,
-        attributes,
-        params,
-      ]: [
+      ([cachedAnswer, data, config, isServiceSpecific, ignoreRootParams, attributes, params]: [
         TimeSlotsAnswerInterface,
-        boolean,
         TimeSlotValueInterface,
         TimeSlotsApiItem,
         boolean,
@@ -102,12 +94,7 @@ export class TimeSlotSmev3Service {
         Partial<TimeSlotRequest>,
         null,
       ]) =>
-        (isInvite
-          ? this.invite
-              .getInvite(this.getParentOrderId(data), cachedAnswer?.timeSlot?.slotId)
-              .pipe(catchError(() => of({})))
-          : of(({} as unknown) as Invite)
-        ).pipe(
+        this.invite.getFilter(this.getParentOrderId(data), cachedAnswer?.timeSlot?.slotId).pipe(
           switchMap((invite) =>
             this.api
               .getList(
@@ -125,7 +112,8 @@ export class TimeSlotSmev3Service {
         ),
     ),
     map((result: TimeSlot[]) => this.createMap(result)),
-    shareReplay(),
+    publishReplay(1),
+    refCount(),
   );
 
   bookId$$ = new BehaviorSubject<string>(this.smev3.cachedAnswer$$.getValue()?.bookId || null);
@@ -180,7 +168,7 @@ export class TimeSlotSmev3Service {
 
   slotsForCancelFilterProvider$$ = new BehaviorSubject<CancelFilterProvider>(
     ((item, waitingTimeExpired, department) =>
-      !!item &&
+      item &&
       (!this.isBookedDepartment(item, department) || waitingTimeExpired)) as CancelFilterProvider,
   );
 
@@ -191,9 +179,12 @@ export class TimeSlotSmev3Service {
     this.slotsForCancelFilterProvider$$,
   ]).pipe(
     map(([list, department, waitingTimeExpired, filterProvider]) =>
-      list.filter((item) => filterProvider(item, waitingTimeExpired, department)),
+      list
+        .filter((item) => !!item)
+        .filter((item) => filterProvider(item, waitingTimeExpired, department)),
     ),
-    shareReplay(),
+    publishReplay(1),
+    refCount(),
   );
 
   cancel$$ = new Subject<CancelOperation>();
@@ -523,38 +514,53 @@ export class TimeSlotSmev3Service {
     return result;
   }
 
-  setInviteToRequest(orgId: string, options: TimeSlotRequest, invite: Invite): TimeSlotRequest {
+  setInviteToRequest(options: TimeSlotRequest, invite: Invite): TimeSlotRequest {
     const result = { ...options };
-    const filters: DictionarySubFilter[] = [];
+
+    const subs: DictionarySubFilter[] = [];
+
     if (invite?.startDate) {
-      filters.push(({
+      subs.push(({
         simple: {
           attributeName: 'DATE',
           condition: DictionaryConditions.GREATER_THAN_OR_EQUALS,
-          value: invite?.startDate,
+          value: this.datesTools.format(new Date(invite.startDate), DATE_STRING_DASH_FORMAT),
           checkAllValues: true,
         },
       } as unknown) as DictionarySubFilter);
     }
+
     if (invite?.endDate) {
-      filters.push(({
+      subs.push(({
         simple: {
           attributeName: 'DATE',
           condition: DictionaryConditions.LESS_THAN_OR_EQUALS,
-          value: invite?.endDate,
+          value: this.datesTools.format(new Date(invite.endDate), DATE_STRING_DASH_FORMAT),
           checkAllValues: true,
         },
       } as unknown) as DictionarySubFilter);
     }
-    if (filters?.length) {
-      result.filter = filters;
+    if (subs?.length) {
+      result.filter = {
+        union: { unionKind: DictionaryUnionKind.AND, subs },
+      };
     }
-    if (invite?.organizations?.length > 0) {
+    if (invite?.organizations?.length > 0 && result?.organizationId) {
+      let areas: string[] = [];
       invite?.organizations.forEach((organization) => {
-        if (organization.orgId === orgId) {
-          result.areaId = organization.areas;
+        if (Array.isArray(result.organizationId)) {
+          if (result.organizationId.includes(organization.orgId)) {
+            areas = areas.concat(organization.areas);
+          }
+        } else {
+          if (result.organizationId === organization.orgId) {
+            areas = areas.concat(organization.areas);
+          }
         }
       });
+      if (areas.length > 0) {
+        result.areaId = areas.filter((value, index, self) => self.indexOf(value) === index);
+      }
     }
     return result;
   }
@@ -567,9 +573,8 @@ export class TimeSlotSmev3Service {
     params: Partial<TimeSlotRequest>,
     invite: Invite,
   ): TimeSlotRequest {
-    const orgId = data.organizationId as string;
     const base = {
-      organizationId: [orgId],
+      organizationId: [data.organizationId as string],
       caseNumber: data.orderId,
       serviceId: [(data.serviceId as string) || serviceId],
       eserviceId: (data.eserviceId as string) || eserviceId,
@@ -582,7 +587,7 @@ export class TimeSlotSmev3Service {
       : base;
 
     return <TimeSlotRequest>(
-      this.paramsFilter(ignoreRootParams, this.setInviteToRequest(orgId, result, invite))
+      this.paramsFilter(ignoreRootParams, this.setInviteToRequest(result, invite))
     );
   }
 

@@ -53,7 +53,7 @@ export class TimeSlotSmev3StateService {
   department$: Observable<DepartmentInterface> = this.value$.pipe(
     pluck('department'),
     map((department) => this.jsonHelperService.tryToParse(department, {}) as DepartmentInterface),
-    shareReplay(),
+    shareReplay(1),
   );
 
   type$: Observable<TimeSlotsTypes> = this.value$.pipe(
@@ -63,11 +63,12 @@ export class TimeSlotSmev3StateService {
 
   config$: Observable<TimeSlotsApiItem> = this.type$.pipe(
     map((type) => this.configService.timeSlots[type]),
+    map((config) => config ?? (({} as unknown) as TimeSlotsApiItem)),
   );
 
   cachedAnswer$$ = new BehaviorSubject<TimeSlotsAnswerInterface>(
     (this.jsonHelperService.tryToParse(
-      this.screenService.getCompValueFromCachedAnswers(),
+      this.screenService.getCompValueFromApplicantAndCachedAnswers(),
     ) as TimeSlotsAnswerInterface) || null,
   );
 
@@ -100,7 +101,7 @@ export class TimeSlotSmev3StateService {
       list.map(
         (item) =>
           this.jsonHelperService.tryToParse(
-            this.screenService.getCompValueFromCachedAnswers(item),
+            this.screenService.getCompValueFromApplicantAndCachedAnswers(item),
             null,
           ) as TimeSlotsAnswerInterface,
       ),

@@ -83,7 +83,7 @@ export class DaySelectorComponent {
       this.createDays(firstDayOfMainSection, daysInMainSection),
     ),
     distinctUntilChanged(),
-    shareReplay(),
+    shareReplay(1),
   );
 
   notExistsAvailable$$ = new BehaviorSubject<boolean>(null);

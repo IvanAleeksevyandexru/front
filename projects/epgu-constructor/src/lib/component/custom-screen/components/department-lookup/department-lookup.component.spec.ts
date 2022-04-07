@@ -36,6 +36,8 @@ import { ComponentsListToolsService } from '../../services/components-list-tools
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 import { DictionaryToolsServiceStub } from '../../../../shared/services/dictionary/dictionary-tools.service.stub';
+import { InviteService } from '../../../../core/services/invite/invite.service';
+import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
 
 const mockPatchedBase: CustomComponent = new DepartmentLookupModel({
   id: 'dict2',
@@ -163,6 +165,7 @@ describe('DepartmentLookupComponent', () => {
       providers: [
         UnsubscribeService,
         JsonHelperService,
+        { provide: InviteService, useClass: InviteServiceStub },
         { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
         { provide: DictionaryApiService, useClass: DictionaryApiServiceStub },
