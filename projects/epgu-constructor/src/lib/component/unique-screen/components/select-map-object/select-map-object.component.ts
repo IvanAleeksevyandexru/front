@@ -71,8 +71,7 @@ import { NavigationService } from '../../../../core/services/navigation/navigati
 import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 import { PriorityItemsService } from './services/priority-items/priority-items.service';
 import { ComponentValue } from '../../../../shared/services/dictionary/dictionary.interface';
-import { Invite, InviteService } from '../../../../core/services/invite/invite.service';
-import { ActivatedRoute } from '@angular/router';
+import { InviteService } from '../../../../core/services/invite/invite.service';
 
 const INTERNAL_ERROR_MESSAGE = 'Internal Error';
 
@@ -118,7 +117,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   private yaMapService: YaMapService;
   private zone: NgZone;
   private priorityItemsService: PriorityItemsService;
-  private route: ActivatedRoute;
 
   private componentValue: ComponentValue;
   private componentPresetValue: ComponentValue;
@@ -133,7 +131,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
   private valueFromCache: string;
 
   constructor(protected injector: Injector) {
-    this.route = injector.get(ActivatedRoute);
     this.invite = injector.get(InviteService);
     this.config = injector.get(ConfigService);
     this.screenService = injector.get(ScreenService);
@@ -355,16 +352,9 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
       return throwError(e);
     }
 
-    const getFilter = this.data.attrs?.isInvite
-      ? this.invite.getInvite(
-          this.route.snapshot.queryParamMap.get('parentOrderId') ??
-            String(this.screenService.orderId),
-        )
-      : of({} as Invite);
-
-    return getFilter.pipe(
+    return this.invite.getFilter().pipe(
       switchMap((invite) =>
-        this.getDataSource(this.setFilterOptions(options, invite)).pipe(
+        this.getDataSource(this.invite.setFilterOptions(invite, options)).pipe(
           switchMap((dictionary: DictionaryResponseForYMap) => {
             if (dictionary.error !== null && dictionary.error?.code !== 0) {
               return throwError(dictionary.error);
@@ -522,13 +512,6 @@ export class SelectMapObjectComponent implements OnInit, AfterViewChecked, OnDes
     const moscowCenter = [37.64, 55.76]; // Москва
     const geoCode = geo_lon && geo_lat ? [geo_lon, geo_lat] : null;
     this.mapCenter = (geoCode || center || moscowCenter) as number[];
-  }
-
-  private setFilterOptions(options: DictionaryOptions, invite: Invite): DictionaryOptions {
-    if (invite?.organizations?.length > 0) {
-      options.filterCodes = invite?.organizations.map((org) => org.orgId);
-    }
-    return options;
   }
 
   private applySelectedObjects(dictionary: DictionaryResponseForYMap): void {

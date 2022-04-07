@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import {
   ConfirmationModal,
-  DictionarySubFilter,
+  DictionaryUnionFilter,
   KeyValueMap,
   ScreenButton,
 } from '@epgu/epgu-constructor-types';
@@ -62,6 +62,9 @@ export interface TimeSlotValueInterface {
   timeSlotRequestAttrs?: { name: string; value: string }[];
   bookingRequestParams?: { name: string; value: string }[];
   userSelectedRegion?: string;
+  preliminaryReservation?: 'true' | 'false';
+  preliminaryReservationPeriod?: string;
+  routeNumber?: string;
 }
 
 export interface DepartmentInterface {
@@ -185,7 +188,7 @@ export interface TimeSlotRequest {
   attributes?: TimeSlotAttribute[];
   routeNumber?: string;
   serviceCode?: string;
-  filter?: DictionarySubFilter[];
+  filter?: { union: DictionaryUnionFilter };
   areaId?: string[];
 }
 

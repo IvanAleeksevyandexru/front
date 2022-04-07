@@ -2,6 +2,7 @@
   [slotListFilter]="slotListFilterProvider$ | async"
   [requestListParams]="requestListParams$ | async"
   [requestBookParams]="requestBookParams$ | async"
+  [slotsForCancelFilterProvider]="cancelFilterProvider"
 >
   <ng-container before-content>
     <epgu-constructor-time-slot-area [department]="department$ | async" [attributes]="attributes">

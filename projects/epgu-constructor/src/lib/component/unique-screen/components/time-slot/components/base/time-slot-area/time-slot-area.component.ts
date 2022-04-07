@@ -14,6 +14,7 @@ import { DictionaryApiService } from '../../../../../../../shared/services/dicti
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
 import { DepartmentInterface } from '../../../typings';
 import { TimeSlotCalendarService } from '../../../services/calendar/time-slot-calendar.service';
+import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
 
 @Component({
   selector: 'epgu-constructor-time-slot-area',
@@ -54,6 +55,7 @@ export class TimeSlotAreaComponent {
     private calendar: TimeSlotCalendarService,
     private dictionaryApi: DictionaryApiService,
     private data: TimeSlotSmev3Service,
+    private state: TimeSlotStateService,
   ) {}
 
   presetValue(items: ListItem[]): void {
@@ -62,6 +64,10 @@ export class TimeSlotAreaComponent {
 
   changedAction(item: ListItem): void {
     this.data.area = item?.id as string;
+  }
+
+  change(): void {
+    this.state.clearDay();
   }
 
   getList(

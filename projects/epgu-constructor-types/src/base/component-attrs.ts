@@ -314,6 +314,7 @@ export interface ComponentAttrsDto {
   notFoundItemsMessage?: NotFoundItemsMessage;
   nsi?: Nsi;
   obliged?: Obliged;
+  orgKeyName?: string;
   participant?: Participant;
   path?: Path;
   payCode?: PayCode;

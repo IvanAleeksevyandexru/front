@@ -32,6 +32,8 @@ import { ComponentsListToolsService } from '../../services/components-list-tools
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
 import { HelperService } from '@epgu/ui/services/helper';
+import { InviteService } from '../../../../core/services/invite/invite.service';
+import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -56,6 +58,7 @@ describe('DictionaryComponent', () => {
         { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: InviteService, useClass: InviteServiceStub },
         MockProvider(DatesToolsService),
         MockProvider(ComponentsListToolsService),
         JsonHelperService,

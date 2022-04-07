@@ -8,7 +8,7 @@ import {
   ModalServiceStub,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentDto } from '@epgu/epgu-constructor-types';
+import { ComponentDto, DictionaryUnionKind } from '@epgu/epgu-constructor-types';
 import { BehaviorSubject, of } from 'rxjs';
 import { isSameDay } from 'date-fns';
 import { TimeSlotSmev3Service } from './time-slot-smev3.service';
@@ -600,8 +600,11 @@ describe('TimeSlotSmev3Service', () => {
         orderId: 123,
         organizations: [{ orgId: 'test', areas: ['123'] }],
       };
-      jest.spyOn(inviteService, 'getInvite').mockReturnValue(of(mockValue));
+      jest.spyOn(inviteService, 'getFilter').mockReturnValue(of(mockValue));
       jest.spyOn(service, 'createRequest');
+
+      jest.spyOn(dateService, 'format').mockReturnValueOnce('09-12-12');
+      jest.spyOn(dateService, 'format').mockReturnValueOnce('12-12-12');
 
       expect(
         service.createRequest(
@@ -617,24 +620,29 @@ describe('TimeSlotSmev3Service', () => {
         attributes: [],
         caseNumber: 1485144134,
         eserviceId: '10000057526',
-        filter: [
-          {
-            simple: {
-              attributeName: 'DATE',
-              checkAllValues: true,
-              condition: 'GREATER_THAN_OR_EQUALS',
-              value: '09-12-12',
-            },
+        filter: {
+          union: {
+            unionKind: DictionaryUnionKind.AND,
+            subs: [
+              {
+                simple: {
+                  attributeName: 'DATE',
+                  checkAllValues: true,
+                  condition: 'GREATER_THAN_OR_EQUALS',
+                  value: '09-12-12',
+                },
+              },
+              {
+                simple: {
+                  attributeName: 'DATE',
+                  checkAllValues: true,
+                  condition: 'LESS_THAN_OR_EQUALS',
+                  value: '12-12-12',
+                },
+              },
+            ],
           },
-          {
-            simple: {
-              attributeName: 'DATE',
-              checkAllValues: true,
-              condition: 'LESS_THAN_OR_EQUALS',
-              value: '12-12-12',
-            },
-          },
-        ],
+        },
         organizationId: ['test'],
         routeNumber: '45382000',
         serviceId: ['ЗагсБрак'],

@@ -33,6 +33,8 @@ import { DictionaryToolsServiceStub } from '../../../../shared/services/dictiona
 import { ComponentsListToolsService } from '../../services/components-list-tools/components-list-tools.service';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../../../../shared/services/dictionary/dictionary.service.stub';
+import { InviteService } from '../../../../core/services/invite/invite.service';
+import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
 
 const mockComponent = {
   id: 'mockComponentID',
@@ -77,6 +79,7 @@ describe('RestLookupInputComponent', () => {
         { provide: ComponentsListRelationsService, useClass: ComponentsListRelationsServiceStub },
         { provide: DictionaryService, useClass: DictionaryServiceStub },
         { provide: DictionaryToolsService, useClass: DictionaryToolsServiceStub },
+        { provide: InviteService, useClass: InviteServiceStub },
         MockProvider(RestToolsService),
         MockProvider(SuggestHandlerService),
         MockProvider(EventBusService),

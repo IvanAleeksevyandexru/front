@@ -14,6 +14,8 @@ import { ComponentsListToolsService } from '../../services/components-list-tools
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { DictionaryService } from '../../../../shared/services/dictionary/dictionary.service';
 import { UpdateFiltersEvents } from '../../services/components-list-relations/components-list-relations.interface';
+import { InviteService } from '../../../../core/services/invite/invite.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   template: '',
@@ -26,10 +28,12 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
   protected dictionaryToolsService: DictionaryToolsService;
   protected componentsListToolsService: ComponentsListToolsService;
   protected componentsListRelationsService: ComponentsListRelationsService;
+  protected inviteService: InviteService;
 
   constructor(public injector: Injector) {
     super(injector);
     this.screenService = this.injector.get(ScreenService);
+    this.inviteService = this.injector.get(InviteService);
     this.dictionaryService = this.injector.get(DictionaryService);
     this.dictionaryToolsService = this.injector.get(DictionaryToolsService);
     this.componentsListToolsService = this.injector.get(ComponentsListToolsService);
@@ -54,7 +58,11 @@ export default abstract class AbstractDictionaryLikeComponent<T extends Dictiona
   protected loadReferenceData$(): Observable<CustomListDictionary> {
     if (this.attrs.isLoadingNeeded()) {
       const options = this.prepareOptions();
-      return this.getDictionary(options);
+      return this.inviteService.getFilter().pipe(
+        switchMap((invite) => {
+          return this.getDictionary(this.inviteService.setFilterOptions(invite, options));
+        }),
+      );
     }
     return of(null);
   }

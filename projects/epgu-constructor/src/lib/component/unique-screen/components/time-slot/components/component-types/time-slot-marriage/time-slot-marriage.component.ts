@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { DictionaryConditions, DictionarySubFilter } from '@epgu/epgu-constructor-types';
 import { TimeSlotSmev3StateService } from '../../../services/smev3-state/time-slot-smev3-state.service';
 import {
@@ -10,9 +10,9 @@ import {
   DepartmentInterface,
   TimeSlotValueInterface,
   TimeSlotBookRequest,
+  CancelFilterProvider,
 } from '../../../typings';
 import { TimeSlotSmev3Service } from '../../../services/smev3/time-slot-smev3.service';
-import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
 
 @Component({
   selector: 'epgu-constructor-time-slot-marriage',
@@ -21,8 +21,8 @@ import { TimeSlotStateService } from '../../../services/state/time-slot-state.se
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeSlotMarriageComponent {
+  cancelFilterProvider = (() => true) as CancelFilterProvider;
   slotListFilterProvider$ = this.data.area$.pipe(
-    tap(() => this.state.clearDay()),
     map((area) => ((slot: Slot) => slot.areaId === area || !area) as SlotListFilterProvider),
   );
   solemn$: Observable<boolean> = this.smev3.solemn$;
@@ -50,11 +50,7 @@ export class TimeSlotMarriageComponent {
     map(([solemn]) => this.createAreaAttributes(solemn)),
   );
 
-  constructor(
-    private smev3: TimeSlotSmev3StateService,
-    private data: TimeSlotSmev3Service,
-    private state: TimeSlotStateService,
-  ) {}
+  constructor(private smev3: TimeSlotSmev3StateService, private data: TimeSlotSmev3Service) {}
 
   createAreaAttributes(solemn: boolean): DictionarySubFilter[] {
     return [

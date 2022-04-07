@@ -62,7 +62,7 @@ describe('TimeSlotSmev3StateService', () => {
     jest.spyOn(screenService, 'componentValue$', 'get').mockReturnValue(of(mockTimeSlotValue));
     jest.spyOn(screenService, 'component$', 'get').mockReturnValue(of(mockComponent));
     jest
-      .spyOn(screenService, 'getCompValueFromCachedAnswers')
+      .spyOn(screenService, 'getCompValueFromApplicantAndCachedAnswers')
       .mockReturnValue(JSON.stringify(mockAnswer));
 
     service = TestBed.inject(TimeSlotSmev3StateService);

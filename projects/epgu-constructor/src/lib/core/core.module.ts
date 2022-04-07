@@ -25,6 +25,7 @@ import { TypeCastService } from './services/type-cast/type-cast.service';
 import { HtmlSelectService } from './services/html-select/html-select.service';
 import { InterceptorUtilsService } from './services/interceptor-utils/interceptor-utils.service';
 import { InviteService } from './services/invite/invite.service';
+import { ScreenService } from '../screen/screen.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -45,6 +46,7 @@ import { InviteService } from './services/invite/invite.service';
     HtmlSelectService,
     InterceptorUtilsService,
     InviteService,
+    ScreenService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpHeadersInterceptor,
