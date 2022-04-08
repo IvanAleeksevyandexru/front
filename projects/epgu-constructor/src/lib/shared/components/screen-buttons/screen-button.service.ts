@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
-import { ScreenService } from '../../../screen/screen.service';
-import { CustomListStatusElements } from '../../../component/custom-screen/components-list.types';
 import { FormArray, FormControl } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ScreenButton, System } from '@epgu/epgu-constructor-types';
 import { DeviceDetectorService } from '@epgu/epgu-constructor-ui-kit';
-
 import { cloneDeep, isEqual } from 'lodash';
 import { distinctUntilChanged, tap } from 'rxjs/operators';
+
+import { ComponentsListRelationsService } from '../../../component/custom-screen/services/components-list-relations/components-list-relations.service';
+import { ScreenService } from '../../../screen/screen.service';
+import { CustomListStatusElements } from '../../../component/custom-screen/components-list.types';
 
 @Injectable()
 export class ScreenButtonService {
@@ -58,6 +58,7 @@ export class ScreenButtonService {
   ): void {
     this._shownElements = shownElements;
     this.processButtonsVisibility(form);
+
     form.valueChanges.subscribe(() => {
       this.processButtonsVisibility(form);
     });
@@ -77,6 +78,7 @@ export class ScreenButtonService {
   private processButtonsDisabling(): void {
     let shouldUpdate = false;
     const processingButtons = cloneDeep(this.outputButtons);
+
     processingButtons.forEach((button) => {
       const disabledByRel = this.rel.calculateDisabling(
         button,
@@ -113,6 +115,7 @@ export class ScreenButtonService {
       this._shownElements,
     );
     let shouldUpdate = false;
+
     initialButtons.forEach((button) => {
       const hidden = shownButtons && shownButtons[button.id] && !shownButtons[button.id].isShown;
       if (button.hidden !== hidden || button.hidden === undefined) {
@@ -122,6 +125,7 @@ export class ScreenButtonService {
         button.hidden = hidden;
       }
     });
+
     if (shouldUpdate) {
       this.updateButtons(initialButtons);
     }

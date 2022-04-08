@@ -7,13 +7,15 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-
+import { FormArray } from '@angular/forms';
 import { UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
 import { DisplayDto, NavigationPayload } from '@epgu/epgu-constructor-types';
+
 import {
   CustomComponent,
   CustomComponentOutputData,
   CustomComponentValidationConditions,
+  CustomListStatusElements,
   CustomScreenComponentTypes,
 } from '../../component/custom-screen/components-list.types';
 import { ScreenBase } from '../screen-base';
@@ -43,6 +45,8 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
   isValid: boolean;
   helperText: CustomComponent;
   disableWhiteBackground: boolean;
+  customScreenForm: FormArray;
+  customListStatusElements: CustomListStatusElements;
 
   constructor(
     public injector: Injector,
@@ -84,6 +88,14 @@ export class CustomScreenComponent extends ScreenBase implements OnInit {
     this.currentAnswersService.isValid = this.isValid;
     this.currentAnswersService.state = this.dataToSend;
     this.cdr.markForCheck();
+  }
+
+  setCustomScreenForm(form: FormArray): void {
+    this.customScreenForm = form;
+  }
+
+  setCustomListStatusElements(elements: CustomListStatusElements): void {
+    this.customListStatusElements = elements;
   }
 
   private setHelperText(): void {
