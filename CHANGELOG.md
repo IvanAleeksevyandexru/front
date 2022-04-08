@@ -1,5 +1,11 @@
 # Release Notes
 
+## [404.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v404.x.x) (2022-04-08)
+
+### Chore
+
+* Удалены устаревшие доки и неиспользуемый проект epgu-constructor-docs
+
 ## [401.32.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.32.0) (2022-04-08)
 
 ### Features
@@ -352,7 +358,7 @@
 * Добавлены тесты PaymentSelectorComponent [EPGUCORE-85302]
 * Добавлены тесты на LogicResolver [EPGUCORE-85307]
 
-## [0.0.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v0.0.0) (2022-01-01)
+## [0.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v0.x.x) (2022-01-01)
 
 ### BREAKING CHANGES
 
