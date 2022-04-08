@@ -42,10 +42,11 @@ export class InviteService {
 
   setFilterOptions(invite: Invite, options: DictionaryOptions): DictionaryOptions {
     const result = { ...options } as DictionaryFilters;
+
     if (invite?.organizations?.length > 0) {
       if (this.screenService?.component?.attrs?.orgKeyName) {
         if (result.filter?.simple) {
-          const simpleFilter = (result.filter.simple as unknown) as DictionarySubFilter;
+          const simpleFilter = (result.filter as unknown) as DictionarySubFilter;
           result.filter = {
             union: {
               unionKind: DictionaryUnionKind.AND,
@@ -93,6 +94,7 @@ export class InviteService {
         (result as DictionaryOptions).filterCodes = invite?.organizations.map((org) => org.orgId);
       }
     }
+
     return result;
   }
 
