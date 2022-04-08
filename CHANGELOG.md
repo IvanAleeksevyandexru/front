@@ -1,6 +1,6 @@
 # Release Notes
 
-## [401.26.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.26.0) (2022-04-01)
+## [401.32.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.32.0) (2022-04-08)
 
 ### Features
 
@@ -13,6 +13,7 @@
 * Добавлен disclaimer в confirm-personal-policy [EPGUCORE-88610]
 * Добавлен errorBookingHandling для TimeSlotDoctors [EPGUCORE-89926]
 * Реализован дисклеймер при отсутствии индекса в RegistrationLegalAddr [EPGUCORE-89049]
+* Добавлено использование компонента TimeSlot для услуг ПГС [EPGUCORE-67218]
 
 ### Refactor
 
@@ -35,6 +36,9 @@
 * Исправлено скрытие кнопок у не-CUSTOM screen [EPGUCORE-91815]
 * Исправлен дефект, что в меню профиля сбиты переводы [EPGUCORE-91101]
 * Добавлена корректная работа atLeastOne в MultipleChoiceDictionary [EPGUCORE-89367]
+* Поправлен inviteService [EPGUCORE-93405]
+* Исправлен дефект, что неверно формируется filter в запросе слотов при 25 статусе [EPGUCORE-90882]
+* Доработан фильтр Lookup для 25 статуса по услугам [EPGUCORE-90231]
 
 ### Chore
 
