@@ -12,3 +12,8 @@
   @include typ-plain-text;
   color: $color-text-helper;
 }
+
+.title {
+  @include typ-h3;
+  color: $color-summer-night;
+}
