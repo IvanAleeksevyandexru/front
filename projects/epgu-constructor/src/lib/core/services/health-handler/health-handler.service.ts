@@ -75,6 +75,7 @@ export class HealthHandlerService implements HealthHandler {
   ): Observable<HttpEvent<T>> {
     let serviceName = '';
     let lastUrlPart = '';
+    let hadOrderId = true;
 
     this.processMnemonic(request);
 
@@ -84,10 +85,17 @@ export class HealthHandlerService implements HealthHandler {
       lastUrlPart = url;
     }
 
+    if (lastUrlPart === 'getservice' || lastUrlPart === 'getnextstep') {
+      hadOrderId = !!((request?.body as unknown) as ScenarioDto)?.orderId;
+    }
+
     return next.handle(request).pipe(
       tap((response: HttpResponse<T>) => {
         if (this.isValidHttpEntity(response)) {
           this.handleValidHttpResponseEntity(request, response, serviceName, lastUrlPart);
+          if (!hadOrderId && !!((request?.body as unknown) as ScenarioDto)?.orderId) {
+            this.measureCreateOrOpenOrder((request?.body as unknown) as ScenarioDto);
+          }
         }
       }),
       catchError((exception: HttpErrorResponse) => {
@@ -433,6 +441,23 @@ export class HealthHandlerService implements HealthHandler {
         );
       });
     }
+  }
+
+  private measureCreateOrOpenOrder(order: ScenarioDto): void {
+    const serviceName = 'OrderOperation';
+    const healthData = {
+      orderId: order.orderId,
+      id: order.display.id,
+      name: order.display.label,
+      operationType: 'create',
+    };
+
+    this.startMeasureHealth(serviceName);
+    this.endMeasureHealth(
+      serviceName,
+      RequestStatus.Succeed,
+      this.objectHelperService.filterIncorrectObjectFields(healthData),
+    );
   }
 
   private checkUrlForExceptions(url: string): boolean {
