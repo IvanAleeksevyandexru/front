@@ -2,6 +2,23 @@
 
 ## [404.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v404.x.x) (2022-04-08)
 
+### Features
+
+*
+
+### Refactor
+
+* Обновление шрифтов Lato-Regular.woff2 и Lato-Bold.woff2 [EPGUCORE-93080]
+
+### Bug Fixes
+
+* Добавлена работа imgPrefixer pipe в InfoScreen [EPGUCORE-90030]
+* Правка фокусировки на регион на карте [EPGUCORE-89831]
+* Поправлена работа курсора в MaskedInput на мобильных устройствах [EPGUCORE-90970]
+* Правка верстки(отступов) ViewComponent.scss [EPGUCORE-89823]
+* Поправлена верстка в GroupItemComponent [EPGUCORE-89824]
+* Убран лишний вертикальный отступ у картинок снизу на InfoScreen [EPGUCORE-91830]
+
 ### Chore
 
 * Удалены устаревшие доки и неиспользуемый проект epgu-constructor-docs
