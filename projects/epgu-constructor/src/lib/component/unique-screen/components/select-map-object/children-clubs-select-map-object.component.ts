@@ -78,6 +78,8 @@ export class ChildrenClubsSelectMapObjectComponent extends SelectMapObjectCompon
 
   protected initSelectedValue(): void {
     const { addressString, selectedProgramUUID } = this.stateService;
+    const address =
+      addressString || (this.screenService.component.arguments?.addressString as string);
     if (selectedProgramUUID) {
       const selectedClub = this.yandexMapService.objectManager.objects
         .getAll()
@@ -87,8 +89,8 @@ export class ChildrenClubsSelectMapObjectComponent extends SelectMapObjectCompon
       this.hasPreviouslyChoosen = this.selectMapObjectService.dictionary.items.find(
         (item) => item.uuid === selectedProgramUUID,
       );
-    } else if (addressString) {
-      this.yandexMapService.geoCode(addressString).subscribe((geoCode) => {
+    } else if (address) {
+      this.yandexMapService.geoCode(address).subscribe((geoCode) => {
         const envelope =
           geoCode.response.GeoObjectCollection.featureMember[0].GeoObject.boundedBy.Envelope;
         const bound1 = envelope.lowerCorner.split(' ').map((coord) => +coord);

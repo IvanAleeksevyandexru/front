@@ -26,6 +26,7 @@ import { BaseProgram, financingTypes } from '../../typings';
 import { StateService } from '../../services/state/state.service';
 import { ProgramListService } from '../../services/program-list/program-list.service';
 import { ContentModalComponent } from '../base/components/content-modal/content-modal.component';
+import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
 
 @Component({
   selector: 'children-clubs-select-map-object',
@@ -56,6 +57,7 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
     private modalService: ModalService,
     private addressesToolsService: AddressesToolsService,
     private elementRef: ElementRef,
+    private screenService: ScreenService,
   ) {
     this.isMobile = this.deviceDetector.isMobile;
   }
@@ -206,6 +208,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
 
   private initCenter(): void {
     const { addressString, selectedProgramUUID } = this.stateService;
+    const address =
+      addressString || (this.screenService.component.arguments?.addressString as string);
     if (selectedProgramUUID) {
       // Нельзя сразу выбрать кластер, так как без центровки и зума его еще нет
       const selectedClub = this.yandexMapService.objectManager.objects
@@ -225,8 +229,8 @@ export class SelectMapObjectComponent implements OnInit, AfterViewInit, OnDestro
         const expandedNode = this.elementRef.nativeElement.querySelector('.map-object.expanded');
         expandedNode?.scrollIntoView();
       });
-    } else if (addressString) {
-      this.yandexMapService.geoCode(addressString).subscribe((geoCode) => {
+    } else if (address) {
+      this.yandexMapService.geoCode(address).subscribe((geoCode) => {
         const envelope =
           geoCode.response.GeoObjectCollection.featureMember[0].GeoObject.boundedBy.Envelope;
         const bound1 = envelope.lowerCorner.split(' ').map((coord) => +coord);
