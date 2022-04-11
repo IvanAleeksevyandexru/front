@@ -8,10 +8,9 @@
 @include rubles('.info__text');
 
 .info {
-  &__img-wrapper {
-    text-align: center;
-  }
   &__img {
+    display: block;
+    margin: 0 auto;
     max-width: 200px;
   }
 }
