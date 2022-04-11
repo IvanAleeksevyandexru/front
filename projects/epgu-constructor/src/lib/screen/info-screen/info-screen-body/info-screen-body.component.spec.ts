@@ -4,8 +4,8 @@ import {
   ConfigServiceStub,
   DeviceDetectorService,
   DeviceDetectorServiceStub,
+  ImgPrefixerModule,
 } from '@epgu/epgu-constructor-ui-kit';
-
 import { MockComponent } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -49,6 +49,7 @@ describe('InfoScreenBodyComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
       ],
+      imports: [ImgPrefixerModule],
     })
       .overrideComponent(InfoScreenBodyComponent, {
         set: { changeDetection: ChangeDetectionStrategy.Default },

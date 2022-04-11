@@ -1,7 +1,7 @@
 <div *ngIf="data?.attrs?.image?.src">
   <img
     class="info__img"
-    [src]="data.attrs.image.src"
+    [src]="data.attrs.image.src | imgPrefixer"
     [attr.alt]="data.attrs.image.alt ? data.attrs.image.alt : null"
   />
 </div>
