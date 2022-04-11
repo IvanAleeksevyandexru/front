@@ -30,6 +30,8 @@ import { SelectMapObjectComponent } from './select-map-object.component';
 import { SelectMapObjectModule } from './select-map-object.module';
 import { BaseProgram } from '../../typings';
 import { baseProgramStub } from '../../stubs/projects.stub';
+import { ScreenService } from '@epgu/epgu-constructor/src/lib/screen/screen.service';
+import { ScreenServiceStub } from '@epgu/epgu-constructor/src/lib/screen/screen.service.stub';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -48,6 +50,7 @@ describe('SelectMapObjectComponent', () => {
         AddressesToolsService,
         YandexMapService,
         YaMapService,
+        { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: ConfigService, useClass: ConfigServiceStub },
         { provide: StateService, useClass: StateServiceStub },
         { provide: MicroAppStateService, useClass: MicroAppStateServiceStub },

@@ -31,10 +31,19 @@ export class TextTransformDirective {
       target.setSelectionRange(...this.prevSelection);
       return;
     }
-    const selection: [number, number] = [target.selectionStart, target.selectionEnd];
+
+    /* Вычисляем текущее положение курсора сначала с опрой на маску, т.к. на мобильных устройствах target.selectionStart
+    имеет свойство криво вычисляться из-за чего курсор становится в конец строки с маской */
+    const currentCursorPosition = target.value?.indexOf('_') || target.selectionStart || 0;
+    const selection: [number, number] = [currentCursorPosition, currentCursorPosition];
     const transformedValue = this.transforms[this.textTransformType].call(this, target.value);
     this.control.control.setValue(transformedValue);
-    target.setSelectionRange(...selection);
+    /* Здесь выносим в макротаску опять же по причине особенности работы курсора на мобильных клавиатурах,
+    где по-умолчанию может быть включена автокоррекция и саджесты.
+    Ref: https://github.com/text-mask/text-mask/issues/300 */
+    setTimeout(() => {
+      target.setSelectionRange(...selection);
+    });
 
     // Сохраняет предыдущее значение и позицию курсора
     this.prevValue = target.value;
