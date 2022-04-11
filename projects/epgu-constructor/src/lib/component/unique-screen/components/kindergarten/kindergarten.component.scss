@@ -1,4 +1,9 @@
 @import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/index';
+
+.epgu-constructor-priority-screen {
+  display: block;
+}
+
 :host {
   height: 100%;
   & > *[hidden] {
