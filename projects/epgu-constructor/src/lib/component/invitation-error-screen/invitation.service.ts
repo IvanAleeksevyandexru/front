@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoggerService, ModalService } from '@epgu/epgu-constructor-ui-kit';
-import { ComponentAttrsDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
+import { ActionType, ComponentAttrsDto, ConfirmationModal } from '@epgu/epgu-constructor-types';
 
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
+import { ScreenService } from '../../screen/screen.service';
 
 export const SUCCESS_MESSAGE = 'Приглашение отправлено';
 export const FAILURE_MESSAGE = 'Ваше приглашение не было отправлено. Попробуйте позже';
@@ -22,6 +23,7 @@ export class InvitationService {
     private modalService: ModalService,
     private navigationService: NavigationService,
     private loggerService: LoggerService,
+    private screenService: ScreenService,
   ) {}
 
   post<T>(path: string, body: T, attrs: ComponentAttrsDto): void {
@@ -59,8 +61,26 @@ export class InvitationService {
     };
 
     this.modalService.openModal<string>(ConfirmationModalComponent, modal).subscribe((value) => {
-      if (value) {
-        this.navigationService[value]();
+      if (!value) {
+        return;
+      }
+
+      switch (value) {
+        case ActionType.redirectToLK:
+          return this.navigationService.redirectToLK();
+        case ActionType.nextStep:
+          const invitationComponent = this.screenService.display.components[0];
+
+          const payload = {
+            [invitationComponent.id]: {
+              visited: true,
+              value,
+            },
+          };
+
+          return this.navigationService.next({ payload });
+        default:
+          console.error(`Incorrect button value ${value} for LkInvitation component`);
       }
     });
   }

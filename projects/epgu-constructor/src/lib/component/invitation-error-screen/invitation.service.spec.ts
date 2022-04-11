@@ -12,6 +12,8 @@ import {
 import { InvitationService, SUCCESS_MESSAGE, FAILURE_MESSAGE } from './invitation.service';
 import { NavigationService } from '../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../core/services/navigation/navigation.service.stub';
+import { ScreenService } from '../../screen/screen.service';
+import { ScreenServiceStub } from '../../screen/screen.service.stub';
 
 describe('InvitationService', () => {
   let service: InvitationService;
@@ -27,6 +29,7 @@ describe('InvitationService', () => {
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: NavigationService, useClass: NavigationServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
+        { provide: ScreenService, useClass: ScreenServiceStub },
         InvitationService,
       ],
     });
