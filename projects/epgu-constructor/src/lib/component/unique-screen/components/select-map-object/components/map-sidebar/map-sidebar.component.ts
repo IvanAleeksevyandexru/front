@@ -117,15 +117,18 @@ export class MapSidebarComponent extends BaseComponent implements OnInit {
             this.activeItem.expanded = true;
           }
           this.cdr.detectChanges();
-          this.balloonComponents.detectBalloonChanges();
-          const idx = this.balloonComponents.findMatchingElementIdx(value[0]);
-          if (idx) {
-            window.requestAnimationFrame(() => {
-              this.balloonComponents.scrollMatchingRefIntoView(idx);
-              if (activeBalloonRef) {
-                this.balloonComponents.lockAnimation(false);
-              }
-            });
+          // Не всегда есть список компонентов (например для судов)
+          if (this.balloonComponents) {
+            this.balloonComponents.detectBalloonChanges();
+            const idx = this.balloonComponents.findMatchingElementIdx(value[0]);
+            if (idx) {
+              window.requestAnimationFrame(() => {
+                this.balloonComponents.scrollMatchingRefIntoView(idx);
+                if (activeBalloonRef) {
+                  this.balloonComponents.lockAnimation(false);
+                }
+              });
+            }
           }
         } else {
           this.originalValue = [];

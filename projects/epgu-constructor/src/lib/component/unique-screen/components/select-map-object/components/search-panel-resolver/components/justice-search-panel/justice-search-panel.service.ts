@@ -158,6 +158,8 @@ export class JusticeSearchPanelService implements OnDestroy {
       this.yandexMapService.objectManager.removeAll();
       this.yandexMapService.objectManager.add(mapOjbect);
       this.setBounds();
+      // Необходимо сначала закрыть старый, чтобы не сработало логика при клике на новом "Повторый клик по пину отменяет выбор" (id одинаковые так как пин всегда один)
+      this.yandexMapService.closeBalloon();
       this.yandexMapService.centeredPlaceMark(mapOjbect.features[0], false, false);
 
       this.courtZones.setOptions('fillOpacity', 0.25);
