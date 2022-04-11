@@ -1,5 +1,23 @@
 # Release Notes
 
+## [404.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v404.x.x) (2022-04-08)
+
+### Chore
+
+* Удалены устаревшие доки и неиспользуемый проект epgu-constructor-docs
+
+## [401.34.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.34.0) (2022-04-11)
+
+### Features
+
+* Добавлено использование компонента TimeSlot для услуг ПГС [EPGUCORE-67218]
+
+### Bug Fixes
+
+* Поправлен inviteService [EPGUCORE-93405]
+* Исправлен дефект, что неверно формируется filter в запросе слотов при 25 статусе [EPGUCORE-90882]
+* Доработан фильтр Lookup для 25 статуса по услугам [EPGUCORE-90231]
+
 ## [401.32.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.32.0) (2022-04-08)
 
 ### Features
@@ -36,9 +54,6 @@
 * Исправлено скрытие кнопок у не-CUSTOM screen [EPGUCORE-91815]
 * Исправлен дефект, что в меню профиля сбиты переводы [EPGUCORE-91101]
 * Добавлена корректная работа atLeastOne в MultipleChoiceDictionary [EPGUCORE-89367]
-* Поправлен inviteService [EPGUCORE-93405]
-* Исправлен дефект, что неверно формируется filter в запросе слотов при 25 статусе [EPGUCORE-90882]
-* Доработан фильтр Lookup для 25 статуса по услугам [EPGUCORE-90231]
 
 ### Chore
 
