@@ -1,20 +1,7 @@
 @import 'node_modules/@epgu/epgu-constructor-ui-kit/src/styles/core/index';
 
-:host {
-  @include flex-container();
-  width: 100%;
-  height: 100%;
-}
-
-.container {
-  @include flex-container();
-  flex-grow: 0;
-  @include tablets-down {
-    flex-grow: 1;
-  }
-  &:empty {
-    display: none;
-  }
+.container:empty {
+  display: none;
 }
 
 .form-player__navigation {
@@ -49,6 +36,9 @@
     @include tablets-down {
       margin-bottom: 8px;
     }
+  }
+  & > .screen-buttons {
+    width: 100%;
   }
   & > .social-share {
     max-width: 390px;
