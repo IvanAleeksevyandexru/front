@@ -174,31 +174,7 @@ describe('TimeSlotSmev3Component', () => {
       res = component.isDateLocked(null, null, null, null);
       expect(res).toBe(false);
     });
-    it('should be findJsonParamsForErrorHandling', () => {
-      const testBookingHandling = [
-        ({
-          errorCode: '2',
-        } as unknown) as IBookingErrorHandling,
-      ];
-      const testError = ({
-        code: 2,
-        message: 'test',
-      } as unknown) as TimeSlotError;
 
-      let res = component.findJsonParamsForErrorHandling(undefined, []);
-      expect(res).toBe(null);
-
-      res = component.findJsonParamsForErrorHandling(testError, testBookingHandling);
-      expect(res).toEqual(testBookingHandling[0]);
-
-      testBookingHandling[0].errorMessageRegExp = 'test';
-      res = component.findJsonParamsForErrorHandling(testError, testBookingHandling);
-      expect(res).toEqual(testBookingHandling[0]);
-
-      testBookingHandling[0].errorMessageRegExp = 'test2';
-      res = component.findJsonParamsForErrorHandling(testError, testBookingHandling);
-      expect(res).toEqual(undefined);
-    });
     it('should be next', () => {
       expect(1).toBe(1);
     });

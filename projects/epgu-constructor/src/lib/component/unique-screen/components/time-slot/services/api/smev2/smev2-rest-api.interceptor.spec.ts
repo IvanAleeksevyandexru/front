@@ -12,6 +12,8 @@ import { TimeSlotSmev3StateService } from '../../smev3-state/time-slot-smev3-sta
 import { TimeSlotsConstants } from '../../../../time-slots/time-slots.constants';
 import { TimeSlotRequestType } from '../../../typings';
 import { DictionaryResponse } from '../../../../../../../shared/services/dictionary/dictionary-api.types';
+import { TimeSlotStateService } from '../../state/time-slot-state.service';
+import { TimeSlotStateServiceStub } from '../../state/time-slot-state.service.stub';
 
 describe('Smev2RestApiInterceptor', () => {
   let service: Smev2RestApiInterceptor;
@@ -26,6 +28,8 @@ describe('Smev2RestApiInterceptor', () => {
         TimeSlotErrorService,
         { provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
+        { provide: TimeSlotSmev3StateService, useClass: TimeSlotSmev3StateServiceStub },
+        { provide: TimeSlotStateService, useClass: TimeSlotStateServiceStub },
         Smev2RestApiInterceptor,
         TimeSlotsConstants,
       ],

@@ -19,6 +19,8 @@ import { ScreenServiceStub } from '../../../../../../../screen/screen.service.st
 import { TimeSlotValueInterface } from '../../../typings';
 import { doctorHandlers } from '../../../handlers/doctor-handlers';
 import { TimeSlotErrorComponent } from '../../base/time-slot-error/time-slot-error.component';
+import { TimeSlotStateService } from '../../../services/state/time-slot-state.service';
+import { TimeSlotStateServiceStub } from '../../../services/state/time-slot-state.service.stub';
 
 describe('TimeSlotVaccinationComponent', () => {
   let component: TimeSlotVaccinationComponent;
@@ -42,6 +44,7 @@ describe('TimeSlotVaccinationComponent', () => {
         { provide: ConfigService, useClass: ConfigServiceStub },
         JsonHelperService,
         { provide: ScreenService, useClass: ScreenServiceStub },
+        { provide: TimeSlotStateService, useClass: TimeSlotStateServiceStub },
       ],
     }).compileComponents();
   });

@@ -26,6 +26,11 @@ export class TimeSlotSmev3StateService {
     map((value) => value ?? []),
   );
 
+  slotsErrorHandling$: Observable<IBookingErrorHandling[]> = this.screenService.component$.pipe(
+    pluck('attrs', 'slotsErrorHandling'),
+    map((value) => value ?? []),
+  );
+
   IsFinalReservation$: Observable<boolean> = this.screenService.component$.pipe(
     pluck('attrs'),
     pluck('IsFinalReservation'),
