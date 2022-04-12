@@ -13,8 +13,9 @@
         contextClass="mb-24"
       ></lib-search-bar>
 
-      <ng-container *ngIf="(filteredItems$ | async).length === items.length; then selectButtons">
-      </ng-container>
+      <ng-container *ngIf="(filteredItems$ | async).length === 0; then emptyHint"></ng-container>
+      <ng-container *ngIf="(filteredItems$ | async).length > 0 && isSelectAll$ | async; then clearAll"></ng-container>
+      <ng-container *ngIf="(filteredItems$ | async).length > 0 && !(isSelectAll$ | async); then selectAll"></ng-container>
 
       <ng-container [formGroupName]="formField.checkbox">
         <lib-checkbox
@@ -32,6 +33,7 @@
       *ngFor="let button of buttons"
       class="conf-modal__button"
       (click)="button.handler()"
+      [disabled]="(filteredItems$ | async).length === 0"
       >{{ button.label }}</lib-button
     >
   </ng-container>
@@ -43,7 +45,7 @@
   </div>
 </ng-template>
 
-<ng-template #selectButtons>
+<ng-template #clearAll>
   <button
     class="link-btn mb-16"
     *ngIf="isSelectAll$ | async; else selectAll"
@@ -51,9 +53,15 @@
   >
     Сбросить все
   </button>
-  <ng-template #selectAll>
-    <button class="link-btn mb-16" (click)="select(true)">
-      Выбрать все
-    </button>
-  </ng-template>
 </ng-template>
+<ng-template #selectAll>
+  <button class="link-btn mb-16" (click)="select(true)">
+    Выбрать все
+  </button>
+</ng-template>
+<ng-template #emptyHint>
+  <div class="text--center">
+    <div class="text-color--text-helper mb-16">Ничего не найдено</div>
+  </div>
+</ng-template>
+

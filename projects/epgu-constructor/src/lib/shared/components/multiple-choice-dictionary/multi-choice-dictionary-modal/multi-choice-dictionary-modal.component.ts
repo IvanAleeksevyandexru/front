@@ -166,11 +166,6 @@ export class MultiChoiceDictionaryModalComponent extends ModalBaseComponent impl
   private getDictionary(): void {
     const dictionary = this.dictionaryList ? of(this.dictionaryList) : this.fetchDictionary();
     dictionary.subscribe((items) => {
-      if (items.length === 0) {
-        this.closeModal(new Error('Dictionary error'));
-        return;
-      }
-
       this.items = items;
       this.initForm(items);
       this.updateInputPlaceholder(this.selectedItems.length);
