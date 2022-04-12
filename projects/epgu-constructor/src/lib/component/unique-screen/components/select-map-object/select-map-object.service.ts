@@ -2,9 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import {
-  CHILDS_HOME_PROPERTIES,
   ConfigService,
-  Icons,
   IGeoCoords,
   IGeoCoordsResponse,
   KINDERGARTEN_SEARCH_RADIUS_IN_METERS,
@@ -96,7 +94,6 @@ export class SelectMapObjectService implements OnDestroy {
     private http: HttpClient,
     private config: ConfigService,
     private yaMapService: YaMapService,
-    private icons: Icons,
     private yandexMapService: YandexMapService,
     private kindergartenSearchPanel: KindergartenSearchPanelService,
   ) {
@@ -259,6 +256,7 @@ export class SelectMapObjectService implements OnDestroy {
     }) as unknown) as Observable<IuikFullDataResponse>;
   }
 
+  // TODO нужно отвязать функционал мультивыбора на карте от услуги садов
   public handleMultiSelectCentering(): void {
     let bounds: number[][];
     const { filteredDictionaryItems } = this;
@@ -306,46 +304,12 @@ export class SelectMapObjectService implements OnDestroy {
     return points[minDistanceIdx];
   }
 
-  // TODO: перенести все что относится к Kindergarten из select-map-object в kindergarten.service.ts
-  public handleKindergartenSelection(): void {
-    const selected = this.filteredDictionaryItems.filter((item) => item.isSelected);
-    if (selected.length) {
-      this.selectedViewItems$.next(
-        selected.map((item) => {
-          return { ...item, expanded: false };
-        }),
-      );
-      this.isSelectedView.next(true);
-      const processed = selected.map((item) => {
-        return {
-          center: item.center,
-          obj: item,
-        };
-      });
-      this.yandexMapService.placeObjectsOnMap(processed);
-    } else {
-      this.resetSelectedView();
-    }
-    this.placeChildsHomeOnMap();
-  }
-
   public resetSelectedView(): void {
     this.isSelectedView.next(false);
     this.selectedViewItems$.next([]);
     this.yandexMapService.selectedValue$.next(null);
     this.yandexMapService.placeObjectsOnMap(
       this.convertDictionaryItemsToMapPoints(this.filteredDictionaryItems),
-    );
-  }
-
-  public placeChildsHomeOnMap(): void {
-    const options = this.icons.childsHome;
-    this.yandexMapService.addObjectsOnMap(
-      this.yandexMapService.createPlacemark(
-        this.kindergartenSearchPanel.childHomeCoords,
-        CHILDS_HOME_PROPERTIES,
-        options,
-      ),
     );
   }
 

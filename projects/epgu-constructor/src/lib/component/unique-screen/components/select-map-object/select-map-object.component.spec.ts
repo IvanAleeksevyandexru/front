@@ -53,6 +53,8 @@ import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 import { HelperService } from '@epgu/ui/services/helper';
 import { InviteService } from '../../../../core/services/invite/invite.service';
 import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
+import { HighlightPipe } from '@epgu/ui/pipes';
+import { KindergartenService } from '../kindergarten/kindergarten.service';
 
 describe('SelectMapObjectComponent', () => {
   let component: SelectMapObjectComponent;
@@ -61,6 +63,7 @@ describe('SelectMapObjectComponent', () => {
   let dictionaryApiService: DictionaryApiService;
   let yandexMapService: YandexMapService;
   let selectMapObjectService: SelectMapObjectService;
+  let kindergartenService: KindergartenService;
   let yaMapService: YaMapService;
   let modalService: ModalService;
   let MapStore: ScenarioDto;
@@ -77,6 +80,7 @@ describe('SelectMapObjectComponent', () => {
         CommonSearchPanelComponent,
         SwipeableWrapperComponent,
         SmoothHeightAnimationDirective,
+        HighlightPipe,
       ],
       imports: [
         BaseModule,
@@ -128,6 +132,7 @@ describe('SelectMapObjectComponent', () => {
     fixture = TestBed.createComponent(SelectMapObjectComponent);
     yandexMapService = fixture.debugElement.injector.get(YandexMapService);
     selectMapObjectService = fixture.debugElement.injector.get(SelectMapObjectService);
+    kindergartenService = fixture.debugElement.injector.get(KindergartenService);
     modalService = fixture.debugElement.injector.get(ModalService);
     component = fixture.componentInstance;
     const item = { center: [1, 2] } as DictionaryYMapItem;
@@ -183,7 +188,7 @@ describe('SelectMapObjectComponent', () => {
 
   it('fillCoords()', (done) => {
     jest
-      .spyOn(component.addressesToolsService, 'getCoordsByAddress')
+      .spyOn(component['addressesToolsService'], 'getCoordsByAddress')
       .mockImplementation((items) => {
         return of({
           coords: items.map(() => ({
@@ -197,7 +202,7 @@ describe('SelectMapObjectComponent', () => {
     jest
       .spyOn(dictionaryApiService, 'getSelectMapDictionary')
       .mockReturnValue(of((mockMapDictionary as unknown) as DictionaryResponse));
-    component.fillCoords(comp.attrs.dictionaryFilter).subscribe((coords: IGeoCoordsResponse) => {
+    component['fillCoords'](comp.attrs.dictionaryFilter).subscribe((coords: IGeoCoordsResponse) => {
       expect(coords.coords.length).toBe(122);
       expect(coords.coords[0]).toEqual({
         address: 'Российская Федерация, г. Москва, ул. Ялтинская',
@@ -220,7 +225,7 @@ describe('SelectMapObjectComponent', () => {
       .mockReturnValue(of((mockDictionaryWithObjectError as unknown) as DictionaryResponse));
 
     const spy = jest.spyOn<any, any>(modalService, 'openModal');
-    component.initMap();
+    component['initMap']();
     expect(spy).toHaveBeenCalledWith(ConfirmationModalComponent, {
       ...COMMON_ERROR_MODAL_PARAMS(),
       backdropDismiss: false,
@@ -242,7 +247,7 @@ describe('SelectMapObjectComponent', () => {
       dict.items,
     ) as unknown) as DictionaryYMapItem[];
     const mapObject = { value: 'R7700005' };
-    const isMapObjectExisted = component.isMapObjectExisted(
+    const isMapObjectExisted = component['isMapObjectExisted'](
       (mapObject as unknown) as YMapItem<DictionaryItem>,
     );
     expect(isMapObjectExisted).toBeTruthy();
@@ -254,26 +259,26 @@ describe('SelectMapObjectComponent', () => {
       dict.items,
     ) as unknown) as DictionaryYMapItem[];
     const mapObject = { value: 'R7800005' };
-    const isMapObjectExisted = component.isMapObjectExisted(
+    const isMapObjectExisted = component['isMapObjectExisted'](
       (mapObject as unknown) as YMapItem<DictionaryItem>,
     );
     expect(isMapObjectExisted).toBeFalsy();
   });
 
   it('initSelectedValue should call selectClosestMapObject when needToAutoFocus is true', () => {
-    component.isMultiSelect = false;
+    component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(component, 'selectClosestMapObject');
     jest.spyOn(component.yandexMapService, 'getDistance').mockImplementation((...args) => 5);
-    component.needToAutoFocus = true;
+    component['needToAutoFocus'] = true;
     selectMapObjectService.filteredDictionaryItems = (addCenterToItems(
       mockMapDictionary.items,
     ) as unknown) as DictionaryYMapItem[];
-    component.initSelectedValue();
+    component['initSelectedValue']();
     expect(spy).toHaveBeenCalled();
   });
 
   it('initSelectedValue should call selectMapObject when there is value from cached answers', () => {
-    component.isMultiSelect = false;
+    component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(yandexMapService, 'selectMapObject');
     component.data.value =
       // eslint-disable-next-line max-len
@@ -281,23 +286,23 @@ describe('SelectMapObjectComponent', () => {
     selectMapObjectService.filteredDictionaryItems = (addCenterToItems(
       mockMapDictionary.items,
     ) as unknown) as DictionaryYMapItem[];
-    component.initSelectedValue();
+    component['initSelectedValue']();
     expect(spy).toHaveBeenCalled();
   });
 
   it('initSelectedValue should call centeredPlaceMarkByObjectValue when there is selectedValue in attrs', () => {
-    component.isMultiSelect = false;
+    component['isMultiSelect'] = false;
     const spy = jest.spyOn<any, any>(selectMapObjectService, 'centeredPlaceMarkByObjectValue');
     component.applicantAnswers = divorceApplicantAnswers;
     component.data.attrs.selectedValue = 'act4.value';
-    component.initSelectedValue();
+    component['initSelectedValue']();
     expect(spy).toHaveBeenCalled();
   });
 
   it('getSelectedValue should return deparment if there is applicantAnswers', () => {
     component.applicantAnswers = divorceApplicantAnswers;
     component.data.attrs.selectedValue = 'act4.value';
-    const department = component.getSelectedValue();
+    const department = component['getSelectedValue']();
     expect(department.id).toEqual('R2400010');
   });
 
@@ -305,28 +310,28 @@ describe('SelectMapObjectComponent', () => {
     const spy = jest.spyOn<any, any>(component, 'fillCoords');
     jest.spyOn<any, any>(component.yandexMapService, 'placeObjectsOnMap').mockReturnValue(null);
     component.data.attrs.LOMurlTemplate = 'temp';
-    component.initMap();
+    component['initMap']();
     expect(spy).not.toHaveBeenCalled();
   });
 
   it('applySelectedObjects should apply items from cache', () => {
-    component.valueFromCache =
+    component['valueFromCache'] =
       '{"items":[{"isSelected":true,"value":"R7700038","attributeValues":{"CODE":"R7700038"}}]}';
     const dict = cloneDeep(mockMapDictionary);
-    component.applySelectedObjects((dict as unknown) as DictionaryResponseForYMap);
+    component['applySelectedObjects']((dict as unknown) as DictionaryResponseForYMap);
     const val = dict.items.find((item) => item.attributeValues.CODE === 'R7700038');
     expect(val.isSelected).toBeTruthy();
   });
 
   it('selectObject should call mapPaint', () => {
     const spy = jest.spyOn(yandexMapService, 'mapPaint');
-    component.isMultiSelect = true;
+    component['isMultiSelect'] = true;
     component.selectObject(({ center: [1, 2] } as unknown) as YMapItem<DictionaryItem>);
     expect(spy).toHaveBeenCalled();
   });
 
   it('selectObject should inverse selected on param', () => {
-    component.isMultiSelect = true;
+    component['isMultiSelect'] = true;
     const testObject = ({ isSelected: true, center: [1, 2] } as unknown) as YMapItem<
       DictionaryItem
     >;
@@ -337,7 +342,7 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('selectObject should inverse selected on param', () => {
-    component.isMultiSelect = true;
+    component['isMultiSelect'] = true;
     const testObject = ({ isSelected: false, center: [1, 2] } as unknown) as YMapItem<
       DictionaryItem
     >;
@@ -348,7 +353,7 @@ describe('SelectMapObjectComponent', () => {
   });
 
   it('selectObject should find appropriate dictionary item and set selected', () => {
-    component.isMultiSelect = true;
+    component['isMultiSelect'] = true;
     const testObject = ({ isSelected: false, center: [1, 2] } as unknown) as YMapItem<
       DictionaryItem
     >;
@@ -360,12 +365,14 @@ describe('SelectMapObjectComponent', () => {
 
   it('selectObject should call handleKindergartenSelection if selectedView is enabled', () => {
     component.selectMapObjectService.isSelectedView.next(true);
-    component.isMultiSelect = true;
+    component['isMultiSelect'] = true;
     jest
-      .spyOn(component.yandexMapService, 'placeObjectsOnMap')
+      .spyOn(kindergartenService['yandexMapService'], 'placeObjectsOnMap')
       .mockImplementation((...args) => null);
-    jest.spyOn(component.yandexMapService, 'createPlacemark').mockImplementation((...args) => null);
-    const spy = jest.spyOn(component.selectMapObjectService, 'handleKindergartenSelection');
+    jest
+      .spyOn(kindergartenService['yandexMapService'], 'createPlacemark')
+      .mockImplementation((...args) => null);
+    const spy = jest.spyOn(component['kindergartenService'], 'handleKindergartenSelection');
     const testObject = ({ isSelected: false, center: [1, 2] } as unknown) as YMapItem<
       DictionaryItem
     >;
