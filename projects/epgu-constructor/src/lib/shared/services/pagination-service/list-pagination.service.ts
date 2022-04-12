@@ -49,9 +49,9 @@ export default class ListPaginationService<T> {
   }
 
   public nextPage(): void {
-    const newCurrentPage = this.currentPage + 1;
+    this.currentPage++;
     const data = this.fullData.getValue();
-    const size = newCurrentPage * this._pageSize;
+    const size = this.currentPage * (this.currentPage === 1 ? this._initSize : this._pageSize);
     const { length } = data;
     let result = [];
     if (size > length) {
@@ -62,11 +62,10 @@ export default class ListPaginationService<T> {
     } else {
       result = data.slice(
         this.paginatedData.getValue().length,
-        this._initSize + this.currentPage * this._pageSize,
+        this._initSize + (this.currentPage - 1) * this._pageSize,
       );
     }
     this.paginatedData.next(this.paginatedData.getValue().concat(result));
-    this.currentPage = newCurrentPage;
   }
 
   public resetData(): void {
@@ -78,7 +77,7 @@ export default class ListPaginationService<T> {
   }
 
   public setData(data): void {
-    if (data.length <= this._pageSize) {
+    if (data.length <= (this.currentPage === 0 ? this._initSize : this._pageSize)) {
       this.isFinished.next(true);
     }
     this.fullData.next(data);
