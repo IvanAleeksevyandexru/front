@@ -434,6 +434,8 @@ export class TimeSlotsComponent implements OnInit, OnDestroy {
 
   public bookTimeSlot(): void {
     this.inProgress = true;
+    this.changeDetectionRef.markForCheck();
+
     this.timeSlotsService.checkBooking(this.currentSlot).subscribe(
       (response) => {
         if (this.timeSlotsService.hasError()) {
