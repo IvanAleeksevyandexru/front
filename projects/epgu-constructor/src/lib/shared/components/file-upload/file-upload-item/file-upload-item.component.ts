@@ -213,6 +213,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
         .find((storeFile) => storeFile.item.fileName === file.item.fileName);
       this.store.remove(storedFile);
       this.addDelete(storedFile);
+      this.stat.decrementLimitByFileItem(file);
     }
   }
 
