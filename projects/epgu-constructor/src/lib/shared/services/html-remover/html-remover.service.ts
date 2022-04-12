@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DisplayDto } from '@epgu/epgu-constructor-types';
+import { cloneDeep } from 'lodash';
 
 @Injectable()
 export class HtmlRemoverService {
@@ -9,7 +10,7 @@ export class HtmlRemoverService {
     if (!display) {
       return;
     }
-    const clearedDisplay = JSON.parse(JSON.stringify(display));
+    const clearedDisplay = cloneDeep(display);
     const recursiveDeleteNodesWithHtml = (obj: DisplayDto): DisplayDto => {
       for (const property in obj) {
         if (obj.hasOwnProperty(property)) {

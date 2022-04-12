@@ -15,6 +15,7 @@ import {
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { ScreenService } from '../../../screen/screen.service';
 import { HtmlRemoverService } from '../html-remover/html-remover.service';
+import { cloneDeep } from 'lodash';
 
 /**
  * Этот базоый сервис служит для взаимодействия formPlayerComponent и formPlayerApi
@@ -138,7 +139,7 @@ export abstract class FormPlayerBaseService {
    * @private
    */
   protected initScreenStore(scenarioDto: ScenarioDto): void {
-    const screenStore = JSON.parse(JSON.stringify(scenarioDto)); // deep clone of scenarioDto
+    const screenStore = cloneDeep(scenarioDto);
     this.screenServiceBase.initScreenStore(screenStore);
   }
 

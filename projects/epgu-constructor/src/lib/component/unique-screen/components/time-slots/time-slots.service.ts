@@ -13,7 +13,7 @@ import {
   SessionService,
   SlotInterface,
 } from '@epgu/epgu-constructor-ui-kit';
-import { get } from 'lodash';
+import { get, isEqual } from 'lodash';
 import {
   DictionaryConditions,
   DictionaryOptions,
@@ -394,7 +394,7 @@ export class TimeSlotsService {
       }
     }
 
-    if (JSON.stringify(this.config) !== JSON.stringify(config)) {
+    if (!isEqual(this.config, config)) {
       changed = true;
       this.config = config;
     }

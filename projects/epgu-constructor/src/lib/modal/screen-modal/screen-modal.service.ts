@@ -10,6 +10,7 @@ import {
 import { FormPlayerApiService } from '../../form-player/services/form-player-api/form-player-api.service';
 import { FormPlayerService } from '../../form-player/services/form-player/form-player.service';
 import { FormPlayerBaseService } from '../../shared/services/form-player-base/form-player-base.service';
+import { cloneDeep } from 'lodash';
 
 @Injectable()
 export class ScreenModalService extends FormPlayerBaseService {
@@ -57,7 +58,7 @@ export class ScreenModalService extends FormPlayerBaseService {
 
   navigate(navigation: Navigation = {}, formPlayerNavigation: FormPlayerNavigation): void {
     if (!this._store) {
-      this._store = JSON.parse(JSON.stringify(this.formPlayerService.store));
+      this._store = cloneDeep(this.formPlayerService.store);
     }
     this.updateLoading(true);
     this.updateRequest(navigation);

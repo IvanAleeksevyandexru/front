@@ -10,7 +10,7 @@ import {
   SlotInterface,
   JsonHelperService,
 } from '@epgu/epgu-constructor-ui-kit';
-import { get } from 'lodash';
+import { get, isEqual } from 'lodash';
 import { ScreenService } from '../../../../screen/screen.service';
 import { Smev3TimeSlotsRestService } from '../time-slots/smev3-time-slots-rest.service';
 import {
@@ -229,7 +229,7 @@ export class TimeSlotDoctorService {
       userSelectedRegion: data.userSelectedRegion,
     };
 
-    if (JSON.stringify(this.config) !== JSON.stringify(config)) {
+    if (!isEqual(this.config, config)) {
       changed = true;
       this.config = config;
     }

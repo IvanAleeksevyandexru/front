@@ -10,10 +10,9 @@ import {
 import { ConfirmUserDataStyle, ComponentDto } from '@epgu/epgu-constructor-types';
 import { takeUntil } from 'rxjs/operators';
 import { UnsubscribeService, JsonHelperService } from '@epgu/epgu-constructor-ui-kit';
-import { get } from 'lodash';
+import { get, cloneDeep } from 'lodash';
 import { EaisdoStateTypes } from '../../../component/custom-screen/components/eaisdo-group-cost/eaisdo.interface';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
-
 import {
   ConfirmUserDataError,
   ConfirmUserDataFieldsState,
@@ -84,10 +83,10 @@ export class FieldListComponent implements OnInit, OnChanges {
 
   transformData(): void {
     this.preparedData = this.preparedData.map((listItem: ConfirmUserDataFieldsState) => {
-      const newListItem = JSON.parse(JSON.stringify(listItem));
+      const newListItem = cloneDeep(listItem);
       newListItem.groupName = this.transformString(listItem.groupName);
       newListItem.fields = newListItem.fields.map((fieldItem: ConfirmUserDataAdaptiveField) => {
-        const newFieldItem = JSON.parse(JSON.stringify(fieldItem));
+        const newFieldItem = cloneDeep(fieldItem);
         newFieldItem.label = this.transformString(newFieldItem.label);
         newFieldItem.value = this.transformString(newFieldItem.value);
         return newFieldItem;

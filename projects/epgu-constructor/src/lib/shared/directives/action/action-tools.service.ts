@@ -37,6 +37,7 @@ import { NavigationModalService } from '../../../core/services/navigation-modal/
 import { HtmlRemoverService } from '../../services/html-remover/html-remover.service';
 import { FormPlayerApiService } from '../../../form-player/services/form-player-api/form-player-api.service';
 import { AutocompleteApiService } from '../../../core/services/autocomplete/autocomplete-api.service';
+import { cloneDeep } from 'lodash';
 
 const navActionToNavMethodMap = {
   prevStep: 'prev',
@@ -341,7 +342,7 @@ export class ActionToolsService {
     const data = this.getActionDTO(action);
     const queryParams = action.value;
     const path = `${action.action}${queryParams ? `?${queryParams}` : ''}`;
-    const payload = JSON.parse(JSON.stringify(data));
+    const payload = cloneDeep(data);
     payload.scenarioDto.display = this.htmlRemoverService.delete(payload.scenarioDto.display);
     return this.formPlayerApiService.sendAction<T>(path, payload, options);
   }
