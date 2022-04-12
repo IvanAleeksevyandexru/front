@@ -141,11 +141,18 @@ export class SelectMapObjectService implements OnDestroy {
   public fillDictionaryItemsWithCoords(coords: IGeoCoordsResponse): void {
     const hashMap = {};
     coords.coords.forEach((coord) => {
-      hashMap[coord.address] = { latitude: coord.latitude, longitude: coord.longitude };
+      if (coord.address) {
+        hashMap[coord.address.toLowerCase()] = {
+          latitude: coord.latitude,
+          longitude: coord.longitude,
+        };
+      }
     });
     this.dictionary.items.forEach((item, index) => {
       const coordinates = hashMap[
-        item.attributeValues[this.componentAttrs.attributeNameWithAddress]
+        (
+          (item.attributeValues[this.componentAttrs.attributeNameWithAddress] as string) || ''
+        ).toLowerCase()
       ] as IGeoCoords;
       item.objectId = index;
       if (coordinates) {
