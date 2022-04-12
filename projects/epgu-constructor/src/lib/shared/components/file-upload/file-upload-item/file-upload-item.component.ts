@@ -28,6 +28,7 @@ import {
 import {
   beforeFilesPlural,
   ErrorActions,
+  extToLowerCase,
   FileItem,
   FileItemStatus,
   OperationType,
@@ -88,6 +89,7 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
     tap(() => this.store.errorTo(ErrorActions.addDeletionErr, FileItemStatus.uploaded)), // Изменяем ошибку удаления на uploaded статус
     tap(() => this.store.removeWithErrorStatus([ErrorActions.serverError])), // Удаляем все ошибки
     concatMap((files: FileList) => from(Array.from(files))), // разбиваем по файлу
+    map((file: File) => this.formatExt(file)),
     map(
       (file: File) => new FileItem(FileItemStatus.preparation, this.config.fileUploadApiUrl, file),
     ), // Формируем FileItem
@@ -152,6 +154,12 @@ export class FileUploadItemComponent extends BaseComponent implements OnInit, On
     private cdRef: ChangeDetectorRef,
   ) {
     super();
+  }
+
+  formatExt(file: File): File {
+    return new File([file.slice(0, file.size, file.type)], extToLowerCase(file.name), {
+      type: file.type,
+    });
   }
 
   ngOnInit(): void {
