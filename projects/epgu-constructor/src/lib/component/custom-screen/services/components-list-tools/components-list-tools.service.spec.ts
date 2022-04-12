@@ -1,12 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentsListToolsService } from './components-list-tools.service';
-import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
-import { DictionaryToolsService } from '../../../../shared/services/dictionary/dictionary-tools.service';
 import { CustomComponent, CustomScreenComponentTypes } from '../../components-list.types';
-import { TypeCastService } from '../../../../core/services/type-cast/type-cast.service';
+import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 
 describe('ComponentsListToolsService', () => {
   let service: ComponentsListToolsService;
@@ -24,14 +19,7 @@ describe('ComponentsListToolsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ComponentsListToolsService,
-        DateRangeService,
-        DatesToolsService,
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        DictionaryToolsService,
-        TypeCastService,
-      ],
+      imports: [ForTestsOnlyModule],
     });
     service = TestBed.inject(ComponentsListToolsService);
   });
@@ -41,6 +29,15 @@ describe('ComponentsListToolsService', () => {
       const parseValueSpy = jest.spyOn<any, string>(service, 'parseValue');
       service.convertedValue(mockComponent);
       expect(parseValueSpy).toHaveBeenCalled();
+    });
+
+    it('parseValue should parse date', () => {
+      const dat = service['parseValue'](
+        '02.07.2021',
+        true,
+        CustomScreenComponentTypes.DateInput,
+      ) as Date;
+      expect(dat.toDateString()).toEqual('Fri Jul 02 2021');
     });
     it('should return Date object, if date string value passed', () => {
       const component = JSON.parse(JSON.stringify(mockComponent));

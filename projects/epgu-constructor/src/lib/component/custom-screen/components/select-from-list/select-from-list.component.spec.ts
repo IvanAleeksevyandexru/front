@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BaseUiModule } from '@epgu/epgu-constructor-ui-kit';
+import { BaseUiModule, DatesToolsService } from '@epgu/epgu-constructor-ui-kit';
 import { ComponentItemComponent } from '../component-item/component-item.component';
 import { ComponentsListRelationsService } from '../../services/components-list-relations/components-list-relations.service';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
@@ -31,6 +31,7 @@ import LookupInputModel from '../lookup-input/LookupInputModel';
 import SelectFromListModel from './SelectFromListModel';
 import { InviteService } from '../../../../core/services/invite/invite.service';
 import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
+import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 
 const mockSelectListComponent = {
   id: 'rb12',
@@ -65,7 +66,7 @@ describe('SelectFromListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [SelectFromListComponent, MockComponents(ComponentItemComponent)],
-      imports: [MockModule(BaseUiModule)],
+      imports: [MockModule(BaseUiModule), ForTestsOnlyModule],
       providers: [
         SelectFromListServiceStub,
         InterpolationService,
