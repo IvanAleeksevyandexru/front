@@ -1,15 +1,15 @@
 import { SmuEventsService } from '@epgu/ui/services/smu-events';
 import { Observable, Subject } from 'rxjs';
 import { Inject, Injectable } from '@angular/core';
-import { ScenarioDto, OrgType, ComponentActionDto, Navigation } from '@epgu/epgu-constructor-types';
+import { ComponentActionDto, Navigation, OrgType, ScenarioDto } from '@epgu/epgu-constructor-types';
 import {
+  ConfigService,
+  DeviceDetectorService,
+  LocationService,
   MobilViewEvents,
   OPTIONS_FEED_EXIT,
   OPTIONS_FEED_MV,
   OPTIONS_PROFILE_MV,
-  ConfigService,
-  DeviceDetectorService,
-  LocationService,
   WINDOW,
 } from '@epgu/epgu-constructor-ui-kit';
 
@@ -118,7 +118,9 @@ export class NavigationService {
 
   redirectToLKByOrgType(action): void {
     const { additionalParameters } = this.screenService.getStore();
-    const isLegal = [OrgType.Legal, OrgType.Business].includes(additionalParameters?.orgType);
+    const isLegal = [OrgType.Legal, OrgType.Business, OrgType.Agency].includes(
+      additionalParameters?.orgType,
+    );
     this.redirectToLK(isLegal, action);
   }
 
