@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActionType, ScreenButton, ScreenTypes } from '@epgu/epgu-constructor-types';
+import { ActionType, ScreenButton } from '@epgu/epgu-constructor-types';
 import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-constructor-ui-kit';
-import { ScreenService } from '../../../screen/screen.service';
-import { ScreenButtonService } from './screen-button.service';
 import { FormArray } from '@angular/forms';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+
+import { ScreenService } from '../../../screen/screen.service';
+import { ScreenButtonService } from './screen-button.service';
+import { CustomListStatusElements } from '../../../component/custom-screen/components-list.types';
 
 @Component({
   selector: 'epgu-constructor-screen-buttons',
@@ -22,6 +24,8 @@ export class ScreenButtonsComponent implements OnInit, OnDestroy {
   @Input() isLoading = false;
   @Input() disabled = false;
   @Input() disabledForAll = false;
+  @Input() customScreenForm?: FormArray;
+  @Input() customScreenElements?: CustomListStatusElements;
 
   public clickedButton: ScreenButton;
   outputButtons$ = this.screenButtonService.outputButtons$;
@@ -34,7 +38,7 @@ export class ScreenButtonsComponent implements OnInit, OnDestroy {
     private ngUnsubscribe$: UnsubscribeService,
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this._processingButtons
       .pipe(
         filter((value) => !!value),
@@ -42,12 +46,17 @@ export class ScreenButtonsComponent implements OnInit, OnDestroy {
         distinctUntilChanged((left, right) => isEqual(left, right)),
       )
       .subscribe((buttons) => this.screenButtonService.initButtonsDisablingHandling(buttons));
+
     this.screenButtonService.subscriptionOnInnerFormForDisablingChanges.subscribe();
-    if (this.screenService.display?.type !== ScreenTypes.CUSTOM) {
-      this.screenButtonService.initSubscribeOnComponentsForm(new FormArray([]), {
-        [this.screenService.component?.id]: { isShown: true },
-      });
-    }
+
+    this.screenButtonService.initSubscribeOnComponentsForm(
+      this.customScreenForm ? this.customScreenForm : new FormArray([]),
+      this.customScreenElements
+        ? this.customScreenElements
+        : {
+            [this.screenService.component?.id]: { isShown: true },
+          },
+    );
 
     this.eventBusService
       .on(BusEventType.GetNextStepWithoutClickedButtonEvent)
@@ -60,7 +69,7 @@ export class ScreenButtonsComponent implements OnInit, OnDestroy {
       });
   }
 
-  public setClickedButton(button: ScreenButton): void {
+  setClickedButton(button: ScreenButton): void {
     this.clickedButton = button;
     this.eventBusService.emit(BusEventType.ScreenButtonClicked, button);
   }

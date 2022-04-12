@@ -24,6 +24,7 @@ import { AbstractControl, FormArray } from '@angular/forms';
 import {
   CustomComponent,
   CustomComponentOutputData,
+  CustomListStatusElements,
   CustomScreenComponentTypes,
 } from './components-list.types';
 import { ComponentsListFormService } from './services/components-list-form/components-list-form.service';
@@ -52,7 +53,8 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() errors: ScenarioErrorsDto;
   @Output() changes: EventEmitter<CustomComponentOutputData>;
   @Output() emitFormStatus = new EventEmitter();
-  @Output() emitFormCreated = new EventEmitter();
+  @Output() emitFormCreated = new EventEmitter<FormArray>();
+  @Output() emitShownElements = new EventEmitter<CustomListStatusElements>();
 
   readonly componentType = CustomScreenComponentTypes;
 
@@ -92,6 +94,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
       components = components.map((component) => createModel(component));
       const formArray: FormArray = this.formService.create(components, this.componentsGroupIndex);
       this.emitFormCreated.emit(formArray);
+      this.emitShownElements.emit(this.formService.shownElements);
     }
 
     if (isErrorsChanged) {

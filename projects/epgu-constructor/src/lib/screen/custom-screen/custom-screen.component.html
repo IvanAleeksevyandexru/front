@@ -14,6 +14,8 @@
         [components]="$any(data?.components)"
         [errors]="screenService.componentErrors$ | async"
         (changes)="changeComponentsList($event)"
+        (emitFormCreated)="setCustomScreenForm($event)"
+        (emitShownElements)="setCustomListStatusElements($event)"
       >
       </epgu-constructor-components-list>
     </epgu-cf-ui-constructor-screen-pad>
@@ -35,6 +37,8 @@
       *ngIf="(screenService.buttons$ | async).length"
       [screenButtons]="screenService.buttons$ | async"
       [isLoading]="screenService.isLoading$ | async"
+      [customScreenForm]="customScreenForm"
+      [customScreenElements]="customListStatusElements"
       [disabled]="!isValid"
     ></epgu-constructor-screen-buttons>
   </div>
