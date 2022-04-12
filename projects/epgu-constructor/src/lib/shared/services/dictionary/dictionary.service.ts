@@ -58,9 +58,15 @@ export class DictionaryService {
     dictionaryType: string,
     component: CustomComponent,
     options: DictionaryOptions,
+    isCacheNeeded: boolean = true,
   ): Observable<CustomListGenericData<DictionaryResponse>> {
     return this.dictionaryApiService
-      .getGenericDictionary(dictionaryType, options, component.attrs.dictionaryUrlType)
+      .getGenericDictionary(
+        dictionaryType,
+        options,
+        component.attrs.dictionaryUrlType,
+        isCacheNeeded,
+      )
       .pipe(
         map((dictionary: DictionaryResponse) => ({
           component,

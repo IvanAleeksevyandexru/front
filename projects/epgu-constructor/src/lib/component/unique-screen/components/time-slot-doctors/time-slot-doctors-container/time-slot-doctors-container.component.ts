@@ -631,18 +631,23 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
     };
     if (this.timeSlotDoctorService.isOnlyDocLookupNeeded) {
       this.doctorProvider = {
-        search: this.providerSearch(component, component.attrs.docLookup, () => []),
+        search: this.providerSearch(component, component.attrs.docLookup, () => [], false),
       };
     } else {
       this.doctorProvider = {
-        search: this.providerSearch(component, component.attrs.docLookup, () => [
-          {
-            attributeName: 'Service_Id',
-            condition: DictionaryConditions.EQUALS,
-            value: JSON.stringify(this.timeSlotDoctorService.state$$.getValue().specLookup.id),
-            valueType: DictionaryValueTypes.value,
-          },
-        ]),
+        search: this.providerSearch(
+          component,
+          component.attrs.docLookup,
+          () => [
+            {
+              attributeName: 'Service_Id',
+              condition: DictionaryConditions.EQUALS,
+              value: JSON.stringify(this.timeSlotDoctorService.state$$.getValue().specLookup.id),
+              valueType: DictionaryValueTypes.value,
+            },
+          ],
+          false,
+        ),
       };
     }
   }
@@ -651,6 +656,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
     component: TimeSlotDoctorsComponentDto,
     attrs: ComponentAttrsDto,
     getInitialDictionaryFilterFunc: () => ComponentDictionaryFilterDto[],
+    isCacheNeeded: boolean = true,
   ): (val: string) => Observable<Partial<ListElement>[]> {
     return (searchString): Observable<Partial<ListElement>[]> => {
       let additionalParams = {};
@@ -682,6 +688,7 @@ export class TimeSlotDoctorsContainerComponent implements OnInit, OnDestroy {
             ...dictionaryOptions,
             ...{ additionalParams },
           } as DictionaryOptions,
+          isCacheNeeded,
         )
         .pipe(
           map((reference) => {

@@ -64,6 +64,7 @@ export class DictionaryApiService {
     dictionaryName: string,
     options: DictionaryOptions = {},
     dictionaryUrlType: DictionaryUrlTypes = DictionaryUrlTypes.dictionary,
+    isCacheNeeded: boolean = true,
   ): Observable<DictionaryResponse> {
     const path = `${this.dictionaryUrlMap[dictionaryUrlType]()}/${dictionaryName}`;
     const cacheId = dictionaryName + JSON.stringify(options);
@@ -72,7 +73,7 @@ export class DictionaryApiService {
     return of(cacheId).pipe(
       delayWhen(() => this.processStatus.pipe(filter((v) => !v[cacheId]))),
       concatMap((id) => {
-        if (this.dictionaryCache[id]) {
+        if (isCacheNeeded && this.dictionaryCache[id]) {
           return of(this.dictionaryCache[id]);
         }
         const status = this.processStatus.getValue();
