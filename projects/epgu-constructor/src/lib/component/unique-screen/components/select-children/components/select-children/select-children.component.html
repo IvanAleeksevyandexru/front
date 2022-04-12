@@ -11,11 +11,11 @@
   <form [formGroup]="selectChildrenForm">
     <epgu-cf-ui-constructor-screen-pad
       class="cmp-group__layer"
-      *ngFor="let item of items; let idx = index; trackBy:trackItemsById"
+      *ngFor="let item of items; let idx = index; trackBy: trackItemsById"
     >
       <epgu-constructor-select-children-item-wrapper
         [idx]="idx"
-        [isMoreThanOneChild]="items.length > 1"
+        [isMoreThanOneChild]="items.length > minOccures"
         [isSingleChild]="isSingleChild"
         (removeChildEvent)="removeChild($event)"
       >

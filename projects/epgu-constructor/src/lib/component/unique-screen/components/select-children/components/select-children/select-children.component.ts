@@ -74,6 +74,7 @@ export class SelectChildrenComponent implements OnInit {
   fullNameListAge: ChildrenListAgeView;
   defaultNewList: string;
   disclaimer: DisclaimerDto;
+  minOccures: number;
 
   constructor(
     private ngUnsubscribe$: UnsubscribeService,
@@ -120,6 +121,11 @@ export class SelectChildrenComponent implements OnInit {
     this.hint = this.component?.attrs?.hint;
     this.isObliged = this.component?.attrs?.obliged;
     this.disclaimer = this.component?.attrs?.uniqueBy?.disclaimer;
+    this.minOccures = !this.isSingleChild ? this.component?.attrs?.minOccures || 1 : 1;
+
+    if (this.minOccures > this.repeatAmount) {
+      this.minOccures = this.repeatAmount;
+    }
   }
 
   initStartValues(): void {
@@ -148,8 +154,18 @@ export class SelectChildrenComponent implements OnInit {
     }
 
     if (this.expandAllChildrenBlocks && this.itemsToSelect.length > 1) {
+      const childrenCount = this.itemsToSelect.length - 1;
       this.initAllChildrenBlocks();
+      if (childrenCount < this.minOccures) {
+        this.addMoreChildByCount(this.minOccures - childrenCount);
+      }
     } else {
+      this.addMoreChildByCount(this.minOccures);
+    }
+  }
+
+  addMoreChildByCount(count): void {
+    for (let i = 0; i < count; i++) {
       this.addMoreChild();
     }
   }
