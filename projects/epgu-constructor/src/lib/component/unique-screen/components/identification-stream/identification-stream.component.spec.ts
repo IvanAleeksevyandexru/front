@@ -32,6 +32,7 @@ import { IdentificationStreamModule } from './identification-stream.module';
 import { NavigationService } from '../../../../core/services/navigation/navigation.service';
 import { NavigationServiceStub } from '../../../../core/services/navigation/navigation.service.stub';
 import { UniqueScreenComponentTypes } from '../../unique-screen-components.types';
+import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 
 const mockComponent = {
   id: 'test',
@@ -57,6 +58,7 @@ describe('IdentificationStreamComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: TerraByteApiService, useClass: TerraByteApiServiceStub },
         EventBusService,
+        MockProvider(ActionToolsService),
         MockProvider(AutocompletePrepareService),
         MockProvider(HttpClient),
         MockProvider(IdentificationStreamService),
