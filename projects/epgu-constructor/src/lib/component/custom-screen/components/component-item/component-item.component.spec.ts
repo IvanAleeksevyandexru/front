@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { MockComponents, MockModule } from 'ng-mocks';
+import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
 import {
   HelperTextComponent,
   ConfigService,
@@ -32,6 +32,7 @@ import { HintComponent } from '../../../../shared/components/base-components/hin
 
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
 import { CustomComponentAttrValidation, UpdateOn } from '../../components-list.types';
+import { ActionToolsService } from '../../../../shared/directives/action/action-tools.service';
 
 describe('ComponentItemComponent', () => {
   let component: ComponentItemComponent;
@@ -67,6 +68,7 @@ describe('ComponentItemComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: FocusManagerService, useClass: FocusManagerServiceStub },
+        MockProvider(ActionToolsService),
         CurrentAnswersService,
         HtmlSelectService,
       ],

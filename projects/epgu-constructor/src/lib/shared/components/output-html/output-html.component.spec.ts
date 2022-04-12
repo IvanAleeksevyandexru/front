@@ -23,6 +23,8 @@ import { ActionServiceStub } from '../../directives/action/action.service.stub';
 import { ClickableLabelDirective } from '../../directives/clickable-label/clickable-label.directive';
 import { CurrentAnswersService } from '../../../screen/current-answers.service';
 import { HtmlSelectService } from '../../../core/services/html-select/html-select.service';
+import { ActionToolsService } from '../../directives/action/action-tools.service';
+import { MockProvider } from 'ng-mocks';
 
 describe('OutputHtmlComponent', () => {
   let fixture: ComponentFixture<OutputHtmlComponent>;
@@ -39,6 +41,7 @@ describe('OutputHtmlComponent', () => {
         { provide: ActionService, useClass: ActionServiceStub },
         { provide: DeviceDetectorService, useClass: DeviceDetectorServiceStub },
         { provide: JsonHelperService, useClass: JsonHelperServiceStub },
+        MockProvider(ActionToolsService),
         EventBusService,
         CurrentAnswersService,
         SmuEventsService,

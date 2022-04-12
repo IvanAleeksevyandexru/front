@@ -39,6 +39,8 @@ import { SignatureApplicationComponent } from './signature-application.component
 import { CurrentAnswersService } from '../../../../../../screen/current-answers.service';
 import { ClickableLabelModule } from '../../../../../../shared/directives/clickable-label/clickable-label.module';
 import { HtmlSelectService } from '../../../../../../core/services/html-select/html-select.service';
+import { MockProvider } from 'ng-mocks';
+import { ActionToolsService } from '../../../../../../shared/directives/action/action-tools.service';
 
 describe('SignatureApplicationComponent', () => {
   let component: SignatureApplicationComponent;
@@ -83,6 +85,7 @@ describe('SignatureApplicationComponent', () => {
         { provide: LocationService, useClass: LocationServiceStub },
         { provide: ModalService, useClass: ModalServiceStub },
         { provide: ScreenService, useClass: ScreenServiceStub },
+        MockProvider(ActionToolsService),
         EventBusService,
         CurrentAnswersService,
         DownloadService,

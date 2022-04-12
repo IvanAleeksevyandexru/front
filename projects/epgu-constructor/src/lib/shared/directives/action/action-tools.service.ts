@@ -218,6 +218,10 @@ export class ActionToolsService {
     return bodyResult;
   }
 
+  public resetBuffer(): void {
+    this.bufferData = null;
+  }
+
   public loadClipboardData(action: ComponentActionDto): void {
     const { value } = action;
     if (action.attrs?.additionalParams) {

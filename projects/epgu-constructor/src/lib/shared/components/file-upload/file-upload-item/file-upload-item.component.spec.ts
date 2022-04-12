@@ -55,6 +55,8 @@ import { UploaderManagerService } from '../services/manager/uploader-manager.ser
 import { UploaderStatService } from '../services/stat/uploader-stat.service';
 import { UploaderProcessService } from '../services/process/uploader-process.service';
 import { HtmlSelectService } from '../../../../core/services/html-select/html-select.service';
+import { MockProvider } from 'ng-mocks';
+import { ActionToolsService } from '../../../directives/action/action-tools.service';
 
 const objectIdMock = '1231';
 const uploadMock: FileUploadItem = {
@@ -144,6 +146,7 @@ describe('FileUploadItemComponent', () => {
         { provide: ScreenService, useClass: ScreenServiceStub },
         { provide: LoggerService, useClass: LoggerServiceStub },
         { provide: ViewerService, useClass: ViewerServiceStub },
+        MockProvider(ActionToolsService),
         EventBusService,
         UploaderLimitsService,
         UnsubscribeService,
