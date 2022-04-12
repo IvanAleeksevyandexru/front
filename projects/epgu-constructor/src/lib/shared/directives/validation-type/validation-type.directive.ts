@@ -18,8 +18,14 @@ export class ValidationTypeDirective {
 
   @HostListener('blur')
   blur(): void {
-    if (this.component?.attrs?.validation) {
-      this.validateOnBlur();
+    const validations = this.component?.attrs?.validation;
+
+    if (validations) {
+      const isOnBlur = validations.filter((validation) => validation.updateOn === UpdateOn.ON_BLUR);
+
+      if (isOnBlur.length > 0) {
+        this.validateOnBlur();
+      }
     }
   }
 

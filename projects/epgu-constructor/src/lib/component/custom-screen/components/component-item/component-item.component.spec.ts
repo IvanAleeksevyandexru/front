@@ -108,7 +108,11 @@ describe('ComponentItemComponent', () => {
   });
 
   it('check uiError with description', () => {
-    component.control.setErrors({ msg: 'fake error', desc: 'fake desc' });
+    component.control.setErrors({
+      msg: 'fake error',
+      desc: 'fake desc',
+      updateOn: UpdateOn.ON_CHANGE,
+    });
     component.control.markAsTouched();
     component.ngOnChanges();
     expect(component.hasUiError).toBeTruthy();
@@ -152,28 +156,6 @@ describe('ComponentItemComponent', () => {
       component.ngOnChanges();
       expect(component.isHelperTextVisible).toBeTruthy();
       expect(component.customUnRecLabel).toBe(OPTIONAL_FIELD);
-    });
-  });
-
-  describe('getFirstUpdateOn', () => {
-    it('returns first updateOn', () => {
-      component.component.attrs.validation = [
-        { updateOn: UpdateOn.ON_SUBMIT },
-      ] as CustomComponentAttrValidation[];
-      expect(component['getFirstUpdateOn']()).toBe(UpdateOn.ON_SUBMIT);
-    });
-
-    it('returns first updateOn', () => {
-      component.component.attrs.validation = [
-        { updateOn: UpdateOn.ON_BLUR },
-        { updateOn: UpdateOn.ON_SUBMIT },
-      ] as CustomComponentAttrValidation[];
-      expect(component['getFirstUpdateOn']()).toBe(UpdateOn.ON_BLUR);
-    });
-
-    it('returns CHANGE updateOn if there is no updateOns', () => {
-      component.component.attrs.validation = [];
-      expect(component['getFirstUpdateOn']()).toBe(UpdateOn.ON_CHANGE);
     });
   });
 });

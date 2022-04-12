@@ -8,18 +8,14 @@ import {
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { takeUntil, tap } from 'rxjs/operators';
+
 import {
   FocusManagerService,
   OPTIONAL_FIELD,
   UnsubscribeService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { FocusState } from '@epgu/ui/services/focus';
-import {
-  CustomComponent,
-  CustomComponentAttrValidation,
-  CustomScreenComponentTypes,
-  UpdateOn,
-} from '../../components-list.types';
+import { CustomComponent, CustomScreenComponentTypes, UpdateOn } from '../../components-list.types';
 import { Clarifications } from '@epgu/epgu-constructor-types';
 
 @Component({
@@ -61,7 +57,8 @@ export class ComponentItemComponent implements OnInit, OnChanges {
 
   public checkShowErrors(state: FocusState): void {
     const isAnotherControlFocused = state?.current?.name !== this.component.id;
-    if (isAnotherControlFocused) {
+
+    if (isAnotherControlFocused && this.control.getError('updateOn') === UpdateOn.ON_BLUR) {
       this.isShowErrors = this.hasUiError;
       this.updateError();
     }
@@ -70,10 +67,10 @@ export class ComponentItemComponent implements OnInit, OnChanges {
 
   public ngOnInit(): void {
     /**
-     * По умолчанию ошибки должны отображаться также как при change(Сделано для того - если у компонента нет поддержки фокуса)
+     * По умолчанию ошибки должны отображаться также как при change
+     * (Сделано для компонентов без поддержки фокуса)
      * Если в момент фокуса нет ошибок то скрываем ошибки
      * Если blur - показываем ошибки
-     *
      * */
     this.focusManager
       .stateComponent$(this.component.id)
@@ -83,7 +80,6 @@ export class ComponentItemComponent implements OnInit, OnChanges {
         takeUntil(this.unsubscribe$),
       )
       .subscribe();
-    this.setState();
   }
 
   public ngOnChanges(): void {
@@ -111,20 +107,12 @@ export class ComponentItemComponent implements OnInit, OnChanges {
         : false;
     this.hasServerError = this.control.hasError('serverError');
     this.hasErrors = !this.disableError && (this.hasUiError || this.hasServerError);
-    if (this.getFirstUpdateOn() === UpdateOn.ON_CHANGE) {
+
+    if (this.control.getError('updateOn') === UpdateOn.ON_CHANGE) {
       this.isShowErrors = this.hasUiError;
       this.updateError();
+      this.cdr.markForCheck();
     }
-  }
-
-  private getFirstUpdateOn(): UpdateOn {
-    const validations = this.component.attrs?.validation || [];
-
-    const ruleWithUpdateOn = validations.find(
-      (validation: CustomComponentAttrValidation) => !!validation.updateOn,
-    );
-
-    return ruleWithUpdateOn ? ruleWithUpdateOn.updateOn : UpdateOn.ON_CHANGE;
   }
 
   private checkItemHasInfo(): void {
@@ -140,6 +128,7 @@ export class ComponentItemComponent implements OnInit, OnChanges {
   private setHelperTextVisibility(): void {
     const isNotCheckBox = this.component?.type !== this.componentType.CheckBox;
     const isNotRequired = !this.component?.required;
+
     this.isHelperTextVisible =
       ((isNotRequired && isNotCheckBox) || !!this.component?.attrs?.labelHint) &&
       !!this.customUnRecLabel;

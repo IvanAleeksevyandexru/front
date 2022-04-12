@@ -298,6 +298,7 @@ export interface CustomComponentAttrValidation extends ComponentValidationDto {
   updateOn?: UpdateOn;
   expr?: string;
   forChild?: string;
+  textFromJson?: boolean;
 }
 
 export enum CustomComponentAttrValidator {

@@ -156,6 +156,7 @@ describe('ValidationService', () => {
       expect(customValidator(control)).toEqual({
         msg: 'Поле может содержать не более 10 символов',
         textFromJson: true,
+        updateOn: UpdateOn.ON_CHANGE,
       });
     });
 
@@ -166,6 +167,7 @@ describe('ValidationService', () => {
       expect(customValidator(control)).toEqual({
         msg: 'Поле может содержать только русские буквы, дефис, пробел, точку, а также цифры',
         textFromJson: true,
+        updateOn: UpdateOn.ON_CHANGE,
       });
     });
 
@@ -179,11 +181,14 @@ describe('ValidationService', () => {
     it('should return required error if empty value', () => {
       const customValidator = service.customValidator(mockComponent);
       const control = new FormControl(null);
-      expect(customValidator(control)).toEqual({ msg: '', textFromJson: false });
+      expect(customValidator(control)).toEqual({
+        msg: '',
+        updateOn: UpdateOn.ON_CHANGE,
+      });
       control.markAsTouched();
       expect(customValidator(control)).toEqual({
         msg: 'Обязательно для заполнения',
-        textFromJson: false,
+        updateOn: UpdateOn.ON_CHANGE,
       });
     });
   });
@@ -195,7 +200,11 @@ describe('ValidationService', () => {
       control.setValue('12345678фи');
       // @ts-ignore
       customAsyncValidator(control).subscribe((obj) => {
-        expect(obj).toEqual({ msg: 'Поле должно содержать 9 символов', textFromJson: true });
+        expect(obj).toEqual({
+          msg: 'Поле должно содержать 9 символов',
+          textFromJson: true,
+          updateOn: UpdateOn.ON_BLUR,
+        });
         done();
       });
     });
@@ -209,6 +218,7 @@ describe('ValidationService', () => {
         expect(obj).toEqual({
           msg: 'Поле должно содержать хотя бы одну цифру',
           textFromJson: true,
+          updateOn: UpdateOn.ON_BLUR,
         });
         done();
       });
@@ -221,7 +231,10 @@ describe('ValidationService', () => {
       control.markAsTouched();
       // @ts-ignore
       customAsyncValidator(control).subscribe((obj) => {
-        expect(obj).toEqual({ msg: 'Обязательно для заполнения', textFromJson: false });
+        expect(obj).toEqual({
+          msg: 'Обязательно для заполнения',
+          updateOn: UpdateOn.ON_BLUR,
+        });
         done();
       });
     });
@@ -243,7 +256,11 @@ describe('ValidationService', () => {
     it('for customValidator', () => {
       components.forEach((component) => {
         const customValidator = service.customValidator(component as any);
-        expect(customValidator(control)).toEqual({ msg: 'ошибка', textFromJson: true });
+        expect(customValidator(control)).toEqual({
+          msg: 'ошибка',
+          textFromJson: true,
+          updateOn: UpdateOn.ON_CHANGE,
+        });
       });
     });
 
@@ -257,7 +274,7 @@ describe('ValidationService', () => {
         );
         // @ts-ignore
         customAsyncValidator(control).subscribe((obj) => {
-          expect(obj).toEqual({ msg: 'ошибка', textFromJson: true });
+          expect(obj).toEqual({ msg: 'ошибка', textFromJson: true, updateOn: UpdateOn.ON_BLUR });
         });
       });
       done();
