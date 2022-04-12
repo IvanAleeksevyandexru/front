@@ -4,7 +4,10 @@
 
 ### Features
 
-*
+* Добавляет в LkInvitationInput возможность последовательного приглашения [EPGUCORE-85587]
+* Добавлен health на создание черновика / открытие черновика [EPGUCORE-87275]
+* Добавлена верстка clarifications в RegistrationLegalAddr [EPGUCORE-86024]
+* Добавлен SlotsErrorHandling для TimeSlot2 [EPGUCORE-92232]
 
 ### Refactor
 
@@ -18,6 +21,13 @@
 * Правка верстки(отступов) ViewComponent.scss [EPGUCORE-89823]
 * Поправлена верстка в GroupItemComponent [EPGUCORE-89824]
 * Убран лишний вертикальный отступ у картинок снизу на InfoScreen [EPGUCORE-91830]
+* Убарн двойной скролл на экране приоритета садов [EPGUCORE-89321]
+* Поправлено положение screen-buttons для mob [EPGUCORE-86209]
+* Изменен текст ошибки для модалки на записи к врачу [EPGUCORE-88496]
+* Правка вёрстки hint для registration-addr [EPGUCORE-89315]
+* Очистка multi-choice-dictionary при смене фильтра (родительского значения) [EPGUCORE-91886]
+* Реализация пустого экрана для модалки мультисписка [EPGUCORE-91918]
+* Исправлена логика инита в list-pagination.service и добавлены тесты [EPGUCORE-92378]
 
 ### Chore
 
