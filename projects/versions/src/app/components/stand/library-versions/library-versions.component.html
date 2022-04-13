@@ -1,13 +1,13 @@
 <table *ngIf="libVersions" id="versions">
   <tr>
-    <th *ngFor = "let item of libVersions | keyvalue">
-      {{item.key}}
+    <th *ngFor="let item of libVersions | keyvalue; let idx = index">
+      <a [href]="links[idx]">{{ item.key }}</a>
     </th>
   </tr>
 
   <tr>
-    <td *ngFor = "let item of libVersions | keyvalue">
-      {{item.value}}
+    <td *ngFor="let item of libVersions | keyvalue">
+      {{ item.value }}
     </td>
   </tr>
 </table>

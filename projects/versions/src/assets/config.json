@@ -1,4 +1,5 @@
 {
   "libVersions": "sf-portal-st/assets/version.json",
-  "serviceVersions": "service-descriptor-storage/v1/scenario/version_gibdd"
+  "serviceVersions": "service-descriptor-storage/v1/scenario/version_gibdd",
+  "sfPortalLink": "600103/1/form"
 }
