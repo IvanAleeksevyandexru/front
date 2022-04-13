@@ -1,7 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, AbstractControl } from '@angular/forms';
 import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
-
 import {
   TextTransformService,
   UnsubscribeService,
@@ -29,6 +28,7 @@ import { AbstractComponentListItemComponent } from '../abstract-component-list-i
 import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import DocInputModelAttrs from './DocInputModelAttrs';
 import { UpdateOn } from '../../components-list.types';
+import { isEqual } from 'lodash';
 
 @Component({
   selector: 'epgu-constructor-doc-input',
@@ -141,7 +141,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
     this.form.valueChanges
       .pipe(
         takeUntil(this.ngUnsubscribe$),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        distinctUntilChanged((a, b) => isEqual(a, b)),
         map((formFields: DocInputFormFields) => this.formatFormFields(formFields)),
       )
       .subscribe((formFields) => {

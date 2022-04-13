@@ -14,6 +14,8 @@ import {
 import { catchError, finalize, mergeMap, tap } from 'rxjs/operators';
 import { FormPlayerApiService } from '../form-player-api/form-player-api.service';
 import { FormPlayerBaseService } from '../../../shared/services/form-player-base/form-player-base.service';
+import { cloneDeep } from 'lodash';
+
 /**
  * Этот сервис служит для взаимодействия formPlayerComponent и formPlayerApi
  * Хранит текущий респонс в store и транслирует поток данных в screenService
@@ -145,7 +147,7 @@ export class FormPlayerService extends FormPlayerBaseService {
 
   patchStore(newScenarioDtoDiff: Partial<ScenarioDto>): void {
     this.updateLoading(true);
-    const newStore = this._store ? JSON.parse(JSON.stringify(this._store)) : {};
+    const newStore = this._store ? cloneDeep(this._store) : {};
     newStore.scenarioDto = { ...newStore.scenarioDto, ...newScenarioDtoDiff };
     this.processResponse(newStore);
   }
