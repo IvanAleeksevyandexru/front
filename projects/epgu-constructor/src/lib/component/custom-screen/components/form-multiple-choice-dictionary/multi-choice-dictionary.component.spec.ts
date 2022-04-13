@@ -26,6 +26,7 @@ import { ComponentsListToolsService } from '../../services/components-list-tools
 import { ComponentsListRelationsServiceStub } from '../../services/components-list-relations/components-list-relations.service.stub';
 import { InviteService } from '../../../../core/services/invite/invite.service';
 import { InviteServiceStub } from '../../../../core/services/invite/invite.service.stub';
+import MultipleChoiceDictionaryModelAttrs from './MultipleChoiceDictionaryModelAttrs';
 
 describe('MultiChoiceDictionaryComponent', () => {
   let component: MultiChoiceDictionaryComponent;
@@ -112,5 +113,58 @@ describe('MultiChoiceDictionaryComponent', () => {
     expect(debugEl.componentInstance.dictionaryList).toBe('fake dictionaryList');
     expect(debugEl.componentInstance.dictionaryType).toBe('fake dictionaryType');
     expect(debugEl.componentInstance.subLabel).toBe('fake subLabel');
+  });
+
+  describe('when there is no dictionaryType', () => {
+    let savedAttrs;
+    beforeEach(() => {
+      savedAttrs = control.value.attrs;
+      control.value.attrs = new MultipleChoiceDictionaryModelAttrs({
+        ...control.value.attrs,
+        dictionaryType: undefined,
+        dictionaryList: [],
+      });
+    });
+
+    afterEach(() => {
+      control.value.attrs = savedAttrs;
+    });
+
+    it('not do getDictionary request', () => {
+      const getDictSpy = jest.spyOn(component, 'getDictionary');
+
+      component.ngOnInit();
+
+      expect(getDictSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when there is dictionaryType', () => {
+    let savedAttrs;
+    beforeEach(() => {
+      savedAttrs = control.value.attrs;
+      control.value.attrs = new MultipleChoiceDictionaryModelAttrs({
+        ...control.value.attrs,
+        dictionaryType: 'SOME_DICTIONARY',
+        dictionaryList: undefined,
+      });
+    });
+
+    afterEach(() => {
+      control.value.attrs = savedAttrs;
+    });
+
+    it('do getDictionary request', () => {
+      const getDictSpy = jest.spyOn(component, 'getDictionary');
+
+      component.ngOnInit();
+
+      expect(getDictSpy).toHaveBeenCalledTimes(1);
+      expect(getDictSpy).toHaveBeenCalledWith({
+        additionalParams: undefined,
+        excludedParams: [],
+        pageNum: 0,
+      });
+    });
   });
 });
