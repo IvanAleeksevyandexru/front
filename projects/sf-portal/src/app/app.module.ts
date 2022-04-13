@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreUiModule } from '@epgu/epgu-constructor-ui-kit';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { IframePlayerService } from './services/iframe-player/iframe-player.service';
+import { PsoModule } from '@epgu/ui/components/pso';
 
 registerLocaleData(localeRu);
 
@@ -49,6 +50,7 @@ export function initializeApp(appConfig: AppConfig) {
     LocationSelectModule,
     FormPlayerModule,
     FrameModule,
+    PsoModule,
   ],
   providers: [
     ConstantsService,
