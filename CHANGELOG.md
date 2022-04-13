@@ -8,10 +8,13 @@
 * Добавлен health на создание черновика / открытие черновика [EPGUCORE-87275]
 * Добавлена верстка clarifications в RegistrationLegalAddr [EPGUCORE-86024]
 * Добавлен SlotsErrorHandling для TimeSlot2 [EPGUCORE-92232]
+* Добавлен minOccures в childrenList [EPGUCORE-91135]
 
 ### Refactor
 
 * Обновление шрифтов Lato-Regular.woff2 и Lato-Bold.woff2 [EPGUCORE-93080]
+* Перенесены часть методов из SelectMapObjectService в KindergartenService [EPGUCORE-85316]
+* Поправлены процедуры клонирования и сравнивания объектов [EPGUCORE-93739]
 
 ### Bug Fixes
 
@@ -30,6 +33,18 @@
 * Исправлена логика инита в list-pagination.service и добавлены тесты [EPGUCORE-92378]
 * Добавлена очистка буфера в output-html [EPGUCORE-90915]
 * Поправлен механизм обработки видимости screen-buttons [EPGUCORE-91815]
+* Добавлен орг тип [EPGUCORE-87162]
+* Добавлено очищение ошибки при выборе даты [EPGUCORE-88893]
+* Убрано кеширование запроса докторов из timeSlotDoctors [EPGUCORE-88440]
+* Правки валидации значения компонентов TextArea и SnilsInput и др. [EPGUCORE-87682]
+* Поправлены счетчики при удаление suggest в FileUploadItem [EPGUCORE-90592]
+* Исправлен парсинг даты в components-list-tools.service [EPGUCORE-89748]
+* Поправлен loader у TimeSlot при Cancel [EPGUCORE-88604]
+* Исправлены стили ранее выбранного элемента на карте [EPGUCORE-88426]
+* Добавлено форматирование ext в названии файла [EPGUCORE-92213]
+
+### Tests
+* Добавлены тесты в multipleChoiceDictionary, чтобы не было регреса [EPGUCORE-91566]
 
 ### Chore
 
