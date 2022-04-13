@@ -42,6 +42,7 @@
 * Поправлен loader у TimeSlot при Cancel [EPGUCORE-88604]
 * Исправлены стили ранее выбранного элемента на карте [EPGUCORE-88426]
 * Добавлено форматирование ext в названии файла [EPGUCORE-92213]
+* Поправлена реактивность в Timeslot 2 [EPGUCORE-92835]
 
 ### Tests
 * Добавлены тесты в multipleChoiceDictionary, чтобы не было регреса [EPGUCORE-91566]
