@@ -1,6 +1,6 @@
 # Release Notes
 
-## [404.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v404.x.x) (2022-04-08)
+## [404.x.x](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v404.x.x) (2022-04-14)
 
 ### Features
 
@@ -46,11 +46,14 @@
 * Поправлен дефект, что не отображается виджет ПСО на страницах КФ [EPGUCORE-92825]
 
 ### Tests
+
 * Добавлены тесты в multipleChoiceDictionary, чтобы не было регреса [EPGUCORE-91566]
 
-### Chore
+## [401.40.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.40.0) (2022-04-14)
 
-* Удалены устаревшие доки и неиспользуемый проект epgu-constructor-docs
+### Bug Fixes
+
+* Добавлена защита от кривого форматирования дадаты и неотрисовки пинов на карте [EPGUCORE-93815]
 
 ## [401.34.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.34.0) (2022-04-11)
 
