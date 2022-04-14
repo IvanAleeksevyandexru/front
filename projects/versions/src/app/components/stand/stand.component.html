@@ -5,6 +5,12 @@
     <library-versions [libVersions]="libVersions"></library-versions>
   </div>
 
+  <div *ngIf="formBackend || spAdapter">
+    <h3>Backend services</h3>
+    <backend-versions [backendServices]="{formBackend: formBackend, spAdapter: spAdapter}">
+    </backend-versions>
+  </div>
+
   <div *ngIf="serviceVersions">
     <h3>Service Versions</h3>
     <service-versions [serviceVersions]="serviceVersions"></service-versions>

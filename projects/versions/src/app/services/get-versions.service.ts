@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map } from 'rxjs/operators';
-import { LibVersions, ServiceVersions } from '../shared/interfaces';
+import { BackendServices, LibVersions, ServiceVersions } from '../shared/interfaces';
 import { ErrorService } from './error.service';
 
 @Injectable()
@@ -28,6 +28,16 @@ export class GetVersionsService {
     return this.http.get<ServiceVersions>(path).pipe(
       filter(Boolean),
       map(this.trimKeysInServiceVersions),
+      catchError((err) => {
+        this.errorService.handleError(err);
+        return of(null);
+      }),
+    );
+  }
+
+  public getBackendServices(url: string): Observable<string> {
+    return this.http.get<BackendServices>(url).pipe(
+      map((value) => value?.app?.version),
       catchError((err) => {
         this.errorService.handleError(err);
         return of(null);

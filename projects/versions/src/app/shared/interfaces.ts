@@ -11,14 +11,22 @@ export interface ServiceVersions {
   date: string;
 }
 
+export interface BackendServices {
+  app: { version: string };
+}
+
 export interface VersionSet {
   standType: string;
   libVersions$?: Observable<LibVersions>;
   serviceVersions$?: Observable<ServiceVersions>;
+  formBackend$?: Observable<string>;
+  spAdapter$?: Observable<string>;
 }
 
 export interface UrlsOfStand {
   libVersions: string;
+  formBackend: string;
+  spAdapter: string;
   serviceVersions?: string;
 }
 
