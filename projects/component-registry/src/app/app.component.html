@@ -1,0 +1,70 @@
+<section class="form">
+  <form class="filters" [formGroup]="formGroup">
+    <div class="form__item">
+      Отфильтровать по:
+      <lib-radio
+        name="type"
+        class="radio-button mt-8"
+        *ngFor="let type of types"
+        [disabled]=""
+        [checked]="type.value === formGroup.get('type').value"
+        [labelText]="type.value"
+        [value]="type.value"
+        (change)="onTypeChange(type.value)"
+      ></lib-radio>
+    </div>
+
+    <div class="form__item">
+      Введите {{ formGroup.get('type').value }} через запятую:
+      <div class="flex-box mt-8">
+        <lib-plain-input class="search" [formControlName]="'searchInput'"></lib-plain-input>
+        <lib-button class="submit-button ml-12" (click)="onSubmit(formGroup.value)"
+          >🔎Поиск</lib-button
+        >
+      </div>
+    </div>
+  </form>
+
+  <section class="data">
+    <div class="form__item flex-box">
+      <lib-button color="white" (click)="handleAccordionState(true)">
+        ▼Развернуть все
+      </lib-button>
+      <lib-button class="ml-12" color="white" (click)="handleAccordionState(false)">
+        ▲Свернуть все
+      </lib-button>
+      <lib-button class="copy-button" color="white" (click)="onCopy()">{{
+        copyButtonLabel
+      }}</lib-button>
+    </div>
+
+    <ng-template #loading>
+      <div>
+        <lib-throbber-hexagon size="big"></lib-throbber-hexagon>
+      </div>
+    </ng-template>
+
+    <div class="form__item" *ngIf="data$ | async as data; else loading">
+      <small
+        >Всего услуг - {{ data?.totalServices }} шт., компонентов -
+        {{ data?.totalComponents }} шт.</small
+      >
+
+      <lib-accordion [closeOthers]="false">
+        <lib-expansion-panel
+          [title]="service.serviceId"
+          [opened]="isAccordionAllOpened"
+          type="light-v2"
+          *ngFor="let service of data?.services; trackBy: trackByServiceId"
+        >
+          <ul *ngFor="let component of service.components; trackBy: trackByComponentType">
+            <li>
+              <b>{{ component.componentType }}</b
+              >: {{ component.amount }} шт.
+            </li>
+          </ul>
+        </lib-expansion-panel>
+      </lib-accordion>
+    </div>
+  </section>
+</section>

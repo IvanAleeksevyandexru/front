@@ -1,0 +1,6 @@
+{
+  "/v1/scenario/stats": {
+    "target": "http://localhost:8096",
+    "secure": false
+  }
+}
