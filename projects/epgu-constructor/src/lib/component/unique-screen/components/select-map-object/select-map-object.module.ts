@@ -95,7 +95,7 @@ import { ChildrenClubsSearchPanelComponent } from './components/search-panel-res
     },
     {
       provide: 'notifierSetting',
-      useValue: { singleNotifier: true },
+      useValue: { singleNotifier: false },
     },
   ],
   exports: [
