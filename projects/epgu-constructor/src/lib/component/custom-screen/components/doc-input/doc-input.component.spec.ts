@@ -1,39 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockModule, MockProvider } from 'ng-mocks';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import {
-  ConfigService,
-  DatesToolsService,
-  LoggerService,
-  ErrorModule,
-  InputErrorModule,
-  EventBusService,
-  ActivatedRouteStub,
-} from '@epgu/epgu-constructor-ui-kit';
+import { MockModule } from 'ng-mocks';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { DatesToolsService, ErrorModule, InputErrorModule } from '@epgu/epgu-constructor-ui-kit';
 import { By } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { DocInputComponent } from './doc-input.component';
-import { ScreenService } from '../../../../screen/screen.service';
-import { ScreenServiceStub } from '../../../../screen/screen.service.stub';
 import { ComponentsListFormService } from '../../services/components-list-form/components-list-form.service';
 import { BaseModule } from '../../../../shared/base.module';
 import { BaseComponentsModule } from '../../../../shared/components/base-components/base-components.module';
-import { ValidationService } from '../../../../shared/services/validation/validation.service';
-import { ValidationServiceStub } from '../../../../shared/services/validation/validation.service.stub';
-import { CurrentAnswersService } from '../../../../screen/current-answers.service';
-import { ComponentsListFormServiceStub } from '../../services/components-list-form/components-list-form.service.stub';
 import { AbstractComponentListItemComponent } from '../abstract-component-list-item/abstract-component-list-item.component';
-import { DateRangeService } from '../../../../shared/services/date-range/date-range.service';
-import { DateRestrictionsService } from '../../../../shared/services/date-restrictions/date-restrictions.service';
 import { ConstructorDatePickerModule } from '../../../../shared/components/constructor-date-picker/constructor-date-picker.module';
 import { ConstructorPlainInputModule } from '../../../../shared/components/constructor-plain-input/constructor-plain-input.module';
 import { ConstructorMaskedInputModule } from '../../../../shared/components/constructor-masked-input/constructor-masked-input.module';
 import { ValidationTypeModule } from '../../../../shared/directives/validation-type/validation-type.module';
-import { SuggestHandlerService } from '../../../../shared/services/suggest-handler/suggest-handler.service';
-import { SuggestMonitorService } from '../../../../shared/services/suggest-monitor/suggest-monitor.service';
-import { AutocompleteService } from '../../../../core/services/autocomplete/autocomplete.service';
 import { UpdateOn } from '../../components-list.types';
+import { ForTestsOnlyModule } from '../../../../core/for-tests-only.module';
 
 const mockComponent = {
   id: 'pd6',
@@ -65,23 +46,6 @@ describe('DocInputComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [DocInputComponent],
-      providers: [
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        { provide: ComponentsListFormService, useClass: ComponentsListFormServiceStub },
-        { provide: ScreenService, useClass: ScreenServiceStub },
-        { provide: ValidationService, useClass: ValidationServiceStub },
-        MockProvider(AutocompleteService),
-        MockProvider(ConfigService),
-        MockProvider(CurrentAnswersService),
-        MockProvider(DateRangeService),
-        MockProvider(DateRestrictionsService),
-        DatesToolsService,
-        MockProvider(EventBusService),
-        MockProvider(LoggerService),
-        MockProvider(SuggestHandlerService),
-        MockProvider(SuggestMonitorService),
-        FormBuilder,
-      ],
       imports: [
         MockModule(BaseComponentsModule),
         MockModule(BaseModule),
@@ -92,6 +56,7 @@ describe('DocInputComponent', () => {
         MockModule(InputErrorModule),
         MockModule(ValidationTypeModule),
         HttpClientModule,
+        ForTestsOnlyModule,
       ],
     }).compileComponents();
   });
@@ -137,7 +102,7 @@ describe('DocInputComponent', () => {
       value: valueControl,
       required: new FormControl(mockComponent.required),
     });
-    formService._form = new FormArray([control]);
+    formService['_form'] = new FormArray([control]);
 
     fixture.detectChanges();
   });
@@ -164,7 +129,7 @@ describe('DocInputComponent', () => {
         required: new FormControl(mockComponent.required),
         label: new FormControl('Паспорт РФ'),
       });
-      formService._form = new FormArray([control]);
+      formService['_form'] = new FormArray([control]);
 
       fixture.detectChanges();
 
@@ -212,9 +177,18 @@ describe('DocInputComponent', () => {
     it('should subscribe on form valueChanges', () => {
       const formValueMock = {
         seriesNumDate: {
-          date: new Date('2016-07-01T08:00:00.000Z'),
-          number: 123321,
-          series: 8000,
+          date: {
+            attrs: {},
+            value: new Date('2016-07-01T08:00:00.000Z'),
+          },
+          number: {
+            attrs: {},
+            value: '2131231231',
+          },
+          series: {
+            attrs: {},
+            value: 8000,
+          },
         },
         emitter: 'Отделением ОФМС',
         issueId: '778899',
@@ -222,8 +196,14 @@ describe('DocInputComponent', () => {
 
       const expectedValue = {
         date: datesToolsService.format(new Date('2016-07-01T08:00:00.000Z')),
-        number: 123321,
-        series: 8000,
+        number: {
+          attrs: {},
+          value: '2131231231',
+        },
+        series: {
+          attrs: {},
+          value: 8000,
+        },
         emitter: 'Отделением ОФМС',
         issueId: '778899',
       };
@@ -262,9 +242,18 @@ describe('DocInputComponent', () => {
     it('should format form fields', () => {
       const formValueMock = {
         seriesNumDate: {
-          date: new Date('2016-07-01T08:00:00.000Z'),
-          number: 123321,
-          series: 8000,
+          date: {
+            attrs: {},
+            value: new Date('2016-07-01T08:00:00.000Z'),
+          },
+          number: {
+            attrs: {},
+            value: '123321',
+          },
+          series: {
+            attrs: {},
+            value: 8000,
+          },
         },
         emitter: 'Отделением ОФМС',
         issueId: '778899',
@@ -272,8 +261,8 @@ describe('DocInputComponent', () => {
 
       const expectedValue = {
         date: datesToolsService.format(new Date('2016-07-01T08:00:00.000Z')),
-        number: 123321,
-        series: 8000,
+        number: { attrs: {}, value: '123321' },
+        series: { attrs: {}, value: 8000 },
         emitter: 'Отделением ОФМС',
         issueId: '778899',
       };
@@ -290,9 +279,18 @@ describe('DocInputComponent', () => {
     it('should set value to control if form is VALID', () => {
       const formValueMock = {
         seriesNumDate: {
-          date: new Date('2016-07-01T08:00:00.000Z'),
-          number: 123321,
-          series: 8000,
+          date: {
+            attrs: {},
+            value: new Date('2016-07-01T08:00:00.000Z'),
+          },
+          number: {
+            attrs: {},
+            value: '123321',
+          },
+          series: {
+            attrs: {},
+            value: 8000,
+          },
         },
         emitter: 'Отделением ОФМС',
         issueId: '778899',
@@ -300,7 +298,7 @@ describe('DocInputComponent', () => {
 
       const expectedValue = {
         date: datesToolsService.format(new Date('2016-07-01T08:00:00.000Z')),
-        number: 123321,
+        number: '123321',
         series: 8000,
         emitter: 'Отделением ОФМС',
         issueId: '778899',
@@ -320,8 +318,49 @@ describe('DocInputComponent', () => {
       const formValueMock = {
         seriesNumDate: {
           date: null,
-          number: 123321,
-          series: 89775,
+          number: {
+            attrs: {
+              validation: [
+                {
+                  type: 'RegExp',
+                  value: '^[0-9]{6,7}$',
+                  ref: '',
+                  dataType: '',
+                  condition: '',
+                  errorMsg: 'Поле должно содержать 6-7 цифр',
+                  updateOn: 'blur',
+                },
+                {
+                  type: 'RegExp',
+                  value: '.+',
+                  ref: '',
+                  dataType: '',
+                  condition: '',
+                  errorMsg: 'Необходимо заполнить Номер',
+                  updateOn: 'blur',
+                },
+              ],
+            },
+            value: '123',
+          },
+          series: {
+            attrs: {
+              required: true,
+              validation: [
+                {
+                  type: 'RegExp',
+                  value: '^[IVXLC]{1,6}-[А-Яа-яЁё]{2}$',
+                  ref: '',
+                  dataType: '',
+                  condition: '',
+                  errorMsg:
+                    'Поле должно содержать римское число (может состоять из заглавных букв I, V, X, L, C, не более 6 символов), тире и две русские буквы. Пример: XVII-ШЮ',
+                  updateOn: 'blur',
+                },
+              ],
+            },
+            value: '123',
+          },
         },
         emitter: 'Отделением ОФМС',
       };
@@ -339,11 +378,11 @@ describe('DocInputComponent', () => {
 
   it('prepareDate should work correct', () => {
     let date1 = new Date('2025-09-06T00:00:00.000Z');
-    let date2 = component.prepareDate('2025-09-06T00:00:00.000Z');
+    let date2 = component['prepareDate']('2025-09-06T00:00:00.000Z');
     let res = datesToolsService.isEqual(date1, date2);
     expect(res).toBeTruthy();
     date1 = new Date('02.01.2020');
-    date2 = component.prepareDate('01.02.2020');
+    date2 = component['prepareDate']('01.02.2020');
     res = datesToolsService.isEqual(date1, date2);
     expect(res).toBeTruthy();
   });

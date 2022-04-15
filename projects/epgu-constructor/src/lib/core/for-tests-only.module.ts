@@ -27,6 +27,8 @@ import {
   SafeModule,
   ConstructorLookupModule,
   ObjectHelperService,
+  MicroAppStateStore,
+  CfAppStateService,
 } from '@epgu/epgu-constructor-ui-kit';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KindergartenService } from '../component/unique-screen/components/kindergarten/kindergarten.service';
@@ -84,6 +86,13 @@ import { ActionService } from '../shared/directives/action/action.service';
 import { ActionToolsService } from '../shared/directives/action/action-tools.service';
 import { DictionaryService } from '../shared/services/dictionary/dictionary.service';
 import { DictionaryServiceStub } from '../shared/services/dictionary/dictionary.service.stub';
+import { StateService } from '../component/unique-screen/components/children-clubs/services/state/state.service';
+import { ScreenButtonService } from '../shared/components/screen-buttons/screen-button.service';
+import { SuggestHandlerService } from '../shared/services/suggest-handler/suggest-handler.service';
+import { SuggestMonitorService } from '../shared/services/suggest-monitor/suggest-monitor.service';
+import { AutocompleteService } from './services/autocomplete/autocomplete.service';
+import { AutocompleteAutofillService } from './services/autocomplete/autocomplete-autofill.service';
+import { AutocompletePrepareService } from './services/autocomplete/autocomplete-prepare.service';
 
 /**
  * Здесь храниться всё providers которые необходимы во всех слоях и должны быть синглетоном.
@@ -109,7 +118,11 @@ import { DictionaryServiceStub } from '../shared/services/dictionary/dictionary.
     AddressesToolsService,
     AddressHelperService,
     AutocompleteApiService,
+    AutocompleteAutofillService,
+    AutocompletePrepareService,
+    AutocompleteService,
     CachedAnswersService,
+    CfAppStateService,
     ComponentsListFormService,
     ComponentsListRelationsService,
     ComponentsListToolsService,
@@ -120,6 +133,7 @@ import { DictionaryServiceStub } from '../shared/services/dictionary/dictionary.
     DatesToolsService,
     DecimalPipe,
     DictionaryApiService,
+    DictionaryService,
     DictionaryToolsService,
     DownloadService,
     EventBusService,
@@ -139,6 +153,7 @@ import { DictionaryServiceStub } from '../shared/services/dictionary/dictionary.
     LoggerService,
     MapAnimationService,
     MaskTransformService,
+    MicroAppStateStore,
     ModalErrorService,
     ModalService,
     NavigationModalService,
@@ -147,9 +162,13 @@ import { DictionaryServiceStub } from '../shared/services/dictionary/dictionary.
     PriorityItemsService,
     RefRelationService,
     RelationResolverService,
+    ScreenButtonService,
     SelectMapObjectService,
     SessionService,
     SessionStorageService,
+    StateService,
+    SuggestHandlerService,
+    SuggestMonitorService,
     TypeCastService,
     UnsubscribeService,
     UploaderProcessService,
