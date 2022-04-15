@@ -32,6 +32,7 @@ import { DisplayOnRelation } from './relation-strategies/display-on-relation';
 import { DisableButtonRelation } from './relation-strategies/disable-button-relation.service';
 import BaseModel from '../../component-list-resolver/BaseModel';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
+import { DocInputField } from '../../components/doc-input/doc-input.types';
 
 @Injectable()
 export class ComponentsListRelationsService {
@@ -251,13 +252,29 @@ export class ComponentsListRelationsService {
     applicantAnswers: ApplicantAnswersDto,
     componentsGroupIndex?: number,
   ): Promise<void> {
-    const relatedComponents = components.filter(
-      (relatedComponent) =>
-        relatedComponent.attrs.dateRestrictions &&
-        relatedComponent.attrs.dateRestrictions.some((restriction) =>
+    let relatedComponents = [];
+    components.forEach((relatedComponent) => {
+      if (
+        relatedComponent.attrs.dateRestrictions?.some((restriction) =>
           this.dateRestrictionsService.haveDateRef(restriction),
-        ),
-    );
+        )
+      ) {
+        relatedComponents.push(relatedComponent);
+      } else if (relatedComponent.attrs.fields) {
+        const fields = relatedComponent.attrs.fields as DocInputField[];
+
+        Object.values(fields).forEach((comp) => {
+          if (
+            comp.attrs?.dateRestrictions?.some((restriction) =>
+              this.dateRestrictionsService.haveDateRef(restriction),
+            )
+          ) {
+            comp.parentComponent = relatedComponent;
+            relatedComponents.push(comp);
+          }
+        });
+      }
+    });
 
     for (let index = 0, len = relatedComponents.length; index < len; index += 1) {
       const restriction = relatedComponents[index].attrs.dateRestrictions.find(
@@ -312,11 +329,21 @@ export class ComponentsListRelationsService {
 
   private updateFormWithDateRange(
     form: FormArray,
-    component: CustomComponent | CustomListFormGroup,
+    component: CustomComponent | CustomListFormGroup | DocInputField,
     dateRange: Range,
     forChild: string,
   ): void {
-    const control = form.controls.find((formControl) => formControl.value.id === component.id);
+    let control;
+    if ((component as DocInputField).parentComponent) {
+      const parentControl = form.controls
+        .find(
+          (formControl) => formControl.value.id === (component as DocInputField).parentComponent.id,
+        )
+        .get('innerFormGroup');
+      control = parentControl.get(component.id);
+    } else {
+      control = form.controls.find((formControl) => formControl.value.id === component.id);
+    }
 
     if (forChild !== DATE_RESTRICTION_GROUP_DEFAULT_KEY) {
       const attrsValue = control.get('attrs').value;

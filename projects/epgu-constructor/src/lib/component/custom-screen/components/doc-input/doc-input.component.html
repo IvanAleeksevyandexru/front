@@ -4,13 +4,13 @@
   </div>
   <div class="form__error">
     <epgu-cf-ui-constructor-input-error *ngFor="let fieldName of fieldsNames | slice: 0:-2">
-      <span *ngIf="isErrorShown([docInputFieldsTypes.seriesNumDate, fieldName])">
+      <span *ngIf="isErrorShown([docInputFieldsTypes.seriesNumDate, fieldName, 'value'])">
         <ng-container
-          *ngIf="!form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.textFromJson"
+          *ngIf="!form.get([docInputFieldsTypes.seriesNumDate, fieldName, 'value']).errors.textFromJson"
         >
           {{ fields[fieldName]?.label }}:
         </ng-container>
-        {{ form.get([docInputFieldsTypes.seriesNumDate, fieldName]).errors.msg }}
+        {{ form.get([docInputFieldsTypes.seriesNumDate, fieldName, 'value']).errors.msg }}
       </span>
     </epgu-cf-ui-constructor-input-error>
     <epgu-cf-ui-constructor-input-error *ngIf="hasExpirationDate">
@@ -37,13 +37,13 @@
         [removeMaskSymbols]="RemoveMaskSymbols.PLACEHOLDERS"
         [textTransformType]="fields[docInputFieldsTypes.series]?.attrs?.fstuc"
         [id]="docInputFieldsTypes.series"
-        [control]="$any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))"
+        [control]="$any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series, 'value']))"
         [mask]="fields[docInputFieldsTypes.series]?.attrs?.mask"
         [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.series]?.placeholder"
         [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
         [showConstantMaskSymbols]="true"
         [invalid]="
-          isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
+          isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series, 'value'])
         "
         [validationShowOn]="validationShowOn"
         [component]="fields[docInputFieldsTypes.series]"
@@ -52,7 +52,7 @@
           suggestHandlerService.handleEvent($event, componentsGroupIndex, 'MASKED_INPUT')
         "
         (blurEvent)="
-          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
+          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series, 'value'])
         "
       ></epgu-constructor-masked-input>
       <ng-template #plainInputSeries>
@@ -60,11 +60,11 @@
           [textTransformType]="fields[docInputFieldsTypes.series]?.attrs?.fstuc"
           [id]="docInputFieldsTypes.series"
           [control]="
-            $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))
+            $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series, 'value']))
           "
           [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
           [invalid]="
-            isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series])
+            isInvalidAndTouched([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series, 'value'])
           "
           [validationShowOn]="validationShowOn"
           [component]="fields[docInputFieldsTypes.series]"
@@ -95,7 +95,7 @@
         *ngIf="fields[docInputFieldsTypes.number]?.attrs?.mask; else plainInputNumber"
         [textTransformType]="fields[docInputFieldsTypes.number]?.attrs?.fstuc"
         [id]="docInputFieldsTypes.number"
-        [control]="$any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]))"
+        [control]="$any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number, 'value']))"
         [mask]="fields[docInputFieldsTypes.number]?.attrs?.mask"
         [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.number]?.placeholder"
         [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
@@ -118,7 +118,7 @@
           [textTransformType]="fields[docInputFieldsTypes.number]?.attrs?.fstuc"
           [id]="docInputFieldsTypes.number"
           [control]="
-            $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]))
+            $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number, 'value']))
           "
           [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
           [invalid]="
@@ -158,15 +158,15 @@
       <epgu-constructor-constructor-date-picker
         [id]="docInputFieldsTypes.date"
         align="left"
-        [control]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
-        [minDate]="fields[docInputFieldsTypes.date]?.attrs?.minDate || '-120y'"
-        [maxDate]="fields[docInputFieldsTypes.date]?.attrs?.maxDate || 'today'"
-        [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
+        [control]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date, 'value'])"
+        [minDate]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date, 'attrs']).value?.minDate || '-120y'"
+        [maxDate]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date, 'attrs']).value?.maxDate || 'today'"
+        [invalid]="isInvalidAndDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date, 'value'])"
         [validationShowOn]="validationShowOn"
         [clearable]="true"
         [brokenDateFixStrategy]="brokenDateFixStrategy"
         (blurEvent)="
-          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])
+          markControlAsDirty([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date, 'value'])
         "
       ></epgu-constructor-constructor-date-picker>
       <epgu-cf-ui-constructor-helper-text
@@ -194,7 +194,7 @@
           [textTransformType]="fields[docInputFieldsTypes.series]?.attrs?.fstuc"
           [id]="docInputFieldsTypes.series"
           [control]="
-            $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))
+            $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series, 'value']))
           "
           [mask]="fields[docInputFieldsTypes.series]?.attrs?.mask"
           [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.series]?.placeholder"
@@ -218,7 +218,7 @@
             [textTransformType]="fields[docInputFieldsTypes.series]?.attrs?.fstuc"
             [id]="docInputFieldsTypes.series"
             [control]="
-              $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series]))
+              $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.series, 'value']))
             "
             [placeholder]="fields[docInputFieldsTypes.series]?.placeholder"
             [invalid]="
@@ -253,7 +253,7 @@
           [textTransformType]="fields[docInputFieldsTypes.number]?.attrs?.fstuc"
           [id]="docInputFieldsTypes.number"
           [control]="
-            $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]))
+            $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number, 'value']))
           "
           [mask]="fields[docInputFieldsTypes.number]?.attrs?.mask"
           [showMaskAsPlaceholder]="!fields[docInputFieldsTypes.number]?.placeholder"
@@ -277,7 +277,7 @@
             [textTransformType]="fields[docInputFieldsTypes.number]?.attrs?.fstuc"
             [id]="docInputFieldsTypes.number"
             [control]="
-              $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number]))
+              $any(form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.number, 'value']))
             "
             [placeholder]="fields[docInputFieldsTypes.number]?.placeholder"
             [invalid]="
@@ -309,7 +309,7 @@
         <epgu-constructor-constructor-date-picker
           [id]="docInputFieldsTypes.date"
           align="left"
-          [control]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date])"
+          [control]="form.get([docInputFieldsTypes.seriesNumDate, docInputFieldsTypes.date, 'value'])"
           [minDate]="fields[docInputFieldsTypes.date]?.attrs?.minDate || '-120y'"
           [maxDate]="fields[docInputFieldsTypes.date]?.attrs?.maxDate || 'today'"
           [invalid]="
