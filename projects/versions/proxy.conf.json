@@ -1,6 +1,7 @@
 {
   "/uat-lib/*": {
     "target": "https://static-uat.egovdev.ru",
+    "link": "https://pgu-uat-fed.test.gosuslugi.ru",
     "pathRewrite": { "^/uat-lib": "" },
     "secure": false,
     "changeOrigin": true
@@ -13,6 +14,7 @@
   },
   "/uat2-lib/*": {
     "target": "https://static-uat2.egovdev.ru",
+    "link": "https://pgu-uat2-fed.test.gosuslugi.ru",
     "pathRewrite": { "^/uat2-lib": "" },
     "secure": false,
     "changeOrigin": true
@@ -55,6 +57,7 @@
   },
   "/prod-lib/*": {
     "target": "https://gu-st.ru",
+    "link": "https://gosuslugi.ru",
     "pathRewrite": { "^/prod-lib": "" },
     "secure": false,
     "changeOrigin": true

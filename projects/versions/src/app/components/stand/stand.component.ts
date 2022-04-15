@@ -19,6 +19,7 @@ export class StandComponent {
   @Input() libVersions: LibVersions;
   @Input() formBackend: string;
   @Input() spAdapter: string;
+  @Input() links: string[];
   @Input() name: string;
   hidden: boolean;
 }

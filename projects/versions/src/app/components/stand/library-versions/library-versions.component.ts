@@ -9,4 +9,5 @@ import { LibVersions } from '../../../shared/interfaces';
 })
 export class LibraryVersionsComponent {
   @Input() libVersions: LibVersions;
+  @Input() links: string[];
 }

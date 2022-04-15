@@ -1,0 +1,56 @@
+@use 'node_modules/@epgu/ui/assets/styles/main';
+@use 'node_modules/@epgu/ui/assets/styles/fonts';
+@import 'node_modules/@epgu/ui/assets/styles/palette';
+
+.form {
+  margin: 1rem auto;
+  max-width: 768px;
+  &__item {
+    margin-bottom: 24px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.filters, .data {
+  padding: 1rem;
+}
+
+.filters {
+  background-color: $color-background;
+}
+
+.search {
+  flex: 1 1 auto;
+}
+
+.flex-box {
+  display: flex;
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.ml-12 {
+  margin-left: 12px;
+}
+
+.copy-button {
+  margin-left: auto;
+  @media (max-width: 768px) {
+    margin-left: 12px;
+  }
+}
+
+.radio-button {
+  display: block;
+}
+
+.mt-24 {
+  margin-top: 25px;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}

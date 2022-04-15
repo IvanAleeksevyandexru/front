@@ -104,6 +104,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
     this.form.updateValueAndValidity();
     this.handleServerErrors();
     this.cdr.markForCheck();
+    (this.control as FormGroup).addControl('innerFormGroup', this.form);
   }
 
   handleServerErrors(): void {
@@ -150,9 +151,17 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
           (acc: DocInputFields, [key, value]) => {
             if (this.fields[key]?.attrs?.fstuc) {
               const textTransformType: TextTransform = this.fields[key].attrs.fstuc;
-              const newValue = value
-                ? this.textTransform.transform(value.toString(), textTransformType)
-                : value;
+              let newValue;
+              if (value && typeof value === 'object') {
+                value.value = value.value
+                  ? this.textTransform.transform(value.value.toString(), textTransformType)
+                  : value.value;
+                newValue = value;
+              } else {
+                newValue = value
+                  ? this.textTransform.transform(value.toString(), textTransformType)
+                  : value;
+              }
               const control =
                 this.form.get(key) || this.form.get([this.docInputFieldsTypes.seriesNumDate, key]);
 
@@ -188,7 +197,7 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
     return {
       ...seriesNumDate,
       ...expirationDate,
-      date: seriesNumDate.date ? this.datesToolsService.format(seriesNumDate.date) : null,
+      date: seriesNumDate.date ? this.datesToolsService.format(seriesNumDate.date.value) : null,
       emitter: formFields.emitter,
       issueId: formFields.issueId,
     };
@@ -196,7 +205,12 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
 
   emitToParentForm(formFields: DocInputFields): void {
     if (this.form.valid) {
-      this.control.get('value').setValue(formFields);
+      const formFieldsForParent = {
+        ...formFields,
+        number: formFields.number.value,
+        series: formFields.series.value,
+      };
+      this.control.get('value').setValue(formFieldsForParent);
     } else {
       this.control.get('value').setErrors({ invalidForm: true });
     }
@@ -222,15 +236,22 @@ export class DocInputComponent extends AbstractComponentListItemComponent<DocInp
       if (this.fields[fieldName]) {
         const validators = [this.validationService.customValidator(this.fields[fieldName])];
 
+        if (fieldName === this.docInputFieldsTypes.date) {
+          validators.push(this.validationService.dateValidator(this.fields[fieldName]));
+        }
+
         const updateOnValidation = this.fields[fieldName].attrs?.validation?.find(
           (v) => v.updateOn === UpdateOn.ON_BLUR,
         );
 
         if (Object.prototype.hasOwnProperty.call(seriesNumDate, fieldName)) {
-          seriesNumDate[fieldName] = new FormControl(componentValues[fieldName], {
-            validators,
-            updateOn: updateOnValidation?.updateOn || UpdateOn.ON_CHANGE,
-          });
+          seriesNumDate[fieldName] = this.fb.group(
+            {
+              attrs: this.fields[fieldName]?.attrs,
+              value: new FormControl(componentValues[fieldName], [...validators]),
+            },
+            { updateOn: updateOnValidation?.updateOn || UpdateOn.ON_CHANGE },
+          );
         } else if (Object.prototype.hasOwnProperty.call(emitter, fieldName)) {
           emitter[fieldName] = new FormControl(componentValues[fieldName], {
             validators,

@@ -4,6 +4,8 @@ export interface LibVersions {
   sfPortalVersion: string;
   formPlayerVersion: string;
   epguLibVersion: string;
+  sfPortalLink?: string;
+  formPlayerLink?: string;
 }
 
 export interface ServiceVersions {
@@ -28,6 +30,8 @@ export interface UrlsOfStand {
   formBackend: string;
   spAdapter: string;
   serviceVersions?: string;
+  sfPortalLink?: string;
+  emulatorLink?: string;
 }
 
 export interface UrlsOfStands {

@@ -212,7 +212,7 @@ export class ComponentsListFormService {
       let { value, type } = val;
       const isValid = disabled || valid;
 
-      if (this.shownElements[val.id].isShown) {
+      if (this.shownElements[val.id]?.isShown) {
         if (type === CustomScreenComponentTypes.DateInput && value) {
           value = this.datesToolsService.format(value);
         } else if (type === CustomScreenComponentTypes.CalendarInput) {

@@ -1,8 +1,9 @@
 import { AbstractControl } from '@angular/forms';
-import { TextTransform } from '@epgu/epgu-constructor-types';
+import { ComponentValidationDto, TextTransform } from '@epgu/epgu-constructor-types';
 import {
   CustomComponent,
   CustomComponentAttrValidation,
+  DateRestriction,
   UpdateOn,
 } from '../../components-list.types';
 
@@ -39,14 +40,33 @@ interface DocInputField extends CustomComponent {
     hidden?: boolean;
     suggestionId?: string;
     updateOn?: UpdateOn;
+    dateRestrictions?: DateRestriction[];
   };
+  parentComponent?: CustomComponent;
 }
 
 interface DocInputFormFields {
   seriesNumDate: {
-    series: number;
-    number: number;
-    date: string | Date;
+    series: {
+      attrs: {
+        validtaion: ComponentValidationDto[];
+      };
+      value: string;
+    };
+    number: {
+      attrs: {
+        validtaion: ComponentValidationDto[];
+      };
+      value: string;
+    };
+    date: {
+      attrs: {
+        accuracy: string;
+        maxDate: string;
+        minDate: string;
+      };
+      value: string | Date;
+    };
   };
   expirationDate?: string | Date;
   emitter: string;
@@ -54,8 +74,18 @@ interface DocInputFormFields {
 }
 
 interface DocInputFields {
-  series: number;
-  number: number;
+  series: {
+    attrs: {
+      validtaion: ComponentValidationDto[];
+    };
+    value: string;
+  };
+  number: {
+    attrs: {
+      validtaion: ComponentValidationDto[];
+    };
+    value: string;
+  };
   date: string | Date;
   emitter: string;
   issueId: string;
