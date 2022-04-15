@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
     this.versions = Object.entries(URLS_OF_STANDS).map(([standType, stand]) => {
       return {
         standType,
+        links: ['', stand.emulatorLink, stand.sfPortalLink],
         libVersions$: this.versionsService.getLibVersions(stand.libVersions, true),
         serviceVersions$: stand.serviceVersions
           ? this.versionsService.getServiceVersions(stand.serviceVersions, true)

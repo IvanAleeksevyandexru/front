@@ -1,8 +1,10 @@
-<h1 (click)="hidden = !hidden">Stand: {{name}} <span [ngClass]="{open: !hidden}" class="indicator"></span></h1>
+<h1 (click)="hidden = !hidden">
+  Stand: {{ name }} <span [ngClass]="{ open: !hidden }" class="indicator"></span>
+</h1>
 <div @expand *ngIf="!hidden" class="content">
   <div *ngIf="libVersions">
     <h3>Library Versions (FRONT)</h3>
-    <library-versions [libVersions]="libVersions"></library-versions>
+    <library-versions [libVersions]="libVersions" [links]="links"></library-versions>
   </div>
 
   <div *ngIf="serviceVersions">
