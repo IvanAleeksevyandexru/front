@@ -32,7 +32,6 @@ describe('HttpHeadersInterceptor', () => {
     initDataService.orderId = 123;
     jest.spyOn(locationService, 'path').mockReturnValue('/600103/1/form');
   });
-
   afterEach(waitForAsync(() => httpTestingController.verify()));
 
   describe('intercept', () => {
