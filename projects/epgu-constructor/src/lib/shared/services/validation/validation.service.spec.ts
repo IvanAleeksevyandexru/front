@@ -181,14 +181,10 @@ describe('ValidationService', () => {
     it('should return required error if empty value', () => {
       const customValidator = service.customValidator(mockComponent);
       const control = new FormControl(null);
-      expect(customValidator(control)).toEqual({
-        msg: '',
-        updateOn: UpdateOn.ON_CHANGE,
-      });
-      control.markAsTouched();
+
       expect(customValidator(control)).toEqual({
         msg: 'Обязательно для заполнения',
-        updateOn: UpdateOn.ON_CHANGE,
+        updateOn: UpdateOn.ON_BLUR,
       });
     });
   });
