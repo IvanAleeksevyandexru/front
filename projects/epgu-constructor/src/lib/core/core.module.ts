@@ -5,6 +5,7 @@ import {
   ERROR_HANDLER_ORDER_PARAMS_SERVICES,
   ERROR_HANDLER_SERVICE,
   HEALTH_SERVICE,
+  LocationService,
   PREV_BUTTON_NAVIGATION,
   TRACE_ALLOWED_REMOTE_SERVICES,
 } from '@epgu/epgu-constructor-ui-kit';
@@ -25,6 +26,7 @@ import { TypeCastService } from './services/type-cast/type-cast.service';
 import { HtmlSelectService } from './services/html-select/html-select.service';
 import { InterceptorUtilsService } from './services/interceptor-utils/interceptor-utils.service';
 import { InviteService } from './services/invite/invite.service';
+import { ClosedByCookieInterceptor } from './interceptor/closed-by-cookie/closed-by-cookie-interceptor';
 import { ScreenService } from '../screen/screen.service';
 
 /**
@@ -51,6 +53,12 @@ import { ScreenService } from '../screen/screen.service';
       provide: HTTP_INTERCEPTORS,
       useClass: HttpHeadersInterceptor,
       multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ClosedByCookieInterceptor,
+      multi: true,
+      deps: [LocationService, DeviceDetectorService],
     },
     {
       provide: PREV_BUTTON_NAVIGATION,
