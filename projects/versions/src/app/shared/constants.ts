@@ -6,7 +6,7 @@ const endpoints = require('../../assets/config.json');
 
 const getUrl = (mask: string): string => {
   const name = Object.keys(masks).find((key: string) => key.includes(mask));
-  const url = masks[name]?.link || masks[name].target;
+  const url = masks[name]?.link || masks[name]?.target;
   return url;
 };
 
