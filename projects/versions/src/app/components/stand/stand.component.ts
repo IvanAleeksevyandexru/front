@@ -17,6 +17,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class StandComponent {
   @Input() serviceVersions: ServiceVersions;
   @Input() libVersions: LibVersions;
+  @Input() formBackend: string;
+  @Input() spAdapter: string;
   @Input() links: string[];
   @Input() name: string;
   hidden: boolean;

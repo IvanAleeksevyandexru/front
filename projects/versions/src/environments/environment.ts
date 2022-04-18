@@ -5,8 +5,10 @@
 export const environment = {
   production: false,
   uatLibApi: 'uat-lib',
+  uatUrl: 'uat-url',
   uatServiceApi: 'uat-service',
   uat2LibApi: 'uat2-lib',
+  uat2Url: 'uat2-url',
   devL11LibApi: 'devL11-lib',
   devL11ServiceApi: 'devL11-service',
   dev01LibApi: 'dev01-lib',
@@ -14,6 +16,7 @@ export const environment = {
   dev02LibApi: 'dev02-lib',
   dev02ServiceApi: 'dev02-service',
   prodLibApi: 'prod-lib',
+  prodServiceApi: 'prod-service-api',
   prodLikeLibApi: 'prodLike-lib',
   prodLikeServiceApi: 'prodLike-service',
 };
