@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { BackendServices } from '../../../shared/interfaces';
 
 interface IBackendVersions {
   formBackend: string;
