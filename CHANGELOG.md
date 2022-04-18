@@ -9,6 +9,8 @@
 * Добавлена верстка clarifications в RegistrationLegalAddr [EPGUCORE-86024]
 * Добавлен SlotsErrorHandling для TimeSlot2 [EPGUCORE-92232]
 * Добавлен minOccures в childrenList [EPGUCORE-91135]
+* Добавлена возможность валидации даты по DateInput в DocInput [EPGUCORE-89680]
+* Добавлен interceptor по закрытию услуг по куке [EPGUCORE-91360]
 
 ### Refactor
 
@@ -44,10 +46,17 @@
 * Добавлено форматирование ext в названии файла [EPGUCORE-92213]
 * Поправлена реактивность в Timeslot 2 [EPGUCORE-92835]
 * Поправлен дефект, что не отображается виджет ПСО на страницах КФ [EPGUCORE-92825]
+* Правка singleNotifier для отображения нескольких дисклеймеров [EPGUCORE-87879]
 
 ### Tests
 
 * Добавлены тесты в multipleChoiceDictionary, чтобы не было регреса [EPGUCORE-91566]
+
+### Chore
+
+* Добавлен проект component-registry [EPGUCORE-90942]
+* Добавлены линки на стенды в versions [EPGUCORE-93907]
+* Доработки в versions, теперь показываются версии бэковских сервисов [EPGUCORE-87386]
 
 ## [401.40.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.40.0) (2022-04-14)
 
@@ -396,7 +405,6 @@
 * Исправлена работа trobber, если не задан timeout в RestCallComponent [EPGUCORE-87527]
 * Исправлен текст в модальном окне при ошибке 409 [EPGUCORE-82665]
 * Поправлен вывод информации о booking timeslot [EPGUCORE-67487]
-* Правка singleNotifier для отображения нескольких дисклеймеров [EPGUCORE-87879]
 * Исправлена работа rest call [EPGUCORE-88035]
 
 ### Tests
