@@ -9,6 +9,7 @@ import { ServiceVersionsComponent } from './components/stand/service-versions/se
 import { ErrorService } from './services/error.service';
 import { ErrorComponent } from './components/error/error.component';
 import { StandComponent } from './components/stand/stand.component';
+import { BackendVersionsComponent } from './components/stand/backend-versions/backend-versions.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { StandComponent } from './components/stand/stand.component';
     LibraryVersionsComponent,
     ServiceVersionsComponent,
     ErrorComponent,
+    BackendVersionsComponent,
   ],
   imports: [BrowserModule, BrowserAnimationsModule, HttpClientModule],
   providers: [GetVersionsService, ErrorService],

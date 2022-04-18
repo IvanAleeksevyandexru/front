@@ -1,5 +1,7 @@
 {
   "libVersions": "sf-portal-st/assets/version.json",
   "serviceVersions": "service-descriptor-storage/v1/scenario/version_gibdd",
+  "formBackend": "api/form-backend/actuator/info",
+  "spAdapter": "sp-adapter/actuator/info",
   "sfPortalLink": "600103/1/form"
 }

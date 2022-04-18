@@ -4,6 +4,8 @@
       *ngIf="{
         libVersions: item.libVersions$ | async,
         serviceVersions: item.serviceVersions$ | async,
+        formBackend: item.formBackend$ | async,
+        spAdapter: item.spAdapter$ | async,
         links: item.links
       } as data"
     >
@@ -11,6 +13,9 @@
         <stand
           [name]="item.standType"
           [libVersions]="data.libVersions"
+          [serviceVersions]="data.serviceVersions"
+          [formBackend]="data.formBackend"
+          [spAdapter]="data.spAdapter"
           [links]="data.links"
           [serviceVersions]="data.serviceVersions"
         ></stand>

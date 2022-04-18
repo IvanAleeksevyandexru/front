@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
         serviceVersions$: stand.serviceVersions
           ? this.versionsService.getServiceVersions(stand.serviceVersions, true)
           : null,
+        formBackend$: this.versionsService.getBackendServices(stand.formBackend),
+        spAdapter$: this.versionsService.getBackendServices(stand.spAdapter),
       };
     });
     this.cdr.detectChanges();
