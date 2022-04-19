@@ -55,17 +55,25 @@ export class ValidationService {
   ) {}
 
   public customValidator(component: CustomComponent): ValidatorFn {
-    const validations = component.attrs?.validation;
+    const validations = this.getFrontendValidators(component);
 
     return (control: AbstractControl): ValidationErrors => {
       if (this.typesWithoutValidation.includes(component.type)) {
         return null;
       }
 
-      const { value, touched, dirty } = control;
+      const { value } = control;
 
       if (component.required && !value) {
-        return this.validationErrorMsg(touched || dirty ? REQUIRED_FIELD : '');
+        const jsonRequiredValidator = this.getJsonRequiredValidator(validations);
+
+        return this.validationErrorMsg(
+          jsonRequiredValidator?.errorMsg || REQUIRED_FIELD,
+          undefined,
+          {
+            updateOn: jsonRequiredValidator?.updateOn || UpdateOn.ON_BLUR,
+          },
+        );
       }
 
       let customMessage;
@@ -104,18 +112,21 @@ export class ValidationService {
     component: CustomComponent,
     asyncValidationType: UpdateOn,
   ): AsyncValidatorFn {
-    const componentValidations = component.attrs?.validation;
-    const onBlurValidations = componentValidations.filter(
+    const validations = this.getFrontendValidators(component);
+
+    const onBlurValidations = validations.filter(
       (validationRule) => validationRule.updateOn === UpdateOn.ON_BLUR,
     );
 
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const { value, touched } = control;
+      const { value } = control;
 
       if (component.required && !value) {
+        const jsonRequiredValidator = this.getJsonRequiredValidator(validations);
+
         return of(
-          this.validationErrorMsg(touched ? REQUIRED_FIELD : '', undefined, {
-            updateOn: asyncValidationType,
+          this.validationErrorMsg(jsonRequiredValidator?.errorMsg || REQUIRED_FIELD, undefined, {
+            updateOn: jsonRequiredValidator?.updateOn || UpdateOn.ON_BLUR,
           }),
         );
       }
@@ -129,7 +140,7 @@ export class ValidationService {
           return of(
             this.validationErrorMsg(error.errorMsg, error?.errorDesc, {
               textFromJson: true,
-              updateOn: asyncValidationType,
+              updateOn: UpdateOn.ON_BLUR,
             }),
           );
         }
@@ -368,5 +379,22 @@ export class ValidationService {
         ) || [];
     }
     return validations;
+  }
+
+  private getFrontendValidators(component: CustomComponent): CustomComponentAttrValidation[] {
+    const validations = component.attrs?.validation;
+    // по submit валидируем только на бэке
+    return validations?.filter(
+      (validator: CustomComponentAttrValidation) => validator.updateOn !== UpdateOn.ON_SUBMIT,
+    );
+  }
+
+  private getJsonRequiredValidator(
+    validations: CustomComponentAttrValidation[],
+  ): CustomComponentAttrValidation {
+    return validations?.find(
+      (validation: CustomComponentAttrValidation) =>
+        validation.type === 'RegExp' && (validation.value === '.+' || validation.value === '.*'),
+    );
   }
 }
