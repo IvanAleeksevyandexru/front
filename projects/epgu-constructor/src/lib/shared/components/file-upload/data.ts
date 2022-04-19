@@ -105,7 +105,7 @@ export class FileItem {
       this.isRawMock = true;
     }
     this.isImage = /^.*\.(jpe?g|gif|png|bmp)$/i.test(this.raw.name);
-    this.hasNoPreview = /^.*\.(zip|rar|sig)$/i.test(this.raw.name);
+    this.hasNoPreview = /^.*\.(zip|rar|sig|txt)$/i.test(this.raw.name);
   }
 
   setAttached(attached: boolean): FileItem {
