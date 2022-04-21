@@ -145,7 +145,8 @@ export class ActionToolsService {
             type = ((response as unknown) as Blob).type;
           }
 
-          this.downloadService.saveRawFile(value, type, 'document.pdf');
+          const extension = type === 'text/calendar' ? '.ics' : '.pdf';
+          this.downloadService.saveRawFile(value, type, `document${extension}`);
         },
         (error) => console.log(error),
       );
