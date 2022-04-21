@@ -41,7 +41,9 @@ export class CarDetailInfoService {
     map((data) => data.every((hasData) => !hasData)),
   );
 
-  public hasVin = !!this.screenService.component.arguments.vin;
+  public hasVin =
+    !!this.screenService.component.arguments.vin &&
+    this.screenService.component.arguments.vin !== 'null';
 
   constructor(
     private screenService: ScreenService,
@@ -52,6 +54,7 @@ export class CarDetailInfoService {
 
   public fetchData(): void {
     this.currentAnswerService.isValid = true;
+
     if (this.hasVin) {
       this.parallelRequest().subscribe();
       return;
@@ -63,6 +66,7 @@ export class CarDetailInfoService {
   public fetchNotaryInfo(): Observable<CarDetailInfo<NotaryInfo>> {
     this.notaryInfo$.next(null);
     this.isLoadingNotaryInfo$.next(true);
+
     return this.fetchInfo<CarDetailInfo<NotaryInfo>>('/form-backend/data/gibdd/notaryInfo').pipe(
       tap((response) => {
         this.isLoadingNotaryInfo$.next(false);
@@ -102,6 +106,7 @@ export class CarDetailInfoService {
 
   private parallelRequest(): Observable<unknown> {
     this.screenService.updateLoading(true);
+
     return merge(this.fetchNotaryInfo(), this.fetchVehicleInfo()).pipe(
       finalize(() => this.screenService.updateLoading(false)),
       catchError(() => {
@@ -116,6 +121,7 @@ export class CarDetailInfoService {
 
   private sequentialRequest(): Observable<unknown> {
     this.screenService.updateLoading(true);
+
     return this.fetchVehicleInfo().pipe(
       switchMap((response) => {
         this.screenService.component.arguments.vin = response.data.vin;
@@ -140,6 +146,7 @@ export class CarDetailInfoService {
 
   private setState(data: [CarDetailInfo<VehicleOwnerInfo>, CarDetailInfo<NotaryInfo>]): void {
     const [vehicleInfo, notaryInfo] = data;
+
     if (vehicleInfo && notaryInfo) {
       this.currentAnswerService.state = {
         vehicleInfo: {
