@@ -1,10 +1,10 @@
 import { BrokenDateFixStrategy } from '@epgu/ui/models/common-enums';
 import { CustomComponentAttr, DateRestriction } from '../../components-list.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
-import { Clarifications } from '@epgu/epgu-constructor-types';
+import { BooleanStr, Clarifications } from '@epgu/epgu-constructor-types';
 
 export default class DateInputModelAttrs extends GenericAttrs {
-  readonly readonly: boolean;
+  readonly readonly: boolean | BooleanStr;
 
   readonly minDate: string;
 

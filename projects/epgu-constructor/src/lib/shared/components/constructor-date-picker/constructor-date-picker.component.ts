@@ -4,6 +4,7 @@ import { Align, BrokenDateFixStrategy, ValidationShowOn } from '@epgu/ui/models/
 import { DatesHelperService } from '@epgu/ui/services/dates-helper';
 import { RelativeDate } from '@epgu/ui/models/date-time';
 import { CustomComponent } from '../../../component/custom-screen/components-list.types';
+import { BooleanStr } from '@epgu/epgu-constructor-types';
 
 @Component({
   selector: 'epgu-constructor-constructor-date-picker',
@@ -16,7 +17,7 @@ export class ConstructorDatePickerComponent {
   @Input() name: string;
   @Input() control: AbstractControl;
   @Input() component: CustomComponent;
-  @Input() readOnly: boolean;
+  @Input() readOnly: boolean | BooleanStr;
   @Input() minDate: Date | RelativeDate | string;
   @Input() maxDate: Date | RelativeDate | string;
   @Input() clearable: boolean;

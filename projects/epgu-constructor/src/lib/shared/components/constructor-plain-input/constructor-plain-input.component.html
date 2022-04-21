@@ -12,7 +12,7 @@
   [id]="id"
   [formControl]="control"
   [validationShowOn]="validationShowOn"
-  [readOnly]="readOnly"
+  [readOnly]="readOnly === 'true' || readOnly === true"
   [placeholder]="placeholder"
   [maxlength]="maxlength"
   [type]="type"
