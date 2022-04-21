@@ -16,6 +16,13 @@ export const INN_ERROR = {
     desc: 'Запросите его в личном кабинете, потом вернитесь к услуге',
   },
 };
+export const INN_WARN = {
+  EMPTY_WARN: {
+    type: ConfirmUserDataErrorType.warn,
+    title: 'ИНН не указан',
+    desc: 'Запросите его в личном кабинете, потом вернитесь к услуге',
+  },
+};
 
 export enum InnState {
   valid = '',
@@ -25,4 +32,5 @@ export enum InnState {
 
 export type PersonalUserInnWithErrors = ComponentBase & {
   errors: ConfirmUserDataError[];
+  skipValidation?: boolean;
 };

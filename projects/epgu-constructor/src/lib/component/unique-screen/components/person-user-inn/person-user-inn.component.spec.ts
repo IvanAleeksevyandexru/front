@@ -34,6 +34,15 @@ describe('PersonUserInnComponent', () => {
     type: '',
     value: '',
   };
+  const mockDataSkipValidation = {
+    attrs: {},
+    id: '',
+    label: '',
+    type: '',
+    value: '',
+    required: false,
+    skipValidation: true,
+  };
 
   const actionMock: ComponentActionDto = {
     label: '',
@@ -112,6 +121,15 @@ describe('PersonUserInnComponent', () => {
       const updateValue = jest.spyOn(component, 'updateValue');
       component.ngOnInit();
       expect(updateValue).toHaveBeenCalled();
+    });
+  });
+
+  describe('when skipValidation: true && required: false', () => {
+    it('should call skipValidation', () => {
+      screenService.component = mockDataSkipValidation;
+      const skipValidation = jest.spyOn(component, 'skipValidation');
+      component.ngOnInit();
+      expect(skipValidation).toHaveBeenCalled();
     });
   });
 });
