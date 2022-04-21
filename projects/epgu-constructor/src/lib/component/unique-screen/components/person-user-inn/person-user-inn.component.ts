@@ -8,7 +8,7 @@ import {
   ConfirmUserDataError,
   ConfirmUserDataErrorType,
 } from '../confirm-personal-user-data-screen/confirm-personal-user-data-screen.types';
-import { INN_ERROR, InnState, PersonalUserInnWithErrors } from './person-user-inn.types';
+import { INN_ERROR, INN_WARN, InnState, PersonalUserInnWithErrors } from './person-user-inn.types';
 
 @Component({
   selector: 'epgu-constructor-person-user-inn',
@@ -25,10 +25,12 @@ export class PersonUserInnComponent implements OnInit {
       ...data,
       value: data.value,
       errors: data?.errors || [],
+      skipValidation: data?.skipValidation,
     })),
   );
   errors: ConfirmUserDataError[] = [];
   currentInnState = InnState.valid;
+  warnings: ConfirmUserDataError[] = [];
 
   private innRegExp = /^([0-9][1-9]|[1-9][0-9])[0-9]{10}$/;
 
@@ -42,16 +44,20 @@ export class PersonUserInnComponent implements OnInit {
 
   ngOnInit(): void {
     this.data$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe((data) => {
-      if (_isEmpty(data.value)) {
-        this.currentInnState = InnState.empty;
-        this.errors.push(INN_ERROR.EMPTY);
-      } else if (!this.innRegExp.test(data.value)) {
-        this.currentInnState = InnState.invalid;
-        this.errors.push(INN_ERROR.INVALID);
-      }
+      if (!data.required && data?.skipValidation) {
+        this.skipValidation();
+      } else {
+        if (_isEmpty(data.value)) {
+          this.currentInnState = InnState.empty;
+          this.errors.push(INN_ERROR.EMPTY);
+        } else if (!this.innRegExp.test(data.value)) {
+          this.currentInnState = InnState.invalid;
+          this.errors.push(INN_ERROR.INVALID);
+        }
 
-      this.updateValue(data.value, data.errors);
-      this.changeDetectionRef.markForCheck();
+        this.updateValue(data.value, data.errors);
+        this.changeDetectionRef.markForCheck();
+      }
     });
   }
 
@@ -62,5 +68,12 @@ export class PersonUserInnComponent implements OnInit {
     const hasBackendErrors = errors.some((error) => error?.type === ConfirmUserDataErrorType.error);
     const hasFrontendErrors = !_isEmpty(this.errors);
     this.currentAnswersService.isValid = !hasBackendErrors && !hasFrontendErrors;
+  }
+
+  skipValidation(): void {
+    this.currentInnState = InnState.empty;
+    this.warnings.push(INN_WARN.EMPTY_WARN);
+    this.currentAnswersService.isValid = true;
+    this.changeDetectionRef.markForCheck();
   }
 }
