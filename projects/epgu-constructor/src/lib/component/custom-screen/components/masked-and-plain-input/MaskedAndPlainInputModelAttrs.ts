@@ -1,4 +1,9 @@
-import { Clarifications, DisabledByCheckbox, TextTransform } from '@epgu/epgu-constructor-types';
+import {
+  BooleanStr,
+  Clarifications,
+  DisabledByCheckbox,
+  TextTransform,
+} from '@epgu/epgu-constructor-types';
 import { CustomComponentAttr } from '../../components-list.types';
 import GenericAttrs from '../../component-list-resolver/GenericAttrs';
 
@@ -13,7 +18,7 @@ export default class MaskedAndPlainInputModelAttrs extends GenericAttrs {
 
   readonly fstuc: TextTransform;
 
-  readonly readonly: boolean;
+  readonly readonly: boolean | BooleanStr;
 
   readonly maskOptions: unknown;
 

@@ -49,3 +49,5 @@ export interface ComponentDto {
   linkedValues?: ILinkedValue[];
   header?: string;
 }
+
+export type BooleanStr = 'true' | 'false';
