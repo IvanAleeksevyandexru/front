@@ -9,10 +9,14 @@ export default class CheckboxInputModelAttrs extends GenericAttrs {
 
   readonly isSoloCheckBox: boolean;
 
+  //todo: заменить на тип BooleanStr
+  readonly consistInRadioButton: 'true' | 'false';
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.clarifications = attrs.clarifications;
     this.hint = attrs.hint;
     this.isSoloCheckBox = attrs.isSoloCheckBox;
+    this.consistInRadioButton = attrs.consistInRadioButton;
   }
 }

@@ -42,6 +42,7 @@
           [componentsGroupIndex]="i"
           [components]="$any(screens[screenKey])"
           [errors]="((commonError$ | async)?.errors)[i] || {}"
+          [activeCheckBoxes]="activeCheckBoxes"
           (changes)="changeComponentList($event, i)"
         >
         </epgu-constructor-components-list>
