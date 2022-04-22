@@ -63,6 +63,10 @@ export class HealthService {
   private send(event: string, time: number, result: number, eventInfo?: EventInfo): void {
     const api = this.loadService.config.timingApiUrl;
 
+    if (isDevMode()) {
+      console.log('HEALTH', { event, ...eventInfo });
+    }
+
     if (isDevMode() || !api) {
       return;
     }

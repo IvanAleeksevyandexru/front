@@ -75,7 +75,6 @@ export class HealthHandlerService implements HealthHandler {
   ): Observable<HttpEvent<T>> {
     let serviceName = '';
     let lastUrlPart = '';
-    let hadOrderId = true;
 
     this.processMnemonic(request);
 
@@ -85,16 +84,26 @@ export class HealthHandlerService implements HealthHandler {
       lastUrlPart = url;
     }
 
-    if (lastUrlPart === 'getservice' || lastUrlPart === 'getnextstep') {
+    const isGetService = lastUrlPart === 'getservice';
+    const isGetNextStep = lastUrlPart === 'getnextstep';
+    let hadOrderId = false;
+
+    if (isGetService) {
       hadOrderId = !!((request?.body as unknown) as ScenarioDto)?.orderId;
+    } else if (isGetNextStep) {
+      hadOrderId = !!((request?.body?.scenarioDto as unknown) as ScenarioDto)?.orderId;
     }
 
     return next.handle(request).pipe(
       tap((response: HttpResponse<T>) => {
         if (this.isValidHttpEntity(response)) {
           this.handleValidHttpResponseEntity(request, response, serviceName, lastUrlPart);
-          if (!hadOrderId && !!((request?.body as unknown) as ScenarioDto)?.orderId) {
-            this.measureCreateOrOpenOrder((request?.body as unknown) as ScenarioDto);
+
+          const hasOrderId = !!((response?.body?.scenarioDto as unknown) as ScenarioDto)?.orderId;
+          if (isGetService && hadOrderId) {
+            this.measureModifyOrder((response?.body?.scenarioDto as unknown) as ScenarioDto);
+          } else if ((isGetService || isGetNextStep) && !hadOrderId && hasOrderId) {
+            this.measureCreateOrder((response?.body?.scenarioDto as unknown) as ScenarioDto);
           }
         }
       }),
@@ -443,13 +452,21 @@ export class HealthHandlerService implements HealthHandler {
     }
   }
 
-  private measureCreateOrOpenOrder(order: ScenarioDto): void {
+  private measureCreateOrder(order: ScenarioDto): void {
+    return this.measureCreateOrModifyOrder(order, 'create');
+  }
+
+  private measureModifyOrder(order: ScenarioDto): void {
+    return this.measureCreateOrModifyOrder(order, 'modify');
+  }
+
+  private measureCreateOrModifyOrder(order: ScenarioDto, operationType: 'create' | 'modify'): void {
     const serviceName = 'OrderOperation';
     const healthData = {
       orderId: order.orderId,
       id: order.display.id,
       name: order.display.label,
-      operationType: 'create',
+      operationType,
     };
 
     this.startMeasureHealth(serviceName);
