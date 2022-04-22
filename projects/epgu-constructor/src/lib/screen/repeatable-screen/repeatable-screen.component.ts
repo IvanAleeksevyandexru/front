@@ -21,6 +21,7 @@ import { BusEventType, EventBusService, UnsubscribeService } from '@epgu/epgu-co
 import { CurrentAnswersService } from '../current-answers.service';
 import { ScreenService } from '../screen.service';
 import {
+  ActiveCheckBoxesType,
   CustomComponent,
   CustomComponentAttr,
   CustomComponentOutputData,
@@ -55,6 +56,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   parentComponentId: string;
   cacheRepeatableFieldsAnswersLocally: boolean;
   disclaimer: DisclaimerDto;
+  activeCheckBoxes: ActiveCheckBoxesType = {};
 
   isRecording$$ = new BehaviorSubject<boolean>(true);
 
@@ -183,6 +185,7 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
     state[index] = prepareDataToSendForRepeatableFieldsComponent(changes);
     this.saveState(state);
     this.uniquenessErrorsService.calculatePreparedUniqErrors(state, index);
+    this.activeCheckBoxes = this.findChangedCheckBoxes(changes, index, this.activeCheckBoxes);
   }
 
   removeItem(key: string, index: number): void {
@@ -282,5 +285,25 @@ export class RepeatableScreenComponent implements OnInit, AfterViewChecked, Afte
   private get firstComponentAttrs(): CustomComponentAttr {
     return (this.propData.components[0].attrs.components[0]
       .attrs as unknown) as CustomComponentAttr;
+  }
+
+  private findChangedCheckBoxes(
+    changes: CustomComponentOutputData,
+    index: number,
+    activeCheckBox: ActiveCheckBoxesType,
+  ): ActiveCheckBoxesType {
+    let objCheckBoxes = { ...activeCheckBox };
+    for (var key in changes) {
+      if (
+        ((changes[key].value as unknown) as boolean) === true &&
+        changes[key].consistInRadioButton === 'true'
+      ) {
+        objCheckBoxes[key] = index;
+      }
+      if (((changes[key].value as unknown) as boolean) === false && objCheckBoxes[key] === index) {
+        delete objCheckBoxes[key];
+      }
+    }
+    return objCheckBoxes;
   }
 }

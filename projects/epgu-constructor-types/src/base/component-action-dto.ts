@@ -73,6 +73,7 @@ export enum DTOActionAction {
   addToCalendar = 'service/action/addToCalendar',
   confirmSmsCode = 'service/actions/confirmSmsCode',
   confirmEmailCode = 'service/actions/confirmEmailCode',
+  confirmModalStep = 'confirmModalStep',
   creatUrlAction = 'service/action/createUrl',
   editChildData = 'editChildData',
   editEmail = 'service/actions/editUserEmail',

@@ -24,6 +24,7 @@ import {
 } from '@epgu/epgu-constructor-ui-kit';
 import { ScreenBase } from '../screen-base';
 import { ConfirmationModalComponent } from '../../modal/confirmation-modal/confirmation-modal.component';
+import { ActionToolsService } from '../../shared/directives/action/action-tools.service';
 
 @Component({
   selector: 'epgu-constructor-question-screen',
@@ -44,6 +45,7 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     private locationService: LocationService,
     private changeDetectionRef: ChangeDetectorRef,
     private sessionService: SessionService,
+    private actionToolsService: ActionToolsService,
   ) {
     super(injector);
   }
@@ -84,6 +86,17 @@ export class QuestionsScreenComponent extends ScreenBase implements OnInit {
     }
     if (answer.type === ActionType.modalRedirectTo) {
       this.showModalRedirectTo(answer);
+      return;
+    }
+    if (
+      answer.type === ActionType.confirmModalStep &&
+      DTOActionAction[answer.action] &&
+      answer.label
+    ) {
+      this.actionToolsService.openConfirmationModal(
+        answer as ComponentActionDto,
+        this.screenService.component.id,
+      );
       return;
     }
     this.selectedAnswer = answer.value;

@@ -14,6 +14,14 @@
         [description]="error.desc"
       ></epgu-constructor-disclaimer>
     </ng-container>
+    <ng-container *ngIf="this.warnings.length > 0">
+      <epgu-constructor-disclaimer
+        class="mb-16"
+        *ngFor="let warning of warnings"
+        [title]="warning.title"
+        [description]="warning.desc"
+      ></epgu-constructor-disclaimer>
+    </ng-container>
 
     <div class="item" *ngIf="currentInnState === InnState.valid">
       <div class="label-helper">{{ data.label }}</div>
