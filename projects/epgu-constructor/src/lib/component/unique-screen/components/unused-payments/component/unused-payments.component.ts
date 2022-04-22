@@ -16,6 +16,7 @@ import { UnusedPaymentInterface } from '../unused-payment.interface';
 export class UnusedPaymentsComponent implements OnInit {
   @Input() payments: UnusedPaymentInterface[];
   @Input() description: string;
+  @Input() uinVisible: boolean;
   @Input() selectedPayment: UnusedPaymentInterface;
 
   @Output() selectPaymentEvent = new EventEmitter<UnusedPaymentInterface>();

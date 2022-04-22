@@ -3,7 +3,8 @@
 <epgu-constructor-radio-tax
   *ngFor="let payment of payments; let i = index"
   [payment]="payment"
-  [isSelect]="payment.uin === selectedPayment.uin"
+  [uinVisible]="uinVisible"
+  [isSelect]="payment.link === selectedPayment.link"
   (paymentSelectEvent)="handleSelect($event)"
   [class.mb-24]="payments.length - 1 !== i"
 ></epgu-constructor-radio-tax>

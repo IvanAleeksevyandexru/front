@@ -67,6 +67,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
   public ngUnsubscribe$: UnsubscribeService;
   public config: ConfigService;
   public actionService: ActionService;
+  public uinVisible: boolean;
 
   data: ComponentBase;
   header$: Observable<string>;
@@ -109,6 +110,7 @@ export class AbstractPaymentComponent implements OnDestroy, OnInit {
       }),
     );
     this.datesToolsService = this.injector.get(DatesToolsService);
+    this.uinVisible = this.screenService.component.attrs.uinVisible || false;
   }
 
   ngOnInit(): void {
