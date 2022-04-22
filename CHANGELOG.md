@@ -11,6 +11,9 @@
 * Добавлен minOccures в childrenList [EPGUCORE-91135]
 * Добавлена возможность валидации даты по DateInput в DocInput [EPGUCORE-89680]
 * Добавлен interceptor по закрытию услуг по куке [EPGUCORE-91360]
+* Реализовать аналог confirmModalStep в кнопках компонента QuestionScr [EPGUCORE-86551]
+* Доработка CheckBox внутри RepeatableFields [EPGUCORE-76749]
+* Обновлена отправка хелсов создания и редактирования orderId [EPGUCORE-87275]
 
 ### Refactor
 
@@ -49,6 +52,10 @@
 * Правка singleNotifier для отображения нескольких дисклеймеров [EPGUCORE-87879]
 * Возвращен selectAttributes из json вместо [*] [EPGUCORE-84738]
 * Убрана кнопка Посмотреть у txt [EPGUCORE-94572]
+* Добавлена обработка строковый значений для readonly [EPGUCORE-92387]
+* Исправлена карта на судах [EPGUCORE-92890]
+* Сделана необязательной валидация ИНН [EPGUCORE-89532]
+* Параллельные и последовательные запросы CarDetailInfo [EPGUCORE-94765]
 
 ### Tests
 
