@@ -206,6 +206,7 @@ type Wait = string;
  * (например Регион связан со страной и чтобы не выкачивать все регионы мира, в ссылке будет указана страна)
  */
 export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
+  consistInRadioButton?: 'true' | 'false';
   appLinks?: AppLink[];
   brokenDateFixStrategy?: BrokenDateFixStrategy;
   charsAmount?: CharsAmount;
@@ -313,6 +314,7 @@ export interface CustomComponentOutputData {
     isValid?: boolean;
     disabled?: boolean;
     condition?: string;
+    consistInRadioButton?: 'true' | 'false';
   };
 }
 
@@ -403,4 +405,7 @@ export interface IEntityWithRef {
   attrs?: {
     ref?: CustomComponentRef[];
   };
+}
+export interface ActiveCheckBoxesType {
+  [key: string]: number;
 }

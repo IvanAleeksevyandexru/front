@@ -20,8 +20,9 @@ import {
   HttpCancelService,
   BusEventType,
 } from '@epgu/epgu-constructor-ui-kit';
-import { AbstractControl, FormArray } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import {
+  ActiveCheckBoxesType,
   CustomComponent,
   CustomComponentOutputData,
   CustomListStatusElements,
@@ -51,6 +52,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() shouldPendingRequestsBeCancelledAfterDestroy = true;
   @Input() components: BaseModel<GenericAttrs>[] | CustomComponent[];
   @Input() errors: ScenarioErrorsDto;
+  @Input() activeCheckBoxes: ActiveCheckBoxesType;
   @Output() changes: EventEmitter<CustomComponentOutputData>;
   @Output() emitFormStatus = new EventEmitter();
   @Output() emitFormCreated = new EventEmitter<FormArray>();
@@ -102,6 +104,7 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.subscribeOnFormStatusChanging();
+    this.disableCheckBoxes();
   }
 
   ngOnDestroy(): void {
@@ -144,5 +147,19 @@ export class ComponentsListComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe(): void {
     this.unsubscribeService.ngUnsubscribe$.next();
     this.unsubscribeService.ngUnsubscribe$.complete();
+  }
+
+  private disableCheckBoxes(): void {
+    this.formService.form.controls.forEach((item: FormGroup, i: number): void => {
+      if (
+        item.value.attrs.consistInRadioButton === 'true' &&
+        !(this.activeCheckBoxes[item.value.id] >= 0)
+      ) {
+        this.formService.form.controls[i].enable();
+      }
+      if (item.value.value === false && this.activeCheckBoxes[item.value.id] >= 0) {
+        this.formService.form.controls[i].disable();
+      }
+    });
   }
 }
