@@ -38,17 +38,20 @@
 .radio-group {
   @include flex-container();
   margin-top: -4px; // Убирает лишний отступ для первого элемента
+  margin-right: -24px; // Скрывает лишний боковой отступ для дочерних элементов
+  @include phones-up {
+    margin-right: -32px;
+  }
   &__item {
     margin-top: 12px;
   }
   &--row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    .radio-group__item {
+      margin-right: $screen-pad-24;
+    }
     @include phones-up {
-      flex-direction: row;
-      flex-wrap: wrap;
-      //TODO: узнать у дизайна, как правильно
-      // должны располагаться элементы в строке,
-      // в гайдах - 2шт с мал текстом рядом на одной линии,
-      // при этом отступы в макетах везде разные
       .radio-group__item {
         margin-right: $screen-pad-32;
       }
