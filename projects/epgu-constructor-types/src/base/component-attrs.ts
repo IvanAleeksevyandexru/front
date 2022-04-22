@@ -357,6 +357,7 @@ export interface ComponentAttrsDto {
   templateId?: TemplateId; // @see InvitationAttrs
   timeout?: Timeout;
   timerRules?: TimerRulesDto;
+  uinVisible?: boolean;
   uniqueBy?: UniqueBy;
   uploadedFile?: ComponentUploadedFileDto;
   url?: Url;

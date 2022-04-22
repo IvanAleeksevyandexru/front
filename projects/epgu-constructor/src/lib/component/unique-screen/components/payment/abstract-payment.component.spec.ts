@@ -108,14 +108,15 @@ describe('AbstractPaymentComponent', () => {
 
   beforeEach(() => {
     screenService = TestBed.inject(ScreenService);
+    screenService.component = mockComponent;
+    screenService.orderId = orderIdMock;
     dictionaryApiService = TestBed.inject(DictionaryApiService);
     paymentService = TestBed.inject(PaymentService);
     locationService = TestBed.inject(LocationService);
     localStorageService = TestBed.inject(LocalStorageService);
     fixture = TestBed.createComponent(AbstractPaymentComponent);
     component = fixture.componentInstance;
-    screenService.component = mockComponent;
-    screenService.orderId = orderIdMock;
+
     fixture.detectChanges();
   });
 

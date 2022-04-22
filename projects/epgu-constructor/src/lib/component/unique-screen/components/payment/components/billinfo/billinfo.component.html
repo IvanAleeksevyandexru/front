@@ -17,7 +17,7 @@
           <strong>{{ paymentPurpose }}</strong>
         </div>
         <ng-template [ngIf]="uin.length">
-          <div class="info__title">
+          <div *ngIf="uinVisible" class="info__title">
             Уникальный идентификатор начисления
           </div>
           <div class="info__text">{{ uin | priorPrefix }}</div>

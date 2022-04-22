@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, pluck } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 
 import { ScreenService } from '../../../../../screen/screen.service';
@@ -27,6 +27,11 @@ export class UnusedPaymentsContainerComponent {
       const cache = this.cachedAnswersService.getCachedValueById(cachedAnswers, component.id);
       return this.parseValue<UnusedPaymentInterface>(cache, null);
     }),
+  );
+
+  uinVisible$ = this.screenService.component$.pipe(
+    pluck('attrs', 'uinVisible'),
+    map((value) => value || false),
   );
 
   constructor(

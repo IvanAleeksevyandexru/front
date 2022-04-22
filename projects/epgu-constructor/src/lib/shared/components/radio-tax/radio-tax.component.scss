@@ -32,7 +32,7 @@
 
 .radio-tax__uin {
   margin-top: 8px;
-  margin-bottom: 16px;
+
   color: $color-text-helper;
   font-weight: 400;
 }
@@ -43,6 +43,8 @@
 }
 
 .radio-tax__link {
+  display: inline-block;
+  margin-top: 16px;
   color: $color-gosblue;
 }
 

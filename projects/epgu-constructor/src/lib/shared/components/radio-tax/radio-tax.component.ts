@@ -11,6 +11,7 @@ import { UnusedPaymentInterface } from '../../../component/unique-screen/compone
 export class RadioTaxComponent {
   @Input() isSelect: boolean;
   @Input() payment: UnusedPaymentInterface;
+  @Input() uinVisible: boolean;
   @Output() paymentSelectEvent = new EventEmitter<UnusedPaymentInterface>();
 
   onSelect(): void {

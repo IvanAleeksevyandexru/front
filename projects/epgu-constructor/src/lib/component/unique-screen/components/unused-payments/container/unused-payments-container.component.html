@@ -10,6 +10,7 @@
     [payments]="unusedPaymentsList$ | async"
     [description]="screenService.componentLabel$ | async"
     [selectedPayment]="selectedPayment$ | async"
+    [uinVisible]="uinVisible$ | async"
     (selectPaymentEvent)="updateState($event)"
   >
   </epgu-constructor-unused-payments>
