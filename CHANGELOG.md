@@ -14,6 +14,7 @@
 * Реализовать аналог confirmModalStep в кнопках компонента QuestionScr [EPGUCORE-86551]
 * Доработка CheckBox внутри RepeatableFields [EPGUCORE-76749]
 * Обновлена отправка хелсов создания и редактирования orderId [EPGUCORE-87275]
+* Добавлен параметр uinVisible для UnusedPayments BillInfo PaymentScr [EPGUCORE-92494]
 
 ### Refactor
 
@@ -56,6 +57,7 @@
 * Исправлена карта на судах [EPGUCORE-92890]
 * Сделана необязательной валидация ИНН [EPGUCORE-89532]
 * Параллельные и последовательные запросы CarDetailInfo [EPGUCORE-94765]
+* Изменены стили радиобаттнов для отображения в строку при коротких лейблах [EPGUCORE-91759]
 
 ### Tests
 
