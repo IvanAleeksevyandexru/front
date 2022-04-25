@@ -6,7 +6,7 @@
   [isValid]="currentAnswersService.isValid$ | async"
 >
   <epgu-cf-ui-constructor-screen-pad class="screen-pad-body">
-    <form [formGroup]="redAddrForm" class="form mb-24">
+    <form [formGroup]="redAddrForm" class="form">
       <div
         class="item"
         *ngFor="let field of (data$ | async)?.attrs?.fields"
@@ -121,7 +121,6 @@
         ></epgu-constructor-disclaimer>
     </ng-container>
 
-    <div class="divider mb-24"></div>
     <div class="data-footer"
       *ngIf="(data$ | async).attrs?.hint as hint"
       epgu-constructor-clickable-label
