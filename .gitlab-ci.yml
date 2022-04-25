@@ -2,7 +2,7 @@ include:
   - project: appsec/cicd
     file: /luxsoft/epgu2-form-frontend.yml
 
-image: node:14
+image: registry.gosuslugi.local/build_images/node:14
 
 cache:
   key:
@@ -29,9 +29,6 @@ stages:
 
 Install:
   stage: install
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
   script:
     - echo 'Warming the cache'
     - test -d node_modules || yarn install --frozen-lockfile --no-progress
@@ -48,12 +45,11 @@ Install:
     - merge_requests
     - master
     - stage
+  tags:
+    - k8s
 
 Types-build:
   stage: types-build
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     - key:
         files:
@@ -75,12 +71,11 @@ Types-build:
     - merge_requests
     - master
     - stage
+  tags:
+    - k8s
 
 Lint:
   stage: code-quality
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
   script:
     - echo -e "##########\nlint\n##########"
     - yarn lint
@@ -92,12 +87,11 @@ Lint:
     - merge_requests
     - master
     - stage
+  tags:
+    - k8s
 
 Test:
   stage: code-quality
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
   script:
     - echo -e "##########\ntest\n##########"
     - yarn test:ci
@@ -108,12 +102,11 @@ Test:
     - merge_requests
     - master
     - stage
+  tags:
+    - k8s
 
 Ui-kit-build:
   stage: ui-kit-build
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     - key:
         files:
@@ -135,12 +128,11 @@ Ui-kit-build:
     - merge_requests
     - master
     - stage
+  tags:
+    - k8s
 
 Children-clubs-build:
   stage: children-clubs-build
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     - key:
         files:
@@ -162,12 +154,11 @@ Children-clubs-build:
     - merge_requests
     - master
     - stage
+  tags:
+    - k8s
 
 Form-player-build:
   stage: form-player-build
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     - key:
         files:
@@ -189,12 +180,11 @@ Form-player-build:
     - merge_requests
     - master
     - stage
+  tags:
+    - k8s
 
 Emulator-build:
   stage: emulator-build
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     - key:
         files:
@@ -214,12 +204,11 @@ Emulator-build:
   needs: ["Form-player-build"]
   only:
     - merge_requests
+  tags:
+    - k8s
 
 Portal-build:
   stage: portal-build
-  except:
-    variables:
-      - $GITLAB_USER_LOGIN == $CI_USER
   cache:
     - key:
         files:
@@ -241,3 +230,5 @@ Portal-build:
     - merge_requests
     - master
     - stage
+  tags:
+    - k8s
