@@ -147,7 +147,7 @@ export class FormPlayerService extends FormPlayerBaseService {
 
   patchStore(newScenarioDtoDiff: Partial<ScenarioDto>): void {
     this.updateLoading(true);
-    const newStore = this._store ? cloneDeep(this._store) : {};
+    const newStore = this._store ? cloneDeep(this._store) : { scenarioDto: {} };
     newStore.scenarioDto = { ...newStore.scenarioDto, ...newScenarioDtoDiff };
     this.processResponse(newStore);
   }
