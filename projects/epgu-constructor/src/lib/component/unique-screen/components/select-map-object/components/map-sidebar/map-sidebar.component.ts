@@ -105,7 +105,7 @@ export class MapSidebarComponent extends BaseComponent implements OnInit {
           let activeBalloonRef;
           if (this.activeItem) {
             this.activeItem.expanded = false;
-            activeBalloonRef = this.balloonComponents.findMatchingElementIdx(value[0]);
+            activeBalloonRef = this.balloonComponents?.findMatchingElementIdx(value[0]);
             if (activeBalloonRef) {
               this.balloonComponents.lockAnimation(true);
             }
