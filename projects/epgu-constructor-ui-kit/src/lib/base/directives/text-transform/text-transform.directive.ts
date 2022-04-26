@@ -34,7 +34,8 @@ export class TextTransformDirective {
 
     /* Вычисляем текущее положение курсора сначала с опрой на маску, т.к. на мобильных устройствах target.selectionStart
     имеет свойство криво вычисляться из-за чего курсор становится в конец строки с маской */
-    const currentCursorPosition = target.value?.indexOf('_') || target.selectionStart || 0;
+    const maskStartPosition = target.value?.indexOf('_') != -1 ? target.value.indexOf('_') : null;
+    const currentCursorPosition = maskStartPosition || target.selectionStart || 0;
     const selection: [number, number] = [currentCursorPosition, currentCursorPosition];
     const transformedValue = this.transforms[this.textTransformType].call(this, target.value);
     this.control.control.setValue(transformedValue);
