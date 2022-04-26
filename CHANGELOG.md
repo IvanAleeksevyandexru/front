@@ -21,6 +21,7 @@
 * Обновление шрифтов Lato-Regular.woff2 и Lato-Bold.woff2 [EPGUCORE-93080]
 * Перенесены часть методов из SelectMapObjectService в KindergartenService [EPGUCORE-85316]
 * Поправлены процедуры клонирования и сравнивания объектов [EPGUCORE-93739]
+* Убран дублирующий параметр 'serviceVersions', в компоненте stand [EPGUCORE-95289]
 
 ### Bug Fixes
 
@@ -58,6 +59,7 @@
 * Сделана необязательной валидация ИНН [EPGUCORE-89532]
 * Параллельные и последовательные запросы CarDetailInfo [EPGUCORE-94765]
 * Изменены стили радиобаттнов для отображения в строку при коротких лейблах [EPGUCORE-91759]
+* Исправлены конфликты с задваивающимся divider [EPGUCORE-89315]
 
 ### Tests
 
@@ -68,6 +70,7 @@
 * Добавлен проект component-registry [EPGUCORE-90942]
 * Добавлены линки на стенды в versions [EPGUCORE-93907]
 * Доработки в versions, теперь показываются версии бэковских сервисов [EPGUCORE-87386]
+* Сборка переведена на кластерный сборочный агент
 
 ## [401.40.0](http://git.gosuslugi.local/luxoft/epgu2-form-frontend/-/tags/v401.40.0) (2022-04-14)
 
