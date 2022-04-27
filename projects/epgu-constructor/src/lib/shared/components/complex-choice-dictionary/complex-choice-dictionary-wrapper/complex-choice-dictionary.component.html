@@ -14,6 +14,6 @@
   </div>
 
   <button *ngIf="!isReadonly" class="link-btn" (click)="onClick()">
-    {{ selectedItems.list.length ? 'Выбрать ещё' : 'Выбрать' }}
+    {{ selectedItems.list.length ? buttonTitle : 'Выбрать' }}
   </button>
 </div>

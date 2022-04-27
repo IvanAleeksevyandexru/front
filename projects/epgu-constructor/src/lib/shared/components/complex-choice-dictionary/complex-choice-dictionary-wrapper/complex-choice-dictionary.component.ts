@@ -46,6 +46,7 @@ export class ComplexChoiceDictionaryComponent implements ControlValueAccessor, O
   @Input() isReadonly?: boolean;
   @Input() tip?: string;
   @Input() limit?: string | number;
+  @Input() buttonName?: string;
 
   selectedItems = { list: [], amount: 0 };
 
@@ -113,6 +114,10 @@ export class ComplexChoiceDictionaryComponent implements ControlValueAccessor, O
     } else {
       this.selectedItems = value;
     }
+  }
+
+  public get buttonTitle(): string {
+    return this.buttonName ? this.buttonName : 'Выбрать еще';
   }
 
   // eslint-disable-next-line no-empty-function
