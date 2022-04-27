@@ -15,6 +15,8 @@ export default class ComplexChoiceDictionaryModelAttrs extends GenericAttrs {
 
   readonly limit?: number | string;
 
+  readonly buttonName?: string;
+
   constructor(attrs: CustomComponentAttr) {
     super(attrs);
     this.dictionaryList = attrs.dictionaryList;
@@ -23,5 +25,6 @@ export default class ComplexChoiceDictionaryModelAttrs extends GenericAttrs {
     this.modalHeader = attrs.modalHeader;
     this.dictionaryFilter = attrs.dictionaryFilter;
     this.limit = attrs.limit;
+    this.buttonName = attrs.buttonName;
   }
 }

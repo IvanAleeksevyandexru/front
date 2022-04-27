@@ -152,6 +152,7 @@ interface CheckBoxes {
   [id: string]: CheckboxListElement;
 }
 
+type ButtonName = string;
 type CharsAmount = number;
 type CityFilter = string[];
 type Class = string;
@@ -209,6 +210,7 @@ export interface CustomComponentAttr extends Partial<ComponentAttrsDto> {
   consistInRadioButton?: 'true' | 'false';
   appLinks?: AppLink[];
   brokenDateFixStrategy?: BrokenDateFixStrategy;
+  buttonName?: ButtonName;
   charsAmount?: CharsAmount;
   checkBoxes?: CheckBoxes;
   cityFilter?: CityFilter;
