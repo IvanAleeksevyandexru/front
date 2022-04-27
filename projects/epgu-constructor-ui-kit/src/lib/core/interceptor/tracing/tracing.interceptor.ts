@@ -12,9 +12,9 @@ import { Tracer } from '@epgu/zipkin';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import * as zipkin from '@epgu/zipkin';
-import ZipkinHttpClient = zipkin.Instrumentation.HttpClient;
 import { Injectable } from '@angular/core';
 import { ConfigService } from '../../services/config/config.service';
+const ZipkinHttpClient = zipkin.Instrumentation.HttpClient;
 
 @Injectable()
 export class TracingHttpInterceptor implements HttpInterceptor {
